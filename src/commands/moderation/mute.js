@@ -22,11 +22,10 @@ module.exports.run = async (bot, message, args) => {
         });
     }
 
-
     let Member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     if (!Member) return message.channel.send(`<@${message.author.id}> You have to mention a user`);
-
-    if(Member.user.bot) return message.channel.send(`You can't mute <@${Member.user.id}>. It's a Bot.`)
+    if(Member.user.bot) return message.reply(`You can't mute <@${Member.user.id}>. It's a Bot.`)
+    if(Member.id === bot.user.id) return message.reply(`You cant't mute me.`);
 
     let isMod = false;
     for(let i in config.modroles) {
