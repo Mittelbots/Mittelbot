@@ -1,0 +1,15 @@
+{
+    "Bot_Owner": "<@395923095472570368>",
+    "DISCORD_APPLICATION_ID": "",
+    "DISCORD_GUILD_ID": "",
+    "prefix": "",
+    "defaultCooldown": {
+        "format": "5000",
+        "text": "5 seconds"
+    },
+    "deleteModCommandsAfterUsage": "false",
+    "deleteCommandsAfterUsage": "false",
+    "errormessages": {
+        "general": "Something went wrong! <@395923095472570368> Fix it idiot!"
+    }
+}
