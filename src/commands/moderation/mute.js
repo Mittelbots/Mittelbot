@@ -9,12 +9,34 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
 
-    if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return message.channel.send(`<@${message.author.id}> You dont have permission for this Command!`);
+    var hasPermission = false
+    for(let i in config.modroles) {
+        if(message.member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
+            hasPermission = true;
+            break;
+        }
+    }
+    if(!hasPermission) {
+        return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
+            setTimeout(() => msg.delete(), 5000);
+        });
+    }
+
 
     let Member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     if (!Member) return message.channel.send(`<@${message.author.id}> You have to mention a user`);
 
     if(Member.user.bot) return message.channel.send(`You can't mute <@${Member.user.id}>. It's a Bot.`)
+
+    let isMod = false;
+    for(let i in config.modroles) {
+        if(Member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
+            isMod = true;
+            break;
+        }
+    }
+
+    if(isMod) return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
 
     var MutedRole;
 

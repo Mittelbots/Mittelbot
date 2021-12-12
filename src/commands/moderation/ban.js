@@ -6,8 +6,20 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
 
-    if (!message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return message.channel.send(`<@${message.author.id}> You dont have permission for this Command!`);
+    var hasPermission = false
+    for(let i in config.modroles) {
+        if(i == "trialmoderator") continue;
 
+        if(message.member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
+            hasPermission = true;
+            break;
+        }
+    }
+    if(!hasPermission) {
+        return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
+            setTimeout(() => msg.delete(), 5000);
+        });
+    }
     message.channel.send('Under construction');
 }
 
