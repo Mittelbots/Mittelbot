@@ -1,4 +1,5 @@
 config.json
 _secret/token.json
+src/db/db_config.json
 
 node_modules/
