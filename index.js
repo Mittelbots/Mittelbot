@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const fs = require('fs');
 const config = require('./config.json');
 const { database } = require("./src/db/db");
+const { checkInfractions } = require("./src/events/checkInfraction");
 const defaultCooldown = new Set();
 
 const bot = new Discord.Client({
@@ -76,6 +77,9 @@ bot.on("messageCreate", async message => {
 });
 
 bot.once('ready', () => {
+  
+  checkInfractions();
+
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   bot.user.setActivity({
     name: "Dev Bot for Chilled Sad",
