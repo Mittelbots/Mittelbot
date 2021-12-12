@@ -25,6 +25,10 @@ module.exports.run = async (bot, message, args) => {
     if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
     if (Member.id === message.author.id) return message.reply(`You can't ban yourself.`);
 
+    let reason = args.slice(1).join(" ");
+    if(!reason) return message.channel.send('Please add a reason!');
+
+
     if(Member.user.bot) message.reply(`Do you really want to ban <@${Member.user.id}>? It's a Bot.`).then(() => {      
         let msg_filter = m => m.author.id === message.author.id;
         message.channel.awaitMessages({filter: msg_filter, max: 1})
@@ -33,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
             if(collected.content.toUpperCase() == 'YES' || collected.content.toUpperCase() == 'Y') {
                 if(!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.reply(`You don't have the permission to ban a bot.`)
                 try {
-                    Member.ban();
+                    Member.ban({reason: reason});
                     return message.reply(`<@${Member.id}>${config.successmessages.banned}`);
                 }catch(err) {
                     console.log(err);
@@ -63,9 +67,6 @@ module.exports.run = async (bot, message, args) => {
 
     if(isMod) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
 
-    let reason = args.slice(1).join(" ");
-    if(!reason) return message.channel.send('Please add a reason!');
-
 
     var Embed = new MessageEmbed()
     .setColor('#0099ff')
@@ -76,7 +77,7 @@ module.exports.run = async (bot, message, args) => {
     .setTimestamp();
 
     try {
-        Member.ban();
+        Member.ban({reason: reason});
         message.reply(`<@${Member.id}>${config.successmessages.banned} `);
         return message.channel.send({embeds: [Embed]})
     }catch(err) {
