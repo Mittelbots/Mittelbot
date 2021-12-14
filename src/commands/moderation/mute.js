@@ -9,6 +9,8 @@ const {
 } = require('../../db/db');
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { getFutureDate } = require('../../../utils/functions/getFutureDate');
+const { createInfractionId } = require('../../../utils/functions/createInfractionId');
+const { insertDataToOpenInfraction } = require('../../../utils/functions/insertDataToDatabase');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -105,17 +107,11 @@ module.exports.run = async (bot, message, args) => {
             .setTimestamp();
 
         try {
-            database.query(`INSERT INTO open_infractions (user_id, mod_id, mute, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, futuredate, reason, Math.random().toString(16).substr(2, 20)], (err) => {
-                if(err) {
-                    console.log(err);
-                    return message.reply(`${config.errormessages.databasequeryerror}`);
-                }
-                Member.roles.add([MutedRole]);
-                Member.send({embeds: [Embed]});
-                return message.channel.send({
-                    embeds: [Embed]
-                });
-
+            insertDataToOpenInfraction(Member.id, message.author.id, 0, 1, futuredate, reason, createInfractionId())
+            await Member.roles.add([MutedRole]);
+            await Member.send({embeds: [Embed]});
+            return message.channel.send({
+                embeds: [Embed]
             });
         } catch (err) {
             console.log(err);
