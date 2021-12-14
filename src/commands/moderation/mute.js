@@ -67,9 +67,10 @@ module.exports.run = async (bot, message, args) => {
 
     let reason = args.slice(1).join(" ");
     if (!reason) return message.channel.send('Please add a reason!');
-    reason = reason.replace(time, '');
 
     let time = args.slice(2).join(" ");
+    reason = reason.replace(time, '');
+    
     dbtime = getModTime(time);
     if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
 
