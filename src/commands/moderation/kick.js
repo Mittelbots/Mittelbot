@@ -3,6 +3,9 @@ const {
     MessageEmbed
 } = require('discord.js');
 const config = require('../../../config.json');
+const { createInfractionId } = require('../../../utils/functions/createInfractionId');
+const { insertDataToClosedInfraction } = require('../../../utils/functions/insertDataToDatabase');
+const { database } = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -84,11 +87,12 @@ module.exports.run = async (bot, message, args) => {
         .setTimestamp();
 
     try {
+        insertDataToClosedInfraction(Member.id, message.author.id, 0, 0, 0, 1, null, reason, createInfractionId())
         await Member.send({embeds: [Embed]});
+        await message.reply(`<@${Member.id}>${config.successmessages.kicked} `)
         await Member.kick({
             reason: reason
-        });
-        message.reply(`<@${Member.id}>${config.successmessages.kicked} `);
+        });;
         return message.channel.send({
             embeds: [Embed]
         })
