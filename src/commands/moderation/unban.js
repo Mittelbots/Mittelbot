@@ -28,17 +28,8 @@ module.exports.run = async (bot, message, args) => {
     Member = Member.replace('!', '');
     Member = Member.replace('>', '');
 
-    if (Member === message.author.id) return message.reply(`You can't ban yourself.`);
-
     let reason = args.slice(1).join(" ");
     if(!reason) return message.channel.send('Please add a reason!');
-
-
-    try {
-        await message.guild.members.unban(`${Member}`, `${reason}`)
-    }catch(err) {
-        return await message.reply(`The User is not banned.`);
-    }
 
     var Embed = new MessageEmbed()
     .setColor('#0099ff')
@@ -47,6 +38,15 @@ module.exports.run = async (bot, message, args) => {
     .addField(`Unanned Member`, `<@${Member}> (${Member})`)
     .addField(`Reason`, `${reason || "No Reason Provided!"}`)
     .setTimestamp();
+
+    try {
+        await message.guild.members.unban(`${Member}`, `${reason}`)
+        // bot.users.fetch(Member, false).then((user) => user.send({embeds: [Embed]}).catch((err) => console.log(err)));
+    }catch(err) {
+        return await message.reply(`The User is not banned.`);
+    }
+
+
     return await message.channel.send({embeds: [Embed]});
 }
 
