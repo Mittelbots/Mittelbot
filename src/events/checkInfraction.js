@@ -4,6 +4,10 @@ const {
     database
 } = require('../db/db');
 
+async function deleteEntries(infraction_id) {
+    await database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction_id], async (err) => { if(err) console.log(err) })
+}
+
 function checkInfractions(bot) {
     setInterval(() => {
         database.query(`SELECT * FROM open_infractions`, async (err, results) => {
@@ -21,41 +25,42 @@ function checkInfractions(bot) {
                 results[i].till_date = results[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
                 
                 if ((currentdate - results[i].till_date) > 0) {
-                    try {
-                        done++;
-
-                        var modtype = '';
-                        var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
-                        var user;
-                        
-                        user = await guild.members.fetch(results[i].user_id).then(members => members);
-                        
+                    if(results[i].mute) {
                         try {
-                            if(results[i].mute) {
-                                modtype = 'unmuted'
+                            done++;
+
+                            var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
+                            var user;
+                            
+                            user = await guild.members.fetch(results[i].user_id).then(members => members);
+                            
+                            try {
                                 await user.roles.remove([bot.guilds.cache.get(config.DISCORD_GUILD_ID).roles.cache.find(role => role.name === "Muted").id])
-                            }else if(results[i].ban) {
-                                modtype = 'unbanned';
-                                await bot.guilds.cache.get(config.DISCORD_GUILD_ID).unban(`${user}`, `Auto`)
-                            }else {
-                                console.log('Something went RLY RLY RLY WRONG.. NO MUTE OR BAN IS GIVEN!!!!!')
+                                var Embed = new MessageEmbed()
+                                .setColor('#0099ff')
+                                .setTitle(`**Member unmuted!**`)
+                                .addField(`Moderator`, `${bot.user.id}`)
+                                .addField(`Member`, `<@${results[i].user_id}> (${results[i].user_id})`)
+                                .addField(`Reason`, `Auto`)
+                                .setTimestamp();
+                                await user.send({embeds: [Embed]});
+
+                                deleteEntries(results[i].infraction_id);
+                            }catch(err) {
+                                console.log(err);
                             }
-
-                            var Embed = new MessageEmbed()
-                            .setColor('#0099ff')
-                            .setTitle(`**Member ${modtype}!**`)
-                            .addField(`Moderator`, `${bot.user.id}`)
-                            .addField(`Member`, `<@${results[i].user_id}> (${results[i].user_id})`)
-                            .addField(`Reason`, `Auto`)
-                            .setTimestamp();
-                            await user.send({embeds: [Embed]});
-
-                            await database.query('DELETE FROM open_infractions WHERE id = ?', [results[i].id], async (err) => { if(err) console.log(err) })
                         }catch(err) {
                             console.log(err);
                         }
-                    }catch(err) {
-                        console.log(err);
+                    }else {
+                        done++;
+                        try {
+                            await bot.guilds.cache.get(config.DISCORD_GUILD_ID).members.unban(`${results[i].user_id}`, `Auto`)
+                            deleteEntries(results[i].infraction_id);
+                        }catch(err) {
+                            //Unknown ban
+                            deleteEntries(results[i].infraction_id);
+                        }
                     }
                 }
             }
