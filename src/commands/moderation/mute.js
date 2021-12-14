@@ -103,9 +103,13 @@ module.exports.run = async (bot, message, args) => {
             console.log(err);
             return message.reply(`${config.errormessages.databasequeryerror}`);
         }
-        if (await result !== '') {
+        if (result.length > 0) {
             for (let i in result) {
-                if ((new Date(result[i].till_date) / 1000) >= Math.round((new Date() / 1000))) {
+                let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
+                currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
+                result[i].till_date = result[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
+                
+                if ((currentdate - result[i].till_date) <= 0) {
                     return message.reply(`Member Is Already Muted!`);
                 }
             }
@@ -126,8 +130,8 @@ module.exports.run = async (bot, message, args) => {
                     console.log(err);
                     return message.reply(`${config.errormessages.databasequeryerror}`);
                 }
-
                 Member.roles.add([MutedRole]);
+                Member.send({embeds: [Embed]});
                 return message.channel.send({
                     embeds: [Embed]
                 });
