@@ -32,15 +32,11 @@ module.exports.run = async (bot, message, args) => {
     if (Member.user.bot) return message.reply(`You can't mute <@${Member.user.id}>. It's a Bot.`)
     if (Member.id === bot.user.id) return message.reply(`You cant't mute me.`);
 
-    let isMod = false;
     for (let i in config.modroles) {
         if (Member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
-            isMod = true;
-            break;
+            return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
         }
     }
-
-    if (isMod) return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
 
     var MutedRole;
 
@@ -70,6 +66,7 @@ module.exports.run = async (bot, message, args) => {
     if (!reason) return message.channel.send('Please add a reason!');
 
     let time = args.slice(2).join(" ");
+    console.log(time)
 
     reason = reason.replace(time, '');
 
@@ -84,15 +81,23 @@ module.exports.run = async (bot, message, args) => {
     } else if (time.search('d') !== -1) {
         format = 'd';
         dbtime = (time.replace(format, '') * 86400);
-    } else {
+    } else if(time == '') {
+        dbtime = '';
+    }else {
         return message.reply(`Invalid Time [m, h, d]`);
     }
 
-    let futuredate = new Date();
-    futuredate.setSeconds(futuredate.getSeconds() + dbtime);
-    dbtime = futuredate.toLocaleString('de-DE', {
-        timeZone: 'Europe/Berlin'
-    });
+    var futuredate;
+    if(dbtime !== '') {
+        futuredate = new Date();
+        futuredate.setSeconds(futuredate.getSeconds() + dbtime);
+        dbtime = futuredate.toLocaleString('de-DE', {
+            timeZone: 'Europe/Berlin'
+        });
+        futuredate = `<t:${Math.floor(futuredate / 1000)}:F> **(${time})** `
+    }else {
+        futuredate = 'Permanent'
+    }
 
 
     if (Member.roles.cache.has(MutedRole)) {
@@ -121,7 +126,7 @@ module.exports.run = async (bot, message, args) => {
             .addField(`Moderator`, `<@${message.author.id}> (${message.author.id})`)
             .addField(`Member`, `<@${Member.user.id}> (${Member.user.id})`)
             .addField(`Reason`, `${reason || "No Reason Provided!"}`)
-            .addField(`Till`, `<t:${Math.floor(futuredate / 1000)}:F> **(${time})**`)
+            .addField(`Till`, `${futuredate}`)
             .setTimestamp();
 
         try {
