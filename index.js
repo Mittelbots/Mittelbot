@@ -78,7 +78,7 @@ bot.on("messageCreate", async message => {
 
 bot.once('ready', () => {
   
-  checkInfractions();
+  checkInfractions(bot);
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   bot.user.setActivity({
