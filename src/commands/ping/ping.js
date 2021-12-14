@@ -10,7 +10,6 @@ module.exports.run = async (bot, message, args) => {
             return;
         }, 1000);
     })
-
 }
 
 module.exports.help = {
