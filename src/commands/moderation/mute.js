@@ -1,6 +1,5 @@
 const {
-    MessageEmbed,
-    Permissions
+    MessageEmbed
 } = require('discord.js');
 const config = require('../../../config.json');
 
@@ -8,6 +7,8 @@ const ms = require('ms');
 const {
     database
 } = require('../../db/db');
+const { getModTime } = require('../../../utils/functions/getModTime');
+const { getFutureDate } = require('../../../utils/functions/getFutureDate');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -62,47 +63,20 @@ module.exports.run = async (bot, message, args) => {
         await message.channel.send(`Role created!`);
     }
 
+    if (Member.roles.cache.has(MutedRole)) return message.channel.send(`Member Is Already Muted!`)
+
     let reason = args.slice(1).join(" ");
     if (!reason) return message.channel.send('Please add a reason!');
-
-    let time = args.slice(2).join(" ");
-    console.log(time)
-
     reason = reason.replace(time, '');
 
-    let format;
-    let dbtime;
-    if (time.search('m') !== -1) {
-        format = 'm';
-        dbtime = (time.replace(format, '') * 60);
-    } else if (time.search('h') !== -1) {
-        format = 'h';
-        dbtime = (time.replace(format, '') * 3600);
-    } else if (time.search('d') !== -1) {
-        format = 'd';
-        dbtime = (time.replace(format, '') * 86400);
-    } else if(time == '') {
-        dbtime = '';
-    }else {
-        return message.reply(`Invalid Time [m, h, d]`);
-    }
-
-    var futuredate;
-    if(dbtime !== '') {
-        futuredate = new Date();
-        futuredate.setSeconds(futuredate.getSeconds() + dbtime);
-        dbtime = futuredate.toLocaleString('de-DE', {
-            timeZone: 'Europe/Berlin'
-        });
-        futuredate = `<t:${Math.floor(futuredate / 1000)}:F> **(${time})** `
-    }else {
-        futuredate = 'Permanent'
-    }
+    let time = args.slice(2).join(" ");
+    dbtime = getModTime(time);
+    if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
 
 
-    if (Member.roles.cache.has(MutedRole)) {
-        return message.channel.send(`Member Is Already Muted!`);
-    }
+    var futuredate = getFutureDate(dbtime, time)
+
+
     database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = 1`, [Member.id], async (err, result) => {
         if (err) {
             console.log(err);
@@ -113,7 +87,7 @@ module.exports.run = async (bot, message, args) => {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
                 currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
                 result[i].till_date = result[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
-                
+
                 if ((currentdate - result[i].till_date) <= 0) {
                     return message.reply(`Member Is Already Muted!`);
                 }
@@ -130,7 +104,7 @@ module.exports.run = async (bot, message, args) => {
             .setTimestamp();
 
         try {
-            database.query(`INSERT INTO open_infractions (user_id, mod_id, mute, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, dbtime, reason, Math.random().toString(16).substr(2, 20)], (err) => {
+            database.query(`INSERT INTO open_infractions (user_id, mod_id, mute, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, futuredate, reason, Math.random().toString(16).substr(2, 20)], (err) => {
                 if(err) {
                     console.log(err);
                     return message.reply(`${config.errormessages.databasequeryerror}`);
