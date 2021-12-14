@@ -84,7 +84,8 @@ module.exports.run = async (bot, message, args) => {
         .setTimestamp();
 
     try {
-        Member.kick({
+        await Member.send({embeds: [Embed]});
+        await Member.kick({
             reason: reason
         });
         message.reply(`<@${Member.id}>${config.successmessages.kicked} `);

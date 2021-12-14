@@ -78,9 +78,10 @@ module.exports.run = async (bot, message, args) => {
     .setTimestamp();
 
     try {
-        Member.ban({reason: reason});
-        message.reply(`<@${Member.id}>${config.successmessages.banned} `);
-        return message.channel.send({embeds: [Embed]})
+        await Member.send({embeds: [Embed]});
+        await Member.ban({reason: reason});
+        await message.reply(`<@${Member.id}>${config.successmessages.banned} `);
+        return message.channel.send({embeds: [Embed]});
     }catch(err) {
         console.log(err);
         return message.reply(`${config.errormessages.botnopermission}`);
