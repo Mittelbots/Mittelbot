@@ -1,12 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 const config = require('../../config.json');
+const { insertDataToClosedInfraction } = require('../../utils/functions/insertDataToDatabase');
 const {
     database
 } = require('../db/db');
 
 async function deleteEntries(infraction) {
     try {
-        await database.query('INSERT INTO closed_infractions (user_id, mod_id, mute, ban, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?, ?)',[infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, infraction.till_date, infraction.reason, infraction.infraction_id])
+        insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
         await database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id], async (err) => { if(err) console.log(err) })
     }catch(err) {console.log(err)}
 }
@@ -19,7 +20,6 @@ function checkInfractions(bot) {
             }
             let done = 0;
             for(let i in results) {
-
                 if(results[i].till_date == '') continue;
 
                 //Member can be unmuted
@@ -32,10 +32,17 @@ function checkInfractions(bot) {
                         try {
                             done++;
 
-                            var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
-                            var user;
-                            
-                            user = await guild.members.fetch(results[i].user_id).then(members => members);
+                            try {
+                                var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
+                                var user;
+                                
+                                user = await guild.members.fetch(results[i].user_id).then(members => members);
+                            }catch(err) {
+                                //Member left or got kicked
+                                console.log(results[i].infraction_id)
+                                deleteEntries(results[i]);
+                                continue
+                            }
                             
                             try {
                                 await user.roles.remove([bot.guilds.cache.get(config.DISCORD_GUILD_ID).roles.cache.find(role => role.name === "Muted").id])
