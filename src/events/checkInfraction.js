@@ -4,8 +4,11 @@ const {
     database
 } = require('../db/db');
 
-async function deleteEntries(infraction_id) {
-    await database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction_id], async (err) => { if(err) console.log(err) })
+async function deleteEntries(infraction) {
+    try {
+        await database.query('INSERT INTO closed_infractions (user_id, mod_id, mute, ban, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?, ?)',[infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, infraction.till_date, infraction.reason, infraction.infraction_id])
+        await database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id], async (err) => { if(err) console.log(err) })
+    }catch(err) {console.log(err)}
 }
 
 function checkInfractions(bot) {
@@ -39,13 +42,13 @@ function checkInfractions(bot) {
                                 var Embed = new MessageEmbed()
                                 .setColor('#0099ff')
                                 .setTitle(`**Member unmuted!**`)
-                                .addField(`Moderator`, `${bot.user.id}`)
+                                .addField(`Moderator`, `<@${bot.user.id}>`)
                                 .addField(`Member`, `<@${results[i].user_id}> (${results[i].user_id})`)
                                 .addField(`Reason`, `Auto`)
                                 .setTimestamp();
                                 await user.send({embeds: [Embed]});
 
-                                deleteEntries(results[i].infraction_id);
+                                deleteEntries(results[i]);
                             }catch(err) {
                                 console.log(err);
                             }
@@ -56,10 +59,10 @@ function checkInfractions(bot) {
                         done++;
                         try {
                             await bot.guilds.cache.get(config.DISCORD_GUILD_ID).members.unban(`${results[i].user_id}`, `Auto`)
-                            deleteEntries(results[i].infraction_id);
+                            deleteEntries(results[i]);
                         }catch(err) {
                             //Unknown ban
-                            deleteEntries(results[i].infraction_id);
+                            deleteEntries(results[i]);
                         }
                     }
                 }
