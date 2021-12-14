@@ -40,6 +40,7 @@ module.exports.run = async (bot, message, args) => {
     .setTimestamp();
 
     try {
+        Member.send({embeds: [Embed]});
         Member.roles.remove([MutedRole]);
         return message.channel.send({embeds: [Embed]});
     }
