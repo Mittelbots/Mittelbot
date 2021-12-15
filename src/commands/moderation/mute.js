@@ -100,7 +100,7 @@ module.exports.run = async (bot, message, args) => {
             .setTimestamp();
 
         try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId())
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, 0, futuredate, reason, createInfractionId())
             await Member.roles.add([MutedRole]);
             await Member.send({embeds: [Embed]});
             return message.channel.send({
