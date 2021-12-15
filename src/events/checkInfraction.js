@@ -8,7 +8,7 @@ const {
 async function deleteEntries(infraction) {
     try {
         insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
-        await database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id], async (err) => { if(err) console.log(err) })
+        database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id], async (err) => { if(err) console.log(err) })
     }catch(err) {console.log(err)}
 }
 
@@ -39,9 +39,8 @@ function checkInfractions(bot) {
                                 user = await guild.members.fetch(results[i].user_id).then(members => members);
                             }catch(err) {
                                 //Member left or got kicked
-                                console.log(results[i].infraction_id)
                                 deleteEntries(results[i]);
-                                continue
+                                continue;
                             }
                             
                             try {
