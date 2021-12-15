@@ -103,11 +103,11 @@ module.exports.run = async (bot, message, args) => {
             .addField(`Moderator`, `<@${message.author.id}> (${message.author.id})`)
             .addField(`Member`, `<@${Member.user.id}> (${Member.user.id})`)
             .addField(`Reason`, `${reason || "No Reason Provided!"}`)
-            .addField(`Till`, `${futuredate}`)
+            .addField(`Till`, `${futuredate} **(${time})**`)
             .setTimestamp();
 
         try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 0, 1, futuredate, reason, createInfractionId())
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId())
             await Member.roles.add([MutedRole]);
             await Member.send({embeds: [Embed]});
             return message.channel.send({
