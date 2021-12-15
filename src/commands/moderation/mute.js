@@ -26,6 +26,7 @@ module.exports.run = async (bot, message, args) => {
     let Member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
     if (!Member) return message.channel.send(`<@${message.author.id}> You have to mention a user`);
     if (Member.user.bot) return message.reply(`You can't mute <@${Member.user.id}>. It's a Bot.`)
+    if (Member.id === message.author.id) return message.reply(`You cant't mute yourself.`);
     if (Member.id === bot.user.id) return message.reply(`You cant't mute me.`);
 
     for (let i in config.modroles) {
@@ -100,7 +101,7 @@ module.exports.run = async (bot, message, args) => {
             .setTimestamp();
 
         try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, 0, futuredate, reason, createInfractionId())
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId())
             await Member.roles.add([MutedRole]);
             await Member.send({embeds: [Embed]});
             return message.channel.send({
