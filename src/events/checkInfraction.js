@@ -20,7 +20,7 @@ function checkInfractions(bot) {
             }
             let done = 0;
             for(let i in results) {
-                if(results[i].till_date == '') continue;
+                if(results[i].till_date == null) continue;
 
                 //Member can be unmuted
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
