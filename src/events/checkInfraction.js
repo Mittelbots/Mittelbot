@@ -27,16 +27,14 @@ function checkInfractions(bot) {
                 currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
                 results[i].till_date = results[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
                 
-                if ((currentdate - results[i].till_date) > 0) {
+                if ((currentdate - results[i].till_date) > 0 && currentdate[8] + currentdate[9] >= results[i].till_date[7] + results[i].till_date[7]) {
                     if(results[i].mute) {
                         try {
                             done++;
 
                             try {
                                 var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
-                                var user;
-                                
-                                user = await guild.members.fetch(results[i].user_id).then(members => members);
+                                var user = await guild.members.fetch(results[i].user_id).then(members => members);
                             }catch(err) {
                                 //Member left or got kicked
                                 deleteEntries(results[i]);
