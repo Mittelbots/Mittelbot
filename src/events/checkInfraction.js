@@ -31,7 +31,6 @@ function checkInfractions(bot) {
                     if(results[i].mute) {
                         try {
                             done++;
-
                             try {
                                 var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
                                 var user = await guild.members.fetch(results[i].user_id).then(members => members);
