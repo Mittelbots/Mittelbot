@@ -2,8 +2,6 @@ const {
     MessageEmbed
 } = require('discord.js');
 const config = require('../../../config.json');
-
-const ms = require('ms');
 const {
     database
 } = require('../../db/db');
@@ -11,20 +9,15 @@ const { getModTime } = require('../../../utils/functions/getModTime');
 const { getFutureDate } = require('../../../utils/functions/getFutureDate');
 const { createInfractionId } = require('../../../utils/functions/createInfractionId');
 const { insertDataToOpenInfraction } = require('../../../utils/functions/insertDataToDatabase');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
-    var hasPermission = false
-    for (let i in config.modroles) {
-        if (message.member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
-            hasPermission = true;
-            break;
-        }
-    }
-    if (!hasPermission) {
+    if (!hasPermission(message, 0, 0)) {
+        message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
