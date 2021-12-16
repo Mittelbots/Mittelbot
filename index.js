@@ -74,7 +74,6 @@ bot.on("messageCreate", async message => {
       }, config.defaultCooldown.format);
     }
   }
-
 });
 
 bot.once('ready', () => {
