@@ -10,6 +10,9 @@ const { getFutureDate } = require('../../../utils/functions/getFutureDate');
 const { createInfractionId } = require('../../../utils/functions/createInfractionId');
 const { insertDataToOpenInfraction } = require('../../../utils/functions/insertDataToDatabase');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
+const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
+const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -90,23 +93,12 @@ module.exports.run = async (bot, message, args) => {
                 }
             }
         }
-
-        var Embed = new MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle(`**Member Muted!**`)
-            .addField(`Moderator`, `<@${message.author.id}> (${message.author.id})`)
-            .addField(`Member`, `<@${Member.user.id}> (${Member.user.id})`)
-            .addField(`Reason`, `${reason || "No Reason Provided!"}`)
-            .addField(`Till`, `${futuredate} **(${time})**`)
-            .setTimestamp();
-
         try {
             insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId())
-            await Member.roles.add([MutedRole]);
-            await Member.send({embeds: [Embed]});
-            return message.channel.send({
-                embeds: [Embed]
-            });
+            setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
+            publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
+            privateModResponse(Member, config.defaultModTypes.mute, reason, time);
+            return Member.roles.add([MutedRole]);
         } catch (err) {
             console.log(err);
             message.channel.send(config.errormessages.general)

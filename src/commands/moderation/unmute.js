@@ -1,7 +1,7 @@
-const { formatEmoji } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
-const {Permissions} = require('discord.js');
 const config = require('../../../config.json');
+const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
+const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
+const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
@@ -31,18 +31,11 @@ module.exports.run = async (bot, message, args) => {
     
     let reason = args.slice(1).join(" ");
 
-    var Embed = new MessageEmbed()
-    .setColor('#0099ff')
-    .setTitle(`**Member Unmuted!**`)
-    .addField(`Moderator`, `<@${message.author.id}> (${message.author.id})`)
-    .addField(`Member`, `<@${Member.user.id}> (${Member.user.id})`)
-    .addField(`Reason`, `${reason || "No Reason Provided!"}`)
-    .setTimestamp();
-
     try {
-        Member.send({embeds: [Embed]});
-        Member.roles.remove([MutedRole]);
-        return message.channel.send({embeds: [Embed]});
+        setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, Member.id, reason);
+        publicModResponses(message, config.defaultModTypes.unmute, message.author.id, Member.id, reason);
+        privateModResponse(Member, config.defaultModTypes.unmute, reason);
+        return Member.roles.remove([MutedRole]);
     }
     catch(err) {
         console.log(err);

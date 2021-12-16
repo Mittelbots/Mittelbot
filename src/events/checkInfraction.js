@@ -1,6 +1,7 @@
-const { MessageEmbed } = require('discord.js');
 const config = require('../../config.json');
 const { insertDataToClosedInfraction } = require('../../utils/functions/insertDataToDatabase');
+const { setNewModLogMessage } = require('../../utils/modlog/modlog');
+const { privateModResponse } = require('../../utils/privatResponses/privateModResponses');
 const {
     database
 } = require('../db/db');
@@ -42,15 +43,8 @@ function checkInfractions(bot) {
                             
                             try {
                                 await user.roles.remove([bot.guilds.cache.get(config.DISCORD_GUILD_ID).roles.cache.find(role => role.name === "Muted").id])
-                                var Embed = new MessageEmbed()
-                                .setColor('#0099ff')
-                                .setTitle(`**Member unmuted!**`)
-                                .addField(`Moderator`, `<@${bot.user.id}>`)
-                                .addField(`Member`, `<@${results[i].user_id}> (${results[i].user_id})`)
-                                .addField(`Reason`, `Auto`)
-                                .setTimestamp();
-                                await user.send({embeds: [Embed]});
-
+                                setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto');
+                                privateModResponse(user, config.defaultModTypes.unmute, 'Auto');
                                 deleteEntries(results[i]);
                             }catch(err) {
                                 console.log(err);
@@ -58,10 +52,11 @@ function checkInfractions(bot) {
                         }catch(err) {
                             console.log(err);
                         }
-                    }else {
+                    }else { //Member got banned
                         done++;
                         try {
                             await bot.guilds.cache.get(config.DISCORD_GUILD_ID).members.unban(`${results[i].user_id}`, `Auto`)
+                            setNewModLogMessage(bot, config.defaultModTypes.unban, bot.user.id, results[i].user_id, 'Auto');
                             deleteEntries(results[i]);
                         }catch(err) {
                             //Unknown ban

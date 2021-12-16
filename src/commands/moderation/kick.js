@@ -6,6 +6,9 @@ const config = require('../../../config.json');
 const { createInfractionId } = require('../../../utils/functions/createInfractionId');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { insertDataToClosedInfraction } = require('../../../utils/functions/insertDataToDatabase');
+const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
+const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
+const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { database } = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
@@ -70,24 +73,17 @@ module.exports.run = async (bot, message, args) => {
     }
     if (isMod) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
 
-    var Embed = new MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle(`**Member kicked!**`)
-        .addField(`Moderator`, `<@${message.author.id}> (${message.author.id})`)
-        .addField(`Kicked Member`, `<@${Member.user.id}> (${Member.user.id})`)
-        .addField(`Reason`, `${reason || "No Reason Provided!"}`)
-        .setTimestamp();
 
     try {
         insertDataToClosedInfraction(Member.id, message.author.id, 0, 0, 0, 1, null, reason, createInfractionId())
-        await Member.send({embeds: [Embed]});
-        await message.reply(`<@${Member.id}>${config.successmessages.kicked} `)
-        await Member.kick({
-            reason: reason
-        });;
-        return message.channel.send({
-            embeds: [Embed]
-        })
+        await setNewModLogMessage(bot, config.defaultModTypes.kick, message.author.id, Member.id, reason);
+        await publicModResponses(message, config.defaultModTypes.kick, message.author.id, Member.id, reason);
+        await privateModResponse(Member, config.defaultModTypes.kick, reason);
+        setTimeout(async () => {
+            return Member.kick({
+                reason: reason
+            });;
+        }, 500);
     } catch (err) {
         console.log(err);
         return message.reply(`${config.errormessages.botnopermission}`);

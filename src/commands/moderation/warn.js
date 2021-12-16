@@ -4,6 +4,9 @@ const { createInfractionId } = require('../../../utils/functions/createInfractio
 const { getFutureDate } = require('../../../utils/functions/getFutureDate');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { insertDataToClosedInfraction, inserDataToTemproles } = require('../../../utils/functions/insertDataToDatabase');
+const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
+const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
+const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
@@ -27,20 +30,15 @@ module.exports.run = async (bot, message, args) => {
     if (!reason) return message.reply('Please add a reason!');
 
     try {
-        var Embed = new MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle(`**Member Warned!**`)
-        .addField(`Moderator`, `<@${message.author.id}> (${message.author.id})`)
-        .addField(`Member`, `<@${Member.user.id}> (${Member.user.id})`)
-        .addField(`Reason`, `${reason || "No Reason Provided!"}`)
-        .setTimestamp();
 
-        message.channel.send({embeds: [Embed]});
-        Member.send({embeds: [Embed]});
+        setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, Member.user.id, reason);
+        publicModResponses(message, config.defaultModTypes.warn, message.author.id, Member.user.id, reason);
+        privateModResponse(Member, config.defaultModTypes.warn, reason);
+
         let warn1 = await message.guild.roles.cache.find(role => role.name === "Warn1").id
         let warn2 = await message.guild.roles.cache.find(role => role.name === "Warn2").id
 
-        let inf_id = await createInfractionId()
+        let inf_id = createInfractionId()
 
         insertDataToClosedInfraction(Member.id, message.author.id, 0, 0, 1, 0, null, reason, inf_id);
 
@@ -48,7 +46,7 @@ module.exports.run = async (bot, message, args) => {
         if(!Member.roles.cache.has(warn2)) {Member.roles.add([warn2]); return inserDataToTemproles(Member.id, warn2, getFutureDate(2678400), inf_id)};
         
         //If User already have both Roles
-        return;
+        return message.reply(`The User already have both warn roles!`);
 
     }catch(err) {
         console.log(err);

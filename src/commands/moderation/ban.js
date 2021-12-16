@@ -3,6 +3,9 @@ const config = require('../../../config.json');
 const { getFutureDate } = require('../../../utils/functions/getFutureDate');
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
+const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
+const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { database } = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
@@ -17,7 +20,11 @@ module.exports.run = async (bot, message, args) => {
         });
     }
    
-    let Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+    try {
+        var Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+    }catch(err) {
+        return message.reply(`This user is not on the server. Try to manually ban him.`);
+    }
     if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
     if (Member.id === message.author.id) return message.reply(`You can't ban yourself.`);
     if (Member.id === bot.user.id) return message.reply(`You cant't ban me.`);
@@ -87,33 +94,23 @@ module.exports.run = async (bot, message, args) => {
             }
         }
 
-        var Embed = new MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle(`**Member Banned!**`)
-            .addField(`Moderator`, `<@${message.author.id}> (${message.author.id})`)
-            .addField(`Member`, `<@${Member.user.id}> (${Member.user.id})`)
-            .addField(`Reason`, `${reason || "No Reason Provided!"}`)
-            .addField(`Time`, `**${time}** `)
-            .setTimestamp();
-
         try {
             database.query(`INSERT INTO open_infractions (user_id, mod_id, ban, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, futuredate, reason, Math.random().toString(16).substr(2, 20)], async (err) => {
                 if(err) {
                     console.log(err);
                     return message.reply(`${config.errormessages.databasequeryerror}`);
                 }
-                await Member.send({embeds: [Embed]});
-                await message.reply(`<@${Member.id}>${config.successmessages.banned} `);
-                await Member.ban({reason: reason});
-                return message.channel.send({
-                    embeds: [Embed]
-                });
+                await setNewModLogMessage(bot, config.defaultModTypes.ban, message.author.id, Member.id, reason, time);
+                await publicModResponses(message, config.defaultModTypes.ban, message.author.id, Member.id, reason, time);
+                await privateModResponse(Member, config.defaultModTypes.ban, reason, time);
+                setTimeout(async () => {
+                    return await Member.ban({reason: reason});
+                }, 500);
             });
         } catch (err) {
             console.log(err);
             message.channel.send(config.errormessages.general)
         }
-
     });
 
 }
