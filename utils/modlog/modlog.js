@@ -22,7 +22,7 @@ function sendToModLog(bot, message) {
         bot.channels.cache.get(config.defaultChannels.modlog).send({embeds: [message]});
         console.log('1')
     }catch(err) {
-        console.log()
+        console.log(err)
     }
 }
 
