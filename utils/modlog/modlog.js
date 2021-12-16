@@ -20,7 +20,6 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time) {
 function sendToModLog(bot, message) {
     try {
         bot.channels.cache.get(config.defaultChannels.modlog).send({embeds: [message]});
-        console.log('1')
     }catch(err) {
         console.log(err)
     }
