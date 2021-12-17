@@ -2,14 +2,73 @@
     "Bot_Owner": "<@395923095472570368>",
     "DISCORD_APPLICATION_ID": "",
     "DISCORD_GUILD_ID": "",
+    "DEVELOPER_DISCORD_GUILD_ID": "",
     "prefix": "",
     "defaultCooldown": {
-        "format": "5000",
+        "format": "0000",
         "text": "5 seconds"
     },
+    "bulkDeleteLimit": "100",
+    "defaultCheckInfractionTimer": "60000",
+    "defaultCheckTemprolesTimer": "1800000",
     "deleteModCommandsAfterUsage": "false",
     "deleteCommandsAfterUsage": "false",
     "errormessages": {
-        "general": "Something went wrong! <@395923095472570368> Fix it idiot!"
+        "general": "Something went wrong! <@395923095472570368> Fix it idiot!",
+        "nopermission": "You dont have permission to run this command!",
+        "botnopermission": "Something went wrong! Either i don't have permissions or the bot is broken.",
+        "databaseconnectionerror": "Error connecting the database! Try again in 5 seconds",
+        "databasequeryerror": "Error by executing the database request. <@395923095472570368> Fix it idiot!"
+    },
+    "successmessages": {
+        "banned": " was banned from the server.",
+        "kicked": " was kicked from the server.",
+        "database": "****Database successfully connected!****"
+    },
+    "modroles": {
+        "owner": "Chilled Sad",
+        "servermanager": "Server Manager",
+        "admin": "Admin",
+        "trialadmin": "Trial Admin",
+        "moderator": "Moderator",
+        "trialmoderator": "Trial Moderator"
+    },
+    "defaultChannels": {
+        "modlog": "",
+        "auditlog": "",
+        "messagelog": "",
+        "adminchat": "",
+        "DEV_SERVER": {
+            "debugchannel": "921178549321367582",
+            "disconnectchannel": "921179868530610206",
+            "errorchannel": "921181513565999154",
+            "warnchannel": "921181992995946536",
+            "reconnectingchannel": "921188150519414844"
+        }
+    },
+    "defaultModTypes": {
+        "warn": "Warned",
+        "mute": "Muted",
+        "kick": "Kicked",
+        "ban": "Banned",
+        "unmute": "Unmuted",
+        "unban": "Unbanned"
+    },
+    "auditTypes": {
+        "messagedelete": "messageDelete",
+        "channelcreate": "channelCreate",
+        "channeldelete": "channelDelete",
+        "channelupdate": "channelUpdate",
+        "debug": "debug",
+        "disconnect": "disconnect",
+        "error": "error",
+        "guildupdate": "guildUpdate",
+        "messagedeletebulk": "messageDeleteBulk",
+        "messageupdate": "messageUpdate",
+        "reconnecting": "reconnecting",
+        "rolecreate": "roleCreate",
+        "roledelete": "roleDelete",
+        "roleupdate": "roleUpdate",
+        "warn": "warn"
     }
 }
