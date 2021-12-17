@@ -1,4 +1,8 @@
 {
-    "channels": [],
-    "words": []
+    "whitelistroles": [""],
+    "channels": [""],
+    "words": {
+        "wildcard": ["fuck", "stfu", "@everyone"],
+        "exact": ["kill myself"]
+    }
 }
