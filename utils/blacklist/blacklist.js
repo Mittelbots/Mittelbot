@@ -8,25 +8,34 @@ const blacklistfile = require('../../blacklist.json');
  */
 function blacklist(type, message) {
     var letUserPass = true;
-    if (type == 0) {
-        for (key in blacklistfile.channels) {
-            if (!letUserPass) continue;
-            if (blacklistfile.channels[key].indexOf(message.channelId) !== -1) {
-                message.delete();
-                message.channel.send(`<@${message.author.id}> You can't use this here!`).then(msg => setTimeout(() => msg.delete(), 5000));
-                letUserPass = false;
-                continue;
-            }
+    var forceUserPass = false
+    for(let i in blacklistfile.whitelistroles) {
+        if(message.member.roles.cache.find(r => r.id === blacklistfile.whitelistroles[i])) {
+            letUserPass = true;
+            forceUserPass = true;
         }
-    } else {
-        for(key in blacklistfile.words) {
-            if (!letUserPass) continue;
-            for(key2 in blacklistfile.words[key]) {
+    }
+    if(!forceUserPass) {
+        if (type == 0) {
+            for (key in blacklistfile.channels) {
                 if (!letUserPass) continue;
-                if(key === 'wildcard' && blacklistfile.words[key].indexOf(message.content) !== -1 || key === 'exact' && message.content == blacklistfile.words[key]) {
+                if (blacklistfile.channels[key].indexOf(message.channelId) !== -1) {
                     message.delete();
-                    message.channel.send('shhhh. Dont say that!');
+                    message.channel.send(`<@${message.author.id}> You can't use this here!`).then(msg => setTimeout(() => msg.delete(), 5000));
                     letUserPass = false;
+                    continue;
+                }
+            }
+        } else {
+            for(key in blacklistfile.words) {
+                if (!letUserPass) continue;
+                for(key2 in blacklistfile.words[key]) {
+                    if (!letUserPass) continue;
+                    if(key === 'wildcard' && blacklistfile.words[key].indexOf(message.content) !== -1 || key === 'exact' && message.content == blacklistfile.words[key]) {
+                        message.delete();
+                        message.channel.send('shhhh. Dont say that!');
+                        letUserPass = false;
+                    }
                 }
             }
         }
