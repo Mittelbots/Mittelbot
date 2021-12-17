@@ -31,7 +31,7 @@ function auditLog(bot) {
 
     bot.on(c.rolecreate, role => sendToAudit(bot, c.rolecreate, role));
 
-    bot.on(c.roleupdate, (oldrole, newrole) => sendToAudit(bot, c.roleupdate, oldrole, newrole));
+    //bot.on(c.roleupdate, (oldrole, newrole) => sendToAudit(bot, c.roleupdate, oldrole, newrole));
 
     bot.on(c.roledelete, role => sendToAudit(bot, c.roledelete, role));
 }
@@ -107,7 +107,7 @@ function sendToAudit(bot, type, content1, content2, content3, content4) {
             break;
 
         case c.roleupdate:
-            Message.setDescription(`**Role #${content2} updated** \n **Before** \n ${content1} \n **After** \n ${content2}`);
+            Message.setDescription(`**Role ${content2} updated** \n **Before** \n ${content1} \n **After** \n ${content2}`);
             break;
 
         case c.rolecreate:
