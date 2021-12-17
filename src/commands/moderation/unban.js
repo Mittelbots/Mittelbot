@@ -1,4 +1,5 @@
 const config = require('../../../config.json');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 
@@ -7,16 +8,8 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
 
-    var hasPermission = false
-    for(let i in config.modroles) {
-        if(i == "trialmoderator") continue;
-
-        if(message.member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
-            hasPermission = true;
-            break;
-        }
-    }
-    if(!hasPermission) {
+    if(!hasPermission(message, 0, 1)) {
+        message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });

@@ -15,15 +15,20 @@ module.exports.run = async (bot, message, args) => {
 
     if (!hasPermission(message, 0, 0)) {
         message.delete();
-        return message.reply(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
+        return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
     }
-    let Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
-    if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
-    if (Member.user.bot) return message.reply(`You can't warn <@${Member.user.id}>. It's a Bot.`)
-    if (Member.id === bot.user.id) return message.reply(`You cant't warn me.`);
-    if (Member.id === message.author.id) return message.reply(`You cant't warn yourself.`);
+    try {
+        var Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+        if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
+        if (Member.user.bot) return message.reply(`You can't warn <@${Member.user.id}>. It's a Bot.`)
+        if (Member.id === bot.user.id) return message.reply(`You cant't warn me.`);
+        if (Member.id === message.author.id) return message.reply(`You cant't warn yourself.`);
+    }catch(err) {
+        message.delete();
+        return message.channel.send(`Please mention an user!`).then(msg => setTimeout(() => msg.delete(), 5000));
+    }
 
 
     let reason = args.slice(1).join(" ");

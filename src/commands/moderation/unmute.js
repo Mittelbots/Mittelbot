@@ -2,28 +2,25 @@ const config = require('../../../config.json');
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
-
-    var hasPermission = false
-    for(let i in config.modroles) {
-        if(message.member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
-            hasPermission = true;
-            break;
-        }
-    }
-    if(!hasPermission) {
+    if(!hasPermission(message, 0, 0)) {
+        message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
     }
 
-    let Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
-
-    if (!Member) return message.channel.send(`<@${message.author.id}> You have to mention a user`);
+    try {
+        var Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+    }catch(err) {
+        message.delete();
+        return message.channel.send(`<@${message.author.id}> You have to mention a user`);
+    }
 
     var MutedRole = message.guild.roles.cache.find(role => role.name === "Muted").id
     

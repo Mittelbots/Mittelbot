@@ -22,13 +22,13 @@ module.exports.run = async (bot, message, args) => {
    
     try {
         var Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+        if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
+        if (Member.id === message.author.id) return message.reply(`You can't ban yourself.`);
+        if (Member.id === bot.user.id) return message.reply(`You cant't ban me.`);
     }catch(err) {
         return message.reply(`This user is not on the server. Try to manually ban him.`);
     }
-    if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
-    if (Member.id === message.author.id) return message.reply(`You can't ban yourself.`);
-    if (Member.id === bot.user.id) return message.reply(`You cant't ban me.`);
-
+    
     let reason = args.slice(1).join(" ");
     if(!reason) return message.channel.send('Please add a reason!');
 

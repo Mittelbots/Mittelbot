@@ -26,11 +26,16 @@ module.exports.run = async (bot, message, args) => {
         });
     }
 
-    let Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
-    if (!Member) return message.channel.send(`<@${message.author.id}> You have to mention a user`);
-    if (Member.user.bot) return message.reply(`You can't mute <@${Member.user.id}>. It's a Bot.`)
-    if (Member.id === message.author.id) return message.reply(`You cant't mute yourself.`);
-    if (Member.id === bot.user.id) return message.reply(`You cant't mute me.`);
+    try {
+        var Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
+        if (!Member) return message.channel.send(`<@${message.author.id}> You have to mention a user`);
+        if (Member.user.bot) return message.reply(`You can't mute <@${Member.user.id}>. It's a Bot.`)
+        if (Member.id === message.author.id) return message.reply(`You cant't mute yourself.`);
+        if (Member.id === bot.user.id) return message.reply(`You cant't mute me.`);
+    }catch(err) {
+        message.delete();
+        return message.channel.send(`<@${message.author.id}> You have to mention a user`);
+    }
 
     for (let i in config.modroles) {
         if (Member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
