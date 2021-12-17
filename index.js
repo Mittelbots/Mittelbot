@@ -58,8 +58,8 @@ bot.on("messageCreate", async message => {
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
 
-  //Check for prefix
-  if (!cmd.startsWith(config.prefix)) return;
+  //Check for prefix & check for blacklist words
+  if (!cmd.startsWith(config.prefix)) return blacklist(1, message);
 
   //Get the command from the commands collection and then if the command is found run the command file
   let commandfile = bot.commands.get(cmd.slice(prefix.length));
