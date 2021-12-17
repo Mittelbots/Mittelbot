@@ -1,5 +1,6 @@
 config.json
 blacklist.json
+autoresponse.json
 _secret/token.json
 src/db/db_config.json
 

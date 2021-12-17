@@ -5,6 +5,7 @@ const { database } = require("./src/db/db");
 const { checkInfractions } = require("./src/events/checkInfraction");
 const { checkTemproles } = require("./src/events/checkTemproles");
 const { auditLog } = require("./utils/auditlog/auditlog");
+const { autoresponse } = require("./utils/autoresponse/autoresponse");
 const { blacklist } = require("./utils/blacklist/blacklist");
 const defaultCooldown = new Set();
 
@@ -59,7 +60,10 @@ bot.on("messageCreate", async message => {
   let args = messageArray.slice(1);
 
   //Check for prefix & check for blacklist words
-  if (!cmd.startsWith(config.prefix)) return blacklist(1, message);
+  if (!cmd.startsWith(config.prefix)) {
+    blacklist(1, message);
+    autoresponse(message);
+  };
 
   //Get the command from the commands collection and then if the command is found run the command file
   let commandfile = bot.commands.get(cmd.slice(prefix.length));
@@ -81,7 +85,6 @@ bot.on("messageCreate", async message => {
 });
 
 bot.once('ready', () => {
-  
   auditLog(bot);
   checkInfractions(bot);
   checkTemproles(bot)
