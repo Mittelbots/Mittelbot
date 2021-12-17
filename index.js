@@ -5,6 +5,7 @@ const { database } = require("./src/db/db");
 const { checkInfractions } = require("./src/events/checkInfraction");
 const { checkTemproles } = require("./src/events/checkTemproles");
 const { auditLog } = require("./utils/auditlog/auditlog");
+const { blacklist } = require("./utils/blacklist/blacklist");
 const defaultCooldown = new Set();
 
 const bot = new Discord.Client({
@@ -62,7 +63,7 @@ bot.on("messageCreate", async message => {
 
   //Get the command from the commands collection and then if the command is found run the command file
   let commandfile = bot.commands.get(cmd.slice(prefix.length));
-  if (commandfile) {
+  if (commandfile && blacklist(0, message)) {
     if (defaultCooldown.has(message.author.id)) {
       message.channel.send(`Wait ${config.defaultCooldown.text} before getting typing this again.`);
       return
@@ -74,6 +75,8 @@ bot.on("messageCreate", async message => {
         defaultCooldown.delete(message.author.id);
       }, config.defaultCooldown.format);
     }
+  }else {
+    return;
   }
 });
 
