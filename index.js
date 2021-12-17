@@ -4,6 +4,7 @@ const config = require('./config.json');
 const { database } = require("./src/db/db");
 const { checkInfractions } = require("./src/events/checkInfraction");
 const { checkTemproles } = require("./src/events/checkTemproles");
+const { auditLog } = require("./utils/auditlog/auditlog");
 const defaultCooldown = new Set();
 
 const bot = new Discord.Client({
@@ -78,6 +79,7 @@ bot.on("messageCreate", async message => {
 
 bot.once('ready', () => {
   
+  auditLog(bot);
   checkInfractions(bot);
   checkTemproles(bot)
 
