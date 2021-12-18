@@ -6,8 +6,9 @@ module.exports.run = async (bot, message, args) => {
     }
     message.channel.send(`Pong!`).then(msg => {
         setTimeout(() => {
-            msg.edit(`Latency is ${Date.now() - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ws.ping)}ms`)
-            return;
+            if(config.debug == 'true') console.info('Ping command passed!')
+            return msg.edit(`Latency is ${Date.now() - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ws.ping)}ms`)
+            ;
         }, 1000);
     })
 }

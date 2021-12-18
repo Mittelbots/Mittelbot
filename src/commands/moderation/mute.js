@@ -1,6 +1,3 @@
-const {
-    MessageEmbed
-} = require('discord.js');
 const config = require('../../../config.json');
 const {
     database
@@ -103,6 +100,7 @@ module.exports.run = async (bot, message, args) => {
             setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
             publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
             privateModResponse(Member, config.defaultModTypes.mute, reason, time);
+            if(config.debug == 'true') console.info('Mute Command passed!')
             return Member.roles.add([MutedRole]);
         } catch (err) {
             console.log(err);

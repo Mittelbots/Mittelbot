@@ -104,6 +104,7 @@ module.exports.run = async (bot, message, args) => {
                 await publicModResponses(message, config.defaultModTypes.ban, message.author.id, Member.id, reason, time);
                 await privateModResponse(Member, config.defaultModTypes.ban, reason, time);
                 setTimeout(async () => {
+                    if(config.debug == 'true') console.info('Ban Command passed!')
                     return await Member.ban({reason: reason});
                 }, 500);
             });

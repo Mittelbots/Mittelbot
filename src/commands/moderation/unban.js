@@ -25,6 +25,7 @@ module.exports.run = async (bot, message, args) => {
     try {
         setNewModLogMessage(bot, config.defaultModTypes.unban, message.author.id, Member, reason);
         publicModResponses(message, config.defaultModTypes.unban, message.author.id, Member, reason);
+        if(config.debug == 'true') console.info('Infraction Command passed!')
         return await message.guild.members.unban(`${Member}`, `${reason}`);
     }catch(err) {
         return await message.reply(`The User is not banned.`);

@@ -57,12 +57,13 @@ module.exports.run = async (bot, message, args) => {
         .addField('\u200B', '\u200B')
         .setTimestamp();
 
+        if(config.debug == 'true') console.info('info command passed!')
     if(!tag) {
-        message.channel.send({
+        return message.channel.send({
             embeds: [serverInfoEmbed]
         });
     }
-    message.channel.send({
+    return message.channel.send({
         embeds: [memberInfoEmbed]
     });
 }

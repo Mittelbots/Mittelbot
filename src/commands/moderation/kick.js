@@ -86,6 +86,7 @@ module.exports.run = async (bot, message, args) => {
         await publicModResponses(message, config.defaultModTypes.kick, message.author.id, Member.id, reason);
         await privateModResponse(Member, config.defaultModTypes.kick, reason);
         setTimeout(async () => {
+            if(config.debug == 'true') console.info('Kick Command passed!')
             return Member.kick({
                 reason: reason
             });;

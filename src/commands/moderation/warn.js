@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args) => {
         let inf_id = createInfractionId()
 
         insertDataToClosedInfraction(Member.id, message.author.id, 0, 0, 1, 0, null, reason, inf_id);
-
+        if(config.debug == 'true') console.info('Infraction Command passed!')
         if(!Member.roles.cache.has(warn1)) { Member.roles.add([warn1]); return inserDataToTemproles(Member.id, warn1, getFutureDate(2678400), inf_id)}
         if(!Member.roles.cache.has(warn2)) {Member.roles.add([warn2]); return inserDataToTemproles(Member.id, warn2, getFutureDate(2678400), inf_id)};
         
