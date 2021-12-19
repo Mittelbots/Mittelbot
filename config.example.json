@@ -26,12 +26,12 @@
         "database": "****Database successfully connected!****"
     },
     "modroles": {
-        "owner": "Chilled Sad",
-        "servermanager": "Server Manager",
-        "admin": "Admin",
-        "trialadmin": "Trial Admin",
-        "moderator": "Moderator",
-        "trialmoderator": "Trial Moderator"
+        "owner": "",
+        "servermanager": "",
+        "admin": "",
+        "trialadmin": "",
+        "moderator": "",
+        "trialmoderator": ""
     },
     "defaultChannels": {
         "modlog": "",
