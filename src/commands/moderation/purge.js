@@ -4,7 +4,7 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 module.exports.run = async (bot, message, args) => {
     message.delete();
 
-    if(!hasPermission(message, 0, 1)) {
+    if(!await hasPermission(message, 0, 1)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);

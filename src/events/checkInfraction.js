@@ -3,22 +3,21 @@ const { insertDataToClosedInfraction } = require('../../utils/functions/insertDa
 const { setNewModLogMessage } = require('../../utils/modlog/modlog');
 const { privateModResponse } = require('../../utils/privatResponses/privateModResponses');
 const {
-    database
+    Database
 } = require('../db/db');
+
+const database = new Database;
 
 async function deleteEntries(infraction) {
     try {
         insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
-        database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id], async (err) => { if(err) console.log(err) })
+        database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id]).catch(err => console.log(err));
     }catch(err) {console.log(err)}
 }
 
 function checkInfractions(bot) {
     setInterval(() => {
-        database.query(`SELECT * FROM open_infractions`, async (err, results) => {
-            if(err) {
-                console.log(`${config.errormessages.databasequeryerror}`, err)
-            }
+        database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;
             for(let i in results) {
                 if(results[i].till_date == null) continue;
@@ -66,7 +65,7 @@ function checkInfractions(bot) {
                 }
             }
             console.log(`Check Infraction done. ${done} infractions removed!`, new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'}))
-        })
+        }).catch(err => console.log(err));
     }, config.defaultCheckInfractionTimer);
 }
 

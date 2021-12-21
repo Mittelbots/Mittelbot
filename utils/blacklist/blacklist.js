@@ -1,4 +1,3 @@
-const config = require('../../config.json');
 const blacklistfile = require('../../blacklist.json');
 
 /**
@@ -11,8 +10,8 @@ function blacklist(type, message) {
     var forceUserPass = false
     for(let i in blacklistfile.whitelistroles) {
         if(message.member.roles.cache.find(r => r.id === blacklistfile.whitelistroles[i])) {
-            letUserPass = true;
             forceUserPass = true;
+            continue;
         }
     }
     if(!forceUserPass) {
@@ -35,6 +34,7 @@ function blacklist(type, message) {
                         message.delete();
                         message.channel.send('shhhh. Dont say that!');
                         letUserPass = false;
+                        continue
                     }
                 }
             }

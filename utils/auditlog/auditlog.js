@@ -1,9 +1,14 @@
 const {MessageEmbed} = require('discord.js');
 const config = require('../../config.json');
+const { Database } = require('../../src/db/db');
+
+const database = new Database;
 
 var c = config.auditTypes;
+var gid;
 
-function auditLog(bot) {
+function auditLog(bot, guildid) {
+    gid = guildid;
 
     bot.on(c.messagedelete, message => sendToAudit(bot, c.messagedelete, message));
 
@@ -36,7 +41,7 @@ function auditLog(bot) {
     bot.on(c.roledelete, role => sendToAudit(bot, c.roledelete, role));
 }
 
-function sendToAudit(bot, type, content1, content2, content3, content4) {
+function sendToAudit(bot, type, content1, content2) {
 
     var Message = new MessageEmbed()
     .setTimestamp();
@@ -116,22 +121,32 @@ function sendToAudit(bot, type, content1, content2, content3, content4) {
         
 
     }
+
     if(type === c.debug) {
-        bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.debugchannel).send({embeds: [Message]});
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.debugchannel).send({embeds: [Message]});
     }else if(type === c.disconnect) {
-        bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.disconnectchannel).send({embeds: [Message]});
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.disconnectchannel).send({embeds: [Message]});
     }else if(type === c.error) {
-        bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.errorchannel).send({embeds: [Message]});
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.errorchannel).send({embeds: [Message]});
     }else if(type === c.warn) {
-        bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.warnchannel).send({embeds: [Message]});
-    }else if(type === c.messageupdate) {
-        bot.channels.cache.get(config.defaultChannels.messagelog).send({embeds: [Message]})
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.warnchannel).send({embeds: [Message]});
     }else if(type === c.reconnecting) {
-        bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.reconnectingchannel).send({embeds: [Message]});
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.reconnectingchannel).send({embeds: [Message]});
     }
-    else {
-        bot.channels.cache.get(config.defaultChannels.auditlog).send({embeds: [Message]})
-    }
+
+    database.query(`SELECT * FROM ${gid}_guild_logs`).then(res => {
+        logs = res[0];
+
+        if(type === c.messageupdate && logs.messagelog !== null) {
+            return bot.channels.cache.get(logs.messagelog).send({embeds: [Message]})
+        }else {
+            if(logs.auditlog !== null) {
+                return bot.channels.cache.get(logs.auditlog).send({embeds: [Message]})
+            }
+        }
+        return;
+    }).catch(err => {})
+
 }
 
 module.exports = {auditLog};

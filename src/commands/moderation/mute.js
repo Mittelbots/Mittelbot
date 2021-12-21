@@ -1,6 +1,6 @@
 const config = require('../../../config.json');
 const {
-    database
+    Database
 } = require('../../db/db');
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { getFutureDate } = require('../../../utils/functions/getFutureDate');
@@ -11,12 +11,14 @@ const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 
+const database = new Database();
+
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
-    if (!hasPermission(message, 0, 0)) {
+    if (!await hasPermission(message, 0, 0)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -79,11 +81,7 @@ module.exports.run = async (bot, message, args) => {
     var futuredate = getFutureDate(dbtime, time)
 
 
-    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = 1`, [Member.id], async (err, result) => {
-        if (err) {
-            console.log(err);
-            return message.reply(`${config.errormessages.databasequeryerror}`);
-        }
+    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = 1`, [Member.id]).then(result => {
         if (result.length > 0) {
             for (let i in result) {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
@@ -107,7 +105,10 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send(config.errormessages.general)
         }
 
-    });
+    }).catch(err => {
+        console.log(err);
+        return message.reply(`${config.errormessages.databasequeryerror}`);
+    })
 }
 
 module.exports.help = {

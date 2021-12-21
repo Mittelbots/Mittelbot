@@ -1,4 +1,3 @@
-const { MessageEmbed } = require('discord.js');
 const config = require('../../../config.json');
 const { createInfractionId } = require('../../../utils/functions/createInfractionId');
 const { getFutureDate } = require('../../../utils/functions/getFutureDate');
@@ -7,13 +6,13 @@ const { insertDataToClosedInfraction, inserDataToTemproles } = require('../../..
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
+const { Database } = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
         message.delete();
     }
-
-    if (!hasPermission(message, 0, 0)) {
+    if (!await hasPermission(message, 0, 0)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -36,22 +35,35 @@ module.exports.run = async (bot, message, args) => {
 
     try {
 
-        setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, Member.user.id, reason);
+        setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, Member.user.id, reason, null, message);
         publicModResponses(message, config.defaultModTypes.warn, message.author.id, Member.user.id, reason);
         privateModResponse(Member, config.defaultModTypes.warn, reason);
-
-        let warn1 = await message.guild.roles.cache.find(role => role.name === "Warn1").id
-        let warn2 = await message.guild.roles.cache.find(role => role.name === "Warn2").id
 
         let inf_id = createInfractionId()
 
         insertDataToClosedInfraction(Member.id, message.author.id, 0, 0, 1, 0, null, reason, inf_id);
-        if(config.debug == 'true') console.info('Infraction Command passed!')
-        if(!Member.roles.cache.has(warn1)) { Member.roles.add([warn1]); return inserDataToTemproles(Member.id, warn1, getFutureDate(2678400), inf_id)}
-        if(!Member.roles.cache.has(warn2)) {Member.roles.add([warn2]); return inserDataToTemproles(Member.id, warn2, getFutureDate(2678400), inf_id)};
-        
-        //If User already have both Roles
-        return message.reply(`The User already have both warn roles!`);
+        if(config.debug == 'true') console.info('Warn Command passed!')
+
+        const database = new Database();
+        database.query(`SELECT autoroles FROM ${message.guild.id}_config LIMIT 1`).then(async res => {
+            if(res[0].autoroles == 1) {   
+                let warn1 = await message.guild.roles.cache.find(role => role.name === "Warn1").id
+                let warn2 = await message.guild.roles.cache.find(role => role.name === "Warn2").id
+
+                if(!Member.roles.cache.has(warn1)) { 
+                    Member.roles.add([warn1]); 
+                    return inserDataToTemproles(Member.id, warn1, getFutureDate(2678400), inf_id)
+                }
+                if(!Member.roles.cache.has(warn2)) {
+                    Member.roles.add([warn2]); 
+                    return inserDataToTemproles(Member.id, warn2, getFutureDate(2678400), inf_id)
+                };
+                            //If User already have both Roles
+            return message.reply(`The User already have both warn roles!`);
+            }
+            return;
+        }).catch(err => console.log(err))
+
 
     }catch(err) {
         console.log(err);

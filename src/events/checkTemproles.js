@@ -1,17 +1,18 @@
-const { database } = require("../db/db");
+const { Database } = require("../db/db");
 const config = require('../../config.json');
 const { getCurrentDate } = require("../../utils/functions/getCurrentDate");
 
+const database = new Database();
+
 async function deleteEntries(infraction_id) {
     try {
-        database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id], async (err) => { if(err) console.log(err) })
+        database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).catch(err => console.log(err))
     }catch(err) {console.log(err)}
 }
 
 function checkTemproles(bot) {
     setInterval(() => {
-        database.query('SELECT * FROM temproles', async (err, results) => {
-            if(err) console.log(err)
+        database.query('SELECT * FROM temproles').then(async results => {
             let done = 0;
             for (let i in results) {
                 if(results[i].till_date == null) continue;
@@ -33,7 +34,7 @@ function checkTemproles(bot) {
                 }
             }
             console.log(`Check Temproles finished. ${done} roles removed`)
-        });
+        }).catch(err => console.log(err));
     }, config.defaultCheckTemprolesTimer);
 }
 

@@ -1,6 +1,5 @@
 const {
     Permissions,
-    MessageEmbed
 } = require('discord.js');
 const config = require('../../../config.json');
 const { createInfractionId } = require('../../../utils/functions/createInfractionId');
@@ -9,14 +8,14 @@ const { insertDataToClosedInfraction } = require('../../../utils/functions/inser
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
-const { database } = require('../../db/db');
+
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
-    if (!hasPermission(message, 0, 0)) {
+    if (!await hasPermission(message, 0, 0)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);

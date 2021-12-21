@@ -1,7 +1,9 @@
 const {MessageEmbed} = require('discord.js');
-const config = require('../../config.json');
+const {Database} = require('../../src/db/db');
 
-async function setNewModLogMessage(bot, type, moderator, member, reason, time) {
+const database = new Database();
+
+async function setNewModLogMessage(bot, type, moderator, member, reason, time, dcmessage) {
     var modLogMessage = new MessageEmbed()
     .setTitle(`**Member ${type}!**`)
     .addField(`Moderator`, `<@${moderator}> (${moderator})`)
@@ -13,16 +15,18 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time) {
         modLogMessage.addField(`Time`, `**${time}** `)
     }
 
-    sendToModLog(bot, modLogMessage);
+    sendToModLog(bot, modLogMessage, dcmessage);
     return;
 }
 
-function sendToModLog(bot, message) {
-    try {
-        bot.channels.cache.get(config.defaultChannels.modlog).send({embeds: [message]});
-    }catch(err) {
-        console.log(err)
-    }
+function sendToModLog(bot, message, dcmessage) {
+    database.query(`SELECT modlog FROM ${dcmessage.guild.id}_guild_logs`).then(res => {
+        try {
+            bot.channels.cache.get(res[0].modlog).send({embeds: [message]});
+        }catch(err) {
+            console.log(err)
+        }
+    }).catch(err => console.log(err));
 }
 
 

@@ -2,15 +2,17 @@ const config = require('../../../config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const {
-    database
+    Database
 } = require('../../db/db');
+
+const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
-    if (!hasPermission(message, 0, 0)) {
+    if (!await hasPermission(message, 0, 0)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -30,22 +32,14 @@ module.exports.run = async (bot, message, args) => {
 
     var closed = []
     var open = []
-    try {
-        await database.query(`SELECT * FROM closed_infractions WHERE user_id = ?`, [Member.id], async (err, res) => {
-            if (err) {
-                console.log(err);
-                return message.reply(`${config.errormessages.databasequeryerror}`);
-            }
-            closed.push(await res);
-        });
-        await database.query(`SELECT * FROM open_infractions WHERE user_id = ?`, [Member.id], async (err, res) => {
-            if (err) {
-                console.log(err);
-                return message.reply(`${config.errormessages.databasequeryerror}`);
-            }
-            open.push(await res);
-        });
-    }catch(e){}
+    await database.query(`SELECT * FROM closed_infractions WHERE user_id = ?`, [Member.id]).then(async res => closed.push(await res)).catch(err => {
+        console.log(err);
+        return message.reply(`${config.errormessages.databasequeryerror}`);
+    })
+    await database.query(`SELECT * FROM open_infractions WHERE user_id = ?`, [Member.id]).then(async res => open.push(await res)).catch(err => {
+        console.log(err);
+        return message.reply(`${config.errormessages.databasequeryerror}`);
+    })
 
     message.reply(`This request can take a few Seconds!`).then((msg) => setTimeout(() => msg.delete(), 5000))
 

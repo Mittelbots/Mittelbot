@@ -6,14 +6,16 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
-const { database } = require('../../db/db');
+const { Database } = require('../../db/db');
+
+const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
 
-    if(!hasPermission(message, 0, 1)) {
+    if(!await hasPermission(message, 0, 1)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -31,9 +33,6 @@ module.exports.run = async (bot, message, args) => {
     
     let reason = args.slice(1).join(" ");
     if(!reason) return message.channel.send('Please add a reason!');
-
-
-
 
     if(Member.user.bot) message.reply(`Do you really want to ban <@${Member.user.id}>? It's a Bot.`).then(() => {      
         let msg_filter = m => m.author.id === message.author.id;
@@ -60,28 +59,19 @@ module.exports.run = async (bot, message, args) => {
                 });
             }
         });
-    });  
-    // If Member is not a bot //
-
-    for(let i in config.modroles) {
-        if(Member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
-            return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
-        }
-    }
+    });
 
     let time = args.slice(2).join(" ");
     reason = reason.replace(time, '');
-    var dbtime = getModTime(time);
-    if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
+    if(time !== '') {
+        var dbtime = getModTime(time);
+        if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
+    }
 
     var futuredate = getFutureDate(dbtime);
 
 
-    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND ban = 1`, [Member.id], async (err, result) => {
-        if (err) {
-            console.log(err);
-            return message.reply(`${config.errormessages.databasequeryerror}`);
-        }
+    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND ban = 1`, [Member.id]).then(async result => {
         if (result.length > 0) {
             for (let i in result) {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
@@ -95,24 +85,26 @@ module.exports.run = async (bot, message, args) => {
         }
 
         try {
-            database.query(`INSERT INTO open_infractions (user_id, mod_id, ban, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, futuredate, reason, Math.random().toString(16).substr(2, 20)], async (err) => {
-                if(err) {
-                    console.log(err);
-                    return message.reply(`${config.errormessages.databasequeryerror}`);
-                }
-                await setNewModLogMessage(bot, config.defaultModTypes.ban, message.author.id, Member.id, reason, time);
+            database.query(`INSERT INTO open_infractions (user_id, mod_id, ban, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, futuredate, reason, Math.random().toString(16).substr(2, 20)]).then(async () => {
+                await setNewModLogMessage(bot, config.defaultModTypes.ban, message.author.id, Member.id, reason, time, message);
                 await publicModResponses(message, config.defaultModTypes.ban, message.author.id, Member.id, reason, time);
                 await privateModResponse(Member, config.defaultModTypes.ban, reason, time);
                 setTimeout(async () => {
                     if(config.debug == 'true') console.info('Ban Command passed!')
                     return await Member.ban({reason: reason});
                 }, 500);
-            });
+            }).catch(err => {
+                console.log(err);
+                return message.reply(`${config.errormessages.databasequeryerror}`);
+            })
         } catch (err) {
             console.log(err);
             message.channel.send(config.errormessages.general)
         }
-    });
+    }).catch(err => {
+        console.log(err);
+        return message.reply(`${config.errormessages.databasequeryerror}`);
+    })
 
 }
 
