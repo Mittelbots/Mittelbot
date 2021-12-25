@@ -24,6 +24,7 @@ const defaultCooldown = new Set();
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS"]
 });
+bot.setMaxListeners(50);
 
 const database = new Database();
 
