@@ -1,4 +1,4 @@
-const {Permissions, MessageEmbed} = require('discord.js');
+const {Permissions} = require('discord.js');
 const config = require('../../../config.json');
 const { getFutureDate } = require('../../../utils/functions/getFutureDate');
 const { getModTime } = require('../../../utils/functions/getModTime');
