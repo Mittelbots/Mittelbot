@@ -143,10 +143,10 @@ function sendToAudit(bot, type, content1, content2) {
             if(logs.auditlog !== null) {
                 return bot.channels.cache.get(logs.auditlog).send({embeds: [Message]})
             }
+            return;
         }
-        return;
     }).catch(err => {})
-
+    return;
 }
 
 module.exports = {auditLog};
