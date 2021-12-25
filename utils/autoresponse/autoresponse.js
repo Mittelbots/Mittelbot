@@ -12,9 +12,6 @@ function autoresponse(message) {
     if(!forceUserPass) {
         for(let i in autoresponseconfig) {
             if(!letUserPass) continue;
-            console.log(i)
-            console.log(message.content)
-            console.log(autoresponseconfig[i])
             if(i !== 'whitelist' && message.content.search(i) !== -1) {
                 message.delete();
                 message.channel.send(`<@${message.author.id}> ${autoresponseconfig[i]}`)
