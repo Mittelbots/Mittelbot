@@ -72,35 +72,34 @@ bot.on('guildMemberAdd', member => {
 
 //Command Manager
 bot.on("messageCreate", async message => {
+
+  if (message.author.bot) return;
+  if (message.channel.type === "dm") return;
+
+  auditLog(bot, message.guild.id);
+  blacklist(1, message);
+  autoresponse(message);
+
+  let messageArray = message.content.split(" ");
+  let cmd = messageArray[0];
+  let args = messageArray.slice(1);
+
   var prefix;
-  database.query(`SELECT prefix FROM ${message.guild.id}_config`).then(res => {
-    prefix = res;
+  database.query(`SELECT prefix FROM ${message.guild.id}_config`).then(async res => {
+    prefix = await res;
 
-
-    if (message.author.bot) return;
-    if (message.channel.type === "dm") return;
-
-    auditLog(bot, message.guild.id);
-
-    let messageArray = message.content.split(" ");
-    let cmd = messageArray[0];
-    let args = messageArray.slice(1);
-
-    if (!cmd.startsWith(prefix)) {
-      blacklist(1, message);
-      autoresponse(message);
-    };
-
-    let commandfile = bot.commands.get(cmd.slice(prefix.length));
-    if (commandfile && blacklist(0, message)) {
-      if (defaultCooldown.has(message.author.id)) {
-        return message.channel.send(`Wait ${config.defaultCooldown.text} before getting typing this again.`);
-      } else {
-        defaultCooldown.add(message.author.id);
-        commandfile.run(bot, message, args);
-        setTimeout(async () => {
-          defaultCooldown.delete(message.author.id);
-        }, config.defaultCooldown.format);
+    if (cmd.startsWith(prefix.prefix)) {
+      let commandfile = bot.commands.get(cmd.slice(prefix.length));
+      if (commandfile && blacklist(0, message)) {
+        if (defaultCooldown.has(message.author.id)) {
+          return message.channel.send(`Wait ${config.defaultCooldown.text} before getting typing this again.`);
+        } else {
+          defaultCooldown.add(message.author.id);
+          commandfile.run(bot, message, args);
+          setTimeout(async () => {
+            defaultCooldown.delete(message.author.id);
+          }, config.defaultCooldown.format);
+        }
       }
     }
   }).catch(err => console.log(err));
