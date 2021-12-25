@@ -88,7 +88,8 @@ bot.on("messageCreate", async message => {
   database.query(`SELECT prefix FROM ${message.guild.id}_config`).then(async res => {
     prefix = await res;
 
-    if (cmd.startsWith(prefix.prefix)) {
+    if (cmd.startsWith(prefix[0].prefix)) {
+
       let commandfile = bot.commands.get(cmd.slice(prefix.length));
       if (commandfile && blacklist(0, message)) {
         if (defaultCooldown.has(message.author.id)) {
