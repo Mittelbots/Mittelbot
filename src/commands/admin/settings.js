@@ -1,14 +1,13 @@
 const config = require('../../../config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const {MessageEmbed} = require('discord.js');
+const {MessageEmbed, Permissions} = require('discord.js');
 const {Database} = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
-
-    if(!await hasPermission(message, 1, 0)) {
+    if(!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
