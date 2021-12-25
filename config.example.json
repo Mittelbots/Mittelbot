@@ -3,7 +3,7 @@
     "DISCORD_APPLICATION_ID": "",
     "DISCORD_GUILD_ID": "",
     "DEVELOPER_DISCORD_GUILD_ID": "",
-    "prefix": "",
+    "defaultprefix": "!",
     "defaultCooldown": {
         "format": "0000",
         "text": "5 seconds"
@@ -70,5 +70,56 @@
         "roledelete": "roleDelete",
         "roleupdate": "roleUpdate",
         "warn": "warn"
+    },
+    "settings": {
+        "wc": {
+            "name": "Welcome Channel",
+            "alias": "welcomechannel",
+            "desc": "Setup a welcome channel to say welcome to everyone who join.",
+            "icon": "923231733309132830",
+            "colname": "welcome_channel",
+            "val": "number"
+        },
+        "prefix": {
+            "name": "Prefix",
+            "alias": "prefix",
+            "desc": "Set an own prefix",
+            "icon": "923232537285918782",
+            "colname": "prefix",
+            "val": "string",
+            "required": ["!", "?", "$", "§", "%", "/", "(", ")", "=", "?", "{", "[", "]", "}", "@", "€", ";", ".", ":", "-", "_", "#", "*", "+", "~", "<", ">", "|", "^", "°"]
+        },
+        "cooldown": {
+            "name": "Command Cooldown",
+            "alias": "cmdcooldown",
+            "desc": "Setup a cooldown to reduce spam in your command channels.",
+            "icon": "923232537126510653",
+            "colname": "cooldown",
+            "val": "number"
+        },
+        "dmcau": {
+            "name": "Delete Mod Command after usage.",
+            "alias": "dmcau",
+            "desc": "Delete Modcommand (!ban, etc) after usage",
+            "icon": "923232537277513739",
+            "colname": "delteModCommandAfterUsage",
+            "val": "boolean"
+        },
+        "dcau": {
+            "name": "Delete Command after usage",
+            "alias": "dcau",
+            "desc": "Delete Command after usage.",
+            "icon": "923232537277513739",
+            "colname": "delteCommandAfterUsage",
+            "val": "boolean"
+        },
+        "joinroles": {
+            "name": "Joinroles",
+            "alias": "joinroles",
+            "desc": "Setup a Joiningrole when a user joins the server",
+            "icon": "923232537655017482",
+            "colname": "joinroles",
+            "val": "number"
+        }
     }
 }
