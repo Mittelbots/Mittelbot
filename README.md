@@ -3,7 +3,7 @@
  <img width=auto height=200px src="#" alt="Project logo"></a>
 </p>
 
-<h1 align="center">Chilled Bot</h1>
+<h1 align="center">Chilled Bot (NOT READY [ ALPHA ])</h1>
 
 <div align="center">
 
