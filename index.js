@@ -57,14 +57,19 @@ modules.forEach((module) => {
 //When a member join add a role called Member to them and welcome them in a channel welcome
 bot.on('guildMemberAdd', member => {
   database.query(`SELECT welcome_channel, member_role FROM ${member.guild.id}_config`).then(res => {
-    if (res !== '') {
+    if (res.length !== 0) {
       bot.channels.cache.find(c => c.id === res[0].welcome_channel).send('Welcome ' + member.user.username)
 
-      let role = member.guild.roles.cache.find(r => r.id === res[0].member_role);
-
-      //setTimeout(function () {
-      member.roles.add(role);
-      // }, 10000);
+      if(res[0].member_role !== null) {
+        let role = member.guild.roles.cache.find(r => r.id === res[0].member_role);
+        //setTimeout(function () {
+          try {
+            member.roles.add(role);
+          }catch(err) {
+            //NO PERMISSONS
+          }
+        // }, 10000);
+      }
     }
   }).catch(err => console.log(err))
 });
