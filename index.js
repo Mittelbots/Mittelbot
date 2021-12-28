@@ -87,7 +87,7 @@ bot.on("messageCreate", async message => {
 
     if (cmd.startsWith(prefix[0].prefix)) {
 
-      let commandfile = bot.commands.get(cmd.slice(prefix.length));
+      let commandfile = bot.commands.get(cmd.slice(prefix[0].prefix.length));
       if (commandfile && blacklist(0, message)) {
         if (defaultCooldown.has(message.author.id)) {
           return message.channel.send(`Wait ${config.defaultCooldown.text} before getting typing this again.`);
