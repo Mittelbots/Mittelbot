@@ -34,6 +34,7 @@ bot.on('guildCreate', async (guild) => {
   }).catch(err => {});
   await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).catch(err => {});
   await database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {})
+  await database.query(`CREATE TABLE ${guild.id}_guild_joinroles LIKE _guild_joinroles_template`).catch(err => {})
 });
 
 bot.commands = new Discord.Collection();
@@ -56,21 +57,24 @@ modules.forEach((module) => {
 
 //When a member join add a role called Member to them and welcome them in a channel welcome
 bot.on('guildMemberAdd', member => {
-  database.query(`SELECT welcome_channel, member_role FROM ${member.guild.id}_config`).then(res => {
+  database.query(`SELECT welcome_channel FROM ${member.guild.id}_config`).then(res => {
     if (res.length !== 0) {
       bot.channels.cache.find(c => c.id === res[0].welcome_channel).send('Welcome ' + member.user.username)
-
-      if(res[0].member_role !== null) {
-        let role = member.guild.roles.cache.find(r => r.id === res[0].member_role);
-        //setTimeout(function () {
-          try {
-            member.roles.add(role);
-          }catch(err) {
-            //NO PERMISSONS
-          }
-        // }, 10000);
-      }
     }
+  }).catch(err => console.log(err))
+
+  database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
+    for (i in res) {
+      let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
+      //setTimeout(function () {
+      try {
+        member.roles.add(role);
+      } catch (err) {
+        //NO PERMISSONS
+      }
+      // }, 10000);
+    }
+
   }).catch(err => console.log(err))
 });
 
@@ -94,15 +98,19 @@ bot.on("messageCreate", async message => {
 
       let commandfile = bot.commands.get(cmd.slice(prefix[0].prefix.length));
       if (commandfile && blacklist(0, message)) {
-        if (defaultCooldown.has(message.author.id)) {
-          return message.channel.send(`Wait ${config.defaultCooldown.text} before getting typing this again.`);
-        } else {
-          defaultCooldown.add(message.author.id);
-          commandfile.run(bot, message, args);
-          setTimeout(async () => {
-            defaultCooldown.delete(message.author.id);
-          }, config.defaultCooldown.format);
-        }
+        database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(res => {
+          if (defaultCooldown.has(message.author.id)) {
+            return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
+          } else {
+            defaultCooldown.add(message.author.id);
+            commandfile.run(bot, message, args);
+
+            setTimeout(async () => {
+              defaultCooldown.delete(message.author.id);
+            }, res[0].cooldown || config.defaultCooldown.format);
+
+          }
+        });
       }
     }
   }).catch(err => console.log(err));
