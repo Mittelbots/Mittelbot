@@ -1,7 +1,10 @@
 function getModTime(time) {
     let format;
     let dbtime;
-    if (time.search('m') !== -1) {
+    if(time.search('s') !== -1) {
+        format = 's';
+        dbtime = (time.replace(format, ''))
+    }else if (time.search('m') !== -1) {
         format = 'm';
         dbtime = (time.replace(format, '') * 60);
     } else if (time.search('h') !== -1) {
