@@ -78,7 +78,7 @@ module.exports.run = async (bot, message, args) => {
                 if(setting == 'prefix') {
                     let pass = 0;
                     for(let i in config.settings.prefix.required) {
-                        if(value.indexOf(config.settings.prefix.required[i]) === -1) pass++;
+                        if(!value.endsWith(config.settings.prefix.required[i])) pass++;
                     }
                     if(pass === (config.settings.prefix.required).length) return message.reply(`Invalid prefix`);
                 }
