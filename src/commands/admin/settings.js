@@ -68,19 +68,30 @@ module.exports.run = async (bot, message, args) => {
      * EDIT SETTING
      */
         setting = setting.replace(value, '').replace(' ', '');
-            
         for(let i in config.settings) {
-            if(i === setting) {
+            if(config.settings[i].alias === setting) {
                 if(typeof value == config.settings[i].val == false) {
                     return message.reply(`Value has to be ${config.settings[i].val}`)
                 }
-
-                if(setting == 'prefix') {
+                if(setting == config.settings.prefix.alias) {
                     let pass = 0;
                     for(let i in config.settings.prefix.required) {
                         if(!value.endsWith(config.settings.prefix.required[i])) pass++;
                     }
                     if(pass === (config.settings.prefix.required).length) return message.reply(`Invalid prefix`);
+
+                    message.reply(`Prefix succesfully changed to **${value}**`)
+                }else if(setting == config.settings[i].alias) {
+                    //check if channel exists
+                    let channel = value.replace('<', '').replace('#', '').replace('>', '')
+                    try {
+                        message.guild.channels.cache.get(`${channel}`).send(`Just to test my permissions!`).then(msg => msg.delete());
+                    }catch(err) {
+                        return message.reply(`Either i don't have permissions to see/write into this channel or this channel doesn't exists`)
+                    }
+                    message.reply(`${config.settings.wc.name} successfully changed to ${value}`);
+                    setting = config.settings.wc.colname
+                    value = channel;
                 }
 
                 const database = new Database();
