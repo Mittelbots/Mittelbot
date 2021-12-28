@@ -22,19 +22,21 @@ const {
 const defaultCooldown = new Set();
 
 const bot = new Discord.Client({
-  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS"]
+  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"]
 });
 bot.setMaxListeners(50);
 
 const database = new Database();
 
-bot.on('guildCreate', guild => {
-
-  database.query(`CREATE TABLE ${guild.id}_config LIKE _guild_config_template`).then(() => {
-    database.query(`INSERT INTO ${guild.id}_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
+bot.on('guildCreate', async (guild) => {
+  await database.query(`SELECT * FROM all_guild_id WHERE guild_id = ?`, [guild.id]).catch(async err => {
+    await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id])
+  });
+  await database.query(`CREATE TABLE ${guild.id}_config LIKE _guild_config_template`).then(async () => {
+    await database.query(`INSERT INTO ${guild.id}_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
   }).catch(err => {});
-  database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).catch(err => {});
-  database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {})
+  await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).catch(err => {});
+  await database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {})
 });
 
 bot.commands = new Discord.Collection();
@@ -75,8 +77,6 @@ bot.on("messageCreate", async message => {
 
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
-
-  auditLog(bot, message.guild.id);
   blacklist(1, message);
   autoresponse(message);
 
@@ -109,12 +109,13 @@ bot.on("messageCreate", async message => {
 bot.once('ready', () => {
   checkInfractions(bot);
   checkTemproles(bot)
+  auditLog(bot);
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   bot.user.setActivity({
-    name: "Dev Bot for Chilled Sad",
+    name: "https://github.com/Mittelbots/",
     type: 'PLAYING'
-  })
+  });
 });
 
 const token = require('./_secret/token.json');

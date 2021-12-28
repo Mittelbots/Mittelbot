@@ -5,10 +5,9 @@ const { Database } = require('../../src/db/db');
 const database = new Database;
 
 var c = config.auditTypes;
-var gid;
+var gid = '';
 
-function auditLog(bot, guildid) {
-    gid = guildid;
+function auditLog(bot) {
 
     bot.on(c.messagedelete, message => sendToAudit(bot, c.messagedelete, message));
 
@@ -71,7 +70,8 @@ function sendToAudit(bot, type, content1, content2) {
 
         case c.messagedeletebulk:
             if (!content1.guild) return
-            Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`, content1.author.avatarURL(true))
+            gid = content1.guildId
+            Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Bulkmessages sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
             Message.setFooter(`Author: ${content1.author.id} | MessageID: ${content1.id}`);
             break;
@@ -79,7 +79,8 @@ function sendToAudit(bot, type, content1, content2) {
         case c.messagedelete:
             if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
-            Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`, content1.author.avatarURL(true))
+            gid = content1.guildId
+            Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
             Message.setFooter(`Author: ${content1.author.id} | MessageID: ${content1.id}`);
             break;
@@ -87,35 +88,43 @@ function sendToAudit(bot, type, content1, content2) {
         case c.messageupdate:
             if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
-            Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`, content1.author.avatarURL(true))
+            gid = content1.guildId
+            Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message edited in <#${content1.channelId}> [Jump to Message](https://discord.com/channels/${content2.guildId}/${content2.channelId}/${content2.id})** \n **Before** \n ${content1} \n **After** \n ${content2}`);
             break;
             
         case c.channelcreate:
+            gid = content1.guildId
             Message.setDescription(`**Channel ${content1} created**`);
             break;
 
         case c.channeldelete:
+            gid = content1.guildId
             Message.setDescription(`**Channel #${content1.name} deleted**`);
             break;
 
         case c.channelupdate:
-            Message.setDescription(`**Channel #${content2} updated** \n  **Before** \n ${content1} \n **After** \n ${content2}`);
+            gid = content2.guildId
+            Message.setDescription(`**Channel ${content2} updated** `);
             break;
 
         case c.guildupdate:
+            gid = content2.guildId
             Message.setDescription(`**Guild updated** \n ${content1} ---> ${content2}`);
             break;
 
         case c.rolecreate:
+            gid = content1.guildId
             Message.setDescription(`**Role ${content1} created**`);
             break;
 
         case c.roleupdate:
+            gid = content2.guildId
             Message.setDescription(`**Role ${content2} updated** \n **Before** \n ${content1} \n **After** \n ${content2}`);
             break;
 
         case c.rolecreate:
+            gid = content1.guildId
             Message.setDescription(`**Role ${content1} deleted**`);
             break;
         
@@ -136,16 +145,16 @@ function sendToAudit(bot, type, content1, content2) {
 
     database.query(`SELECT * FROM ${gid}_guild_logs`).then(res => {
         logs = res[0];
-
         if(type === c.messageupdate && logs.messagelog !== null) {
             return bot.channels.cache.get(logs.messagelog).send({embeds: [Message]})
         }else {
             if(logs.auditlog !== null) {
                 return bot.channels.cache.get(logs.auditlog).send({embeds: [Message]})
             }
-            return;
         }
-    }).catch(err => {})
+    }).catch(err => {
+        //NO GUILD LOGS OR NO GUILD ID
+    })
     return;
 }
 
