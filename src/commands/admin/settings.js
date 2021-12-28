@@ -81,10 +81,13 @@ module.exports.run = async (bot, message, args) => {
         setting = setting.replace(value, '').replace(' ', '');
         for (let i in config.settings) {
             if (config.settings[i].alias === setting) {
-                if (typeof value == config.settings[i].val == false && config.settings[i].val !== 'boolean' && config.settings[i].val !== 'mention') {
+                if (typeof value == config.settings[i].val == false && config.settings[i].val !== 'boolean' && config.settings[i].val !== 'mention' && config.settings[i].val !== 'time') {
                     return message.reply(`Value has to be ${config.settings[i].val}`)
-                } else if (config.settings[i].val === 'boolean')
+                } else if (config.settings[i].val === 'boolean'){
                     if (value !== 'true' && value !== 'false') return message.reply(`Value has to be true or false`)
+                }else if (config.settings[i].val === 'time') {
+                    if(!value.endsWith('s') && !value.endsWith('m') && !value.endsWith('h') && !value.endsWith('d')) return message.reply(`Value has to be time (e.g. 1m or 30s)`);
+                }
 
                 if (setting == config.settings.prefix.alias) {
                     let pass = 0;
@@ -151,7 +154,6 @@ module.exports.run = async (bot, message, args) => {
                                 } else {
                                     try {
                                         message.guild.roles.cache.get(roles[i]);
-                                        console.log('1')
                                     } catch (err) {
                                         console.log(err);
                                         return message.reply(`${roles[i]} doesn't exists!`)
