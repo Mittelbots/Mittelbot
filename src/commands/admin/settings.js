@@ -167,7 +167,10 @@ module.exports.run = async (bot, message, args) => {
                                 }catch(err) {
                                     return message.reply(`${roles[i]} doesn't exists! All existing mentions before are saved.`)
                                 }
-                                database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [roles[i]]);
+                                database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [roles[i]]).catch(err => {
+                                    console.log(err);
+                                    return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                                })
                             }
                             return message.reply(`${value} saved as Joinrole(s)`)
                         }
