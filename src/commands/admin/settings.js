@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
         for (let i in config.settings) {
             if (setting == config.settings[i].alias) {
                 passed = true;
-                return viewSetting(config.settings[i].name, config.settings[i].desc, config.settings[i].icon, currentsettings[config.settings[i].colname])
+                return viewSetting(config.settings[i].name, config.settings[i].desc, config.settings[i].icon, currentsettings[config.settings[i].colname], `**_Exp: ${currentsettings.prefix}settings ${config.settings[i].alias} ${config.settings[i].exp}_**`)
             }
         }
         if (!passed) viewAllSettings();
@@ -55,19 +55,55 @@ module.exports.run = async (bot, message, args) => {
 
             for (let i in config.settings) {
                 let emote = await getEmote(config.settings[i].icon);
-                settingMessage.addField(`${emote} - ${config.settings[i].name}`, `${config.settings[i].desc} \n Current Setting: **${currentsettings[config.settings[i].colname] ?? 'Not set yet'}** \n **_Exp: ${currentsettings.prefix}settings ${config.settings[i].alias} ${config.settings[i].exp}_**`);
+                var current;
+                if(config.settings[i].colname === config.settings.wc.colname) current = `<#${currentsettings[config.settings[i].colname]}>`;
+                else if(config.settings[i].colname === config.settings.cooldown.colname && currentsettings[config.settings[i].colname] === null) current = `Default Cooldown`;
+                else if(config.settings[i].colname === config.settings.dmcau.colname || config.settings[i].colname === config.settings.dcau.colname){ if(currentsettings[config.settings[i].colname] == '1') current = 'true'; else current = 'false'}
+                else if(config.settings[i].colname === config.settings.joinroles.colname) { 
+                    database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
+                        current = ''; 
+                        for(let x in res) {
+                            current += `<@${res[x].role_id}> `;
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                    });
+                }
+                else if(config.settings[i].colname === config.settings.auditlog.colname || config.settings[i].colname === config.settings.messagelog.colname ||config.settings[i].colname === config.settings.modlog.colname) { 
+                    current = database.query(`SELECT auditlog, messagelog, modlog FROM ${message.guild.id}_guild_logs`).then(res => {
+                        return `<#${res[0][config.settings[i].colname]}>`;
+                    }).catch(err => {
+                        console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                    });
+                }else if(config.settings[i].colname === config.settings.warnroles.colname) {
+                    current = database.query(`SELECT * FROM ${message.guild.id}_guild_warnroles`).then(res => {
+                        current = ''; 
+                        for(let x in res) {
+                            current += `<@&${res[x].role_id}> `;
+                        }
+                        return current;
+                    }).catch(err => {
+                        console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
+                    })
+                }
+                else {current = currentsettings[config.settings[i].colname];}
+
+                settingMessage.addField(`${emote} - ${config.settings[i].name}`, `${config.settings[i].desc} \n Current Setting: **${await current ?? 'Not set yet'}** \n **_Exp: ${currentsettings.prefix}settings ${config.settings[i].alias} ${config.settings[i].exp}_**`);
             }
             return message.channel.send({
                 embeds: [settingMessage]
             });
         }
 
-        async function viewSetting(sett_name, sett_desc, sett_icon, current) {
+        async function viewSetting(sett_name, sett_desc, sett_icon, current, sett_exp) {
             let emote = await getEmote(sett_icon);
             let settingMessage = new MessageEmbed()
                 .setTitle(`**Settings for ${message.guild.name}**`)
                 .setDescription(`**Change or view Settings**`)
-                .addField(`${emote} - ${sett_name}`, `${sett_desc} \n Current Setting: **${current ?? 'Not set yet'}**`)
+                .addField(`${emote} - ${sett_name}`, `${sett_desc} \n Current Setting: **${current ?? 'Not set yet'}** \n ${sett_exp}`)
                 .setTimestamp();
 
             return message.channel.send({
