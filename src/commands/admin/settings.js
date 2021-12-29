@@ -81,6 +81,8 @@ module.exports.run = async (bot, message, args) => {
         setting = setting.replace(value, '').replace(' ', '');
         for (let i in config.settings) {
             if (config.settings[i].alias === setting) {
+                
+                //? CHECK THE VALUE INPUT
                 if (typeof value == config.settings[i].val == false && config.settings[i].val !== 'boolean' && config.settings[i].val !== 'mention' && config.settings[i].val !== 'time') {
                     return message.reply(`Value has to be ${config.settings[i].val}`)
                 } else if (config.settings[i].val === 'boolean'){
@@ -89,6 +91,7 @@ module.exports.run = async (bot, message, args) => {
                     if(!value.endsWith('s') && !value.endsWith('m') && !value.endsWith('h') && !value.endsWith('d')) return message.reply(`Value has to be time (e.g. 1m or 30s)`);
                 }
 
+                //? IF SETTING IS PREFIX
                 if (setting == config.settings.prefix.alias) {
                     let pass = 0;
                     for (let i in config.settings.prefix.required) {
@@ -98,7 +101,9 @@ module.exports.run = async (bot, message, args) => {
 
                     message.reply(`Prefix succesfully changed to **${value}**`)
                     return saveSetting();
-                } else if (setting == config.settings.wc.alias) {
+                } 
+                //? IF SETTING IS WELCOME_CHANNEL
+                else if (setting == config.settings.wc.alias) {
                     //check if channel exists
                     let channel = value.replace('<', '').replace('#', '').replace('>', '')
                     try {
@@ -110,7 +115,9 @@ module.exports.run = async (bot, message, args) => {
                     setting = config.settings.wc.colname
                     value = channel;
                     return saveSetting();
-                } else if (setting == config.settings.cooldown.alias) {
+                } 
+                //? IF SETTING IS COOLDOWN
+                else if (setting == config.settings.cooldown.alias) {
                     let dbtime = getModTime(value);
                     if (dbtime <= 0 || dbtime == false) {
                         value = null;
@@ -121,7 +128,9 @@ module.exports.run = async (bot, message, args) => {
                     }
                     setting = config.settings.cooldown.colname;
                     return saveSetting();
-                } else if (setting == config.settings.dmcau.alias) {
+                } 
+                //? IF SETTING IS DELETE MOD COMMAND AFTER USAGE
+                else if (setting == config.settings.dmcau.alias) {
                     setting = config.settings.dmcau.colname;
                     if (value == 'false') {
                         value = 0;
@@ -131,7 +140,9 @@ module.exports.run = async (bot, message, args) => {
                         message.reply(`Mod Commands **will** get deleted after usage!`)
                     }
                     return saveSetting();
-                } else if (setting == config.settings.dcau.alias) {
+                } 
+                //? IF SETTING IS DELETE COMMAND AFTER USAGE
+                else if (setting == config.settings.dcau.alias) {
                     setting = config.settings.dcau.colname;
                     if (value == 'false') {
                         value = 0;
@@ -141,7 +152,9 @@ module.exports.run = async (bot, message, args) => {
                         message.reply(`Commands **will** get deleted after usage!`)
                     }
                     return saveSetting();
-                } else if (setting == config.settings.joinroles.alias) {
+                } 
+                //? UF SETTING IS JOINROLES
+                else if (setting == config.settings.joinroles.alias) {
                     let roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
                     roles = roles.split(' ');
                     const database = new Database();
@@ -175,6 +188,10 @@ module.exports.run = async (bot, message, args) => {
                             return message.reply(`${value} saved as Joinrole(s)`)
                         }
                     });
+                }
+                //? IF SETTING IS AUDIT-LOG
+                else if (setting == config.settings.auditlog.alias) {
+                    
                 }
                 continue;
             }
