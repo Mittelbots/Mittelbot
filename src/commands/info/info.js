@@ -42,18 +42,17 @@ module.exports.run = async (bot, message, args) => {
         .addField(`Channels`, `${server.channels.cache.size}`, true)
         .addField(`Members`, `${server.members.cache.size}`, true)
         .addField(`Roles`, `${server.roles.cache.size}`, true)
-        .addField(`Created At`, `${new Intl.DateTimeFormat('de-DE').format(server.createdAt)}`, true)
+        .addField(`Created At`, `${new Intl.DateTimeFormat('de-DE').format(server.createdAt)} CET`, true)
         .addField('\u200B', '\u200B')
         .setTimestamp();
 
     const memberInfoEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`**Memberinfos - ${user.username}**`)
-        .setThumbnail(user.avatarURL())
         .addField(`Tag/ID: `, `<@${user.id}>/${user.id}`)
-        .addField(`Created at`, `${new Intl.DateTimeFormat('de-DE').format(user.createdAt)}`, true)
-        .addField(`Joined at`, `${new Intl.DateTimeFormat('de-DE').format(message.member.createdAt)}`)
-        .addField(`Your roles`, `${userRole}`, true)
+        .addField(`Created at`, `${new Intl.DateTimeFormat('de-DE').format(user.createdAt)} CET`, true)
+        .addField(`Joined at`, `${new Intl.DateTimeFormat('de-DE').format(message.member.createdAt)} CET`, true)
+        .addField(`Roles`, `${userRole}`)
         .addField('\u200B', '\u200B')
         .setTimestamp();
 
@@ -63,6 +62,15 @@ module.exports.run = async (bot, message, args) => {
             embeds: [serverInfoEmbed]
         });
     }
+
+    const axios = require('axios');
+    let pfp = axios.get(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=4096`).then(response => {
+        return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=4096`
+    }).catch(err => {
+        return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=4096`
+    })
+
+    memberInfoEmbed.setThumbnail(await pfp)
     return message.channel.send({
         embeds: [memberInfoEmbed]
     });
