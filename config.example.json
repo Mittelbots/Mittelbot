@@ -78,7 +78,8 @@
             "desc": "Setup a welcome channel to say welcome to everyone who join.",
             "icon": "923231733309132830",
             "colname": "welcome_channel",
-            "val": "number"
+            "val": "string",
+            "exp": "[#channel]"
         },
         "prefix": {
             "name": "Prefix",
@@ -87,7 +88,8 @@
             "icon": "923232537285918782",
             "colname": "prefix",
             "val": "string",
-            "required": ["!", "?", "$", "§", "%", "/", "(", ")", "=", "?", "{", "[", "]", "}", "@", "€", ";", ".", ":", "-", "_", "#", "*", "+", "~", "<", ">", "|", "^", "°"]
+            "required": ["!", "?", "$", "§", "%", "/", "(", ")", "=", "?", "{", "[", "]", "}", "@", "€", ";", ".", ":", "-", "_", "#", "*", "+", "~", "<", ">", "|", "^", "°"],
+            "exp": "[prefix]"
         },
         "cooldown": {
             "name": "Command Cooldown",
@@ -95,15 +97,17 @@
             "desc": "Setup a cooldown to reduce spam in your command channels.",
             "icon": "923232537126510653",
             "colname": "cooldown",
-            "val": "number"
+            "val": "time",
+            "exp": "[1m] or [0s]"
         },
         "dmcau": {
             "name": "Delete Mod Command after usage.",
             "alias": "dmcau",
             "desc": "Delete Modcommand (!ban, etc) after usage",
             "icon": "923232537277513739",
-            "colname": "delteModCommandAfterUsage",
-            "val": "boolean"
+            "colname": "deleteModCommandAfterUsage",
+            "val": "boolean",
+            "exp": "[false]"
         },
         "dcau": {
             "name": "Delete Command after usage",
@@ -111,7 +115,8 @@
             "desc": "Delete Command after usage.",
             "icon": "923232537277513739",
             "colname": "delteCommandAfterUsage",
-            "val": "boolean"
+            "val": "boolean",
+            "exp": "[true]"
         },
         "joinroles": {
             "name": "Joinroles",
@@ -119,7 +124,44 @@
             "desc": "Setup a Joiningrole when a user joins the server",
             "icon": "923232537655017482",
             "colname": "joinroles",
-            "val": "number"
+            "val": "mention",
+            "exp": "[@role1 @role2 @role3]"
+        },
+        "auditlog": {
+            "name": "Audit-Log",
+            "alias": "auditlog",
+            "desc": "Logs action like delted Messages, channel update, guild update and much more.",
+            "icon": "925792424243101696",
+            "colname": "auditlog",
+            "val": "mention",
+            "exp": "[#mention]"
+        },
+        "messagelog": {
+            "name": "Message-Log",
+            "alias": "messagelog",
+            "desc": "Logs updated messages (before and after).",
+            "icon": "925792424243101696",
+            "colname": "messagelog",
+            "val": "mention",
+            "exp": "[#mention]"
+        },
+        "modlog": {
+            "name": "Mod-Log",
+            "alias": "modlog",
+            "desc": "Logs moderation action like warn, mute, and much more.",
+            "icon": "925792424243101696",
+            "colname": "modlog",
+            "val": "mention",
+            "exp": "[#mention]"
+        },
+        "warnroles": {
+            "name": "Warn roles",
+            "alias": "warnroles",
+            "desc": "The bot adds one by one role after warning a user.",
+            "icon": "925792709871042560",
+            "colname": "role_id",
+            "val": "mention",
+            "exp": "[@warn1 @warn2 @warn3]"
         }
     }
 }
