@@ -56,14 +56,16 @@ module.exports.run = async (bot, message, args) => {
             for (let i in config.settings) {
                 let emote = await getEmote(config.settings[i].icon);
                 var current;
-                if(config.settings[i].colname === config.settings.wc.colname) current = `<#${currentsettings[config.settings[i].colname]}>`;
+                if(config.settings[i].colname === config.settings.wc.colname) if(currentsettings[config.settings[i].colname] == null) current = null; else current = `<#${currentsettings[config.settings[i].colname]}>`;
                 else if(config.settings[i].colname === config.settings.cooldown.colname && currentsettings[config.settings[i].colname] === null) current = `Default Cooldown`;
                 else if(config.settings[i].colname === config.settings.dmcau.colname || config.settings[i].colname === config.settings.dcau.colname){ if(currentsettings[config.settings[i].colname] == '1') current = 'true'; else current = 'false'}
                 else if(config.settings[i].colname === config.settings.joinroles.colname) { 
                     database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
-                        current = ''; 
-                        for(let x in res) {
-                            current += `<@${res[x].role_id}> `;
+                        if(res.length > 0) {
+                            current = ''; 
+                            for(let x in res) {
+                                current += `<@${res[x].role_id}> `;
+                            }
                         }
                     }).catch(err => {
                         console.log(err);
@@ -72,18 +74,22 @@ module.exports.run = async (bot, message, args) => {
                 }
                 else if(config.settings[i].colname === config.settings.auditlog.colname || config.settings[i].colname === config.settings.messagelog.colname ||config.settings[i].colname === config.settings.modlog.colname) { 
                     current = database.query(`SELECT auditlog, messagelog, modlog FROM ${message.guild.id}_guild_logs`).then(res => {
-                        return `<#${res[0][config.settings[i].colname]}>`;
+                        if(res.length > 0) {
+                            return `<#${res[0][config.settings[i].colname]}>`;
+                        }
                     }).catch(err => {
                         console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`);
                     });
                 }else if(config.settings[i].colname === config.settings.warnroles.colname) {
                     current = database.query(`SELECT * FROM ${message.guild.id}_guild_warnroles`).then(res => {
-                        current = ''; 
-                        for(let x in res) {
-                            current += `<@&${res[x].role_id}> `;
+                        if(res.length > 0) {
+                            current = ''; 
+                            for(let x in res) {
+                                current += `<@&${res[x].role_id}> `;
+                            }
+                            return current;
                         }
-                        return current;
                     }).catch(err => {
                         console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`); 
