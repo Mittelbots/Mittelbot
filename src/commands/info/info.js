@@ -76,6 +76,4 @@ module.exports.run = async (bot, message, args) => {
     });
 }
 
-module.exports.help = {
-    name: "info",
-}
+module.exports.help = config.commandhelp.info
