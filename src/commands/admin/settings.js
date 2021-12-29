@@ -55,7 +55,7 @@ module.exports.run = async (bot, message, args) => {
 
             for (let i in config.settings) {
                 let emote = await getEmote(config.settings[i].icon);
-                settingMessage.addField(`${emote} - ${config.settings[i].name}`, `${config.settings[i].desc} \n Current Setting: **${currentsettings[config.settings[i].colname] ?? 'Not set yet'}**`);
+                settingMessage.addField(`${emote} - ${config.settings[i].name}`, `${config.settings[i].desc} \n Current Setting: **${currentsettings[config.settings[i].colname] ?? 'Not set yet'}** \n **_Exp: ${currentsettings.prefix}settings ${config.settings[i].alias} ${config.settings[i].exp}_**`);
             }
             return message.channel.send({
                 embeds: [settingMessage]
@@ -155,43 +155,141 @@ module.exports.run = async (bot, message, args) => {
                 } 
                 //? UF SETTING IS JOINROLES
                 else if (setting == config.settings.joinroles.alias) {
-                    let roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
+                    var roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
                     roles = roles.split(' ');
+
                     const database = new Database();
-                    database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
-                        if (res.length !== 0) {
-                            for (let i in res) {
-                                if (roles[i].search(res[i].role_id) !== -1) {
-                                    database.query(`DELETE FROM ${message.guild.id}_guild_joinroles WHERE role_id = ?`, [res[i].role_id]).catch(err => message.channel.send(`${config.errormessages.databasequeryerror}`));
-                                    message.reply(`<@&${roles[i]}> removed from joinroles`)
-                                } else {
-                                    try {
-                                        message.guild.roles.cache.get(roles[i]);
-                                    } catch (err) {
-                                        console.log(err);
-                                        return message.reply(`${roles[i]} doesn't exists!`)
+                    var removedRoles = '';
+                    let checkroles = database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
+                        if(res.length > 0) { //? ROLES AREADY EXISTS
+                            for(let i in res) {
+                                for(let x in roles) {
+                                    if(res[i].role_id === roles[x]) {
+                                        database.query(`DELETE FROM ${message.guild.id}_guild_joinroles WHERE role_id = ?`, [roles[x]]).catch(err => {console.log(err); message.channel.send(`${config.errormessages.databasequeryerror}`)});
+                                        removedRoles += `<@&${roles[x]}> `;
+                                        roles[x] = '';
                                     }
                                 }
                             }
-                        }else {
-                            for(let i in roles) {
-                                try {
-                                    message.guild.roles.cache.get(roles[i]);
-                                }catch(err) {
-                                    return message.reply(`${roles[i]} doesn't exists! All existing mentions before are saved.`)
-                                }
-                                database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [roles[i]]).catch(err => {
-                                    console.log(err);
-                                    return message.channel.send(`${config.errormessages.databasequeryerror}`);
-                                })
-                            }
-                            return message.reply(`${value} saved as Joinrole(s)`)
                         }
+                        if(removedRoles !== '') {
+                            message.reply(`${removedRoles} got removed from joinroles.`).then(msg => returnMessage = null)
+                        }
+                        return true;
                     });
+                    if(await checkroles && roles[0] !== '') {
+                        var passedRoles = [];
+                        for(let i in roles) {
+                            try {
+                                var role = message.guild.roles.cache.get(roles[i]);
+                            }catch(err) {
+                                return message.reply(`${roles[i]} doesn't exists! All existing mentions before are saved.`)
+                            }
+                            try {
+                                if(!message.member.roles.cache.find(r => r.id.toString() === role.id.toString())) {
+                                    await message.member.roles.add(role);
+                                    await message.member.roles.remove(role);
+                                }else {
+                                    await message.member.roles.remove(role);
+                                    await message.member.roles.add(role);
+                                }
+                            }catch(err) {
+                                return message.reply(`I don't have the permission to add this roles: ${role.name}`);
+                            }
+                            passedRoles.push(role.id);
+                        }
+                        for(let i in passedRoles) {
+                            saveJoinRoles(passedRoles[i]);
+                        }
+                        return message.reply(`Roles saved to Joinroles.`)
+                    }else {
+                        return;
+                    }
+
+
+                    function saveJoinRoles(role) {
+                        database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [role]).catch(err => {
+                            console.log(err);
+                            return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                        })
+                    }
+
                 }
                 //? IF SETTING IS AUDIT-LOG
-                else if (setting == config.settings.auditlog.alias) {
+                //? IF SETTING IS MESSAGE-LOG
+                //? IF SETTING IS MOD-LOG
+                else if (setting == config.settings.auditlog.alias || setting == config.settings.messagelog.alias || setting == config.settings.modlog.alias) {
                     
+                    var channel = value.replace('<', '').replace('#', '').replace('>', '');
+                    channel = message.guild.channels.cache.get(channel)
+                    
+                    try {
+                        let embed = new MessageEmbed()
+                            .setTitle('Test')
+                            .addField('To test', 'my permissions')
+                        channel.send({embeds: [embed]}).then(msg => msg.delete());
+                    }catch(err) {
+                        return message.reply(`I don't have permissions to write into this channel!`);
+                    }
+                    var dbcol;
+
+                    switch(true) {
+                        case setting == config.settings.auditlog.alias:
+                            dbcol = config.settings.auditlog.colname;
+                            break;
+                        case setting == config.settings.modlog.alias:
+                            dbcol = config.settings.modlog.colname;
+                            break;
+                        case setting = config.settings.messagelog.alias:
+                            dbcol = config.settings.messagelog.colname;
+                            break;
+
+                    }
+
+                    const database = new Database();
+                    database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ?`, [channel.id]).catch(err => {
+                        console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                    });
+
+                    return message.reply(`${channel} successfully saved!`);
+                }
+                //? IF SETTING IS WARNROLES
+                else if(setting == config.settings.warnroles.alias) {
+                    var roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
+                    roles = roles.split(' ');
+
+                    const database = new Database();
+                    database.query(`DELETE FROM ${message.guild.id}_guild_warnroles`).catch(err => {
+                        console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                    });
+
+                    for(let i in roles) {
+                        try {
+                            var role = message.guild.roles.cache.get(roles[i]);
+                        }catch(err) {
+                            return message.reply(`${roles[i]} doesn't exists!`)
+                        }
+                        try {
+                            if(!message.member.roles.cache.find(r => r.id.toString() === role.id.toString())) {
+                                await message.member.roles.add(role);
+                                await message.member.roles.remove(role);
+                            }else {
+                                await message.member.roles.remove(role);
+                                await message.member.roles.add(role);
+                            }
+                        }catch(err) {
+                            return message.reply(`I don't have the permission to add this roles: ${role.name}`);
+                        }
+                    }
+                    for(let i in roles) {
+                        database.query(`INSERT INTO ${message.guild.id}_guild_warnroles (${config.settings.warnroles.colname}) VALUES (?)`, [roles[i]]).catch(err => {
+                            console.log(err);
+                            return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                        });
+                    }
+                    return message.reply(`Warn roles successfully saved! \n \n To check these roles write !settings ${config.settings.warnroles.alias}`)
                 }
                 continue;
             }
