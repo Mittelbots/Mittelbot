@@ -35,7 +35,7 @@ bot.on('guildCreate', async (guild) => {
   await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).catch(err => {});
   await database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {})
   await database.query(`CREATE TABLE ${guild.id}_guild_joinroles LIKE _guild_joinroles_template`).catch(err => {})
-  await database.query(`CREATE TABLE ${guild.id}_guild_warnroles LIKE _guild_warmroles_template`).catch(err => {})
+  await database.query(`CREATE TABLE ${guild.id}_guild_warnroles LIKE _guild_warnroles_template`).catch(err => {})
 });
 
 bot.commands = new Discord.Collection();
