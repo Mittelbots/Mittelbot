@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "deployCommands": "node src/deploy-commands.js"
+    "deployCommands": "node src/deploy-commands.js",
+    "deployTables": "node _scripts/addTables.js"
   },
   "author": "BlackDayz",
   "license": "ISC",
