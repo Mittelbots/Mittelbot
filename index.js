@@ -29,10 +29,10 @@ bot.setMaxListeners(50);
 const database = new Database();
 
 bot.on('guildCreate', async (guild) => {
-  await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).catch(err => {
-    await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
+  await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).then(async res => {
+    if(res.length <= 0) await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
   });
-  await database.query(`CREATE TABLE ${guild.id}_config LIKE _guild_config_template`).then(async () => {
+  await database.query(`CREATE TABLE ${guild.id}_config LIKE _config_template`).then(async () => {
     await database.query(`INSERT INTO ${guild.id}_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
   }).catch(err => {});
   await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).catch(err => {});
