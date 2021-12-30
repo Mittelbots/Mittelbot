@@ -1,0 +1,3 @@
+{
+    "tables": ["_config", "_guild_joinroles", "_guild_logs", "_guild_modroles", "_guild_warnroles"]
+}
