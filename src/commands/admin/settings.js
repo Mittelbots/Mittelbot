@@ -57,7 +57,7 @@ module.exports.run = async (bot, message, args) => {
                 let emote = await getEmote(config.settings[i].icon);
                 var current;
                 if(config.settings[i].colname === config.settings.wc.colname) if(currentsettings[config.settings[i].colname] == null) current = null; else current = `<#${currentsettings[config.settings[i].colname]}>`;
-                else if(config.settings[i].colname === config.settings.cooldown.colname && currentsettings[config.settings[i].colname] === null) current = `Default Cooldown`;
+                else if(config.settings[i].colname === config.settings.cooldown.colname && currentsettings[config.settings[i].colname] === null) current = `Default Cooldown (${config.defaultCooldown.text})`;
                 else if(config.settings[i].colname === config.settings.dmcau.colname || config.settings[i].colname === config.settings.dcau.colname){ if(currentsettings[config.settings[i].colname] == '1') current = 'true'; else current = 'false'}
                 else if(config.settings[i].colname === config.settings.joinroles.colname) { 
                     database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
@@ -236,7 +236,7 @@ module.exports.run = async (bot, message, args) => {
                                     await message.member.roles.add(role);
                                 }
                             }catch(err) {
-                                return message.reply(`I don't have the permission to add this roles: ${role.name}`);
+                                return message.reply(`I don't have the permission to add this role: **${role.name}**`);
                             }
                             passedRoles.push(role.id);
                         }
@@ -320,7 +320,7 @@ module.exports.run = async (bot, message, args) => {
                                 await message.member.roles.add(role);
                             }
                         }catch(err) {
-                            return message.reply(`I don't have the permission to add this roles: ${role.name}`);
+                            return message.reply(`I don't have the permission to add this role: **${role.name}**`);
                         }
                     }
                     for(let i in roles) {
