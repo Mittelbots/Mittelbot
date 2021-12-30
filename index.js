@@ -87,8 +87,8 @@ bot.on("messageCreate", async message => {
 
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
-  blacklist(1, message);
-  autoresponse(message);
+  // blacklist(1, message);
+  // autoresponse(message);
 
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
