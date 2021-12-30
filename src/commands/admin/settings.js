@@ -282,19 +282,17 @@ module.exports.run = async (bot, message, args) => {
                         case setting == config.settings.modlog.alias:
                             dbcol = config.settings.modlog.colname;
                             break;
-                        case setting = config.settings.messagelog.alias:
+                        case setting == config.settings.messagelog.alias:
                             dbcol = config.settings.messagelog.colname;
                             break;
-
                     }
-
                     const database = new Database();
-                    database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ?`, [channel.id]).catch(err => {
+                    database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [channel.id]).then(() => {
+                        return message.reply(`${channel} successfully saved!`);
+                    }).catch(err => {
                         console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`);
                     });
-
-                    return message.reply(`${channel} successfully saved!`);
                 }
                 //? IF SETTING IS WARNROLES
                 else if(setting == config.settings.warnroles.alias) {
