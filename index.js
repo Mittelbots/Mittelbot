@@ -13,13 +13,14 @@ const {
 const {
   auditLog
 } = require("./utils/auditlog/auditlog");
-const {
-  autoresponse
-} = require("./utils/autoresponse/autoresponse");
-const {
-  blacklist
-} = require("./utils/blacklist/blacklist");
+// const {
+//   autoresponse
+// } = require("./utils/autoresponse/autoresponse");
+// const {
+//   blacklist
+// } = require("./utils/blacklist/blacklist");
 const defaultCooldown = new Set();
+const settingsCooldown = new Set();
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"]
@@ -101,8 +102,11 @@ bot.on("messageCreate", async message => {
     if (cmd.startsWith(prefix[0].prefix)) {
 
       let commandfile = bot.commands.get(cmd.slice(prefix[0].prefix.length));
-      if (commandfile && blacklist(0, message)) {
+      if (commandfile) { //&& blacklist(0, message)
         database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(res => {
+          if(settingsCooldown.has(message.author.id) && cmd === `${prefix[0].prefix}settings`) return message.channel.send(`You have to wait 1 Minute after each Settings Command.`);
+          else settingsCooldown.add(message.author.id);
+
           if (defaultCooldown.has(message.author.id)) {
             return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
           } else {
