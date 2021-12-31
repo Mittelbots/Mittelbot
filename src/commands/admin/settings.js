@@ -9,6 +9,8 @@ const {
 const {
     getModTime
 } = require('../../../utils/functions/getModTime');
+const { getEmote } = require('../../../utils/functions/getEmote');
+const { viewSetting } = require('../../../utils/functions/viewSetting');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -31,7 +33,10 @@ module.exports.run = async (bot, message, args) => {
         const database = new Database();
         var currentsettings = database.query(`SELECT * FROM ${message.guild.id}_config LIMIT 1`).then(async res => {
             return await res[0];
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            console.log(err);
+            return message.channel.send(`${config.errormessages.databasequeryerror}`);
+        });
 
         currentsettings = await currentsettings;
 
@@ -39,14 +44,14 @@ module.exports.run = async (bot, message, args) => {
         for (let i in config.settings) {
             if (setting == config.settings[i].alias) {
                 passed = true;
-                return viewSetting(config.settings[i].name, config.settings[i].desc, config.settings[i].icon, currentsettings[config.settings[i].colname], `**_Exp: ${currentsettings.prefix}settings ${config.settings[i].alias} ${config.settings[i].exp}_**`)
+                /**
+                 * TO-DO:
+                 * - Hinzufügen von settings die eigene SQL Abfrage brauchen
+                 */
+                return viewSetting(bot, message, config.settings[i].name, config.settings[i].desc, config.settings[i].icon, currentsettings[config.settings[i].colname], `**_Exp: ${currentsettings.prefix}settings ${config.settings[i].alias} ${config.settings[i].exp}_**`)
             }
         }
         if (!passed) viewAllSettings();
-
-        async function getEmote(id) {
-            return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).emojis.cache.get(id);
-        }
 
         async function viewAllSettings() {
             let settingMessage = new MessageEmbed()
@@ -54,7 +59,7 @@ module.exports.run = async (bot, message, args) => {
                 .setDescription(`**Change or view Settings**`);
 
             for (let i in config.settings) {
-                let emote = await getEmote(config.settings[i].icon);
+                let emote = await getEmote(bot, config.settings[i].icon);
                 var current;
                 if(config.settings[i].colname === config.settings.wc.colname) if(currentsettings[config.settings[i].colname] == null) current = null; else current = `<#${currentsettings[config.settings[i].colname]}>`;
                 else if(config.settings[i].colname === config.settings.cooldown.colname && currentsettings[config.settings[i].colname] === null) current = `Default Cooldown (${config.defaultCooldown.text})`;
@@ -104,18 +109,6 @@ module.exports.run = async (bot, message, args) => {
             });
         }
 
-        async function viewSetting(sett_name, sett_desc, sett_icon, current, sett_exp) {
-            let emote = await getEmote(sett_icon);
-            let settingMessage = new MessageEmbed()
-                .setTitle(`**Settings for ${message.guild.name}**`)
-                .setDescription(`**Change or view Settings**`)
-                .addField(`${emote} - ${sett_name}`, `${sett_desc} \n Current Setting: **${current ?? 'Not set yet'}** \n ${sett_exp}`)
-                .setTimestamp();
-
-            return message.channel.send({
-                embeds: [settingMessage]
-            });
-        }
     } else {
         /**
          * EDIT SETTING
