@@ -1,0 +1,13 @@
+{
+    "mods": {
+        "modroles": {
+            "name": "Mod Roles",
+            "alias": "roles",
+            "desc": "Set Mod Roles which can use moderation commands",
+            "icon": "",
+            "colname": "role_id",
+            "val": "mention",
+            "exp": "[@role1] isAdmin isMod isHelper"
+        }
+    }
+}
