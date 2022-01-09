@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
     if(!reason) return message.channel.send('Please add a reason!');
 
     try {
-        setNewModLogMessage(bot, config.defaultModTypes.unban, message.author.id, Member, reason);
+        setNewModLogMessage(bot, config.defaultModTypes.unban, message.author.id, Member, reason, message.guild.id);
         publicModResponses(message, config.defaultModTypes.unban, message.author.id, Member, reason);
         if(config.debug == 'true') console.info('Infraction Command passed!')
         return await message.guild.members.unban(`${Member}`, `${reason}`);

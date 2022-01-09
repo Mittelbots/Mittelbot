@@ -103,8 +103,8 @@ module.exports.run = async (bot, message, args) => {
 
     if (Member.roles.cache.has(MutedRole)) {
         try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId())
-            setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message);
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId(), message.guild.id)
+            setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message.guild.id);
             publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
             privateModResponse(Member, config.defaultModTypes.mute, reason, time);
         } catch (err) {

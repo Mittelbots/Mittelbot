@@ -89,7 +89,7 @@ module.exports.run = async (bot, message, args) => {
 
         try {
             database.query(`INSERT INTO open_infractions (user_id, mod_id, ban, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, futuredate, reason, Math.random().toString(16).substr(2, 20)]).then(async () => {
-                await setNewModLogMessage(bot, config.defaultModTypes.ban, message.author.id, Member.id, reason, time, message);
+                await setNewModLogMessage(bot, config.defaultModTypes.ban, message.author.id, Member.id, reason, time, message.guild.id);
                 await publicModResponses(message, config.defaultModTypes.ban, message.author.id, Member.id, reason, time);
                 await privateModResponse(Member, config.defaultModTypes.ban, reason, time);
                 setTimeout(async () => {

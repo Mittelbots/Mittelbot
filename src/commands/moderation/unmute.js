@@ -40,7 +40,7 @@ module.exports.run = async (bot, message, args) => {
     let reason = args.slice(1).join(" ");
 
     try {
-        setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, Member.id, reason);
+        setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, Member.id, reason, message.guild.id);
         publicModResponses(message, config.defaultModTypes.unmute, message.author.id, Member.id, reason);
         privateModResponse(Member, config.defaultModTypes.unmute, reason);
         database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [Member.id]).then(async res => {

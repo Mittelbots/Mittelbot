@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
 
     try {
 
-        setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, Member.user.id, reason, null, message);
+        setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, Member.user.id, reason, null, message.guild.id);
         publicModResponses(message, config.defaultModTypes.warn, message.author.id, Member.user.id, reason);
         privateModResponse(Member, config.defaultModTypes.warn, reason);
 
