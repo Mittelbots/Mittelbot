@@ -75,7 +75,7 @@ module.exports.run = async (bot, message, args) => {
 
     try {
         insertDataToClosedInfraction(Member.id, message.author.id, 0, 0, 0, 1, null, reason, createInfractionId())
-        await setNewModLogMessage(bot, config.defaultModTypes.kick, message.author.id, Member.id, reason, message.guild.id);
+        await setNewModLogMessage(bot, config.defaultModTypes.kick, message.author.id, Member.id, reason, null, message.guild.id);
         await publicModResponses(message, config.defaultModTypes.kick, message.author.id, Member.id, reason);
         await privateModResponse(Member, config.defaultModTypes.kick, reason);
         setTimeout(async () => {
