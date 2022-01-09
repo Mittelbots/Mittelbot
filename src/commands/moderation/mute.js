@@ -36,8 +36,8 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
         return message.channel.send(`<@${message.author.id}> You have to mention a user`);
     }
-
-    if (isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
+    
+    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
 
     var MutedRole;
 
@@ -65,20 +65,21 @@ module.exports.run = async (bot, message, args) => {
 
     if (Member.roles.cache.has(MutedRole)) return message.channel.send(`Member Is Already Muted!`)
 
-    let reason = args.slice(1).join(" ");
+    let reason = args.slice(2).join(" ");
     if (!reason) return message.channel.send('Please add a reason!');
 
-    let time = args.slice(2).join(" ");
+    let time = args.slice(1).join(" ");
     reason = reason.replace(time, '');
+    time = time.replace(reason, '');
     
-    dbtime = getModTime(time);
+    let dbtime = getModTime(time);
     if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
 
 
     var futuredate = getFutureDate(dbtime, time)
 
 
-    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = 1`, [Member.id]).then(result => {
+    await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = 1`, [Member.id]).then(result => {
         if (result.length > 0) {
             for (let i in result) {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
@@ -90,22 +91,27 @@ module.exports.run = async (bot, message, args) => {
                 }
             }
         }
-        try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId())
-            setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
-            publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
-            privateModResponse(Member, config.defaultModTypes.mute, reason, time);
-            if(config.debug == 'true') console.info('Mute Command passed!')
-            return Member.roles.add([MutedRole]);
-        } catch (err) {
-            console.log(err);
-            message.channel.send(config.errormessages.general)
-        }
-
+        
     }).catch(err => {
         console.log(err);
         return message.reply(`${config.errormessages.databasequeryerror}`);
-    })
+    });
+
+    if(config.debug == 'true') console.info('Mute Command passed!')
+
+    await Member.roles.add(MutedRole).catch(err => { return message.channel.send(`I don't have permissions to do this task!`)});
+
+    if (Member.roles.cache.has(MutedRole)) {
+        try {
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId())
+            setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message);
+            publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
+            privateModResponse(Member, config.defaultModTypes.mute, reason, time);
+        } catch (err) {
+            console.log(err);
+            return message.channel.send(config.errormessages.general)
+        }
+    }
 }
 
 module.exports.help = {
