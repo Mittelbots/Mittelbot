@@ -41,15 +41,14 @@ module.exports.run = async (bot, message, args) => {
         return message.reply(`${config.errormessages.databasequeryerror}`);
     })
 
-    message.reply(`This request can take a few Seconds!`).then((msg) => setTimeout(() => msg.delete(), 5000))
+    message.reply(`This request can take a few Seconds! Depends on how many infraction this user have`).then((msg) => setTimeout(() => msg.delete(), 5000))
 
-    setTimeout(() => {
-        if(closed[0].length <= 0 && open[0].length <= 0) {
-            return message.reply(`This User dont have any infractions!`);
-        }
-        if(config.debug == 'true') console.info('Infraction Command passed!')
-        return publicInfractionResponse(message, Member, closed[0], open[0]);
-    }, 5000);
+    if(closed[0].length <= 0 && open[0].length <= 0) {
+        return message.reply(`This User dont have any infractions!`);
+    }
+    if(config.debug == 'true') console.info('Infraction Command passed!')
+    
+    return publicInfractionResponse(message, Member, closed[0], open[0]);
 }
 
 module.exports.help = {
