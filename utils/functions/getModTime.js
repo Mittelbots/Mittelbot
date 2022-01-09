@@ -19,6 +19,8 @@ function getModTime(time) {
         dbtime = false;
     }
 
+    if(isNaN(dbtime)) dbtime = false;
+
     return dbtime;
 }
 
