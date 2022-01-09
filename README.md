@@ -3,7 +3,7 @@
  <img width=auto height=200px src="#" alt="Project logo"></a>
 </p>
 
-<h1 align="center">Chilled Bot (NOT READY [ ALPHA ])</h1>
+<h1 align="center">Mittelbot BETA</h1>
 
 <div align="center">
 
@@ -15,7 +15,7 @@
 
 ---
 
-<p align="center">An own Discord Bot for the Discord Server "Chilled Sad".
+<p align="center">An all around Bot.
     <br> 
 </p>
 
@@ -31,8 +31,7 @@
 
 This Bot is written in Node.js and created by Mittelblut9
 - Moderation
-- Auto Moderation
-- Fun commands
+- highly costumable
 
 <br>
 
