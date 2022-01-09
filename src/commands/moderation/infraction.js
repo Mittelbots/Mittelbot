@@ -23,33 +23,28 @@ module.exports.run = async (bot, message, args) => {
         return message.reply(`No Infractionid sent!`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
 
-    var infraction = [];
+    var infraction;
 
-    database.query(`SELECT * FROM closed_infractions WHERE infraction_id = ? LIMIT 1`, [args[0]], (err, res) => {
-        if(err) {
-            console.log(err);
-            return message.reply(`${config.errormessages.databasequeryerror}`);
-        }
+    await database.query(`SELECT * FROM closed_infractions WHERE infraction_id = ? LIMIT 1`, [args[0]]).then(async res => {
+        infraction = await res;
         if(res.length <= 0) {
-            database.query(`SELECT * FROM open_infractions WHERE infraction_id = ? LIMIT 1`, [args[0]], (err, res) => {
-                if(err) {
-                    console.log(err);
-                    return message.reply(`${config.errormessages.databasequeryerror}`);
-                }
+            database.query(`SELECT * FROM open_infractions WHERE infraction_id = ? LIMIT 1`, [args[0]]).then(async res => {
                 if(res.length <= 0) {
                     return message.reply(`No Infraction found for this ID`);
                 }
 
-                infraction.push(res);
+                infraction = await res;
+            }).catch(err => {
+                console.log(err);
+                return message.reply(`${config.errormessages.databasequeryerror}`);
             });
         }
 
-        infraction.push(res);
+    }).catch(err => {
+        console.log(err);
+        return message.reply(`${config.errormessages.databasequeryerror}`);
     });
-
-    setTimeout(() => {
-        return publicInfractionResponse(message, infraction[0][0], null, null, true);
-    }, 500);
+    return publicInfractionResponse(message, infraction[0], null, null, true);
 
     
 }
