@@ -10,6 +10,7 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
+const { isMod } = require('../../../utils/functions/isMod');
 
 const database = new Database();
 
@@ -36,11 +37,7 @@ module.exports.run = async (bot, message, args) => {
         return message.channel.send(`<@${message.author.id}> You have to mention a user`);
     }
 
-    for (let i in config.modroles) {
-        if (Member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
-            return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
-        }
-    }
+    if (isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
 
     var MutedRole;
 

@@ -7,6 +7,7 @@ const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { Database } = require('../../db/db');
+const { isMod } = require('../../../utils/functions/isMod');
 
 const database = new Database();
 
@@ -30,6 +31,8 @@ module.exports.run = async (bot, message, args) => {
     }catch(err) {
         return message.reply(`This user is not on the server. Try to manually ban him.`);
     }
+
+    if (isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
     
     let reason = args.slice(1).join(" ");
     if(!reason) return message.channel.send('Please add a reason!');

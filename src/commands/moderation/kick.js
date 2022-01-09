@@ -5,6 +5,7 @@ const config = require('../../../config.json');
 const { createInfractionId } = require('../../../utils/functions/createInfractionId');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { insertDataToClosedInfraction } = require('../../../utils/functions/insertDataToDatabase');
+const { isMod } = require('../../../utils/functions/isMod');
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
@@ -69,14 +70,7 @@ module.exports.run = async (bot, message, args) => {
     });
     // If Member is not a bot //
 
-    let isMod = false;
-    for (let i in config.modroles) {
-        if (Member.roles.cache.find(r => r.name === config.modroles[i]) !== undefined) {
-            isMod = true;
-            break;
-        }
-    }
-    if (isMod) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
+    if (isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
 
 
     try {

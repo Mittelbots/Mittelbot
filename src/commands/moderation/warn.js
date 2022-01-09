@@ -7,6 +7,7 @@ const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { Database } = require('../../db/db');
+const { isMod } = require('../../../utils/functions/isMod');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
@@ -29,6 +30,7 @@ module.exports.run = async (bot, message, args) => {
         return message.channel.send(`Please mention an user!`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
 
+    if (isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You warn kick a Moderator!`) 
 
     let reason = args.slice(1).join(" ");
     if (!reason) return message.reply('Please add a reason!');
