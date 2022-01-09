@@ -69,7 +69,7 @@ modules.forEach((module) => {
 //When a member join add a role called Member to them and welcome them in a channel welcome
 bot.on('guildMemberAdd', member => {
   database.query(`SELECT welcome_channel FROM ${member.guild.id}_config`).then(res => {
-    if (res.length !== 0) {
+    if (res[0].welcome_channel !== null) {
       bot.channels.cache.find(c => c.id === res[0].welcome_channel).send('Welcome ' + member.user.username)
     }
   }).catch(err => console.log(err))
