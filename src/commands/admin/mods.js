@@ -7,7 +7,9 @@ const {
 const {
     Database
 } = require('../../db/db');
-const { viewSetting } = require('../../../utils/functions/viewSetting');
+const {
+    viewSetting
+} = require('../../../utils/functions/viewSetting');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -21,30 +23,61 @@ module.exports.run = async (bot, message, args) => {
     }
 
     let setting = args[0]
-    let value = args.slice(1).join(" ");
 
-    if(value == '') {
+
+    //? ADD OR REMOVE MODROLES
+    if (setting === commandconfig.mods.modroles.command || setting === commandconfig.mods.modroles.alias) {
+
+        let value = args[1];
+        let type = args.slice(2).join(" ");
+
+        if (value == '') return message.reply(`You have to mention a role!`);
+        if (type == '') return message.reply(`You have to pass options! (exp.: ${config.defaultprefix}${commandconfig.mods.modroles.command} ${setting} ${value || '@role'} **true false false**)`)
+
+        value = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('>', '');
+
+        if (!message.guild.roles.cache.get(value)) return message.reply(`<@&${value[i]}> not found`);
+
+
         const database = new Database();
-        var modroles = database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(async res => {
-            return await res
+
+        let x = await database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(res => {
+            if (res.length > 0) {
+                for (let i in res) {
+                    console.log(value, res[i])
+                    if (value === res[i].role_id) {
+                        message.reply(`<@&${value}> is already a Mod role. It will be removed!`);
+                        database.query(`DELETE FROM ${message.guild.id}_guild_modroles WHERE role_id = ?`, [res[i].role_id])
+                        return false;
+                    }
+                }
+            }
         }).catch(err => {
             console.log(err);
             return message.channel.send(`${config.errormessages.databasequeryerror}`);
         });
 
-        var passed = false;
-        for(let i in commandconfig) {
-            if(setting == commandconfig.mods.modroles.alias) {
-                // viewSetting(bot, commandconfig.mods.modroles.name, commandconfig.mods.modroles.desc, commandconfig.mods.modroles.icon, modroles));
-            }
+        if(await x === false) return;
+
+        type = type.split(' ');
+
+        for (let i in type) {
+            if (type[i] != '1' && type[i] != '0' && type[i].toLowerCase() != 'true' && type[i].toLowerCase() != 'false') return message.reply(`Wrong options! Only 0/1 or true or false allowed.`)
+            if (type[i].toLowerCase() == 'true') type[i] = '1';
+            if (type[i].toLowerCase() == 'false') type[i] = '0';
         }
-        if(!passed) return;
 
-    }else {
+        if(type[0] == ' ') return message.reply(`You have an space betweeen your role mention and the options!`)
 
-    }
+        database.query(`INSERT INTO ${message.guild.id}_guild_modroles (role_id, isadmin, ismod, ishelper) VALUES (?, ?, ?, ?)`, [value, type[0], type[1], type[2]]).then(() => {
+            return message.reply(`<@&${value}> successfully saved as a new Modrole!`);
+        }).catch(err => {
+            console.log(err);
+            return message.channel.send(`${config.errormessages.databasequeryerror}`);
+        });
+    } else return;
 }
 
 module.exports.help = {
-    name:"mods"
-}
+    name: 'mods'
+};
