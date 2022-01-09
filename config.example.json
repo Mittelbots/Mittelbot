@@ -4,9 +4,14 @@
     "DISCORD_GUILD_ID": "",
     "DEVELOPER_DISCORD_GUILD_ID": "",
     "defaultprefix": "!",
+    "debug": "false",
     "defaultCooldown": {
         "format": "0000",
         "text": "5 seconds"
+    },
+    "defaultSettingsCooldown": {
+        "format": "30000",
+        "text": "30 seconds"
     },
     "bulkDeleteLimit": "100",
     "defaultCheckInfractionTimer": "60000",
@@ -25,19 +30,7 @@
         "kicked": " was kicked from the server.",
         "database": "****Database successfully connected!****"
     },
-    "modroles": {
-        "owner": "",
-        "servermanager": "",
-        "admin": "",
-        "trialadmin": "",
-        "moderator": "",
-        "trialmoderator": ""
-    },
     "defaultChannels": {
-        "modlog": "",
-        "auditlog": "",
-        "messagelog": "",
-        "adminchat": "",
         "DEV_SERVER": {
             "debugchannel": "921178549321367582",
             "disconnectchannel": "921179868530610206",
