@@ -104,8 +104,13 @@ bot.on("messageCreate", async message => {
       let commandfile = bot.commands.get(cmd.slice(prefix[0].prefix.length));
       if (commandfile) { //&& blacklist(0, message)
         database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(res => {
-          if(settingsCooldown.has(message.author.id) && cmd === `${prefix[0].prefix}settings`) return message.channel.send(`You have to wait 1 Minute after each Settings Command.`);
-          else settingsCooldown.add(message.author.id);
+          if(settingsCooldown.has(message.author.id) && cmd === `${prefix[0].prefix}settings`) return message.channel.send(`You have to wait ${config.defaultSettingsCooldown.text} after each Settings Command.`);
+          else {
+            settingsCooldown.add(message.author.id);
+            setTimeout(async () => {
+              settingsCooldown.delete(message.author.id);
+            }, config.defaultSettingsCooldown.format);
+          }
 
           if (defaultCooldown.has(message.author.id)) {
             return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
