@@ -42,7 +42,7 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         let user = await message.guild.members.fetch(infraction.user_id);
         var publicOneInfractionMessage = new MessageEmbed()
         .setAuthor(`${user.user.username}${user.user.discriminator}`)
-        .addField(`${infraction.infraction_id} - ${type}`, `Reason: ${infraction.reason} \n From: <@${infraction.mod_id}>`);
+        .addField(`${infraction.infraction_id} - ${type}`, `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`);
         return message.reply({embeds:[publicOneInfractionMessage]});
     }
     console.log(Member)
