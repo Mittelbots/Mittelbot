@@ -70,7 +70,7 @@ module.exports.run = async (bot, message, args) => {
     });
     // If Member is not a bot //
 
-    if (isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
+    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
 
 
     try {

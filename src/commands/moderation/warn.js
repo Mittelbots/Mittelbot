@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
         return message.channel.send(`Please mention an user!`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
 
-    if (isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You warn kick a Moderator!`) 
+    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You warn kick a Moderator!`) 
 
     let reason = args.slice(1).join(" ");
     if (!reason) return message.reply('Please add a reason!');
