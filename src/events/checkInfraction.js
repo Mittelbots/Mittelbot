@@ -19,6 +19,8 @@ function checkInfractions(bot) {
     setInterval(() => {
         database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;
+            let mutecount = 0;
+            let bancount = 0;
             for(let i in results) {
                 if(results[i].till_date == null) continue;
 
@@ -39,6 +41,7 @@ function checkInfractions(bot) {
                     if(results[i].mute) {
                         try {
                             done++;
+                            mutecount++;
                             try {
                                 var guild = await bot.guilds.cache.get(results[i].guild_id);
                                 var user = await guild.members.fetch(results[i].user_id).then(members => members);
@@ -61,9 +64,10 @@ function checkInfractions(bot) {
                         }
                     }else { //Member got banned
                         done++;
+                        bancount++;
                         try {
                             await bot.guilds.cache.get(results[i].guild_id).members.unban(`${results[i].user_id}`, `Auto`)
-                            setNewModLogMessage(bot, config.defaultModTypes.unban, bot.user.id, results[i].user_id, 'Auto');
+                            setNewModLogMessage(bot, config.defaultModTypes.unban, bot.user.id, results[i].user_id, 'Auto', null, results[i].guild_id);
                             deleteEntries(results[i]);
                         }catch(err) {
                             //Unknown ban
@@ -72,7 +76,7 @@ function checkInfractions(bot) {
                     }
                 }
             }
-            console.log(`Check Infraction done. ${done} infractions removed!`, new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'}))
+            console.log(`Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`, new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'}))
         }).catch(err => console.log(err));
     }, config.defaultCheckInfractionTimer);
 }
