@@ -45,7 +45,6 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         .addField(`${infraction.infraction_id} - ${type}`, `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`);
         return message.reply({embeds:[publicOneInfractionMessage]});
     }
-    console.log(Member)
     var publicInfractionMessage = new MessageEmbed()
     .setAuthor(`${Member.user.username}#${Member.user.discriminator}`, Member.avatarURL(true))
     .addField(`Closed Infractions`, '‎', false);
