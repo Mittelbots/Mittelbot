@@ -3,7 +3,7 @@ const {Database} = require('../../src/db/db');
 
 const database = new Database();
 
-async function setNewModLogMessage(bot, type, moderator, member, reason, time, dcmessage) {
+async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
     var modLogMessage = new MessageEmbed()
     .setTitle(`**Member ${type}!**`)
     .addField(`Moderator`, `<@${moderator}> (${moderator})`)
@@ -15,12 +15,12 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, d
         modLogMessage.addField(`Time`, `**${time}** `)
     }
 
-    sendToModLog(bot, modLogMessage, dcmessage);
+    sendToModLog(bot, modLogMessage, gid);
     return;
 }
 
-function sendToModLog(bot, message, dcmessage) {
-    database.query(`SELECT modlog FROM ${dcmessage.guild.id}_guild_logs`).then(res => {
+function sendToModLog(bot, message, gid) {
+    database.query(`SELECT modlog FROM ${gid}_guild_logs`).then(res => {
         if(res.length > 0) {
             try {
                 bot.channels.cache.get(res[0].modlog).send({embeds: [message]});
