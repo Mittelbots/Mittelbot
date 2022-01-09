@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
         return message.channel.send(`Please mention an user!`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
 
-    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You warn kick a Moderator!`) 
+    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't warn a Moderator!`) 
 
     let reason = args.slice(1).join(" ");
     if (!reason) return message.reply('Please add a reason!');
@@ -47,21 +47,18 @@ module.exports.run = async (bot, message, args) => {
         if(config.debug == 'true') console.info('Warn Command passed!')
 
         const database = new Database();
-        database.query(`SELECT autoroles FROM ${message.guild.id}_config LIMIT 1`).then(async res => {
-            if(res[0].autoroles == 1) {   
-                let warn1 = await message.guild.roles.cache.find(role => role.name === "Warn1").id
-                let warn2 = await message.guild.roles.cache.find(role => role.name === "Warn2").id
+        database.query(`SELECT role_id FROM ${message.guild.id}_guild_warnroles`).then(async res => {
+            if(res.length > 0) {   
 
-                if(!Member.roles.cache.has(warn1)) { 
-                    Member.roles.add([warn1]); 
-                    return inserDataToTemproles(Member.id, warn1, getFutureDate(2678400), inf_id)
+                for(let i in res) {
+                    let role = await message.guild.roles.cache.find(role => role.id === res[i].role_id).id
+                    if(!Member.roles.cache.has(role)) {
+                        Member.roles.add([role]);
+                        return inserDataToTemproles(Member.id, res[i].role_id, getFutureDate(2678400), inf_id);
+                    }
                 }
-                if(!Member.roles.cache.has(warn2)) {
-                    Member.roles.add([warn2]); 
-                    return inserDataToTemproles(Member.id, warn2, getFutureDate(2678400), inf_id)
-                };
-                            //If User already have both Roles
-            return message.reply(`The User already have both warn roles!`);
+                //If User already have both Roles
+                return message.reply(`The User already have both warn roles!`);
             }
             return;
         }).catch(err => console.log(err))
