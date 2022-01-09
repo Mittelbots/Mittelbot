@@ -23,16 +23,24 @@ function checkInfractions(bot) {
                 if(results[i].till_date == null) continue;
 
                 //Member can be unmuted
-                let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
+                let currentdate = new Date().toLocaleString('de-DE', {            
+                    timeZone: 'Europe/Berlin',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
                 currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
                 results[i].till_date = results[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
-                
-                if ((currentdate - results[i].till_date) > 0 && currentdate[8] + currentdate[9] >= results[i].till_date[7] + results[i].till_date[7]) {
+
+                if ((currentdate - results[i].till_date) > 0 && currentdate[6] + currentdate[7] >= results[i].till_date[7] + results[i].till_date[7]) {
                     if(results[i].mute) {
                         try {
                             done++;
                             try {
-                                var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
+                                var guild = await bot.guilds.cache.get(results[i].guild_id);
                                 var user = await guild.members.fetch(results[i].user_id).then(members => members);
                             }catch(err) {
                                 //Member left or got kicked
@@ -41,8 +49,8 @@ function checkInfractions(bot) {
                             }
                             
                             try {
-                                await user.roles.remove([bot.guilds.cache.get(config.DISCORD_GUILD_ID).roles.cache.find(role => role.name === "Muted").id])
-                                setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto');
+                                await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(role => role.name === "Muted").id])
+                                setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id);
                                 privateModResponse(user, config.defaultModTypes.unmute, 'Auto');
                                 deleteEntries(results[i]);
                             }catch(err) {
@@ -54,7 +62,7 @@ function checkInfractions(bot) {
                     }else { //Member got banned
                         done++;
                         try {
-                            await bot.guilds.cache.get(config.DISCORD_GUILD_ID).members.unban(`${results[i].user_id}`, `Auto`)
+                            await bot.guilds.cache.get(results[i].guild_id).members.unban(`${results[i].user_id}`, `Auto`)
                             setNewModLogMessage(bot, config.defaultModTypes.unban, bot.user.id, results[i].user_id, 'Auto');
                             deleteEntries(results[i]);
                         }catch(err) {
