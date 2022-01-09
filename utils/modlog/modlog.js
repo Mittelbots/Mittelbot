@@ -21,10 +21,12 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, d
 
 function sendToModLog(bot, message, dcmessage) {
     database.query(`SELECT modlog FROM ${dcmessage.guild.id}_guild_logs`).then(res => {
-        try {
-            bot.channels.cache.get(res[0].modlog).send({embeds: [message]});
-        }catch(err) {
-            console.log(err)
+        if(res.length > 0) {
+            try {
+                bot.channels.cache.get(res[0].modlog).send({embeds: [message]});
+            }catch(err) {
+                console.log(err)
+            }
         }
     }).catch(err => console.log(err));
 }
