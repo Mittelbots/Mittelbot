@@ -80,6 +80,7 @@ module.exports.run = async (bot, message, args) => {
                 else if(config.settings[i].colname === config.settings.auditlog.colname || config.settings[i].colname === config.settings.messagelog.colname ||config.settings[i].colname === config.settings.modlog.colname) { 
                     current = database.query(`SELECT auditlog, messagelog, modlog FROM ${message.guild.id}_guild_logs`).then(res => {
                         if(res.length > 0) {
+                            if(res[0][config.settings[i].colname] == null) return `not set yet`;
                             return `<#${res[0][config.settings[i].colname]}>`;
                         }
                     }).catch(err => {
@@ -257,7 +258,6 @@ module.exports.run = async (bot, message, args) => {
                     
                     var channel = value.replace('<', '').replace('#', '').replace('>', '');
                     channel = message.guild.channels.cache.get(channel)
-                    
                     try {
                         let embed = new MessageEmbed()
                             .setTitle('Test')
