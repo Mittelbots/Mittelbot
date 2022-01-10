@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
+    "pm2": "pm2 start index.js && pm2 monit",
     "deployCommands": "node src/deploy-commands.js",
     "deployTables": "node _scripts/addTables.js"
   },
