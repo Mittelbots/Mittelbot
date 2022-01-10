@@ -1,6 +1,7 @@
 const {MessageEmbed} = require('discord.js');
 const config = require('../../config.json');
 const { Database } = require('../../src/db/db');
+const ignorechannel = require('../../ignorechannel.json');
 
 const database = new Database;
 
@@ -41,6 +42,8 @@ function auditLog(bot) {
 }
 
 function sendToAudit(bot, type, content1, content2) {
+    
+    if(ignorechannel.c.indexOf(content1.channelId) !== -1) return;
 
     var Message = new MessageEmbed()
     .setTimestamp();
