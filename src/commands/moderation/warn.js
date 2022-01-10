@@ -54,7 +54,7 @@ module.exports.run = async (bot, message, args) => {
                     let role = await message.guild.roles.cache.find(role => role.id === res[i].role_id).id
                     if(!Member.roles.cache.has(role)) {
                         Member.roles.add([role]);
-                        return inserDataToTemproles(Member.id, res[i].role_id, getFutureDate(2678400), inf_id);
+                        return inserDataToTemproles(Member.id, res[i].role_id, getFutureDate(2678400), inf_id, message.guild.id);
                     }
                 }
                 //If User already have both Roles

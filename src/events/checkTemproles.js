@@ -23,9 +23,9 @@ function checkTemproles(bot) {
                 if ((currentdate - results[i].till_date) > 0 && currentdate[8] + currentdate[9] >= results[i].till_date[7] + results[i].till_date[7]) {
                     try {
                         done++;
-                        var guild = await bot.guilds.cache.get(config.DISCORD_GUILD_ID);
+                        var guild = await bot.guilds.cache.get(results[i].guild_id);
                         var user = await guild.members.fetch(results[i].user_id).then(members => members);
-                        await user.roles.remove([bot.guilds.cache.get(config.DISCORD_GUILD_ID).roles.cache.find(r => r.id === results[i].role_id)])
+                        await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(r => r.id === results[i].role_id)])
                         deleteEntries(results[i].infraction_id);
                     }catch(err) {
                         done -= 1;
