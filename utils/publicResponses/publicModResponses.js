@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 
 async function publicModResponses(channelmessage, type, moderator, member, reason, time) {
     var publicModMessage = new MessageEmbed()
@@ -21,7 +21,7 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
     if(isOne) {
         let infraction = Member;
 
-        var type;
+        let type;
         switch(true) {
             case infraction.mute == 1: 
                 type = 'Mute'; 
@@ -45,39 +45,66 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         .addField(`${infraction.infraction_id} - ${type}`, `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`);
         return message.reply({embeds:[publicOneInfractionMessage]});
     }
-    var publicInfractionMessage = new MessageEmbed()
-    .setAuthor(`${Member.user.username}#${Member.user.discriminator}`, Member.avatarURL(true))
-    .addField(`Closed Infractions`, '‎', false);
-    for(let i in closed) {
-        var type;
-        switch(true) {
-            case closed[i].mute == 1: 
-                type = 'Mute'; 
-                break;
 
-            case closed[i].ban == 1: 
-                type = 'Ban'; 
-                break;
+    const backId = 'back'
+    const forwardId = 'forward'
+    const backButton = new MessageButton({
+    style: 'SECONDARY',
+    label: 'Back',
+    emoji: '⬅️',
+    customId: backId
+    });
+    const forwardButton = new MessageButton({
+    style: 'SECONDARY',
+    label: 'Forward',
+    emoji: '➡️',
+    customId: forwardId
+    });
 
-            case closed[i].warn == 1: 
-                type = 'Warn'; 
-                break;
+    const data = [...open,...closed]
 
-            case closed[i].kick == 1: 
-                type = 'Kick'; 
-                break;
-        }
-        publicInfractionMessage.addField(`${closed[i].infraction_id} - ${type}`, `Reason: ${closed[i].reason}`)
+    const generateEmbed = async start => {
+        const current = data.slice(start, start + 10);
+
+        return new MessageEmbed({
+            title: `Showing infractions ${start + 1}-${start + current.length} out of ${data.length}`,
+            fields: await Promise.all(
+                current.map(async inf => ({
+                    name: `${inf.infraction_id} - ${inf.mute == 1 ? `${'Mute'}`: inf.kick == 1 ? `${'Kick'}` : inf.warn == 1 ? `${'Warn'}` : `${'Ban'}`}`,
+                    value: `Reason: ${inf.reason}`
+                }))
+            )
+        })
     }
-    if(open.length > 0) {
-        publicInfractionMessage.addField(`\n Open Infractions`, '‎', false)
-        for(let i in open) {
-            publicInfractionMessage.addField(`${open[i].infraction_id} - ${type}`, `Reason: ${open[i].reason} \n Till: ${open[i].till_date || 'Permanent'}`)
-        }
-    }
 
-    publicInfractionMessage.setTimestamp();
-    return message.reply({embeds: [publicInfractionMessage]});
+    const canFitOnOnePage = data.length <= 10;
+    const embedMessage = await message.channel.send({
+        embeds: [await generateEmbed(0)],
+        components: canFitOnOnePage ? [] : [new MessageActionRow({components: [forwardButton]})]
+    });
+
+    if(canFitOnOnePage) return;
+
+    const collector = embedMessage.createMessageComponentCollector({
+        filter: ({user}) => user.id === message.author.id
+    });
+
+    let currentIndex = 0;
+    collector.on('collect', async interaction => {
+        interaction.customId === backId ? (currentIndex -= 10) : (currentIndex += 10)
+
+        await interaction.update({
+            embeds: [await generateEmbed(currentIndex)],
+            components: [
+                new MessageActionRow({
+                    components: [
+                        ...(currentIndex ? [backButton] : []),
+                        ...(currentIndex + 10 < data.length ? [forwardButton] : [])
+                    ]
+                })
+            ]
+        });
+    });
 }
 
 module.exports = {publicModResponses, publicInfractionResponse}
