@@ -70,6 +70,8 @@ function sendToAudit(bot, type, content1, content2) {
 
         case c.messagedeletebulk:
             if (!content1.guild) return
+            if (content1.author.bot) return;
+
             gid = content1.guildId
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Bulkmessages sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
@@ -79,6 +81,7 @@ function sendToAudit(bot, type, content1, content2) {
         case c.messagedelete:
             if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
+            if (content1.author.bot) return;
             gid = content1.guildId
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
@@ -88,6 +91,7 @@ function sendToAudit(bot, type, content1, content2) {
         case c.messageupdate:
             if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
+            if (content1.author.bot) return;
             gid = content1.guildId
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message edited in <#${content1.channelId}> [Jump to Message](https://discord.com/channels/${content2.guildId}/${content2.channelId}/${content2.id})** \n **Before** \n ${content1} \n **After** \n ${content2}`);
