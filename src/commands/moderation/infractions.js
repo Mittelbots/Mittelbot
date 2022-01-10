@@ -35,13 +35,11 @@ module.exports.run = async (bot, message, args) => {
     await database.query(`SELECT * FROM closed_infractions WHERE user_id = ?`, [Member.id]).then(async res => closed.push(await res)).catch(err => {
         console.log(err);
         return message.reply(`${config.errormessages.databasequeryerror}`);
-    })
+    });
     await database.query(`SELECT * FROM open_infractions WHERE user_id = ?`, [Member.id]).then(async res => open.push(await res)).catch(err => {
         console.log(err);
         return message.reply(`${config.errormessages.databasequeryerror}`);
-    })
-
-    message.reply(`This request can take a few Seconds! Depends on how many infraction this user have`).then((msg) => setTimeout(() => msg.delete(), 5000))
+    });
 
     if(closed[0].length <= 0 && open[0].length <= 0) {
         return message.reply(`This User dont have any infractions!`);
