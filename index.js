@@ -33,7 +33,6 @@ const whitelist = require('./whitelist.json');
 
 bot.on('guildCreate', async (guild) => {
   let gid = guild.id;
-  console.log(whitelist.server.indexOf(gid))
   if(whitelist.server.indexOf(gid) === -1) return guild.leave();
 
   await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).then(async res => {
@@ -42,7 +41,9 @@ bot.on('guildCreate', async (guild) => {
   await database.query(`CREATE TABLE ${guild.id}_config LIKE _config_template`).then(async () => {
     await database.query(`INSERT INTO ${guild.id}_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
   }).catch(err => {});
-  await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).catch(err => {});
+  await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).then(async () => {
+    await database.query(`INSERT INTO ${guild.id}_guild_logs (id) VALUES (?)`, [1]).catch(err => {})
+  }).catch(err => {});
   await database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {})
   await database.query(`CREATE TABLE ${guild.id}_guild_joinroles LIKE _guild_joinroles_template`).catch(err => {})
   await database.query(`CREATE TABLE ${guild.id}_guild_warnroles LIKE _guild_warnroles_template`).catch(err => {})
