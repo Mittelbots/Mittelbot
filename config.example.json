@@ -1,13 +1,14 @@
 {
     "Bot_Owner": "<@395923095472570368>",
+    "Bot_Owner_ID": "395923095472570368",
     "DISCORD_APPLICATION_ID": "",
     "DISCORD_GUILD_ID": "",
     "DEVELOPER_DISCORD_GUILD_ID": "",
     "defaultprefix": "!",
     "debug": "false",
     "defaultCooldown": {
-        "format": "0000",
-        "text": "5 seconds"
+        "format": "2000",
+        "text": "2 seconds"
     },
     "defaultSettingsCooldown": {
         "format": "30000",
@@ -107,7 +108,7 @@
             "alias": "dcau",
             "desc": "Delete Command after usage.",
             "icon": "923232537277513739",
-            "colname": "delteCommandAfterUsage",
+            "colname": "deleteCommandAfterUsage",
             "val": "boolean",
             "exp": "[true]"
         },
@@ -155,6 +156,13 @@
             "colname": "role_id",
             "val": "mention",
             "exp": "[@warn1 @warn2 @warn3]"
+        }
+    },
+    "commandhelp": {
+        "info": {
+            "name": "info",
+            "description": "Get infos about the server or one user.",
+            "usage": "info [@user]"
         }
     }
 }
