@@ -110,10 +110,10 @@ function sendToAudit(bot, type, content1, content2) {
             Message.setDescription(`**Channel #${content1.name} deleted**`);
             break;
 
-        case c.channelupdate:
-            gid = content2.guildId
-            Message.setDescription(`**Channel ${content2} updated** `);
-            break;
+        // case c.channelupdate:
+        //     gid = content2.guildId
+        //     Message.setDescription(`**Channel ${content2} updated** `);
+        //     break;
 
         case c.guildupdate:
             gid = content2.guildId
