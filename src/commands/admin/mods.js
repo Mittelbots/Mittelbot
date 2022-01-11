@@ -44,7 +44,6 @@ module.exports.run = async (bot, message, args) => {
         let x = await database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(res => {
             if (res.length > 0) {
                 for (let i in res) {
-                    console.log(value, res[i])
                     if (value === res[i].role_id) {
                         message.reply(`<@&${value}> is already a Mod role. It will be removed!`);
                         database.query(`DELETE FROM ${message.guild.id}_guild_modroles WHERE role_id = ?`, [res[i].role_id])
