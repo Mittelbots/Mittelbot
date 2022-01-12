@@ -138,7 +138,6 @@ bot.on("messageCreate", async message => {
         });
       }
     }else {
-      if(lvlconfig.x) {
         if(!levelCooldown.has(message.author.id)) {
           gainXP(message);
           levelCooldown.add(message.author.id);
@@ -147,7 +146,6 @@ bot.on("messageCreate", async message => {
             levelCooldown.delete(message.author.id)
           }, lvlconfig.timeout);
         }
-      }
     }
   }).catch(err => console.log(err));
 });
