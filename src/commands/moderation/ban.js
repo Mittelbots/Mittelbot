@@ -33,47 +33,24 @@ module.exports.run = async (bot, message, args) => {
     }
 
     if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
-    
-    let reason = args.slice(2).join(" ");
-    if(!reason) return message.channel.send('Please add a reason!');
 
-    if(Member.user.bot) message.reply(`Do you really want to ban <@${Member.user.id}>? It's a Bot.`).then(() => {      
-        let msg_filter = m => m.author.id === message.author.id;
-        message.channel.awaitMessages({filter: msg_filter, max: 1})
-        .then(collected => {
-            collected = collected.first();
-            if(collected.content.toUpperCase() == 'YES' || collected.content.toUpperCase() == 'Y') {
-                if(!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.reply(`You don't have the permission to ban a bot.`)
-                try {
-                    Member.ban({reason: reason});
-                    return message.reply(`<@${Member.id}>${config.successmessages.banned}`);
-                }catch(err) {
-                    console.log(err);
-                    return message.reply(`${config.errormessages.botnopermission}`);
-                }
+    let x = 1;
+    var time = args[x]
 
-            }else if (collected.content.toUpperCase() == 'NO' || collected.content.toUpperCase() == 'N') {
-                return message.channel.send(`Terminated`).then(msg => {
-                    setTimeout(() => msg.delete(), 5000);
-                });
-            }else {
-                return message.channel.send(`Terminated: Invalid Response`).then(msg => {
-                    setTimeout(() => msg.delete(), 5000);
-                });
-            }
-        });
-    });
-
-    let time = args.slice(1).join(" ");
-    reason = reason.replace(time, '');
-    time = time.replace(reason, '');
-    if(time !== '') {
-        var dbtime = getModTime(time);
-        if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
+    while(time == '') {
+        time = args[x];
+        x++;
     }
 
-    var futuredate = getFutureDate(dbtime);
+    let dbtime = getModTime(time);
+    if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
 
+    let reason = args.slice(x).join(" ");
+    reason = reason.replace(time, '');
+
+    if(!reason) return message.channel.send('Please add a reason!');
+
+    if(Member.user.bot) return message.reply(`You can't ban ${Member}! It's a bot!`);
 
     database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND ban = 1`, [Member.id]).then(async result => {
         if (result.length > 0) {
@@ -83,19 +60,26 @@ module.exports.run = async (bot, message, args) => {
                 result[i].till_date = result[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
 
                 if ((currentdate - result[i].till_date) <= 0) {
-                    return message.reply(`Member Is Already banned!`);
+                    return message.reply(`Member is already banned!`);
                 }
             }
         }
 
         try {
-            database.query(`INSERT INTO open_infractions (user_id, mod_id, ban, till_date, reason, infraction_id, guild_id) VALUES (?, ?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, futuredate, reason, Math.random().toString(16).substr(2, 20), message.guild.id]).then(async () => {
+            let infid = Math.random().toString(16).slice(2, 20);
+            database.query(`INSERT INTO open_infractions (user_id, mod_id, ban, till_date, reason, infraction_id, guild_id) VALUES (?, ?, ?, ?, ?, ?, ?)`, [Member.id, message.author.id, 1, getFutureDate(dbtime), reason, infid, message.guild.id]).then(async () => {
                 await setNewModLogMessage(bot, config.defaultModTypes.ban, message.author.id, Member.id, reason, time, message.guild.id);
                 await publicModResponses(message, config.defaultModTypes.ban, message.author.id, Member.id, reason, time);
                 await privateModResponse(Member, config.defaultModTypes.ban, reason, time);
                 setTimeout(async () => {
-                    if(config.debug == 'true') console.info('Ban Command passed!')
-                    return await Member.ban({reason: reason});
+                    if(config.debug == 'true') console.info('Ban Command passed!');
+                    await Member.ban({reason: reason}).catch(err => {
+                        message.channel.send(`I can't ban the user! Please check if my Permissions are correct!`);
+                        database.query(`DELETE FROM open_infractions WHERE infraction_id = ?`, [infid]).catch(err => {
+                            console.log(err);
+                            return message.reply(`${config.errormessages.databasequeryerror}`); 
+                        });
+                    })
                 }, 500);
             }).catch(err => {
                 console.log(err);
