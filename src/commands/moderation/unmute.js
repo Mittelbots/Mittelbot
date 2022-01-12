@@ -44,6 +44,11 @@ module.exports.run = async (bot, message, args) => {
         publicModResponses(message, config.defaultModTypes.unmute, message.author.id, Member.id, reason);
         privateModResponse(Member, config.defaultModTypes.unmute, reason);
         database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [Member.id]).then(async res => {
+            let user_roles = await JSON.parse(await res[0].user_roles);
+            for (let x in user_roles) {
+                let r = await message.guild.roles.cache.find(role => role.id == user_roles[x])
+                await Member.roles.add(r);
+            }
             await deleteEntries(await res);
             if(config.debug == 'true') console.info('Unmute Command passed!')
             return await Member.roles.remove([MutedRole]);
