@@ -95,6 +95,7 @@ function sendToAudit(bot, type, content1, content2) {
             if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
+            if (content1.content == content2.content) return;
             gid = content1.guildId
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message edited in <#${content1.channelId}> [Jump to Message](https://discord.com/channels/${content2.guildId}/${content2.channelId}/${content2.id})** \n **Before** \n ${content1} \n **After** \n ${content2}`);

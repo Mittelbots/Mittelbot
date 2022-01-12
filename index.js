@@ -13,6 +13,7 @@ const {
 const {
   auditLog
 } = require("./utils/auditlog/auditlog");
+const { gainXP } = require("./src/events/levelsystem/levelsystem");
 // const {
 //   autoresponse
 // } = require("./utils/autoresponse/autoresponse");
@@ -21,6 +22,9 @@ const {
 // } = require("./utils/blacklist/blacklist");
 const defaultCooldown = new Set();
 const settingsCooldown = new Set();
+const levelCooldown = new Set();
+
+const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"]
@@ -47,6 +51,7 @@ bot.on('guildCreate', async (guild) => {
   await database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {})
   await database.query(`CREATE TABLE ${guild.id}_guild_joinroles LIKE _guild_joinroles_template`).catch(err => {})
   await database.query(`CREATE TABLE ${guild.id}_guild_warnroles LIKE _guild_warnroles_template`).catch(err => {})
+  await database.query(`CREATE TABLE ${guild.id}_guild_level LIKE _guild_level`).catch(err => {})
 });
 
 bot.commands = new Discord.Collection();
@@ -131,6 +136,17 @@ bot.on("messageCreate", async message => {
 
           }
         });
+      }
+    }else {
+      if(lvlconfig.x) {
+        if(!levelCooldown.has(message.author.id)) {
+          gainXP(message);
+          levelCooldown.add(message.author.id);
+        }else {
+          setTimeout(() => {
+            levelCooldown.delete(message.author.id)
+          }, lvlconfig.timeout);
+        }
       }
     }
   }).catch(err => console.log(err));

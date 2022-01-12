@@ -65,18 +65,22 @@ module.exports.run = async (bot, message, args) => {
 
     if (Member.roles.cache.has(MutedRole)) return message.channel.send(`Member Is Already Muted!`)
 
-    let reason = args.slice(2).join(" ");
-    if (!reason) return message.channel.send('Please add a reason!');
 
-    let time = args.slice(1).join(" ");
-    reason = reason.replace(time, '');
-    time = time.replace(reason, '');
-    
+    let x = 1;
+    var time = args[x]
+
+    while(time == '') {
+        time = args[x];
+        x++;
+    }
+
     let dbtime = getModTime(time);
     if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
 
+    let reason = args.slice(x).join(" ");
+    reason = reason.replace(time, '');
 
-    var futuredate = getFutureDate(dbtime, time)
+    if (!reason) return message.channel.send('Please add a reason!');
 
 
     await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = 1`, [Member.id]).then(result => {
@@ -103,7 +107,7 @@ module.exports.run = async (bot, message, args) => {
 
     if (Member.roles.cache.has(MutedRole)) {
         try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, futuredate, reason, createInfractionId(), message.guild.id)
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime, time), reason, createInfractionId(), message.guild.id)
             setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message.guild.id);
             publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
             privateModResponse(Member, config.defaultModTypes.mute, reason, time);
