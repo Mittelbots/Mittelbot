@@ -10,7 +10,7 @@ const database = new Database;
 
 async function deleteEntries(infraction) {
     try {
-        insertDataToClosedInfraction(infraction[0].user_id, infraction[0].mod_id, infraction[0].mute, infraction[0].ban, 0, 0, infraction[0].till_date, infraction[0].reason, infraction[0].infraction_id);
+        await insertDataToClosedInfraction(infraction[0].user_id, infraction[0].mod_id, infraction[0].mute, infraction[0].ban, 0, 0, infraction[0].till_date, infraction[0].reason, infraction[0].infraction_id);
         database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction[0].infraction_id]).catch(err => console.log(err));
     }catch(err) {console.log(err)}
 }
@@ -45,7 +45,7 @@ module.exports.run = async (bot, message, args) => {
         privateModResponse(Member, config.defaultModTypes.unmute, reason);
         database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [Member.id]).then(async res => {
             await deleteEntries(await res);
-            if(config.debug == 'true') console.info('Infraction Command passed!')
+            if(config.debug == 'true') console.info('Unmute Command passed!')
             return await Member.roles.remove([MutedRole]);
         }).catch(err => console.log(err))
     }
