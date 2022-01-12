@@ -11,6 +11,8 @@ const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { isMod } = require('../../../utils/functions/isMod');
+const { getAllRoles } = require('../../../utils/functions/roles/getAllRoles');
+const { removeAllRoles } = require('../../../utils/functions/roles/removeAllRoles');
 
 const database = new Database();
 
@@ -103,11 +105,13 @@ module.exports.run = async (bot, message, args) => {
 
     if(config.debug == 'true') console.info('Mute Command passed!')
 
+    var user_roles = await getAllRoles(Member);
+    await removeAllRoles(Member);
     await Member.roles.add(MutedRole).catch(err => { return message.channel.send(`I don't have permissions to do this task!`)});
 
     if (Member.roles.cache.has(MutedRole)) {
         try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime, time), reason, createInfractionId(), message.guild.id)
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime, time), reason, createInfractionId(), message.guild.id, JSON.stringify(user_roles))
             setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message.guild.id);
             publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
             privateModResponse(Member, config.defaultModTypes.mute, reason, time);
