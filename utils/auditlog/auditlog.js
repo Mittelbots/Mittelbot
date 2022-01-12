@@ -46,7 +46,7 @@ function sendToAudit(bot, type, content1, content2) {
     if(ignorechannel.c.indexOf(content1.channelId) !== -1) return;
 
     var Message = new MessageEmbed()
-    .setTimestamp();
+    .setTimestamp()
 
     switch(type) {
 
@@ -76,6 +76,7 @@ function sendToAudit(bot, type, content1, content2) {
             if (content1.author.bot) return;
 
             gid = content1.guildId
+            Message.setColor('#fc0509');
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Bulkmessages sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
             Message.setFooter(`Author: ${content1.author.id} | MessageID: ${content1.id}`);
@@ -86,6 +87,8 @@ function sendToAudit(bot, type, content1, content2) {
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
             gid = content1.guildId
+
+            Message.setColor('#fc0509');
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
             Message.setFooter(`Author: ${content1.author.id} | MessageID: ${content1.id}`);
@@ -97,17 +100,23 @@ function sendToAudit(bot, type, content1, content2) {
             if (content1.author.bot) return;
             if (content1.content == content2.content) return;
             gid = content1.guildId
+
+            Message.setColor('#2c4ff9');
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message edited in <#${content1.channelId}> [Jump to Message](https://discord.com/channels/${content2.guildId}/${content2.channelId}/${content2.id})** \n **Before** \n ${content1} \n **After** \n ${content2}`);
             break;
             
         case c.channelcreate:
             gid = content1.guildId
+
+            Message.setColor('#36d30a');
             Message.setDescription(`**Channel ${content1} created**`);
             break;
 
         case c.channeldelete:
             gid = content1.guildId
+
+            Message.setColor('#a80f2b');
             Message.setDescription(`**Channel #${content1.name} deleted**`);
             break;
 
@@ -118,21 +127,29 @@ function sendToAudit(bot, type, content1, content2) {
 
         case c.guildupdate:
             gid = content2.guildId
+
+            Message.setColor('#021982');
             Message.setDescription(`**Guild updated** \n ${content1} ---> ${content2}`);
             break;
 
         case c.rolecreate:
             gid = content1.guildId
+
+            Message.setColor('#36d30a');
             Message.setDescription(`**Role ${content1} created**`);
             break;
 
         case c.roleupdate:
             gid = content2.guildId
+
+            Message.setColor('#021982');
             Message.setDescription(`**Role ${content2} updated** \n **Before** \n ${content1} \n **After** \n ${content2}`);
             break;
 
-        case c.rolecreate:
+        case c.roledelete:
             gid = content1.guildId
+
+            Message.setColor('#021982');
             Message.setDescription(`**Role ${content1} deleted**`);
             break;
         
