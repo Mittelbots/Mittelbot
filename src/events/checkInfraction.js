@@ -40,8 +40,6 @@ function checkInfractions(bot) {
                 if ((currentdate - results[i].till_date) > 0 && currentdate[6] + currentdate[7] >= results[i].till_date[7] + results[i].till_date[7]) {
                     if(results[i].mute) {
                         try {
-                            done++;
-                            mutecount++;
                             try {
                                 var guild = await bot.guilds.cache.get(results[i].guild_id);
                                 var user = await guild.members.fetch(results[i].user_id).then(members => members);
@@ -53,9 +51,14 @@ function checkInfractions(bot) {
                             
                             try {
                                 await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(role => role.name === "Muted").id])
+                                for (let x in JSON.parse(results[i].user_roles)) {
+                                    user.roles.add([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(role => role.id == JSON.parse(results[i].user_roles)[x])]);
+                                }
                                 setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id);
                                 privateModResponse(user, config.defaultModTypes.unmute, 'Auto');
                                 deleteEntries(results[i]);
+                                done++;
+                                mutecount++;
                             }catch(err) {
                                 console.log(err);
                             }
