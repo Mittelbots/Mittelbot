@@ -98,7 +98,6 @@ module.exports.run = async (bot, message, args) => {
                 }
             }
         }
-        
     }).catch(err => {
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
@@ -108,8 +107,10 @@ module.exports.run = async (bot, message, args) => {
     if(config.debug == 'true') console.info('Mute Command passed!')
 
     var user_roles = await getAllRoles(Member);
-    await removeAllRoles(Member);
+
     await Member.roles.add(MutedRole).catch(err => { return message.channel.send(`I don't have permissions to do this task!`)});
+
+    await removeAllRoles(Member);
 
     if (Member.roles.cache.has(MutedRole)) {
         try {

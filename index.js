@@ -170,6 +170,7 @@ bot.once('ready', () => {
   checkTemproles(bot)
   auditLog(bot);
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
+  log.info('------------BOT SUCCESSFULLY STARTED------------');
   bot.user.setActivity({
     name: "BETA",
     type: 'PLAYING'

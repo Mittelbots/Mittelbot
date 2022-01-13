@@ -4,8 +4,14 @@
  */
 
 async function removeAllRoles(member) {
-    await member.roles.cache.forEach(role => (role.name !== '@everyone') ? member.roles.remove(role) : '')
-    return;
+    setTimeout(async () => {
+        await member.roles.cache.forEach(role => {
+            if(role.name != '@everyone' && role.name != 'Muted'){
+                member.roles.remove(role)
+            }
+        })
+        return;
+    }, 700);
 }
 
 
