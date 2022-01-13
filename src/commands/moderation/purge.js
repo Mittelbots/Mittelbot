@@ -1,5 +1,6 @@
 const config = require('../../../config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { log } = require('../../../logs');
 
 module.exports.run = async (bot, message, args) => {
     message.delete();

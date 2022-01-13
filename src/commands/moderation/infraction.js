@@ -6,6 +6,7 @@ const {
 } = require('../../db/db');
 
 const database = new Database();
+const { log } = require('../../../logs');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
@@ -35,14 +36,16 @@ module.exports.run = async (bot, message, args) => {
 
                 infraction = await res;
             }).catch(err => {
-                console.log(err);
-                return message.reply(`${config.errormessages.databasequeryerror}`);
+                log.fatal(err);
+                if(config.debug == 'true') console.log(err);
+                return message.channel.send(`${config.errormessages.databasequeryerror}`); 
             });
         }
 
     }).catch(err => {
-        console.log(err);
-        return message.reply(`${config.errormessages.databasequeryerror}`);
+        log.fatal(err);
+        if(config.debug == 'true') console.log(err);
+        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     });
     return publicInfractionResponse(message, infraction[0], null, null, true);
 

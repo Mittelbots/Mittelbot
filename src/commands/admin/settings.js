@@ -11,6 +11,7 @@ const {
 } = require('../../../utils/functions/getModTime');
 const { getEmote } = require('../../../utils/functions/getEmote');
 const { viewSetting } = require('../../../utils/functions/viewSetting');
+const { log } = require('../../../logs');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -34,7 +35,8 @@ module.exports.run = async (bot, message, args) => {
         var currentsettings = database.query(`SELECT * FROM ${message.guild.id}_config LIMIT 1`).then(async res => {
             return await res[0];
         }).catch(err => {
-            console.log(err);
+            log.fatal(err);
+            if(config.debug == 'true') console.log(err);
             return message.channel.send(`${config.errormessages.databasequeryerror}`);
         });
 
@@ -73,7 +75,8 @@ module.exports.run = async (bot, message, args) => {
                             }
                         }
                     }).catch(err => {
-                        console.log(err);
+                        log.fatal(err);
+                        if(config.debug == 'true') console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`);
                     });
                 }
@@ -84,7 +87,8 @@ module.exports.run = async (bot, message, args) => {
                             return `<#${res[0][config.settings[i].colname]}>`;
                         }
                     }).catch(err => {
-                        console.log(err);
+                        log.fatal(err);
+                        if(config.debug == 'true') console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`);
                     });
                 }else if(config.settings[i].colname === config.settings.warnroles.colname) {
@@ -97,7 +101,8 @@ module.exports.run = async (bot, message, args) => {
                             return current;
                         }
                     }).catch(err => {
-                        console.log(err);
+                        log.fatal(err);
+                        if(config.debug == 'true') console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`); 
                     })
                 }
@@ -212,7 +217,11 @@ module.exports.run = async (bot, message, args) => {
                             message.reply(`${removedRoles} got removed from joinroles.`).then(msg => returnMessage = null)
                         }
                         return true;
-                    });
+                    }).catch(err => {
+                        log.fatal(err);
+                        if(config.debug == 'true') console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
+                    })
                     if(await checkroles && roles[0] !== '') {
                         var passedRoles = [];
                         for(let i in roles) {
@@ -245,8 +254,9 @@ module.exports.run = async (bot, message, args) => {
 
                     function saveJoinRoles(role) {
                         database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [role]).catch(err => {
-                            console.log(err);
-                            return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                            log.fatal(err);
+                            if(config.debug == 'true') console.log(err);
+                            return message.channel.send(`${config.errormessages.databasequeryerror}`); 
                         })
                     }
 
@@ -283,8 +293,9 @@ module.exports.run = async (bot, message, args) => {
                     database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [channel.id]).then(() => {
                         return message.reply(`${channel} successfully saved!`);
                     }).catch(err => {
-                        console.log(err);
-                        return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                        log.fatal(err);
+                        if(config.debug == 'true') console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
                     });
                 }
                 //? IF SETTING IS WARNROLES
@@ -294,8 +305,9 @@ module.exports.run = async (bot, message, args) => {
 
                     const database = new Database();
                     database.query(`DELETE FROM ${message.guild.id}_guild_warnroles`).catch(err => {
-                        console.log(err);
-                        return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                        log.fatal(err);
+                        if(config.debug == 'true') console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
                     });
 
                     for(let i in roles) {
@@ -318,8 +330,9 @@ module.exports.run = async (bot, message, args) => {
                     }
                     for(let i in roles) {
                         database.query(`INSERT INTO ${message.guild.id}_guild_warnroles (${config.settings.warnroles.colname}) VALUES (?)`, [roles[i]]).catch(err => {
-                            console.log(err);
-                            return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                            log.fatal(err);
+                            if(config.debug == 'true') console.log(err);
+                            return message.channel.send(`${config.errormessages.databasequeryerror}`); 
                         });
                     }
                     return message.reply(`Warn roles successfully saved! \n \n To check these roles write !settings ${config.settings.warnroles.alias}`)
@@ -331,8 +344,9 @@ module.exports.run = async (bot, message, args) => {
         function saveSetting() {
             const database = new Database();
             database.query(`UPDATE ${message.guild.id}_config SET ${setting} = ?`, [value]).catch(err => {
-                console.log(err);
-                return message.channel.send(`${config.errormessages.databasequeryerror}`);
+                log.fatal(err);
+                if(config.debug == 'true') console.log(err);
+                return message.channel.send(`${config.errormessages.databasequeryerror}`); 
             });
         }
     }

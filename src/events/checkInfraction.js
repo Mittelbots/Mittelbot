@@ -5,6 +5,7 @@ const { privateModResponse } = require('../../utils/privatResponses/privateModRe
 const {
     Database
 } = require('../db/db');
+const { log } = require('../../logs');
 
 const database = new Database;
 
@@ -12,7 +13,10 @@ async function deleteEntries(infraction) {
     try {
         insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
         database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id]).catch(err => console.log(err));
-    }catch(err) {console.log(err)}
+    }catch(err) {
+        log.fatal(err);
+        if(config.debug == 'true') console.log(err);
+    }
 }
 
 function checkInfractions(bot) {
@@ -60,10 +64,12 @@ function checkInfractions(bot) {
                                 done++;
                                 mutecount++;
                             }catch(err) {
-                                console.log(err);
+                                log.fatal(err);
+                                if(config.debug == 'true') console.log(err);
                             }
                         }catch(err) {
-                            console.log(err);
+                            log.fatal(err);
+                            if(config.debug == 'true') console.log(err);
                         }
                     }else { //Member got banned
                         done++;
@@ -80,7 +86,10 @@ function checkInfractions(bot) {
                 }
             }
             console.log(`Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`, new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'}))
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            log.fatal(err);
+            if(config.debug == 'true') console.log(err);
+        });
     }, config.defaultCheckInfractionTimer);
 }
 

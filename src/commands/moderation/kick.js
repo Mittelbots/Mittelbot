@@ -9,6 +9,7 @@ const { isMod } = require('../../../utils/functions/isMod');
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
+const { log } = require('../../../logs');
 
 
 module.exports.run = async (bot, message, args) => {

@@ -3,7 +3,8 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { insertDataToClosedInfraction } = require('../../../utils/functions/insertDataToDatabase');
 const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
-const { Database } = require('../../db/db')
+const { Database } = require('../../db/db');
+const { log } = require('../../../logs');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
@@ -32,8 +33,9 @@ module.exports.run = async (bot, message, args) => {
             await database.query(`DELETE FROM open_infractions WHERE infraction_id = ?`, [res[0].infraction_id]);
         }
     }).catch(err => {
-        console.log(err);
-        return message.reply(`${config.errormessages.databasequeryerror}`);
+        log.fatal(err);
+        if(config.debug == 'true') console.log(err);
+        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     })
 
     try {

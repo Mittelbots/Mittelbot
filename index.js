@@ -14,6 +14,8 @@ const {
   auditLog
 } = require("./utils/auditlog/auditlog");
 const { gainXP } = require("./src/events/levelsystem/levelsystem");
+
+const { log } = require('./logs');
 // const {
 //   autoresponse
 // } = require("./utils/autoresponse/autoresponse");
@@ -51,7 +53,7 @@ bot.on('guildCreate', async (guild) => {
   await database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {})
   await database.query(`CREATE TABLE ${guild.id}_guild_joinroles LIKE _guild_joinroles_template`).catch(err => {})
   await database.query(`CREATE TABLE ${guild.id}_guild_warnroles LIKE _guild_warnroles_template`).catch(err => {})
-  await database.query(`CREATE TABLE ${guild.id}_guild_level LIKE _guild_level`).catch(err => {})
+  await database.query(`CREATE TABLE ${guild.id}_guild_level LIKE _guild_level_template`).catch(err => {})
 });
 
 bot.commands = new Discord.Collection();
@@ -60,7 +62,8 @@ let modules = fs.readdirSync('./src/commands/');
 modules.forEach((module) => {
   fs.readdir(`./src/commands/${module}`, (err, files) => {
     if (err) {
-      console.log(`Mission Folder!!`, err);
+      log.warn('Missing folder!', err)
+      if(config.debug == 'true') console.log(`Mission Folder!!`, err);
     }
     files.forEach((file) => {
       if (!file.endsWith('.js')) return;
@@ -78,7 +81,10 @@ bot.on('guildMemberAdd', member => {
     if (res[0].welcome_channel !== null) {
       bot.channels.cache.find(c => c.id === res[0].welcome_channel).send('Welcome ' + member.user.username)
     }
-  }).catch(err => console.log(err))
+  }).catch(err => { 
+    log.fatal(err);
+    if(config.debug == 'true') console.log(err) 
+  })
 
   database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
     for (i in res) {
@@ -92,7 +98,10 @@ bot.on('guildMemberAdd', member => {
       // }, 10000);
     }
 
-  }).catch(err => console.log(err))
+  }).catch(err => {
+    log.fatal(err);
+    if(config.debug == 'true') console.log(err)
+  });
 });
 
 //Command Manager
@@ -135,7 +144,10 @@ bot.on("messageCreate", async message => {
             }, res[0].cooldown || config.defaultCooldown.format);
 
           }
-        });
+        }).catch(err => {
+          log.fatal(err);
+          if(config.debug == 'true') console.log(err);
+        })
       }
     }else {
         if(!levelCooldown.has(message.author.id)) {
@@ -147,14 +159,16 @@ bot.on("messageCreate", async message => {
           }, lvlconfig.timeout);
         }
     }
-  }).catch(err => console.log(err));
+  }).catch(err => {
+    log.fatal(err);
+    if(config.debug == 'true') console.log(err)
+  });
 });
 
 bot.once('ready', () => {
   checkInfractions(bot);
   checkTemproles(bot)
   auditLog(bot);
-
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   bot.user.setActivity({
     name: "BETA",
