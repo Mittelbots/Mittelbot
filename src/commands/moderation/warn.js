@@ -61,11 +61,16 @@ module.exports.run = async (bot, message, args) => {
                 return message.reply(`The User already have both warn roles!`);
             }
             return;
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            log.fatal(err);
+            if(config.debug == 'true') console.log(err);
+            return message.channel.send(`${config.errormessages.databasequeryerror}`); 
+        })
 
 
     }catch(err) {
-        console.log(err);
+        log.warn(err);
+        if(config.debug == 'true') console.log(err);
         message.reply(config.errormessages.general)
     }
 }

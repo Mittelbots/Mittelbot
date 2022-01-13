@@ -13,6 +13,7 @@ const { publicModResponses } = require('../../../utils/publicResponses/publicMod
 const { isMod } = require('../../../utils/functions/isMod');
 const { getAllRoles } = require('../../../utils/functions/roles/getAllRoles');
 const { removeAllRoles } = require('../../../utils/functions/roles/removeAllRoles');
+const { log } = require('../../../logs');
 
 const database = new Database();
 
@@ -99,8 +100,9 @@ module.exports.run = async (bot, message, args) => {
         }
         
     }).catch(err => {
-        console.log(err);
-        return message.reply(`${config.errormessages.databasequeryerror}`);
+        log.fatal(err);
+        if(config.debug == 'true') console.log(err);
+        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     });
 
     if(config.debug == 'true') console.info('Mute Command passed!')
@@ -116,7 +118,8 @@ module.exports.run = async (bot, message, args) => {
             publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time);
             privateModResponse(Member, config.defaultModTypes.mute, reason, time);
         } catch (err) {
-            console.log(err);
+            log.warn(err);
+            if(config.debug == 'true') console.log(err);
             return message.channel.send(config.errormessages.general)
         }
     }

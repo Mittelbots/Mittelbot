@@ -1,7 +1,6 @@
 const config = require('../../../config.json');
 const commandconfig = require('../../../command_config.json');
 const {
-    MessageEmbed,
     Permissions
 } = require('discord.js');
 const {
@@ -10,6 +9,7 @@ const {
 const {
     viewSetting
 } = require('../../../utils/functions/viewSetting');
+const { log } = require('../../../logs');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -52,7 +52,8 @@ module.exports.run = async (bot, message, args) => {
                 }
             }
         }).catch(err => {
-            console.log(err);
+            log.fatal(err);
+            if(config.debug == 'true') console.log(err);
             return message.channel.send(`${config.errormessages.databasequeryerror}`);
         });
 
@@ -71,7 +72,8 @@ module.exports.run = async (bot, message, args) => {
         database.query(`INSERT INTO ${message.guild.id}_guild_modroles (role_id, isadmin, ismod, ishelper) VALUES (?, ?, ?, ?)`, [value, type[0], type[1], type[2]]).then(() => {
             return message.reply(`<@&${value}> successfully saved as a new Modrole!`);
         }).catch(err => {
-            console.log(err);
+            log.fatal(err);
+            if(config.debug == 'true') console.log(err);
             return message.channel.send(`${config.errormessages.databasequeryerror}`);
         });
     } else return;

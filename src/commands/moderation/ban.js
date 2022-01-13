@@ -76,22 +76,26 @@ module.exports.run = async (bot, message, args) => {
                     await Member.ban({reason: reason}).catch(err => {
                         message.channel.send(`I can't ban the user! Please check if my Permissions are correct!`);
                         database.query(`DELETE FROM open_infractions WHERE infraction_id = ?`, [infid]).catch(err => {
-                            console.log(err);
-                            return message.reply(`${config.errormessages.databasequeryerror}`); 
+                            log.fatal(err);
+                            if(config.debug == 'true') console.log(err);
+                            return message.channel.send(`${config.errormessages.databasequeryerror}`); 
                         });
                     })
                 }, 500);
             }).catch(err => {
-                console.log(err);
-                return message.reply(`${config.errormessages.databasequeryerror}`);
+                log.fatal(err);
+                if(config.debug == 'true') console.log(err);
+                return message.channel.send(`${config.errormessages.databasequeryerror}`); 
             })
         } catch (err) {
-            console.log(err);
+            log.fatal(err);
+            if(config.debug == 'true') console.log(err);
             message.channel.send(config.errormessages.general)
         }
     }).catch(err => {
-        console.log(err);
-        return message.reply(`${config.errormessages.databasequeryerror}`);
+        log.fatal(err);
+        if(config.debug == 'true') console.log(err);
+        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     })
 
 }

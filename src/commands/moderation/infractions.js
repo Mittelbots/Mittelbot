@@ -6,6 +6,8 @@ const {
 } = require('../../db/db');
 
 const database = new Database();
+const { log } = require('../../../logs');
+
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -33,12 +35,14 @@ module.exports.run = async (bot, message, args) => {
     var closed = []
     var open = []
     await database.query(`SELECT * FROM closed_infractions WHERE user_id = ?`, [Member.id]).then(async res => closed.push(await res)).catch(err => {
-        console.log(err);
-        return message.reply(`${config.errormessages.databasequeryerror}`);
+        log.fatal(err);
+        if(config.debug == 'true') console.log(err);
+        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     });
     await database.query(`SELECT * FROM open_infractions WHERE user_id = ?`, [Member.id]).then(async res => open.push(await res)).catch(err => {
-        console.log(err);
-        return message.reply(`${config.errormessages.databasequeryerror}`);
+        log.fatal(err);
+        if(config.debug == 'true') console.log(err);
+        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     });
 
     if(closed[0].length <= 0 && open[0].length <= 0) {

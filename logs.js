@@ -6,4 +6,4 @@ const opts = {
 };
 const log = require('simple-node-logger').createRollingFileLogger(opts);
 
-module.exports = log;
+module.exports = {log};
