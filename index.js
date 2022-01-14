@@ -150,14 +150,14 @@ bot.on("messageCreate", async message => {
         })
       }
     }else {
-        if(!levelCooldown.has(message.author.id)) {
-          gainXP(message);
-          levelCooldown.add(message.author.id);
-        }else {
-          setTimeout(() => {
-            levelCooldown.delete(message.author.id)
-          }, lvlconfig.timeout);
-        }
+        // if(!levelCooldown.has(message.author.id)) {
+        //   gainXP(message);
+        //   levelCooldown.add(message.author.id);
+        // }else {
+        //   setTimeout(() => {
+        //     levelCooldown.delete(message.author.id)
+        //   }, lvlconfig.timeout);
+        // }
     }
   }).catch(err => {
     log.fatal(err);
