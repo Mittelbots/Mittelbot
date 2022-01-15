@@ -22,13 +22,15 @@ module.exports.run = async (bot, message, args) => {
     }
 
     var Member;
+
     if(args[0] == undefined) {
         Member = message.author;
     }else {
         try {
-            Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]) || args[0];
+            Member = await message.guild.members.fetch(args[0]) || args[0];
         }catch(err) {
-            return message.reply(`User not found`).then(msg => setTimeout(() => msg.delete(), 5000));
+            Member = args[0];
+            if(isNaN(Member)) return message.reply(`This is not a valid input!`).then(msg => setTimeout(() => msg.delete(), 5000));
         }
     }
 
