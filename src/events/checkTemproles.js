@@ -32,8 +32,8 @@ function checkTemproles(bot) {
                         await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(r => r.id === results[i].role_id)])
                         deleteEntries(results[i].infraction_id);
                     }catch(err) {
+                        // CAN'T FIND USER OR USER LEFT THE SERVER
                         done -= 1;
-                        log.fatal(err);
                         if(config.debug == 'true') console.log(err);
                     }
                 }
