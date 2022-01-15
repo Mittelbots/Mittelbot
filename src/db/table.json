@@ -5,6 +5,7 @@
         "_guild_logs", 
         "_guild_modroles", 
         "_guild_warnroles",
-        "_guild_level"
+        "_guild_level",
+        "_guild_member_info"
     ]
 }
