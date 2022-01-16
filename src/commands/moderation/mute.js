@@ -78,7 +78,10 @@ module.exports.run = async (bot, message, args) => {
     }
 
     let dbtime = getModTime(time);
-    if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
+    if(!dbtime) {
+        time = 'Permanent';
+        dbtime = getModTime('99999d');
+    }
 
     let reason = args.slice(x).join(" ");
     reason = reason.replace(time, '');
