@@ -8,6 +8,7 @@ const { privateModResponse } = require('../../../utils/privatResponses/privateMo
 const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { Database } = require('../../db/db');
 const { isMod } = require('../../../utils/functions/isMod');
+const { log } = require('../../../logs');
 
 const database = new Database();
 
@@ -43,7 +44,10 @@ module.exports.run = async (bot, message, args) => {
     }
 
     let dbtime = getModTime(time);
-    if(!dbtime) return message.reply(`Invalid Time [m, h, d]`);
+    if(!dbtime) {
+        time = 'Permanent';
+        dbtime = getModTime('99999d');
+    }
 
     let reason = args.slice(x).join(" ");
     reason = reason.replace(time, '');
@@ -86,7 +90,7 @@ module.exports.run = async (bot, message, args) => {
                 log.fatal(err);
                 if(config.debug == 'true') console.log(err);
                 return message.channel.send(`${config.errormessages.databasequeryerror}`); 
-            })
+            });
         } catch (err) {
             log.fatal(err);
             if(config.debug == 'true') console.log(err);
