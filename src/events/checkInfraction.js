@@ -6,6 +6,7 @@ const {
     Database
 } = require('../db/db');
 const { log } = require('../../logs');
+const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
 
 const database = new Database;
 
@@ -54,13 +55,10 @@ function checkInfractions(bot) {
                             }
                             
                             try {
-                                await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(role => role.name === "Muted").id])
-                                for (let x in JSON.parse(results[i].user_roles)) {
-                                    user.roles.add([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(role => role.id == JSON.parse(results[i].user_roles)[x])]);
-                                }
+                                await giveAllRoles(results[i].user_id, results[i].guild_id , JSON.parse(results[i].user_roles))
                                 setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id);
                                 privateModResponse(user, config.defaultModTypes.unmute, 'Auto');
-                                deleteEntries(results[i]);
+                                await deleteEntries(results[i]);
                                 done++;
                                 mutecount++;
                             }catch(err) {
