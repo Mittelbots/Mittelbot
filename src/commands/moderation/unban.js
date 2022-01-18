@@ -1,10 +1,12 @@
 const config = require('../../../config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { insertDataToClosedInfraction } = require('../../../utils/functions/insertDataToDatabase');
-const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
-const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { Database } = require('../../db/db');
 const { log } = require('../../../logs');
+const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
+const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
+
+const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
@@ -20,32 +22,15 @@ module.exports.run = async (bot, message, args) => {
 
     let Member = args[0];
     if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
-    Member = await Member.replace('<', '').replace('@', '').replace('!', '').replace('>', '');
+    Member = removeMention(Member)
 
     let reason = args.slice(1).join(" ");
     if(!reason) return message.channel.send('Please add a reason!');
 
-    const database = new Database();
 
-    await database.query(`SELECT * FROM open_infractions WHERE user_id AND ban = 1`, [Member]).then(async res => {
-        if(res.length > 0) {
-            await insertDataToClosedInfraction(Member, res[0].mod_id, res[0].mute, res[0].ban, 0, 0, res[0].till_date, res[0].reason, res[0].infraction_id)
-            await database.query(`DELETE FROM open_infractions WHERE infraction_id = ?`, [res[0].infraction_id]);
-        }
-    }).catch(err => {
-        log.fatal(err);
-        if(config.debug == 'true') console.log(err);
-        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
-    })
+    if(await isBanned(database, Member) == false) return message.reply('This user isn`t banned!')
 
-    try {
-        setNewModLogMessage(bot, config.defaultModTypes.unban, message.author.id, Member, reason, null, message.guild.id);
-        publicModResponses(message, config.defaultModTypes.unban, message.author.id, Member, reason);
-        if(config.debug == 'true') console.info('Ban Command passed!')
-        return await message.guild.members.unban(`${Member}`, `${reason}`);
-    }catch(err) {
-        return await message.reply(`The User is not banned.`);
-    }
+    return await unbanUser(database, Member, config, message, log, reason, bot);
 }
 
 module.exports.help = {

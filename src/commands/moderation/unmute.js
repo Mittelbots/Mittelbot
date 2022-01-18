@@ -1,23 +1,11 @@
 const config = require('../../../config.json');
-const { setNewModLogMessage } = require('../../../utils/modlog/modlog');
-const { privateModResponse } = require('../../../utils/privatResponses/privateModResponses');
-const { publicModResponses } = require('../../../utils/publicResponses/publicModResponses');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { Database } = require('../../db/db');
-const { insertDataToClosedInfraction } = require('../../../utils/functions/insertDataToDatabase');
+const { log } = require('../../../logs');
+const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser');
 
 const database = new Database;
-
-async function deleteEntries(infraction) {
-    try {
-        await insertDataToClosedInfraction(infraction[0].user_id, infraction[0].mod_id, infraction[0].mute, infraction[0].ban, 0, 0, infraction[0].till_date, infraction[0].reason, infraction[0].infraction_id);
-        database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction[0].infraction_id]).catch(err => console.log(err));
-    }catch(err) {
-        log.fatal(err);
-        if(config.debug == 'true') console.log(err);
-        return message.channel.send(`${config.errormessages.databasequeryerror}`); 
-    }
-}
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
@@ -31,38 +19,17 @@ module.exports.run = async (bot, message, args) => {
     }
 
     try {
-        var Member = message.mentions.members.first() || await message.guild.members.fetch(args[0]);
-    }catch(err) {
-        message.delete();
-        return message.channel.send(`<@${message.author.id}> You have to mention a user`);
-    }
+        args[0] = removeMention(args[0]);
 
-    var MutedRole = message.guild.roles.cache.find(role => role.name === "Muted").id
-    
-    if(!Member.roles.cache.has(MutedRole)) return message.channel.send(`<@${message.author.id}> The user isnt't muted.`)
+        var Member = await message.guild.members.fetch(args[0]);
+        
+    }catch(err) {
+        return message.reply(`I can't find this user!`);
+    }    
     
     let reason = args.slice(1).join(" ");
 
-    try {
-        setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, Member.id, reason, null, message.guild.id);
-        publicModResponses(message, config.defaultModTypes.unmute, message.author.id, Member.id, reason);
-        privateModResponse(Member, config.defaultModTypes.unmute, reason);
-        database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [Member.id]).then(async res => {
-            let user_roles = await JSON.parse(await res[0].user_roles);
-            for (let x in user_roles) {
-                let r = await message.guild.roles.cache.find(role => role.id == user_roles[x])
-                await Member.roles.add(r);
-            }
-            await deleteEntries(await res);
-            if(config.debug == 'true') console.info('Unmute Command passed!')
-            return await Member.roles.remove([MutedRole]);
-        }).catch(err => console.log(err))
-    }
-    catch(err) {
-        log.warn(err);
-        if(config.debug == 'true') console.log(err);
-        message.channel.send(config.errormessages.general)
-    }
+    return await unmuteUser(database, message, Member, bot, config, reason, log)
 
 }
 

@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "nodemon index.js",
 
-    "pm2": "pm2 start index.js --watch && pm2 monit",
-    "pm2prod": "pm2 start index.js && pm2 monit",
+    "pm2": "pm2 start index.js --watch --name Mittelbot&& pm2 monit",
+    "pm2prod": "pm2 start index.js --name Mittelbot && pm2 monit",
 
-    "pm2restart": "pm2 stop 0 && pm2 start index.js --watch && pm2 monit",
-    "pm2restartprod": "pm2 stop 0 && pm2 start index.js && pm2 monit",
+    "pm2restart": "pm2 stop Mittelbot && pm2 start index.js --watch --name Mittelbot && pm2 monit",
+    "pm2restartprod": "pm2 stop Mittelbot && pm2 start index.js --name Mittelbot&& pm2 monit",
 
-    "kill": "pm2 stop 0 && pm2 delete 0",
+    "kill": "pm2 stop Mittelbot && pm2 delete Mittelbot",
 
     "deployCommands": "node src/deploy-commands.js",
     
