@@ -13,8 +13,7 @@ async function publicModResponses(channelmessage, type, moderator, member, reaso
         publicModMessage.addField(`Time`, `**${time}** `)
     }
 
-    channelmessage.channel.send({embeds: [publicModMessage]});
-    return;
+    return channelmessage.channel.send({embeds: [publicModMessage]});
 }
 
 async function publicInfractionResponse(message, Member, closed, open, isOne) {
