@@ -23,12 +23,10 @@ module.exports.run = async (bot, message, args) => {
         });
     }
 
-    if(args[0] == undefined) return message.reply(`<@${message.author.id}> You have to mention a user`);
     try {
         args[0] = removeMention(args[0]);
 
         var Member = await message.guild.members.fetch(args[0]);
-        if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
 
         if(checkMessage(message, Member, bot, 'ban')) return message.reply(checkMessage(message, Member, bot, 'ban'));
     }catch(err) {
@@ -40,9 +38,12 @@ module.exports.run = async (bot, message, args) => {
     let x = 1;
     var time = args[x]
 
+    if(time === undefined) return message.reply('Please add a valid time and reason!');
+
     while(time == '') {
         time = args[x];
         x++;
+        console.log(x)
     }
 
     let dbtime = getModTime(time);
@@ -59,7 +60,6 @@ module.exports.run = async (bot, message, args) => {
     if(await isBanned(database, Member)) return message.reply('This user is already banned!')
 
     return await banUser(database, Member, message, reason, bot, config, log, dbtime, time);
-
 }
 
 module.exports.help = {
