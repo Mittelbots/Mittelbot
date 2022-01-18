@@ -16,6 +16,7 @@ module.exports.run = async (bot, message, args) => {
             return message.reply(config.errormessages.general);
         }
     }
+    return;
 }
 
 module.exports.help = {
