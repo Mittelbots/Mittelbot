@@ -93,7 +93,7 @@ bot.on('guildMemberAdd', member => {
           user_roles = JSON.parse(user_roles);
 
           //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
-          if(user_roles.indexOf(member.roles.cache.find(r => r.name === 'Muted')) !== -1) user_roles = user_roles.filter(val => {return val !== member.roles.cache.find(r => r.name === 'Muted').id});
+          if(user_roles !== null && user_roles.indexOf(member.roles.cache.find(r => r.name === 'Muted')) !== -1) user_roles = user_roles.filter(val => {return val !== member.roles.cache.find(r => r.name === 'Muted').id});
 
           await giveAllRoles(member, member.guild, user_roles, bot);
         }
