@@ -7,5 +7,105 @@
         "_guild_warnroles",
         "_guild_level",
         "_guild_member_info"
-    ]
+    ],
+    "_config": {
+        "id": {
+            "name": "id",
+            "val": "INT AUTO_INCREMENT PRIMARY KEY"
+        },
+        "welcome_channel": {
+            "name": "welcome_channel",
+            "val": "VARCHAR(255)"
+        },
+        "prefix": {
+            "name": "prefix",
+            "val": "VARCHAR(5)"
+        },
+        "cooldown": {
+            "name": "cooldown",
+            "val": "int(11)"
+        },
+        "deleteModCommandAfterUsage": {
+            "name": "deleteModCommandAfterUsage",
+            "val": "INT(4)"
+        },
+        "deleteCommandAfterUsage": {
+            "name": "deleteCommandAfterUsage",
+            "val": "INT(4)"
+        }
+    },
+    "_guild_joinroles": {
+        "id": {
+            "name": "id",
+            "val": "INT AUTO_INCREMENT PRIMARY KEY"
+        },
+        "role_id": {
+            "name": "role_id",
+            "val": "VARCHAR(255)"
+        }
+    },
+    "_guild_logs": {
+        "id": {
+            "name": "id",
+            "val": "INT AUTO_INCREMENT PRIMARY KEY"
+        },
+        "auditlog": {
+            "name": "auditlog",
+            "val": "VARCHAR(255)"
+        },
+        "messagelog": {
+            "name": "messagelog",
+            "val": "VARCHAR(255)"
+        }
+    },
+    "_guild_member_info": {
+        "id": {
+            "name": "id",
+            "val": "INT AUTO_INCREMENT PRIMARY KEY"
+        },
+        "user_id": {
+            "name": "user_id",
+            "val": "VARCHAR(255)"
+        },
+        "member_roles": {
+            "name": "member_roles",
+            "val": "LONGTEXT"
+        },
+        "user_joined": {
+            "name": "user_joined",
+            "val": "VARCHAR(255)"
+        }
+    },
+    "_guild_modroles": {
+        "id": {
+            "name": "id",
+            "val": "INT AUTO_INCREMENT PRIMARY KEY"
+        },
+        "role_id": {
+            "name": "role_id",
+            "val": "VARCHAR(255)"
+        },
+        "isadmin": {
+            "name": "isadmin",
+            "val": "INT(4)"
+        },
+        "ismod": {
+            "name": "ismod",
+            "val": "INT(4)"
+        },
+        "ishelper": {
+            "name": "ishelper",
+            "val": "INT(4)"
+        }
+    },
+    "_guild_warnroles": {
+        "id": {
+            "name": "id",
+            "val": "INT AUTO_INCREMENT PRIMARY KEY"
+        },
+        "role_id": {
+            "name": "role_id",
+            "val": "VARCHAR(255)"
+        }
+    }
 }
