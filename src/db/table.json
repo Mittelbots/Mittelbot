@@ -107,5 +107,19 @@
             "name": "role_id",
             "val": "VARCHAR(255)"
         }
+    },
+    "_guild_level": {
+        "id": {
+            "name": "id",
+            "val": "INT AUTO_INCREMENT PRIMARY KEY"
+        },
+        "xp": {
+            "name": "xp",
+            "val": "VARCHAR(255)"
+        },
+        "user_id": {
+            "name": "user_id",
+            "val": "VARCHAR(255)"
+        }
     }
 }
