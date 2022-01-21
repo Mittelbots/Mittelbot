@@ -35,31 +35,15 @@ const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"]
 });
-bot.setMaxListeners(50);
+bot.setMaxListeners(0);
 
 const database = new Database();
 
 const whitelist = require('./whitelist.json');
 
-bot.on('guildCreate', async (guild) => {
-  let gid = guild.id;
-  if(whitelist.server.indexOf(gid) === -1) return guild.leave();
+const { guildCreate } = require("./src/events/guildCreate/guildCreate");
 
-  await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).then(async res => {
-    if(res.length <= 0) await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
-  });
-  await database.query(`CREATE TABLE ${guild.id}_config LIKE _config_template`).then(async () => {
-    await database.query(`INSERT INTO ${guild.id}_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {log.fatal(err)});
-  }).catch(err => {log.fatal(err)});
-  await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).then(async () => {
-    await database.query(`INSERT INTO ${guild.id}_guild_logs (id) VALUES (?)`, [1]).catch(err => {log.fatal(err)});
-  }).catch(err => {log.fatal(err)});
-  await database.query(`CREATE TABLE ${guild.id}_guild_modroles LIKE _guild_modroles_template`).catch(err => {log.fatal(err)});
-  await database.query(`CREATE TABLE ${guild.id}_guild_joinroles LIKE _guild_joinroles_template`).catch(err => {log.fatal(err)});
-  await database.query(`CREATE TABLE ${guild.id}_guild_warnroles LIKE _guild_warnroles_template`).catch(err => {log.fatal(err)});
-  await database.query(`CREATE TABLE ${guild.id}_guild_level LIKE _guild_level_template`).catch(err => {log.fatal(err)});
-  await database.query(`CREATE TABLE ${guild.id}_guild_member_info LIKE _guild_member_info_template`).catch(err => {log.fatal(err)})
-});
+bot.on('guildCreate', async (guild) => await guildCreate(database, guild, whitelist, log));
 
 bot.commands = new Discord.Collection();
 
@@ -196,14 +180,14 @@ bot.on("messageCreate", async message => {
         })
       }
     }else {
-        // if(!levelCooldown.has(message.author.id)) {
-        //   gainXP(message);
-        //   levelCooldown.add(message.author.id);
-        // }else {
-        //   setTimeout(() => {
-        //     levelCooldown.delete(message.author.id)
-        //   }, lvlconfig.timeout);
-        // }
+        if(!levelCooldown.has(message.author.id)) {
+          gainXP(message);
+          levelCooldown.add(message.author.id);
+        }else {
+          setTimeout(() => {
+            levelCooldown.delete(message.author.id)
+          }, lvlconfig.timeout);
+        }
     }
   }).catch(err => {
     log.fatal(err);
