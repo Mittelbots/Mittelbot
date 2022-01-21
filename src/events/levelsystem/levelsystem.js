@@ -22,12 +22,14 @@ async function gainXP(message) {
     }).catch(err => {
         console.log(err);
     });
+
+    return;
 }
 
 function generateXP(currentxp) {
     const randomNumber = Math.floor(Math.random() * 30) + 1;
 
-    currentxp += randomNumber;
+    currentxp = Number(currentxp) + Number(randomNumber);
 
     return currentxp;
 }
