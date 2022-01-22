@@ -137,6 +137,8 @@ bot.on('guildMemberRemove', member => {
 //Command Manager
 bot.on("messageCreate", async message => {
 
+  await checkForScam(message, log, config, database, bot);
+
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
   // blacklist(1, message);
@@ -208,4 +210,5 @@ bot.once('ready', () => {
 });
 
 const token = require('./_secret/token.json');
+const { checkForScam } = require("./utils/checkForScam/checkForScam");
 bot.login(token.BOT_TOKEN);

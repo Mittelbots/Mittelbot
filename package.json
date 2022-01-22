@@ -11,7 +11,7 @@
     "pm2restartprod": "pm2 stop Mittelbot && pm2 start index.js --name Mittelbot&& pm2 monit",
     "kill": "pm2 stop Mittelbot && pm2 delete Mittelbot",
     "deployCommands": "node src/deploy-commands.js",
-    "deployTables": "node _scripts/addTables.js"
+    "checkDatabase": "node _scripts/checkDatabase.js"
   },
   "author": "BlackDayz",
   "license": "ISC",
