@@ -137,7 +137,7 @@ bot.on('guildMemberRemove', member => {
 //Command Manager
 bot.on("messageCreate", async message => {
 
-  await checkForScam(message, log, config);
+  await checkForScam(message, log, config, database, bot);
 
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
