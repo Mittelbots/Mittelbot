@@ -86,11 +86,14 @@ function sendToAudit(bot, type, content1, content2) {
             if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
-            gid = content1.guildId
+            gid = content1.guildId;
+            
+            const attachment = content1.attachments.first();
 
             Message.setColor('#fc0509');
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
-            Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
+            Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${(!attachment.url) ? content1 : ''}`);
+            if(attachment.url) Message.setImage(attachment.url)
             Message.setFooter(`Author: ${content1.author.id} | MessageID: ${content1.id}`);
             break;
 
