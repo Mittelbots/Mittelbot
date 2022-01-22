@@ -92,8 +92,8 @@ function sendToAudit(bot, type, content1, content2) {
 
             Message.setColor('#fc0509');
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
-            Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${(!attachment.url) ? content1 : ''}`);
-            if(attachment.url) Message.setImage(attachment.url)
+            Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${(attachment !== undefined) ? '' : content1}`);
+            if(attachment !== undefined) Message.setImage(attachment.url)
             Message.setFooter(`Author: ${content1.author.id} | MessageID: ${content1.id}`);
             break;
 
