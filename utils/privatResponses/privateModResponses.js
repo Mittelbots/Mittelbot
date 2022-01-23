@@ -1,8 +1,11 @@
 const { MessageEmbed } = require("discord.js");
-async function privateModResponse(member, type, reason, time) {
+const { generateModEmote } = require("../functions/generateModEmote");
+const config = require('../../config.json');
+
+async function privateModResponse(member, type, reason, time, bot) {
     try {
         var privateModMessage = new MessageEmbed()
-        .setTitle(`**You got ${type}!**`)
+        .setTitle(`${await generateModEmote(config, bot, type)} **You got ${type}!**`)
         .addField(`Reason`, `${reason || "No Reason Provided!"}`)
         .setTimestamp();
 

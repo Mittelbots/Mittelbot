@@ -1,9 +1,11 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
+const { generateModEmote } = require("../functions/generateModEmote");
+const config = require('../../config.json');
 
-async function publicModResponses(channelmessage, type, moderator, member, reason, time) {
+async function publicModResponses(channelmessage, type, moderator, member, reason, time, bot) {
     var publicModMessage = new MessageEmbed()
     .setColor('#0099ff')
-    .setTitle(`**Member ${type}!**`)
+    .setTitle(`${await generateModEmote(config, bot, type) }**Member ${type}!**`)
     .addField(`Moderator`, `<@${moderator}> (${moderator})`)
     .addField(`Member`, `<@${member}> (${member})`)
     .addField(`Reason`, `${reason || "No Reason Provided!"}`)

@@ -14,8 +14,8 @@ async function unmuteUser(db, message, member, bot, config, reason, log) {
 
     try {
         setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, member.id, reason, null, message.guild.id);
-        publicModResponses(message, config.defaultModTypes.unmute, message.author.id, member.id, reason);
-        privateModResponse(member, config.defaultModTypes.unmute, reason);
+        publicModResponses(message, config.defaultModTypes.unmute, message.author.id, member.id, reason, null, bot);
+        privateModResponse(member, config.defaultModTypes.unmute, reason, null, bot);
         db.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [member.id]).then(async res => {
             let user_roles = await JSON.parse(await res[0].user_roles);
             for (let x in user_roles) {
