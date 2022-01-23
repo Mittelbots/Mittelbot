@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 const fs = require('fs');
+const axios = require("axios")
+
 const config = require('./config.json');
 const {
   Database
@@ -14,7 +16,7 @@ const {
   auditLog
 } = require("./utils/auditlog/auditlog");
 const { gainXP } = require("./src/events/levelsystem/levelsystem");
-
+const { guildCreate } = require("./src/events/guildCreate/guildCreate");
 const { log } = require('./logs');
 // const {
 //   autoresponse
@@ -30,8 +32,6 @@ const defaultCooldown = new Set();
 const settingsCooldown = new Set();
 const levelCooldown = new Set();
 
-const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
-
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"]
 });
@@ -39,9 +39,9 @@ bot.setMaxListeners(0);
 
 const database = new Database();
 
+const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
 const whitelist = require('./whitelist.json');
-
-const { guildCreate } = require("./src/events/guildCreate/guildCreate");
+const token = require('./_secret/token.json');
 
 bot.on('guildCreate', async (guild) => await guildCreate(database, guild, whitelist, log));
 
@@ -134,11 +134,10 @@ bot.on('guildMemberRemove', member => {
   });
 });
 
+
+
 //Command Manager
 bot.on("messageCreate", async message => {
-
-  await checkForScam(message, log, config, database, bot);
-
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
   // blacklist(1, message);
@@ -197,7 +196,7 @@ bot.on("messageCreate", async message => {
   });
 });
 
-bot.once('ready', () => {
+bot.once('ready', async () => {
   checkInfractions(bot);
   checkTemproles(bot)
   auditLog(bot);
@@ -209,6 +208,5 @@ bot.once('ready', () => {
   });
 });
 
-const token = require('./_secret/token.json');
-const { checkForScam } = require("./utils/checkForScam/checkForScam");
+
 bot.login(token.BOT_TOKEN);
