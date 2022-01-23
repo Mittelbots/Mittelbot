@@ -144,7 +144,7 @@ bot.on("messageCreate", async message => {
   // blacklist(1, message);
   // autoresponse(message);
 
-  await checkForScam(message, database, bot, config, log)
+  //await checkForScam(message, database, bot, config, log)
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
