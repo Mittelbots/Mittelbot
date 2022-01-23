@@ -11,8 +11,8 @@ async function banUser(db, member, message, reason, bot, config, log, dbtime, ti
         let infid = createInfractionId();
         await insertDataToOpenInfraction(member.id, message.author.id, 0, 1, getFutureDate(dbtime), reason, createInfractionId(), message.guild.id, null)
         await setNewModLogMessage(bot, config.defaultModTypes.ban, message.author.id,  member.id, reason, time, message.guild.id);
-        await publicModResponses(message, config.defaultModTypes.ban, message.author.id, member.id, reason, time);
-        await privateModResponse(member, config.defaultModTypes.ban, reason, time);
+        await publicModResponses(message, config.defaultModTypes.ban, message.author.id, member.id, reason, time, bot);
+        await privateModResponse(member, config.defaultModTypes.ban, reason, time, bot);
         setTimeout(async () => {
             if(config.debug == 'true') console.info('Ban Command passed!');
             await member.ban({reason: reason}).catch(err => {

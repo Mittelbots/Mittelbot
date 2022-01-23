@@ -9,8 +9,8 @@ const { addWarnRoles } = require("../roles/addWarnRoles");
 async function warnUser(bot, config, message, member, reason, db, log) {
     try {
         setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, member.user.id, reason, null, message.guild.id);
-        publicModResponses(message, config.defaultModTypes.warn, message.author.id, member.user.id, reason);
-        privateModResponse(member, config.defaultModTypes.warn, reason);
+        publicModResponses(message, config.defaultModTypes.warn, message.author.id, member.user.id, reason, null, bot);
+        privateModResponse(member, config.defaultModTypes.warn, reason, null, bot);
 
         let inf_id = createInfractionId()
 
