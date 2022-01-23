@@ -28,7 +28,7 @@ module.exports.run = async (bot, message, args) => {
     if(!reason) return message.channel.send('Please add a reason!');
 
 
-    if(await isBanned(database, Member) == false) return message.reply('This user isn`t banned!')
+    if(await isBanned(database, Member, message) == false) return message.reply('This user isn`t banned!')
 
     return await unbanUser(database, Member, config, message, log, reason, bot);
 }
