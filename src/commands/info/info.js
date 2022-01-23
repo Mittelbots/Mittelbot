@@ -2,6 +2,11 @@ const {
     MessageEmbed
 } = require('discord.js');
 const config = require('../../../config.json');
+const { log } = require('../../../logs');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const {
+    Database
+} = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage  == 'true') {
@@ -46,12 +51,21 @@ module.exports.run = async (bot, message, args) => {
         .addField('\u200B', '\u200B')
         .setTimestamp();
 
+        if(tag) {
+            const database = new Database();
+            var joined_at = await database.query(`SELECT user_joined FROM ${message.guild.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
+                return await res[0].user_joined
+            }).catch(err => {
+                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config)
+            })
+        }
     const memberInfoEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`**Memberinfos - ${user.username}**`)
         .addField(`Tag/ID: `, `<@${user.id}>/${user.id}`)
         .addField(`Created at`, `${new Intl.DateTimeFormat('de-DE').format(user.createdAt)} CET`, true)
-        .addField(`Joined at`, `${new Intl.DateTimeFormat('de-DE').format(message.member.createdAt)} CET`, true)
+        .addField(`Last Joined at`, `${new Intl.DateTimeFormat('de-DE').format(message.member.createdAt)} CET`, true)
+        .addField(`First Joined at`, `${(joined_at == '') ? 'Not saved' : new Intl.DateTimeFormat('de-DE').format(new Date(joined_at.slice(0,9)))} ${(joined_at != '') ? 'CET' : ''}`, true)
         .addField(`Roles`, `${userRole}`)
         .addField('\u200B', '\u200B')
         .setTimestamp();
@@ -64,13 +78,13 @@ module.exports.run = async (bot, message, args) => {
     }
 
     const axios = require('axios');
-    let pfp = axios.get(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=4096`).then(response => {
+    let pfp = axios.get(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=4096`).then(() => {
         return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=4096`
-    }).catch(err => {
+    }).catch(() => {
         return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=4096`
     })
 
-    memberInfoEmbed.setThumbnail(await pfp)
+    memberInfoEmbed.setThumbnail(await pfp);
     return message.channel.send({
         embeds: [memberInfoEmbed]
     });
