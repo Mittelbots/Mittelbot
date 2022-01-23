@@ -42,6 +42,7 @@ const database = new Database();
 const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
 const whitelist = require('./whitelist.json');
 const token = require('./_secret/token.json');
+const { checkForScam } = require("./utils/checkForScam/checkForScam");
 
 bot.on('guildCreate', async (guild) => await guildCreate(database, guild, whitelist, log));
 
@@ -143,6 +144,7 @@ bot.on("messageCreate", async message => {
   // blacklist(1, message);
   // autoresponse(message);
 
+  await checkForScam(message, database, bot, config, log)
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
