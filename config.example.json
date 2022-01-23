@@ -6,6 +6,7 @@
     "DEVELOPER_DISCORD_GUILD_ID": "",
     "defaultprefix": "!",
     "debug": "false",
+    "ytkey": "",
     "defaultCooldown": {
         "format": "2000",
         "text": "2 seconds"
@@ -64,6 +65,14 @@
         "roledelete": "roleDelete",
         "roleupdate": "roleUpdate",
         "warn": "warn"
+    },
+    "icons": {
+        "ban": "🔒",
+        "kick": "🚪",
+        "mute": "🔇",
+        "unmute": "📢",
+        "unban": "🔓",
+        "warn": "925792709871042560"
     },
     "settings": {
         "wc": {
