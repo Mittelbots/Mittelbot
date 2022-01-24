@@ -70,7 +70,7 @@ bot.on('guildMemberAdd', member => {
     if(await res.length == 0) {
       database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {log.fatal(err)});
     }else {
-      await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ?`, [member.user.id, member.guild.id]).then(async inf => {
+      await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
         if(await inf.length != 0) {
           member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]);
         }else {
@@ -144,7 +144,8 @@ bot.on("messageCreate", async message => {
   // blacklist(1, message);
   // autoresponse(message);
 
-  //await checkForScam(message, database, bot, config, log)
+  await checkForScam(message, database, bot, config, log)
+  
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
   let args = messageArray.slice(1);

@@ -26,7 +26,7 @@ async function muteUser(Member, message, bot, config, reason, time, dbtime) {
             insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime, time), reason, createInfractionId(), message.guild.id, JSON.stringify(user_roles))
             setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message.guild.id);
             publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, bot);
-            privateModResponse(Member, config.defaultModTypes.mute, reason, time, bot);
+            privateModResponse(Member, config.defaultModTypes.mute, reason, time, bot, message.guild.name);
         } catch (err) {
             return errorhandler(err, config.errormessages.general, message.channel, log, config)
         }
