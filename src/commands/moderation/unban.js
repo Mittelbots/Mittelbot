@@ -1,19 +1,16 @@
 const config = require('../../../config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { Database } = require('../../db/db');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
 
-const database = new Database();
-
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, database) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
 
-    if(!await hasPermission(message, 0, 1)) {
+    if(!await hasPermission(message, database, 0, 1)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);

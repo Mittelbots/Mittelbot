@@ -1,6 +1,6 @@
 const config = require('../../../config.json');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, database) => {
     if(config.deleteCommandsAfterUsage == 'true') {
         message.delete();
     }

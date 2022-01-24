@@ -1,9 +1,6 @@
-const { Database } = require("../db/db");
 const config = require('../../config.json');
 const { getCurrentDate } = require("../../utils/functions/getCurrentDate");
 const { log } = require('../../logs');
-
-const database = new Database();
 
 async function deleteEntries(infraction_id) {
     try {
@@ -14,7 +11,7 @@ async function deleteEntries(infraction_id) {
     }
 }
 
-function checkTemproles(bot) {
+function checkTemproles(bot, database) {
     setInterval(() => {
         database.query('SELECT * FROM temproles').then(async results => {
             let done = 0;

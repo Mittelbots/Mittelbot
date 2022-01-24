@@ -17,7 +17,7 @@ async function unbanUser(db, Member, config, message, log, reason, bot) {
         })
 
         try {
-            setNewModLogMessage(bot, config.defaultModTypes.unban, message.author.id, Member, reason, null, message.guild.id);
+            setNewModLogMessage(bot, config.defaultModTypes.unban, message.author.id, Member, reason, null, message.guild.id, database);
             publicModResponses(message, config.defaultModTypes.unban, message.author.id, Member, reason, null, bot);
             if(config.debug == 'true') console.info('Ban Command passed!')
             return await message.guild.members.unban(`${Member}`, `${reason}`).catch(err =>{

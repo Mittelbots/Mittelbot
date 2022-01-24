@@ -171,7 +171,7 @@ bot.on("messageCreate", async message => {
             return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
           } else {
             defaultCooldown.add(message.author.id);
-            commandfile.run(bot, message, args);
+            commandfile.run(bot, message, args, database);
 
             setTimeout(async () => {
               defaultCooldown.delete(message.author.id);
@@ -185,7 +185,7 @@ bot.on("messageCreate", async message => {
       }
     }else {
         if(!levelCooldown.has(message.author.id)) {
-          gainXP(message);
+          gainXP(message, database);
           levelCooldown.add(message.author.id);
         }else {
           setTimeout(() => {
@@ -200,8 +200,8 @@ bot.on("messageCreate", async message => {
 });
 
 bot.once('ready', async () => {
-  checkInfractions(bot);
-  checkTemproles(bot)
+  checkInfractions(bot, database);
+  checkTemproles(bot, database)
   auditLog(bot);
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());

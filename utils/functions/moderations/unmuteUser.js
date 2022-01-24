@@ -13,7 +13,7 @@ async function unmuteUser(db, message, member, bot, config, reason, log) {
     if(!member.roles.cache.has(MutedRole)) return message.channel.send(`<@${message.author.id}> The user isnt't muted.`)
 
     try {
-        setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, member.id, reason, null, message.guild.id);
+        setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, member.id, reason, null, message.guild.id, db);
         publicModResponses(message, config.defaultModTypes.unmute, message.author.id, member.id, reason, null, bot);
         privateModResponse(member, config.defaultModTypes.unmute, reason, null, bot, message.guild.name);
         db.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [member.id]).then(async res => {

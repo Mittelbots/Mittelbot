@@ -13,7 +13,7 @@ const { getEmote } = require('../../../utils/functions/getEmote');
 const { viewSetting } = require('../../../utils/functions/viewSetting');
 const { log } = require('../../../logs');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, database) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
@@ -31,7 +31,6 @@ module.exports.run = async (bot, message, args) => {
      * VIEW SETTINGS
      */
     if (value == '') {
-        const database = new Database();
         var currentsettings = database.query(`SELECT * FROM ${message.guild.id}_config LIMIT 1`).then(async res => {
             return await res[0];
         }).catch(err => {
@@ -199,7 +198,6 @@ module.exports.run = async (bot, message, args) => {
                     var roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
                     roles = roles.split(' ');
 
-                    const database = new Database();
                     var removedRoles = '';
                     let checkroles = database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
                         if(res.length > 0) { //? ROLES AREADY EXISTS
@@ -289,7 +287,6 @@ module.exports.run = async (bot, message, args) => {
                             dbcol = config.settings.messagelog.colname;
                             break;
                     }
-                    const database = new Database();
                     database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [channel.id]).then(() => {
                         return message.reply(`${channel} successfully saved!`);
                     }).catch(err => {
@@ -303,7 +300,6 @@ module.exports.run = async (bot, message, args) => {
                     var roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
                     roles = roles.split(' ');
 
-                    const database = new Database();
                     database.query(`DELETE FROM ${message.guild.id}_guild_warnroles`).catch(err => {
                         log.fatal(err);
                         if(config.debug == 'true') console.log(err);
@@ -342,7 +338,6 @@ module.exports.run = async (bot, message, args) => {
         }
 
         function saveSetting() {
-            const database = new Database();
             database.query(`UPDATE ${message.guild.id}_config SET ${setting} = ?`, [value]).catch(err => {
                 log.fatal(err);
                 if(config.debug == 'true') console.log(err);

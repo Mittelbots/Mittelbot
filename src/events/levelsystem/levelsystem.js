@@ -1,9 +1,6 @@
 const lvlconfig = require('../../assets/json/levelsystem/levelsystem.json');
-const { Database } = require('../../db/db');
 
-const database = new Database();
-
-async function gainXP(message) {
+async function gainXP(message, database) {
     if(message.author.bot) return;
 
     database.query(`SELECT xp FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [message.author.id]).then(async res => {
