@@ -25,7 +25,7 @@ async function banUser(db, member, message, reason, bot, config, log, dbtime, ti
     await insertDataToOpenInfraction(member.id, mod.id, 0, 1, getFutureDate(dbtime), reason, createInfractionId(), message.guild.id, null)
     await setNewModLogMessage(bot, config.defaultModTypes.ban, mod.id,  member.id, reason, time, message.guild.id);
     await publicModResponses(message, config.defaultModTypes.ban, mod, member.id, reason, time, bot);
-    await privateModResponse(member, config.defaultModTypes.ban, reason, time, bot)
+    await privateModResponse(member, config.defaultModTypes.ban, reason, time, bot, message.guild.name)
 }
 
 module.exports = {banUser};

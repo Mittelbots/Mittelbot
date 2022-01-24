@@ -57,7 +57,7 @@ function checkInfractions(bot) {
                             try {
                                 await giveAllRoles(results[i].user_id, results[i].guild_id , JSON.parse(results[i].user_roles), bot)
                                 setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id);
-                                privateModResponse(user, config.defaultModTypes.unmute, 'Auto', bot);
+                                privateModResponse(user, config.defaultModTypes.unmute, 'Auto', bot, await bot.guilds.cache.fetch(results[i].guild_id).name);
                                 await deleteEntries(results[i]);
                                 done++;
                                 mutecount++;

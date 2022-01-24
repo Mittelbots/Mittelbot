@@ -2,9 +2,9 @@ const { MessageEmbed } = require("discord.js");
 const { generateModEmote } = require("../functions/generateModEmote");
 const config = require('../../config.json');
 
-async function privateModResponse(member, type, reason, time, bot) {
+async function privateModResponse(member, type, reason, time, bot, guildname) {
     var privateModMessage = new MessageEmbed()
-    .setTitle(`${await generateModEmote(config, bot, type)} **You got ${type}!**`)
+    .setTitle(`${await generateModEmote(config, bot, type)} **You got ${type} from ${guildname}!**`)
     .addField(`Reason`, `${reason || "No Reason Provided!"}`)
     .setTimestamp();
     if(time) {
