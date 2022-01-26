@@ -1,11 +1,13 @@
 const { createMutedRole } = require("./createMutedRole");
 
-async function getMutedRole(message) {
+async function getMutedRole(message, guild) {
     let MutedRole;
     try {
-        MutedRole = await message.guild.roles.cache.find(role => role.name === "Muted").id;
+        MutedRole = await guild.roles.cache.find(role => role.name === "Muted").id;
     } catch (err) {
-        MutedRole = await createMutedRole(message);
+        if(message !== null) {
+            MutedRole = await createMutedRole(message);
+        }
     }
     return MutedRole;
 }

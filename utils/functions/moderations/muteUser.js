@@ -10,10 +10,10 @@ const { getAllRoles } = require("../roles/getAllRoles");
 const { getMutedRole } = require("../roles/getMutedRole");
 const { removeAllRoles } = require("../roles/removeAllRoles");
 
-async function muteUser(Member, message, bot, config, reason, time, dbtime) {
+async function muteUser(Member, message, bot, config, reason, time, dbtime, database) {
     var user_roles = await getAllRoles(Member);
     console.log(user_roles);
-    var MutedRole = await getMutedRole(message);
+    var MutedRole = await getMutedRole(message, message.guild);
 
     if (Member.roles.cache.has(MutedRole)) return message.channel.send(`Member Is Already Muted!`)
 
@@ -23,8 +23,8 @@ async function muteUser(Member, message, bot, config, reason, time, dbtime) {
 
     if (Member.roles.cache.has(MutedRole)) {
         try {
-            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime, time), reason, createInfractionId(), message.guild.id, JSON.stringify(user_roles))
-            setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message.guild.id);
+            insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime, time), reason, createInfractionId(database), message.guild.id, JSON.stringify(user_roles))
+            setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message.guild.id, database);
             publicModResponses(message, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, bot);
             privateModResponse(Member, config.defaultModTypes.mute, reason, time, bot, message.guild.name);
         } catch (err) {

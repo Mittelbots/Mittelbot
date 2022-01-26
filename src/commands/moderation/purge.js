@@ -1,11 +1,14 @@
 const config = require('../../../config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { log } = require('../../../logs');
+
+const {Database} = require('../../db/db')
+
+const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
     message.delete();
 
-    if(!await hasPermission(message, 0, 1)) {
+    if(!await hasPermission(message, database, 0, 1)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);

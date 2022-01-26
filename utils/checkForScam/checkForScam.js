@@ -7,7 +7,7 @@ async function checkForScam(message, database, bot, config, log) {
 
     // if(message.content.search('http') === -1) return
 
-    if(await isMod(await message.guild.members.fetch(message.author), message)) return;
+    if(await isMod(await message.guild.members.fetch(message.author), message, database)) return;
 
     axios.get('https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/domain-list.json').then(async res => {
         let data = res.data.domains;

@@ -1,11 +1,14 @@
 const config = require('../../../config.json');
+const {log} = require('../../../logs.js');
 
-module.exports.run = async (bot, message, args) => {
+const {execSync} = require('child_process');
+
+module.exports.run = async (bot, message, args, database) => {
     if(message.author.id === config.Bot_Owner_ID) {
         try {
             message.reply(`Ok sir, Bot stopped!`);
             log.info('------------BOT SUCCESSFULLY STOPPED------------');
-            process.exit();
+            execSync('npm run kill')
         }catch(err) {
             log.fatal(err);
             return message.reply(config.errormessages.general);

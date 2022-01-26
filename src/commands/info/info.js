@@ -2,11 +2,9 @@ const {
     MessageEmbed
 } = require('discord.js');
 const config = require('../../../config.json');
-const { log } = require('../../../logs');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const {
-    Database
-} = require('../../db/db');
+const {Database} = require('../../db/db')
+
+const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage  == 'true') {
@@ -52,7 +50,6 @@ module.exports.run = async (bot, message, args) => {
         .setTimestamp();
 
     if(tag) {
-        const database = new Database();
         var joined_at = await database.query(`SELECT user_joined FROM ${message.guild.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
             return await res[0].user_joined
         }).catch(err => {

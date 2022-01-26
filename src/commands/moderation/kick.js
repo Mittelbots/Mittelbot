@@ -5,13 +5,16 @@ const { checkMessage } = require('../../../utils/functions/checkMessage/checkMes
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 
+const {Database} = require('../../db/db')
+
+const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
-    if (!await hasPermission(message, 0, 0)) {
+    if (!await hasPermission(message, database, 0, 0)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -31,10 +34,10 @@ module.exports.run = async (bot, message, args) => {
     let reason = args.slice(1).join(" ");
     if (!reason) return message.channel.send('Please add a reason!');
 
-    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
+    if (await isMod(Member, message, database)) return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
 
 
-    return await kickUser(bot, Member, message, config, reason)
+    return await kickUser(bot, Member, message, config, reason, database)
 }
 
 module.exports.help = {

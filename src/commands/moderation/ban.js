@@ -1,13 +1,13 @@
 const config = require('../../../config.json');
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { Database } = require('../../db/db');
 const { isMod } = require('../../../utils/functions/isMod');
 const { log } = require('../../../logs');
 const { banUser } = require('../../../utils/functions/moderations/banUser');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const {Database} = require('../../db/db')
 
 const database = new Database();
 
@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
 
-    if(!await hasPermission(message, 0, 1)) {
+    if(!await hasPermission(message, database, 0, 1)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -33,7 +33,7 @@ module.exports.run = async (bot, message, args) => {
         return message.reply(`I can't find this user!`);
     }
 
-    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
+    if (await isMod(Member, message, database)) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
 
     let x = 1;
     var time = args[x]
