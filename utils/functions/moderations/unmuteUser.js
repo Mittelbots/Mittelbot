@@ -8,7 +8,7 @@ const { removeDataFromOpenInfractions } = require('../data/removeDataFromDatabas
 
 
 async function unmuteUser(db, message, member, bot, config, reason, log) {
-    var MutedRole = await getMutedRole(message);
+    var MutedRole = await getMutedRole(null, message);
 
     if(!member.roles.cache.has(MutedRole)) return message.channel.send(`<@${message.author.id}> The user isnt't muted.`)
 
