@@ -27,6 +27,8 @@ const { log } = require('./logs');
 
 const { giveAllRoles } = require("./utils/functions/roles/giveAllRoles");
 const { getAllRoles } = require("./utils/functions/roles/getAllRoles");
+const { checkForScam } = require("./utils/checkForScam/checkForScam");
+const { deployCommands } = require("./utils/functions/deployCommands/deployCommands");
 
 const defaultCooldown = new Set();
 const settingsCooldown = new Set();
@@ -42,28 +44,12 @@ const database = new Database();
 const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
 const whitelist = require('./whitelist.json');
 const token = require('./_secret/token.json');
-const { checkForScam } = require("./utils/checkForScam/checkForScam");
 
 bot.on('guildCreate', async (guild) => await guildCreate(database, guild, whitelist, log));
 
 bot.commands = new Discord.Collection();
 
-let modules = fs.readdirSync('./src/commands/');
-modules.forEach((module) => {
-  fs.readdir(`./src/commands/${module}`, (err, files) => {
-    if (err) {
-      log.warn('Missing folder!', err)
-      if(config.debug == 'true') console.log(`Mission Folder!!`, err);
-    }
-    files.forEach((file) => {
-      if (!file.endsWith('.js')) return;
-      let command = require(`./src/commands/${module}/${file}`);
-      console.log(`${command.help.name} Command has been loaded!`);
-      if (command.help.name) bot.commands.set(command.help.name, command)
-
-    })
-  });
-});
+deployCommands(fs, log, config, bot);
 
 bot.on('guildMemberAdd', member => {
   database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
@@ -171,7 +157,7 @@ bot.on("messageCreate", async message => {
             return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
           } else {
             defaultCooldown.add(message.author.id);
-            commandfile.run(bot, message, args, database);
+            commandfile.run(bot, message, args);
 
             setTimeout(async () => {
               defaultCooldown.delete(message.author.id);
