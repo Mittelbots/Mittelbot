@@ -186,8 +186,8 @@ bot.on("messageCreate", async message => {
 });
 
 bot.once('ready', async () => {
-  checkInfractions(bot, database);
-  checkTemproles(bot, database)
+  checkInfractions(bot);
+  checkTemproles(bot)
   auditLog(bot);
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
