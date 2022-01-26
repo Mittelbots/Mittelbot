@@ -18,6 +18,7 @@ const {
 const { gainXP } = require("./src/events/levelsystem/levelsystem");
 const { guildCreate } = require("./src/events/guildCreate/guildCreate");
 const { log } = require('./logs');
+const { errorhandler } = require('./utils/functions/errorhandler/errorhandler');
 // const {
 //   autoresponse
 // } = require("./utils/autoresponse/autoresponse");
@@ -56,6 +57,11 @@ bot.on('guildMemberAdd', member => {
     if(await res.length == 0) {
       database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {log.fatal(err)});
     }else {
+      if(res[0].user_joined == null) {
+        database.query(`UPDATE ${member.guild.id}_guild_member_info SET user_joined = ? WHERE user_id = ?`, [new Date(), member.user.id]).catch(err => {
+          return errorhandler(err, config.errormessages.databasequeryerror, null, log, config)
+        });
+      }
       await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
         if(await inf.length != 0) {
           member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]);
