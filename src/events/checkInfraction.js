@@ -6,7 +6,11 @@ const { log } = require('../../logs');
 const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
 const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
 
-async function deleteEntries(infraction, database) {
+const {Database} = require('../db/db')
+
+const database = new Database();
+
+async function deleteEntries(infraction) {
     try {
         insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
         database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id]).catch(err => console.log(err));
@@ -16,7 +20,7 @@ async function deleteEntries(infraction, database) {
     }
 }
 
-function checkInfractions(bot, database) {
+function checkInfractions(bot) {
     setInterval(() => {
         database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;
