@@ -1,7 +1,11 @@
 const config = require('../../../config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
-module.exports.run = async (bot, message, args, database) => {
+const {Database} = require('../../db/db')
+
+const database = new Database();
+
+module.exports.run = async (bot, message, args) => {
     message.delete();
 
     if(!await hasPermission(message, database, 0, 1)) {

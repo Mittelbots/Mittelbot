@@ -4,6 +4,7 @@ const { setNewModLogMessage } = require('../../utils/modlog/modlog');
 const { privateModResponse } = require('../../utils/privatResponses/privateModResponses');
 const { log } = require('../../logs');
 const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
+const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
 
 async function deleteEntries(infraction, database) {
     try {
@@ -40,26 +41,22 @@ function checkInfractions(bot, database) {
                 if ((currentdate - results[i].till_date) > 0 && currentdate[6] + currentdate[7] >= results[i].till_date[7] + results[i].till_date[7]) {
                     if(results[i].mute) {
                         try {
-                            try {
-                                var guild = await bot.guilds.cache.get(results[i].guild_id);
-                                var user = await guild.members.fetch(results[i].user_id).then(members => members);
-                            }catch(err) {
-                                //Member left or got kicked
-                                deleteEntries(results[i], database);
-                                continue;
-                            }
-                            
-                            try {
-                                await giveAllRoles(results[i].user_id, results[i].guild_id , JSON.parse(results[i].user_roles), bot)
-                                setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id, database);
-                                privateModResponse(user, config.defaultModTypes.unmute, 'Auto', bot, await bot.guilds.cache.get(results[i].guild_id).name);
-                                await deleteEntries(results[i], database);
-                                done++;
-                                mutecount++;
-                            }catch(err) {
-                                log.fatal(err);
-                                if(config.debug == 'true') console.log(err);
-                            }
+                            var guild = await bot.guilds.cache.get(results[i].guild_id);
+                            var user = await guild.members.fetch(results[i].user_id).then(members => members);
+                        }catch(err) {
+                            //Member left or got kicked
+                            deleteEntries(results[i], database);
+                            continue;
+                        }
+                        try {
+                            await giveAllRoles(results[i].user_id, results[i].guild_id , JSON.parse(results[i].user_roles), bot)
+                            setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id, database);
+                            privateModResponse(user, config.defaultModTypes.unmute, 'Auto', null, bot, guild.name);
+                            await deleteEntries(results[i], database);
+                            await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
+                            done++;
+                            mutecount++;
+                            continue;
                         }catch(err) {
                             log.fatal(err);
                             if(config.debug == 'true') console.log(err);

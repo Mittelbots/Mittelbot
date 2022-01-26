@@ -4,7 +4,11 @@ const { publicInfractionResponse } = require('../../../utils/publicResponses/pub
 const { log } = require('../../../logs');
 
 
-module.exports.run = async (bot, message, args, database) => {
+const {Database} = require('../../db/db')
+
+const database = new Database();
+
+module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }

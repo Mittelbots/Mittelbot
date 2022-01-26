@@ -5,8 +5,11 @@ const { checkMessage } = require('../../../utils/functions/checkMessage/checkMes
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 
+const {Database} = require('../../db/db')
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database();
+
+module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }

@@ -4,12 +4,13 @@ const {
     Permissions
 } = require('discord.js');
 const {
-    Database
-} = require('../../db/db');
-const {
     viewSetting
 } = require('../../../utils/functions/viewSetting');
 const { log } = require('../../../logs');
+
+const {Database} = require('../../db/db')
+
+const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {

@@ -7,8 +7,11 @@ const { banUser } = require('../../../utils/functions/moderations/banUser');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const {Database} = require('../../db/db')
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database();
+
+module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }

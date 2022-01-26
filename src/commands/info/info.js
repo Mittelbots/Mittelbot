@@ -2,8 +2,11 @@ const {
     MessageEmbed
 } = require('discord.js');
 const config = require('../../../config.json');
+const {Database} = require('../../db/db')
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database();
+
+module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage  == 'true') {
         message.delete();
     }
