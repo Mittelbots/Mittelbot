@@ -6,9 +6,6 @@ const {
     MessageActionRow,
     MessageButton 
 } = require('discord.js');
-const {
-    viewSetting
-} = require('../../../utils/functions/viewSetting');
 const { log } = require('../../../logs');
 
 const {Database} = require('../../db/db');
