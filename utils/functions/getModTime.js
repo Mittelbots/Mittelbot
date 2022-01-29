@@ -1,6 +1,7 @@
 function getModTime(time) {
     let format;
     let dbtime;
+    if(time == undefined) return dbtime = false;
     if(time.search('s') !== -1) {
         format = 's';
         dbtime = (time.replace(format, ''))
