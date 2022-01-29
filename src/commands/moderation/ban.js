@@ -9,15 +9,17 @@ const { checkMessage } = require('../../../utils/functions/checkMessage/checkMes
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const {Database} = require('../../db/db')
 
-const database = new Database();
-
 module.exports.run = async (bot, message, args) => {
+
+    const database = new Database();
+
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
 
     if(!await hasPermission(message, database, 0, 1)) {
         message.delete();
+        database.close();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
@@ -30,15 +32,22 @@ module.exports.run = async (bot, message, args) => {
 
         if(checkMessage(message, Member, bot, 'ban')) return message.reply(checkMessage(message, Member, bot, 'ban'));
     }catch(err) {
+        database.close();
         return message.reply(`I can't find this user!`);
     }
 
-    if (await isMod(Member, message, database)) return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
+    if (await isMod(Member, message, database)) {
+        database.close();
+        return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
+    }
 
     let x = 1;
     var time = args[x]
 
-    if(time === undefined) return message.reply('Please add a valid time and reason!');
+    if(time === undefined) {
+        database.close();
+        return message.reply('Please add a valid time and reason!');
+    }
 
     while(time == '') {
         time = args[x];
@@ -57,7 +66,10 @@ module.exports.run = async (bot, message, args) => {
 
     if(!reason) return message.channel.send('Please add a reason!');
 
-    if(await isBanned(database, Member, message)) return message.reply('This user is already banned!')
+    if(await isBanned(database, Member, message)) {
+        database.close();
+        return message.reply('This user is already banned!')
+    }
 
     return await banUser(database, Member, message, reason, bot, config, log, dbtime, time);
 }

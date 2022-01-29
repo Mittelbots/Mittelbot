@@ -7,14 +7,16 @@ const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 
 const {Database} = require('../../db/db')
 
-const database = new Database();
-
 module.exports.run = async (bot, message, args) => {
+
+    const database = new Database();
+
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
     if (!await hasPermission(message, database, 0, 0)) {
+        database.close();
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -26,18 +28,28 @@ module.exports.run = async (bot, message, args) => {
 
         var Member = await message.guild.members.fetch(args[0]);
         
-        if(checkMessage(message, Member, bot, 'kick')) return message.reply(checkMessage(message, Member, bot, 'kick'));
+        if(checkMessage(message, Member, bot, 'kick')) {
+            database.close();
+            return message.reply(checkMessage(message, Member, bot, 'kick'));
+        }
     }catch(err) {
+        database.close();
         return message.reply(`I can't find this user!`);
     }
 
     let reason = args.slice(1).join(" ");
-    if (!reason) return message.channel.send('Please add a reason!');
+    if (!reason) {
+        database.close();
+        return message.channel.send('Please add a reason!');
+    }
 
-    if (await isMod(Member, message, database)) return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
+    if (await isMod(Member, message, database)) {
+        database.close();
+        return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
+    }
 
 
-    return await kickUser(bot, Member, message, config, reason, database)
+    return await kickUser(bot, Member, message, config, reason, database);
 }
 
 module.exports.help = {

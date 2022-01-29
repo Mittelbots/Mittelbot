@@ -6,13 +6,15 @@ const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser'
 
 const {Database} = require('../../db/db')
 
-const database = new Database();
-
 module.exports.run = async (bot, message, args) => {
+
+    const database = new Database();
+
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
     if(!await hasPermission(message, database, 0, 0)) {
+        database.close();
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -25,12 +27,13 @@ module.exports.run = async (bot, message, args) => {
         var Member = await message.guild.members.fetch(args[0]);
         
     }catch(err) {
+        database.close();
         return message.reply(`I can't find this user!`);
     }    
     
     let reason = args.slice(1).join(" ");
 
-    return await unmuteUser(database, message, Member, bot, config, reason, log)
+    return await unmuteUser(database, message, Member, bot, config, reason, log);
 
 }
 
