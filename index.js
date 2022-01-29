@@ -191,6 +191,10 @@ bot.on("messageCreate", async message => {
   });
 });
 
+process.on('unhandledRejection', err => {
+  return errorhandler(err, null, null, log, config)
+});
+
 bot.once('ready', async () => {
   checkInfractions(bot);
   checkTemproles(bot)
