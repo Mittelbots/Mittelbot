@@ -1,4 +1,5 @@
 const { Database } = require("../../src/db/db");
+const { errorhandler } = require("./errorhandler/errorhandler");
 
 const database = new Database;
 
@@ -14,8 +15,24 @@ async function insertDataToTemproles (uid, role_id, till_date, infraction_id, gi
     database.query('INSERT INTO temproles (user_id, role_id, till_date, infraction_id, guild_id) VALUES (?, ?, ?, ?, ?)', [uid, role_id, till_date, infraction_id, gid]).catch(err => console.log(err));
 }
 
+async function insertPermsToModroles(guild_id, role_id, isadmin, ismod, ishelper) {
+    database.query(`INSERT INTO ${guild_id}_guild_modroles (role_id, isadmin, ismod, ishelper) VALUES (?, ?, ?, ?)`, [role_id, isadmin, ismod, ishelper]).catch(err => console.log(err));
+}
+
+async function updatePermsFromModroles(guild_id, role_id, isadmin, ismod, ishelper) {
+    console.log(guild_id, role_id, isadmin, ismod, ishelper)
+    database.query(`UPDATE ${guild_id}_guild_modroles SET isadmin = ?, ismod = ?, ishelper = ? WHERE role_id = ?`, [isadmin, ismod, ishelper, role_id]).catch(err => console.log(err))
+}
+
+async function deletePermsFromModroles(guild_id, role_id) {
+    database.query(`DELETE FROM ${guild_id}_guild_modroles WHERE role_id = ?`, [role_id]).catch(err => console.log(err))
+}
+
 module.exports = {
     insertDataToClosedInfraction,
     insertDataToOpenInfraction,
-    insertDataToTemproles
+    insertDataToTemproles,
+    insertPermsToModroles,
+    updatePermsFromModroles,
+    deletePermsFromModroles
 }

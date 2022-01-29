@@ -4,7 +4,8 @@ const { publicInfractionResponse } = require('../../../utils/publicResponses/pub
 const { log } = require('../../../logs');
 
 
-const {Database} = require('../../db/db')
+const {Database} = require('../../db/db');
+const { removeMention } = require('../../../utils/functions/removeCharacters');
 
 const database = new Database();
 
@@ -26,6 +27,7 @@ module.exports.run = async (bot, message, args) => {
         Member = message.author;
     }else {
         try {
+            args[0] = removeMention(args[0]);
             Member = await message.guild.members.fetch(args[0]) || args[0];
         }catch(err) {
             Member = args[0];
