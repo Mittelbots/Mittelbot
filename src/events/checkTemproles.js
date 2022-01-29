@@ -4,11 +4,11 @@ const { log } = require('../../logs');
 
 const {Database} = require('../db/db')
 
-const database = new Database();
-
 async function deleteEntries(infraction_id) {
     try {
+        const database = new Database();
         database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).catch(err => console.log(err))
+        database.close();
     }catch(err) {
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
@@ -17,6 +17,7 @@ async function deleteEntries(infraction_id) {
 
 function checkTemproles(bot) {
     setInterval(() => {
+        const database = new Database();
         database.query('SELECT * FROM temproles').then(async results => {
             let done = 0;
             for (let i in results) {
@@ -39,10 +40,12 @@ function checkTemproles(bot) {
                     }
                 }
             }
+            database.close();
             console.log(`Check Temproles finished. ${done} roles removed`)
         }).catch(err => {
             log.fatal(err);
             if(config.debug == 'true') console.log(err);
+            database.close();
         });
     }, config.defaultCheckTemprolesTimer);
 }

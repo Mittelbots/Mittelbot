@@ -10,5 +10,37 @@
             "val": "mention",
             "exp": "@role isAdmin(0/false or 1/true) isMod(0/false or 1/true) isHelper(0/false or 1/true)"
         }
+    },
+    "scam": {
+        "add": {
+            "name": "Add link to Scamlist",
+            "command": "add",
+            "alias": "",
+            "desc": "Add a link to the advanced ScamList managed by the Community",
+            "icon": "",
+            "colname": "",
+            "val": "",
+            "exp": "link.com"
+        },
+        "delete": {
+            "name": "Delete link from Scamlist",
+            "command": "delete",
+            "alias": "del",
+            "desc": "Remove a link to the advanced ScamList managed by the Community",
+            "icon": "",
+            "colname": "",
+            "val": "",
+            "exp": "link.com"
+        },
+        "view": {
+            "name": "View ScamList",
+            "command": "view",
+            "alias": "",
+            "desc": "Check if a link already exits on Scamlist",
+            "icon": "",
+            "colname": "",
+            "val": "",
+            "exp": "link.com"
+        }
     }
 }

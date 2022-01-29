@@ -14,6 +14,7 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
     if (!await hasPermission(message, database, 0, 0)) {
+        database.close();
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -26,13 +27,17 @@ module.exports.run = async (bot, message, args) => {
 
         if(checkMessage(message, Member, bot, 'warn')) return message.reply(checkMessage(message, Member, bot, 'warn'));
     }catch(err) {
+        database.close();
         return message.reply(`I can't find this user!`);
     }
 
     if (await isMod(Member, message, database)) return message.channel.send(`<@${message.author.id}> You can't warn a Moderator!`) 
 
     let reason = args.slice(1).join(" ");
-    if (!reason) return message.reply('Please add a reason!');
+    if (!reason) {
+        database.close();
+        return message.reply('Please add a reason!');
+    }
     
     return await warnUser(bot, config, message, Member, reason, database, log);
 }

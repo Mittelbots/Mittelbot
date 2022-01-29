@@ -7,14 +7,17 @@ const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
 
 const {Database} = require('../../db/db')
 
-const database = new Database();
 
 module.exports.run = async (bot, message, args) => {
+
+    const database = new Database();
+
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
 
     if(!await hasPermission(message, database, 0, 1)) {
+        database.close();
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -22,14 +25,23 @@ module.exports.run = async (bot, message, args) => {
     }
 
     let Member = args[0];
-    if (!Member) return message.reply(`<@${message.author.id}> You have to mention a user`);
+    if (!Member) {
+        database.close();
+        return message.reply(`You have to mention a user`);
+    }
     Member = removeMention(Member)
 
     let reason = args.slice(1).join(" ");
-    if(!reason) return message.channel.send('Please add a reason!');
+    if(!reason) {
+        database.close();
+        return message.channel.send('Please add a reason!');
+    }
 
 
-    if(await isBanned(database, Member, message) == false) return message.reply('This user isn`t banned!')
+    if(await isBanned(database, Member, message) == false) {
+        database.close();
+        return message.reply('This user isn`t banned!')
+    }
 
     return await unbanUser(database, Member, config, message, log, reason, bot);
 }

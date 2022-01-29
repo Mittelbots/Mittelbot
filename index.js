@@ -40,7 +40,7 @@ const bot = new Discord.Client({
 });
 bot.setMaxListeners(0);
 
-const database = new Database();
+
 
 const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
 const whitelist = require('./whitelist.json');
@@ -53,12 +53,18 @@ bot.commands = new Discord.Collection();
 deployCommands(fs, log, config, bot);
 
 bot.on('guildMemberAdd', member => {
+  const database = new Database();
+
   database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
     if(await res.length == 0) {
-      database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {log.fatal(err)});
+      database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
+        log.fatal(err);
+        return database.close();
+      });
     }else {
       if(res[0].user_joined == null) {
         database.query(`UPDATE ${member.guild.id}_guild_member_info SET user_joined = ? WHERE user_id = ?`, [new Date(), member.user.id]).catch(err => {
+          database.close();
           return errorhandler(err, config.errormessages.databasequeryerror, null, log, config)
         });
       }
@@ -72,14 +78,19 @@ bot.on('guildMemberAdd', member => {
           //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
           if(user_roles !== null && user_roles.indexOf(member.roles.cache.find(r => r.name === 'Muted')) !== -1) user_roles = user_roles.filter(val => {return val !== member.roles.cache.find(r => r.name === 'Muted').id});
 
-          await giveAllRoles(member, member.guild, user_roles, bot);
+          giveAllRoles(member, member.guild, user_roles, bot);
         }
       }).catch(err => {
-        log.fatal(err)
+        database.close();
+        return log.fatal(err)
       });
     }
+    database.close();
     return;
-  }).catch(err => log.fatal(err));
+  }).catch(err => {
+    log.fatal(err)
+    return database.close();
+  });
 
   database.query(`SELECT welcome_channel FROM ${member.guild.id}_config`).then(res => {
     if (res[0].welcome_channel !== null) {
@@ -88,6 +99,7 @@ bot.on('guildMemberAdd', member => {
   }).catch(err => { 
     log.fatal(err);
     if(config.debug == 'true') console.log(err) 
+    return database.close();
   })
 
   database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
@@ -98,6 +110,7 @@ bot.on('guildMemberAdd', member => {
         member.roles.add(role);
       } catch (err) {
         //NO PERMISSONS
+        return database.close();
       }
       // }, 10000);
     }
@@ -105,15 +118,20 @@ bot.on('guildMemberAdd', member => {
   }).catch(err => {
     log.fatal(err);
     if(config.debug == 'true') console.log(err)
+    return database.close();
   });
 });
 
+
 bot.on('guildMemberRemove', member => {
+  const database = new Database();
+  
   database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
     if(await res.length == 0) {
       database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, member_roles) VALUES (?, ?)`, [member.user.id, JSON.stringify(await getAllRoles(member)) ]).catch(err => {
         log.fatal(err);
         if(config.debug == 'true') console.log(err)
+        return database.close();
       });
     }else {
       if(JSON.parse(res[0].member_roles) === await getAllRoles(member)) return;
@@ -121,9 +139,14 @@ bot.on('guildMemberRemove', member => {
         database.query(`UPDATE ${member.guild.id}_guild_member_info SET member_roles = ? WHERE user_id = ?`, [JSON.stringify(await getAllRoles(member)), member.user.id]).catch(err => {
           log.fatal(err);
           if(config.debug == 'true') console.log(err)
+          return database.close();
         })
       }
     }
+  }).catch(err =>{
+    log.fatal(err)
+    if(config.debug == 'true') console.log(err);
+    return database.close();
   });
 });
 
@@ -135,6 +158,8 @@ bot.on("messageCreate", async message => {
   if (message.channel.type === "dm") return;
   // blacklist(1, message);
   // autoresponse(message);
+
+  const database = new Database();
 
   await checkForScam(message, database, bot, config, log)
   
@@ -151,7 +176,10 @@ bot.on("messageCreate", async message => {
       let commandfile = bot.commands.get(cmd.slice(prefix[0].prefix.length));
       if (commandfile) { //&& blacklist(0, message)
         database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(res => {
-          if(settingsCooldown.has(message.author.id) && cmd === `${prefix[0].prefix}settings`) return message.channel.send(`You have to wait ${config.defaultSettingsCooldown.text} after each Settings Command.`);
+          if(settingsCooldown.has(message.author.id) && cmd === `${prefix[0].prefix}settings`) {
+            database.close()
+            return message.channel.send(`You have to wait ${config.defaultSettingsCooldown.text} after each Settings Command.`);
+          }
           else {
             settingsCooldown.add(message.author.id);
             setTimeout(async () => {
@@ -160,6 +188,7 @@ bot.on("messageCreate", async message => {
           }
 
           if (defaultCooldown.has(message.author.id)) {
+            database.close()
             return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
           } else {
             defaultCooldown.add(message.author.id);
@@ -173,6 +202,7 @@ bot.on("messageCreate", async message => {
         }).catch(err => {
           log.fatal(err);
           if(config.debug == 'true') console.log(err);
+          return database.close();
         })
       }
     }else {
@@ -188,8 +218,17 @@ bot.on("messageCreate", async message => {
   }).catch(err => {
     log.fatal(err);
     if(config.debug == 'true') console.log(err)
+    return database.close()
   });
 });
+
+process.on('unhandledRejection', err => {
+  return errorhandler(err, null, null, log, config)
+});
+
+process.on('uncaughtException', err => {
+  return errorhandler(err, null, null, log, config)
+})
 
 bot.once('ready', async () => {
   checkInfractions(bot);
