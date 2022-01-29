@@ -6,17 +6,17 @@ const { errorhandler } = require("../errorhandler/errorhandler");
 const { getFutureDate } = require("../getFutureDate");
 const { insertDataToOpenInfraction } = require("../insertDataToDatabase");
 
-async function banUser(db, member, message, reason, bot, config, log, dbtime, time, isAuto) {
+async function banUser(database, member, message, reason, bot, config, log, dbtime, time, isAuto) {
 
     if(isAuto) mod = bot.user;
     else mod = message.author;
 
-    let infid = createInfractionId(db);
+    let infid = createInfractionId(database);
     let pass = false
 
     if(config.debug == 'true') console.info('Ban Command passed!');
     let x = await member.ban({reason: reason}).then(() => {pass = true}).catch(err => {
-        return db.query(`DELETE FROM open_infractions WHERE infraction_id = ?`, [infid]).catch(err => {
+        return database.query(`DELETE FROM open_infractions WHERE infraction_id = ?`, [infid]).catch(err => {
             pass = false;
             return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
         });

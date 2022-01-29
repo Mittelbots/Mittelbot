@@ -1,5 +1,4 @@
 const {MessageEmbed} = require('discord.js');
-const { getEmote } = require('../functions/getEmote');
 const config = require('../../config.json');
 const { generateModEmote } = require('../functions/generateModEmote');
 

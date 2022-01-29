@@ -64,7 +64,10 @@ module.exports.run = async (bot, message, args) => {
     let reason = args.slice(x).join(" ");
     reason = reason.replace(time, '');
 
-    if(!reason) return message.channel.send('Please add a reason!');
+    if(!reason) {
+        database.close();
+        return message.channel.send('Please add a reason!');
+    }
 
     if(await isBanned(database, Member, message)) {
         database.close();
