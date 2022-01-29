@@ -13,14 +13,34 @@
     },
     "scam": {
         "add": {
-            "name": "Scam List",
+            "name": "Add link to Scamlist",
             "command": "add",
             "alias": "",
             "desc": "Add a link to the advanced ScamList managed by the Community",
             "icon": "",
             "colname": "",
-            "val": "link",
-            "exo": "link.com"
+            "val": "",
+            "exp": "link.com"
+        },
+        "delete": {
+            "name": "Delete link from Scamlist",
+            "command": "delete",
+            "alias": "del",
+            "desc": "Remove a link to the advanced ScamList managed by the Community",
+            "icon": "",
+            "colname": "",
+            "val": "",
+            "exp": "link.com"
+        },
+        "view": {
+            "name": "View ScamList",
+            "command": "view",
+            "alias": "",
+            "desc": "Check if a link already exits on Scamlist",
+            "icon": "",
+            "colname": "",
+            "val": "",
+            "exp": "link.com"
         }
     }
 }
