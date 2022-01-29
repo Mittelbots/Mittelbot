@@ -10,5 +10,17 @@
             "val": "mention",
             "exp": "@role isAdmin(0/false or 1/true) isMod(0/false or 1/true) isHelper(0/false or 1/true)"
         }
+    },
+    "scam": {
+        "add": {
+            "name": "Scam List",
+            "command": "add",
+            "alias": "",
+            "desc": "Add a link to the advanced ScamList managed by the Community",
+            "icon": "",
+            "colname": "",
+            "val": "link",
+            "exo": "link.com"
+        }
     }
 }
