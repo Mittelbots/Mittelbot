@@ -118,7 +118,7 @@ module.exports.run = async (bot, message, args) => {
         }
 
         
-        const embedMessage = await message.reply({embeds: [modroleembed], components: [row]});
+        const embedMessage = await message.channel.send({embeds: [modroleembed], components: [row]});
 
         const collector = embedMessage.createMessageComponentCollector({
             filter: ({user}) => user.id === message.author.id,
@@ -160,6 +160,7 @@ module.exports.run = async (bot, message, args) => {
         collector.on('end', (collected, reason) => {
             if(reason == 'time'){
                 for(let i in row.components) {
+                    row.components[i].setStyle('DANGER');
                     row.components[i].setDisabled(true)
                 }
                 embedMessage.edit({content: '**Time limit reached**', embeds: [modroleembed], components: [row]})
