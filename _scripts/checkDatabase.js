@@ -7,6 +7,16 @@ const database = new Database();
 
 
 async function main() {
+
+    for(let t in tables.nondynamical) {
+        await database.query(`CREATE TABLE ${t} (id INT AUTO_INCREMENT PRIMARY KEY)`).catch(err => {console.log(err)})
+        for(let c in tables.nondynamical[t]) {
+            await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables.nondynamical[t][c].name} ${tables.nondynamical[t][c].val}`).catch(err => console.log(err))
+        }
+    }
+
+    return;
+
     var guildids = await database.query(`SELECT * FROM all_guild_id`).then(async res => {
         return await res;
     }).catch(err => {

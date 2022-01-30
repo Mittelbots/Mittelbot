@@ -1,5 +1,10 @@
 {
     "tables": [
+        "advancedScamList",
+        "all_guild_id",
+        "closed_infractions",
+        "open_infractions",
+        "temproles",
         "_config", 
         "_guild_joinroles",
         "_guild_logs", 
@@ -8,6 +13,138 @@
         "_guild_level",
         "_guild_member_info"
     ],
+    "nondynamical": {
+        "advancedScamList": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "link": {
+                "name": "link",
+                "val": "VARCHAR(255)"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            }
+        },
+        "all_guild_id": {
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            }
+        },
+        "closed_infractions": {
+            "id": {
+                "name": "id",
+                "val":"INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "user_id": {
+                "name": "user_id",
+                "val":"VARCHAR(255)"
+            },
+            "mod_id": {
+                "name": "mod_id",
+                "val":"VARCHAR(255)"
+            },
+            "mute": {
+                "name": "mute",
+                "val": "INT(4)"
+            },
+            "ban": {
+                "name": "ban",
+                "val": "INT(4)"
+            },
+            "warn": {
+                "name": "warn",
+                "val": "INT(4)"
+            },
+            "kick": {
+                "name": "kick",
+                "val": "INT(4)"
+            },
+            "till_date": {
+                "name": "till_date",
+                "val": "VARCHAR(255)"
+            },
+            "reason": {
+                "name": "reason",
+                "val": "VARCHAR(255)"
+            },
+            "infraction_id": {
+                "name": "infraction_id",
+                "val": "VARCHAR(255)"
+            }
+        },
+        "open_infractions": {
+            "id": {
+                "name": "id",
+                "val":"INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "user_id": {
+                "name": "user_id",
+                "val":"VARCHAR(255)"
+            },
+            "mod_id": {
+                "name": "mod_id",
+                "val":"VARCHAR(255)"
+            },
+            "mute": {
+                "name": "mute",
+                "val": "INT(4)"
+            },
+            "ban": {
+                "name": "ban",
+                "val": "INT(4)"
+            },
+            "till_date": {
+                "name": "till_date",
+                "val": "VARCHAR(255)"
+            },
+            "reason": {
+                "name": "reason",
+                "val": "VARCHAR(255)"
+            },
+            "infraction_id": {
+                "name": "infraction_id",
+                "val": "VARCHAR(255)"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val":"VARCHAR(255)"
+            },
+            "user_roles": {
+                "name": "user_roles",
+                "val": "LONGTEXT"
+            }
+        },
+        "temproles": {
+            "id": {
+                "name": "id",
+                "val":"INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "user_id": {
+                "name": "user_id",
+                "val":"VARCHAR(255)"
+            },
+            "role_id": {
+                "name": "role_id",
+                "val":"VARCHAR(255)"
+            },
+            "till_date": {
+                "name": "till_date",
+                "val": "VARCHAR(255)"
+            },
+            "infraction_id": {
+                "name": "infraction_id",
+                "val": "VARCHAR(255)"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val":"VARCHAR(255)"
+            }
+        }
+    },
     "_config": {
         "id": {
             "name": "id",
