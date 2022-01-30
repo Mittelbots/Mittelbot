@@ -1,4 +1,4 @@
-const config = require('../../../config.json');
+const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {

@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const config = require('../../src/assets/json/_config/config.json');
 const autoresponseconfig = require('../../autoresponse.json');
 
 function autoresponse(message) {

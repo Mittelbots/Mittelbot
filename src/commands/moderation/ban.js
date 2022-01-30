@@ -1,4 +1,4 @@
-const config = require('../../../config.json');
+const config = require('../../../src/assets/json/_config/config.json');
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isMod } = require('../../../utils/functions/isMod');

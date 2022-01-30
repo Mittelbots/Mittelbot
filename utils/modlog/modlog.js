@@ -1,5 +1,5 @@
 const {MessageEmbed} = require('discord.js');
-const config = require('../../config.json');
+const config = require('../../src/assets/json/_config/config.json');
 const { generateModEmote } = require('../functions/generateModEmote');
 
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid, database) {

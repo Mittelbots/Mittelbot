@@ -1,5 +1,5 @@
-const config = require('../../../config.json');
-const commandconfig = require('../../../command_config.json');
+const config = require('../../../src/assets/json/_config/config.json');
+const commandconfig = require('../../assets/json/command_config/command_config.json');
 const {
     Permissions,
     MessageEmbed,
