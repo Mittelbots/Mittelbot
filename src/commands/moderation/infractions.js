@@ -43,13 +43,11 @@ module.exports.run = async (bot, message, args) => {
     var closed = []
     var open = []
     await database.query(`SELECT * FROM closed_infractions WHERE user_id = ?`, [Member.id || Member]).then(async res => closed.push(await res)).catch(err => {
-        database.close();
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
         return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     });
     await database.query(`SELECT * FROM open_infractions WHERE user_id = ?`, [Member.id || Member]).then(async res => open.push(await res)).catch(err => {
-        database.close();
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
         return message.channel.send(`${config.errormessages.databasequeryerror}`); 

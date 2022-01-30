@@ -12,7 +12,6 @@ const { removeHttp } = require('../../../utils/functions/removeCharacters');
 const dns = require('dns');
 const url = require('url');
 
-const fs = require('fs')
 
 const {Database} = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
@@ -57,7 +56,9 @@ module.exports.run = async (bot, message, args) => {
                 }
                 pass = true;
             }
-        });
+        }).catch(err => {
+            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+        })
         if(!pass) return database.close();
 
         const parsedLookupUrl = url.parse(value);

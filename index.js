@@ -202,7 +202,6 @@ bot.on("messageCreate", async message => {
         }).catch(err => {
           log.fatal(err);
           if(config.debug == 'true') console.log(err);
-          return database.close();
         })
       }
     }else {
@@ -218,7 +217,6 @@ bot.on("messageCreate", async message => {
   }).catch(err => {
     log.fatal(err);
     if(config.debug == 'true') console.log(err)
-    return database.close()
   });
 });
 

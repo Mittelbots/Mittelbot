@@ -13,13 +13,15 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { insertPermsToModroles, deletePermsFromModroles, updatePermsFromModroles } = require('../../../utils/functions/insertDataToDatabase');
 
-const database = new Database();
-
 module.exports.run = async (bot, message, args) => {
+
+    const database = new Database();
+
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
     if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+        database.close();
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -65,7 +67,7 @@ module.exports.run = async (bot, message, args) => {
                 status = true;
             }
         }).catch(err => {
-            errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
         });
         
         if(roleid == null) value = removeMention(value);
@@ -174,10 +176,8 @@ module.exports.run = async (bot, message, args) => {
                 embedMessage.edit({embeds: [modroleembed], components: [row]})
             });
             
-            return;
+            return database.close();
         });
-
-
         return;
 
     } else return;
