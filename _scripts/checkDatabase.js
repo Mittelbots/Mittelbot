@@ -1,7 +1,7 @@
 const {Database} = require('../src/db/db');
 const tables = require('../src/db/table.json');
 const readline = require('readline');
-const config = require('../config.json');
+const config = require('../src/assets/json/_config/config.json');
 
 const database = new Database();
 

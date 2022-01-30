@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const config = require('../../src/assets/json/_config/config.json');
 const { getCurrentDate } = require("../../utils/functions/getCurrentDate");
 const { log } = require('../../logs');
 
@@ -43,9 +43,8 @@ function checkTemproles(bot) {
             database.close();
             console.log(`Check Temproles finished. ${done} roles removed`)
         }).catch(err => {
-            log.fatal(err);
             if(config.debug == 'true') console.log(err);
-            database.close();
+            return log.fatal(err);
         });
     }, config.defaultCheckTemprolesTimer);
 }

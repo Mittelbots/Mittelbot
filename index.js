@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const fs = require('fs');
 
-const config = require('./config.json');
+const config = require('./src/assets/json/_config/config.json');
 const {
   Database
 } = require("./src/db/db");
@@ -31,7 +31,7 @@ const { checkForScam } = require("./utils/checkForScam/checkForScam");
 const { deployCommands } = require("./utils/functions/deployCommands/deployCommands");
 
 const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
-const whitelist = require('./whitelist.json');
+const whitelist = require('./src/assets/json/whitelist/whitelist.json');
 const token = require('./_secret/token.json');
 
 const defaultCooldown = new Set();

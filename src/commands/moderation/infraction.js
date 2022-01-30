@@ -1,4 +1,4 @@
-const config = require('../../../config.json');
+const config = require('../../../src/assets/json/_config/config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const { log } = require('../../../logs');

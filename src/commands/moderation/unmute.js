@@ -1,4 +1,4 @@
-const config = require('../../../config.json');
+const config = require('../../../src/assets/json/_config/config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');

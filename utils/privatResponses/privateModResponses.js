@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { generateModEmote } = require("../functions/generateModEmote");
-const config = require('../../config.json');
+const config = require('../../src/assets/json/_config/config.json');
 
 async function privateModResponse(member, type, reason, time, bot, guildname) {
     var privateModMessage = new MessageEmbed()

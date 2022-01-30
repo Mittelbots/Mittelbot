@@ -1,5 +1,5 @@
 const { createConnection } = require('mysql');
-const config = require('../../config.json');
+const config = require('../../src/assets/json/_config/config.json');
 const dbconfig = require('./db_config.json');
 
 class Database {

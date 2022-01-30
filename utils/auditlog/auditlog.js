@@ -1,6 +1,6 @@
 const {MessageEmbed} = require('discord.js');
-const config = require('../../config.json');
-const ignorechannel = require('../../ignorechannel.json');
+const config = require('../../src/assets/json/_config/config.json');
+const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
 
 const {Database} = require('../../src/db/db')
 

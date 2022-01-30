@@ -5,7 +5,7 @@
  * @param {Array} roles 
  */
 
-const config = require('../../../config.json');
+const config = require('../../../src/assets/json/_config/config.json');
 
 async function giveAllRoles(user, guild, roles, bot) {
     if(roles.length !== 0) {
