@@ -41,6 +41,7 @@ module.exports.run = async (bot, message, args) => {
         return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
     }
 
+
     let x = 1;
     var time = args[x]
 
@@ -52,7 +53,6 @@ module.exports.run = async (bot, message, args) => {
     while(time == '') {
         time = args[x];
         x++;
-        console.log(x)
     }
 
     let dbtime = getModTime(time);

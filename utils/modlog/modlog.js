@@ -29,7 +29,8 @@ function sendToModLog(bot, message, gid, database) {
                 return true;
             }
         }
-    }).catch(err => console.log(err));
+    }).catch(err => console.log(err))
+    return;
 }
 
 
