@@ -41,8 +41,9 @@ const levelCooldown = new Set();
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"],
   makeCache: Discord.Options.cacheWithLimits({
-		MessageManager: 10,
+		MessageManager: 0,
 		PresenceManager: 0,
+    disableMentions: 'everyone'
 		// Add more class names here
 	}),
 });
