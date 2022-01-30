@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const fs = require('fs');
-const axios = require("axios")
 
 const config = require('./config.json');
 const {
@@ -31,20 +30,24 @@ const { getAllRoles } = require("./utils/functions/roles/getAllRoles");
 const { checkForScam } = require("./utils/checkForScam/checkForScam");
 const { deployCommands } = require("./utils/functions/deployCommands/deployCommands");
 
+const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
+const whitelist = require('./whitelist.json');
+const token = require('./_secret/token.json');
+
 const defaultCooldown = new Set();
 const settingsCooldown = new Set();
 const levelCooldown = new Set();
 
 const bot = new Discord.Client({
-  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"]
+  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"],
+  makeCache: Discord.Options.cacheWithLimits({
+		MessageManager: 10,
+		PresenceManager: 0,
+		// Add more class names here
+	}),
 });
-bot.setMaxListeners(0);
+bot.setMaxListeners(10);
 
-
-
-const lvlconfig = require('./src/assets/json/levelsystem/levelsystem.json');
-const whitelist = require('./whitelist.json');
-const token = require('./_secret/token.json');
 
 bot.on('guildCreate', async (guild) => await guildCreate(database, guild, whitelist, log));
 
@@ -81,15 +84,13 @@ bot.on('guildMemberAdd', member => {
           giveAllRoles(member, member.guild, user_roles, bot);
         }
       }).catch(err => {
-        database.close();
         return log.fatal(err)
       });
     }
     database.close();
     return;
   }).catch(err => {
-    log.fatal(err)
-    return database.close();
+    return log.fatal(err)
   });
 
   database.query(`SELECT welcome_channel FROM ${member.guild.id}_config`).then(res => {
@@ -97,9 +98,8 @@ bot.on('guildMemberAdd', member => {
       bot.channels.cache.find(c => c.id === res[0].welcome_channel).send('Welcome ' + member.user.username)
     }
   }).catch(err => { 
-    log.fatal(err);
     if(config.debug == 'true') console.log(err) 
-    return database.close();
+    return log.fatal(err);
   })
 
   database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
@@ -116,9 +116,8 @@ bot.on('guildMemberAdd', member => {
     }
 
   }).catch(err => {
-    log.fatal(err);
     if(config.debug == 'true') console.log(err)
-    return database.close();
+    return log.fatal(err);
   });
 });
 
@@ -156,6 +155,7 @@ bot.on('guildMemberRemove', member => {
 bot.on("messageCreate", async message => {
   if (message.author.bot) return;
   if (message.channel.type === "dm") return;
+  if (message.author.system) return;
   // blacklist(1, message);
   // autoresponse(message);
 
@@ -200,8 +200,8 @@ bot.on("messageCreate", async message => {
 
           }
         }).catch(err => {
-          log.fatal(err);
           if(config.debug == 'true') console.log(err);
+          return log.fatal(err);
         })
       }
     }else {
@@ -215,8 +215,8 @@ bot.on("messageCreate", async message => {
         }
     }
   }).catch(err => {
-    log.fatal(err);
     if(config.debug == 'true') console.log(err)
+    return log.fatal(err);
   });
 });
 
