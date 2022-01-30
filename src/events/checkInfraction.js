@@ -83,9 +83,8 @@ function checkInfractions(bot) {
             database.close();
             console.log(`Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`, new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'}))
         }).catch(err => {
-            log.fatal(err);
             if(config.debug == 'true') console.log(err);
-            database.close();
+            return log.fatal(err);
         });
     }, config.defaultCheckInfractionTimer);
 }
