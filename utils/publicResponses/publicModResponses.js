@@ -39,6 +39,9 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
             case infraction.kick == 1: 
                 type = 'Kick'; 
                 break;
+
+            default: 
+                break;
         }
         let user = await message.guild.members.fetch(infraction.user_id);
         var publicOneInfractionMessage = new MessageEmbed()
@@ -106,6 +109,7 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
             ]
         });
     });
+    return;
 }
 
 module.exports = {publicModResponses, publicInfractionResponse}
