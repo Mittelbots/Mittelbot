@@ -74,7 +74,7 @@ module.exports.run = async (bot, message, args) => {
         return message.reply('This user is already banned!')
     }
 
-    return await banUser(database, Member, message, reason, bot, config, log, dbtime, time);
+    return banUser(database, Member, message, reason, bot, config, log, dbtime, time);
 }
 
 module.exports.help = {
