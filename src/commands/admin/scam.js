@@ -218,16 +218,14 @@ module.exports.run = async (bot, message, args) => {
             interaction.deferUpdate();
             if(interaction.customId === accept) {
                 database.query(`DELETE FROM advancedScamList WHERE link = ?`, [removeHttp(value)]).catch(err => {
-                    errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
-                    return database.close();
+                    return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
                 })
                 return await message.author.send(`Your ScamList request was accepted! \n Link: \`${value}\` `).catch(err => {})
             }else if(interaction.customId === deny) {
                 return await message.author.send(`Your ScamList request was denied! \n Link: \`${value}\` `).catch(err => {})
             }else {
                 database.query(`INSERT INTO advancedScamList (guild_id) VALUES (?)`, [message.guild.id]).catch(err => {
-                    errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
-                    return database.close();
+                    return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
                 });
                 return await message.author.send(`Your Server got added to the blacklist!`).catch(err => {})
             }
@@ -309,7 +307,6 @@ module.exports.run = async (bot, message, args) => {
                 });
 
             }).catch(err => {
-                database.close();
                 return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config);
             })
         }else {
@@ -325,7 +322,6 @@ module.exports.run = async (bot, message, args) => {
                 database.close()
                 return message.reply('✅ **Matching link found!**');
             }).catch(err => {
-                database.close()
                 return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config);
             })
         }
