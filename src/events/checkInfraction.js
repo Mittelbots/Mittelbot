@@ -23,7 +23,7 @@ async function deleteEntries(infraction) {
 function checkInfractions(bot) {
     setInterval(() => {
         const database = new Database();
-        database.query(`SELECT * FROM open_infractions`).then(async results => {
+        await database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;
             let mutecount = 0;
             let bancount = 0;
@@ -80,12 +80,12 @@ function checkInfractions(bot) {
                     }
                 }
             }
-            database.close();
             console.log(`Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`, new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'}))
         }).catch(err => {
             if(config.debug == 'true') console.log(err);
             return log.fatal(err);
         });
+        database.close();
     }, config.defaultCheckInfractionTimer);
 }
 
