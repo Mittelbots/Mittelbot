@@ -20,7 +20,7 @@ async function deleteEntries(infraction) {
     }
 }
 
-function checkInfractions(bot) {
+async function checkInfractions(bot) {
     setInterval(() => {
         const database = new Database();
         await database.query(`SELECT * FROM open_infractions`).then(async results => {
