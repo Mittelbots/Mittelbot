@@ -62,13 +62,11 @@ bot.on('guildMemberAdd', member => {
   database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
     if(await res.length == 0) {
       database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
-        log.fatal(err);
-        return database.close();
+        return log.fatal(err);
       });
     }else {
       if(res[0].user_joined == null) {
         database.query(`UPDATE ${member.guild.id}_guild_member_info SET user_joined = ? WHERE user_id = ?`, [new Date(), member.user.id]).catch(err => {
-          database.close();
           return errorhandler(err, config.errormessages.databasequeryerror, null, log, config)
         });
       }
