@@ -10,19 +10,18 @@ const {Database} = require('../db/db')
 
 async function deleteEntries(infraction) {
     try {
-        const database = new Database();
         insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
+
         database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id]).catch(err => console.log(err));
-        database.close();
+
     }catch(err) {
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
     }
 }
 
-function checkInfractions(bot) {
+function checkInfractions(bot, database) {
     setInterval(async () => {
-        const database = new Database();
         await database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;
             let mutecount = 0;
@@ -50,14 +49,14 @@ function checkInfractions(bot) {
                             var user = await guild.members.fetch(results[i].user_id).then(members => members);
                         }catch(err) {
                             //Member left or got kicked
-                            deleteEntries(results[i], database);
+                            deleteEntries(results[i]);
                             continue;
                         }
                         try {
                             await giveAllRoles(results[i].user_id, results[i].guild_id , JSON.parse(results[i].user_roles), bot)
                             setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id, database);
                             privateModResponse(user, config.defaultModTypes.unmute, 'Auto', null, bot, guild.name);
-                            await deleteEntries(results[i], database);
+                            await deleteEntries(results[i]);
                             await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
                             done++;
                             mutecount++;
@@ -72,10 +71,10 @@ function checkInfractions(bot) {
                         try {
                             await bot.guilds.cache.get(results[i].guild_id).members.unban(`${results[i].user_id}`, `Auto`)
                             setNewModLogMessage(bot, config.defaultModTypes.unban, bot.user.id, results[i].user_id, 'Auto', null, results[i].guild_id, database);
-                            deleteEntries(results[i], database);
+                            deleteEntries(results[i]);
                         }catch(err) {
                             //Unknown ban
-                            deleteEntries(results[i], database);
+                            deleteEntries(results[i]);
                         }
                     }
                 }
@@ -85,7 +84,6 @@ function checkInfractions(bot) {
             if(config.debug == 'true') console.log(err);
             return log.fatal(err);
         });
-        database.close();
     }, config.defaultCheckInfractionTimer);
 }
 
