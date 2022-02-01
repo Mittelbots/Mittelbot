@@ -1,5 +1,4 @@
 const config = require('../../../src/assets/json/_config/config.json');
-const token = require('../../../_secret/token.json');
 const { log } = require('../../../logs');
 const {execSync} = require('child_process');
 
