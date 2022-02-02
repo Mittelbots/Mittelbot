@@ -6,6 +6,7 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { muteUser } = require('../../../utils/functions/moderations/muteUser');
 const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfractions');
+const { log } = require('../../../logs');
 
 
 module.exports.run = async (bot, message, args, database) => {
@@ -59,7 +60,7 @@ module.exports.run = async (bot, message, args, database) => {
     }
 
 
-    if(await isMuted(database, config, Member, message)) {
+    if(await isMuted(database, config, Member, message, log)) {
         return message.reply('This user is already muted!');
     }
 
