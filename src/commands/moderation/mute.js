@@ -6,13 +6,9 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { muteUser } = require('../../../utils/functions/moderations/muteUser');
 const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfractions');
-const {Database} = require('../../db/db')
 
 
-module.exports.run = async (bot, message, args) => {
-
-    const database = new Database();
-
+module.exports.run = async (bot, message, args, database) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }

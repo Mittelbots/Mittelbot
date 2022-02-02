@@ -15,7 +15,6 @@ function deployCommands(bot) {
                     var command = require(`../../../src/commands/${module}/${file}`);
                     console.log(`${command.help.name} Command has been loaded!`);
                     if (command.help.name) bot.commands.set(command.help.name, command)
-
                 })
             });
         });

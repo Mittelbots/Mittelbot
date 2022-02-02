@@ -1,11 +1,7 @@
-const {
-  Database
-} = require("../src/db/db");
 const whitelist = require('../src/assets/json/whitelist/whitelist.json');
 const { log } = require('../logs');
 
-async function guildCreate(guild) {
-  const database = new Database();
+async function guildCreate(guild, database) {
 
   let gid = guild.id;
   if (whitelist.server.indexOf(gid) === -1) return guild.leave();

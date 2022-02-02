@@ -2,7 +2,7 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { log } = require('../../../logs');
 const {execSync} = require('child_process');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, database) => {
     if(message.author.id === config.Bot_Owner_ID) {
         try {
             await message.reply(`Ok sir, Bot is restarting!`);

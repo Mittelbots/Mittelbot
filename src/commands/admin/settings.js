@@ -10,11 +10,7 @@ const { getEmote } = require('../../../utils/functions/getEmote');
 const { viewSetting } = require('../../../utils/functions/viewSetting');
 const { log } = require('../../../logs');
 
-const {Database} = require('../../db/db')
-
-const database = new Database();
-
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, database) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }

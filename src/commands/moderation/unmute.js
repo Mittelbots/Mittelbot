@@ -4,11 +4,9 @@ const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser');
 
-const {Database} = require('../../db/db')
+module.exports.run = async (bot, message, args, database) => {
 
-module.exports.run = async (bot, message, args) => {
-
-    const database = new Database();
+    ;
 
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();

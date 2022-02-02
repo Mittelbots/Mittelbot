@@ -3,7 +3,7 @@ const tables = require('../src/db/table.json');
 const readline = require('readline');
 const config = require('../src/assets/json/_config/config.json');
 
-const database = new Database();
+;
 
 
 async function main() {

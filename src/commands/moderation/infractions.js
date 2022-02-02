@@ -2,15 +2,9 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const { log } = require('../../../logs');
-
-
-const {Database} = require('../../db/db');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 
-module.exports.run = async (bot, message, args) => {
-
-    const database = new Database();
-
+module.exports.run = async (bot, message, args, database) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }

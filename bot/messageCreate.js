@@ -1,8 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
 const {
-    Database
-} = require("../src/db/db");
-const {
     gainXP
 } = require("../src/events/levelsystem/levelsystem");
 const {
@@ -19,14 +16,12 @@ const levelCooldown = new Set();
 const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
 
 
-async function messageCreate(message, bot) {
+async function messageCreate(message, bot, database) {
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
     // blacklist(1, message);
     // autoresponse(message);
-
-    const database = new Database();
 
     await checkForScam(message, database, bot, config, log)
 
@@ -55,7 +50,7 @@ async function messageCreate(message, bot) {
                         return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
                     } else {
                         defaultCooldown.add(message.author.id);
-                        commandfile.run(bot, message, args);
+                        commandfile.run(bot, message, args, database);
 
                         setTimeout(async () => {
                             defaultCooldown.delete(message.author.id);
