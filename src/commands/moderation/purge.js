@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
     message.delete();
 
     if(!await hasPermission(message, database, 0, 1)) {
-        database.close();
+         
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -26,10 +26,10 @@ module.exports.run = async (bot, message, args) => {
     //}
 
     if(isNaN(amount)) {
-        database.close();
+         
         return message.channel.send(`That isn't a valid number!`);
     }else if (amount < 1 || amount >= Number(config.bulkDeleteLimit)) {
-        database.close();
+         
         return message.channel.send('you need to input a number between 1 and 99.');
     }
 
@@ -59,7 +59,7 @@ module.exports.run = async (bot, message, args) => {
             console.log(err);
             message.channel.send('there was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)');
         });
-        return database.close();
+        return  
     // }
 }
 

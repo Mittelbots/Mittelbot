@@ -16,14 +16,14 @@ module.exports.run = async (bot, message, args) => {
 
     if (!await hasPermission(message, database, 0, 0)) {
         message.delete();
-        database.close();
+         
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
     }
 
     if(args[0] == undefined) {
-        database.close();
+         
         return message.reply(`No Infractionid sent!`).then(msg => setTimeout(() => msg.delete(), 5000));
     }
 
@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args) => {
         if(config.debug == 'true') console.log(err);
         return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     });
-    database.close();
+     
     return publicInfractionResponse(message, infraction[0], null, null, true);
 }
 

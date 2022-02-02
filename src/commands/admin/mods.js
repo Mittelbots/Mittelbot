@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
     if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-        database.close();
+         
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -178,7 +178,7 @@ module.exports.run = async (bot, message, args) => {
             
         });
 
-    } else return database.close();
+    } else return  
 }
 
 module.exports.help = {

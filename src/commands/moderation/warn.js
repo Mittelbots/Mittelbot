@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
     if (!await hasPermission(message, database, 0, 0)) {
-        database.close();
+         
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -34,7 +34,7 @@ module.exports.run = async (bot, message, args) => {
 
     let reason = args.slice(1).join(" ");
     if (!reason) {
-        database.close();
+         
         return message.reply('Please add a reason!');
     }
     

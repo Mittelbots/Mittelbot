@@ -64,7 +64,7 @@ module.exports.run = async (bot, message, args) => {
             return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
         })
 
-        if(!pass) return database.close();
+        if(!pass) return  
 
         const parsedLookupUrl = url.parse(value);
 
@@ -143,7 +143,7 @@ module.exports.run = async (bot, message, args) => {
                 
             } else {
                 //! URL IS INVALID
-                database.close();
+                 
                 return message.reply('Invalid URL!');
             }
         });
@@ -173,10 +173,10 @@ module.exports.run = async (bot, message, args) => {
                 };
             }
         });
-        if(!pass) return database.close();
+        if(!pass) return  
         if(!exits) { 
             message.reply('This URL doesn\'t exits in current list!');
-            return database.close();
+            return  
         } 
 
         const accept = 'accept';

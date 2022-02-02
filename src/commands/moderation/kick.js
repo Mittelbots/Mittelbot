@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
     }
 
     if (!await hasPermission(message, database, 0, 0)) {
-        database.close();
+         
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
         var Member = await message.guild.members.fetch(args[0]);
         
         if(checkMessage(message, Member, bot, 'kick')) {
-            database.close();
+             
             return message.reply(checkMessage(message, Member, bot, 'kick'));
         }
     }catch(err) {
@@ -38,12 +38,12 @@ module.exports.run = async (bot, message, args) => {
 
     let reason = args.slice(1).join(" ");
     if (!reason) {
-        database.close();
+         
         return message.channel.send('Please add a reason!');
     }
 
     if (await isMod(Member, message, database)) {
-        database.close();
+         
         return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
     }
 
