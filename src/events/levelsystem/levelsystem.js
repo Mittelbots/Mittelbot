@@ -1,5 +1,3 @@
-const lvlconfig = require('../../assets/json/levelsystem/levelsystem.json');
-
 async function gainXP(message, database) {
     if(message.author.bot) return;
 
@@ -8,8 +6,6 @@ async function gainXP(message, database) {
             let currentxp = await res[0].xp;
 
             var newxp = generateXP(currentxp);
-
-
             database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ? WHERE user_id = ?`, [newxp, message.author.id]).catch(err => {
                 console.log(err);
             });
