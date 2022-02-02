@@ -14,8 +14,6 @@ async function muteUser(Member, message, bot, config, reason, time, dbtime, data
     var user_roles = await getAllRoles(Member);
     var MutedRole = await getMutedRole(message, message.guild);
 
-    if (Member.roles.cache.has(MutedRole)) return message.channel.send(`Member Is Already Muted!`)
-
     await Member.roles.add(MutedRole).catch(err => { return message.channel.send(`I don't have permissions to do this task!`)});
 
     if(user_roles.length !== 0) await removeAllRoles(Member);

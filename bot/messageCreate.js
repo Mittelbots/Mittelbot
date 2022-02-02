@@ -15,7 +15,6 @@ const levelCooldown = new Set();
 
 const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
 
-
 async function messageCreate(message, bot, database) {
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
