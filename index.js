@@ -64,7 +64,6 @@ bot.on('guildMemberRemove', async member => {
 });
 
 
-
 bot.on("messageCreate", async message => {
   return await messageCreate(message, bot);
 });
