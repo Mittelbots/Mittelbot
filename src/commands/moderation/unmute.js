@@ -5,9 +5,6 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser');
 
 module.exports.run = async (bot, message, args, database) => {
-
-    ;
-
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }

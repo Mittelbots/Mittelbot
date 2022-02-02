@@ -1,6 +1,7 @@
 const { errorhandler } = require("../errorhandler/errorhandler");
+const { getMutedRole } = require('../roles/getMutedRole')
 
-async function isMuted(db, config, member, message, log) {
+async function isMuted(db, config, member, message, log, bot) {
     db.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = ? AND guild_id = ?`, [member.id, 1, message.guild.id]).then(async result => {
         let MutedRole = await getMutedRole(message, bot.guilds.cache.get(message.guild.id))
         if (result.length > 0 && await member.roles.cache.has(MutedRole)) {

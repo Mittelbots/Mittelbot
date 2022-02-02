@@ -59,8 +59,7 @@ module.exports.run = async (bot, message, args, database) => {
         return message.channel.send('Please add a reason!');
     }
 
-
-    if(await isMuted(database, config, Member, message, log)) {
+    if(await isMuted(database, config, Member, message, log, bot)) {
         return message.reply('This user is already muted!');
     }
 

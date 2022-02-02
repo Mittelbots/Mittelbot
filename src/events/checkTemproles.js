@@ -2,11 +2,8 @@ const config = require('../../src/assets/json/_config/config.json');
 const { getCurrentDate } = require("../../utils/functions/getCurrentDate");
 const { log } = require('../../logs');
 
-const {Database} = require('../db/db')
-
-async function deleteEntries(infraction_id) {
+async function deleteEntries(infraction_id, database) {
     try {
-        ;
         database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).then(() => database.close()).catch(err => console.log(err))
     }catch(err) {
         log.fatal(err);
@@ -30,7 +27,7 @@ function checkTemproles(bot, database) {
                         var guild = await bot.guilds.cache.get(results[i].guild_id);
                         var user = await guild.members.fetch(results[i].user_id).then(members => members);
                         await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(r => r.id === results[i].role_id)])
-                        deleteEntries(results[i].infraction_id);
+                        deleteEntries(results[i].infraction_id, database);
                     }catch(err) {
                         // CAN'T FIND USER OR USER LEFT THE SERVER
                         done -= 1;
