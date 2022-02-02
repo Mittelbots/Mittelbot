@@ -84,7 +84,7 @@ async function messageCreate(message, bot) {
         return log.fatal(err);
     });
 
-    database.close();
+     
 }
 
 module.exports = {

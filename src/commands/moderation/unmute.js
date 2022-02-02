@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args) => {
         message.delete();
     }
     if(!await hasPermission(message, database, 0, 0)) {
-        database.close();
+         
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
         var Member = await message.guild.members.fetch(args[0]);
         
     }catch(err) {
-        database.close();
+         
         return message.reply(`I can't find this user!`);
     }    
     

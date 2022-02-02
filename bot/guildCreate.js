@@ -43,7 +43,7 @@ async function guildCreate(guild) {
     log.fatal(err)
   })
 
-  return database.close();
+  return  
 }
 
 module.exports = {

@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
     }
 
     if (!await hasPermission(message, database, 0, 0)) {
-        database.close();
+         
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -34,7 +34,7 @@ module.exports.run = async (bot, message, args) => {
         }catch(err) {
             Member = args[0];
             if(isNaN(Member)) {
-                database.close();
+                 
                 return message.reply(`This is not a valid input!`).then(msg => setTimeout(() => msg.delete(), 5000));
             }
         }
@@ -54,12 +54,12 @@ module.exports.run = async (bot, message, args) => {
     });
 
     if(closed[0].length <= 0 && open[0].length <= 0) {
-        database.close();
+         
         return message.reply(`This User dont have any infractions!`);
     }
     if(config.debug == 'true') console.info('Infraction Command passed!')
     
-    database.close();
+     
     
     return publicInfractionResponse(message, Member, closed[0], open[0]);
 }

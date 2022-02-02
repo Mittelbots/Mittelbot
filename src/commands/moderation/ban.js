@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args) => {
 
     if(!await hasPermission(message, database, 0, 1)) {
         message.delete();
-        database.close();
+         
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         });
@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
     }
 
     if (await isMod(Member, message, database)) {
-        database.close();
+         
         return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
     }
 
@@ -45,7 +45,7 @@ module.exports.run = async (bot, message, args) => {
     var time = args[x]
 
     if(time === undefined) {
-        database.close();
+         
         return message.reply('Please add a valid time and reason!');
     }
 
@@ -64,12 +64,12 @@ module.exports.run = async (bot, message, args) => {
     reason = reason.replace(time, '');
 
     if(!reason) {
-        database.close();
+         
         return message.channel.send('Please add a reason!');
     }
 
     if(await isBanned(database, Member, message)) {
-        database.close();
+         
         return message.reply('This user is already banned!')
     }
 

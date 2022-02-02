@@ -41,7 +41,7 @@ async function guildMemberAdd(member, bot) {
                 return log.fatal(err)
             });
         }
-        return database.close();
+        return  
     }).catch(err => {
         return log.fatal(err)
     });
@@ -63,7 +63,7 @@ async function guildMemberAdd(member, bot) {
                 member.roles.add(role);
             } catch (err) {
                 //NO PERMISSONS
-                return database.close();
+                return  
             }
             // }, 10000);
         }
