@@ -34,7 +34,6 @@ module.exports.run = async (bot, message, args) => {
         if(res.length <= 0) {
             database.query(`SELECT * FROM open_infractions WHERE infraction_id = ? LIMIT 1`, [args[0]]).then(async res => {
                 if(res.length <= 0) {
-                    database.close();
                     return message.reply(`No Infraction found for this ID`);
                 }
 
@@ -45,15 +44,14 @@ module.exports.run = async (bot, message, args) => {
                 return message.channel.send(`${config.errormessages.databasequeryerror}`); 
             });
         }
-        database.close();
         return;
     }).catch(err => {
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
         return message.channel.send(`${config.errormessages.databasequeryerror}`); 
     });
+    database.close();
     return publicInfractionResponse(message, infraction[0], null, null, true);
-    
 }
 
 module.exports.help = {

@@ -176,11 +176,9 @@ module.exports.run = async (bot, message, args) => {
                 embedMessage.edit({embeds: [modroleembed], components: [row]})
             });
             
-            return database.close();
         });
-        return;
 
-    } else return;
+    } else return database.close();
 }
 
 module.exports.help = {

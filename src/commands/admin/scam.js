@@ -136,8 +136,6 @@ module.exports.run = async (bot, message, args) => {
                             buttons.components[i].setDisabled(true)
                         }
                         sentMessage.edit({embeds: [newScamLinkembed], components: [buttons]})
-
-                        database.close();
                     });
                     
                     return;
@@ -248,7 +246,6 @@ module.exports.run = async (bot, message, args) => {
                 sentMessage.edit({embeds: [newScamLinkembed], components: [buttons]})
             });
 
-            return database.close();
         });
     }else if(setting === commandconfig.scam.view.command) {
         var value = args[1];
@@ -319,9 +316,9 @@ module.exports.run = async (bot, message, args) => {
             value = removeHttp(value);
             const database = new Database();
 
-            database.query(`SELECT link FROM advancedScamList WHERE link = ?`, [value]).then(res => {
+            return database.query(`SELECT link FROM advancedScamList WHERE link = ?`, [value]).then(res => {
                 if(res.length <= 0) {
-                    database.close();
+                    database.close()
                     return message.reply('❌ **No results by searching this URL**');
                 }
 
