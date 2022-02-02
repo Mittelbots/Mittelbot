@@ -1,6 +1,3 @@
-const {
-    bot
-} = require("..");
 const config = require('../src/assets/json/_config/config.json');
 const {
     Database
@@ -46,7 +43,6 @@ async function messageCreate(message, bot) {
             if (commandfile) { //&& blacklist(0, message)
                 database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(res => {
                     if (settingsCooldown.has(message.author.id) && cmd === `${prefix[0].prefix}settings`) {
-                        database.close()
                         return message.channel.send(`You have to wait ${config.defaultSettingsCooldown.text} after each Settings Command.`);
                     } else {
                         settingsCooldown.add(message.author.id);
@@ -56,7 +52,6 @@ async function messageCreate(message, bot) {
                     }
 
                     if (defaultCooldown.has(message.author.id)) {
-                        database.close()
                         return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
                     } else {
                         defaultCooldown.add(message.author.id);
@@ -88,6 +83,8 @@ async function messageCreate(message, bot) {
         if (config.debug == 'true') console.log(err)
         return log.fatal(err);
     });
+
+    database.close();
 }
 
 module.exports = {
