@@ -13,11 +13,10 @@ const dns = require('dns');
 const url = require('url');
 
 
-const {Database} = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
 
-module.exports.run = async (bot, message, args) => {
+module.exports.run = async (bot, message, args, database) => {
 
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
@@ -32,7 +31,6 @@ module.exports.run = async (bot, message, args) => {
     const setting = args[0];
 
     if(setting === commandconfig.scam.add.command) {
-        const database = new Database();
 
         var value = args[1];
 
@@ -150,8 +148,6 @@ module.exports.run = async (bot, message, args) => {
 
 
     }else if(setting === commandconfig.scam.delete.command || setting === commandconfig.scam.delete.alias) {
-        const database = new Database();
-
         var value = args[1];
 
         if(value == undefined) return message.reply('Please add an valid URL');
@@ -250,7 +246,7 @@ module.exports.run = async (bot, message, args) => {
     }else if(setting === commandconfig.scam.view.command) {
         var value = args[1];
         
-        const database = new Database();
+        ;
 
         if(value === undefined) {
             database.query(`SELECT * FROM advancedScamList WHERE link != ''`).then(async res => {
@@ -314,15 +310,13 @@ module.exports.run = async (bot, message, args) => {
             })
         }else {
             value = removeHttp(value);
-            const database = new Database();
+            ;
 
             return database.query(`SELECT link FROM advancedScamList WHERE link = ?`, [value]).then(res => {
                 if(res.length <= 0) {
-                    database.close()
                     return message.reply('❌ **No results by searching this URL**');
                 }
 
-                database.close()
                 return message.reply('✅ **Matching link found!**');
             }).catch(err => {
                 return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config);

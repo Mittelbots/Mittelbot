@@ -6,7 +6,7 @@ const {Database} = require('../db/db')
 
 async function deleteEntries(infraction_id) {
     try {
-        const database = new Database();
+        ;
         database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).then(() => database.close()).catch(err => console.log(err))
     }catch(err) {
         log.fatal(err);

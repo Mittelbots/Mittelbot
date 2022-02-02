@@ -25,8 +25,6 @@ const { errorhandler } = require('./utils/functions/errorhandler/errorhandler');
 
 const { deployCommands } = require("./utils/functions/deployCommands/deployCommands");
 
-
-
 const token = require('./_secret/token.json');
 
 const { guildCreate } = require("./bot/guildCreate");
@@ -46,26 +44,35 @@ const bot = new Discord.Client({
 });
 bot.setMaxListeners(10);
 
+var database = new Database();
+
+// RE NEW EVERY HOUR THE DATBASE CONNECTION
+setInterval(async () => {
+  await database.close();
+  database = new Database();
+  console.log('------------DATABASE SUCCESSFULLY RESTARTED------------')
+}, 3600000);
+
 bot.on('guildCreate', async (guild) => {
-  return await guildCreate(guild)}
-);
+  return await guildCreate(guild, database)
+});
 
 bot.commands = new Discord.Collection();
 
 deployCommands(bot);
 
 bot.on('guildMemberAdd', async member => {
-  return await guildMemberAdd(member, bot)
+  return await guildMemberAdd(member, bot, database)
 });
 
 
 bot.on('guildMemberRemove', async member => {
-  return await guildMemberRemove(member);
+  return await guildMemberRemove(member, database);
 });
 
 
 bot.on("messageCreate", async message => {
-  return await messageCreate(message, bot);
+  return await messageCreate(message, bot, database);
 });
 
 process.on('unhandledRejection', err => {
@@ -79,7 +86,7 @@ process.on('uncaughtException', err => {
 bot.once('ready', async () => {
   checkInfractions(bot, new Database());
   checkTemproles(bot, new Database())
-  auditLog(bot);
+  auditLog(bot, database);
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
 

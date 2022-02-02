@@ -8,15 +8,11 @@ const {
 } = require('discord.js');
 const { log } = require('../../../logs');
 
-const {Database} = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { insertPermsToModroles, deletePermsFromModroles, updatePermsFromModroles } = require('../../../utils/functions/insertDataToDatabase');
 
-module.exports.run = async (bot, message, args) => {
-
-    const database = new Database();
-
+module.exports.run = async (bot, message, args, database) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }

@@ -1,8 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
 const {
-    Database
-} = require("../src/db/db");
-const {
     giveAllRoles
 } = require("../utils/functions/roles/giveAllRoles");
 const {
@@ -10,8 +7,7 @@ const {
 } = require('../utils/functions/errorhandler/errorhandler');
 const { log } = require('../logs');
 
-async function guildMemberAdd(member, bot) {
-    const database = new Database();
+async function guildMemberAdd(member, bot, database) {
     database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
         if (await res.length == 0) {
             database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
