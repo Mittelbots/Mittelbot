@@ -32,7 +32,6 @@ module.exports.run = async (bot, message, args) => {
     const setting = args[0];
 
     if(setting === commandconfig.scam.add.command) {
-
         const database = new Database();
 
         var value = args[1];
@@ -41,24 +40,30 @@ module.exports.run = async (bot, message, args) => {
 
         if(value.search('http://') !== -1 && value.search('https://') !== -1) {
             value = `http://${value}/`;
-        }
 
+        }
         var pass = false;
         await database.query(`SELECT * FROM advancedScamList`).then(res => {
-            for(let i in res) {
-                if(res[i].guild_id === message.guild.id) {
-                    pass = false;
-                    return message.reply('Your server is on blacklist! You can\'t sent any requests until the bot moderators removes your server from it.');
+            if(res.length > 0) { 
+                for(let i in res) {
+                    if(res[i].guild_id === message.guild.id) {
+                        pass = false;
+                        return message.reply('Your server is on blacklist! You can\'t sent any requests until the bot moderators removes your server from it.');
+                    }
+                    if(res[i].link === removeHttp(value)) {
+                        pass = false;
+                        return message.reply(`This URL already exits in current Scamlist`)
+                    }
+                    pass = true;
                 }
-                if(res[i].link === removeHttp(value)) {
-                    pass = false;
-                    return message.reply(`This URL already exits in current Scamlist`)
-                }
-                pass = true;
-            }
+                
+            }else {
+                return pass = true;
+            };
         }).catch(err => {
             return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
         })
+
         if(!pass) return database.close();
 
         const parsedLookupUrl = url.parse(value);
@@ -66,7 +71,7 @@ module.exports.run = async (bot, message, args) => {
         dns.lookup(parsedLookupUrl.protocol ? parsedLookupUrl.host : parsedLookupUrl.path, async (err, address, family) => {
             if(!err) {
                 //? URL IS VALID
-                
+            
                 value = removeHttp(value);
 
                 const accept = 'accept';
@@ -103,6 +108,7 @@ module.exports.run = async (bot, message, args) => {
                     )
 
                 const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get('937032777583427586').send({embeds: [newScamLinkembed], components: [buttons]})
+                await message.channel.send(`"**${value}**" Successfully sent a request to the Bot Moderators. You'll receive an status update in your direkt messages!`);
 
                 const collector = sentMessage.createMessageComponentCollector({
                     max: 1
