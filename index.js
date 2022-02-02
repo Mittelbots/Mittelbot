@@ -38,7 +38,7 @@ const { Database } = require("./src/db/db");
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"],
   makeCache: Discord.Options.cacheWithLimits({
-		MessageManager: 0,
+		MessageManager: 10,
 		PresenceManager: 0,
     disableMentions: 'everyone'
 		// Add more class names here
