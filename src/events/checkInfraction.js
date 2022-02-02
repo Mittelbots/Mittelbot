@@ -6,24 +6,21 @@ const { log } = require('../../logs');
 const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
 const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
 
-const {Database} = require('../db/db')
-
-async function deleteEntries(infraction) {
+async function deleteEntries(infraction, database) {
     try {
-        const database = new Database();
         insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
+
         database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id]).catch(err => console.log(err));
-        database.close();
+
     }catch(err) {
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
     }
 }
 
-function checkInfractions(bot) {
+function checkInfractions(bot, database) {
     setInterval(async () => {
-        const database = new Database();
-        await database.query(`SELECT * FROM open_infractions`).then(async results => {
+        database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;
             let mutecount = 0;
             let bancount = 0;
@@ -85,7 +82,6 @@ function checkInfractions(bot) {
             if(config.debug == 'true') console.log(err);
             return log.fatal(err);
         });
-        database.close();
     }, config.defaultCheckInfractionTimer);
 }
 

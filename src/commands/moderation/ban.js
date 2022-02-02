@@ -32,7 +32,6 @@ module.exports.run = async (bot, message, args) => {
 
         if(checkMessage(message, Member, bot, 'ban')) return message.reply(checkMessage(message, Member, bot, 'ban'));
     }catch(err) {
-        database.close();
         return message.reply(`I can't find this user!`);
     }
 

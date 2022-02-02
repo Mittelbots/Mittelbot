@@ -15,6 +15,12 @@
         "format": "30000",
         "text": "30 seconds"
     },
+    "activity": {
+        "playing": {
+            "name": "",
+            "type": ""
+        }
+    },
     "bulkDeleteLimit": "100",
     "defaultCheckInfractionTimer": "60000",
     "defaultCheckTemprolesTimer": "1800000",

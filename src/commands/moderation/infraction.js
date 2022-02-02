@@ -40,7 +40,6 @@ module.exports.run = async (bot, message, args) => {
 
                 infraction = await res;
             }).catch(err => {
-                database.close();
                 log.fatal(err);
                 if(config.debug == 'true') console.log(err);
                 return message.channel.send(`${config.errormessages.databasequeryerror}`); 
@@ -49,7 +48,6 @@ module.exports.run = async (bot, message, args) => {
         database.close();
         return;
     }).catch(err => {
-        database.close();
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
         return message.channel.send(`${config.errormessages.databasequeryerror}`); 

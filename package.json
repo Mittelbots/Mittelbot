@@ -4,7 +4,7 @@
   "description": "A Discord Bot written in Node.js",
   "main": "shard.js",
   "scripts": {
-    "dev": "nodemon shard.js",
+    "dev": "nodemon index.js",
     "pm2dev": "pm2 start shard.js --name DEV__Mittelbot__DEV --max-memory-restart 300M && pm2 monit",
     "pm2devstop": "pm2 stop DEV__Mittelbot__DEV",
     "pm2devrestart": "pm2 stop DEV__Mittelbot__DEV && pm2 start shard.js --name DEV__Mittelbot__DEV --max-memory-restart 300M && pm2 monit",

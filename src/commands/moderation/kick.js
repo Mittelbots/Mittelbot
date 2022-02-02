@@ -33,7 +33,6 @@ module.exports.run = async (bot, message, args) => {
             return message.reply(checkMessage(message, Member, bot, 'kick'));
         }
     }catch(err) {
-        database.close();
         return message.reply(`I can't find this user!`);
     }
 
