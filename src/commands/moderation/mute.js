@@ -34,7 +34,6 @@ module.exports.run = async (bot, message, args, database) => {
     }
     
     if (await isMod(Member, message, database)) {
-         
         return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
     }
 
@@ -56,13 +55,11 @@ module.exports.run = async (bot, message, args, database) => {
     reason = reason.replace(time, '');
 
     if (!reason) {
-         
         return message.channel.send('Please add a reason!');
     }
 
 
     if(await isMuted(database, config, Member, message)) {
-         
         return message.reply('This user is already muted!');
     }
 
