@@ -16,7 +16,7 @@ async function kickUser(bot, member, message, config, reason, database) {
             if(config.debug == 'true') console.info('Kick Command passed!')
             return member.kick({
                 reason: reason
-            });;
+            });
         }, 500);
     } catch (err) {
         return errorhandler(err, config.errormessages.botnopermission, message.channel, log, config, database)

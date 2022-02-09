@@ -245,8 +245,6 @@ module.exports.run = async (bot, message, args, database) => {
         });
     }else if(setting === commandconfig.scam.view.command) {
         var value = args[1];
-        
-        ;
 
         if(value === undefined) {
             database.query(`SELECT * FROM advancedScamList WHERE link != ''`).then(async res => {
@@ -310,8 +308,7 @@ module.exports.run = async (bot, message, args, database) => {
             })
         }else {
             value = removeHttp(value);
-            ;
-
+            
             return database.query(`SELECT link FROM advancedScamList WHERE link = ?`, [value]).then(res => {
                 if(res.length <= 0) {
                     return message.reply('❌ **No results by searching this URL**');

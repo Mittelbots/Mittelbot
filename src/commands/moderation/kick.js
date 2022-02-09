@@ -6,9 +6,6 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 
 module.exports.run = async (bot, message, args, database) => {
-
-    ;
-
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
@@ -36,7 +33,6 @@ module.exports.run = async (bot, message, args, database) => {
 
     let reason = args.slice(1).join(" ");
     if (!reason) {
-         
         return message.channel.send('Please add a reason!');
     }
 
