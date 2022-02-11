@@ -6,8 +6,11 @@ const {
     errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
 const { log } = require('../logs');
+const { Database } = require('../src/db/db');
 
-async function guildMemberAdd(member, bot, database) {
+const database = new Database();
+
+async function guildMemberAdd(member, bot) {
     database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
         if (await res.length == 0) {
             database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
@@ -30,8 +33,7 @@ async function guildMemberAdd(member, bot, database) {
                     if (user_roles !== null && user_roles.indexOf(member.roles.cache.find(r => r.name === 'Muted')) !== -1) user_roles = user_roles.filter(val => {
                         return val !== member.roles.cache.find(r => r.name === 'Muted').id
                     });
-
-                    giveAllRoles(member, member.guild, user_roles, bot);
+                    await giveAllRoles(member, member.guild, user_roles, bot);
                 }
             }).catch(err => {
                 return log.fatal(err)
@@ -52,18 +54,19 @@ async function guildMemberAdd(member, bot, database) {
     })
 
     database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
-        for (i in res) {
-            let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
-            //setTimeout(function () {
-            try {
-                member.roles.add(role);
-            } catch (err) {
-                //NO PERMISSONS
-                return  
+        if(res.length > 0) {
+            for (i in res) {
+                let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
+                //setTimeout(function () {
+                try {
+                    member.roles.add(role);
+                } catch (err) {
+                    //NO PERMISSONS
+                    return  
+                }
+                // }, 10000);
             }
-            // }, 10000);
         }
-
     }).catch(err => {
         if (config.debug == 'true') console.log(err)
         return log.fatal(err);

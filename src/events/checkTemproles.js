@@ -1,20 +1,19 @@
 const config = require('../../src/assets/json/_config/config.json');
 const { getCurrentDate } = require("../../utils/functions/getCurrentDate");
 const { log } = require('../../logs');
+const { Database } = require('../db/db');
+const database = new Database();
 
-const {Database} = require('../db/db')
-
-async function deleteEntries(infraction_id) {
+async function deleteEntries(infraction_id,) {
     try {
-        ;
-        database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).then(() => database.close()).catch(err => console.log(err))
+        database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).catch(err => console.log(err))
     }catch(err) {
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
     }
 }
 
-function checkTemproles(bot, database) {
+function checkTemproles(bot) {
     setInterval(() => {
         database.query('SELECT * FROM temproles').then(async results => {
             let done = 0;

@@ -32,6 +32,7 @@ const { messageCreate } = require("./bot/messageCreate");
 const { guildMemberAdd } = require("./bot/guildMemberAdd");
 const {guildMemberRemove} = require("./bot/guildMemberRemove");
 const { Database } = require("./src/db/db");
+const { getLinesOfCode } = require("./utils/functions/getLinesOfCode/getLinesOfCode");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"],
@@ -62,17 +63,17 @@ bot.commands = new Discord.Collection();
 deployCommands(bot);
 
 bot.on('guildMemberAdd', async member => {
-  return await guildMemberAdd(member, bot, database)
+  return await guildMemberAdd(member, bot)
 });
 
 
 bot.on('guildMemberRemove', async member => {
-  return await guildMemberRemove(member, database);
+  return await guildMemberRemove(member);
 });
 
 
 bot.on("messageCreate", async message => {
-  return await messageCreate(message, bot, database);
+  return await messageCreate(message, bot);
 });
 
 process.on('unhandledRejection', err => {
@@ -87,15 +88,24 @@ bot.once('ready', async () => {
   checkInfractions(bot, new Database());
   checkTemproles(bot, new Database())
   auditLog(bot, database);
+  
+  var codeLines;
+  await getLinesOfCode((cb) => {
+    setTimeout(() => {
+      return codeLines = ` | Lines of Code: ${cb}` || '';
+    }, 1000);
+  });
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
 
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
 
-  bot.user.setActivity({
-    name: config.activity.playing.name,
-    type: config.activity.playing.type
-  });
+  setTimeout(() => {
+    bot.user.setActivity({
+      name: config.activity.playing.name + codeLines,
+      type: config.activity.playing.type
+    });
+  }, 1100);
 });
 
 bot.login(token.BOT_TOKEN);

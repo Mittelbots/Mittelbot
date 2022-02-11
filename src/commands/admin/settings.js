@@ -9,8 +9,11 @@ const {
 const { getEmote } = require('../../../utils/functions/getEmote');
 const { viewSetting } = require('../../../utils/functions/viewSetting');
 const { log } = require('../../../logs');
+const { Database } = require('../../db/db');
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database()
+
+module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
@@ -328,7 +331,7 @@ module.exports.run = async (bot, message, args, database) => {
                             return message.channel.send(`${config.errormessages.databasequeryerror}`); 
                         });
                     }
-                    return message.reply(`Warn roles successfully saved! \n \n To check these roles write !settings ${config.settings.warnroles.alias}`)
+                    return message.reply(`Warn roles successfully saved!`)
                 }
                 continue;
             }

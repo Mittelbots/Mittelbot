@@ -8,12 +8,12 @@ const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfr
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 
-module.exports.run = async (bot, message, args, database) => {
+module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
 
-    if(!await hasPermission(message, database, 0, 1)) {
+    if(!await hasPermission(message, 0, 1)) {
         message.delete();
          
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
@@ -31,7 +31,7 @@ module.exports.run = async (bot, message, args, database) => {
         return message.reply(`I can't find this user!`);
     }
 
-    if (await isMod(Member, message, database)) {
+    if (await isMod(Member, message)) {
          
         return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
     }
@@ -64,12 +64,12 @@ module.exports.run = async (bot, message, args, database) => {
         return message.channel.send('Please add a reason!');
     }
 
-    if(await isBanned(database, Member, message)) {
+    if(await isBanned(Member, message)) {
          
         return message.reply('This user is already banned!')
     }
 
-    return banUser(database, Member, message, reason, bot, config, log, dbtime, time);
+    return banUser(Member, message, reason, bot, config, log, dbtime, time);
 }
 
 module.exports.help = {

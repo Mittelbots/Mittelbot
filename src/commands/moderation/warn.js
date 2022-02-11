@@ -5,12 +5,15 @@ const { checkMessage } = require('../../../utils/functions/checkMessage/checkMes
 const { warnUser } = require('../../../utils/functions/moderations/warnUser');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { Database } = require('../../db/db');
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database();
+
+module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
         message.delete();
     }
-    if (!await hasPermission(message, database, 0, 0)) {
+    if (!await hasPermission(message, 0, 0)) {
          
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
@@ -27,7 +30,7 @@ module.exports.run = async (bot, message, args, database) => {
         return message.reply(`I can't find this user!`);
     }
 
-    if (await isMod(Member, message, database)) return message.channel.send(`<@${message.author.id}> You can't warn a Moderator!`) 
+    if (await isMod(Member, message)) return message.channel.send(`<@${message.author.id}> You can't warn a Moderator!`) 
 
     let reason = args.slice(1).join(" ");
     if (!reason) {
@@ -35,7 +38,7 @@ module.exports.run = async (bot, message, args, database) => {
         return message.reply('Please add a reason!');
     }
     
-    return await warnUser(bot, config, message, Member, reason, database, log);
+    return await warnUser(bot, config, message, Member, reason, log);
 }
 
 module.exports.help = {
