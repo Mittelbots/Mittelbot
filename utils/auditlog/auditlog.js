@@ -1,44 +1,46 @@
 const {MessageEmbed} = require('discord.js');
 const config = require('../../src/assets/json/_config/config.json');
 const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
+const { Database } = require('../../src/db/db');
+const database = new Database();
 
 var c = config.auditTypes;
 var gid = '';
 
-function auditLog(bot, database) {
+function auditLog(bot) {
 
-    bot.on(c.messagedelete, message => sendToAudit(bot, database, c.messagedelete, message));
+    bot.on(c.messagedelete, message => sendToAudit(bot, c.messagedelete, message));
 
-    bot.on(c.channelcreate, channel => sendToAudit(bot, database, c.channelcreate, channel));
+    bot.on(c.channelcreate, channel => sendToAudit(bot, c.channelcreate, channel));
 
-    bot.on(c.channeldelete, channel => sendToAudit(bot, database, c.channeldelete, channel));
+    bot.on(c.channeldelete, channel => sendToAudit(bot, c.channeldelete, channel));
 
-    bot.on(c.channelupdate, (oldchannel, newchannel) => sendToAudit(bot, database, c.channelupdate, oldchannel, newchannel));
+    bot.on(c.channelupdate, (oldchannel, newchannel) => sendToAudit(bot, c.channelupdate, oldchannel, newchannel));
 
-    bot.on(c.debug, info => sendToAudit(bot, database, c.debug, info));
+    bot.on(c.debug, info => sendToAudit(bot, c.debug, info));
 
-    bot.on(c.disconnect, event => sendToAudit(bot, database, c.debug, event));
+    bot.on(c.disconnect, event => sendToAudit(bot, c.debug, event));
 
-    bot.on(c.reconnecting, event => sendToAudit(bot, database, c.reconnecting, event));
+    bot.on(c.reconnecting, event => sendToAudit(bot, c.reconnecting, event));
 
-    bot.on(c.error, err => sendToAudit(bot, database, c.error, err));
+    bot.on(c.error, err => sendToAudit(bot, c.error, err));
 
-    bot.on(c.warn, warn => sendToAudit(bot, database, c.warn, warn));
+    bot.on(c.warn, warn => sendToAudit(bot, c.warn, warn));
 
-    bot.on(c.guildupdate, (oldguild, newguild) => sendToAudit(bot, database, c.guildupdate, oldguild, newguild));
+    bot.on(c.guildupdate, (oldguild, newguild) => sendToAudit(bot, c.guildupdate, oldguild, newguild));
 
-    bot.on(c.messagedeletebulk, messages => sendToAudit(bot, database, c.messagedeletebulk, messages));
+    bot.on(c.messagedeletebulk, messages => sendToAudit(bot, c.messagedeletebulk, messages));
 
-    bot.on(c.messageupdate, (oldmessage, newmessage) => sendToAudit(bot, database, c.messageupdate, oldmessage, newmessage));
+    bot.on(c.messageupdate, (oldmessage, newmessage) => sendToAudit(bot, c.messageupdate, oldmessage, newmessage));
 
-    bot.on(c.rolecreate, role => sendToAudit(bot, database, c.rolecreate, role));
+    bot.on(c.rolecreate, role => sendToAudit(bot, c.rolecreate, role));
 
-    //bot.on(c.roleupdate, (oldrole, newrole) => sendToAudit(bot, database, c.roleupdate, oldrole, newrole));
+    //bot.on(c.roleupdate, (oldrole, newrole) => sendToAudit(bot, c.roleupdate, oldrole, newrole));
 
-    bot.on(c.roledelete, role => sendToAudit(bot, database, c.roledelete, role));
+    bot.on(c.roledelete, role => sendToAudit(bot, c.roledelete, role));
 }
 
-function sendToAudit(bot, database, type, content1, content2) {
+function sendToAudit(bot, type, content1, content2) {
     
     if(ignorechannel.c.indexOf(content1.channelId) !== -1) return;
 

@@ -2,11 +2,8 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 
-module.exports.run = async (bot, message, args, database) => {
-    message.delete();
-
-    if(!await hasPermission(message, database, 0, 1)) {
-         
+module.exports.run = async (bot, message, args) => {
+    if(!await hasPermission(message, 0, 1)) {        
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -21,10 +18,8 @@ module.exports.run = async (bot, message, args, database) => {
     //}
 
     if(isNaN(amount)) {
-         
         return message.channel.send(`That isn't a valid number!`);
     }else if (amount < 1 || amount >= Number(config.bulkDeleteLimit)) {
-         
         return message.channel.send('you need to input a number between 1 and 99.');
     }
 
@@ -51,10 +46,10 @@ module.exports.run = async (bot, message, args, database) => {
     //     });
     // }else {
         await message.channel.bulkDelete(amount, true).then(message.channel.send(`Successfully pruned ${amount} messages`).then(msg => setTimeout(() => msg.delete(), 5000))).catch(err => {
-            console.log(err);
+            if(config.debug == 'true') console.log(err);
             message.channel.send('there was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)');
         });
-        return  
+        return message.delete();
     // }
 }
 

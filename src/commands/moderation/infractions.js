@@ -3,13 +3,16 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { Database } = require('../../db/db');
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database();
+
+module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
-    if (!await hasPermission(message, database, 0, 0)) {
+    if (!await hasPermission(message, 0, 0)) {
          
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {

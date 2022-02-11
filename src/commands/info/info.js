@@ -3,10 +3,9 @@ const {
 } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
 const {Database} = require('../../db/db')
+const database = new Database();
 
-;
-
-module.exports.run = async (bot, message, args, database) => {
+module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage  == 'true') {
         message.delete();
     }

@@ -5,12 +5,12 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
 
-module.exports.run = async (bot, message, args, database) => {
+module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
         message.delete();
     }
 
-    if(!await hasPermission(message, database, 0, 1)) {
+    if(!await hasPermission(message, 0, 1)) {
          
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
@@ -32,7 +32,7 @@ module.exports.run = async (bot, message, args, database) => {
     }
 
 
-    if(await isBanned(database, Member, message) == false) {
+    if(await isBanned(Member, message) == false) {
          
         return message.reply('This user isn`t banned!')
     }

@@ -63,17 +63,17 @@ bot.commands = new Discord.Collection();
 deployCommands(bot);
 
 bot.on('guildMemberAdd', async member => {
-  return await guildMemberAdd(member, bot, database)
+  return await guildMemberAdd(member, bot)
 });
 
 
 bot.on('guildMemberRemove', async member => {
-  return await guildMemberRemove(member, database);
+  return await guildMemberRemove(member);
 });
 
 
 bot.on("messageCreate", async message => {
-  return await messageCreate(message, bot, database);
+  return await messageCreate(message, bot);
 });
 
 process.on('unhandledRejection', err => {

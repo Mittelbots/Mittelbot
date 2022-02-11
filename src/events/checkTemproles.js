@@ -1,17 +1,19 @@
 const config = require('../../src/assets/json/_config/config.json');
 const { getCurrentDate } = require("../../utils/functions/getCurrentDate");
 const { log } = require('../../logs');
+const { Database } = require('../db/db');
+const database = new Database();
 
-async function deleteEntries(infraction_id, database) {
+async function deleteEntries(infraction_id,) {
     try {
-        database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).then(() => database.close()).catch(err => console.log(err))
+        database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id]).catch(err => console.log(err))
     }catch(err) {
         log.fatal(err);
         if(config.debug == 'true') console.log(err);
     }
 }
 
-function checkTemproles(bot, database) {
+function checkTemproles(bot) {
     setInterval(() => {
         database.query('SELECT * FROM temproles').then(async results => {
             let done = 0;
@@ -27,7 +29,7 @@ function checkTemproles(bot, database) {
                         var guild = await bot.guilds.cache.get(results[i].guild_id);
                         var user = await guild.members.fetch(results[i].user_id).then(members => members);
                         await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(r => r.id === results[i].role_id)])
-                        deleteEntries(results[i].infraction_id, database);
+                        deleteEntries(results[i].infraction_id);
                     }catch(err) {
                         // CAN'T FIND USER OR USER LEFT THE SERVER
                         done -= 1;

@@ -11,8 +11,11 @@ const { log } = require('../../../logs');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { insertPermsToModroles, deletePermsFromModroles, updatePermsFromModroles } = require('../../../utils/functions/insertDataToDatabase');
+const { Database } = require('../../db/db');
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database()
+
+module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }

@@ -1,4 +1,8 @@
-async function hasPermission(message, database, adminOnly, modOnly) {
+const { Database } = require("../../src/db/db");
+
+const database = new Database();
+
+async function hasPermission(message, adminOnly, modOnly) {
     return database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(async (res) => {
         var hasPermission = false
         for (let i in await res) {

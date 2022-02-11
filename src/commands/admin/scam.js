@@ -15,8 +15,11 @@ const url = require('url');
 
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
+const { Database } = require('../../db/db');
 
-module.exports.run = async (bot, message, args, database) => {
+const database = new Database()
+
+module.exports.run = async (bot, message, args) => {
 
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();

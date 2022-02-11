@@ -1,8 +1,11 @@
 const {MessageEmbed} = require('discord.js');
 const config = require('../../src/assets/json/_config/config.json');
+const { Database } = require('../../src/db/db');
 const { generateModEmote } = require('../functions/generateModEmote');
 
-async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid, database) {
+const database = new Database();
+
+async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
 
     var modLogMessage = new MessageEmbed()
     .setTitle(`${await generateModEmote(config, bot, type)} **Member ${type}!**`)
@@ -15,11 +18,11 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
         modLogMessage.addField(`Time`, `**${time}** `)
     }
 
-    sendToModLog(bot, modLogMessage, gid, database);
+    sendToModLog(bot, modLogMessage, gid);
     return;
 }
 
-function sendToModLog(bot, message, gid, database) {
+function sendToModLog(bot, message, gid) {
     database.query(`SELECT modlog FROM ${gid}_guild_logs`).then(res => {
         if(res.length > 0 && res[0].modlog) {
             try {

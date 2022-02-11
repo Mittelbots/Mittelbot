@@ -9,13 +9,12 @@ const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfra
 const { log } = require('../../../logs');
 
 
-module.exports.run = async (bot, message, args, database) => {
+module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete();
     }
 
-    if (!await hasPermission(message, database, 0, 0)) {
-         
+    if (!await hasPermission(message, 0, 0)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
@@ -34,7 +33,7 @@ module.exports.run = async (bot, message, args, database) => {
         return message.reply(`I can't find this user!`);
     }
     
-    if (await isMod(Member, message, database)) {
+    if (await isMod(Member, message)) {
         return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
     }
 
@@ -59,13 +58,13 @@ module.exports.run = async (bot, message, args, database) => {
         return message.channel.send('Please add a reason!');
     }
 
-    if(await isMuted(database, config, Member, message, log, bot)) {
+    if(await isMuted(config, Member, message, log, bot)) {
         return message.reply('This user is already muted!');
     }
 
     if(config.debug == 'true') console.info('Mute Command passed!');
 
-    return await muteUser(Member, message, bot, config, reason, time, dbtime, database)
+    return await muteUser(Member, message, bot, config, reason, time, dbtime)
 }
 
 module.exports.help = {
