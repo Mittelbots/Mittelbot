@@ -17,7 +17,8 @@ jobs:
         with:
           node-version: 12
       - run: npm install 
-      - run: pwd    
+      - run: pwd  
+      - run: ls -la  
       #   uses: juliangruber/read-file-action@v1
       #   with: 
       #     path: ./package.json
