@@ -48,67 +48,67 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         .setAuthor(`${user.user.username}${user.user.discriminator}`)
         .addField(`${infraction.infraction_id} - ${type} **${infraction.till_date}**`, `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`);
         return message.reply({embeds:[publicOneInfractionMessage]});
-    }
-
-    const backId = 'back'
-    const forwardId = 'forward'
-    const backButton = new MessageButton({
-    style: 'SECONDARY',
-    label: 'Back',
-    emoji: '⬅️',
-    customId: backId
-    });
-    const forwardButton = new MessageButton({
-    style: 'SECONDARY',
-    label: 'Forward',
-    emoji: '➡️',
-    customId: forwardId
-    });
-
-    const data = [...open,...closed]
-
-    const generateEmbed = async start => {
-        const current = data.slice(start, start + 10);
-
-        return new MessageEmbed({
-            title: `Showing infractions ${start + 1}-${start + current.length} out of ${data.length}`,
-            fields: await Promise.all(
-                current.map(async inf => ({
-                    name: `${inf.infraction_id} - ${inf.mute == 1 ? `${'Mute'}`: inf.kick == 1 ? `${'Kick'}` : inf.warn == 1 ? `${'Warn'}` : `${'Ban'}`}`,
-                    value: `Reason: ${inf.reason} \n ${inf.till_date ? `${`Till: ${inf.till_date}`}` : inf.mute == 1 ? `${'Till: Permanent'}` : inf.ban == 1 ? `${'Till: Permanent'}` : `${''}`}`
-                }))
-            )
-        })
-    }
-
-    const canFitOnOnePage = data.length <= 10;
-    const embedMessage = await message.channel.send({
-        embeds: [await generateEmbed(0)],
-        components: canFitOnOnePage ? [] : [new MessageActionRow({components: [forwardButton]})]
-    });
-
-    if(canFitOnOnePage) return;
-
-    const collector = embedMessage.createMessageComponentCollector({
-        filter: ({user}) => user.id === message.author.id
-    });
-
-    let currentIndex = 0;
-    collector.on('collect', async interaction => {
-        interaction.customId === backId ? (currentIndex -= 10) : (currentIndex += 10)
-
-        await interaction.update({
-            embeds: [await generateEmbed(currentIndex)],
-            components: [
-                new MessageActionRow({
-                    components: [
-                        ...(currentIndex ? [backButton] : []),
-                        ...(currentIndex + 10 < data.length ? [forwardButton] : [])
-                    ]
-                })
-            ]
+    }else {
+        const backId = 'back'
+        const forwardId = 'forward'
+        const backButton = new MessageButton({
+        style: 'SECONDARY',
+        label: 'Back',
+        emoji: '⬅️',
+        customId: backId
         });
-    });
+        const forwardButton = new MessageButton({
+        style: 'SECONDARY',
+        label: 'Forward',
+        emoji: '➡️',
+        customId: forwardId
+        });
+
+        const data = [...open,...closed]
+
+        const generateEmbed = async start => {
+            const current = data.slice(start, start + 10);
+
+            return new MessageEmbed({
+                title: `Showing infractions ${start + 1}-${start + current.length} out of ${data.length}`,
+                fields: await Promise.all(
+                    current.map(async inf => ({
+                        name: `${inf.infraction_id} - ${inf.mute == 1 ? `${'Mute'}`: inf.kick == 1 ? `${'Kick'}` : inf.warn == 1 ? `${'Warn'}` : `${'Ban'}`}`,
+                        value: `Reason: ${inf.reason} \n ${inf.till_date ? `${`Till: ${inf.till_date}`}` : inf.mute == 1 ? `${'Till: Permanent'}` : inf.ban == 1 ? `${'Till: Permanent'}` : `${''}`}`
+                    }))
+                )
+            })
+        }
+
+        const canFitOnOnePage = data.length <= 10;
+        const embedMessage = await message.channel.send({
+            embeds: [await generateEmbed(0)],
+            components: canFitOnOnePage ? [] : [new MessageActionRow({components: [forwardButton]})]
+        });
+
+        if(canFitOnOnePage) return;
+
+        const collector = embedMessage.createMessageComponentCollector({
+            filter: ({user}) => user.id === message.author.id
+        });
+
+        let currentIndex = 0;
+        collector.on('collect', async interaction => {
+            interaction.customId === backId ? (currentIndex -= 10) : (currentIndex += 10)
+
+            await interaction.update({
+                embeds: [await generateEmbed(currentIndex)],
+                components: [
+                    new MessageActionRow({
+                        components: [
+                            ...(currentIndex ? [backButton] : []),
+                            ...(currentIndex + 10 < data.length ? [forwardButton] : [])
+                        ]
+                    })
+                ]
+            });
+        });
+    }
     return;
 }
 
