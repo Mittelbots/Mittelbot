@@ -6,3 +6,5 @@ src/db/db_config.json
 
 node_modules/
 _logs/
+
+VERSION
