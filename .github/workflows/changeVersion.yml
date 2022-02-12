@@ -2,9 +2,19 @@ name: changeVersion on Beta
 on: 
   push:
     branches:
-     - beta
+      - beta
+    jobs:
+      - changeVersionBETA
+
+on: 
+  push:
+    branches:
+      - main
+    jobs:
+      - changeVersionSTABLE
+
 jobs: 
-  changeVersion: 
+  changeVersionBETA: 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -27,13 +37,8 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: beta
-
-on: 
-  push:
-    branches:
-     - main
-jobs: 
-  changeVersion: 
+          
+  changeVersionSTABLE: 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
