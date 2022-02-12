@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: changeVersion
+        id: package
+        uses: juliangruber/read-file-action@v1
         with: 
           path: ./src/assets/txt/version/version.txt
 
