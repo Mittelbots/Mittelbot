@@ -5,6 +5,7 @@ on:
     branches:
       - beta
       - main
+      - development
     paths-ignore:
     - 'VERSION'
 
