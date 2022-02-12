@@ -18,7 +18,5 @@ jobs:
           node-version: 16
       - run: npm install 
 
-      - name: echo version
-        env: 
-          VERSION: ${{ secrets.VERSION }}
-        run: echo ${{ secrets.VERSION }}
+      - name: execute change version
+        run: node ./_scripts/versionControl/versionControl.js
