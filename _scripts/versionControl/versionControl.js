@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-fs.readFile('.VERSION', 'utf-8', (err, data) => {
+fs.readFile('./VERSION', 'utf-8', (err, data) => {
     if(err) throw err;
 
     data = data.split(".")
