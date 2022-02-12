@@ -4,6 +4,7 @@ autoresponse.json
 _secret/token.json
 src/db/db_config.json
 
-node_modules/
+src/assets/txt/version/version.txt
 
-_logs/*
+node_modules/
+_logs/

@@ -1,0 +1,22 @@
+name: changeVersion
+
+on: 
+  push:
+    branches:
+     - beta
+
+on: 
+  push:
+    branches:
+     - main
+
+jobs: 
+  changeVersion: 
+    name: changeVersion
+    runs-on: ubuntu-latest
+
+  steps: 
+  - id: set_version
+    run: |
+      content=`cat ../../src/assets/txt/version/version.txt`
+      echo "content"
