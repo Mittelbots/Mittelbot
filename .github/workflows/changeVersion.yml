@@ -6,10 +6,6 @@ on: push
 #   push:
 #     branches:
 #      - beta
-
-# on: 
-#   push:
-#     branches:
 #      - main
 
 jobs: 
