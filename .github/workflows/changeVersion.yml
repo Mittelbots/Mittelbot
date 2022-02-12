@@ -14,11 +14,9 @@ on: push
 
 jobs: 
   changeVersion: 
-    name: changeVersion
     runs-on: ubuntu-latest
-
-  steps: 
-  - id: set_version
-    run: |
-      content=`cat ../../src/assets/txt/version/version.txt`
-      echo "content"
+    steps:
+      - name: changeVersion
+        run: |
+          content=`cat ../../src/assets/txt/version/version.txt`
+          echo "content"
