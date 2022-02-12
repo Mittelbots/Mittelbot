@@ -23,8 +23,9 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./VERSION
+          trim: true
 
       - name: echo file
-        run: |
-          echo -e ${{steps.version.outputs.content}} + 1 > ./VERSION
-          cat ./VERSION
+        run: echo -e ${{steps.version.outputs.content}} + 1 > ./VERSION
+
+      - run: cat ./VERSION
