@@ -12,11 +12,15 @@ jobs:
   changeVersion: 
     runs-on: ubuntu-latest
     steps:
-      - name: changeVersion
-        id: package
-        uses: juliangruber/read-file-action@v1
-        with: 
-          path: ./package.json
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install 
+      - run: pwd    
+      #   uses: juliangruber/read-file-action@v1
+      #   with: 
+      #     path: ./package.json
 
-      - name: echo version
-        run: echo "${{ steps.package.outputs.content }}"
+      # - name: echo version
+      #   run: echo "${{ steps.package.outputs.content }}"
