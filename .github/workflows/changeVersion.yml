@@ -22,9 +22,9 @@ jobs:
         uses: EthanSK/git-branch-name-action@v1
 
       - name: change version
-        run: echo ${GIT_BRANCH_NAME}
         run: node ./_scripts/versionControl/versionControl.js '${GIT_BRANCH_NAME}'
 
+      - run: echo ${GIT_BRANCH_NAME}
       - name: commit change
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
