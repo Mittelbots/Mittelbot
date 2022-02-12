@@ -22,7 +22,7 @@ jobs:
         id: version
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./src/assets/txt/version/version.txt
+          path: ./VERSION
 
       - name: echo file
-        run: echo "${{steps.version.outputs.content}}"
+        run: echo -e ${{steps.version.outputs.content}} + 1 > ./VERSION
