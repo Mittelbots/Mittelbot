@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: changeVersion
-        run: |
-          pwd
-          ls -la
+        with: 
+          path: ./src/assets/txt/version/version.txt
+
+      - name: echo version
+        run: echo "${{ steps.package.outputs.content }}"
