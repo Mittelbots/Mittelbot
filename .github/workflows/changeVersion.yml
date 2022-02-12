@@ -1,13 +1,37 @@
-name: changeVersion
+name: changeVersion on Beta
+on: 
+  push:
+    branches:
+     - beta
+jobs: 
+  changeVersion: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - run: npm install 
 
-on: push
+      - name: change version
+        run: node ./_scripts/versionControl/versionControl.js 'beta'
 
-# on: 
-#   push:
-#     branches:
-#      - beta
-#      - main
+      - name: commit change
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "new version" -a
+      
+      - name: push change
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: beta
 
+on: 
+  push:
+    branches:
+     - main
 jobs: 
   changeVersion: 
     runs-on: ubuntu-latest
@@ -19,4 +43,16 @@ jobs:
       - run: npm install 
 
       - name: execute change version
-        run: node ./_scripts/versionControl/versionControl.js
+        run: node ./_scripts/versionControl/versionControl.js 'stable'
+
+      - name: commit change
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "new version" -a
+      
+      - name: push change
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: main
