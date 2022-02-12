@@ -17,8 +17,12 @@ jobs:
           node-version: 16
       - run: npm install 
 
+      - name: Git branch name
+        id: git-branch-name
+        uses: EthanSK/git-branch-name-action@v1
+
       - name: change version
-        run: node ./_scripts/versionControl/versionControl.js ' ${GITHUB_REF##*/} '
+        run: node ./_scripts/versionControl/versionControl.js '${GIT_BRANCH_NAME}'
 
       - name: commit change
         run: |
@@ -30,4 +34,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
-          branch: ${GITHUB_REF##*/}
+          branch: ${GIT_BRANCH_NAME}
