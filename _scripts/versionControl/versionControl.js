@@ -12,7 +12,7 @@ fs.readFile('./VERSION', 'utf-8', (err, data) => {
     let beta = data[1]
 
     if(process.argv[2] == 'beta') beta++;
-    else if('stable') stable++
+    else if(process.argv[2] == 'stable') stable++
     else return;
     
     fs.writeFileSync('./VERSION', stable + '.' + beta);
