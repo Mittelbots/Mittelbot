@@ -25,4 +25,6 @@ jobs:
           path: ./VERSION
 
       - name: echo file
-        run: echo -e ${{steps.version.outputs.content}} + 1 > ./VERSION
+        run: |
+          echo -e ${{steps.version.outputs.content}} + 1 > ./VERSION
+          cat ./VERSION
