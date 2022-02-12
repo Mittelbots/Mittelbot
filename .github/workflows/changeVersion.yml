@@ -15,9 +15,14 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - run: npm install 
-      - run: pwd  
-      - run: ls -la  
-      - run: content="cat ./src/assets/txt/version/version.txt"
-      - run: echo $content
+
+      - name: read version
+        id: version
+            uses: juliangruber/read-file-action@v1
+        with:
+          path: ./src/assets/txt/version/version.txt
+
+      - name: echo file
+        run: echo "${{steps.version.outputs.content}}"
