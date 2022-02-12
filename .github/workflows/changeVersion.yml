@@ -18,14 +18,7 @@ jobs:
           node-version: 16
       - run: npm install 
 
-      - name: read version
-        id: version
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./VERSION
-          trim: true
-
-      - name: echo file
-        run: echo -e ${{steps.version.outputs.content}} + 1 > ./VERSION
-
-      - run: cat ./VERSION
+      - name: echo version
+        env: 
+          VERSION: ${{ secrets.VERSION }}
+        run: echo ${{ secrets.VERSION }}
