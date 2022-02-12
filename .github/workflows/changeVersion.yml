@@ -19,4 +19,5 @@ jobs:
       - run: npm install 
       - run: pwd  
       - run: ls -la  
-      - run: cat ./src/assets/txt/version/version.txt
+      - run: content="cat ./src/assets/txt/version/version.txt"
+      - run: echo $content
