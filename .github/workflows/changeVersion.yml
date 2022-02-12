@@ -14,5 +14,4 @@ jobs:
     steps:
       - name: changeVersion
         run: |
-          content=`cat ./src/assets/txt/version/version.txt`
-          echo "content"
+          pwd
