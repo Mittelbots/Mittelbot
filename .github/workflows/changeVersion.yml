@@ -3,7 +3,7 @@ name: changeVersion
 on: 
   push:
     branches:
-      - beta
+      - Beta
       - main
     paths-ignore:
     - 'VERSION'
