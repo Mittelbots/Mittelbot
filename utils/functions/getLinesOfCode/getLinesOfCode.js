@@ -2,7 +2,7 @@ const {exec} = require('child_process');
 
 async function getLinesOfCode(cb) {
     exec('git ls-files | xargs wc -l', (err, stdout, stderr) => {
-        if(err) {
+        if(err.killed) {
             console.log(err);
         }
         let array = stdout.split(' ');
