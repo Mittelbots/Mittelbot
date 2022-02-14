@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
         return message.reply('This user isn`t banned!')
     }
 
-    return await unbanUser(database, Member, config, message, log, reason, bot);
+    return await unbanUser(Member, config, message, log, reason, bot);
 }
 
 module.exports.help = {
