@@ -13,7 +13,7 @@ async function checkForScam(message, bot, config, log) {
         let data = res.data.domains;
         
         for(let i in data) {
-            if(message.content.search(data[i]) !== -1) {
+            if(message.content.search(data[i]) !== -1 && message.content.indexOf(data[i]) !== -1) {
                 await banUser(await message.guild.members.fetch(message.author), message, `User tried to sent a Scam Link : ${data[i]}`, bot, config, log, getModTime('99999d'), 'Permanent', true)
                 await message.delete().catch(err => {return;});
                 i = 0;
