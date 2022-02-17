@@ -25,7 +25,7 @@ jobs:
       - name: change version
         run: node ./_scripts/versionControl/versionControl.js '${GIT_BRANCH_NAME}'
 
-      - run: echo ${GIT_BRANCH_NAME}
+      - run: cat VERSION
       - name: commit change
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
