@@ -116,7 +116,7 @@ module.exports.run = async (bot, message, args) => {
 
     } else {
         /**
-         * EDIT SETTING
+         *? EDIT SETTING
          */
         setting = setting.replace(value, '').replace(' ', '');
         for (let i in config.settings) {
