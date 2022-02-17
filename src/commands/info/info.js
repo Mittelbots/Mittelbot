@@ -40,6 +40,7 @@ module.exports.run = async (bot, message, args) => {
         .setTitle(`**Serverinfos - ${server.name}**`)
         .setURL('https://discord.gg/chilledsad/')
         .setThumbnail(server.iconURL())
+        .setDescription(`${server.id}`)
         .addField(`Owner: `, `<@${server.ownerId}>`, true)
         .addField(`Channels`, `${server.channels.cache.size}`, true)
         .addField(`Members`, `${server.members.cache.size}`, true)
