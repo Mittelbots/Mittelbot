@@ -9,9 +9,9 @@ fs.readFile('./VERSION', 'utf-8', (err, data) => {
 
     let stable = data[0];
 
-    let beta = data[1]
+    let beta = data[1];
 
-    if(process.argv[2] == 'beta') beta++;
+    if(process.argv[2] == 'Beta') beta++;
     else if(process.argv[2] == 'stable') stable++
     else return;
     
