@@ -9,7 +9,7 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
 
     var modLogMessage = new MessageEmbed()
     .setTitle(`${await generateModEmote(config, bot, type)} **Member ${type}!**`)
-    .addField(`Moderator`, `<@${moderator}> (${moderator})`)
+    .addField(`Moderator`, `${moderator} (${moderator})`)
     .addField(`${type} Member`, `<@${member}> (${member})`)
     .addField(`Reason`, `${reason || "No Reason Provided!"}`)
     .setTimestamp();
