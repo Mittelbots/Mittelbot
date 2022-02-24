@@ -15,7 +15,11 @@ module.exports.run = async (bot, message, args) => {
     let tag = false;
     if(args.length !== 0) {
         args = args.join(" ").replace('<', '').replace('@', '').replace('>', '').replace('!', '')
-        user = message.guild.members.cache.find(member => member.id.includes(args)).user;
+        try {
+            user = message.guild.members.cache.find(member => member.id.includes(args)).user;
+        }catch(err) {
+            return message.reply('Member not found!');
+        }
         tag = true;
     }else {
         user = message.author
