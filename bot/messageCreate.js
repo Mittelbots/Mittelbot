@@ -10,7 +10,6 @@ const {
 } = require('../logs');
 
 const defaultCooldown = new Set();
-const settingsCooldown = new Set();
 const levelCooldown = new Set();
 
 const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
@@ -40,28 +39,9 @@ async function messageCreate(message, bot) {
             if (commandfile) { //&& blacklist(0, message)
                 database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(async res => {
 
-                    if (settingsCooldown.has(message.author.id) && cmd === `${prefix[0].prefix}settings`) {
-                        return message.channel.send(`You have to wait ${config.defaultSettingsCooldown.text} after each Settings Command.`);
-                    } else {
-                        settingsCooldown.add(message.author.id);
-                        setTimeout(async () => {
-                            settingsCooldown.delete(message.author.id);
-                        }, config.defaultSettingsCooldown.format);
-                        if(message.author.id !== config.Bot_Owner_ID) {
-                            settingsCooldown.add(message.author.id);
-                            setTimeout(async () => {
-                                settingsCooldown.delete(message.author.id);
-                            }, config.defaultSettingsCooldown.format);
-                        }
-                    }
-
                     if (defaultCooldown.has(message.author.id)) {
                         return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
                     } else {
-                        defaultCooldown.add(message.author.id);
-                        setTimeout(async () => {
-                            defaultCooldown.delete(message.author.id);
-                        }, res[0].cooldown || config.defaultCooldown.format);
                         if(message.author.id !== config.Bot_Owner_ID) {
                             defaultCooldown.add(message.author.id);
                             setTimeout(async () => {
