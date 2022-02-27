@@ -47,6 +47,12 @@ async function messageCreate(message, bot) {
                         setTimeout(async () => {
                             settingsCooldown.delete(message.author.id);
                         }, config.defaultSettingsCooldown.format);
+                        if(message.author.id !== config.Bot_Owner_ID) {
+                            settingsCooldown.add(message.author.id);
+                            setTimeout(async () => {
+                                settingsCooldown.delete(message.author.id);
+                            }, config.defaultSettingsCooldown.format);
+                        }
                     }
 
                     if (defaultCooldown.has(message.author.id)) {
@@ -56,6 +62,12 @@ async function messageCreate(message, bot) {
                         setTimeout(async () => {
                             defaultCooldown.delete(message.author.id);
                         }, res[0].cooldown || config.defaultCooldown.format);
+                        if(message.author.id !== config.Bot_Owner_ID) {
+                            defaultCooldown.add(message.author.id);
+                            setTimeout(async () => {
+                                defaultCooldown.delete(message.author.id);
+                            }, res[0].cooldown || config.defaultCooldown.format);
+                        }
                         return commandfile.run(bot, message, args);
                     }
                 }).catch(err => {
@@ -66,9 +78,13 @@ async function messageCreate(message, bot) {
             } else return;
 
         } else { //? NO COMMAND
+            
             if (!levelCooldown.has(message.author.id)) {
                 gainXP(message);
                 levelCooldown.add(message.author.id);
+                if(message.author.id !== config.Bot_Owner_ID) {
+                    levelCooldown.add(message.author.id);
+                }
             } else {
                 setTimeout(() => {
                     levelCooldown.delete(message.author.id)
