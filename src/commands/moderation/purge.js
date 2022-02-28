@@ -49,7 +49,6 @@ module.exports.run = async (bot, message, args) => {
             if(config.debug == 'true') console.log(err);
             message.channel.send('there was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)');
         });
-        return message.delete();
     // }
 }
 
