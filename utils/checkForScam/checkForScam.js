@@ -2,16 +2,22 @@ const axios = require('axios');
 const { getModTime } = require('../functions/getModTime');
 const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
+const { Database } = require('../../src/db/db');
+const database = new Database();
 
 async function checkForScam(message, bot, config, log) {
 
-    // if(message.content.search('http') === -1) return
-
     if(await isMod(await message.guild.members.fetch(message.author), message)) return;
+
+    const advancedScamList = await database.query('SELECT link FROM advancedScamList');
 
     axios.get('https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/domain-list.json').then(async res => {
         let data = res.data.domains;
         
+        for(let i in advancedScamList) {
+            data.push(advancedScamList[i].link);
+        }
+
         if(message.content.search('discord.gg') !== -1 && message.content.indexOf('discord.gg') !== -1){
             return;
         }
@@ -24,6 +30,9 @@ async function checkForScam(message, bot, config, log) {
                 return;
             }
         }
+    })
+    .catch(err => {
+        console.log(err);
     })
 }
 
