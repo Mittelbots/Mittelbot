@@ -46,4 +46,3 @@ More informations are in the LICENSE file
 ## Built using <a name="built_using"></a>
 <br>
 - node.js
-
