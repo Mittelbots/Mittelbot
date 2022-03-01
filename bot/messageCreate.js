@@ -1,7 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
-const {
-    gainXP
-} = require("../src/events/levelsystem/levelsystem");
+const levelSystem = require("../utils/functions/levelsystem/levelsystem");
 const {
     checkForScam
 } = require("../utils/checkForScam/checkForScam");
@@ -60,8 +58,8 @@ async function messageCreate(message, bot) {
         } else { //? NO COMMAND
             
             if (!levelCooldown.has(message.author.id)) {
-                gainXP(message);
-                levelCooldown.add(message.author.id);
+                levelSystem.run(message, bot);
+
                 if(message.author.id !== config.Bot_Owner_ID) {
                     levelCooldown.add(message.author.id);
                 }

@@ -45,17 +45,8 @@ const bot = new Discord.Client({
 });
 bot.setMaxListeners(10);
 
-var database = new Database();
-
-// RE NEW EVERY HOUR THE DATBASE CONNECTION
-setInterval(async () => {
-  await database.close();
-  database = new Database();
-  console.log('------------DATABASE SUCCESSFULLY RESTARTED------------')
-}, 3600000);
-
 bot.on('guildCreate', async (guild) => {
-  return await guildCreate(guild, database)
+  return await guildCreate(guild)
 });
 
 bot.commands = new Discord.Collection();
@@ -87,7 +78,7 @@ process.on('uncaughtException', err => {
 bot.once('ready', async () => {
   checkInfractions(bot, new Database());
   checkTemproles(bot, new Database())
-  auditLog(bot, database);
+  auditLog(bot);
   
   var codeLines;
   await getLinesOfCode((cb) => {
@@ -101,6 +92,7 @@ bot.once('ready', async () => {
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
 
   setTimeout(() => {
+    console.log(codeLines)
     bot.user.setActivity({
       name: config.activity.playing.name + codeLines,
       type: config.activity.playing.type
