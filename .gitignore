@@ -5,4 +5,5 @@ _secret/token.json
 src/db/db_config.json
 
 node_modules/
-_logs/core
+
+core
