@@ -6,4 +6,5 @@ src/db/db_config.json
 
 node_modules/
 
+logs/*
 core
