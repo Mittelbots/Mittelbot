@@ -92,7 +92,6 @@ bot.once('ready', async () => {
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
 
   setTimeout(() => {
-    console.log(codeLines)
     bot.user.setActivity({
       name: config.activity.playing.name + codeLines,
       type: config.activity.playing.type
