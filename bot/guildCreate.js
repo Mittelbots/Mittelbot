@@ -1,4 +1,3 @@
-const whitelist = require('../src/assets/json/whitelist/whitelist.json');
 const { log } = require('../logs');
 const { Database } = require('../src/db/db')
 
@@ -7,7 +6,6 @@ const database = new Database()
 async function guildCreate(guild) {
 
   let gid = guild.id;
-  if (whitelist.server.indexOf(gid) === -1) return guild.leave();
 
   await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).then(async res => {
     if (res.length <= 0) await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
