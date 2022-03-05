@@ -42,5 +42,29 @@
             "val": "",
             "exp": "link.com"
         }
+    },
+    "levelsettings": {
+        "rank": {
+            "name": "View and Update Ranks",
+            "command": "rank",
+            "alias": "r",
+            "desc": "View and Update Ranks",
+            "icon": "",
+            "colname": "levelsettings",
+            "val": "",
+            "exp": "link.com"
+        }
+    },
+    "rank": {
+        "rank": {
+            "name": "View your rank",
+            "command": "rank",
+            "alias": "r",
+            "desc": "View and Update Ranks",
+            "icon": "",
+            "colname": "xp",
+            "val": "",
+            "exp": ""
+        }
     }
 }

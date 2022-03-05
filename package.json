@@ -5,13 +5,13 @@
   "main": "shard.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "pm2dev": "pm2 start shard.js --name DEV__Mittelbot__DEV --max-memory-restart 300M && pm2 monit",
+    "pm2dev": "pm2 start shard.js --name DEV__Mittelbot__DEV --max-memory-restart 500M && pm2 monit",
     "pm2devstop": "pm2 stop DEV__Mittelbot__DEV",
-    "pm2devrestart": "pm2 stop DEV__Mittelbot__DEV && pm2 start shard.js --name DEV__Mittelbot__DEV --max-memory-restart 300M && pm2 monit",
-    "pm2": "pm2 start shard.js --watch --name Mittelbot --max-memory-restart 300M && pm2 monit",
-    "pm2prod": "pm2 start shard.js --name Mittelbot --max-memory-restart 300M && pm2 monit",
-    "pm2restart": "pm2 stop Mittelbot && pm2 start shard.js --watch --name Mittelbot --max-memory-restart 300M && pm2 monit",
-    "pm2restartprod": "pm2 stop Mittelbot && pm2 start shard.js --name Mittelbot --max-memory-restart 300M && pm2 monit",
+    "pm2devrestart": "pm2 stop DEV__Mittelbot__DEV && pm2 start shard.js --name DEV__Mittelbot__DEV --max-memory-restart 500M && pm2 monit",
+    "pm2": "pm2 start shard.js --watch --name Mittelbot --max-memory-restart 500M && pm2 monit",
+    "pm2prod": "pm2 start shard.js --name Mittelbot --max-memory-restart 500M && pm2 monit",
+    "pm2restart": "pm2 stop Mittelbot && pm2 start shard.js --watch --name Mittelbot --max-memory-restart 500M && pm2 monit",
+    "pm2restartprod": "pm2 stop Mittelbot && pm2 start shard.js --name Mittelbot --max-memory-restart 500M && pm2 monit",
     "kill": "pm2 stop Mittelbot && pm2 delete Mittelbot",
     "deployCommands": "node src/deploy-commands.js",
     "checkDatabase": "node _scripts/checkDatabase.js"
@@ -27,8 +27,10 @@
     "ms": "^2.1.3",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
+    "rank-card-generator": "^1.0.9",
     "rss-parser": "^3.12.0",
     "simple-node-logger": "^21.8.12",
-    "simple-youtube-api": "^5.2.1"
+    "simple-youtube-api": "^5.2.1",
+    "sloc": "^0.2.1"
   }
 }

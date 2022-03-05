@@ -5,6 +5,7 @@ const {execSync} = require('child_process');
 
 module.exports.run = async (bot, message, args, database) => {
     if(message.author.id === config.Bot_Owner_ID) {
+        return message.reply('Command disabled!');
         try {
             message.reply(`Ok sir, Bot stopped!`);
             log.info('------------BOT SUCCESSFULLY STOPPED------------');

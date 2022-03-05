@@ -8,9 +8,13 @@ if (config.debug == 'false') {
     let manager = new ShardingManager('./index.js', {
         token: token.BOT_TOKEN,
         totalShards: "auto",
+        respawn: true,
     });
 
     manager.on('shardCreate', shard => {
+        setTimeout(() => {
+            shard.kill();
+        }, 86400000); // 24h
         console.log(`[SHARDS]: Launched shards ${shard.id}`)
     });
 
