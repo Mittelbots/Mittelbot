@@ -61,7 +61,7 @@ module.exports.run = async (bot, message, args) => {
                 fields: await Promise.all(
                     current.map(async levelSettings => ({
                         name: `Level: ${levelSettings.level}`,
-                        value: `Needed XP: **${levelSettings.needXP}** \n Level Role: ${guild.roles.cache.get(levelSettings.role)}`
+                        value: `Needed XP: **${levelSettings.needXP}** \n Level Role: ${guild.roles.cache.get(levelSettings.role) || 'Not set'}`
                     }))
                 )
             })
@@ -232,6 +232,9 @@ module.exports.run = async (bot, message, args) => {
                             });
 
                             rolecollector.on('collect', async reply => {
+
+                                if(reply.content.toLowerCase() === 'none') return;
+
                                 const role = await guild.roles.cache.get(reply.content)
                                 console.log(role)
                                 if(!role) return message.reply('Invalid role provided. Please mention an existing role!')
@@ -273,6 +276,7 @@ module.exports.run = async (bot, message, args) => {
             }
             if (interaction.customId === 'ADD') {
                 message.channel.send('Which Level you want to add? Please use this Syntax: "LEVEL ROLE NEEDED-XP"');
+                message.channel.send('--> _If you don\'t want to set a role, just write "none" instead of the role_ <--');
 
                 interaction.deferUpdate();
                 for(let i in collector.options.message.components[0].components) {
