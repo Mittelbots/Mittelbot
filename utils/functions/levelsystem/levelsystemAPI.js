@@ -80,8 +80,8 @@ module.exports.checkXP = async function (bot, guildid, currentxp, message) {
             user.roles.add(guild.roles.cache.find(role => role.id === possibleNewRankRole)).catch(err => {})
 
             const level_announce = await this.getLevelAnnounce(guildid, message.author.id);
-
-            if(level_announce <= level) {
+            
+            if(Number(level_announce) < Number(level)) {
                 this.setLevelAnnounce(guildid, message.author.id, level);
                 return newRoleDB;
             }else {
