@@ -1,25 +1,55 @@
-const {exec} = require('child_process');
+var fs = require('fs');
+const {
+    exec
+} = require('child_process')
 
 async function getLinesOfCode(cb) {
-    exec('git ls-files | xargs wc -l', (err, stdout, stderr) => {
-        try {
-            if(err) {
-                if(err.killed) {
-                    console.log(err);
-                }
+
+    function readOutput(stdout) {
+        var index = stdout.search('Source');
+        var lines = '';
+
+        while (isNaN(stdout[index]) || stdout[index] == ' ') {
+            index++;
+            if (!isNaN(stdout[index]) && stdout[index] !== ' ') {
+                return readLines(index);
             }
-            let array = stdout.split(' ');
-            let i = stdout.length;
-            while(i > 0) {
-                if(!isNaN(array[i])) {
-                    return cb(array[i]);
-                }else {
-                    i--;
-                }
-            }
-        }catch(err) {
-            console.log(err)
         }
-    });
+
+        function readLines(index) {
+            while (!isNaN(stdout[index]) && stdout[index] !== ' ') {
+                lines += stdout[index];
+                index++;
+            }
+            lines = lines.replace("\n", '');
+
+            return lines;
+        }
+    }
+
+    function readCode() {
+        fs.readdir('./', "utf8", function (err, entity) {
+
+            const folder = ['_logs', '_.github', 'node_modules', '.bashrc', '.gitattributes', '.gitignore', 'LICENSE', 'package-lock.json', 'package.json', 'README.md', 'VERSION', '.git', '.github'];
+
+            var currentFolder = '';
+            var codeLines = 0;
+
+            for (let i in entity) {
+                if (folder.includes(entity[i])) continue;
+
+                exec(`sloc ./${entity[i]}`, (err, stdout, stderr) => {
+                    codeLines = codeLines + Number(readOutput(stdout))
+                });
+            }
+            setTimeout(() => {
+                return cb(codeLines)
+            }, 10000);
+            
+        });
+    }
+    readCode();
 }
-module.exports = {getLinesOfCode};
+module.exports = {
+    getLinesOfCode
+};
