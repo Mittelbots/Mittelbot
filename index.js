@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 const fs = require('fs');
 
 const config = require('./src/assets/json/_config/config.json');
+const token = require('./_secret/token.json');
+const version = require('./package.json').version;
 
 const {
   checkInfractions
@@ -30,8 +32,6 @@ const {
 const {
   deployCommands
 } = require("./utils/functions/deployCommands/deployCommands");
-
-const token = require('./_secret/token.json');
 
 const {
   guildCreate
@@ -102,7 +102,7 @@ bot.once('ready', async () => {
     setTimeout(() => {
       var codeLines = ` | Lines of Code: ${cb}` || '';
       bot.user.setActivity({
-        name: config.activity.playing.name + codeLines,
+        name: config.activity.playing.name + ' ' +  version + codeLines,
         type: config.activity.playing.type
       });
     }, 10000);
