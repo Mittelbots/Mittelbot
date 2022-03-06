@@ -23,12 +23,16 @@ module.exports.run = async (bot, message, args) => {
     }
 
     const levelSettings = await levelAPI.getLevelSettingsFromGuild(message.guild.id);
-    
-    const nextLevel = await levelAPI.getNextLevel(levelSettings, playerXP.level_announce);
-    console.log(nextLevel)
-    return message.reply({
-        files: [await card.rankCard(null, null, playerXP.level_announce, playerXP.xp, nextLevel.needXP, 0, 0 , bot.users.cache.find(m => m.id === mention))]
-    })
+    if(!levelSettings) {
+        return message.reply({
+            files: [await card.rankCard(null, null, playerXP.level_announce || 'N/A', playerXP.xp, 0, 0, 0 , bot.users.cache.find(m => m.id === mention))]
+        })
+    }else {
+        const nextLevel = await levelAPI.getNextLevel(levelSettings, playerXP.level_announce);
+        return message.reply({
+            files: [await card.rankCard(null, null, playerXP.level_announce, playerXP.xp, nextLevel.needXP, 0, 0 , bot.users.cache.find(m => m.id === mention))]
+        })
+    }
 }
 
 module.exports.help = {

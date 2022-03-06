@@ -155,7 +155,7 @@ module.exports.setLevelRolesFromGuild = async function (guildid, levelroles) {
  */
 module.exports.getLevelSettingsFromGuild = async function (guildid) {
     return await database.query(`SELECT levelsettings FROM ${guildid}_config`).then(async res => {
-        if(res[0].levelsettings === undefined) {
+        if(res[0].levelsettings === undefined || res[0].levelsettings === '') {
             res = false;
         }else {
             res = JSON.parse(res[0].levelsettings);
