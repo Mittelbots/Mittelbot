@@ -34,7 +34,7 @@ async function getLinesOfCode(cb) {
 
             if(err) console.log(err)
 
-            const folder = ['_logs', '_.github', 'node_modules', '.bashrc', '.gitattributes', '.gitignore', 'LICENSE', 'package-lock.json', 'package.json', 'README.md', 'VERSION', '.git', '.github'];
+            const folder = ['_logs', '_.github', 'node_modules', '.bashrc', '.gitattributes', '.gitignore', 'LICENSE', 'package-lock.json', 'package.json', 'README.md', '.git', '.github'];
 
             var codeLines = 0;
 
