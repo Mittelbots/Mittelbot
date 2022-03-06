@@ -23,9 +23,12 @@ module.exports.run = async (bot, message, args) => {
     }
 
     const levelSettings = await levelAPI.getLevelSettingsFromGuild(message.guild.id);
-    
+    if(!levelSettings) {
+        return message.reply({
+            files: [await card.rankCard(null, null, playerXP.level_announce, playerXP.xp, 0, 0, 0 , bot.users.cache.find(m => m.id === mention))]
+        })
+    }
     const nextLevel = await levelAPI.getNextLevel(levelSettings, playerXP.level_announce);
-    console.log(nextLevel)
     return message.reply({
         files: [await card.rankCard(null, null, playerXP.level_announce, playerXP.xp, nextLevel.needXP, 0, 0 , bot.users.cache.find(m => m.id === mention))]
     })
