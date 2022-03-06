@@ -5,9 +5,11 @@ const {
 
 async function getLinesOfCode(cb) {
 
-    function readOutput(stdout) {
+    async function readOutput(stdout) {
         var index = stdout.search('Source');
         var lines = '';
+
+        if(index === -1) return;
 
         while (isNaN(stdout[index]) || stdout[index] == ' ') {
             index++;
@@ -30,16 +32,20 @@ async function getLinesOfCode(cb) {
     function readCode() {
         fs.readdir('./', "utf8", function (err, entity) {
 
+            if(err) console.log(err)
+
             const folder = ['_logs', '_.github', 'node_modules', '.bashrc', '.gitattributes', '.gitignore', 'LICENSE', 'package-lock.json', 'package.json', 'README.md', 'VERSION', '.git', '.github'];
 
-            var currentFolder = '';
             var codeLines = 0;
 
             for (let i in entity) {
                 if (folder.includes(entity[i])) continue;
 
                 exec(`sloc ./${entity[i]}`, (err, stdout, stderr) => {
-                    codeLines = codeLines + Number(readOutput(stdout))
+                    var output = await readOutput(stdout)
+                    if(output === undefined || output === null) return;
+
+                    codeLines = Number(codeLines) + Number(output)
                 });
             }
             setTimeout(() => {
