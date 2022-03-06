@@ -41,7 +41,7 @@ async function getLinesOfCode(cb) {
             for (let i in entity) {
                 if (folder.includes(entity[i])) continue;
 
-                exec(`sloc ./${entity[i]}`, (err, stdout, stderr) => {
+                exec(`sloc ./${entity[i]}`, async (err, stdout, stderr) => {
                     var output = await readOutput(stdout)
                     if(output === undefined || output === null) return;
 
