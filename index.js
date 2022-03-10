@@ -105,6 +105,7 @@ bot.once('ready', async () => {
         name: config.activity.playing.name + ' ' +  version + codeLines,
         type: config.activity.playing.type
       });
+      log.info('------------BOT ACTIVITY SUCCESSFULLY STARTED------------', new Date())
     }, 10000);
   });
 
