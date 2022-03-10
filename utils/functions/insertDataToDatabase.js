@@ -1,7 +1,5 @@
-const { Database } = require("../../src/db/db");
+const database = require("../../src/db/db");
 const { errorhandler } = require("./errorhandler/errorhandler");
-
-const database = new Database;
 
 async function insertDataToClosedInfraction (uid, modid, mute, ban, warn, kick, till_date, reason, infraction_id) {
     database.query('INSERT INTO closed_infractions (user_id, mod_id, mute, ban, warn, kick, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',[uid, modid, mute, ban, warn, kick, till_date, reason, infraction_id]).catch(err => console.log(err));

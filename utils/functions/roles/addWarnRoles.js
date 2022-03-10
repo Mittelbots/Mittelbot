@@ -1,9 +1,9 @@
-const { Database } = require("../../../src/db/db");
+const database = require("../../../src/db/db");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getFutureDate } = require("../getFutureDate");
 const { insertDataToTemproles } = require("../insertDataToDatabase");
 
-const database = new Database();
+
 
 async function addWarnRoles(message, member, inf_id, config, log) {
     database.query(`SELECT role_id FROM ${message.guild.id}_guild_warnroles`).then(async res => {

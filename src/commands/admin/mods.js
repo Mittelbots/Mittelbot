@@ -11,9 +11,9 @@ const { log } = require('../../../logs');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { insertPermsToModroles, deletePermsFromModroles, updatePermsFromModroles } = require('../../../utils/functions/insertDataToDatabase');
-const { Database } = require('../../db/db');
+const database = require('../../db/db');
 
-const database = new Database()
+
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -34,6 +34,7 @@ module.exports.run = async (bot, message, args) => {
     if (setting === commandconfig.mods.modroles.command || setting === commandconfig.mods.modroles.alias) {
 
         let value = args[1];
+        if(!value || value === '') return message.reply('No role provied!');
 
         const isadmin = 'isadmin';
         const isadminLabel = 'Admin';

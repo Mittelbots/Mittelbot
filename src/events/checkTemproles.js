@@ -1,8 +1,8 @@
 const config = require('../../src/assets/json/_config/config.json');
 const { getCurrentDate } = require("../../utils/functions/getCurrentDate");
 const { log } = require('../../logs');
-const { Database } = require('../db/db');
-const database = new Database();
+const database = require('../db/db');
+
 
 async function deleteEntries(infraction_id,) {
     try {

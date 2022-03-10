@@ -5,8 +5,8 @@ const { privateModResponse } = require('../../utils/privatResponses/privateModRe
 const { log } = require('../../logs');
 const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
 const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
-const { Database } = require('../db/db');
-const database = new Database();
+const database = require('../db/db');
+
 
 async function deleteEntries(infraction) {
     try {

@@ -5,9 +5,9 @@ const { createInfractionId } = require("../createInfractionId");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getFutureDate } = require("../getFutureDate");
 const { insertDataToOpenInfraction } = require("../insertDataToDatabase");
-const { Database } = require('../../../src/db/db');
+const database = require('../../../src/db/db');
 
-const database = new Database();
+
 
 async function banUser(member, message, reason, bot, config, log, dbtime, time, isAuto) {
 

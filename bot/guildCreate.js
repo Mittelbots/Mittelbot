@@ -1,7 +1,7 @@
 const { log } = require('../logs');
-const { Database } = require('../src/db/db')
+const database = require('../src/db/db')
 
-const database = new Database()
+
 
 async function guildCreate(guild) {
 

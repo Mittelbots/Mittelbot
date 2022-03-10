@@ -3,9 +3,9 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
-const { Database } = require('../../db/db');
+const database = require('../../db/db');
 
-const database = new Database();
+
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {

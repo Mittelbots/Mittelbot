@@ -1,6 +1,6 @@
-const { Database } = require("../../src/db/db");
+const database = require("../../src/db/db");
 
-const database = new Database()
+
 
 async function isMod(member, message) {
     return database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(async (res) => {

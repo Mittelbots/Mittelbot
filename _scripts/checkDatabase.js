@@ -1,8 +1,8 @@
-const {Database} = require('../src/db/db');
+const database = require('../src/db/db');
 const tables = require('../src/db/table.json');
 const readline = require('readline');
 
-const database = new Database();
+
 
 async function main() {
     

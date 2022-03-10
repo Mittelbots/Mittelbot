@@ -6,9 +6,9 @@ const {
     errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
 const { log } = require('../logs');
-const { Database } = require('../src/db/db');
+const database = require('../src/db/db');
 
-const database = new Database();
+
 
 async function guildMemberAdd(member, bot) {
     database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
