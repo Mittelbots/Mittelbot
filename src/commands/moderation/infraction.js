@@ -3,8 +3,8 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const { log } = require('../../../logs');
 
-const {Database} = require('../../db/db');
-const database = new Database();
+const database = require('../../db/db');
+
 
 
 module.exports.run = async (bot, message, args) => {

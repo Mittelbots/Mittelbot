@@ -6,8 +6,8 @@ const { insertDataToClosedInfraction } = require('../insertDataToDatabase');
 const { getMutedRole } = require('../roles/getMutedRole');
 const { removeDataFromOpenInfractions } = require('../data/removeDataFromDatabase');
 
-const { Database } = require('../../../src/db/db');
-const database = new Database();
+const database = require('../../../src/db/db');
+
 
 
 async function unmuteUser(message, member, bot, config, reason, log) {

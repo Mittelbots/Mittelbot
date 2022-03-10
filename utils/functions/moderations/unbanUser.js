@@ -3,9 +3,9 @@ const { publicModResponses } = require("../../publicResponses/publicModResponses
 const { removeDataFromOpenInfractions } = require("../data/removeDataFromDatabase");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
-const { Database } = require('../../../src/db/db');
+const database = require('../../../src/db/db');
 
-const database = new Database()
+
 
 async function unbanUser(Member, config, message, log, reason, bot) {
     let banList = await message.guild.bans.fetch();

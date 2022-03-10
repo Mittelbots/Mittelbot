@@ -1,8 +1,8 @@
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getMutedRole } = require('../roles/getMutedRole');
-const { Database } = require('../../../src/db/db');
+const database = require('../../../src/db/db');
 
-const database = new Database()
+
 
 async function isMuted(config, member, message, log, bot) {
     database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = ? AND guild_id = ?`, [member.id, 1, message.guild.id]).then(async result => {

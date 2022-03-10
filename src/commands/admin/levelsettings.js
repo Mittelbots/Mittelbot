@@ -10,9 +10,7 @@ const {
     MessageButton,
     MessageActionRow
 } = require('discord.js');
-const {
-    Database
-} = require('../../db/db');
+const database = require('../../db/db');
 const {
     errorhandler
 } = require('../../../utils/functions/errorhandler/errorhandler');
@@ -22,7 +20,7 @@ const {
 const {
     removeMention
 } = require('../../../utils/functions/removeCharacters');
-const database = new Database();
+
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {

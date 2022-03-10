@@ -2,8 +2,8 @@ const axios = require('axios');
 const { getModTime } = require('../functions/getModTime');
 const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
-const { Database } = require('../../src/db/db');
-const database = new Database();
+const database = require('../../src/db/db');
+
 
 async function checkForScam(message, bot, config, log) {
 

@@ -11,9 +11,9 @@ const defaultCooldown = new Set();
 const levelCooldown = new Set();
 
 const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
-const { Database } = require('../src/db/db');
+const database = require('../src/db/db');
 
-const database = new Database();
+
 
 async function messageCreate(message, bot) {
     if (message.author.bot) return;

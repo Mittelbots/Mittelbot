@@ -1,4 +1,4 @@
-const {Database} = require('../src/db/db');
+const database = require('../src/db/db');
 const tables = require('../src/db/table.json');
 const {log} = require('../logs');
 

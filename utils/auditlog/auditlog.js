@@ -1,8 +1,8 @@
 const {MessageEmbed} = require('discord.js');
 const config = require('../../src/assets/json/_config/config.json');
 const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
-const { Database } = require('../../src/db/db');
-const database = new Database();
+const database = require('../../src/db/db');
+
 
 var c = config.auditTypes;
 var gid = '';

@@ -1,6 +1,6 @@
-const { Database } = require("../../src/db/db");
+const database = require("../../src/db/db");
 
-const database = new Database();
+
 
 function generate() {
     return Math.random().toString(30).substr(2, 50)

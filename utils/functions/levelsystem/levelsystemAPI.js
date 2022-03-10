@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
-const { Database } = require("../../../src/db/db");
+const database = require("../../../src/db/db");
 
-const database = new Database();
+
 
 /**
  * 

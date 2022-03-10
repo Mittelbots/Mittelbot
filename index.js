@@ -45,9 +45,7 @@ const {
 const {
   guildMemberRemove
 } = require("./bot/guildMemberRemove");
-const {
-  Database
-} = require("./src/db/db");
+const database = require("./src/db/db");
 const {
   getLinesOfCode
 } = require("./utils/functions/getLinesOfCode/getLinesOfCode");
@@ -94,8 +92,8 @@ process.on('uncaughtException', err => {
 })
 
 bot.once('ready', async () => {
-  checkInfractions(bot, new Database());
-  checkTemproles(bot, new Database())
+  checkInfractions(bot, database);
+  checkTemproles(bot, database)
   auditLog(bot);
 
   getLinesOfCode((cb) => {

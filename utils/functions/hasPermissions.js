@@ -1,6 +1,6 @@
-const { Database } = require("../../src/db/db");
+const database = require("../../src/db/db");
 
-const database = new Database();
+
 
 async function hasPermission(message, adminOnly, modOnly) {
     return database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(async (res) => {

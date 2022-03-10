@@ -15,9 +15,9 @@ const url = require('url');
 
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
-const { Database } = require('../../db/db');
+const database = require('../../db/db');
 
-const database = new Database()
+
 
 module.exports.run = async (bot, message, args) => {
 
