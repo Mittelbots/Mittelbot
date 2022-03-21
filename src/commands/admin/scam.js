@@ -22,13 +22,13 @@ const database = require('../../db/db');
 module.exports.run = async (bot, message, args) => {
 
     if (config.deleteModCommandsAfterUsage == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
     if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-        message.delete();
+        message.delete().catch(err => {});
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
-            setTimeout(() => msg.delete(), 5000);
-        });
+            setTimeout(() => msg.delete().catch(err => {}), 5000);
+        }).catch(err => {});
     }
 
     const setting = args[0];
@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
 
         var value = args[1];
 
-        if(value == undefined) return message.reply('Please add an valid URL');
+        if(value == undefined) return message.reply('Please add an valid URL').catch(err => {});
 
         if(value.search('http://') !== -1 && value.search('https://') !== -1) {
             value = `http://${value}/`;
@@ -49,11 +49,11 @@ module.exports.run = async (bot, message, args) => {
                 for(let i in res) {
                     if(res[i].guild_id === message.guild.id) {
                         pass = false;
-                        return message.reply('Your server is on blacklist! You can\'t sent any requests until the bot moderators removes your server from it.');
+                        return message.reply('Your server is on blacklist! You can\'t sent any requests until the bot moderators removes your server from it.').catch(err => {});
                     }
                     if(res[i].link === removeHttp(value)) {
                         pass = false;
-                        return message.reply(`This URL already exits in current Scamlist`)
+                        return message.reply(`This URL already exits in current Scamlist`).catch(err => {});
                     }
                     pass = true;
                 }
@@ -108,8 +108,8 @@ module.exports.run = async (bot, message, args) => {
                             .setStyle('DANGER')                        
                     )
 
-                const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get('937032777583427586').send({embeds: [newScamLinkembed], components: [buttons]})
-                await message.channel.send(`"**${value}**" Successfully sent a request to the Bot Moderators. You'll receive an status update in your direkt messages!`);
+                const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get('937032777583427586').send({embeds: [newScamLinkembed], components: [buttons]}).catch(err => {});
+                await message.channel.send(`"**${value}**" Successfully sent a request to the Bot Moderators. You'll receive an status update in your direkt messages!`).catch(err => {});
 
                 const collector = sentMessage.createMessageComponentCollector({
                     max: 1
@@ -153,7 +153,7 @@ module.exports.run = async (bot, message, args) => {
     }else if(setting === commandconfig.scam.delete.command || setting === commandconfig.scam.delete.alias) {
         var value = args[1];
 
-        if(value == undefined) return message.reply('Please add an valid URL');
+        if(value == undefined) return message.reply('Please add an valid URL').catch(err => {});
 
         if(value.search('http://') !== -1 && value.search('https://') !== -1) {
             value = `http://${value}/`;
@@ -165,7 +165,7 @@ module.exports.run = async (bot, message, args) => {
             for(let i in res) {
                 if(res[i].guild_id === message.guild.id) {
                     pass = false;
-                    return message.reply('Your server is on blacklist! You can\'t sent any requests until the bot moderators removes your server from it.');
+                    return message.reply('Your server is on blacklist! You can\'t sent any requests until the bot moderators removes your server from it.').catch(err => {});
                 }else if(res[i].link === removeHttp(value)) {
                     exits = true
                     pass = true;
@@ -174,7 +174,7 @@ module.exports.run = async (bot, message, args) => {
         });
         if(!pass) return  
         if(!exits) { 
-            message.reply('This URL doesn\'t exits in current list!');
+            message.reply('This URL doesn\'t exits in current list!').catch(err => {});
             return  
         } 
 
@@ -211,26 +211,26 @@ module.exports.run = async (bot, message, args) => {
                     .setStyle('DANGER')                        
             )
 
-        const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get('937032777583427586').send({embeds: [newScamLinkembed], components: [buttons]})
+        const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get('937032777583427586').send({embeds: [newScamLinkembed], components: [buttons]}).catch(err => {});
 
         const collector = sentMessage.createMessageComponentCollector({
             max: 1
         });
 
         collector.on('collect', async interaction => {
-            interaction.deferUpdate();
+            await interaction.deferUpdate();
             if(interaction.customId === accept) {
                 database.query(`DELETE FROM advancedScamList WHERE link = ?`, [removeHttp(value)]).catch(err => {
                     return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
                 })
-                return await message.author.send(`Your ScamList request was accepted! \n Link: \`${value}\` `).catch(err => {})
+                return await message.author.send(`Your ScamList request was accepted! \n Link: \`${value}\` `).catch(err => {});
             }else if(interaction.customId === deny) {
-                return await message.author.send(`Your ScamList request was denied! \n Link: \`${value}\` `).catch(err => {})
+                return await message.author.send(`Your ScamList request was denied! \n Link: \`${value}\` `).catch(err => {});
             }else {
                 database.query(`INSERT INTO advancedScamList (guild_id) VALUES (?)`, [message.guild.id]).catch(err => {
                     return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
                 });
-                return await message.author.send(`Your Server got added to the blacklist!`).catch(err => {})
+                return await message.author.send(`Your Server got added to the blacklist!`).catch(err => {});
             }
         });
 
@@ -242,7 +242,7 @@ module.exports.run = async (bot, message, args) => {
                     }
                     buttons.components[i].setDisabled(true)
                 }
-                sentMessage.edit({embeds: [newScamLinkembed], components: [buttons]})
+                sentMessage.edit({embeds: [newScamLinkembed], components: [buttons]}).catch(err => {});
             });
 
         });
@@ -281,7 +281,7 @@ module.exports.run = async (bot, message, args) => {
                 const sentMessage = await message.channel.send({
                     embeds: [await generateEmbed(0)],
                     components: canFitOnOnePage ? [] : [new MessageActionRow({components: [forwardButton]})]
-                });
+                }).catch(err => {});
 
                 if(canFitOnOnePage) return;
 
@@ -317,7 +317,7 @@ module.exports.run = async (bot, message, args) => {
                     return message.reply('❌ **No results by searching this URL**');
                 }
 
-                return message.reply('✅ **Matching link found!**');
+                return message.reply('✅ **Matching link found!**').catch(err => {});
             }).catch(err => {
                 return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config);
             })

@@ -6,14 +6,13 @@ const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser'
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
     if(!await hasPermission(message, 0, 0)) {
-         
-        message.delete();
+        message.delete().catch(err => {});
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
-            setTimeout(() => msg.delete(), 5000);
-        });
+            setTimeout(() => msg.delete().catch(err => {}), 5000);
+        }).catch(err => {});
     }
 
     try {
@@ -23,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
         
     }catch(err) {
          
-        return message.reply(`I can't find this user!`);
+        return message.reply(`I can't find this user!`).catch(err => {});
     }    
     
     let reason = args.slice(1).join(" ");

@@ -12,9 +12,9 @@ async function privateModResponse(member, type, reason, time, bot, guildname) {
     }
 
     return member.send({embeds: [privateModMessage]}).catch(err => {
-        /** MEMBER HAS DM CLOSED */
+        // MEMBER HAS DM CLOSED
         return false;
-    });
+    }).catch(err => {});
 }
 
 module.exports = {privateModResponse}

@@ -24,7 +24,7 @@ async function guildMemberAdd(member, bot) {
             }
             await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
                 if (await inf.length != 0) {
-                    member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]);
+                    member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]).catch(err => {});
                 } else {
                     let user_roles = await res[0].member_roles;
                     user_roles = JSON.parse(user_roles);
@@ -60,7 +60,7 @@ async function guildMemberAdd(member, bot) {
                 let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
                 //setTimeout(function () {
                 try {
-                    member.roles.add(role);
+                    member.roles.add(role).catch(err => {})
                 } catch (err) {
                     //NO PERMISSONS
                     return  

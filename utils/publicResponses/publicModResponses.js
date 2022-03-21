@@ -6,7 +6,7 @@ async function publicModResponses(channelmessage, type, moderator, member, reaso
     var publicModMessage = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle(`${await generateModEmote(config, bot, type) }**Member ${type}!**`)
-    .addField(`Moderator`, `<@${moderator}> (${moderator})`)
+    .addField(`Moderator`, `${moderator} (${moderator.id})`)
     .addField(`Member`, `<@${member}> (${member})`)
     .addField(`Reason`, `${reason || "No Reason Provided!"}`)
     .setTimestamp();
@@ -15,7 +15,7 @@ async function publicModResponses(channelmessage, type, moderator, member, reaso
         publicModMessage.addField(`Time`, `**${time}** `)
     }
 
-    return channelmessage.channel.send({embeds: [publicModMessage]});
+    return channelmessage.channel.send({embeds: [publicModMessage]}).catch(err => {});
 }
 
 async function publicInfractionResponse(message, Member, closed, open, isOne) {
@@ -47,7 +47,7 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         var publicOneInfractionMessage = new MessageEmbed()
         .setAuthor(`${user.user.username}${user.user.discriminator}`)
         .addField(`${infraction.infraction_id} - ${type} **${infraction.till_date}**`, `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`);
-        return message.reply({embeds:[publicOneInfractionMessage]});
+        return message.reply({embeds:[publicOneInfractionMessage]}).catch(err => {});
     }else {
         const backId = 'back'
         const forwardId = 'forward'
@@ -84,7 +84,7 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         const embedMessage = await message.channel.send({
             embeds: [await generateEmbed(0)],
             components: canFitOnOnePage ? [] : [new MessageActionRow({components: [forwardButton]})]
-        });
+        }).catch(err => {});
 
         if(canFitOnOnePage) return;
 

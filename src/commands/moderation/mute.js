@@ -11,14 +11,14 @@ const { log } = require('../../../logs');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
 
     if (!await hasPermission(message, 0, 0)) {
-        message.delete();
+        message.delete().catch(err => {});
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
-            setTimeout(() => msg.delete(), 5000);
-        });
+            setTimeout(() => msg.delete().catch(err => {}), 5000);
+        }).catch(err => {});
     }
 
     try {
@@ -26,15 +26,14 @@ module.exports.run = async (bot, message, args) => {
         var Member = await message.guild.members.fetch(args[0]);
 
         if(checkMessage(message, Member, bot, 'mute')) {
-             
-            return message.reply(checkMessage(message, Member, bot, 'mute'));
+            return message.reply(checkMessage(message, Member, bot, 'mute')).catch(err => {});
         }
     }catch(err) {
-        return message.reply(`I can't find this user!`);
+        return message.reply(`I can't find this user!`).catch(err => {});
     }
     
     if (await isMod(Member, message)) {
-        return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`)
+        return message.channel.send(`<@${message.author.id}> You can't mute a Moderator!`).catch(err => {});
     }
 
     let x = 1;
@@ -55,11 +54,11 @@ module.exports.run = async (bot, message, args) => {
     reason = reason.replace(time, '');
 
     if (!reason) {
-        return message.channel.send('Please add a reason!');
+        return message.channel.send('Please add a reason!').catch(err => {});
     }
 
     if(await isMuted(config, Member, message, log, bot)) {
-        return message.reply('This user is already muted!');
+        return message.reply('This user is already muted!').catch(err => {});
     }
 
     if(config.debug == 'true') console.info('Mute Command passed!');

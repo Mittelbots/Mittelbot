@@ -7,7 +7,7 @@ const database = require('../../db/db')
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage  == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
     let server = message.guild;
 
@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
         try {
             user = message.guild.members.cache.find(member => member.id.includes(args)).user;
         }catch(err) {
-            return message.reply('Member not found!');
+            return message.reply('Member not found!').catch(err => {});
         }
         tag = true;
     }else {
@@ -76,7 +76,7 @@ module.exports.run = async (bot, message, args) => {
     if(!tag) {
         return message.channel.send({
             embeds: [serverInfoEmbed]
-        });
+        }).catch(err => {});
     }
 
     const axios = require('axios');
@@ -89,7 +89,7 @@ module.exports.run = async (bot, message, args) => {
     memberInfoEmbed.setThumbnail(await pfp);
     return message.channel.send({
         embeds: [memberInfoEmbed]
-    });
+    }).catch(err => {});
 }
 
 module.exports.help = config.commandhelp.info

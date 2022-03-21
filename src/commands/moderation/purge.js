@@ -4,9 +4,9 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async (bot, message, args) => {
     if(!await hasPermission(message, 0, 1)) {        
-        message.delete();
+        message.delete().catch(err => {});
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
-            setTimeout(() => msg.delete(), 5000);
+            setTimeout(() => msg.delete().catch(err => {}), 5000);
         });
     }
     var amount = args[0];
@@ -18,9 +18,9 @@ module.exports.run = async (bot, message, args) => {
     //}
 
     if(isNaN(amount)) {
-        return message.channel.send(`That isn't a valid number!`);
+        return message.channel.send(`That isn't a valid number!`).catch(err => {});
     }else if (amount < 1 || amount >= Number(config.bulkDeleteLimit)) {
-        return message.channel.send('you need to input a number between 1 and 99.');
+        return message.channel.send('you need to input a number between 1 and 99.').catch(err => {});
     }
 
 
@@ -45,9 +45,9 @@ module.exports.run = async (bot, message, args) => {
     //         })
     //     });
     // }else {
-        await message.channel.bulkDelete(amount, true).then(message.channel.send(`Successfully pruned ${amount} messages`).then(msg => setTimeout(() => msg.delete(), 5000))).catch(err => {
+        await message.channel.bulkDelete(amount, true).then(message.channel.send(`Successfully pruned ${amount} messages`).then(msg => setTimeout(() => msg.delete().catch(err => {}), 5000))).catch(err => {
             if(config.debug == 'true') console.log(err);
-            message.channel.send('there was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)');
+            message.channel.send('there was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)').catch(err => {});
         });
     // }
 }
