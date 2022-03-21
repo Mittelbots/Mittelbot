@@ -17,14 +17,14 @@ const database = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
     if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
          
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
-        });
+        }).catch(err => {});
     }
 
     let setting = args[0]

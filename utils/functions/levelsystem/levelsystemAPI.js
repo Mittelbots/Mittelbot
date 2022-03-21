@@ -101,7 +101,7 @@ module.exports.sendNewLevelMessage = async function (newLevel, member, currentxp
         .setTimestamp()
 
     try {
-        member.send({embeds: [newLevelMessage]});
+        member.send({embeds: [newLevelMessage]}).catch(err => {return;});
     }catch(err) {
         return;
     }

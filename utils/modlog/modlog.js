@@ -26,7 +26,7 @@ function sendToModLog(bot, message, gid) {
     database.query(`SELECT modlog FROM ${gid}_guild_logs`).then(res => {
         if(res.length > 0 && res[0].modlog) {
             try {
-                bot.channels.cache.get(res[0].modlog).send({embeds: [message]});
+                bot.channels.cache.get(res[0].modlog).send({embeds: [message]}).catch(err => {});
             }catch(err) {
                 console.log(err)
                 return true;

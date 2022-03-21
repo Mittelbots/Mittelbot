@@ -10,15 +10,15 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteModCommandsAfterUsage  == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
 
     if(!await hasPermission(message, 0, 1)) {
-        message.delete();
+        message.delete().catch(err => {});
          
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
-            setTimeout(() => msg.delete(), 5000);
-        });
+            setTimeout(() => msg.delete().catch(err => {}), 5000);
+        }).catch(err => {});
     }
 
     try {
@@ -26,14 +26,14 @@ module.exports.run = async (bot, message, args) => {
 
         var Member = await message.guild.members.fetch(args[0]);
 
-        if(checkMessage(message, Member, bot, 'ban')) return message.reply(checkMessage(message, Member, bot, 'ban'));
+        if(checkMessage(message, Member, bot, 'ban')) return message.reply(checkMessage(message, Member, bot, 'ban')).catch(err => {});
     }catch(err) {
-        return message.reply(`I can't find this user!`);
+        return message.reply(`I can't find this user!`).catch(err => {});
     }
 
     if (await isMod(Member, message)) {
          
-        return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`)
+        return message.channel.send(`<@${message.author.id}> You can't ban a Moderator!`).catch(err => {});
     }
 
 
@@ -41,8 +41,7 @@ module.exports.run = async (bot, message, args) => {
     var time = args[x]
 
     if(time === undefined) {
-         
-        return message.reply('Please add a valid time and reason!');
+        return message.reply('Please add a valid time and reason!').catch(err => {});
     }
 
     while(time == '') {
@@ -61,12 +60,12 @@ module.exports.run = async (bot, message, args) => {
 
     if(!reason) {
          
-        return message.channel.send('Please add a reason!');
+        return message.channel.send('Please add a reason!').catch(err => {});
     }
 
     if(await isBanned(Member, message)) {
          
-        return message.reply('This user is already banned!')
+        return message.reply('This user is already banned!').catch(err => {});
     }
 
     return banUser(Member, message, reason, bot, config, log, dbtime, time);

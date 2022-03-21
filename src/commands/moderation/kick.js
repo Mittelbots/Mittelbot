@@ -7,14 +7,13 @@ const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
 
-    if (!await hasPermission(message, 0, 0)) {
-         
-        message.delete();
+    if (!await hasPermission(message, 0, 0)) { 
+        message.delete().catch(err => {});
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
-            setTimeout(() => msg.delete(), 5000);
+            setTimeout(() => msg.delete().catch(err => {}), 5000);
         });
     }
 
@@ -24,8 +23,7 @@ module.exports.run = async (bot, message, args) => {
         var Member = await message.guild.members.fetch(args[0]);
         
         if(checkMessage(message, Member, bot, 'kick')) {
-             
-            return message.reply(checkMessage(message, Member, bot, 'kick'));
+            return message.reply(checkMessage(message, Member, bot, 'kick')).catch(err => {});
         }
     }catch(err) {
         return message.reply(`I can't find this user!`);
@@ -33,12 +31,11 @@ module.exports.run = async (bot, message, args) => {
 
     let reason = args.slice(1).join(" ");
     if (!reason) {
-        return message.channel.send('Please add a reason!');
+        return message.channel.send('Please add a reason!').catch(err => {});
     }
 
     if (await isMod(Member, message)) {
-         
-        return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`)
+        return message.channel.send(`<@${message.author.id}> You can't kick a Moderator!`).catch(err => {});
     }
 
 

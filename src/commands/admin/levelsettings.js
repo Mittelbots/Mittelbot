@@ -24,14 +24,14 @@ const {
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
-        message.delete();
+        message.delete().catch(err => {});
     }
 
     if (!await hasPermission(message, 1, 0)) {
         message.delete();
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
-            setTimeout(() => msg.delete(), 5000);
-        });
+            setTimeout(() => msg.delete().catch(err => {}), 5000);
+        }).catch(err => {});
     }
 
     let setting = args[0];
@@ -68,7 +68,7 @@ module.exports.run = async (bot, message, args) => {
 
         const sentMessage = await message.channel.send({
             embeds: [await generateEmbed(0)]
-        });
+        }).catch(err => {});
 
         var currentIndex = 0;
 
@@ -127,7 +127,7 @@ module.exports.run = async (bot, message, args) => {
         }
         await sentMessage.edit({
             components: [setComponentButtons(0, 1)]
-        })
+        }).catch(err => {});
 
         const collector = await sentMessage.createMessageComponentCollector({
             filter: ({
@@ -171,7 +171,7 @@ module.exports.run = async (bot, message, args) => {
                         components: [new MessageActionRow({
                             components: [updateButton, updateRoleButton, deleteButton]
                         })]
-                    });
+                    }).catch(err => {});
 
                     const collector2 = sentMessage.createMessageComponentCollector({
                         filter: ({
@@ -192,7 +192,7 @@ module.exports.run = async (bot, message, args) => {
                         });
 
                         if (interaction.customId === updateButtonId) {
-                            message.channel.send('Please provide the needed XP that a user have to reach');
+                            message.channel.send('Please provide the needed XP that a user have to reach').catch(err => {});
 
                             const collector3 = message.channel.createMessageCollector({
                                 filter: (m) => m.author.id === message.author.id,
@@ -202,14 +202,14 @@ module.exports.run = async (bot, message, args) => {
 
                             collector3.on('collect', async reply => {
                                 if (isNaN(parseInt(reply))) {
-                                    return reply.reply('Invalid Message provided. Only Numbers are allowed. Try again!')
+                                    return reply.reply('Invalid Message provided. Only Numbers are allowed. Try again!').catch(err => {});
                                 }
                                 levelSettings[i].needXP = reply.content;
 
                                 database.query(`UPDATE ${message.guild.id}_config SET levelsettings = ?`, [JSON.stringify(levelSettings)])
                                     .then(() => {
                                         reply.delete();
-                                        message.channel.send(`Successfully Changed the XP Rage to ${levelSettings[i].needXP}`)
+                                        message.channel.send(`Successfully Changed the XP Rage to ${levelSettings[i].needXP}`).catch(err => {});
                                     })
                                     .catch(err => {
                                         return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
@@ -242,7 +242,7 @@ module.exports.run = async (bot, message, args) => {
                                 database.query(`UPDATE ${message.guild.id}_config SET levelsettings = ?`, [JSON.stringify(levelSettings), message.guild.id])
                                     .then(() => {
                                         reply.delete();
-                                        message.channel.send(`Successfully changed the role to <@&${levelSettings[i].role}>`)
+                                        message.channel.send(`Successfully changed the role to <@&${levelSettings[i].role}>`).catch(err => {});
                                     })
                                     .catch(err => {
                                         return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
@@ -250,7 +250,7 @@ module.exports.run = async (bot, message, args) => {
                             });
                             rolecollector.on('end', (collected, reason) => {
                                 if(reason === 'time') {
-                                    rolecollector.options.message.edit({content: '**Time limit reached**'})
+                                    rolecollector.options.message.edit({content: '**Time limit reached**'}).catch(err => {});
                                 }
                             });
 
@@ -258,7 +258,7 @@ module.exports.run = async (bot, message, args) => {
                         } else {
                             database.query(`UPDATE ${message.guild.id}_config SET levelsettings = ?`, [JSON.stringify(levelSettings.filter(data => data.level !== levelSettings[i].level))])
                                 .then(() => {
-                                    message.channel.send(`Successfully delete level ${levelSettings[i].level}`)
+                                    message.channel.send(`Successfully delete level ${levelSettings[i].level}`).catch(err => {});
                                 })
                                 .catch(err => {
                                     return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
@@ -273,8 +273,8 @@ module.exports.run = async (bot, message, args) => {
                 }
             }
             if (interaction.customId === 'ADD') {
-                message.channel.send('Which Level you want to add? Please use this Syntax: "LEVEL ROLE NEEDED-XP"');
-                message.channel.send('--> _If you don\'t want to set a role, just write "none" instead of the role_ <--');
+                message.channel.send('Which Level you want to add? Please use this Syntax: "LEVEL ROLE NEEDED-XP"').catch(err => {});
+                message.channel.send('--> _If you don\'t want to set a role, just write "none" instead of the role_ <--').catch(err => {});
 
                 interaction.deferUpdate();
                 for(let i in collector.options.message.components[0].components) {
@@ -300,20 +300,20 @@ module.exports.run = async (bot, message, args) => {
 
                     const alreadyExits = levelSettings.filter(el => el.level === reply[0]);
                     if(alreadyExits.length !== 0) {
-                        return message.reply('Invalid level provided. This level already exists!');
+                        return message.reply('Invalid level provided. This level already exists!').catch(err => {});
                     }
 
                     try {
                         guild.roles.cache.get(removeMention(reply[1]))
                     }catch(err) {
-                        return message.reply('Invalid role provided. Please mention an existing role!')
+                        return message.reply('Invalid role provided. Please mention an existing role!').catch(err => {});
                     }
                     
                     if(reply[2] <= 0) {
-                        return message.reply('Invalid XP provided. Number cant be lower or equal to 0!');
+                        return message.reply('Invalid XP provided. Number cant be lower or equal to 0!').catch(err => {});
                     }
                     if(isNaN(parseInt(reply[2]))) {
-                        return message.reply('Invalid XP provided. Only numbers are allowed. Try again!')
+                        return message.reply('Invalid XP provided. Only numbers are allowed. Try again!').catch(err => {});
                     }
 
                     levelSettings.push({
@@ -329,7 +329,7 @@ module.exports.run = async (bot, message, args) => {
                     await levelAPI.setLevelSettingsFromGuild(guild.id, JSON.stringify(newLevelSettings));
 
                     message.delete();
-                    return message.channel.send('Saved!');
+                    return message.channel.send('Saved!').catch(err => {});
                 });
 
                 collector4.on('end', async (collected, reason) => {
@@ -342,14 +342,13 @@ module.exports.run = async (bot, message, args) => {
                 await sentMessage.edit({
                     embeds: [await generateEmbed(currentIndex)],
                     components: [setComponentButtons(currentIndex, currentIndex + 1)]
-                })
+                }).catch(err => {});
             }else if(interaction.customId === 'BACK') {
                 interaction.deferUpdate();
-                console.log(currentIndex);
                 await sentMessage.edit({
                     embeds: [await generateEmbed((currentIndex - 2) )],
                     components: [setComponentButtons(currentIndex - 2, currentIndex - 1)]
-                })
+                }).catch(err => {});
             }
         });
 

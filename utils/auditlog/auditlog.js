@@ -159,24 +159,24 @@ function sendToAudit(bot, type, content1, content2) {
     }
 
     if(type === c.debug) {
-        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.debugchannel).send({embeds: [Message]});
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.debugchannel).send({embeds: [Message]}).catch(err => {});
     }else if(type === c.disconnect) {
-        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.disconnectchannel).send({embeds: [Message]});
-    }else if(type === c.error) {
-        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.errorchannel).send({embeds: [Message]});
-    }else if(type === c.warn) {
-        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.warnchannel).send({embeds: [Message]});
-    }else if(type === c.reconnecting) {
-        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.reconnectingchannel).send({embeds: [Message]});
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.disconnectchannel).send({embeds: [Message]}).catch(err => {});
+    }else if(type === c.error){
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.errorchannel).send({embeds: [Message]}).catch(err => {});
+    }else if(type === c.warn){
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.warnchannel).send({embeds: [Message]}).catch(err => {});
+    }else if(type === c.reconnecting){
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.reconnectingchannel).send({embeds: [Message]}).catch(err => {});
     }
 
     database.query(`SELECT * FROM ${gid}_guild_logs`).then(res => {
         logs = res[0];
         if(type === c.messageupdate && logs.messagelog !== null) {
-            return bot.channels.cache.get(logs.messagelog).send({embeds: [Message]})
+            return bot.channels.cache.get(logs.messagelog).send({embeds: [Message]}).catch(err => {});
         }else {
             if(logs.auditlog !== null) {
-                return bot.channels.cache.get(logs.auditlog).send({embeds: [Message]})
+                return bot.channels.cache.get(logs.auditlog).send({embeds: [Message]}).catch(err => {});
             }
         }
     }).catch(err => {

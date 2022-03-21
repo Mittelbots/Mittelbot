@@ -38,7 +38,7 @@ async function messageCreate(message, bot) {
                 database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(async res => {
 
                     if (defaultCooldown.has(message.author.id)) {
-                        return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`);
+                        return message.channel.send(`You have to wait ${res[0].cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`).catch(err => {})
                     } else {
                         if(message.author.id !== config.Bot_Owner_ID) {
                             defaultCooldown.add(message.author.id);
