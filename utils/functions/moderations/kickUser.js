@@ -8,9 +8,9 @@ const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
 
 async function kickUser(bot, member, message, config, reason) {
     try {
-        insertDataToClosedInfraction(member.id, message.author.id, 0, 0, 0, 1, null, reason, createInfractionId())
+        insertDataToClosedInfraction(member.id, message.author.id, 0, 0, 0, 1, null, reason, await createInfractionId())
         await setNewModLogMessage(bot, config.defaultModTypes.kick, message.author.id, member.id, reason, null, message.guild.id);
-        await publicModResponses(message, config.defaultModTypes.kick, message.author.id, member.id, reason, null, bot);
+        await publicModResponses(message, config.defaultModTypes.kick, message.author, member.id, reason, null, bot);
         await privateModResponse(member, config.defaultModTypes.kick, reason, null, bot, message.guild.name);
         setTimeout(async () => {
             if(config.debug == 'true') console.info('Kick Command passed!')

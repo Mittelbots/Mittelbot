@@ -8,24 +8,16 @@ const { addWarnRoles } = require("../roles/addWarnRoles");
 
 async function warnUser(bot, config, message, member, reason, log) {
     try {
-        console.log('1')
         await setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, member.user.id, reason, null, message.guild.id);
-        console.log('2')
-        await publicModResponses(message, config.defaultModTypes.warn, message.author.id, member.user.id, reason, null, bot);
-        console.log('3')
+        await publicModResponses(message, config.defaultModTypes.warn, message.author, member.user.id, reason, null, bot);
         await privateModResponse(member, config.defaultModTypes.warn, reason, null, bot, message.guild.name);
-        console.log('4')
 
-        let inf_id = createInfractionId()
-        console.log('5')
+        let inf_id = await createInfractionId()
 
         await insertDataToClosedInfraction(member.id, message.author.id, 0, 0, 1, 0, null, reason, inf_id);
-        console.log('6')
+    
+        await addWarnRoles(message, member, inf_id, config, log);
         if(config.debug == 'true') console.info('Warn Command passed!')
-
-        console.log('7')
-        await addWarnRoles(message, member, inf_id, config, log)
-        console.log('8')
     }catch(err) {
         return errorhandler(err, config.errormessages.general, message.channel, log, config)
     }  

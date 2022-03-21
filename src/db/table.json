@@ -195,6 +195,10 @@
                 "name": "auditlog",
                 "val": "VARCHAR(255)"
             },
+            "modlog": {
+                "name": "modlog",
+                "val": "VARCHAR(255)"
+            },
             "messagelog": {
                 "name": "messagelog",
                 "val": "VARCHAR(255)"

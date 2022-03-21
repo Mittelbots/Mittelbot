@@ -6,7 +6,7 @@ async function publicModResponses(channelmessage, type, moderator, member, reaso
     var publicModMessage = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle(`${await generateModEmote(config, bot, type) }**Member ${type}!**`)
-    .addField(`Moderator`, `<@${moderator}> (${moderator})`)
+    .addField(`Moderator`, `${moderator} (${moderator.id})`)
     .addField(`Member`, `<@${member}> (${member})`)
     .addField(`Reason`, `${reason || "No Reason Provided!"}`)
     .setTimestamp();

@@ -14,7 +14,7 @@ async function banUser(member, message, reason, bot, config, log, dbtime, time, 
     if(isAuto) mod = bot.user;
     else mod = message.author;
 
-    let infid = createInfractionId();
+    let infid = await createInfractionId();
 
     if(config.debug == 'true') console.info('Ban Command passed!');
     insertDataToOpenInfraction(member.id, mod.id, 0, 1, getFutureDate(dbtime), reason, infid, message.guild.id, null)
