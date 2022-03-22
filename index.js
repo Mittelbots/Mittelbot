@@ -4,6 +4,8 @@ const fs = require('fs');
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
 const version = require('./package.json').version;
+if(config.debug == 'true') var activity = require('./src/assets/json/_config/activity_dev.json');
+else var activity = require('./src/assets/json/_config/activity_prod.json');
 
 const {
   checkInfractions
@@ -21,14 +23,6 @@ const {
 const {
   errorhandler
 } = require('./utils/functions/errorhandler/errorhandler');
-// const {
-//   autoresponse
-// } = require("./utils/autoresponse/autoresponse");
-// const {
-//   blacklist
-// } = require("./utils/blacklist/blacklist");
-
-
 const {
   deployCommands
 } = require("./utils/functions/deployCommands/deployCommands");
@@ -100,8 +94,8 @@ bot.once('ready', async () => {
     setTimeout(() => {
       var codeLines = ` | Lines of Code: ${cb}` || '';
       bot.user.setActivity({
-        name: config.activity.playing.name + ' v' +  version + codeLines,
-        type: config.activity.playing.type
+        name: activity.name + ' v' +  version + codeLines,
+        type: activity.type,
       });
       log.info('------------BOT ACTIVITY SUCCESSFULLY STARTED------------', new Date())
     }, 10000);
