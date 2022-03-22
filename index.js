@@ -100,7 +100,7 @@ bot.once('ready', async () => {
     setTimeout(() => {
       var codeLines = ` | Lines of Code: ${cb}` || '';
       bot.user.setActivity({
-        name: config.activity.playing.name + ' ' +  version + codeLines,
+        name: config.activity.playing.name + ' v' +  version + codeLines,
         type: config.activity.playing.type
       });
       log.info('------------BOT ACTIVITY SUCCESSFULLY STARTED------------', new Date())
