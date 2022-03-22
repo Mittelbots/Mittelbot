@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args) => {
                 return new MessageEmbed({
                     title: `Ranksettings for ${message.guild}`,
                     description: 'You don\'t have any ranks. Please add one to manage it.',  
-                })
+                });
             }
 
             return new MessageEmbed({
@@ -62,7 +62,7 @@ module.exports.run = async (bot, message, args) => {
                         value: `Needed XP: **${levelSettings.needXP}** \n Level Role: ${guild.roles.cache.get(levelSettings.role) || 'Not set'}`
                     }))
                 )
-            })
+            });
         }
         var canFitOnOnePage = levelSettings.length <= 3;
 
@@ -192,7 +192,7 @@ module.exports.run = async (bot, message, args) => {
                         });
 
                         if (interaction.customId === updateButtonId) {
-                            message.channel.send('Please provide the needed XP that a user have to reach').catch(err => {});
+                            message.channel.send('Please provide the needed XP that a user have to reach You\'ll get each Message à one Minute between 15-35 XP').catch(err => {});
 
                             const collector3 = message.channel.createMessageCollector({
                                 filter: (m) => m.author.id === message.author.id,
