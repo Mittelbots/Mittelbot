@@ -1,4 +1,5 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
@@ -12,6 +13,4 @@ module.exports.run = async (bot, message, args) => {
     }).catch(err => {});
 }
 
-module.exports.help = {
-    name:"ping"
-}
+module.exports.help = cmd_help.utility.ping;

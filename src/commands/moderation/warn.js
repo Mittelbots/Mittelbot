@@ -1,4 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isMod } = require('../../../utils/functions/isMod');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
@@ -6,8 +8,6 @@ const { warnUser } = require('../../../utils/functions/moderations/warnUser');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const database = require('../../db/db');
-
-
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
@@ -41,6 +41,4 @@ module.exports.run = async (bot, message, args) => {
     return await warnUser(bot, config, message, Member, reason, log);
 }
 
-module.exports.help = {
-    name:"warn"
-}
+module.exports.help = cmd_help.moderation.warn;

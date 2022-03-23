@@ -1,4 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isMod } = require('../../../utils/functions/isMod');
@@ -66,8 +68,4 @@ module.exports.run = async (bot, message, args) => {
     return await muteUser(Member, message, bot, config, reason, time, dbtime)
 }
 
-module.exports.help = {
-    name: "mute",
-    description: "Mute a User",
-    usage: "Mute <Mention User> <Reason>"
-}
+module.exports.help = cmd_help.moderation.mute;

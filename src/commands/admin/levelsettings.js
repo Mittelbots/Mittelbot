@@ -1,5 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
 const cmdconfig = require('../../../src/assets/json/command_config/command_config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 
 const {
     hasPermission
@@ -367,6 +368,4 @@ module.exports.run = async (bot, message, args) => {
     }
 }
 
-module.exports.help = {
-    name: "levelsettings"
-}
+module.exports.help = cmd_help.admin.levelsettings;

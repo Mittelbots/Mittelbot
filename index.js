@@ -45,7 +45,7 @@ const {
 } = require("./utils/functions/getLinesOfCode/getLinesOfCode");
 
 const bot = new Discord.Client({
-  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES"],
+  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
   makeCache: Discord.Options.cacheWithLimits({
     MessageManager: 10,
     PresenceManager: 0,

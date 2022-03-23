@@ -1,6 +1,7 @@
 const config = require('../../../src/assets/json/_config/config.json');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async (bot, message, args) => {
     if(!await hasPermission(message, 0, 1)) {        
@@ -52,6 +53,4 @@ module.exports.run = async (bot, message, args) => {
     // }
 }
 
-module.exports.help = {
-    name:"purge"
-}
+module.exports.help = cmd_help.moderation.purge;

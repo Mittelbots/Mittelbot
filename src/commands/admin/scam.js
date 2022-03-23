@@ -1,5 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
 const commandconfig = require('../../assets/json/command_config/command_config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 
 const {
     MessageEmbed,
@@ -327,6 +328,4 @@ module.exports.run = async (bot, message, args) => {
 }
 
 
-module.exports.help = {
-    name: "scam"
-}
+module.exports.help = cmd_help.admin.scam;
