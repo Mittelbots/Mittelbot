@@ -76,6 +76,7 @@ function sendToAudit(bot, type, content1, content2) {
 
             gid = content1.guildId
             Message.setColor('#fc0509');
+            Message.setThumbnail(content1.author.avatarURL({ format: 'jpg' }))
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Bulkmessages sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${content1}`);
             Message.setFooter(`Author: ${content1.author.id} | MessageID: ${content1.id}`);
@@ -90,6 +91,7 @@ function sendToAudit(bot, type, content1, content2) {
             const attachment = content1.attachments.first();
 
             Message.setColor('#fc0509');
+            Message.setThumbnail(content1.author.avatarURL({ format: 'jpg' }))
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n ${(attachment !== undefined) ? '' : content1}`);
             if(attachment !== undefined) Message.setImage(attachment.url)
@@ -104,6 +106,7 @@ function sendToAudit(bot, type, content1, content2) {
             gid = content1.guildId
 
             Message.setColor('#2c4ff9');
+            Message.setThumbnail(content1.author.avatarURL({ format: 'jpg' }))
             Message.setAuthor(`${content1.author.username}#${content1.author.discriminator}`)
             Message.setDescription(`**Message edited in <#${content1.channelId}> [Jump to Message](https://discord.com/channels/${content2.guildId}/${content2.channelId}/${content2.id})** \n **Before** \n ${content1} \n **After** \n ${content2}`);
             break;
