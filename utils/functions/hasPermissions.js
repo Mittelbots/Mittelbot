@@ -4,7 +4,7 @@ const config = require('../../src/assets/json/_config/config.json')
 
 
 async function hasPermission(message, adminOnly, modOnly) {
-    if(message.user.id === config.Bot_Owner_ID) return true;
+    if(message.author.id === config.Bot_Owner_ID) return true;
     
     return database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(async (res) => {
         var hasPermission = false
