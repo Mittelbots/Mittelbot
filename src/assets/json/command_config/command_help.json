@@ -1,0 +1,121 @@
+{
+    "admin": {
+        "_desc": "Manage everything which is related to the server.",
+        "_icon": "⚒️",
+        "levelsettings": {
+            "name": "levelsettings",
+            "description": "View, change, add or delete your ranksettings",
+            "usage": "rank <Mention User>",
+            "icon": "🏆"
+        },
+        "mods": {
+            "name": "mods",
+            "description": "Manage Moderationsettings",
+            "usage": "mods <setting> <value>",
+            "icon": "🛡️"
+        },
+        "scam": {
+            "name": "scam",
+            "description": "Add new Scam Links to the community Database",
+            "usage": "scam add/remove/view <link>",
+            "icon": "💀"
+        },
+        "settings": {
+            "name": "settings",
+            "description": "View and change all Settings releated to the server",
+            "usage": "settings <setting> <value>",
+            "icon": "⚙️"
+        }
+    },
+    "moderation": {
+        "_desc": "Every important Command for all Moderators on your server.",
+        "_icon": "🛡️",
+        "ban": {
+            "name":"ban",
+            "description": "Ban an User",
+            "usage": "ban <Mention User> <Reason>",
+            "icon": "🔒"
+        },
+        "infraction": {
+            "name":"infraction",
+            "description": "View specific infraction from user",
+            "usage": "infraction <infraction id>",
+            "icon": "📕"
+        },
+        "infractions": {
+            "name":"infractions",
+            "description": "View infractions from user",
+            "usage": "infraction <mention/ID>",
+            "icon": "📚",
+            "aliases": ["inf"]
+        },
+        "kick": {
+            "name": "kick",
+            "description": "Kick an user",
+            "usage": "kick <mention/ID> <reason>",
+            "icon": "🚪"
+        },
+        "mute": {
+            "name": "mute",
+            "description": "Mute a user",
+            "usage": "mute <mention/ID> <Reason>",
+            "icon": "🔇"
+        },
+        "purge": {
+            "name":"purge",
+            "description": "Purge an amount of messages",
+            "usage": "purge <number>",
+            "icon": "❌"
+        },
+        "unban": {
+            "name":"unban",
+            "description": "Unban an user",
+            "usage": "unban <mention/ID> <Reason>",
+            "icon": "🔓"
+        },
+        "unmute": {
+            "name":"unmute",
+            "description": "Unmute an user",
+            "usage": "unmute <mention/ID> <Reason>",
+            "icon": "🔈"
+        },
+        "warn": {
+            "name":"warn",
+            "description": "Warn an user",
+            "usage": "warn <mention/ID> <Reason>",
+            "icon": "⚠️"
+        }
+    },
+    "utility": {
+        "_desc": "Utility Commands for everyone on the server.",
+        "_icon": "📝",
+        "ping": {
+            "name":"ping",
+            "description": "Ping the bot",
+            "usage": "ping",
+            "icon": "🌐"
+        },
+        "info": {
+            "name": "info",
+            "description": "Get infos about the server or one user.",
+            "usage": "info <mention/ID>",
+            "icon": "📶"
+        },
+        "help": {
+            "name": "help",
+            "description": "View Rank of user",
+            "usage": "rank <Mention User>",
+            "icon": "❓"
+        }
+    },
+    "levelsystem": {
+        "_desc": "View your or other rank.",
+        "_icon": "🏆",
+        "rank": {
+            "name": "rank",
+            "description": "View Rank of user",
+            "usage": "rank <Mention User>",
+            "icon": "🏆"
+        }
+    }
+}

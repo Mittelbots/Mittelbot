@@ -1,4 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
@@ -31,6 +33,4 @@ module.exports.run = async (bot, message, args) => {
 
 }
 
-module.exports.help = {
-    name:"unmute"
-}
+module.exports.help = cmd_help.moderation.unmute;

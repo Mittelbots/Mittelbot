@@ -1,4 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
@@ -37,8 +39,4 @@ module.exports.run = async (bot, message, args) => {
     return await unbanUser(Member, config, message, log, reason, bot);
 }
 
-module.exports.help = {
-    name:"unban",
-    description: "Unban an User",
-    usage: "unban <Mention User> <Reason>"
-}
+module.exports.help = cmd_help.moderation.unban;

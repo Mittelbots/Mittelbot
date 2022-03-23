@@ -1,4 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isMod } = require('../../../utils/functions/isMod');
@@ -71,8 +73,4 @@ module.exports.run = async (bot, message, args) => {
     return banUser(Member, message, reason, bot, config, log, dbtime, time);
 }
 
-module.exports.help = {
-    name:"ban",
-    description: "Ban an User",
-    usage: "ban <Mention User> <Reason>"
-}
+module.exports.help = cmd_help.moderation.ban;

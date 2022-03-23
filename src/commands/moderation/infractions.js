@@ -1,4 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const { log } = require('../../../logs');
@@ -57,7 +59,4 @@ module.exports.run = async (bot, message, args) => {
     return await publicInfractionResponse(message, memberId, closed[0], open[0]);
 }
 
-module.exports.help = {
-    name:"infractions",
-    aliases: ["inf"]
-}
+module.exports.help = cmd_help.moderation.infractions;

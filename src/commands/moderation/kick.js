@@ -1,4 +1,6 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isMod } = require('../../../utils/functions/isMod');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
@@ -42,8 +44,4 @@ module.exports.run = async (bot, message, args) => {
     return await kickUser(bot, Member, message, config, reason);
 }
 
-module.exports.help = {
-    name: "kick",
-    description: "Kick an User",
-    usage: "kick <Mention User> <Reason>"
-}
+module.exports.help = cmd_help.moderation.kick;

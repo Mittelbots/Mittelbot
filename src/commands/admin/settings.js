@@ -1,4 +1,5 @@
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 const {
     MessageEmbed,
     Permissions
@@ -349,6 +350,4 @@ module.exports.run = async (bot, message, args) => {
 
 }
 
-module.exports.help = {
-    name: "settings"
-}
+module.exports.help = cmd_help.admin.settings;

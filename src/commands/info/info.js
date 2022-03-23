@@ -2,6 +2,7 @@ const {
     MessageEmbed
 } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
+const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 const database = require('../../db/db')
 
 
@@ -92,4 +93,4 @@ module.exports.run = async (bot, message, args) => {
     }).catch(err => {});
 }
 
-module.exports.help = config.commandhelp.info
+module.exports.help = cmd_help.utility.info
