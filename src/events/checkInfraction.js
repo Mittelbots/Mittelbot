@@ -33,17 +33,18 @@ function checkInfractions(bot) {
                 let currentdate = new Date()
 
                 var inf_date = results[i].till_date.split('.');
+                console.log(inf_date)
                 const year = inf_date[2].split(',')[0];
-                const month = inf_date[1];
-                const day = inf_date[0];
+                const month = (inf_date[1] < 10) ? inf_date[1].replace('0', '') : inf_date[1];
+                const day = (inf_date[0] < 10) ? inf_date[0].replace('0', '') : inf_date[0];
                 const time = inf_date[2].split(':');
                 const hr = time[0].split(',')[1].replace(' ', '');
                 const min = time[1];
                 const sec = time[2];
-                
-                inf_date = new Date(year, month, day, hr, min, sec);
 
-                if (currentdate.getTime() >= inf_date.getTime() && currentdate.getHours() <= inf_date.getHours()) {
+                inf_date = new Date(year, month - 1, day, hr, min, sec);
+                
+                if (currentdate.getTime() >= inf_date.getTime()) { //&& currentdate.getFullYear() <= inf_date.getFullYear()
                     if(results[i].mute) {
                         try {
                             var guild = await bot.guilds.cache.get(results[i].guild_id);
