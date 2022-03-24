@@ -1,7 +1,6 @@
 const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 
 const levelAPI = require('../../../utils/functions/levelsystem/levelsystemAPI');
-const card = require('rank-card-generator');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const canvacord = require("canvacord");
 const { MessageAttachment } = require('discord.js');
