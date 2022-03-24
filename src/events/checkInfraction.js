@@ -30,19 +30,20 @@ function checkInfractions(bot) {
                 if(results[i].till_date == null) continue;
 
                 //Member can be unmuted
-                let currentdate = new Date().toLocaleString('de-DE', {            
-                    timeZone: 'Europe/Berlin',
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-                currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
-                results[i].till_date = results[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
+                let currentdate = new Date()
 
-                if ((currentdate - results[i].till_date) > 0 && currentdate[6] + currentdate[7] >= results[i].till_date[7] + results[i].till_date[7]) {
+                var inf_date = results[i].till_date.split('.');
+                const year = inf_date[2].split(',')[0];
+                const month = inf_date[1];
+                const day = inf_date[0];
+                const time = inf_date[2].split(':');
+                const hr = time[0].split(',')[1].replace(' ', '');
+                const min = time[1];
+                const sec = time[2];
+                
+                inf_date = new Date(year, month, day, hr, min, sec);
+
+                if (currentdate.getTime() >= inf_date.getTime() && currentdate.getHours() <= inf_date.getHours()) {
                     if(results[i].mute) {
                         try {
                             var guild = await bot.guilds.cache.get(results[i].guild_id);
