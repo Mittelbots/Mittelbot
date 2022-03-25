@@ -10,8 +10,12 @@ if (config.debug == 'false') {
         totalShards: "auto",
         respawn: true,
     });
-
     manager.on('shardCreate', shard => {
+
+        module.exports.restartShards = () => {
+            return shard.kill();
+        }    
+
         setTimeout(() => {
             shard.kill();
         }, 86400000); // 24h

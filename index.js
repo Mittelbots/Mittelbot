@@ -43,6 +43,7 @@ const database = require("./src/db/db");
 const {
   getLinesOfCode
 } = require("./utils/functions/getLinesOfCode/getLinesOfCode");
+const { restartShards } = require("./shard");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
@@ -78,10 +79,12 @@ bot.on("messageCreate", async message => {
 });
 
 process.on('unhandledRejection', err => {
+  restartShards();
   return errorhandler(err, null, null, log, config, true)
 });
 
 process.on('uncaughtException', err => {
+  restartShards();
   return errorhandler(err, null, null, log, config, true)
 })
 
