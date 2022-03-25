@@ -33,7 +33,7 @@ async function muteUser(Member, message, bot, config, reason, time, dbtime) {
                 await privateModResponse(Member, config.defaultModTypes.mute, reason, time, bot, message.guild.name);
                 return true;
             } catch (err) {
-                return errorhandler(err, config.errormessages.general, message.channel, log, config)
+                return errorhandler(err, config.errormessages.general, message.channel, log, config, true)
             }
         }
     }

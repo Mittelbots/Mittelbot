@@ -23,7 +23,7 @@ async function warnUser(bot, config, message, member, reason, log) {
             
             if(config.debug == 'true') console.info('Warn Command passed!')
         }catch(err) {
-            return errorhandler(err, config.errormessages.general, message.channel, log, config)
+            return errorhandler(err, config.errormessages.general, message.channel, log, config, true)
         }  
     }
 }

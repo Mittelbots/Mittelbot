@@ -219,7 +219,7 @@ module.exports.run = async (bot, message, args) => {
                                         message.channel.send(`Successfully Changed the XP Rage to ${levelSettings[i].needXP}`).catch(err => {});
                                     })
                                     .catch(err => {
-                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                                     })
                             });
                             collector3.on('end', (collected, reason) => {
@@ -252,7 +252,7 @@ module.exports.run = async (bot, message, args) => {
                                         message.channel.send(`Successfully changed the role to <@&${levelSettings[i].role}>`).catch(err => {});
                                     })
                                     .catch(err => {
-                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                                     })
                             });
                             rolecollector.on('end', (collected, reason) => {
@@ -268,7 +268,7 @@ module.exports.run = async (bot, message, args) => {
                                     message.channel.send(`Successfully delete level ${levelSettings[i].level}`).catch(err => {});
                                 })
                                 .catch(err => {
-                                    return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+                                    return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                                 })
                         }
                     });

@@ -32,7 +32,7 @@ async function addWarnRoles(message, member, inf_id, config, log) {
             }
         }
     }).catch(err => {
-        errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+        errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
         return false;
     })
 }

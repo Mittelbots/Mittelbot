@@ -23,7 +23,7 @@ async function isMuted(config, member, message, log, bot) {
             return false;
         }
     }).catch(err => {
-        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
     })
 }
 
@@ -43,7 +43,7 @@ async function isBanned(member, message) {
             }
         }
     }).catch(err => {
-        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
     })
 }
 

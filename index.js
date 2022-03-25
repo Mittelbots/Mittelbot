@@ -78,11 +78,11 @@ bot.on("messageCreate", async message => {
 });
 
 process.on('unhandledRejection', err => {
-  return errorhandler(err, null, null, log, config)
+  return errorhandler(err, null, null, log, config, true)
 });
 
 process.on('uncaughtException', err => {
-  return errorhandler(err, null, null, log, config)
+  return errorhandler(err, null, null, log, config, true)
 })
 
 bot.once('ready', async () => {

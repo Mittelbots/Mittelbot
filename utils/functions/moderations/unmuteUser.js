@@ -44,7 +44,7 @@ async function unmuteUser(message, member, bot, config, reason, log) {
             }).catch(err => console.log(err))
         }
         catch(err) {
-            return errorhandler(err, config.errormessages.general, message.channel, log, config)
+            return errorhandler(err, config.errormessages.general, message.channel, log, config, true)
         }
     }
 }
