@@ -25,7 +25,17 @@
         "nopermission": "You dont have permission to run this command!",
         "botnopermission": "Something went wrong! Either i don't have permissions or the bot is broken.",
         "databaseconnectionerror": "Error connecting the database! Try again in 5 seconds",
-        "databasequeryerror": "Error by executing the database request. <@395923095472570368> Fix it idiot!"
+        "databasequeryerror": "Error by executing the database request. <@395923095472570368> Fix it idiot!",
+        "nopermissions": {
+            "ban": "I don't have permissions to ban people. Please check my Permissions and try again.",
+            "unban": "I don't have permissions to unban people. Please check my Permissions and try again.",
+            "kick": "I don't have permissions to kick people. Please check my Permissions and try again.",
+            "manageRoles": "I don't have permissions to manage roles. Please check my Permissions and try again.",
+            "sendEmbedMessages": "I don't have permissions to embed Links (Embeds). Please check my Permissions and try again.",
+            "addReactions": "I don't have permissions to add reactions. Please check my permissions and try again.",
+            "manageReactions": "I don't have permissions to manage reactions. Please chek my permissions and try again.",
+            "sendFiles": "I don't have permissions to send files. Please check my Permissions and try again."
+        }
     },
     "successmessages": {
         "banned": " was banned from the server.",
