@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const fs = require('fs');
+const {exec} = require('child_process');
 
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
@@ -79,12 +79,12 @@ bot.on("messageCreate", async message => {
 });
 
 process.on('unhandledRejection', err => {
-  restartShards();
+  exec('npm run pm2restartprod')
   return errorhandler(err, null, null, log, config, true)
 });
 
 process.on('uncaughtException', err => {
-  restartShards();
+  exec('npm run pm2restartprod')
   return errorhandler(err, null, null, log, config, true)
 })
 

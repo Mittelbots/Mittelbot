@@ -4,8 +4,6 @@ const {
 } = require('discord.js')
 const token = require('./_secret/token.json');
 
-var shards;
-
 if (config.debug == 'false') {
     let manager = new ShardingManager('./index.js', {
         token: token.BOT_TOKEN,
@@ -13,7 +11,6 @@ if (config.debug == 'false') {
         respawn: true,
     });
     manager.on('shardCreate', shard => {
-        shards = shard;
         setTimeout(() => {
             shard.kill();
         }, 86400000); // 24h
@@ -21,8 +18,4 @@ if (config.debug == 'false') {
     });
 
     manager.spawn();
-
-    module.exports.restartShards = () => {
-        return shards.kill();
-    }    
 }
