@@ -7,7 +7,6 @@ const { checkMessage } = require('../../../utils/functions/checkMessage/checkMes
 const { warnUser } = require('../../../utils/functions/moderations/warnUser');
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
-const database = require('../../db/db');
 
 module.exports.run = async (bot, message, args) => {
     if(config.deleteCommandsAfterUsage == 'true') {
@@ -34,7 +33,6 @@ module.exports.run = async (bot, message, args) => {
 
     let reason = args.slice(1).join(" ");
     if (!reason) {
-         
         return message.reply('Please add a reason!').catch(err => {});
     }
     

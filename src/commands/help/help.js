@@ -1,7 +1,10 @@
 const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+const config = require('../../../src/assets/json/_config/config.json');
 const {
     MessageEmbed
 } = require('discord.js');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { log } = require('../../../logs');
 
 module.exports.run = async (bot, message, args) => {
     const helpEmbedMessage = new MessageEmbed()
@@ -12,27 +15,38 @@ module.exports.run = async (bot, message, args) => {
         helpEmbedMessage.addField(`${value._icon} ${key.charAt(0).toUpperCase() + key.slice(1)}`, value._desc);
     }
 
-    
-
     await message.channel.send({
         embeds: [helpEmbedMessage]
     }).then(async msg => {
 
         var filterEmoji = [];
 
-        function addCloseReaction() {
-            msg.react('❌');
+        let pass = true;    
+
+
+        async function addCloseReaction() {
+            if(!pass) return;
+            await msg.react('❌').catch(err => {
+                pass = false;
+                return errorhandler(err, config.errormessages.nopermissions.addReactions, message.channel, log, config)
+            });
             if(filterEmoji.indexOf('❌') === -1) filterEmoji.push('❌');
         }
 
-        function addHomeReactions() {
+        async function addHomeReactions() {
             for (let i in cmd_help) {
-                msg.react(cmd_help[i]._icon);
+                if(!pass) return;
+                await msg.react(cmd_help[i]._icon).catch(err => {
+                    pass = false;
+                    return errorhandler(err, config.errormessages.nopermissions.addReactions, message.channel, log, config)
+                });
                 if(filterEmoji.indexOf(cmd_help[i]._icon) === -1) filterEmoji.push(cmd_help[i]._icon)
             }
         }
-        addCloseReaction();
-        addHomeReactions();
+        await addCloseReaction();
+        if(!pass) return;
+
+        await addHomeReactions();
 
         const filter = (reaction, user) => filterEmoji.indexOf(reaction.emoji.name) !== -1 && user.id === message.author.id;
     
@@ -42,18 +56,24 @@ module.exports.run = async (bot, message, args) => {
         });
         
         collector.on('collect', async (reaction, user) => {
-            await reaction.users.remove(user);
+            await reaction.users.remove(user).catch(err => {
+                return errorhandler(err, config.errormessages.nopermissions.manageReactions, message.channel, log, config);
+            });
             
             if(reaction.emoji.name === '❌') {
-                message.delete();
-                return await msg.delete();
+                message.delete().catch(err => {})
+                return await msg.delete().catch(err=> {})
             }
 
             if(reaction.emoji.name === '🔼') {
                 msg.edit({
                     embeds: [helpEmbedMessage]
+                }).catch(err => {
+                    return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                })
+                msg.reactions.removeAll().catch(err => {
+                    return errorhandler(err, config.errormessages.nopermissions.manageReactions, message.channel, log, config);
                 });
-                msg.reactions.removeAll().catch(err => {});
                 addCloseReaction();
                 addHomeReactions();
             }
@@ -73,12 +93,16 @@ module.exports.run = async (bot, message, args) => {
 
                     msg.edit({
                         embeds: [edithelpEmbedMessage]
-                    });
+                    }).catch(err => {
+                        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                    })
 
                     msg.reactions.removeAll().catch(err => {});
 
                     addCloseReaction();
-                    msg.react('🔼');
+                    msg.react('🔼').catch(err => {
+                        return errorhandler(err, config.errormessages.nopermissions.addReactions, message.channel, log, config)
+                    });
                     if(filterEmoji.indexOf('🔼') === -1) filterEmoji.push('🔼');
                     return;
                 }
@@ -88,15 +112,21 @@ module.exports.run = async (bot, message, args) => {
         collector.on('end', (collected, reason) => {
             try {
                 if(reason === 'time') {
-                    msg.edit({content: '**Time limit reached**'});
-                    msg.reactions.removeAll().catch(err => {});
+                    msg.edit({content: '**Time limit reached**'}).catch(err => {});
+                    msg.reactions.removeAll().catch(err => {
+                        return errorhandler(err, config.errormessages.nopermissions.manageReactions, message.channel, log, config);
+                    });
                 }else {
                     msg.edit({content: `**Collector ended cause: ${reason}**`});
-                    msg.reactions.removeAll().catch(err => {});
+                    msg.reactions.removeAll().catch(err => {
+                        return errorhandler(err, config.errormessages.nopermissions.manageReactions, message.channel, log, config);
+                    });
                 }
             }catch(err) {}
         });
-    })
+    }).catch(err => {
+        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config, true);
+    });
 
 
 }

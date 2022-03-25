@@ -6,6 +6,7 @@ const { publicInfractionResponse } = require('../../../utils/publicResponses/pub
 const { log } = require('../../../logs');
 
 const database = require('../../db/db');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 
 
@@ -39,16 +40,12 @@ module.exports.run = async (bot, message, args) => {
 
                 infraction = await res;
             }).catch(err => {
-                log.fatal(err);
-                if(config.debug == 'true') console.log(err);
-                return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
             });
         }
         return;
     }).catch(err => {
-        log.fatal(err);
-        if(config.debug == 'true') console.log(err);
-        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
     });
      
     return publicInfractionResponse(message, infraction[0], null, null, true);

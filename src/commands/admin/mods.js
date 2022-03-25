@@ -14,15 +14,12 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { insertPermsToModroles, deletePermsFromModroles, updatePermsFromModroles } = require('../../../utils/functions/insertDataToDatabase');
 const database = require('../../db/db');
 
-
-
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
         message.delete().catch(err => {});
     }
     if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-         
-        message.delete();
+        message.delete().catch(err => {});
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
             setTimeout(() => msg.delete(), 5000);
         }).catch(err => {});
@@ -68,7 +65,7 @@ module.exports.run = async (bot, message, args) => {
                 status = true;
             }
         }).catch(err => {
-            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
         });
         
         if(roleid == null) value = removeMention(value);
@@ -117,8 +114,14 @@ module.exports.run = async (bot, message, args) => {
             )
         }
 
-        
-        const embedMessage = await message.channel.send({embeds: [modroleembed], components: [row]});
+        let pass = true;
+        const embedMessage = await message.channel.send({embeds: [modroleembed], components: [row]})
+        .catch(err => {
+            pass = false;
+            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+        })
+
+        if(!pass) return;
 
         const collector = embedMessage.createMessageComponentCollector({
             filter: ({user}) => user.id === message.author.id,

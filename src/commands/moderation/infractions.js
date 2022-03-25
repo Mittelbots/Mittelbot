@@ -6,6 +6,7 @@ const { publicInfractionResponse } = require('../../../utils/publicResponses/pub
 const { log } = require('../../../logs');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const database = require('../../db/db');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 
 
@@ -41,14 +42,10 @@ module.exports.run = async (bot, message, args) => {
     var open = [];
 
     await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? ORDER BY ID DESC`, [memberId]).then(async res => closed.push(await res)).catch(err => {
-        log.fatal(err);
-        if(config.debug == 'true') console.log(err);
-        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
     });
     await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY ID DESC`, [memberId]).then(async res => open.push(await res)).catch(err => {
-        log.fatal(err);
-        if(config.debug == 'true') console.log(err);
-        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {}); 
+        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
     });
 
     if(closed[0].length <= 0 && open[0].length <= 0) {

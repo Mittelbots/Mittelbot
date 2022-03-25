@@ -1,6 +1,8 @@
 const {MessageEmbed} = require('discord.js');
+const { log } = require('../../logs');
 const config = require('../../src/assets/json/_config/config.json');
 const database = require('../../src/db/db');
+const { errorhandler } = require('../functions/errorhandler/errorhandler');
 const { generateModEmote } = require('../functions/generateModEmote');
 
 
@@ -25,14 +27,11 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
 function sendToModLog(bot, message, gid) {
     database.query(`SELECT modlog FROM ${gid}_guild_logs`).then(res => {
         if(res.length > 0 && res[0].modlog) {
-            try {
-                bot.channels.cache.get(res[0].modlog).send({embeds: [message]}).catch(err => {});
-            }catch(err) {
-                console.log(err)
-                return true;
-            }
+            bot.channels.cache.get(res[0].modlog).send({embeds: [message]}).catch(err => {});
         }
-    }).catch(err => console.log(err))
+    }).catch(err => {
+        errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true)  
+    })
     return;
 }
 

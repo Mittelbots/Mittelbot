@@ -1,7 +1,11 @@
 const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
+const config = require('../../../src/assets/json/_config/config.json');
 
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const levelAPI = require('../../../utils/functions/levelsystem/levelsystemAPI');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { log } = require('../../../logs');
+
 const canvacord = require("canvacord");
 const { MessageAttachment } = require('discord.js');
 
@@ -47,6 +51,8 @@ module.exports.run = async (bot, message, args) => {
         const attachment = new MessageAttachment(data, "RankCard.png");
         message.channel.send({
             files: [attachment]
+        }).catch(err => {
+            return errorhandler(err, config.errormessages.nopermissions.sendFiles, message.channel, log, config);
         });
     });
 }

@@ -11,8 +11,7 @@ const { getEmote } = require('../../../utils/functions/getEmote');
 const { viewSetting } = require('../../../utils/functions/viewSetting');
 const { log } = require('../../../logs');
 const database = require('../../db/db');
-
-
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -35,8 +34,7 @@ module.exports.run = async (bot, message, args) => {
         var currentsettings = database.query(`SELECT * FROM ${message.guild.id}_config LIMIT 1`).then(async res => {
             return await res[0];
         }).catch(err => {
-            log.fatal(err);
-            if(config.debug == 'true') console.log(err);
+            errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
             return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
         });
 
@@ -112,7 +110,9 @@ module.exports.run = async (bot, message, args) => {
             }
             return message.channel.send({
                 embeds: [settingMessage]
-            }).catch(err => {});
+            }).catch(err => {
+                return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+            });
         }
 
     } else {
@@ -217,9 +217,7 @@ module.exports.run = async (bot, message, args) => {
                         }
                         return true;
                     }).catch(err => {
-                        log.fatal(err);
-                        if(config.debug == 'true') console.log(err);
-                        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                     })
                     if(await checkroles && roles[0] !== '') {
                         var passedRoles = [];
@@ -250,12 +248,9 @@ module.exports.run = async (bot, message, args) => {
                         return;
                     }
 
-
                     function saveJoinRoles(role) {
                         database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [role]).catch(err => {
-                            log.fatal(err);
-                            if(config.debug == 'true') console.log(err);
-                            return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+                            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                         })
                     }
 
@@ -267,14 +262,18 @@ module.exports.run = async (bot, message, args) => {
                     
                     var channel = value.replace('<', '').replace('#', '').replace('>', '');
                     channel = message.guild.channels.cache.get(channel)
-                    try {
-                        let embed = new MessageEmbed()
-                            .setTitle('Test')
-                            .addField('To test', 'my permissions')
-                        channel.send({embeds: [embed]}).then(msg => msg.delete());
-                    }catch(err) {
-                        return message.reply(`I don't have permissions to write into this channel!`).catch(err => {});
-                    }
+                    let embed = new MessageEmbed()
+                        .setTitle('Test')
+                        .addField('To test', 'my permissions')
+
+                    let pass = true;
+                    await channel.send({embeds: [embed]}).then(msg => msg.delete()).catch(err => {
+                        pass = false;
+                        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                    });
+
+                    if(!pass) return;
+
                     var dbcol;
 
                     switch(true) {
@@ -291,9 +290,7 @@ module.exports.run = async (bot, message, args) => {
                     database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [channel.id]).then(() => {
                         return message.reply(`${channel} successfully saved!`).catch(err => {});
                     }).catch(err => {
-                        log.fatal(err);
-                        if(config.debug == 'true') console.log(err);
-                        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                     });
                 }
                 //? IF SETTING IS WARNROLES
@@ -302,9 +299,7 @@ module.exports.run = async (bot, message, args) => {
                     roles = roles.split(' ');
 
                     database.query(`DELETE FROM ${message.guild.id}_guild_warnroles`).catch(err => {
-                        log.fatal(err);
-                        if(config.debug == 'true') console.log(err);
-                        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                     });
 
                     for(let i in roles) {
@@ -327,9 +322,7 @@ module.exports.run = async (bot, message, args) => {
                     }
                     for(let i in roles) {
                         database.query(`INSERT INTO ${message.guild.id}_guild_warnroles (${config.settings.warnroles.colname}) VALUES (?)`, [roles[i]]).catch(err => {
-                            log.fatal(err);
-                            if(config.debug == 'true') console.log(err);
-                            return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+                            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                         });
                     }
                     return message.reply(`Warn roles successfully saved!`).catch(err => {});
@@ -340,9 +333,7 @@ module.exports.run = async (bot, message, args) => {
 
         function saveSetting() {
             database.query(`UPDATE ${message.guild.id}_config SET ${setting} = ?`, [value]).catch(err => {
-                log.fatal(err);
-                if(config.debug == 'true') console.log(err);
-                return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
+                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
             });
         }
     }

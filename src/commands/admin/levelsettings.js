@@ -67,9 +67,15 @@ module.exports.run = async (bot, message, args) => {
         }
         var canFitOnOnePage = levelSettings.length <= 3;
 
+        let pass = true;
         const sentMessage = await message.channel.send({
             embeds: [await generateEmbed(0)]
-        }).catch(err => {});
+        }).catch(err => {
+            pass = false;
+            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+        });
+
+        if(!pass) return;
 
         var currentIndex = 0;
 
