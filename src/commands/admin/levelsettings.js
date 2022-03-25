@@ -241,7 +241,7 @@ module.exports.run = async (bot, message, args) => {
                                 if(reply.content.toLowerCase() === 'none') return;
 
                                 const role = await guild.roles.cache.get(reply.content)
-                                console.log(role)
+
                                 if(!role) return message.reply('Invalid role provided. Please mention an existing role!')
 
                                 levelSettings[i].role = removeMention(reply.content);

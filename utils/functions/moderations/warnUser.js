@@ -11,7 +11,7 @@ async function warnUser(bot, config, message, member, reason, log) {
     let inf_id = await createInfractionId();
     
     const pass = await addWarnRoles(message, member, inf_id, config, log);
-    console.log(pass);
+    
     if(pass) {
         try {
             await setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, member.user.id, reason, null, message.guild.id);
