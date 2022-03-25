@@ -67,9 +67,15 @@ module.exports.run = async (bot, message, args) => {
         }
         var canFitOnOnePage = levelSettings.length <= 3;
 
+        let pass = true;
         const sentMessage = await message.channel.send({
             embeds: [await generateEmbed(0)]
-        }).catch(err => {});
+        }).catch(err => {
+            pass = false;
+            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+        });
+
+        if(!pass) return;
 
         var currentIndex = 0;
 
@@ -213,7 +219,7 @@ module.exports.run = async (bot, message, args) => {
                                         message.channel.send(`Successfully Changed the XP Rage to ${levelSettings[i].needXP}`).catch(err => {});
                                     })
                                     .catch(err => {
-                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                                     })
                             });
                             collector3.on('end', (collected, reason) => {
@@ -246,7 +252,7 @@ module.exports.run = async (bot, message, args) => {
                                         message.channel.send(`Successfully changed the role to <@&${levelSettings[i].role}>`).catch(err => {});
                                     })
                                     .catch(err => {
-                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+                                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                                     })
                             });
                             rolecollector.on('end', (collected, reason) => {
@@ -262,7 +268,7 @@ module.exports.run = async (bot, message, args) => {
                                     message.channel.send(`Successfully delete level ${levelSettings[i].level}`).catch(err => {});
                                 })
                                 .catch(err => {
-                                    return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config);
+                                    return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                                 })
                         }
                     });

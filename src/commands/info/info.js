@@ -3,7 +3,9 @@ const {
 } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
 const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
-const database = require('../../db/db')
+const database = require('../../db/db');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { log } = require('../../../logs');
 
 
 module.exports.run = async (bot, message, args) => {
@@ -58,6 +60,7 @@ module.exports.run = async (bot, message, args) => {
         var joined_at = await database.query(`SELECT user_joined FROM ${message.guild.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
             return await res[0].user_joined
         }).catch(err => {
+            errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
             return false
         })
     }
@@ -77,7 +80,9 @@ module.exports.run = async (bot, message, args) => {
     if(!tag) {
         return message.channel.send({
             embeds: [serverInfoEmbed]
-        }).catch(err => {});
+        }).catch(err => {
+            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+        });
     }
 
     const axios = require('axios');
@@ -90,7 +95,9 @@ module.exports.run = async (bot, message, args) => {
     memberInfoEmbed.setThumbnail(await pfp);
     return message.channel.send({
         embeds: [memberInfoEmbed]
-    }).catch(err => {});
+    }).catch(err => {
+        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+    });
 }
 
 module.exports.help = cmd_help.utility.info

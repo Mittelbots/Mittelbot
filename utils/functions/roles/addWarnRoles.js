@@ -6,22 +6,34 @@ const { insertDataToTemproles } = require("../insertDataToDatabase");
 
 
 async function addWarnRoles(message, member, inf_id, config, log) {
-    database.query(`SELECT role_id FROM ${message.guild.id}_guild_warnroles`).then(async res => {
+    return await database.query(`SELECT role_id FROM ${message.guild.id}_guild_warnroles`).then(async res => {
+        let hasRoleAlready = false;
         if(res.length > 0) {   
-
             for(let i in res) {
                 let role = await message.guild.roles.cache.find(role => role.id === res[i].role_id).id
                 if(!member.roles.cache.has(role)) {
-                    await member.roles.add([role]);
-                    return insertDataToTemproles(member.id, res[i].role_id, getFutureDate(2678400), inf_id, message.guild.id);
+                    return await member.roles.add([role])
+                        .then(() => {
+                            insertDataToTemproles(member.id, res[i].role_id, getFutureDate(2678400), inf_id, message.guild.id);
+                            return true;
+                        })
+                        .catch(err => {
+                            errorhandler(err, config.errormessages.nopermissions.manageRoles, message.channel, log, config);
+                            return false;
+                        })
+                }else {
+                    hasRoleAlready = true;
                 }
             }
-            //If User already have all Roles
-            return message.channel.send(`\`The User already have all warn roles!\``);
+            if(hasRoleAlready) {
+                //If User already have all Roles
+                message.channel.send(`\`This User already have all warn roles!\``);
+                return true;
+            }
         }
-        return;
     }).catch(err => {
-        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config)
+        errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+        return false;
     })
 }
 

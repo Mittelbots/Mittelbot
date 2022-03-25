@@ -1,8 +1,10 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 const { generateModEmote } = require("../functions/generateModEmote");
 const config = require('../../src/assets/json/_config/config.json');
+const { errorhandler } = require("../functions/errorhandler/errorhandler");
+const { log } = require("../../logs");
 
-async function publicModResponses(channelmessage, type, moderator, member, reason, time, bot) {
+async function publicModResponses(message, type, moderator, member, reason, time, bot) {
     var publicModMessage = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle(`${await generateModEmote(config, bot, type) }**Member ${type}!**`)
@@ -15,7 +17,9 @@ async function publicModResponses(channelmessage, type, moderator, member, reaso
         publicModMessage.addField(`Time`, `**${time}** `)
     }
 
-    return channelmessage.channel.send({embeds: [publicModMessage]}).catch(err => {});
+    return message.channel.send({embeds: [publicModMessage]}).catch(err => {
+        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config)
+    });
 }
 
 async function publicInfractionResponse(message, Member, closed, open, isOne) {
@@ -106,7 +110,7 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
                         ]
                     })
                 ]
-            });
+            }).catch(err => {})
         });
     }
     return;

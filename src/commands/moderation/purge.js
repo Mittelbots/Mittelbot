@@ -46,10 +46,14 @@ module.exports.run = async (bot, message, args) => {
     //         })
     //     });
     // }else {
-        await message.channel.bulkDelete(amount, true).then(message.channel.send(`Successfully pruned ${amount} messages`).then(msg => setTimeout(() => msg.delete().catch(err => {}), 5000))).catch(err => {
+        const msg = await message.channel.bulkDelete(amount, true).then(message.channel.send(`Successfully pruned ${amount} messages`).catch((err) => {})).catch(err => {
             if(config.debug == 'true') console.log(err);
             message.channel.send('there was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)').catch(err => {});
         });
+
+        setTimeout(() => {
+            msg.delete();
+        }, 3000);
     // }
 }
 

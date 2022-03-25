@@ -33,7 +33,7 @@ function checkInfractions(bot) {
                 let currentdate = new Date()
 
                 var inf_date = results[i].till_date.split('.');
-                console.log(inf_date)
+
                 const year = inf_date[2].split(',')[0];
                 const month = (inf_date[1] < 10) ? inf_date[1].replace('0', '') : inf_date[1];
                 const day = (inf_date[0] < 10) ? inf_date[0].replace('0', '') : inf_date[0];
