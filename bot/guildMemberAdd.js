@@ -34,7 +34,7 @@ async function guildMemberAdd(member, bot) {
                         return val !== member.roles.cache.find(r => r.name === 'Muted').id
                     });
 
-                    if(user_roles) await giveAllRoles(member, member.guild, user_roles, bot);
+                    if(user_roles) await giveAllRoles(member.id, member.guild, user_roles, bot);
                 }
             }).catch(err => {
                 return log.fatal(err)

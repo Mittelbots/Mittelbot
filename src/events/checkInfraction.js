@@ -22,11 +22,11 @@ async function deleteEntries(infraction) {
 
 function checkInfractions(bot) {
     setInterval(async () => {
-        database.query(`SELECT * FROM open_infractions`).then(async results => {
+        await database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;
             let mutecount = 0;
             let bancount = 0;
-            for(let i in results) {
+            for(let i in await results) {
                 if(results[i].till_date == null) continue;
 
                 //Member can be unmuted
@@ -55,11 +55,12 @@ function checkInfractions(bot) {
                             continue;
                         }
                         try {
-                            await giveAllRoles(results[i].user_id, results[i].guild_id , JSON.parse(results[i].user_roles), bot)
-                            setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id);
-                            privateModResponse(user, config.defaultModTypes.unmute, 'Auto', null, bot, guild.name);
-                            await deleteEntries(results[i]);
                             await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
+                            await giveAllRoles(results[i].user_id,  bot.guilds.cache.get(results[i].guild_id), JSON.parse(results[i].user_roles), bot)
+                            await setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id);
+                            await privateModResponse(user, config.defaultModTypes.unmute, 'Auto', null, bot, guild.name);
+                            await deleteEntries(results[i]);
+
                             done++;
                             mutecount++;
                             continue;
