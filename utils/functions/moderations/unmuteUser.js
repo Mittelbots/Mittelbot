@@ -5,9 +5,9 @@ const { errorhandler } = require('../errorhandler/errorhandler');
 const { insertDataToClosedInfraction } = require('../insertDataToDatabase');
 const { getMutedRole } = require('../roles/getMutedRole');
 const { removeDataFromOpenInfractions } = require('../data/removeDataFromDatabase');
+const { giveAllRoles } = require('../roles/giveAllRoles');
 
 const database = require('../../../src/db/db');
-
 
 
 async function unmuteUser(message, member, bot, config, reason, log) {
@@ -20,7 +20,13 @@ async function unmuteUser(message, member, bot, config, reason, log) {
     .then(() => pass = true)
     .catch(err => {
         return errorhandler(err, config.errormessages.nopermissions.manageRoles, message.channel, log, config);
-    })
+    });
+
+    const roles = await database.query('SELECT user_roles FROM open_infractions WHERE user_id = ? AND mute = ?', [member.id, 1]).then(res => {return res[0].user_roles}).catch(err => {errorhandler(err, 'Something went wrong in collecting the user roles', message.channel, log, config, true); return false})
+
+    if(roles) {
+        await giveAllRoles(member.id, bot.guilds.cache.get(message.guild.id), JSON.parse(roles), bot)
+    }
 
     if(pass) {
         try {
