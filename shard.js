@@ -13,7 +13,7 @@ if (config.debug == 'false') {
     manager.on('shardCreate', shard => {
         setTimeout(() => {
             shard.kill();
-        }, 86400000); // 24h
+        }, 86400000 * 5); // 5d
         console.log(`[SHARDS]: Launched shards ${shard.id}`)
     });
 
