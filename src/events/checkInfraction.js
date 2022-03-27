@@ -6,6 +6,7 @@ const { log } = require('../../logs');
 const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
 const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
 const database = require('../db/db');
+const { saveAllRoles } = require('../../utils/functions/roles/saveAllRoles');
 
 
 async function deleteEntries(infraction) {
@@ -56,7 +57,8 @@ function checkInfractions(bot) {
                         }
                         try {
                             await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
-                            await giveAllRoles(results[i].user_id,  bot.guilds.cache.get(results[i].guild_id), JSON.parse(results[i].user_roles), bot)
+                            await giveAllRoles(results[i].user_id, bot.guilds.cache.get(results[i].guild_id), JSON.parse(results[i].user_roles), bot)
+                            await saveAllRoles(JSON.parse(results[i].user_roles), bot.users.cache.get(results[i].user_id), log)
                             await setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user.id, 'Auto', null, results[i].guild_id);
                             await privateModResponse(user, config.defaultModTypes.unmute, 'Auto', null, bot, guild.name);
                             await deleteEntries(results[i]);
