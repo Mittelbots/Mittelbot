@@ -11,30 +11,32 @@ const database = require('../src/db/db');
 
 
 async function guildMemberAdd(member, bot) {
-    database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
+    await database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
         if (await res.length == 0) {
-            database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
+            await database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
                 return log.fatal(err);
             });
         } else {
             if (res[0].user_joined == null) {
-                database.query(`UPDATE ${member.guild.id}_guild_member_info SET user_joined = ? WHERE user_id = ?`, [new Date(), member.user.id]).catch(err => {
+                await database.query(`UPDATE ${member.guild.id}_guild_member_info SET user_joined = ? WHERE user_id = ?`, [new Date(), member.user.id]).catch(err => {
                     return errorhandler(err, config.errormessages.databasequeryerror, null, log, config, true)
                 });
             }
             await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
-                if (await inf.length != 0) {
+                if (await inf.length > 0) {
                     member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]).catch(err => {});
                 } else {
                     let user_roles = await res[0].member_roles;
                     user_roles = JSON.parse(user_roles);
 
                     //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
-                    if (user_roles !== null && user_roles.indexOf(member.roles.cache.find(r => r.name === 'Muted')) !== -1) user_roles = user_roles.filter(val => {
-                        return val !== member.roles.cache.find(r => r.name === 'Muted').id
-                    });
-
-                    if(user_roles) await giveAllRoles(member.id, member.guild, user_roles, bot);
+                    const indexOfMuteRole = user_roles.indexOf(member.guild.roles.cache.find(r => r.name === 'Muted').id)
+                    if (user_roles !== null && indexOfMuteRole !== -1) {
+                        user_roles = await user_roles.filter(r => r !== member.guild.roles.cache.find(r => r.name === 'Muted').id)
+                    }
+                    setTimeout(async () => {
+                        if(user_roles) await giveAllRoles(member.id, member.guild, user_roles);
+                    }, 2000);
                 }
             }).catch(err => {
                 return log.fatal(err)
