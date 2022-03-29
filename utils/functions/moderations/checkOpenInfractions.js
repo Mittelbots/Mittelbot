@@ -27,6 +27,20 @@ async function isMuted(config, member, message, log, bot) {
     })
 }
 
+async function isOnBanList(member, message) {
+    return message.guild.bans.fetch()
+        .then(async bans => {
+            let list = bans.filter(user => user.user.id === member);
+            let reason = list.map(list => list.reason)[0];
+
+            if(JSON.stringify(list).length < 10) return [false];
+            else return [true, reason];
+
+        }).catch(err => {
+            return false;
+        })
+}
+
 async function isBanned(member, message) {
     database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND ban = ? AND guild_id = ?`, [member.id, 1, message.guild.id]).then(async result => {
         if (result.length > 0) {
@@ -49,5 +63,6 @@ async function isBanned(member, message) {
 
 module.exports = {
     isMuted,
-    isBanned
+    isBanned,
+    isOnBanList
 }
