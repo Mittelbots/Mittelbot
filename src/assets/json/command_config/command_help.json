@@ -84,6 +84,12 @@
             "description": "Warn an user",
             "usage": "warn <mention/ID> <Reason>",
             "icon": "⚠️"
+        },
+        "isbanned": {
+            "name":"isbanned",
+            "description": "Check if a user banned or not",
+            "usage": "isbanned <mention/ID>",
+            "icon": "⚠️"
         }
     },
     "utility": {
