@@ -16,7 +16,6 @@ async function guildMemberRemove(member) {
         const allRoles = await getAllRoles(member)
         if(JSON.parse(res[0].member_roles) === allRoles) return;
         else {
-          console.log(member);
           await saveAllRoles(allRoles, member.user, log, member.guild)
         }
       }
