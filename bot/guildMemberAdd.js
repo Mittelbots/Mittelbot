@@ -23,10 +23,12 @@ async function guildMemberAdd(member, bot) {
                 });
             }
             await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
-                if (await inf.length > 0) {
+                if (await inf.length !== 0) {
                     member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]).catch(err => {});
                 } else {
                     let user_roles = await res[0].member_roles;
+                    if(!user_roles) return;
+                    
                     user_roles = JSON.parse(user_roles);
 
                     //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
