@@ -5,7 +5,7 @@ async function generateModEmote(config, bot, type) {
 
     switch(true) {
         case type == config.defaultModTypes.warn:
-            emote = await getEmote(bot, config.icons.warn);
+            emote = config.icons.warn
             break;
         case type == config.defaultModTypes.kick:
             emote = config.icons.kick;
