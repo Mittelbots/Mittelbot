@@ -1,6 +1,6 @@
 {
   "name": "chilled-sad-discord-bot",
-  "version": "0.37.2",
+  "version": "0.38.0",
   "description": "A Discord Bot written in Node.js",
   "main": "shard.js",
   "scripts": {
@@ -15,6 +15,8 @@
     "kill": "pm2 stop Mittelbot && pm2 delete Mittelbot",
     "deployCommands": "node src/deploy-commands.js",
     "checkDatabase": "node _scripts/checkDatabase.js",
+    "insertActiveCommands": "node _scripts/active_commands/insertCommandsInDatabase.js",
+    "updateActiveCommands": "node _scripts/active_commands/updateCommandsInDatabase.js",
     "install": "mkdir _logs && npm i"
   },
   "author": "BlackDayz",
@@ -25,6 +27,7 @@
     "axios": "^0.24.0",
     "canvacord": "^5.2.3",
     "discord-api-types": "^0.26.0",
+    "discord-bettermarkdown": "^1.1.0",
     "discord.js": "^13.4.0",
     "ms": "^2.1.3",
     "mysql": "^2.18.1",

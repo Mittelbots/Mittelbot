@@ -110,7 +110,7 @@ module.exports.run = async (bot, message, args) => {
                     )
 
                 let pass = true;
-                const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get('937032777583427586').send({embeds: [newScamLinkembed], components: [buttons]})
+                const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.scammanagechannel).send({embeds: [newScamLinkembed], components: [buttons]})
                     .catch(err => {
                         pass = false;
                         return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);

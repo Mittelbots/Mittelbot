@@ -3,10 +3,7 @@ const database = require('../src/db/db')
 
 
 
-async function guildCreate(guild) {
-
-  let gid = guild.id;
-
+async function guildCreate(guild, bot) {
   await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).then(async res => {
     if (res.length <= 0) await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
   });
@@ -17,6 +14,16 @@ async function guildCreate(guild) {
   }).catch(err => {
     log.fatal(err)
   });
+
+  let commands = [];
+  await bot.commands.map(cmd => {
+    commands.push(cmd.help.name);
+  });
+
+  await database.query(`INSERT INTO active_commands (active_commands, disabled_commands, guild_id, global_disabled) VALUES (?, ?, ?)`, [JSON.stringify(commands), "[]", guild.id, "[]"]).catch(err => {
+    log.fatal(err)
+  });
+
   await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).then(async () => {
     await database.query(`INSERT INTO ${guild.id}_guild_logs (id) VALUES (?)`, [1]).catch(err => {
       log.fatal(err)
@@ -40,7 +47,7 @@ async function guildCreate(guild) {
     log.fatal(err)
   })
 
-  return  
+  return;
 }
 
 module.exports = {

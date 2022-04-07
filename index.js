@@ -56,7 +56,7 @@ const bot = new Discord.Client({
 bot.setMaxListeners(10);
 
 bot.on('guildCreate', async (guild) => {
-  return await guildCreate(guild)
+  return await guildCreate(guild, bot)
 });
 
 bot.commands = new Discord.Collection();

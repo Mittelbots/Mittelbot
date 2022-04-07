@@ -1,4 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
+const {checkActiveCommand} = require('../utils/functions/checkActiveCommand/checkActiveCommand');
 const levelSystem = require("../utils/functions/levelsystem/levelsystem");
 const {
     checkForScam
@@ -12,8 +13,6 @@ const levelCooldown = new Set();
 
 const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
 const database = require('../src/db/db');
-
-
 
 async function messageCreate(message, bot) {
     if (message.author.bot) return;
@@ -35,6 +34,13 @@ async function messageCreate(message, bot) {
 
             let commandfile = bot.commands.get(cmd.slice(prefix[0].prefix.length));
             if (commandfile) { //&& blacklist(0, message)
+
+                const isActive = await checkActiveCommand(commandfile.help.name, message.guild.id);
+
+                console.log(isActive)
+                if(isActive.global_disabled) return message.reply("This command is currently disabled in all Servers. Join the offical support discord For more informations.");
+                if(!isActive.enabled) return message.reply("This command is disabled in your Guild.");
+
                 database.query(`SELECT cooldown FROM ${message.guild.id}_config`).then(async res => {
 
                     if (defaultCooldown.has(message.author.id)) {

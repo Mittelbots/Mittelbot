@@ -2,8 +2,6 @@ const database = require('../src/db/db');
 const tables = require('../src/db/table.json');
 const {log} = require('../logs');
 
-;
-
 let res = database.query(`SELECT * FROM all_guild_id`).then(async res => {
     return await res;
 }).catch(err => {

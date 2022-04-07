@@ -48,7 +48,8 @@
             "disconnectchannel": "921179868530610206",
             "errorchannel": "921181513565999154",
             "warnchannel": "921181992995946536",
-            "reconnectingchannel": "921188150519414844"
+            "reconnectingchannel": "921188150519414844",
+            "scammanagechannel": "937032777583427586"
         }
     },
     "defaultModTypes": {
