@@ -4,7 +4,7 @@ const {
 } = require('discord.js')
 const token = require('./_secret/token.json');
 
-if (config.debug == 'true') {
+if (config.debug == 'false') {
     let manager = new ShardingManager('./index.js', {
         token: token.BOT_TOKEN,
         totalShards: 'auto',
