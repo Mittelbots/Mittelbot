@@ -143,6 +143,28 @@
                 "name": "guild_id",
                 "val": "VARCHAR(255)"
             }
+        },
+        "active_commands": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "active_commands": {
+                "name": "active_commands",
+                "val": "LONGTEXT"
+            },
+            "disabled_commands": {
+                "name": "disabled_commands",
+                "val": "LONGTEXT"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            },
+            "global_disabled": {
+                "name": "global_disabled",
+                "val": "LONGTEXT"
+            }
         }
     },
     "dynamical": {
