@@ -4,18 +4,19 @@ const {
 } = require('discord.js')
 const token = require('./_secret/token.json');
 
-if (config.debug == 'false') {
+if (config.debug == 'true') {
     let manager = new ShardingManager('./index.js', {
         token: token.BOT_TOKEN,
-        totalShards: "auto",
+        totalShards: 'auto',
         respawn: true,
     });
     manager.on('shardCreate', shard => {
-        setTimeout(() => {
-            shard.kill();
-        }, 86400000 * 5); // 5d
         console.log(`[SHARDS]: Launched shards ${shard.id}`)
     });
 
-    manager.spawn();
+    manager.spawn().then(shard => {
+        setTimeout(() => {
+            shard.kill();
+        }, 86400000 * 5); // 5d
+    });
 }
