@@ -17,7 +17,7 @@
     "checkDatabase": "node _scripts/checkDatabase.js",
     "insertActiveCommands": "node _scripts/active_commands/insertCommandsInDatabase.js",
     "updateActiveCommands": "node _scripts/active_commands/updateCommandsInDatabase.js",
-    "install": "mkdir _logs && npm i"
+    "install_bot": "mkdir _logs && npm i"
   },
   "author": "BlackDayz",
   "license": "ISC",

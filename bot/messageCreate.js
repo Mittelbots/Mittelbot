@@ -37,7 +37,6 @@ async function messageCreate(message, bot) {
 
                 const isActive = await checkActiveCommand(commandfile.help.name, message.guild.id);
 
-                console.log(isActive)
                 if(isActive.global_disabled) return message.reply("This command is currently disabled in all Servers. Join the offical support discord For more informations.");
                 if(!isActive.enabled) return message.reply("This command is disabled in your Guild.");
 
