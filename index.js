@@ -91,7 +91,13 @@ bot.once('ready', async () => {
   checkInfractions(bot, database);
   checkTemproles(bot, database)
   auditLog(bot);
+	setActivity();
 
+setInterval(() => {
+	setActivity();
+}, 43200000); // 12h
+
+	function setActivity() {
   getLinesOfCode((cb) => {
     setTimeout(() => {
       var codeLines = ` | Lines of Code: ${cb}` || '';
@@ -102,6 +108,7 @@ bot.once('ready', async () => {
       log.info('------------BOT ACTIVITY SUCCESSFULLY STARTED------------', new Date())
     }, 10000);
   });
+}
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
