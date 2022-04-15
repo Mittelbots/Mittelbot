@@ -30,7 +30,7 @@ module.exports.gainXP = async function (message, newxp) {
  * @returns {int} newxp
  */
 module.exports.generateXP = function (currentxp) {
-    const randomNumber = Math.floor(Math.random() * 20) + 8; //8 - 27
+    const randomNumber = Math.floor(Math.random() * 20) + 2; //4 - 21 ca.
 
     let newxp = Number(currentxp) + Number(randomNumber);
 
