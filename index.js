@@ -78,12 +78,14 @@ bot.on("messageCreate", async message => {
 });
 
 process.on('unhandledRejection', err => {
-  exec('npm run pm2restartprod')
+  exec('npm run pm2restartprod');
+  errorhandler('----BOT CRASHED-----', null, null, log, config, true);
   return errorhandler(err, null, null, log, config, true)
 });
 
 process.on('uncaughtException', err => {
-  exec('npm run pm2restartprod')
+  exec('npm run pm2restartprod');
+  errorhandler('----BOT CRASHED-----', null, null, log, config, true);
   return errorhandler(err, null, null, log, config, true)
 })
 
