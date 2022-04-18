@@ -61,6 +61,7 @@ module.exports.run = async (bot, message, args) => {
             });
             
             if(reaction.emoji.name === '❌') {
+                collector.ended = true;
                 message.delete().catch(err => {})
                 return await msg.delete().catch(err=> {})
             }
