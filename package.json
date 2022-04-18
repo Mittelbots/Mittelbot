@@ -36,6 +36,6 @@
     "rss-parser": "^3.12.0",
     "simple-node-logger": "^21.8.12",
     "simple-youtube-api": "^5.2.1",
-    "sloc": "^0.0.4"
+    "sloc": "0.2.1"
   }
 }
