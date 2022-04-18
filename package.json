@@ -23,7 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
-    "@discordjs/rest": "^0.3.0",
+    "@discordjs/rest": "^0.4.1",
     "axios": "^0.26.1",
     "canvacord": "^5.2.3",
     "discord-api-types": "^0.31.1",
