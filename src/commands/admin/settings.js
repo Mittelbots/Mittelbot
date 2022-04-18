@@ -7,11 +7,19 @@ const {
 const {
     getModTime
 } = require('../../../utils/functions/getModTime');
-const { getEmote } = require('../../../utils/functions/getEmote');
-const { viewSetting } = require('../../../utils/functions/viewSetting');
-const { log } = require('../../../logs');
+const {
+    getEmote
+} = require('../../../utils/functions/getEmote');
+const {
+    viewSetting
+} = require('../../../utils/functions/viewSetting');
+const {
+    log
+} = require('../../../logs');
 const database = require('../../db/db');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const {
+    errorhandler
+} = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -61,50 +69,54 @@ module.exports.run = async (bot, message, args) => {
             for (let i in config.settings) {
                 let emote = await getEmote(bot, config.settings[i].icon);
                 var current;
-                if(config.settings[i].colname === config.settings.wc.colname) if(currentsettings[config.settings[i].colname] == null) current = null; else current = `<#${currentsettings[config.settings[i].colname]}>`;
-                else if(config.settings[i].colname === config.settings.cooldown.colname && currentsettings[config.settings[i].colname] === null) current = `Default Cooldown (${config.defaultCooldown.text})`;
-                else if(config.settings[i].colname === config.settings.dmcau.colname || config.settings[i].colname === config.settings.dcau.colname){ if(currentsettings[config.settings[i].colname] == '1') current = 'true'; else current = 'false'}
-                else if(config.settings[i].colname === config.settings.joinroles.colname) { 
+                if (config.settings[i].colname === config.settings.wc.colname)
+                    if (currentsettings[config.settings[i].colname] == null) current = null;
+                    else current = `<#${currentsettings[config.settings[i].colname]}>`;
+                else if (config.settings[i].colname === config.settings.cooldown.colname && currentsettings[config.settings[i].colname] === null) current = `Default Cooldown (${config.defaultCooldown.text})`;
+                else if (config.settings[i].colname === config.settings.dmcau.colname || config.settings[i].colname === config.settings.dcau.colname) {
+                    if (currentsettings[config.settings[i].colname] == '1') current = 'true';
+                    else current = 'false'
+                } else if (config.settings[i].colname === config.settings.joinroles.colname) {
                     database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
-                        if(res.length > 0) {
-                            current = ''; 
-                            for(let x in res) {
+                        if (res.length > 0) {
+                            current = '';
+                            for (let x in res) {
                                 current += `<@${res[x].role_id}> `;
                             }
                         }
                     }).catch(err => {
                         log.fatal(err);
-                        if(config.debug == 'true') console.log(err);
+                        if (config.debug == 'true') console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
                     });
-                }
-                else if(config.settings[i].colname === config.settings.auditlog.colname || config.settings[i].colname === config.settings.messagelog.colname ||config.settings[i].colname === config.settings.modlog.colname) { 
+                } else if (config.settings[i].colname === config.settings.auditlog.colname || config.settings[i].colname === config.settings.messagelog.colname || config.settings[i].colname === config.settings.modlog.colname) {
                     current = database.query(`SELECT auditlog, messagelog, modlog FROM ${message.guild.id}_guild_logs`).then(res => {
-                        if(res.length > 0) {
-                            if(res[0][config.settings[i].colname] == null) return `not set yet`;
+                        if (res.length > 0) {
+                            if (res[0][config.settings[i].colname] == null) return `not set yet`;
                             return `<#${res[0][config.settings[i].colname]}>`;
                         }
                     }).catch(err => {
                         log.fatal(err);
-                        if(config.debug == 'true') console.log(err);
+                        if (config.debug == 'true') console.log(err);
                         return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
                     });
-                }else if(config.settings[i].colname === config.settings.warnroles.colname) {
+                } else if (config.settings[i].colname === config.settings.warnroles.colname) {
                     current = database.query(`SELECT * FROM ${message.guild.id}_guild_warnroles`).then(res => {
-                        if(res.length > 0) {
-                            current = ''; 
-                            for(let x in res) {
+                        if (res.length > 0) {
+                            current = '';
+                            for (let x in res) {
                                 current += `<@&${res[x].role_id}> `;
                             }
                             return current;
                         }
                     }).catch(err => {
                         log.fatal(err);
-                        if(config.debug == 'true') console.log(err);
-                        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {}); 
+                        if (config.debug == 'true') console.log(err);
+                        return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
                     })
+                } else {
+                    current = currentsettings[config.settings[i].colname];
                 }
-                else {current = currentsettings[config.settings[i].colname];}
 
                 settingMessage.addField(`${emote} - ${config.settings[i].name}`, `${config.settings[i].desc} \n Current Setting: **${await current ?? 'Not set yet'}** \n **_Exp: ${currentsettings.prefix}settings ${config.settings[i].alias} ${config.settings[i].exp}_**`);
             }
@@ -122,14 +134,14 @@ module.exports.run = async (bot, message, args) => {
         setting = setting.replace(value, '').replace(' ', '');
         for (let i in config.settings) {
             if (config.settings[i].alias === setting) {
-                
+
                 //? CHECK THE VALUE INPUT
                 if (typeof value == config.settings[i].val == false && config.settings[i].val !== 'boolean' && config.settings[i].val !== 'mention' && config.settings[i].val !== 'time') {
                     return message.reply(`Value has to be ${config.settings[i].val}`).catch(err => {});
-                } else if (config.settings[i].val === 'boolean'){
+                } else if (config.settings[i].val === 'boolean') {
                     if (value !== 'true' && value !== 'false') return message.reply(`Value has to be true or false`).catch(err => {});
-                }else if (config.settings[i].val === 'time') {
-                    if(!value.endsWith('s') && !value.endsWith('m') && !value.endsWith('h') && !value.endsWith('d')) return message.reply(`Value has to be time (e.g. 1m or 30s)`).catch(err => {});
+                } else if (config.settings[i].val === 'time') {
+                    if (!value.endsWith('s') && !value.endsWith('m') && !value.endsWith('h') && !value.endsWith('d')) return message.reply(`Value has to be time (e.g. 1m or 30s)`).catch(err => {});
                 }
 
                 //? IF SETTING IS PREFIX
@@ -142,9 +154,17 @@ module.exports.run = async (bot, message, args) => {
 
                     message.reply(`Prefix succesfully changed to **${value}**`).catch(err => {});
                     return saveSetting();
-                } 
+                }
                 //? IF SETTING IS WELCOME_CHANNEL
                 else if (setting == config.settings.wc.alias) {
+
+                    if (value.toLowerCase() === 'none') {
+                        value = null;
+                        setting = config.settings.wc.colname;
+                        message.reply(`Welcome channel succesfully removed.`).catch(err => {});
+                        return saveSetting();
+                    }
+
                     //check if channel exists
                     let channel = value.replace('<', '').replace('#', '').replace('>', '')
                     try {
@@ -156,7 +176,7 @@ module.exports.run = async (bot, message, args) => {
                     setting = config.settings.wc.colname
                     value = channel;
                     return saveSetting();
-                } 
+                }
                 //? IF SETTING IS COOLDOWN
                 else if (setting == config.settings.cooldown.alias) {
                     let dbtime = getModTime(value);
@@ -169,11 +189,11 @@ module.exports.run = async (bot, message, args) => {
                     }
                     setting = config.settings.cooldown.colname;
                     return saveSetting();
-                } 
+                }
                 //? IF SETTING IS DELETE MOD COMMAND AFTER USAGE
                 else if (setting == config.settings.dmcau.alias) {
                     setting = config.settings.dmcau.colname;
-                    if (value == 'false') {
+                    if (value.toLowerCase() == 'false') {
                         value = 0;
                         message.reply(`Mod Commands will **don't** get deleted after usage!`).catch(err => {});
                     } else {
@@ -181,11 +201,11 @@ module.exports.run = async (bot, message, args) => {
                         message.reply(`Mod Commands **will** get deleted after usage!`).catch(err => {});
                     }
                     return saveSetting();
-                } 
+                }
                 //? IF SETTING IS DELETE COMMAND AFTER USAGE
                 else if (setting == config.settings.dcau.alias) {
                     setting = config.settings.dcau.colname;
-                    if (value == 'false') {
+                    if (value.toLowerCase() == 'false') {
                         value = 0;
                         message.reply(`Commands will **don't** get deleted after usage!`).catch(err => {});
                     } else {
@@ -193,65 +213,82 @@ module.exports.run = async (bot, message, args) => {
                         message.reply(`Commands **will** get deleted after usage!`).catch(err => {});
                     }
                     return saveSetting();
-                } 
+                }
                 //? UF SETTING IS JOINROLES
                 else if (setting == config.settings.joinroles.alias) {
+
+                    if (value.toLowerCase() === 'none') return saveJoinRoles(false);
+
+
                     var roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
                     roles = roles.split(' ');
 
                     var removedRoles = '';
                     let checkroles = database.query(`SELECT * FROM ${message.guild.id}_guild_joinroles`).then(res => {
-                        if(res.length > 0) { //? ROLES AREADY EXISTS
-                            for(let i in res) {
-                                for(let x in roles) {
-                                    if(res[i].role_id === roles[x]) {
-                                        database.query(`DELETE FROM ${message.guild.id}_guild_joinroles WHERE role_id = ?`, [roles[x]]).catch(err => {console.log(err); message.channel.send(`${config.errormessages.databasequeryerror}`)});
+                        if (res.length > 0) { //? ROLES AREADY EXISTS
+                            for (let i in res) {
+                                for (let x in roles) {
+                                    if (res[i].role_id === roles[x]) {
+                                        database.query(`DELETE FROM ${message.guild.id}_guild_joinroles WHERE role_id = ?`, [roles[x]]).catch(err => {
+                                            console.log(err);
+                                            message.channel.send(`${config.errormessages.databasequeryerror}`)
+                                        });
                                         removedRoles += `<@&${roles[x]}> `;
                                         roles[x] = '';
                                     }
                                 }
                             }
                         }
-                        if(removedRoles !== '') {
+                        if (removedRoles !== '') {
                             message.reply(`${removedRoles} got removed from joinroles.`).then(msg => returnMessage = null).catch(err => {});
                         }
                         return true;
                     }).catch(err => {
                         return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                     })
-                    if(await checkroles && roles[0] !== '') {
+                    if (await checkroles && roles[0] !== '') {
                         var passedRoles = [];
-                        for(let i in roles) {
+                        for (let i in roles) {
                             try {
                                 var role = message.guild.roles.cache.get(roles[i]);
-                            }catch(err) {
+                            } catch (err) {
                                 return message.reply(`${roles[i]} doesn't exists! All existing mentions before are saved.`).catch(err => {});
                             }
                             try {
-                                if(!message.member.roles.cache.find(r => r.id.toString() === role.id.toString())) {
+                                if (!message.member.roles.cache.find(r => r.id.toString() === role.id.toString())) {
                                     await message.member.roles.add(role).catch(err => {});
                                     await message.member.roles.remove(role).catch(err => {});
-                                }else {
+                                } else {
                                     await message.member.roles.remove(role).catch(err => {});
                                     await message.member.roles.add(role).catch(err => {});
                                 }
-                            }catch(err) {
+                            } catch (err) {
                                 return message.reply(`I don't have the permission to add this role: **${role.name}**`).catch(err => {});
                             }
                             passedRoles.push(role.id);
                         }
-                        for(let i in passedRoles) {
+                        for (let i in passedRoles) {
                             saveJoinRoles(passedRoles[i]);
                         }
                         return message.reply(`Roles saved to Joinroles.`).catch(err => {});
-                    }else {
+                    } else {
                         return;
                     }
 
-                    function saveJoinRoles(role) {
-                        database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [role]).catch(err => {
-                            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
-                        })
+                    async function saveJoinRoles(role) {
+                        if(!role) {
+                            return await database.query(`DELETE FROM ${message.guild.id}_guild_joinroles`)
+                            .then(() => {
+                                message.reply(`Joinroles successfully cleared.`).catch(err => {});
+                            })
+                            .catch(err => {
+                                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                            });
+                        }else {
+                            return await database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [role]).catch(err => {
+                                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                            })
+                        }
                     }
 
                 }
@@ -259,24 +296,30 @@ module.exports.run = async (bot, message, args) => {
                 //? IF SETTING IS MESSAGE-LOG
                 //? IF SETTING IS MOD-LOG
                 else if (setting == config.settings.auditlog.alias || setting == config.settings.messagelog.alias || setting == config.settings.modlog.alias) {
-                    
-                    var channel = value.replace('<', '').replace('#', '').replace('>', '');
-                    channel = message.guild.channels.cache.get(channel)
-                    let embed = new MessageEmbed()
-                        .setTitle('Test')
-                        .addField('To test', 'my permissions')
 
-                    let pass = true;
-                    await channel.send({embeds: [embed]}).then(msg => msg.delete()).catch(err => {
-                        pass = false;
-                        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
-                    });
+                    if (value.toLowerCase() !== 'none') {
 
-                    if(!pass) return;
+                        var channel = value.replace('<', '').replace('#', '').replace('>', '');
+                        channel = message.guild.channels.cache.get(channel)
+                        let embed = new MessageEmbed()
+                            .setTitle('Test')
+                            .addField('To test', 'my permissions')
+
+                        let pass = true;
+                        await channel.send({
+                            embeds: [embed]
+                        }).then(msg => msg.delete()).catch(err => {
+                            pass = false;
+                            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                        });
+
+                        if (!pass) return;
+
+                    }
 
                     var dbcol;
 
-                    switch(true) {
+                    switch (true) {
                         case setting == config.settings.auditlog.alias:
                             dbcol = config.settings.auditlog.colname;
                             break;
@@ -287,14 +330,31 @@ module.exports.run = async (bot, message, args) => {
                             dbcol = config.settings.messagelog.colname;
                             break;
                     }
-                    database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [channel.id]).then(() => {
-                        return message.reply(`${channel} successfully saved!`).catch(err => {});
+
+
+                    database.query(`UPDATE ${message.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [(channel) ? channel.id : null]).then(() => {
+                        if (value.toLowerCase() === 'none') {
+                            return message.reply(`Log successfully removed.`).catch(err => {});
+                        } else {
+                            return message.reply(`${channel} successfully saved!`).catch(err => {});
+                        }
                     }).catch(err => {
                         return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                     });
                 }
                 //? IF SETTING IS WARNROLES
-                else if(setting == config.settings.warnroles.alias) {
+                else if (setting == config.settings.warnroles.alias) {
+
+                    if (value.toLowerCase() === 'none') {
+                        return await database.query(`DELETE FROM ${message.guild.id}_guild_warnroles`)
+                            .then(() => {
+                                return message.reply(`Removed all warnroles.`).catch(err => {});
+                            })
+                            .catch(err => {
+                                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                            });
+                    }
+
                     var roles = value.replaceAll('<', '').replaceAll('@', '').replaceAll('&', '').replaceAll('!', '').replaceAll('>', '');
                     roles = roles.split(' ');
 
@@ -302,25 +362,25 @@ module.exports.run = async (bot, message, args) => {
                         return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                     });
 
-                    for(let i in roles) {
+                    for (let i in roles) {
                         try {
                             var role = message.guild.roles.cache.get(roles[i]);
-                        }catch(err) {
+                        } catch (err) {
                             return message.reply(`${roles[i]} doesn't exists!`).catch(err => {});
                         }
                         try {
-                            if(!message.member.roles.cache.find(r => r.id.toString() === role.id.toString())) {
+                            if (!message.member.roles.cache.find(r => r.id.toString() === role.id.toString())) {
                                 await message.member.roles.add(role).catch(err => {});
                                 await message.member.roles.remove(role).catch(err => {});
-                            }else {
+                            } else {
                                 await message.member.roles.remove(role).catch(err => {});
                                 await message.member.roles.add(role).catch(err => {});
                             }
-                        }catch(err) {
+                        } catch (err) {
                             return message.reply(`I don't have the permission to add this role: **${role.name}**`).catch(err => {});
                         }
                     }
-                    for(let i in roles) {
+                    for (let i in roles) {
                         database.query(`INSERT INTO ${message.guild.id}_guild_warnroles (${config.settings.warnroles.colname}) VALUES (?)`, [roles[i]]).catch(err => {
                             return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
                         });
