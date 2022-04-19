@@ -97,7 +97,7 @@ bot.once('ready', async () => {
 
 setInterval(() => {
 	setActivity();
-}, 43200000); // 12h
+}, 3600000); // 1h
 
 	function setActivity() {
   getLinesOfCode((cb) => {

@@ -8,8 +8,8 @@
 <div align="center">
 
 [![Status.](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues.](https://img.shields.io/github/issues/Mittelblut9/Chilled-Sad-Discord-Bot.svg)](https://github.com/Mittelblut9/Chilled-Sad-Discord-Bot/issues)
-[![GitHub Pull Requests.](https://img.shields.io/github/issues-pr/Mittelblut9/Chilled-Sad-Discord-Bot.svg)](https://github.com/Mittelblut9/Chilled-Sad-Discord-Bot/pulls)
+[![GitHub Issues.](https://img.shields.io/github/issues/Mittelbots/Mittelbot.svg)](https://github.com/Mittelbots/Mittelbot/issues)
+[![GitHub Pull Requests.](https://img.shields.io/github/issues-pr/Mittelbots/Mittelbot.svg)](https://github.com/Mittelbots/Mittelbot/pulls)
 
 </div>
 
