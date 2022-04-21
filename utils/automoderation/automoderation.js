@@ -1,5 +1,3 @@
-function autoModeration(message) {
+module.exports.antiSpam = (message) => {
 
 }
-
-module.exports = {autoModeration}

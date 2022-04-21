@@ -1,60 +1,15 @@
-var fs = require('fs');
-const {
-    exec
-} = require('child_process')
-
+const sloc = require('node-sloc')
 async function getLinesOfCode(cb) {
-
-    async function readOutput(stdout) {
-        var index = stdout.search('Source');
-        var lines = '';
-
-        if(index === -1) return;
-
-        while (isNaN(stdout[index]) || stdout[index] == ' ') {
-            index++;
-            if (!isNaN(stdout[index]) && stdout[index] !== ' ') {
-                return readLines(index);
-            }
-        }
-
-        function readLines(index) {
-            while (!isNaN(stdout[index]) && stdout[index] !== ' ') {
-                lines += stdout[index];
-                index++;
-            }
-            lines = lines.replace("\n", '');
-
-            return lines;
-        }
-    }
-
-    function readCode() {
-        fs.readdir('./', "utf8", function (err, entity) {
-
-            if(err) console.log(err)
-
-            const folder = ['_logs', '_.github', 'node_modules', '.bashrc', '.gitattributes', '.gitignore', 'LICENSE', 'package-lock.json', 'package.json', 'README.md', '.git', '.github'];
-
-            var codeLines = 0;
-
-            for (let i in entity) {
-                if (folder.includes(entity[i])) continue;
-
-                exec(`sloc ./${entity[i]}`, async (err, stdout, stderr) => {
-                    var output = await readOutput(stdout)
-                    if(output === undefined || output === null) return;
-
-                    codeLines = Number(codeLines) + Number(output)
-                });
-            }
-            setTimeout(() => {
-                return cb(codeLines)
-            }, 10000);
-            
-        });
-    }
-    readCode();
+    const options = {
+        path: './', // Required. The path to walk or file to read.
+        extensions: ['js', 'json'], // Additional file extensions to look for. Required if ignoreDefault is set to true.
+        ignorePaths: ['_logs', '.github', 'node_modules', '.bashrc', '.gitattributes', '.gitignore', 'LICENSE', 'package-lock.json', 'package.json', 'README.md', '.git', '.github'], // A list of directories to ignore. Supports glob patterns.
+        ignoreDefault: false // Whether to ignore the default file extensions or not
+      }
+    
+      return sloc(options).then((res) => {
+        return cb(res.sloc);
+      })
 }
 module.exports = {
     getLinesOfCode
