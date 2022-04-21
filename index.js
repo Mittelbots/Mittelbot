@@ -72,14 +72,13 @@ bot.on('guildMemberRemove', async member => {
 });
 
 bot.on("messageCreate", async message => {
-  spamFilter.init(message)
   return await messageCreate(message, bot);
 });
 
 process.on('unhandledRejection', err => {
   errorhandler(err, null, null, log, config, true)
 
-  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null);
+  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null, log, config, true);
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]
@@ -91,7 +90,7 @@ process.on('uncaughtException', err => {
   errorhandler('----BOT CRASHED-----', null, null, log, config, true);
   errorhandler(err, null, null, log, config, true)
 
-  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null);
+  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null, log, config, true);
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]
