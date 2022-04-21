@@ -33,6 +33,7 @@ async function banUser(member, message, reason, bot, config, log, dbtime, time, 
     let pass = false;
 
     await member.ban({
+            days: 7,
             reason: reason
         })
         .then(() => pass = true)
