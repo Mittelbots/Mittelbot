@@ -11,8 +11,8 @@ async function checkForScam(message, bot, config, log) {
 
     const advancedScamList = await database.query('SELECT link FROM advancedScamList');
 
-    axios.get('https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/domain-list.json').then(async res => {
-        let data = res.data.domains;
+    axios.get('https://discord-phishing-backend.herokuapp.com/all').then(async res => {
+        let data = res.data;
         
         for(let i in advancedScamList) {
             data.push(advancedScamList[i].link);
