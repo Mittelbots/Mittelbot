@@ -1,10 +1,9 @@
 const Discord = require("discord.js");
-const {exec} = require('child_process');
 
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
 const version = require('./package.json').version;
-if(config.debug == 'true') var activity = require('./src/assets/json/_config/activity_dev.json');
+if (config.debug == 'true') var activity = require('./src/assets/json/_config/activity_dev.json');
 else var activity = require('./src/assets/json/_config/activity_prod.json');
 
 const {
@@ -72,45 +71,54 @@ bot.on('guildMemberRemove', async member => {
   return await guildMemberRemove(member);
 });
 
-
 bot.on("messageCreate", async message => {
+  spamFilter.init(message)
   return await messageCreate(message, bot);
 });
 
 process.on('unhandledRejection', err => {
-  exec('npm run pm2restartprod');
-  errorhandler('----BOT CRASHED-----', null, null, log, config, true);
-  return errorhandler(err, null, null, log, config, true)
+  errorhandler(err, null, null, log, config, true)
+
+  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null);
+  spawn(process.argv[1], process.argv.slice(2), {
+      detached: true,
+      stdio: ['ignore', null, null]
+  }).unref()
+  process.exit()
 });
 
 process.on('uncaughtException', err => {
-  exec('npm run pm2restartprod');
   errorhandler('----BOT CRASHED-----', null, null, log, config, true);
-  return errorhandler(err, null, null, log, config, true)
+  errorhandler(err, null, null, log, config, true)
+
+  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null);
+  spawn(process.argv[1], process.argv.slice(2), {
+      detached: true,
+      stdio: ['ignore', null, null]
+  }).unref()
+  process.exit()
 })
 
 bot.once('ready', async () => {
   checkInfractions(bot, database);
   checkTemproles(bot, database)
   auditLog(bot);
-	setActivity();
+  setActivity();
 
-setInterval(() => {
-	setActivity();
-}, 3600000); // 1h
+  setInterval(() => {
+    setActivity();
+  }, 3600000); // 1h
 
-	function setActivity() {
-  getLinesOfCode((cb) => {
-    setTimeout(() => {
+  function setActivity() {
+    getLinesOfCode((cb) => {
       var codeLines = ` | Lines of Code: ${cb}` || '';
       bot.user.setActivity({
-        name: activity.name + ' v' +  version + codeLines,
+        name: activity.name + ' v' + version + codeLines,
         type: activity.type,
       });
       log.info('------------BOT ACTIVITY SUCCESSFULLY STARTED------------', new Date())
-    }, 10000);
-  });
-}
+    });
+  }
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());

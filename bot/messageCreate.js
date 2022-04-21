@@ -18,8 +18,6 @@ async function messageCreate(message, bot) {
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
-    // blacklist(1, message);
-    // autoresponse(message);
 
     await checkForScam(message, bot, config, log);
 
