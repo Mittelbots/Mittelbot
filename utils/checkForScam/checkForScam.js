@@ -2,14 +2,21 @@ const axios = require('axios');
 const { getModTime } = require('../functions/getModTime');
 const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
+const { errohandler } = require('../functions/errorhandler/errorhandler');
 const database = require('../../src/db/db');
 
 
 async function checkForScam(message, bot, config, log) {
 
-    if(await isMod(await message.guild.members.fetch(message.author), message)) return;
+    //if(await isMod(await message.guild.members.fetch(message.author), message)) return;
 
-    const advancedScamList = await database.query('SELECT link FROM advancedScamList');
+    const advancedScamList = await database.query('SELECT link, whitelist_link FROM advancedScamList')
+    .catch(err => {
+        errohandler(err, 'Error while fetching Community Scam List database', message.channel, log, config, true)
+        return message.delete().catch(err => {return;});
+    });
+
+    const whitelist_links = advancedScamList.map(link => link.whitelist_link).filter(Boolean)
 
     axios.get('https://discord-phishing-backend.herokuapp.com/all').then(async res => {
         let data = res.data;
@@ -18,8 +25,10 @@ async function checkForScam(message, bot, config, log) {
             data.push(advancedScamList[i].link);
         }
 
-        if(message.content.search('discord.gg') !== -1 && message.content.indexOf('discord.gg') !== -1){
-            return;
+        for(let i in whitelist_links) {
+            if(message.content.search(whitelist_links[i]) !== -1 && message.content.indexOf(whitelist_links[i]) !== -1){
+                return;
+            }
         }
 
         for(let i in data) {
@@ -32,7 +41,8 @@ async function checkForScam(message, bot, config, log) {
         }
     })
     .catch(err => {
-        console.log(err);
+        errohandler(err, 'Error while fetching Scam List', message.channel, log, config, true)
+        return message.delete().catch(err => {return;});
     })
 }
 

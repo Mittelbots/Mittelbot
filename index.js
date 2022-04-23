@@ -42,6 +42,9 @@ const database = require("./src/db/db");
 const {
   getLinesOfCode
 } = require("./utils/functions/getLinesOfCode/getLinesOfCode");
+const {
+  spawn
+} = require('child_process');
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
@@ -78,7 +81,7 @@ bot.on("messageCreate", async message => {
 process.on('unhandledRejection', err => {
   errorhandler(err, null, null, log, config, true)
 
-  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null, log, config, true);
+  errorhandler(`---- BOT RESTARTED DUE ERROR..., ${new Date()}`, null, null, log, config, true);
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]
@@ -90,7 +93,7 @@ process.on('uncaughtException', err => {
   errorhandler('----BOT CRASHED-----', null, null, log, config, true);
   errorhandler(err, null, null, log, config, true)
 
-  errorhandler(`---- BOT RESTARTED..., ${new Date()}`, null, null, log, config, true);
+  errorhandler(`---- BOT RESTARTED DUE ERROR..., ${new Date()}`, null, null, log, config, true);
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]
