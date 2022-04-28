@@ -24,7 +24,7 @@
   "dependencies": {
     "@discordjs/builders": "^0.13.0",
     "@discordjs/rest": "^0.4.1",
-    "axios": "^0.27.1",
+    "axios": "^0.27.2",
     "canvacord": "^5.2.3",
     "discord-api-types": "^0.32.0",
     "discord-bettermarkdown": "^1.1.0",
