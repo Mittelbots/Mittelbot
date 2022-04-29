@@ -57,25 +57,27 @@ async function guildMemberAdd(member, bot) {
         if (config.debug == 'true') console.log(err)
         return log.fatal(err);
     })
-
-    database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
-        if(res.length > 0) {
-            for (i in res) {
-                let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
-                //setTimeout(function () {
-                try {
-                    member.roles.add(role).catch(err => {})
-                } catch (err) {
-                    //NO PERMISSONS
-                    return  
+    
+    if(!member.user.bot) {
+        database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
+            if(res.length > 0) {
+                for (i in res) {
+                    let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
+                    //setTimeout(function () {
+                    try {
+                        member.roles.add(role).catch(err => {})
+                    } catch (err) {
+                        //NO PERMISSONS
+                        return  
+                    }
+                    // }, 10000);
                 }
-                // }, 10000);
             }
-        }
-    }).catch(err => {
-        if (config.debug == 'true') console.log(err)
-        return log.fatal(err);
-    });
+        }).catch(err => {
+            if (config.debug == 'true') console.log(err)
+            return log.fatal(err);
+        });
+    }
 }
 
 module.exports = {
