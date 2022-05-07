@@ -2,5 +2,6 @@
     "host": "",
     "user": "",
     "password": "",
-    "database": ""
+    "database": "",
+    "backup_repo": ""
 }
