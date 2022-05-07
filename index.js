@@ -45,6 +45,7 @@ const {
 const {
   spawn
 } = require('child_process');
+const { db_backup } = require("./src/db/db_backup");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
@@ -106,6 +107,13 @@ bot.once('ready', async () => {
   checkTemproles(bot, database)
   auditLog(bot);
   setActivity();
+  
+  if(config.debug) {
+    db_backup();
+    setTimeout(() => {
+        db_backup();
+    }, 86400000); // 24h
+}
 
   setInterval(() => {
     setActivity();
