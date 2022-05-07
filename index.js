@@ -108,12 +108,12 @@ bot.once('ready', async () => {
   auditLog(bot);
   setActivity();
   
-  if(config.debug) {
+  if(config.debug == 'false') {
     db_backup();
     setTimeout(() => {
         db_backup();
     }, 86400000); // 24h
-}
+  }
 
   setInterval(() => {
     setActivity();
