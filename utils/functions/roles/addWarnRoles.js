@@ -30,6 +30,8 @@ async function addWarnRoles(message, member, inf_id, config, log) {
                 message.channel.send(`\`This User already have all warn roles!\``);
                 return true;
             }
+        }else {
+            return true;
         }
     }).catch(err => {
         errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);

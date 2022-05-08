@@ -8,6 +8,7 @@ const database = require('../../../src/db/db');
 
 
 async function unbanUser(Member, config, message, log, reason, bot) {
+
     let banList = await message.guild.bans.fetch();
     if(banList.get(Member) !== undefined) {
 

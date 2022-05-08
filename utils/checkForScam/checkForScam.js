@@ -2,17 +2,17 @@ const axios = require('axios');
 const { getModTime } = require('../functions/getModTime');
 const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
-const { errohandler } = require('../functions/errorhandler/errorhandler');
+const { errorhandler } = require('../functions/errorhandler/errorhandler');
 const database = require('../../src/db/db');
 
 
 async function checkForScam(message, bot, config, log) {
 
-    //if(await isMod(await message.guild.members.fetch(message.author), message)) return;
+    if(await isMod(await message.guild.members.fetch(message.author), message)) return;
 
     const advancedScamList = await database.query('SELECT link, whitelist_link FROM advancedScamList')
     .catch(err => {
-        errohandler(err, 'Error while fetching Community Scam List database', message.channel, log, config, true)
+        errorhandler(err, 'Error while fetching Community Scam List database', message.channel, log, config, true)
         return message.delete().catch(err => {return;});
     });
 
@@ -25,23 +25,28 @@ async function checkForScam(message, bot, config, log) {
             data.push(advancedScamList[i].link);
         }
 
+
+		let messageArray = message.content.split(" ");
+
         for(let i in whitelist_links) {
-            if(message.content.search(whitelist_links[i]) !== -1 && message.content.indexOf(whitelist_links[i]) !== -1){
-                return;
-            }
+        	const isWhitelist = messageArray.some((words) => words.includes(whitelist_links[i]));
+			if(isWhitelist) return;
         }
 
+		
         for(let i in data) {
-            if(message.content.search(data[i]) !== -1 && message.content.indexOf(data[i]) !== -1) {
+				const isScam = messageArray.some((words) => words.includes(data[i]));
+            if(isScam) {
                 await banUser(await message.guild.members.fetch(message.author), message, `User tried to sent a Scam Link : ${data[i]}`, bot, config, log, getModTime('99999d'), 'Permanent', true)
                 await message.delete().catch(err => {return;});
                 i = 0;
                 return;
             }
         }
+		
     })
     .catch(err => {
-        errohandler(err, 'Error while fetching Scam List', message.channel, log, config, true)
+        errorhandler(err, 'Error while fetching Scam List', message.channel, log, config, true)
         return message.delete().catch(err => {return;});
     })
 }

@@ -23,7 +23,7 @@ async function generateModEmote(config, bot, type) {
             emote = config.icons.unban;
             break;
     }
-    return emote;
+    return getEmote(bot, emote);
 }
 
 module.exports = {generateModEmote};

@@ -27,15 +27,12 @@ module.exports.run = async (bot, message, args) => {
 
     let reason = args.slice(1).join(" ");
     if(!reason) {
-         
         return message.channel.send('Please add a reason!').catch(err => {});
     }
-
 
     if(await isBanned(Member, message) == false) {
         return message.reply('This user isn`t banned!').catch(err => {});
     }
-
     return await unbanUser(Member, config, message, log, reason, bot);
 }
 

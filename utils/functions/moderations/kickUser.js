@@ -20,7 +20,7 @@ async function kickUser(bot, member, message, config, reason) {
     if(pass) {
         try {
             insertDataToClosedInfraction(member.id, message.author.id, 0, 0, 0, 1, null, reason, await createInfractionId())
-            setNewModLogMessage(bot, config.defaultModTypes.kick, message.author.id, member.id, reason, null, message.guild.id);
+            setNewModLogMessage(bot, config.defaultModTypes.kick, message.author.id, member.user, reason, null, message.guild.id);
             publicModResponses(message, config.defaultModTypes.kick, message.author, member.id, reason, null, bot);
             privateModResponse(member, config.defaultModTypes.kick, reason, null, bot, message.guild.name);
             if(config.debug == 'true') console.info('Kick Command passed!')
