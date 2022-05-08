@@ -30,7 +30,7 @@ async function unmuteUser(message, member, bot, config, reason, log) {
 
     if(pass) {
         try {
-            await setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, member.id, reason, null, message.guild.id);
+            await setNewModLogMessage(bot, config.defaultModTypes.unmute, message.author.id, member.user, reason, null, message.guild.id);
             await publicModResponses(message, config.defaultModTypes.unmute, message.author, member.id, reason, null, bot);
             await privateModResponse(member, config.defaultModTypes.unmute, reason, null, bot, message.guild.name);
 

@@ -49,7 +49,7 @@ module.exports.run = async (bot, message, args) => {
     });
 
     if(closed[0].length <= 0 && open[0].length <= 0) {
-        return message.reply(`This user dont have any infractions!`).catch(err => {});
+        return message.reply(`<@${memberId}> dont have any infractions!`).catch(err => {});
     }
     if(config.debug == 'true') console.info('Infraction Command passed!')
    

@@ -28,7 +28,7 @@ async function muteUser(Member, message, bot, config, reason, time, dbtime) {
         if (Member.roles.cache.has(MutedRole)) {
             try {
                 await insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime), reason, await createInfractionId(), message.guild.id, JSON.stringify(user_roles))
-                await setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.id, reason, time, message.guild.id);
+                await setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.user, reason, time, message.guild.id);
                 await publicModResponses(message, config.defaultModTypes.mute, message.author, Member.id, reason, time, bot);
                 await privateModResponse(Member, config.defaultModTypes.mute, reason, time, bot, message.guild.name);
                 return true;
