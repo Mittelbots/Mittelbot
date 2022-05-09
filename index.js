@@ -46,6 +46,8 @@ const {
   spawn
 } = require('child_process');
 const { db_backup } = require("./src/db/db_backup");
+const { createSlashCommands } = require("./utils/functions/createSlashCommands/createSlashCommands");
+const { handleSlashCommands } = require("./src/slash_commands");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
@@ -65,6 +67,7 @@ bot.on('guildCreate', async (guild) => {
 bot.commands = new Discord.Collection();
 
 deployCommands(bot);
+createSlashCommands();
 
 bot.on('guildMemberAdd', async member => {
   return await guildMemberAdd(member, bot)
@@ -114,6 +117,16 @@ bot.once('ready', async () => {
         db_backup();
     }, 86400000); // 24h
   }
+
+  
+  bot.on('interactionCreate', async (main_interaction) => {
+    if(main_interaction.isCommand()) {
+        handleSlashCommands({
+            main_interaction: main_interaction,
+            bot: bot
+        })
+      }
+  });
 
   setInterval(() => {
     setActivity();

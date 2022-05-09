@@ -5,25 +5,25 @@
         "levelsettings": {
             "name": "levelsettings",
             "description": "View, change, add or delete your ranksettings",
-            "usage": "rank <Mention User>",
+            "usage": "!levelsettings",
             "icon": "🏆"
         },
         "mods": {
             "name": "mods",
             "description": "Manage Moderationsettings",
-            "usage": "mods <setting> <value>",
+            "usage": "!mods <setting> <value>",
             "icon": "🛡️"
         },
         "scam": {
             "name": "scam",
             "description": "Add new Scam Links to the community Database",
-            "usage": "scam add/remove/view <link>",
+            "usage": "!scam add/remove/view <link>",
             "icon": "💀"
         },
         "settings": {
             "name": "settings",
             "description": "View and change all Settings releated to the server",
-            "usage": "settings <setting> <value>",
+            "usage": "!settings <setting> <value>",
             "icon": "⚙️"
         }
     },
@@ -33,62 +33,62 @@
         "ban": {
             "name":"ban",
             "description": "Ban an User",
-            "usage": "ban <Mention User> <Reason>",
+            "usage": "!ban <Mention User> <Reason>",
             "icon": "🔒"
         },
         "infraction": {
             "name":"infraction",
             "description": "View specific infraction from user",
-            "usage": "infraction <infraction id>",
+            "usage": "!infraction <infraction id>",
             "icon": "📕"
         },
         "infractions": {
             "name":"infractions",
             "description": "View infractions from user",
-            "usage": "infraction <mention/ID>",
+            "usage": "!infraction <mention/ID>",
             "icon": "📚",
             "aliases": ["inf"]
         },
         "kick": {
             "name": "kick",
             "description": "Kick an user",
-            "usage": "kick <mention/ID> <reason>",
+            "usage": "!kick <mention/ID> <reason>",
             "icon": "🚪"
         },
         "mute": {
             "name": "mute",
             "description": "Mute a user",
-            "usage": "mute <mention/ID> <Reason>",
+            "usage": "!mute <mention/ID> <Reason>",
             "icon": "🔇"
         },
         "purge": {
             "name":"purge",
             "description": "Purge an amount of messages",
-            "usage": "purge <number>",
+            "usage": "!purge <number>",
             "icon": "❌"
         },
         "unban": {
             "name":"unban",
             "description": "Unban an user",
-            "usage": "unban <mention/ID> <Reason>",
+            "usage": "!unban <mention/ID> <Reason>",
             "icon": "🔓"
         },
         "unmute": {
             "name":"unmute",
             "description": "Unmute an user",
-            "usage": "unmute <mention/ID> <Reason>",
+            "usage": "!unmute <mention/ID> <Reason>",
             "icon": "🔈"
         },
         "warn": {
             "name":"warn",
             "description": "Warn an user",
-            "usage": "warn <mention/ID> <Reason>",
+            "usage": "!warn <mention/ID> <Reason>",
             "icon": "⚠️"
         },
         "isbanned": {
             "name":"isbanned",
             "description": "Check if a user banned or not",
-            "usage": "isbanned <mention/ID>",
+            "usage": "!isbanned <mention/ID>",
             "icon": "⚠️"
         }
     },
@@ -98,19 +98,19 @@
         "ping": {
             "name":"ping",
             "description": "Ping the bot",
-            "usage": "ping",
+            "usage": "/ping",
             "icon": "🌐"
         },
         "info": {
             "name": "info",
             "description": "Get infos about the server or one user.",
-            "usage": "info <mention/ID>",
+            "usage": "/info <mention/ID> <anonymus>",
             "icon": "📶"
         },
         "help": {
             "name": "help",
-            "description": "View Rank of user",
-            "usage": "rank <Mention User>",
+            "description": "View all commands of the Bot",
+            "usage": "/help",
             "icon": "❓"
         }
     },
@@ -120,7 +120,7 @@
         "rank": {
             "name": "rank",
             "description": "View Rank of user",
-            "usage": "rank <Mention User>",
+            "usage": "/rank <Mention User> <anonymus>",
             "icon": "🏆"
         }
     }
