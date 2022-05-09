@@ -11,7 +11,7 @@ module.exports.db_backup = () => {
     }
   });
   setTimeout(() => {
-    exec(` cd ${dbconfig.backup_repo} && git add . && git commit -m "${dbconfig.backup_repo}" && git push`, (error, stdout, stderr) => {
+    exec(` cd ${dbconfig.backup_repo} && git pull && git add . && git commit -m "${dbconfig.backup_repo}" && git push`, (error, stdout, stderr) => {
       console.log(stdout);
       console.log(stderr);
       if (error !== null) {
