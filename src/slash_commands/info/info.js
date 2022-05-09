@@ -1,42 +1,34 @@
 const {
+    SlashCommandBuilder
+} = require('@discordjs/builders');
+const {
     MessageEmbed
 } = require('discord.js');
-const config = require('../../../src/assets/json/_config/config.json');
-const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 const database = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
 
+const config = require('../../../src/assets/json/_config/config.json');
 
-module.exports.run = async (bot, message, args) => {
-    if(config.deleteCommandsAfterUsage  == 'true') {
-        message.delete().catch(err => {});
-    }
-    let server = message.guild;
+module.exports.run = async ({main_interaction, bot}) => {
+    let server = main_interaction.guild;
 
-    var user;
-    let tag = false;
-    if(args.length !== 0) {
-        args = args.join(" ").replace('<', '').replace('@', '').replace('>', '').replace('!', '')
-        try {
-            user = message.guild.members.cache.find(member => member.id.includes(args)).user;
-        }catch(err) {
-            return message.reply('Member not found!').catch(err => {});
-        }
-        tag = true;
-    }else {
-        user = message.author
-    }
+    const userOption = main_interaction.options.getUser('user');
+    const isAnonym = main_interaction.options.getBoolean('anonymous');
+
+    const tag = (userOption) ? true : false;
+
+    var user = userOption || main_interaction.user;
 
     var userRole = '';
 
-    message.guild.roles.cache.forEach(role => {
-        let searchedRole = message.guild.roles.cache.get(role.id).members.map(m => m.user.id).filter(m => m === user.id)
+    server.roles.cache.forEach(role => {
+        let searchedRole = server.roles.cache.get(role.id).members.map(m => m.user.id).filter(m => m === user.id)
 
-        if (userRole.includes(searchedRole) || message.guild.roles.cache.get(role.id).name === '@everyone' || message.guild.roles.cache.get(role.id).name === bot.user.username) return;
+        if (userRole.includes(searchedRole) || server.roles.cache.get(role.id).name === '@everyone' || server.roles.cache.get(role.id).name === bot.user.username) return;
 
         if (searchedRole.filter(e => e === user.id)) {
-            userRole += ` <@&${message.guild.roles.cache.get(role.id).id}> `;
+            userRole += ` <@&${server.roles.cache.get(role.id).id}> `;
         }
     });
 
@@ -65,11 +57,11 @@ module.exports.run = async (bot, message, args) => {
         .setTimestamp();
 
     if(tag) {
-        var joined_at = await database.query(`SELECT user_joined FROM ${message.guild.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
+        var joined_at = await database.query(`SELECT user_joined FROM ${server.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
             if(res.length === 0) return false;
             return await res[0].user_joined
         }).catch(err => {
-            errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+            errorhandler(err, config.errormessages.databasequeryerror, main_interaction.channel, log, config, true);
             return false
         })
     }
@@ -88,10 +80,11 @@ module.exports.run = async (bot, message, args) => {
 
         if(config.debug == 'true') console.info('info command passed!')
     if(!tag) {
-        return message.channel.send({
-            embeds: [serverInfoEmbed]
+        return main_interaction.reply({
+            embeds: [serverInfoEmbed],
+            ephemeral: true
         }).catch(err => {
-            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, main_interaction.channel, log, config);
         });
     }
 
@@ -103,11 +96,24 @@ module.exports.run = async (bot, message, args) => {
     });
 
     memberInfoEmbed.setThumbnail(await pfp);
-    return message.channel.send({
-        embeds: [memberInfoEmbed]
+    return main_interaction.reply({
+        embeds: [memberInfoEmbed],
+        ephemeral: (isAnonym) ? true : false
     }).catch(err => {
-        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, main_interaction.channel, log, config);
     });
 }
 
-module.exports.help = cmd_help.utility.info
+module.exports.data = new SlashCommandBuilder()
+	.setName('info')
+	.setDescription('Get information about yourself or another user')
+    .addUserOption(option => 
+        option.setName('user')
+        .setDescription('The user to get information about')
+        .setRequired(false)
+        )
+    .addBooleanOption(option =>
+        option.setName('anonymous')
+        .setDescription('Set this to true if you want to hide the response from the user')
+        .setRequired(false)
+        )

@@ -3,7 +3,7 @@ const exec = require('child_process').exec;
 
 
 module.exports.db_backup = () => {
-  exec(` mysqldump -u ${dbconfig.user} -p${dbconfig.password} ${dbconfig.database} > ${dbconfig.backup_repo}/${new Date().getDay()+'_'+new Date().getMonth()+'_'+new Date().getFullYear()}.backup.sql`, (error, stdout, stderr) => {
+  exec(` mysqldump -u ${dbconfig.user} -p'${dbconfig.password}' ${dbconfig.database} --no-tablespaces > ${dbconfig.backup_repo}/${new Date().getDay()+'_'+new Date().getMonth()+'_'+new Date().getFullYear()}.backup.sql`, (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (error !== null) {
