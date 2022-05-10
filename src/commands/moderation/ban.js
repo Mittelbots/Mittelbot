@@ -42,6 +42,10 @@ module.exports.run = async (bot, message, args) => {
     var Member;
     let isOnTheServer = true
 
+    if(!args[0]) return message.reply({
+        content: `You have to mention an user!`
+    });
+
     args[0] = removeMention(args[0]);
 
     Member = await message.guild.members.fetch(args[0])
