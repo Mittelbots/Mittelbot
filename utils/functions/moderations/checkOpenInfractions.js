@@ -28,8 +28,8 @@ async function isMuted(config, member, message, log, bot) {
     })
 }
 
-async function isOnBanList(member, message) {
-    return message.guild.bans.fetch()
+async function isOnBanList(member, guild) {
+    return guild.bans.fetch()
         .then(async bans => {
             let list = bans.filter(user => user.user.id === member);
             let reason = list.map(list => list.reason)[0];
@@ -42,12 +42,12 @@ async function isOnBanList(member, message) {
         })
 }
 
-async function isBanned(member, message) {
-    let banList = await message.guild.bans.fetch();
+async function isBanned(member, guild) {
+    let banList = await guild.bans.fetch();
 
-    return await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND ban = ? AND guild_id = ?`, [member.id || member, 1, message.guild.id]).then(async result => {
+    return await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND ban = ? AND guild_id = ?`, [member.id, 1, guild.id]).then(async result => {
         if (result.length > 0) {
-            const isUserOnBanList = banList.get(member.id || member);
+            const isUserOnBanList = banList.get(member.id);
 
             for (let i in result) {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
@@ -55,14 +55,29 @@ async function isBanned(member, message) {
                 result[i].till_date = result[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
 
                 if ((currentdate - result[i].till_date) <= 0 || isUserOnBanList !== undefined) {
-                    return true;
+                    return {
+                        error: false,
+                        isBanned: true
+                    }
                 }else {
-                    return false;
+                    return {
+                        error: false,
+                        isBanned: false
+                    }
                 }
+            }
+        }else {
+            return {
+                error: false,
+                isBanned: false
             }
         }
     }).catch(err => {
-        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+        errorhandler(err, null, null, log, config, true);
+        return {
+            error: true,
+            message: config.errormessages.databasequeryerror
+        }
     });
 
 

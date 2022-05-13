@@ -4,7 +4,7 @@ const config = require('../../src/assets/json/_config/config.json');
 const { errorhandler } = require("../functions/errorhandler/errorhandler");
 const { log } = require("../../logs");
 
-async function publicModResponses(message, type, moderator, member, reason, time, bot) {
+async function publicModResponses(type, moderator, member, reason, time, bot) {
     var publicModMessage = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle(`${await generateModEmote(config, bot, type) }**Member ${type}!**`)
@@ -17,14 +17,15 @@ async function publicModResponses(message, type, moderator, member, reason, time
         publicModMessage.addField(`Time`, `**${time}** `)
     }
 
-    return message.channel.send({embeds: [publicModMessage]}).catch(err => {
-        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config)
-    });
+    return {
+        error: false,
+        message: publicModMessage
+    }
 }
 
-async function publicInfractionResponse(message, Member, closed, open, isOne) {
+async function publicInfractionResponse({member, closed, open, main_interaction, isOne}) {
     if(isOne) {
-        let infraction = Member;
+        let infraction = member;
 
         let type;
         switch(true) {
@@ -47,11 +48,16 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
             default: 
                 break;
         }
-        let user = await message.guild.members.fetch(infraction.user_id);
+        //let user = await guild.members.fetch(infraction.user_id);
         var publicOneInfractionMessage = new MessageEmbed()
-        .setAuthor(`${user.user.username}${user.user.discriminator}`)
+        //.setAuthor(`${user.user.username}${user.user.discriminator}`)
         .addField(`${infraction.infraction_id} - ${type} **${infraction.till_date}**`, `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`);
-        return message.reply({embeds:[publicOneInfractionMessage]}).catch(err => {});
+        
+        return {
+            error: false,
+            message: publicOneInfractionMessage
+        }
+
     }else {
         const backId = 'back'
         const forwardId = 'forward'
@@ -85,7 +91,8 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         }
 
         const canFitOnOnePage = data.length <= 10;
-        const embedMessage = await message.channel.send({
+        
+        const embedMessage = await main_interaction.channel.send({
             embeds: [await generateEmbed(0)],
             components: canFitOnOnePage ? [] : [new MessageActionRow({components: [forwardButton]})]
         }).catch(err => {});
@@ -93,7 +100,7 @@ async function publicInfractionResponse(message, Member, closed, open, isOne) {
         if(canFitOnOnePage) return;
 
         const collector = embedMessage.createMessageComponentCollector({
-            filter: ({user}) => user.id === message.author.id
+            filter: ({user}) => user.id === main_interaction.user.id
         });
 
         let currentIndex = 0;

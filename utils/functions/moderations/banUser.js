@@ -19,43 +19,42 @@ const {
 const {
     insertDataToOpenInfraction
 } = require("../insertDataToDatabase");
-const database = require('../../../src/db/db');
+const config = require('../../../src/assets/json/_config/config.json');
 
-
-
-async function banUser(member, message, reason, bot, config, log, dbtime, time, isAuto) {
-
+async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
     if (isAuto) mod = bot.user;
-    else mod = message.author;
 
     let infid = await createInfractionId();
 
     let pass = false;
 
-    if (member.id) {
-        await member.ban({
+    if (user) {
+        await guild.members.ban(user, {
                 days: 7,
                 reason: reason
             })
             .then(() => pass = true)
-            .catch(async err => {
-                return errorhandler(err, config.errormessages.nopermissions.ban, message.channel, log, config);
-            });
-    } else {
-        await message.guild.members.ban(member)
-            .then(() => pass = true)
-            .catch(async err => {
-                return errorhandler(err, config.errormessages.nopermissions.ban, message.channel, log, config);
+            .catch(err => {
+                errorhandler(err);
+                return {
+                    error: true,
+                    message: config.errormessages.nopermissions.ban
+                }
             });
     }
-
     if (pass) {
-        insertDataToOpenInfraction(member.id || member, mod.id, 0, 1, getFutureDate(dbtime), reason, infid, message.guild.id, null)
-        setNewModLogMessage(bot, config.defaultModTypes.ban, mod.id, member.user || member, reason, time, message.guild.id);
-        publicModResponses(message, config.defaultModTypes.ban, mod, member.id || member, reason, time, bot);
-        privateModResponse(member, config.defaultModTypes.ban, reason, time, bot, message.guild.name)
+       
+        insertDataToOpenInfraction(user.id, mod.id, 0, 1, getFutureDate(dbtime), reason, infid, guild.id, null)
+        setNewModLogMessage(bot, config.defaultModTypes.ban, mod.id, user.user || user, reason, time, guild.id);        
+        privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name)
+        const p_response = await publicModResponses(config.defaultModTypes.ban, mod, user.id || user, reason, time, bot);
 
         if (config.debug == 'true') console.info('Ban Command passed!');
+
+        return {
+            error: false,
+            message: p_response.message
+        }
     }
 
 
