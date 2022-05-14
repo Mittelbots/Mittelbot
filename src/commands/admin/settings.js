@@ -42,7 +42,7 @@ module.exports.run = async (bot, message, args) => {
         var currentsettings = database.query(`SELECT * FROM ${message.guild.id}_config LIMIT 1`).then(async res => {
             return await res[0];
         }).catch(err => {
-            errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+            errorhandler({err, fatal: true});
             return message.channel.send(`${config.errormessages.databasequeryerror}`).catch(err => {});
         });
 
@@ -123,7 +123,7 @@ module.exports.run = async (bot, message, args) => {
             return message.channel.send({
                 embeds: [settingMessage]
             }).catch(err => {
-                return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                return errorhandler({err, fatal: false});
             });
         }
 
@@ -244,7 +244,7 @@ module.exports.run = async (bot, message, args) => {
                         }
                         return true;
                     }).catch(err => {
-                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                        return errorhandler({err, fatal: true});
                     })
                     if (await checkroles && roles[0] !== '') {
                         var passedRoles = [];
@@ -282,11 +282,11 @@ module.exports.run = async (bot, message, args) => {
                                 message.reply(`Joinroles successfully cleared.`).catch(err => {});
                             })
                             .catch(err => {
-                                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                                return errorhandler({err, fatal: true});
                             });
                         }else {
                             return await database.query(`INSERT INTO ${message.guild.id}_guild_joinroles (role_id) VALUES (?)`, [role]).catch(err => {
-                                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                                return errorhandler({err, fatal: true});
                             })
                         }
                     }
@@ -310,7 +310,7 @@ module.exports.run = async (bot, message, args) => {
                             embeds: [embed]
                         }).then(msg => msg.delete()).catch(err => {
                             pass = false;
-                            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                            return errorhandler({err, fatal: true});
                         });
 
                         if (!pass) return;
@@ -339,7 +339,7 @@ module.exports.run = async (bot, message, args) => {
                             return message.reply(`${channel} successfully saved!`).catch(err => {});
                         }
                     }).catch(err => {
-                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                        return errorhandler({err, fatal: true});
                     });
                 }
                 //? IF SETTING IS WARNROLES
@@ -351,7 +351,7 @@ module.exports.run = async (bot, message, args) => {
                                 return message.reply(`Removed all warnroles.`).catch(err => {});
                             })
                             .catch(err => {
-                                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                                return errorhandler({err, fatal: true});
                             });
                     }
 
@@ -359,7 +359,7 @@ module.exports.run = async (bot, message, args) => {
                     roles = roles.split(' ');
 
                     database.query(`DELETE FROM ${message.guild.id}_guild_warnroles`).catch(err => {
-                        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                        return errorhandler({err, fatal: true});
                     });
 
                     for (let i in roles) {
@@ -382,7 +382,7 @@ module.exports.run = async (bot, message, args) => {
                     }
                     for (let i in roles) {
                         database.query(`INSERT INTO ${message.guild.id}_guild_warnroles (${config.settings.warnroles.colname}) VALUES (?)`, [roles[i]]).catch(err => {
-                            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                            return errorhandler({err, fatal: true});
                         });
                     }
                     return message.reply(`Warn roles successfully saved!`).catch(err => {});
@@ -393,7 +393,7 @@ module.exports.run = async (bot, message, args) => {
 
         function saveSetting() {
             database.query(`UPDATE ${message.guild.id}_config SET ${setting} = ?`, [value]).catch(err => {
-                return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+                return errorhandler({err, fatal: true});
             });
         }
     }

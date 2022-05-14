@@ -88,7 +88,7 @@ async function isBanned(member, guild) {
             }
         }
     }).catch(err => {
-        errorhandler(err, null, null, log, config, true);
+        errorhandler({err, fatal: true});
         return {
             error: true,
             message: config.errormessages.databasequeryerror

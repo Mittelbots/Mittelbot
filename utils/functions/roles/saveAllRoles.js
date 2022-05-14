@@ -10,16 +10,16 @@ async function saveAllRoles(roles, member, log, guild_id) {
             if(res.length === 0) {
                 await database.query(`INSERT INTO ${guild_id.id}_guild_member_info (user_id, member_roles) VALUES (?, ?)`, [member.id, JSON.stringify(roles)])
                     .catch(err => {
-                        errorhandler(err, null, null, log, config, true);
+                        return errorhandler({err, fatal: true});
                     });
             }else {
                 await database.query(`UPDATE ${guild_id.id}_guild_member_info SET member_roles = ? WHERE user_id = ?`, [JSON.stringify(roles), member.id])
                     .catch(err => {
-                        errorhandler(err, null, null, log, config, true);
+                        return errorhandler({err, fatal: true});
                     });
             }
         }).catch(err => {
-            errorhandler(err, null, null, log, config, true);
+            return errorhandler({err, fatal: true});
         })
 
 }

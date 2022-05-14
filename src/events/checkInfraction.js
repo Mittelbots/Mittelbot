@@ -73,7 +73,7 @@ function checkInfractions(bot) {
                             mutecount++;
                             continue;
                         }catch(err) {
-                            errorhandler(err, null, null, log, config, true);
+                            return errorhandler({err, fatal: true});
                         }
                     }else { //Member got banned
                         done++;

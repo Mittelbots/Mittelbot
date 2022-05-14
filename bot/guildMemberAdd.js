@@ -19,7 +19,7 @@ async function guildMemberAdd(member, bot) {
         } else {
             if (res[0].user_joined == null) {
                 await database.query(`UPDATE ${member.guild.id}_guild_member_info SET user_joined = ? WHERE user_id = ?`, [new Date(), member.user.id]).catch(err => {
-                    return errorhandler(err, config.errormessages.databasequeryerror, null, log, config, true)
+                    return errorhandler({err, fatal: true})
                 });
             }
             await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
