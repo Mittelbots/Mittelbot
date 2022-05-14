@@ -2,29 +2,28 @@ const { setNewModLogMessage } = require("../../modlog/modlog");
 const { privateModResponse } = require("../../privatResponses/privateModResponses");
 const { publicModResponses } = require("../../publicResponses/publicModResponses");
 const { createInfractionId } = require("../createInfractionId");
-const { errorhandler } = require("../errorhandler/errorhandler");
 const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
 const { addWarnRoles } = require("../roles/addWarnRoles");
+const config = require('../../../src/assets/json/_config/config.json');
 
-async function warnUser(bot, config, message, member, reason, log) {
+async function warnUser({bot, user, mod, guild, reason}) {
 
     let inf_id = await createInfractionId();
     
-    const pass = await addWarnRoles(message, member, inf_id, config, log);
-    console.log(pass);
-    if(pass) {
-        try {
-            await setNewModLogMessage(bot, config.defaultModTypes.warn, message.author.id, member.user, reason, null, message.guild.id);
-            await publicModResponses(message, config.defaultModTypes.warn, message.author, member.user.id, reason, null, bot);
-            await privateModResponse(member, config.defaultModTypes.warn, reason, null, bot, message.guild.name);
+    const pass = await addWarnRoles({user, inf_id, guild});
 
-            await insertDataToClosedInfraction(member.id, message.author.id, 0, 0, 1, 0, null, reason, inf_id);
-        
+    if(pass.error) return pass;
+
+    if(!pass.error) {
+        await setNewModLogMessage(bot, config.defaultModTypes.warn, mod.id, user, reason, null, guild.id);
+        const p_response = await publicModResponses(config.defaultModTypes.warn, mod, user.id, reason, null, bot);
+        await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
+
+        await insertDataToClosedInfraction(user.id, mod.id, 0, 0, 1, 0, null, reason, inf_id);
             
-            if(config.debug == 'true') console.info('Warn Command passed!')
-        }catch(err) {
-            return errorhandler(err, config.errormessages.general, message.channel, log, config, true)
-        }  
+        if(config.debug == 'true') console.info('Warn Command passed!');
+
+        return p_response;
     }
 }
 module.exports = {warnUser}

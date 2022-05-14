@@ -2,24 +2,29 @@ const database = require("../../../src/db/db");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getFutureDate } = require("../getFutureDate");
 const { insertDataToTemproles } = require("../insertDataToDatabase");
+const config = require('../../../src/assets/json/_config/config.json');
 
 
 
-async function addWarnRoles(message, member, inf_id, config, log) {
-    return await database.query(`SELECT role_id FROM ${message.guild.id}_guild_warnroles`).then(async res => {
+async function addWarnRoles({user, inf_id, guild}) {
+    return await database.query(`SELECT role_id FROM ${guild.id}_guild_warnroles`).then(async res => {
         let hasRoleAlready = false;
         if(res.length > 0) {   
             for(let i in res) {
-                let role = await message.guild.roles.cache.find(role => role.id === res[i].role_id).id
-                if(!member.roles.cache.has(role)) {
-                    return await member.roles.add([role])
+                let role = await guild.roles.cache.find(role => role.id === res[i].role_id).id
+                const guild_user = await guild.members.cache.get(user.id)
+                if(!guild_user.roles.cache.has(role)) {
+                    return await user.roles.add([role])
                         .then(() => {
-                            insertDataToTemproles(member.id, res[i].role_id, getFutureDate(2678400), inf_id, message.guild.id);
+                            insertDataToTemproles(user.id, res[i].role_id, getFutureDate(2678400), inf_id, guild.id);
                             return true;
                         })
                         .catch(err => {
-                            errorhandler(err, config.errormessages.nopermissions.manageRoles, message.channel, log, config);
-                            return false;
+                            errorhandler({err});
+                            return {
+                                error: true,
+                                message: config.errormessages.nopermissions.manageRoles
+                            };
                         })
                 }else {
                     hasRoleAlready = true;
@@ -27,15 +32,20 @@ async function addWarnRoles(message, member, inf_id, config, log) {
             }
             if(hasRoleAlready) {
                 //If User already have all Roles
-                message.channel.send(`\`This User already have all warn roles!\``);
-                return true;
+                return {
+                    error: false,
+                    message: 'This User already have all warn roles!'
+                }
             }
         }else {
             return true;
         }
     }).catch(err => {
-        errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
-        return false;
+        errorhandler({err, fatal: true});
+        return {
+            error: true,
+            message: config.errormessages.general
+        }
     })
 }
 
