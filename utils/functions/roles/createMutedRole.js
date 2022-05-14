@@ -1,13 +1,13 @@
-async function createMutedRole(message) {
+async function createMutedRole({guild}) {
     try {
         let MutedRole;
-        MutedRole = await message.guild.roles.create({
+        MutedRole = await guild.roles.create({
             name: 'Muted',
             color: 'BLUE',
             reason: 'Automatically created "Muted" Role.',
             permissions: []
         });
-        await message.guild.channels.cache.map(async channel => {
+        await guild.channels.cache.map(async channel => {
             await channel.permissionOverwrites.create(MutedRole, {
                 VIEW_CHANNEL: false,
                 SEND_MESSAGES: false,
@@ -18,7 +18,10 @@ async function createMutedRole(message) {
         });
         return MutedRole;
     }catch(err){
-        return message.reply(`I don't have permission to create the muted role.`)
+        return {
+            error: true,
+            message: `I don't have permission to create the muted role.`    
+        }
     }
 }
 

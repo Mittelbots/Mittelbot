@@ -1,11 +1,11 @@
 /**
  * 
- * @param {messag.member} member 
+ * @param {user} user
  */
 
-async function getAllRoles(member) {
+async function getAllRoles(user) {
     let r = [];
-    member.roles.cache.forEach(role => (role.name !== '@everyone') ? r.push(role.id) : '')
+    user.roles.cache.map(role => (role.name !== '@everyone') ? r.push(role.id) : '')
     return r;
 }
 

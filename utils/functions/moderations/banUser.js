@@ -51,10 +51,7 @@ async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
 
         if (config.debug == 'true') console.info('Ban Command passed!');
 
-        return {
-            error: false,
-            message: p_response.message
-        }
+        return p_response;
     }
 
 

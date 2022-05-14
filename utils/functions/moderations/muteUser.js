@@ -1,4 +1,4 @@
-const { log } = require("../../../logs");
+
 const { setNewModLogMessage } = require("../../modlog/modlog");
 const { privateModResponse } = require("../../privatResponses/privateModResponses");
 const { publicModResponses } = require("../../publicResponses/publicModResponses");
@@ -9,31 +9,44 @@ const { insertDataToOpenInfraction } = require("../insertDataToDatabase");
 const { getAllRoles } = require("../roles/getAllRoles");
 const { getMutedRole } = require("../roles/getMutedRole");
 const { removeAllRoles } = require("../roles/removeAllRoles");
+const config = require('../../../src/assets/json/_config/config.json');
 
-async function muteUser(Member, message, bot, config, reason, time, dbtime) {
-    var user_roles = await getAllRoles(Member);
-    var MutedRole = await getMutedRole(message, message.guild);
+async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
+    const guild_user = guild.members.cache.get(user.id);
+    
+    var user_roles = await getAllRoles(guild_user);
+    var MutedRole = await getMutedRole(guild);
 
     let pass = false;
 
-    await Member.roles.add(MutedRole)
+    await guild_user.roles.add(MutedRole)
     .then(() => pass = true)
     .catch(err => {
-        return errorhandler(err, config.errormessages.nopermissions.manageRoles, message.channel, log, config);
+        errorhandler({err});
+        return {
+            error: true,
+            message: config.errormessages.nopermissions.manageRoles
+        }
     });
 
     if(pass) {
-        if(user_roles.length !== 0) await removeAllRoles(Member);
+        if(user_roles.length !== 0) await removeAllRoles(guild_user);
 
-        if (Member.roles.cache.has(MutedRole)) {
+        if (guild_user.roles.cache.has(MutedRole)) {
             try {
-                await insertDataToOpenInfraction(Member.id, message.author.id, 1, 0, getFutureDate(dbtime), reason, await createInfractionId(), message.guild.id, JSON.stringify(user_roles))
-                await setNewModLogMessage(bot, config.defaultModTypes.mute, message.author.id, Member.user, reason, time, message.guild.id);
-                await publicModResponses(message, config.defaultModTypes.mute, message.author, Member.id, reason, time, bot);
-                await privateModResponse(Member, config.defaultModTypes.mute, reason, time, bot, message.guild.name);
-                return true;
+                await insertDataToOpenInfraction(user.id, mod.id, 1, 0, getFutureDate(dbtime), reason, await createInfractionId(), guild.id, JSON.stringify(user_roles))
+                await setNewModLogMessage(bot, config.defaultModTypes.mute, mod.id, user, reason, time, guild.id);
+                await privateModResponse(user, config.defaultModTypes.mute, reason, time, bot, guild.name);
+                const p_response = await publicModResponses(config.defaultModTypes.mute, mod, user.id, reason, time, bot);
+
+                return p_response;
+
             } catch (err) {
-                return errorhandler(err, config.errormessages.general, message.channel, log, config, true)
+                errorhandler({err, fatal: true});
+                return {
+                    error: true,
+                    message: config.errormessages.general
+                }
             }
         }
     }

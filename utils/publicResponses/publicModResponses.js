@@ -1,8 +1,6 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 const { generateModEmote } = require("../functions/generateModEmote");
 const config = require('../../src/assets/json/_config/config.json');
-const { errorhandler } = require("../functions/errorhandler/errorhandler");
-const { log } = require("../../logs");
 
 async function publicModResponses(type, moderator, member, reason, time, bot) {
     var publicModMessage = new MessageEmbed()

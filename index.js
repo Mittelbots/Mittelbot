@@ -83,9 +83,9 @@ bot.on("messageCreate", async message => {
 });
 
 process.on('unhandledRejection', err => {
-  errorhandler(err, null, null, log, config, true)
+  errorhandler({err, fatal: true})
 
-  errorhandler(`---- BOT RESTARTED DUE ERROR..., ${new Date()}`, null, null, log, config, true);
+  errorhandler({err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`, fatal: true});
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]
@@ -94,10 +94,10 @@ process.on('unhandledRejection', err => {
 });
 
 process.on('uncaughtException', err => {
-  errorhandler('----BOT CRASHED-----', null, null, log, config, true);
-  errorhandler(err, null, null, log, config, true)
+  errorhandler({err:'----BOT CRASHED-----', fatal: true});
+  errorhandler({err, fatal: true})
 
-  errorhandler(`---- BOT RESTARTED DUE ERROR..., ${new Date()}`, null, null, log, config, true);
+  errorhandler({err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`, fatal: true});
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]

@@ -10,7 +10,6 @@ const {
 const database = require('../../db/db');
 const config = require('../../../src/assets/json/_config/config.json');
 
-const { log } = require('../../../logs');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 
@@ -20,7 +19,7 @@ module.exports.run = async ({
     bot
 }) => {
 
-    if (!await hasPermission(main_interaction, 0, 1)) {
+    if (!await hasPermission(main_interaction, 0, 0)) {
         return main_interaction.reply({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true

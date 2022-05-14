@@ -1,28 +1,15 @@
 const {
     SlashCommandBuilder
 } = require('@discordjs/builders');
-
+const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
-
-const {
-    getModTime
-} = require('../../../utils/functions/getModTime');
-const {
-    hasPermission
-} = require('../../../utils/functions/hasPermissions');
-const {
-    banUser
-} = require('../../../utils/functions/moderations/banUser');
-const {
-    isBanned
-} = require('../../../utils/functions/moderations/checkOpenInfractions');
-const {
-    checkMessage
-} = require('../../../utils/functions/checkMessage/checkMessage');
+const { getModTime } = require('../../../utils/functions/getModTime');
+const { muteUser } = require('../../../utils/functions/moderations/muteUser');
+const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfractions');
 
 module.exports.run = async ({main_interaction, bot}) => {
-
-    if (!await hasPermission(main_interaction, 0, 1)) {
+    if (!await hasPermission(main_interaction, 0, 0)) {
         return main_interaction.reply({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true
@@ -33,32 +20,25 @@ module.exports.run = async ({main_interaction, bot}) => {
     
     const check = await checkMessage({
         author: main_interaction.user,
-        guild: main_interaction.guild,
         target: user,
+        guild: main_interaction.guild,
         bot,
-        type: 'ban'
+        type: 'mute'
     });
-    
+
     if(check) return main_interaction.reply({
         content: check,
         ephemeral: true
     }).catch(err => {});
     
-    const isUserBanned = await isBanned(user, main_interaction.guild);
-    
-    if(isUserBanned.error) {
+    if(await isMuted({user, guild: main_interaction.guild, bot})) {
         return main_interaction.reply({
-            content: isUserBanned.message,
+            content: 'This user is already muted!',
             ephemeral: true
         }).catch(err => {});
     }
 
-    if (isUserBanned.isBanned) {
-        return main_interaction.reply({
-            content: 'This user is already banned!',
-            ephemeral: true
-        }).catch(err => {});
-    }
+    
 
     var time = main_interaction.options.getString('time');
 
@@ -71,29 +51,32 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     let reason = main_interaction.options.getString('reason') || 'No reason provided';
 
-    const banned = await banUser({
-        user, 
+    const muted = await muteUser({
+        user,
         mod: main_interaction.user,
+        bot,
         guild: main_interaction.guild,
-        reason, bot, dbtime, time
+        reason,
+        time,
+        dbtime
     });
 
-    if(banned.error) {
+    if(muted.error) {
         return main_interaction.reply({
-            content: banned.message,
+            content: muted.message,
             ephemeral: true
         }).catch(err => {});
     }
     
     return main_interaction.reply({
-        embeds: [banned.message],
+        embeds: [muted.message],
         ephemeral: true
     }).catch(err => {});
 }
 
 module.exports.data = new SlashCommandBuilder()
-    .setName('ban')
-    .setDescription('Ban a user from the server')
+    .setName('mute')
+    .setDescription('Mute an user from the server')
     .addUserOption(option =>
         option.setName('user')
         .setDescription('The user to ban')

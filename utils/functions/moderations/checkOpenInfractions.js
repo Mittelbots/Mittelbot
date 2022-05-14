@@ -1,37 +1,52 @@
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getMutedRole } = require('../roles/getMutedRole');
 const database = require('../../../src/db/db');
-const { insertDataToOpenInfraction } = require("../insertDataToDatabase");
+const config = require('../../../src/assets/json/_config/config.json');
 
 
+async function isMuted({user, guild, bot}) {
+    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = ? AND guild_id = ?`, [user.id, 1, guild.id]).then(async result => {
+        let MutedRole = await getMutedRole(bot.guilds.cache.get(guild.id))
 
-async function isMuted(config, member, message, log, bot) {
-    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = ? AND guild_id = ?`, [member.id, 1, message.guild.id]).then(async result => {
-        let MutedRole = await getMutedRole(message, bot.guilds.cache.get(message.guild.id))
-        if (result.length > 0 && await member.roles.cache.has(MutedRole)) {
+        if(MutedRole.error) return MutedRole;
+
+        if (result.length > 0 && await user.roles.cache.has(MutedRole)) {
             for (let i in result) {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
                 currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
                 result[i].till_date = result[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
 
                 if ((currentdate - result[i].till_date) <= 0) {
-                    return true;
+                    return {
+                        error: false,
+                        isMuted: true
+                    }
                 }else {
-                    return false;
+                    return {
+                        error: false,
+                        isMuted: false
+                    }
                 }
             }
         }else {
-            return false;
+            return {
+                error: false,
+                isMuted: false
+            }
         }
     }).catch(err => {
-        return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+        errorhandler({err, fatal:true});
+        return {
+            error: true,
+            message: config.errormessages.databasequeryerror
+        }
     })
 }
 
-async function isOnBanList(member, guild) {
+async function isOnBanList({user, guild}) {
     return guild.bans.fetch()
         .then(async bans => {
-            let list = bans.filter(user => user.user.id === member);
+            let list = bans.filter(list_user => list_user.user.id === user.id);
             let reason = list.map(list => list.reason)[0];
 
             if(JSON.stringify(list).length < 10) return [false];
