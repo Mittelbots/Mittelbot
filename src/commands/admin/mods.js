@@ -65,7 +65,7 @@ module.exports.run = async (bot, message, args) => {
                 status = true;
             }
         }).catch(err => {
-            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+            return errorhandler({err, fatal: true});
         });
         
         if(roleid == null) value = removeMention(value);
@@ -118,7 +118,7 @@ module.exports.run = async (bot, message, args) => {
         const embedMessage = await message.channel.send({embeds: [modroleembed], components: [row]})
         .catch(err => {
             pass = false;
-            return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+            return errorhandler({err});
         })
 
         if(!pass) return;

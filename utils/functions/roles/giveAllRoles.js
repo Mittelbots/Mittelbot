@@ -17,7 +17,7 @@ async function giveAllRoles(userId, guild, roles) {
                 if(config.debug == 'true') console.log(r.name);
                 await guild.members.cache.get(userId).roles.add([await r]).catch(err => {})
             }catch(err) {
-                errorhandler(err, null, null, log, config);
+                return errorhandler({err, fatal: true});
             }
         }
     }

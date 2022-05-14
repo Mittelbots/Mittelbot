@@ -12,7 +12,7 @@ async function checkForScam(message, bot, config, log) {
 
     const advancedScamList = await database.query('SELECT link, whitelist_link FROM advancedScamList')
     .catch(err => {
-        errorhandler(err, 'Error while fetching Community Scam List database', message.channel, log, config, true)
+        return errorhandler({err, fatal: true});
         return message.delete().catch(err => {return;});
     });
 
@@ -46,7 +46,7 @@ async function checkForScam(message, bot, config, log) {
 		
     })
     .catch(err => {
-        errorhandler(err, 'Error while fetching Scam List', message.channel, log, config, true)
+        return errorhandler({err, fatal: true});
         return message.delete().catch(err => {return;});
     })
 }

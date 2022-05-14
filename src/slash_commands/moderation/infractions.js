@@ -34,14 +34,14 @@ module.exports.run = async ({
             var open = [];
 
             await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? ORDER BY ID DESC`, [user.id]).then(async res => closed.push(await res)).catch(err => {
-                errorhandler(err, true);
+                return errorhandler({err, fatal: true});
                 return main_interaction.reply({
                     content: config.errormessages.databasequeryerror,
                     ephemeral: true
                 }).catch(err => {});
             });
             await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY ID DESC`, [user.id]).then(async res => open.push(await res)).catch(err => {
-                errorhandler(err, true);
+                return errorhandler({err, fatal: true});
                 return main_interaction.reply({
                     content: config.errormessages.databasequeryerror,
                     ephemeral: true
@@ -81,10 +81,10 @@ module.exports.run = async ({
                         return infraction.push(res[0]);
                     }
                 }).catch(err => {
-                    return errorhandler(err, true);
+                    return errorhandler({err, fatal: true});
                 });
             }).catch(err => {
-                return errorhandler(err, true);
+                return errorhandler({err, fatal: true});
             });
             const response = await publicInfractionResponse({
                 member: infraction[0],

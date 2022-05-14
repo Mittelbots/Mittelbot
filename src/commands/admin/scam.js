@@ -63,7 +63,7 @@ module.exports.run = async (bot, message, args) => {
                 return pass = true;
             };
         }).catch(err => {
-            return errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true);
+            return errorhandler({err, fatal: true});
         })
 
         if(!pass) return  
@@ -113,7 +113,7 @@ module.exports.run = async (bot, message, args) => {
                 const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.scammanagechannel).send({embeds: [newScamLinkembed], components: [buttons]})
                     .catch(err => {
                         pass = false;
-                        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                        return errorhandler({err});
                     });
                 if(!pass) return;
                 
@@ -126,12 +126,12 @@ module.exports.run = async (bot, message, args) => {
                 collector.on('collect', async interaction => {
                     interaction.deferUpdate();
                     if(interaction.customId === accept) {
-                        database.query(`INSERT INTO advancedScamList (link) VALUES (?)`, [value]).catch(err => errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config, true));
+                        database.query(`INSERT INTO advancedScamList (link) VALUES (?)`, [value]).catch(err =>  errorhandler({err, fatal: true}));
                         return await message.author.send(`Your ScamList request was accepted! \n Link: \`${value}\` `).catch(err => {})
                     }else if(interaction.customId === deny) {
                         return await message.author.send(`Your ScamList request was denied! \n Link: \`${value}\` `).catch(err => {})
                     }else {
-                        database.query(`INSERT INTO advancedScamList (guild_id) VALUES (?)`, [message.guild.id]).catch(err => errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config, true));
+                        database.query(`INSERT INTO advancedScamList (guild_id) VALUES (?)`, [message.guild.id]).catch(err => errorhandler({err, fatal: true}));
                         return await message.author.send(`Your Server got added to the blacklist!`).catch(err => {})
                     }
                 });
@@ -229,14 +229,14 @@ module.exports.run = async (bot, message, args) => {
             await interaction.deferUpdate();
             if(interaction.customId === accept) {
                 database.query(`DELETE FROM advancedScamList WHERE link = ?`, [removeHttp(value)]).catch(err => {
-                    return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
+                    return errorhandler({err, fatal: true});
                 })
                 return await message.author.send(`Your ScamList request was accepted! \n Link: \`${value}\` `).catch(err => {});
             }else if(interaction.customId === deny) {
                 return await message.author.send(`Your ScamList request was denied! \n Link: \`${value}\` `).catch(err => {});
             }else {
                 database.query(`INSERT INTO advancedScamList (guild_id) VALUES (?)`, [message.guild.id]).catch(err => {
-                    return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config)
+                    return errorhandler({err, fatal: true});
                 });
                 return await message.author.send(`Your Server got added to the blacklist!`).catch(err => {});
             }
@@ -315,7 +315,7 @@ module.exports.run = async (bot, message, args) => {
                 });
 
             }).catch(err => {
-                return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config, true);
+                return errorhandler({err, fatal: true});
             })
         }else {
             value = removeHttp(value);
@@ -327,7 +327,7 @@ module.exports.run = async (bot, message, args) => {
 
                 return message.reply('✅ **Matching link found!**').catch(err => {});
             }).catch(err => {
-                return errorhandler(err, config.errormessages.databasequeryerror, bot.guilds.cache.get(interaction.guildId).channels.cache.get(interaction.channelId), log, config, true);
+                return errorhandler({err, fatal: true});
             })
         }
     }

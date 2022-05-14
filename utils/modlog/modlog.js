@@ -29,7 +29,7 @@ function sendToModLog(bot, message, gid) {
             bot.channels.cache.get(res[0].modlog).send({embeds: [message]}).catch(err => {});
         }
     }).catch(err => {
-        errorhandler(err, config.errormessages.databasequeryerror, message.channel, log, config, true)  
+        return errorhandler({err, fatal: true});
     })
     return;
 }

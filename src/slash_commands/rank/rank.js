@@ -44,7 +44,7 @@ module.exports.run = async ({main_interaction, bot}) => {
             files: [attachment],
             ephemeral: (anonymous) ? true : false
         }).catch(err => {
-            return errorhandler(err, config.errormessages.nopermissions.sendFiles, main_interaction.channel, log, config);
+            return errorhandler({err, fatal: true});
         });
     });
 }

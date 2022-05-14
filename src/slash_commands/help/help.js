@@ -28,7 +28,7 @@ module.exports.run = async ({main_interaction, bot}) => {
             if(!pass) return;
             await msg.react('❌').catch(err => {
                 pass = false;
-                return errorhandler(err, config.errormessages.nopermissions.addReactions, main_interaction.channel, log, config)
+                return errorhandler({err, fatal: true});
             });
             if(filterEmoji.indexOf('❌') === -1) filterEmoji.push('❌');
         }
@@ -38,7 +38,7 @@ module.exports.run = async ({main_interaction, bot}) => {
                 if(!pass) return;
                 await msg.react(cmd_help[i]._icon).catch(err => {
                     pass = false;
-                    return errorhandler(err, config.errormessages.nopermissions.addReactions, main_interaction.channel, log, config)
+                    return errorhandler({err, fatal: true});
                 });
                 if(filterEmoji.indexOf(cmd_help[i]._icon) === -1) filterEmoji.push(cmd_help[i]._icon)
             }
@@ -57,7 +57,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         
         collector.on('collect', async (reaction, user) => {
             await reaction.users.remove(user).catch(err => {
-                return errorhandler(err, config.errormessages.nopermissions.manageReactions, main_interaction.channel, log, config);
+                return errorhandler({err, fatal: true});
             });
             
             if(reaction.emoji.name === '❌') {
@@ -69,10 +69,10 @@ module.exports.run = async ({main_interaction, bot}) => {
                 msg.edit({
                     embeds: [helpEmbedMessage]
                 }).catch(err => {
-                    return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, main_interaction.channel, log, config);
+                    return errorhandler({err, fatal: true});
                 })
                 msg.reactions.removeAll().catch(err => {
-                    return errorhandler(err, config.errormessages.nopermissions.manageReactions, main_interaction.channel, log, config);
+                    return errorhandler({err, fatal: true});
                 });
                 addCloseReaction();
                 addHomeReactions();
@@ -94,14 +94,14 @@ module.exports.run = async ({main_interaction, bot}) => {
                     msg.edit({
                         embeds: [edithelpEmbedMessage]
                     }).catch(err => {
-                        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, message.channel, log, config);
+                        return errorhandler({err, fatal: true});
                     })
 
                     msg.reactions.removeAll().catch(err => {});
 
                     addCloseReaction();
                     msg.react('🔼').catch(err => {
-                        return errorhandler(err, config.errormessages.nopermissions.addReactions, message.channel, log, config)
+                        return errorhandler({err, fatal: true});
                     });
                     if(filterEmoji.indexOf('🔼') === -1) filterEmoji.push('🔼');
                     return;
@@ -114,18 +114,18 @@ module.exports.run = async ({main_interaction, bot}) => {
                 if(reason === 'time') {
                     msg.edit({content: '**Time limit reached**'}).catch(err => {});
                     msg.reactions.removeAll().catch(err => {
-                        return errorhandler(err, config.errormessages.nopermissions.manageReactions, main_interaction.channel, log, config);
+                        return errorhandler({err, fatal: true});
                     });
                 }else {
                     msg.edit({content: `**Collector ended cause: ${reason}**`});
                     msg.reactions.removeAll().catch(err => {
-                        return errorhandler(err, config.errormessages.nopermissions.manageReactions, main_interaction.channel, log, config);
+                        return errorhandler({err, fatal: true});
                     });
                 }
             }catch(err) {}
         });
     }).catch(err => {
-        return errorhandler(err, config.errormessages.nopermissions.sendEmbedMessages, main_interaction.channel, log, config, true);
+        return errorhandler({err, fatal: true});
     });
 
 
