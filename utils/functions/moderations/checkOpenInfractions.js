@@ -10,7 +10,7 @@ async function isMuted({user, guild, bot}) {
 
         if(MutedRole.error) return MutedRole;
 
-        if (result.length > 0 && await user.roles.cache.has(MutedRole)) {
+        if (result.length > 0 && await guild.members.cache.get(user.id).roles.cache.has(MutedRole)) {
             for (let i in result) {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
                 currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');

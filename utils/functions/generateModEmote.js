@@ -1,11 +1,12 @@
 const { getEmote } = require("./getEmote");
+const config = require('../../src/assets/json/_config/config.json');
 
-async function generateModEmote(config, bot, type) {
+async function generateModEmote({bot, type}) {
     let emote;
 
     switch(true) {
         case type == config.defaultModTypes.warn:
-            emote = config.icons.warn
+            emote = getEmote(bot, config.icons.warn)
             break;
         case type == config.defaultModTypes.kick:
             emote = config.icons.kick;
@@ -23,7 +24,7 @@ async function generateModEmote(config, bot, type) {
             emote = config.icons.unban;
             break;
     }
-    return getEmote(bot, emote);
+    return emote+' ';
 }
 
 module.exports = {generateModEmote};

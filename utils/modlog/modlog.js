@@ -1,15 +1,11 @@
 const {MessageEmbed} = require('discord.js');
-const { log } = require('../../logs');
-const config = require('../../src/assets/json/_config/config.json');
 const database = require('../../src/db/db');
 const { errorhandler } = require('../functions/errorhandler/errorhandler');
 const { generateModEmote } = require('../functions/generateModEmote');
 
-
-
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
     var modLogMessage = new MessageEmbed()
-    .setTitle(`${await generateModEmote(config, bot,type)} **Member ${type}!**`)
+    .setTitle(`${await generateModEmote({bot, type})} **Member ${type}!**`)
     .addField(`Moderator`, `<@${moderator}> (${moderator})`)
     .addField(`${type.charAt(0).toUpperCase() + type.slice(1)} Member`, `${(member.username) ? `Username: **${member.username}**\n` : ''}Tag:<@${member.id || member}>\nUser ID: **(${member.id || member})**`)
     .addField(`Reason`, `${reason || "No Reason Provided!"}`)
