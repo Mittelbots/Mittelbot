@@ -20,7 +20,7 @@ async function guildCreate(guild, bot) {
     commands.push(cmd.help.name);
   });
 
-  await database.query(`INSERT INTO active_commands (active_commands, disabled_commands, guild_id, global_disabled) VALUES (?, ?, ?)`, [JSON.stringify(commands), "[]", guild.id, "[]"]).catch(err => {
+  await database.query(`INSERT INTO active_commands (active_commands, disabled_commands, guild_id, global_disabled) VALUES (?, ?, ?, ?)`, [JSON.stringify(commands), "[]", guild.id, "[]"]).catch(err => {
     log.fatal(err)
   });
 
