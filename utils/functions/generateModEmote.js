@@ -24,7 +24,7 @@ async function generateModEmote({bot, type}) {
             emote = config.icons.unban;
             break;
     }
-    return emote+' ';
+    return (type === config.defaultModTypes.warn) ? emote : emote+' ';
 }
 
 module.exports = {generateModEmote};
