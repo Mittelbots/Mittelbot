@@ -13,22 +13,25 @@ async function addWarnRoles({user, inf_id, guild}) {
             for(let i in res) {
                 let role = await guild.roles.cache.find(role => role.id === res[i].role_id).id
                 const guild_user = await guild.members.cache.get(user.id)
-                if(!guild_user.roles.cache.has(role)) {
-                    return await guild_user.roles.add([role])
-                        .then(() => {
-                            insertDataToTemproles(user.id, res[i].role_id, getFutureDate(2678400), inf_id, guild.id);
-                            return true;
-                        })
-                        .catch(err => {
-                            errorhandler({err});
-                            return {
-                                error: true,
-                                message: config.errormessages.nopermissions.manageRoles
-                            };
-                        })
-                }else {
-                    hasRoleAlready = true;
+                if(guild_user){
+                    if(!guild_user.roles.cache.has(role)) {
+                        return await guild_user.roles.add([role])
+                            .then(() => {
+                                insertDataToTemproles(user.id, res[i].role_id, getFutureDate(2678400), inf_id, guild.id);
+                                return true;
+                            })
+                            .catch(err => {
+                                errorhandler({err});
+                                return {
+                                    error: true,
+                                    message: config.errormessages.nopermissions.manageRoles
+                                };
+                            })
+                    }else {
+                        hasRoleAlready = true;
+                    }
                 }
+                return true;
             }
             if(hasRoleAlready) {
                 //If User already have all Roles
