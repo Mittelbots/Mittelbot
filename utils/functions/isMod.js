@@ -3,6 +3,8 @@ const { errorhandler } = require("./errorhandler/errorhandler");
 
 
 async function isMod({member, guild}) {
+    if(!member) return false;
+    
     return await database.query(`SELECT * FROM ${guild.id}_guild_modroles`).then(async (res) => {
         var isMod = false
         for (let i in await res) {
