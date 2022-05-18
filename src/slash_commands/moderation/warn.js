@@ -9,7 +9,7 @@ const { log } = require('../../../logs');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({main_interaction, bot}) => {
-    if (!await hasPermission(main_interaction, 0, 1)) {
+    if (!await hasPermission(main_interaction, 0, 0)) {
         return main_interaction.reply({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true
