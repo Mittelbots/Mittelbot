@@ -34,14 +34,14 @@ module.exports.run = async ({
             var open = [];
 
             await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? ORDER BY ID DESC`, [user.id]).then(async res => closed.push(await res)).catch(err => {
-                return errorhandler({err, fatal: true});
+                errorhandler({err, fatal: true});
                 return main_interaction.reply({
                     content: config.errormessages.databasequeryerror,
                     ephemeral: true
                 }).catch(err => {});
             });
             await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY ID DESC`, [user.id]).then(async res => open.push(await res)).catch(err => {
-                return errorhandler({err, fatal: true});
+                errorhandler({err, fatal: true});
                 return main_interaction.reply({
                     content: config.errormessages.databasequeryerror,
                     ephemeral: true
@@ -70,12 +70,11 @@ module.exports.run = async ({
             const inf_id = main_interaction.options.getString('infractionid');
 
             var infraction = [];
+
             await database.query(`SELECT * FROM closed_infractions WHERE infraction_id = ? LIMIT 1`, [inf_id]).then(async res => {
                 if (res.length > 0) {
                     return infraction.push(res[0]);
                 }
-
-
                 await database.query(`SELECT * FROM open_infractions WHERE infraction_id = ? LIMIT 1`, [inf_id]).then(async res => {
                     if (res.length > 0) {
                         return infraction.push(res[0]);
@@ -86,6 +85,7 @@ module.exports.run = async ({
             }).catch(err => {
                 return errorhandler({err, fatal: true});
             });
+            
             const response = await publicInfractionResponse({
                 member: infraction[0],
                 guild: main_interaction.guild,
@@ -98,7 +98,55 @@ module.exports.run = async ({
                 embeds: [response.message],
                 ephemeral: true
             }).catch(err => {});
-            break;
+        break;
+        
+        case 'remove':
+            const infraction_id = main_interaction.options.getString('infractionid');
+
+            let inf_exists = false;
+            let table = '';
+            await database.query(`SELECT id FROM closed_infractions WHERE infraction_id = ? LIMIT 1`, [infraction_id]).then(async res => {
+                if (res.length > 0) {
+                    table = 'closed_infractions';
+                    return inf_exists = true;
+                }
+
+                await database.query(`SELECT id FROM open_infractions WHERE infraction_id = ? LIMIT 1`, [infraction_id]).then(async res => {
+                    if (res.length > 0) {
+                        table = 'open_infractions';
+                        return inf_exists = true;
+                    }
+                }).catch(err => {
+                    return errorhandler({err, fatal: true});
+                });
+            }).catch(err => {
+                return errorhandler({err, fatal: true});
+            });
+
+            if(inf_exists) {
+
+                database.query(`DELETE FROM ${table} WHERE infraction_id = ?`, [infraction_id])
+                    .then(() => {
+                        main_interaction.reply({
+                            content: `Infraction with id \`${infraction_id}\` has been removed!`,
+                            ephemeral: true
+                        }).catch(err => {});
+                    })
+                    .catch(err => {
+                        main_interaction.reply({
+                            content: `Infraction with id \`${infraction_id}\` could not be removed!`,
+                            ephemeral: true
+                        }).catch(err => {});
+                        return errorhandler({err, fatal: true});
+                    })
+                
+            }else {
+                return main_interaction.reply({
+                    content: `Infraction with id \`${infraction_id}\` does not exist!`,
+                    ephemeral: true
+                }).catch(err => {});
+            }
+        break;
     }
 
 
@@ -123,5 +171,14 @@ module.exports.data = new SlashCommandBuilder()
             option.setName('infractionid')
             .setRequired(true)
             .setDescription('The id of the infraction to view')
+        )
+    )
+    .addSubcommand(command =>
+        command.setName('remove')
+        .setDescription('Remove an specific infraction')
+        .addStringOption(option =>
+            option.setName('infractionid')
+            .setRequired(true)
+            .setDescription('The id of the infraction to remove')
         )
     )
