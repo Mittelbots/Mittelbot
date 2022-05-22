@@ -13,7 +13,6 @@ module.exports.viewAllSettings = async ({currentsettings, message, bot}) => {
 
     for (let i in config.settings) {
         const emote = await getEmote(bot, config.settings[i].icon);
-        console.log(config.settings[i].colname === config.settings.joinroles.colname)
         var current;
 
         if (config.settings[i].colname === config.settings.wc.colname){ //? Wenn Settings gleich Welcome channel
