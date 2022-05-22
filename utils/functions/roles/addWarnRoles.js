@@ -4,8 +4,6 @@ const { getFutureDate } = require("../getFutureDate");
 const { insertDataToTemproles } = require("../insertDataToDatabase");
 const config = require('../../../src/assets/json/_config/config.json');
 
-
-
 async function addWarnRoles({user, inf_id, guild}) {
     return await database.query(`SELECT role_id FROM ${guild.id}_guild_warnroles`).then(async res => {
         let hasRoleAlready = false;
