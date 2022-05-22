@@ -64,7 +64,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     //! User 1
     context.strokeRect(0, 0, canvas.width, canvas.height);
-	const user1 = await request(user.displayAvatarURL({ format: 'jpg' }));
+	const user1 = await request(main_interaction.user.displayAvatarURL({ format: 'jpg' }));
 	const avatar1 = new Canvas.Image();
 	avatar1.src = Buffer.from(await user1.body.arrayBuffer());
     context.drawImage(avatar1, 50, 100, 250, 250);
