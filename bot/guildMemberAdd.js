@@ -5,7 +5,6 @@ const {
 const {
     errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
-const { log } = require('../logs');
 const database = require('../src/db/db');
 
 
@@ -14,7 +13,7 @@ async function guildMemberAdd(member, bot) {
     await database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
         if (await res.length == 0) {
             await database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
-                return log.fatal(err);
+                return errorhandler({err, fatal: true})
             });
         } else {
             if (res[0].user_joined == null) {
@@ -41,12 +40,12 @@ async function guildMemberAdd(member, bot) {
                     }, 2000);
                 }
             }).catch(err => {
-                return log.fatal(err)
+                return errorhandler({err, fatal: true})
             });
         }
         return  
     }).catch(err => {
-        return log.fatal(err)
+        return errorhandler({err, fatal: true})
     });
 
     database.query(`SELECT welcome_channel FROM ${member.guild.id}_config`).then(res => {
@@ -55,11 +54,11 @@ async function guildMemberAdd(member, bot) {
         }
     }).catch(err => {
         if (config.debug == 'true') console.log(err)
-        return log.fatal(err);
+        return errorhandler({err, fatal: true})
     })
     
     if(!member.user.bot) {
-        database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
+        await database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
             if(res.length > 0) {
                 for (i in res) {
                     let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
@@ -75,7 +74,7 @@ async function guildMemberAdd(member, bot) {
             }
         }).catch(err => {
             if (config.debug == 'true') console.log(err)
-            return log.fatal(err);
+            return errorhandler({err, fatal: true})
         });
     }
 }
