@@ -22,7 +22,7 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
 
     let pass = false;
 
-    await guild_user.roles.remove([MutedRole])
+    guild_user.roles.remove([MutedRole])
     .then(() => pass = true)
     .catch(err => {
         errorhandler({err});
