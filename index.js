@@ -49,6 +49,7 @@ const { db_backup } = require("./src/db/db_backup");
 const { createSlashCommands } = require("./utils/functions/createSlashCommands/createSlashCommands");
 const { handleSlashCommands } = require("./src/slash_commands");
 const { handleUploads } = require("./src/events/notfifier/yt_notifier");
+const { startUpCache } = require("./utils/functions/cache/startUpCache");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
@@ -107,6 +108,9 @@ process.on('uncaughtException', err => {
 })
 
 bot.once('ready', async () => {
+  await startUpCache();
+
+  
   checkInfractions(bot, database);
   checkTemproles(bot, database)
   auditLog(bot);

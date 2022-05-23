@@ -32,7 +32,6 @@ module.exports.handleUploads = async ({
             if (uploads[i].channel_id) {
                 request.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`)
                     .then(async (feed) => {
-                        console.log(feed)
                         if (uploads.includes(feed.items[0].link)) return;
 
                         const saved = await database.query(`INSERT INTO guild_uploads (guild_id, link) VALUES (?, ?)`, [uploads[i].guild_id, feed.items[0].link])
@@ -45,7 +44,7 @@ module.exports.handleUploads = async ({
                             })
                         if (!saved) return;
 
-                        const channel = await bot.channels.get(uploads[i].channel_id);
+                        const channel = await bot.channels.cache.get(uploads[i].channel_id);
                         if (!channel) return;
 
                         const newMessageEmbed = new MessageEmbed()
