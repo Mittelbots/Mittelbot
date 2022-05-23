@@ -13,6 +13,10 @@ const levelCooldown = new Set();
 
 const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
 const database = require('../src/db/db');
+const {
+    errorhandler
+} = require('../utils/functions/errorhandler/errorhandler');
+const { translateMessage } = require('../utils/functions/checkLang/translateMessage');
 
 async function messageCreate(message, bot) {
     if (message.author.bot) return;
@@ -52,14 +56,15 @@ async function messageCreate(message, bot) {
                         return commandfile.run(bot, message, args);
                     }
                 }).catch(err => {
-                    if (config.debug == 'true') console.log(err);
-                    return log.fatal(err);
+                    return errorhandler({err: err, fatal: true});
                 })
 
             } else return;
-
+        return;
         } else { //? NO COMMAND
             
+            await translateMessage({message}); //? CURRENTLY ONLY ON GUSTIXA SERVER
+
             if (!levelCooldown.has(message.author.id)) {
                 levelSystem.run(message, bot);
 
@@ -73,8 +78,7 @@ async function messageCreate(message, bot) {
             }
         }
     }).catch(err => {
-        if (config.debug == 'true') console.log(err)
-        return log.fatal(err);
+        return errorhandler({err: err, fatal: true});
     });
 }
 

@@ -1,4 +1,4 @@
-const config = require('../src/assets/json/_config/config.json');
+const config = require('../../../src/assets/json/_config/config.json');
 const token = require('../_secret/token.json')
 const fs = require("fs") //Fs (Filesystem) (Datein auslesen aus command files)
 const { REST } = require("@discordjs/rest") //REST Client um die Commands zu regestrieren
