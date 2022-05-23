@@ -219,6 +219,18 @@
             "levelsettings": {
                 "name": "levelsettings",
                 "val": "LONGTEXT"
+            },
+            "translate": {
+                "name": "translate",
+                "val": "INT(4)"
+            },
+            "translate_channel": {
+                "name": "translate_channel",
+                "val": "VARCHAR(255)"
+            },
+            "translate_language": {
+                "name": "translate_language",
+                "val": "VARCHAR(2)"
             }
         },
         "_guild_joinroles": {

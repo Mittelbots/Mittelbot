@@ -1,6 +1,6 @@
 const { setNewModLogMessage } = require("../../modlog/modlog");
 const { publicModResponses } = require("../../publicResponses/publicModResponses");
-const { removeDataFromOpenInfractions } = require("../data/removeDataFromDatabase");
+const { removeDataFromOpenInfractions } = require("../removeData/removeDataFromDatabase");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
 const database = require('../../../src/db/db');
