@@ -8,7 +8,9 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     return main_interaction.reply({
         files: [new MessageAttachment(data[0].url, 'cat.png')]
-    })
+    }).catch(err => {
+        main_interaction.reply('Something went wrong!').catch(err => {});
+    });
 }
 
 module.exports.data = new SlashCommandBuilder()
