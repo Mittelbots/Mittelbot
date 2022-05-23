@@ -5,6 +5,7 @@
         "closed_infractions",
         "open_infractions",
         "temproles",
+        "guild_uploads",
         "_config",
         "_guild_joinroles",
         "_guild_logs",
@@ -164,6 +165,28 @@
             "global_disabled": {
                 "name": "global_disabled",
                 "val": "LONGTEXT"
+            }
+        },
+        "guild_uploads": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            },
+            "link": {
+                "name": "uploads",
+                "val": "VARCHAR(255)"
+            },
+            "channel_id": {
+                "name": "channel_id",
+                "val": "VARCHAR(255)"
+            },
+            "info_channel_id": {
+                "name": "info_channel_id",
+                "val": "VARCHAR(255)"
             }
         }
     },
