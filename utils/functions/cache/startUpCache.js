@@ -1,7 +1,10 @@
 const { getAllConfig } = require("../getData/getConfig");
 const { getAllModroles } = require("../getData/getModroles");
 const { getAllJoinroles } = require("../getData/getJoinroles");
-const { addToCache } = require("./cache");
+const { getAllLogs } = require('../getData/getLogs');
+const { addToCache, memberInfo } = require("./cache");
+const { getAllXP } = require("../levelsystem/levelsystemAPI");
+const { getAllMemberInfo } = require('../getData/getMemberInfo');
 
 module.exports.startUpCache = async () => {
 
@@ -14,6 +17,9 @@ module.exports.startUpCache = async () => {
     const guildConfigs = await getAllConfig();
     const guildModroles = await getAllModroles();
     const guildJoinroles = await getAllJoinroles();
+    const guildLogs = await getAllLogs();
+    const guildXp = await getAllXP();
+    const guildMemberInfo = await getAllMemberInfo();
 
     console.log('✅ Data collected...');
 
@@ -48,10 +54,7 @@ module.exports.startUpCache = async () => {
                 name: "modroles",
                 data: {
                     id: guildModroles[i].guild_id,
-                    role_id: (isObject) ? guildModroles[i].modroles[0].role_id : '',
-                    isadmin: (isObject) ? guildModroles[i].modroles[0].isadmin : '0',
-                    ismod: (isObject) ? guildModroles[i].modroles[0].ismod : '0',
-                    ishelper: (isObject) ? guildModroles[i].modroles[0].ishelper : '0',
+                    modroles: isObject ? guildModroles[i].modroles : ''
                 }
             }
         });
@@ -69,6 +72,49 @@ module.exports.startUpCache = async () => {
             }
         });
     }
+
+    for(let i in guildLogs) {
+        if(!guildLogs[i]) continue;
+        await addToCache({
+            value: {
+                name: "logs",
+                data: {
+                    id: guildLogs[i].guild_id,
+                    audit_log: guildLogs[i].logs.audit_log,
+                    messagelog: guildLogs[i].logs.messagelog,
+                    modlog: guildLogs[i].logs.modlog,
+                }
+            }
+        });
+    }
+
+
+    for(let i in guildXp) {
+        if(!guildXp[i]) continue;
+        await addToCache({
+            value: {
+                name: "xp",
+                data: {
+                    id: guildXp[i].guild_id,
+                    xp: (guildXp[i].xp) ? guildXp[i].xp : '',
+                }
+            }
+        });
+    }
+
+    for(let i in guildMemberInfo) {
+        if(!guildMemberInfo[i]) continue;
+        await addToCache({
+            value: {
+                name: "memberInfo",
+                data: {
+                    id: guildMemberInfo[i].guild_id,
+                    memberInfo: (guildMemberInfo[i].member_info) ? guildMemberInfo[i].member_info : '',
+                }
+            }
+        });
+    }
+
     console.log('✅ Everything is in cache...');
     console.log('----------------------------------------');
 }

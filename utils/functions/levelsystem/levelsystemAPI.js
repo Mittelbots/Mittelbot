@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const database = require("../../../src/db/db");
-
+const { errorhandler } = require("../errorhandler/errorhandler");
+const { getAllGuildIds } = require("../getData/getAllGuildIds");
 
 
 /**
@@ -19,7 +20,7 @@ module.exports.gainXP = async function (message, newxp) {
             return true;
         }
     }).catch(err => {
-        console.log(err);
+        errorhandler({err: err, fatal: true})
         return false;
     });
 }
@@ -41,7 +42,7 @@ module.exports.updateXP = async function (message, newxp) {
     return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ? WHERE user_id = ?`, [newxp, message.author.id])
         .then(() => {return true;})
         .catch(err => {
-            console.log(err);
+            errorhandler({err: err, fatal: true})
             return false;
         });
 }
@@ -112,6 +113,32 @@ module.exports.sendNewLevelMessage = async function (newLevel, member, currentxp
  * ! LEVEL SETTINGS !
  */
 
+module.exports.getAllXP = async () => {
+    const all_guild_id = await getAllGuildIds();
+    if(all_guild_id) {
+        let response = [];
+        for(let i in all_guild_id) {
+            const obj = {
+                guild_id: all_guild_id[i].guild_id,
+                xp: await this.getXPOfGuild({guildid: all_guild_id[i].guild_id})
+            }
+            response.push(obj);
+        }
+        return response;
+    }else {
+        return false;
+    }
+}
+
+module.exports.getXPOfGuild = async ({guildid}) => {
+    return await database.query(`SELECT * FROM ${guildid}_guild_level`).then(async res => {
+        return res;
+    }).catch(err => {
+        errorhandler({err: err, fatal: true})
+        return false;
+    })
+}
+
 module.exports.getXP = async function (guildid, user_id) {
     return await database.query(`SELECT * FROM ${guildid}_guild_level WHERE user_id = ?`, [user_id])
         .then(res => {
@@ -121,7 +148,7 @@ module.exports.getXP = async function (guildid, user_id) {
             return res[0];
         })
         .catch(err => {
-            console.log(err);
+            errorhandler({err: err, fatal: true})
             return false;
         })
 }
@@ -133,7 +160,7 @@ module.exports.getXP = async function (guildid, user_id) {
  */
 module.exports.setLevelSettingsFromGuild = async function (guildid, levelorder) {
     await database.query(`UPDATE ${guildid}_config SET levelsettings = ?`, [levelorder]).catch(err => {
-        console.log(err);
+        errorhandler({err: err, fatal: true})
     })
 }
 
@@ -144,7 +171,7 @@ module.exports.setLevelSettingsFromGuild = async function (guildid, levelorder) 
  */
 module.exports.setLevelRolesFromGuild = async function (guildid, levelroles) {
     await database.query(`UPDATE ${guildid}_config SET levelroles = ?`, [levelroles]).catch(err => {
-        console.log(err)
+        errorhandler({err: err, fatal: true})
     })
 }
 
@@ -163,7 +190,7 @@ module.exports.getLevelSettingsFromGuild = async function (guildid) {
 
         return res;
     }).catch(err => {
-        console.log(err);
+        errorhandler({err: err, fatal: true})
         return false;
     })
 }
@@ -184,7 +211,7 @@ module.exports.getLevelAnnounce = async function (guildid, user_id) {
 
             return res[0].level_announce;
         }).catch(err => {
-            console.log(err);
+            errorhandler({err: err, fatal: true})
             return false;
         })
 }
@@ -192,7 +219,7 @@ module.exports.getLevelAnnounce = async function (guildid, user_id) {
 module.exports.setLevelAnnounce = async function (guildid, user_id, state) {
     return await database.query(`UPDATE ${guildid}_guild_level SET level_announce = ? WHERE user_id = ?`, [state, user_id])
         .then(() => {return true}).catch(err => {
-            console.log(err);
+            errorhandler({err: err, fatal: true})
             return false;
         })
 }
