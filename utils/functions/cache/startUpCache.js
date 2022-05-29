@@ -2,7 +2,7 @@ const { getAllConfig } = require("../getData/getConfig");
 const { getAllModroles } = require("../getData/getModroles");
 const { getAllJoinroles } = require("../getData/getJoinroles");
 const { getAllLogs } = require('../getData/getLogs');
-const { addToCache, memberInfo } = require("./cache");
+const { addToCache } = require("./cache");
 const { getAllXP } = require("../levelsystem/levelsystemAPI");
 const { getAllMemberInfo } = require('../getData/getMemberInfo');
 
@@ -26,20 +26,20 @@ module.exports.startUpCache = async () => {
     console.log('🕐Adding to cache...');
 
     for(let i in guildConfigs) {
-        if(!guildConfigs[i] || !guildConfigs[i][0].guild_id) continue;
+        if(!guildConfigs[i] || !guildConfigs[i].guild_id) continue;
         await addToCache({
             value: {
                 name: "config",
                 data: {
-                    id: guildConfigs[i][0].guild_id,
-                    prefix: guildConfigs[i][0].prefix,
-                    welcome_channel: guildConfigs[i][0].welcome_channel,
-                    cooldown: guildConfigs[i][0].cooldown,
-                    deleteModCommandAfterUsage: guildConfigs[i][0].deleteModCommandAfterUsage,
-                    deleeteCommandAfterUsage: guildConfigs[i][0].deleeteCommandAfterUsage,
-                    levelsettings: guildConfigs[i][0].levelsettings,
-                    translate_channel: guildConfigs[i][0].translate_channel,
-                    translate_language: guildConfigs[i][0].translate_language,
+                    id: guildConfigs[i].guild_id,
+                    prefix: guildConfigs[i].prefix,
+                    welcome_channel: guildConfigs[i].welcome_channel,
+                    cooldown: guildConfigs[i].cooldown,
+                    deleteModCommandAfterUsage: guildConfigs[i].deleteModCommandAfterUsage,
+                    deleeteCommandAfterUsage: guildConfigs[i].deleeteCommandAfterUsage,
+                    levelsettings: guildConfigs[i].levelsettings,
+                    translate_channel: guildConfigs[i].translate_channel,
+                    translate_language: guildConfigs[i].translate_language,
                 }
             }
         });
@@ -67,7 +67,7 @@ module.exports.startUpCache = async () => {
                 name: "joinroles",
                 data: {
                     id: guildJoinroles[i].guild_id,
-                    role_id: (typeof guildJoinroles[i].joinroles === "object") ? guildJoinroles[i].joinroles[0].role_id : '',
+                    role_id: (typeof guildJoinroles[i].joinroles === "object") ? guildJoinroles[i].joinroles : '',
                 }
             }
         });

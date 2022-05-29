@@ -6,76 +6,94 @@ const {
     errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
 const database = require('../src/db/db');
-
-
+const { getJoinroles } = require('../utils/functions/getData/getJoinroles');
+const { getConfig } = require('../utils/functions/getData/getConfig');
+const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/getData/getMemberInfo');
 
 async function guildMemberAdd(member, bot) {
-    await database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
-        if (await res.length == 0) {
-            await database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, user_joined) VALUES (?, ?)`, [member.user.id, new Date()]).catch(err => {
-                return errorhandler({err, fatal: true})
-            });
-        } else {
-            if (res[0].user_joined == null) {
-                await database.query(`UPDATE ${member.guild.id}_guild_member_info SET user_joined = ? WHERE user_id = ?`, [new Date(), member.user.id]).catch(err => {
-                    return errorhandler({err, fatal: true})
-                });
-            }
-            await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
-                if (await inf.length !== 0) {
-                    member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]).catch(err => {});
-                } else {
-                    let user_roles = await res[0].member_roles;
-                    if(!user_roles) return;
-                    
-                    user_roles = JSON.parse(user_roles);
 
-                    //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
-                    const indexOfMuteRole = user_roles.indexOf(member.guild.roles.cache.find(r => r.name === 'Muted').id)
-                    if (user_roles !== null && indexOfMuteRole !== -1) {
-                        user_roles = await user_roles.filter(r => r !== member.guild.roles.cache.find(r => r.name === 'Muted').id)
-                    }
-                    setTimeout(async () => {
-                        if(user_roles) await giveAllRoles(member.id, member.guild, user_roles);
-                    }, 2000);
-                }
-            }).catch(err => {
-                return errorhandler({err, fatal: true})
-            });
+    const memberInfo = await getMemberInfoById({
+        guild_id: member.guild.id,
+        user_id: member.id
+    })
+
+    if (memberInfo.error) return;
+    else if(!memberInfo) {
+        await insertMemberInfo({
+            guild_id: member.guild.id,
+            user_id: member.id,
+            member_roles: [],
+            user_joined: new Date()
+        })
+    }
+
+    if(memberInfo.user_joined == null) {
+        await updateMemberInfoById({
+            guild_id: member.guild.id,
+            user_id: member.id,
+            user_joined: new Date(),
+            member_roles: memberInfo.member_roles || []
+        })
+    }
+
+
+    await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
+        if (await inf.length !== 0) {
+            member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]).catch(err => {});
+        } else {
+            let user_roles = await memberInfo.member_roles;
+            if(!user_roles) return;
+            
+            user_roles = JSON.parse(user_roles);
+
+            //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
+            const indexOfMuteRole = user_roles.indexOf(member.guild.roles.cache.find(r => r.name === 'Muted').id)
+            if (user_roles !== null && indexOfMuteRole !== -1) {
+                user_roles = await user_roles.filter(r => r !== member.guild.roles.cache.find(r => r.name === 'Muted').id)
+            }
+            setTimeout(async () => {
+                if(user_roles) await giveAllRoles(member.id, member.guild, user_roles);
+            }, 2000);
         }
-        return  
     }).catch(err => {
         return errorhandler({err, fatal: true})
     });
 
-    database.query(`SELECT welcome_channel FROM ${member.guild.id}_config`).then(res => {
-        if (res[0].welcome_channel !== null) {
-            bot.channels.cache.find(c => c.id === res[0].welcome_channel).send('Welcome ' + member.user.username)
-        }
-    }).catch(err => {
-        if (config.debug == 'true') console.log(err)
-        return errorhandler({err, fatal: true})
-    })
+    const guild_config = await getConfig({
+        guild_id: member.guild.id
+    });
+
+    if (!guild_config) {
+        return await message.channel.send(config.errormessages.general)
+            .then(async msg => {
+                await delay(5000);
+                msg.delete().catch(err => {});
+            }).catch(err => {});
+    }
+
+    const welcome_channel = guild_config.welcome_channel;
     
+    if (welcome_channel !== null) {
+        bot.channels.cache.find(c => c.id === welcome_channel).send('Welcome ' + member.user.username)
+    }
+
     if(!member.user.bot) {
-        await database.query(`SELECT * FROM ${member.guild.id}_guild_joinroles`).then(res => {
-            if(res.length > 0) {
-                for (i in res) {
-                    let role = member.guild.roles.cache.find(r => r.id === res[i].role_id);
-                    //setTimeout(function () {
-                    try {
-                        member.roles.add(role).catch(err => {})
-                    } catch (err) {
-                        //NO PERMISSONS
-                        return  
-                    }
-                    // }, 10000);
-                }
-            }
-        }).catch(err => {
-            if (config.debug == 'true') console.log(err)
-            return errorhandler({err, fatal: true})
+        const joinroles = await getJoinroles({
+            guild_id: member.guild.id
         });
+
+        if(!joinroles) return;
+
+        joinroles.map(role => {
+            let j_role = member.guild.roles.cache.find(r => r.id === role.role_id);
+            //setTimeout(function () {
+            try {
+                member.roles.add(j_role).catch(err => {})
+            } catch (err) {
+                //NO PERMISSONS
+                return  
+            }
+        })
     }
 }
 

@@ -25,11 +25,23 @@ module.exports.addToCache = async ({value}) => {
 module.exports.getFromCache = async ({cacheName, param_id}) => {
     if(!cacheName || !param_id) return false;
     let response = [];
+    
     for (let i in this[cacheName]) {
         if(cacheName[i].id === param_id) {
             response.push(cacheName[i])
         }
     }
+
+    if(response.length === 0) {
+        try {
+            this[cacheName].map(res => {
+                if(res.id === param_id) {
+                    response.push(res);
+                }
+            })
+        }catch(err) {}
+    }
+
     return (response.length > 0) ? response : false;
 }
 

@@ -1,5 +1,7 @@
 const database = require("../../../src/db/db");
+const { errorhandler } = require("../errorhandler/errorhandler");
 const { getAllGuildIds } = require("./getAllGuildIds");
+const { getFromCache } = require('../cache/cache');
 
 module.exports.getAllConfig = async () => {
     const all_guild_id = await getAllGuildIds();
@@ -17,10 +19,20 @@ module.exports.getAllConfig = async () => {
 
 
 module.exports.getConfig = async ({guild_id}) => {
+
+    const cache = getFromCache({
+        cacheName: "config",
+        param_id: guild_id
+    });
+
+    if(cache.length > 0) {
+        return cache[0];
+    }
+
     return await database.query(`SELECT * FROM ${guild_id}_config`)
         .then(res => {
             if(res.length > 0) {
-                return res;
+                return res[0];
             }else {
                 return false;
             }
