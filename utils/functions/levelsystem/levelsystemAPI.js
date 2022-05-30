@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const database = require("../../../src/db/db");
 const { errorhandler } = require("../errorhandler/errorhandler");
-const { getAllGuildIds } = require("../getData/getAllGuildIds");
+const { getAllGuildIds } = require("../data/getAllGuildIds");
 
 
 /**

@@ -19,8 +19,8 @@ const {
 } = require('../utils/functions/checkLang/translateMessage');
 const {
     getConfig
-} = require('../utils/functions/getData/getConfig');
-const { getJoinroles } = require('../utils/functions/getData/getJoinroles');
+} = require('../utils/functions/data/getConfig');
+const { getJoinroles } = require('../utils/functions/data/getJoinroles');
 
 
 const defaultCooldown = new Set();

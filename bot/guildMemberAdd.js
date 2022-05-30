@@ -6,9 +6,9 @@ const {
     errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
 const database = require('../src/db/db');
-const { getJoinroles } = require('../utils/functions/getData/getJoinroles');
-const { getConfig } = require('../utils/functions/getData/getConfig');
-const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/getData/getMemberInfo');
+const { getJoinroles } = require('../utils/functions/data/getJoinroles');
+const { getConfig } = require('../utils/functions/data/getConfig');
+const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/data/getMemberInfo');
 
 async function guildMemberAdd(member, bot) {
 
