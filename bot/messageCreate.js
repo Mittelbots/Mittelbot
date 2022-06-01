@@ -20,8 +20,6 @@ const {
 const {
     getConfig
 } = require('../utils/functions/data/getConfig');
-const { getJoinroles } = require('../utils/functions/data/getJoinroles');
-
 
 const defaultCooldown = new Set();
 const levelCooldown = new Set();
@@ -31,6 +29,7 @@ async function messageCreate(message, bot) {
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
+
 
     await checkForScam(message, bot, config, log);
 
@@ -91,7 +90,7 @@ async function messageCreate(message, bot) {
             levelSystem.run(message, bot);
 
             if (message.author.id !== config.Bot_Owner_ID) {
-                levelCooldown.add(message.author.id);
+                //levelCooldown.add(message.author.id);
             }
         } else {
             setTimeout(() => {

@@ -12,9 +12,11 @@ module.exports.warnroles = [];
  * @param {Object} values - Object containing the values to be inserted
  * @returns {Boolean}
  */
-module.exports.addToCache = async ({value}) => {
-    if(!value) return false;
-    
+module.exports.addToCache = async ({
+    value
+}) => {
+    if (!value) return false;
+
     const obj = {
         name: value.name.toString(),
         id: value.id,
@@ -24,40 +26,54 @@ module.exports.addToCache = async ({value}) => {
     this[value.name].push(obj);
 }
 
-module.exports.addValueToCache = async ({cacheName, param_id, value, valueName}) => {
-    if(!cacheName || !param_id || !value || !valueName) return false;
+module.exports.addValueToCache = async ({
+    cacheName,
+    param_id,
+    value,
+    valueName
+}) => {
+    if (!cacheName || !param_id || !value || !valueName) return false;
 
-    for(let i in this[cacheName]) {
-        if(this[cacheName][i].id === param_id) {
+    for (let i in this[cacheName]) {
+
+        if (this[cacheName][i].id === param_id) {
             const length = this[cacheName][i][valueName].length;
-            const obj = {
-                id: this[cacheName][i][valueName][length - 1].id + 1,
-                role_id: value,
+            var obj = {
+                id: (length > 0) ? this[cacheName][i][valueName][length - 1].id + 1 : 1
+            };
+            if(cacheName === 'xp') {
+                obj.xp = value;
+            }else {
+                obj.role_id = value;
             }
             this[cacheName][i][valueName].push(obj);
+            return;
         }
     }
 }
 
-module.exports.getFromCache = async ({cacheName, param_id}) => {
-    if(!cacheName || !param_id) return false;
+module.exports.getFromCache = async ({
+    cacheName,
+    param_id
+}) => {
+    if (!cacheName || !param_id) return false;
     let response = [];
     for (let i in this[cacheName]) {
         try {
-            if(cacheName[i].id === param_id) {
-                response.push(cacheName[i])
+            if (this[cacheName][i].id === param_id) {
+                response.push(this[cacheName][i])
             }
-        }catch(e){}
+        } catch (e) {}
     }
 
-    if(response.length === 0) {
+    if (response.length === 0) {
         try {
             this[cacheName].map(res => {
-                if(res.id === param_id) {
+                if (res.id === param_id) {
                     response.push(res);
                 }
             })
-        }catch(err) {}
+        } catch (err) {}
     }
 
     return (response.length > 0) ? response : false;
@@ -66,35 +82,68 @@ module.exports.getFromCache = async ({cacheName, param_id}) => {
 /**
  * 
  * @param {String} cacheName - Name of the cache 
- * @param {String} param_id - Value to get the right cacheValue
+ * @param {Array} param_id - [0] = guild_id, [1] = role_id
  * @param {String} updateVal - new Value to update the cache
  * @returns {}
  */
-module.exports.updateCache = async ({cacheName, param_id, updateVal = undefined, updateValName}) => {
-    if(!cacheName || !param_id || updateVal === undefined) return false;
-    
-        for(let i in this[cacheName]) {
-            if(this[cacheName][i].id === param_id || this[cacheName][i].role_id === param_id) {
+module.exports.updateCache = async ({
+    cacheName,
+    param_id,
+    updateVal = undefined,
+    updateValName
+}) => {
+    if (!cacheName || !param_id) return false;
 
-                if(typeof updateVal === 'object') {
-                    for (const [index, [key, value]] of Object.entries(Object.entries(updateVal))) {
-                        if(key === updateValName) {
-                            this[cacheName][i][key] = updateVal;
-                        }
+    for (let i in this[cacheName]) {
+        if (this[cacheName][i].id === param_id[0]) { // If both id's match
+
+            if (typeof updateVal === 'object' && updateVal !== undefined) {
+                for (const [index, [key, value]] of Object.entries(Object.entries(updateVal))) {
+                    if (key === updateValName) {
+                        this[cacheName][i][key] = updateVal;
                     }
-                }else {
-                    this[cacheName][i][updateValName] = updateVal;
-                }
+                    if(value === updateVal.role_id) { // hardcode for modroles
+                        this[cacheName][i] = updateVal;
+                    }
 
+                }
+            } else { // updateval is a string or undefined
+                if (updateVal === undefined) { // updateval is undefined
+                    if(updateValName === 'roles' || updateValName === 'role_id') { // hardcode for warnroles
+                        for(let r in this[cacheName][i][updateValName]) {
+                            if(this[cacheName][i][updateValName][r].role_id === param_id[1]) {
+                                delete this[cacheName][i][updateValName][r];
+                            }
+                        }
+                        this[cacheName][i][updateValName] = this[cacheName][i][updateValName].filter(Boolean);
+                    }
+
+                } else { // updateval is a string
+                    if(typeof this[cacheName][i][updateValName] === 'array') {
+                        this[cacheName][i][updateValName].push(updateVal);
+                    }
+                    else if(cacheName === 'xp') {
+                        this[cacheName][i][updateValName].find(x => x.user_id === param_id[1]).xp = updateVal;
+                    }else {
+                        console.log('7')
+                        this[cacheName][i][updateValName] = updateVal;
+                    }
+                }
             }
+
         }
+    }
 }
 
-module.exports.deleteFromCache = async ({cacheName, param_id, cachValueName}) => {
-    if(!cacheName || !param_id) return false;
+module.exports.deleteFromCache = async ({
+    cacheName,
+    param_id,
+    cachValueName
+}) => {
+    if (!cacheName || !param_id) return false;
 
-    for(let i in this[cacheName]) {
-        if(this[cacheName][i].id === param_id) {
+    for (let i in this[cacheName]) {
+        if (this[cacheName][i].id === param_id) {
             console.log(this[cacheName][i])
             delete this[cacheName][i].id;
             this[cacheName][i].filter(Boolean);

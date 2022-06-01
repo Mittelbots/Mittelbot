@@ -2,7 +2,7 @@ const { MessageEmbed } = require("discord.js");
 const database = require("../../../src/db/db");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getAllGuildIds } = require("../data/getAllGuildIds");
-
+const { getFromCache, addValueToCache, updateCache } = require('../cache/cache')
 
 /**
  * 
@@ -12,17 +12,51 @@ const { getAllGuildIds } = require("../data/getAllGuildIds");
 module.exports.gainXP = async function (message, newxp) {
     if(message.author.bot) return;
 
-    return await database.query(`SELECT xp FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [message.author.id]).then(async res => {
-        if(res.length > 0) {
-            return await res[0].xp;
-        }else {
-            database.query(`INSERT INTO ${message.guild.id}_guild_level (user_id, xp) VALUES (?, ?)`, [message.author.id, 10]);
-            return true;
-        }
-    }).catch(err => {
-        errorhandler({err: err, fatal: true})
-        return false;
+    const cache = await getFromCache({
+        cacheName: 'xp',
+        param_id: message.guild.id,
     });
+
+    if(cache[0].xp.length === 0) {
+        return await database.query(`SELECT xp, id, level_announce FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [message.author.id]).then(async res => {
+            if(res.length > 0) {       
+                await addValueToCache({
+                    cacheName: 'xp',
+                    param_id: message.guild.id,
+                    value: {
+                        user_id: message.author.id,
+                        xp: res[0].xp,
+                        id: res[0].id,
+                        level_announce: res[0].level_announce
+                    },
+                    valueName: 'xp'
+                })
+
+                return await res[0].xp;
+            }else {
+                database.query(`INSERT INTO ${message.guild.id}_guild_level (user_id, xp) VALUES (?, ?)`, [message.author.id, 10])
+                    .then(async res => {
+                        await addValueToCache({
+                            cacheName: 'xp',
+                            param_id: message.guild.id,
+                            value: {
+                                user_id: message.author.id,
+                                id: res.insertId,
+                                xp: 10,
+                                level_announce: '0'
+                            },
+                            valueName: 'xp'
+                        })
+                    })
+                return true;
+            }
+        }).catch(err => {
+            errorhandler({err: err, fatal: true})
+            return false;
+        });
+    }else {
+        return cache[0].xp.find(x => x.user_id === message.author.id).xp;
+    }
 }
 
 /**
@@ -40,7 +74,15 @@ module.exports.generateXP = function (currentxp) {
 
 module.exports.updateXP = async function (message, newxp) {
     return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ? WHERE user_id = ?`, [newxp, message.author.id])
-        .then(() => {return true;})
+        .then((res) => {
+            updateCache({
+                cacheName: 'xp',
+                param_id: [message.guild.id, message.author.id],
+                updateVal: newxp,
+                updateValName: 'xp'
+            })
+            return true;
+        })
         .catch(err => {
             errorhandler({err: err, fatal: true})
             return false;

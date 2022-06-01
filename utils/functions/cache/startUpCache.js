@@ -1,6 +1,6 @@
 const { getAllConfig } = require("../data/getConfig");
 const { getAllModroles } = require("../data/getModroles");
-const { getAllJoinroles } = require("../data/getJoinroles");
+const { getAllJoinroles } = require("../data/joinroles");
 const { getAllLogs } = require('../data/getLogs');
 const { addToCache } = require("./cache");
 const { getAllXP } = require("../levelsystem/levelsystemAPI");
@@ -70,7 +70,7 @@ module.exports.startUpCache = async () => {
                 name: "joinroles",
                 data: {
                     id: guildJoinroles[i].guild_id,
-                    role_id: (typeof guildJoinroles[i].joinroles === "object") ? guildJoinroles[i].joinroles : '',
+                    role_id: (typeof guildJoinroles[i].joinroles === "object") ? guildJoinroles[i].joinroles : [],
                 }
             }
         });
@@ -125,7 +125,7 @@ module.exports.startUpCache = async () => {
                 name: "warnroles",
                 data: {
                     id: guildWarnRoles[i].guild_id,
-                    roles: (typeof guildWarnRoles[i].warnroles === "object") ? guildWarnRoles[i].warnroles : '',
+                    roles: (typeof guildWarnRoles[i].warnroles === "object") ? guildWarnRoles[i].warnroles : [],
                 }
             }
         });

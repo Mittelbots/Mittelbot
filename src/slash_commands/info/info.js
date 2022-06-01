@@ -65,14 +65,19 @@ module.exports.run = async ({main_interaction, bot}) => {
             return false
         })
     }
-
+    var dc_joinedAt;
+    try {
+        dc_joinedAt = new Intl.DateTimeFormat('de-DE').format(server.members.cache.find(member => member.id === user.id).joinedAt) + `\n<t:${convertDateToDiscordTimestamp(server.members.cache.find(member => member.id === user.id).joinedAt)}:R>`;
+    }catch(err) {
+        dc_joinedAt = 'Not in this server';
+    }
     
     const memberInfoEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`**Memberinfos - ${user.username}#${user.discriminator}**`)
         .addField(`Tag/ID: `, `<@${user.id}>/${user.id}`)
         .addField(`Created at`, `${new Intl.DateTimeFormat('de-DE').format(user.createdAt)} \n<t:${convertDateToDiscordTimestamp(user.createdAt)}:R>`, true)
-        .addField(`Last Joined at`, `${new Intl.DateTimeFormat('de-DE').format(server.members.cache.find(member => member.id === user.id).joinedAt)} \n<t:${convertDateToDiscordTimestamp(server.members.cache.find(member => member.id === user.id).joinedAt)}:R>`, true)
+        .addField(`Last Joined at`, dc_joinedAt, true)
         .addField(`First Joined at`, `${(!joined_at) ? 'Not saved in Database' : new Intl.DateTimeFormat('de-DE').format(new Date(joined_at.slice(0,9)))} ${(joined_at) ? ` \n<t:${Math.floor(new Date(joined_at.slice(0,9))/1000)}:R>` : ''}`, true)
         .addField(`Roles`, `${userRole}`)
         .addField('\u200B', '\u200B')
