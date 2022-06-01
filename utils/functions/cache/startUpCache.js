@@ -1,10 +1,12 @@
-const { getAllConfig } = require("../getData/getConfig");
-const { getAllModroles } = require("../getData/getModroles");
-const { getAllJoinroles } = require("../getData/getJoinroles");
-const { getAllLogs } = require('../getData/getLogs');
-const { addToCache, memberInfo } = require("./cache");
+const { getAllConfig } = require("../data/getConfig");
+const { getAllModroles } = require("../data/getModroles");
+const { getAllJoinroles } = require("../data/joinroles");
+const { getAllLogs } = require('../data/getLogs');
+const { addToCache } = require("./cache");
 const { getAllXP } = require("../levelsystem/levelsystemAPI");
-const { getAllMemberInfo } = require('../getData/getMemberInfo');
+const { getAllMemberInfo } = require('../data/getMemberInfo');
+const { getAllWarnroles } = require("../data/warnroles");
+const { getFromCache } = require('./cache');
 
 module.exports.startUpCache = async () => {
 
@@ -20,26 +22,27 @@ module.exports.startUpCache = async () => {
     const guildLogs = await getAllLogs();
     const guildXp = await getAllXP();
     const guildMemberInfo = await getAllMemberInfo();
+    const guildWarnRoles = await getAllWarnroles();
 
     console.log('✅ Data collected...');
 
     console.log('🕐Adding to cache...');
 
     for(let i in guildConfigs) {
-        if(!guildConfigs[i] || !guildConfigs[i][0].guild_id) continue;
+        if(!guildConfigs[i] || !guildConfigs[i].guild_id) continue;
         await addToCache({
             value: {
                 name: "config",
                 data: {
-                    id: guildConfigs[i][0].guild_id,
-                    prefix: guildConfigs[i][0].prefix,
-                    welcome_channel: guildConfigs[i][0].welcome_channel,
-                    cooldown: guildConfigs[i][0].cooldown,
-                    deleteModCommandAfterUsage: guildConfigs[i][0].deleteModCommandAfterUsage,
-                    deleeteCommandAfterUsage: guildConfigs[i][0].deleeteCommandAfterUsage,
-                    levelsettings: guildConfigs[i][0].levelsettings,
-                    translate_channel: guildConfigs[i][0].translate_channel,
-                    translate_language: guildConfigs[i][0].translate_language,
+                    id: guildConfigs[i].guild_id,
+                    prefix: guildConfigs[i].prefix,
+                    welcome_channel: guildConfigs[i].welcome_channel,
+                    cooldown: guildConfigs[i].cooldown,
+                    deleteModCommandAfterUsage: guildConfigs[i].deleteModCommandAfterUsage,
+                    deleteCommandAfterUsage: guildConfigs[i].deleteCommandAfterUsage,
+                    levelsettings: guildConfigs[i].levelsettings,
+                    translate_channel: guildConfigs[i].translate_channel,
+                    translate_language: guildConfigs[i].translate_language,
                 }
             }
         });
@@ -67,7 +70,7 @@ module.exports.startUpCache = async () => {
                 name: "joinroles",
                 data: {
                     id: guildJoinroles[i].guild_id,
-                    role_id: (typeof guildJoinroles[i].joinroles === "object") ? guildJoinroles[i].joinroles[0].role_id : '',
+                    role_id: (typeof guildJoinroles[i].joinroles === "object") ? guildJoinroles[i].joinroles : [],
                 }
             }
         });
@@ -80,7 +83,7 @@ module.exports.startUpCache = async () => {
                 name: "logs",
                 data: {
                     id: guildLogs[i].guild_id,
-                    audit_log: guildLogs[i].logs.audit_log,
+                    auditlog: guildLogs[i].logs.auditlog,
                     messagelog: guildLogs[i].logs.messagelog,
                     modlog: guildLogs[i].logs.modlog,
                 }
@@ -115,6 +118,19 @@ module.exports.startUpCache = async () => {
         });
     }
 
+    for(let i in guildWarnRoles) {
+        if(!guildWarnRoles[i]) continue;
+        await addToCache({
+            value: {
+                name: "warnroles",
+                data: {
+                    id: guildWarnRoles[i].guild_id,
+                    roles: (typeof guildWarnRoles[i].warnroles === "object") ? guildWarnRoles[i].warnroles : [],
+                }
+            }
+        });
+    }
+    
     console.log('✅ Everything is in cache...');
     console.log('----------------------------------------');
 }

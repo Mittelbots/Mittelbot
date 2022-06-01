@@ -7,7 +7,6 @@ const { saveAllRoles } = require("../utils/functions/roles/saveAllRoles");
 async function guildMemberRemove(member) {
     database.query(`SELECT * FROM ${member.guild.id}_guild_member_info WHERE user_id = ?`, [member.user.id]).then(async res => {
       if(await res.length == 0) {
-        console.log('1')
         database.query(`INSERT INTO ${member.guild.id}_guild_member_info (user_id, member_roles) VALUES (?, ?)`, [member.user.id, JSON.stringify(await getAllRoles(member)) ]).catch(err => {
           if(config.debug == 'true') console.log(err)
           return log.fatal(err);

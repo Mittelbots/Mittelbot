@@ -13,6 +13,7 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { insertPermsToModroles, deletePermsFromModroles, updatePermsFromModroles } = require('../../../utils/functions/insertDataToDatabase');
 const database = require('../../db/db');
+const { getFromCache, addToCache } = require('../../../utils/functions/cache/cache');
 
 module.exports.run = async (bot, message, args) => {
     if (config.deleteModCommandsAfterUsage == 'true') {
@@ -56,17 +57,43 @@ module.exports.run = async (bot, message, args) => {
 
         args[1] = removeMention(args[1])
 
-        await database.query(`SELECT * FROM ${message.guild.id}_guild_modroles WHERE role_id = ?`, [args[1]]).then(async res => {
-            if(await res.length > 0) {
-                roleid = await res[0].role_id;
-                db_isadmin = await res[0].isadmin
-                db_ismod = await res[0].ismod
-                db_ishelper = await res[0].ishelper
-                status = true;
-            }
-        }).catch(err => {
-            return errorhandler({err, fatal: true});
+        const cache = await getFromCache({
+            cacheName: 'modroles',
+            param_id: message.guild.id
         });
+
+        if(!cache) {
+            await addToCache({
+                value: {
+                    name: "joinroles",
+                    data: {
+                        id: message.guild.id,
+                        role_id: []
+                    }
+                }
+            });
+            await database.query(`SELECT * FROM ${message.guild.id}_guild_modroles WHERE role_id = ?`, [args[1]]).then(async res => {
+                if(await res.length > 0) {
+                    roleid = await res[0].role_id;
+                    db_isadmin = await res[0].isadmin
+                    db_ismod = await res[0].ismod
+                    db_ishelper = await res[0].ishelper
+                    status = true;
+                }
+            }).catch(err => {
+                return errorhandler({err, fatal: true});
+            });
+        }else {
+            for(let i in cache[0].modroles) {
+                if(cache[0].modroles[i].role_id === args[1]) {
+                    roleid = cache[0].modroles[i].role_id;
+                    db_isadmin = cache[0].modroles[i].isadmin
+                    db_ismod = cache[0].modroles[i].ismod
+                    db_ishelper = cache[0].modroles[i].ishelper
+                    status = true;
+                }
+            }
+        }
         
         if(roleid == null) value = removeMention(value);
         else value = roleid;
