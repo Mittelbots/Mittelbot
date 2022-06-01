@@ -52,7 +52,7 @@ const { handleUploads } = require("./src/events/notfifier/yt_notifier");
 const { startUpCache } = require("./utils/functions/cache/startUpCache");
 
 const bot = new Discord.Client({
-  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES"],
+  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
   makeCache: Discord.Options.cacheWithLimits({
     MessageManager: 10,
     PresenceManager: 0,
