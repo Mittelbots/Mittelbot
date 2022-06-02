@@ -39,7 +39,10 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
                 await privateModResponse(user, config.defaultModTypes.mute, reason, time, bot, guild.name);
                 const p_response = await publicModResponses(config.defaultModTypes.mute, mod, user.id, reason, time, bot);
 
-                return p_response;
+                return {
+                    error: false,
+                    message: p_response
+                }
 
             } catch (err) {
                 errorhandler({err, fatal: true});

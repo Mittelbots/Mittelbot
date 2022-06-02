@@ -31,7 +31,9 @@ module.exports.run = async ({main_interaction, bot}) => {
         ephemeral: true
     }).catch(err => {});
     
-    if(await isMuted({user, guild: main_interaction.guild, bot})) {
+    const isUserMuted = await isMuted({user, guild: main_interaction.guild, bot})
+
+    if(isUserMuted.isMuted) {
         return main_interaction.reply({
             content: 'This user is already muted!',
             ephemeral: true

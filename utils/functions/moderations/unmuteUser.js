@@ -22,8 +22,10 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
 
     let pass = false;
 
-    guild_user.roles.remove([MutedRole])
-    .then(() => pass = true)
+    await guild_user.roles.remove(MutedRole)
+    .then(() => {
+        pass = true
+    })
     .catch(err => {
         errorhandler({err});
         return {
@@ -34,7 +36,17 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
 
     const roles = await database.query('SELECT user_roles FROM open_infractions WHERE user_id = ? AND mute = ?', [user.id, 1])
         .then(res => {
-            return res[0].user_roles
+            if(res.length > 0) {
+                return {
+                    error: false,
+                    roles: res[0].user_roles
+                }
+            }else {
+                return {
+                    error: true,
+                    roles: null
+                }
+            }
         })
         .catch(err => {
             errorhandler({err, fatal: true})
@@ -45,7 +57,7 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
         })
 
     if(!roles.error) {
-        await giveAllRoles(user.id, bot.guilds.cache.get(guild.id), JSON.parse(roles))
+        await giveAllRoles(user.id, bot.guilds.cache.get(guild.id), JSON.parse(roles.roles))
     }
 
     if(pass) {
@@ -53,7 +65,7 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
         await privateModResponse(user, config.defaultModTypes.unmute, reason, null, bot, guild.name);
         const p_response = await publicModResponses(config.defaultModTypes.unmute, mod, user.id, reason, null, bot);
 
-        await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [user.id]).then(async res => {
+        database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [user.id]).then(async res => {
             if(res.length > 0) {
                 let user_roles = await JSON.parse(await res[0].user_roles);
                 for (let x in user_roles) {
