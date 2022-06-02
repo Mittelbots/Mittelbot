@@ -66,7 +66,7 @@ module.exports.getMemberInfoById = async ({guild_id, user_id}) => {
 }
 
 module.exports.updateMemberInfoById = async ({guild_id, user_id, member_roles = [], user_joined = null}) => {
-    return await database.query(`UPDATE ${guild_id}_guild_member_info SET member_roles = ?, user_joined = ? WHERE user_id = ?`, [member_roles, user_joined, user_id])
+    return await database.query(`UPDATE ${guild_id}_guild_member_info SET member_roles = ?, user_joined = ? WHERE user_id = ?`, [JSON.stringify(member_roles), user_joined, user_id])
     .then(() => {
         return true;
     })
