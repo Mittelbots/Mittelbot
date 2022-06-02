@@ -5,7 +5,7 @@ const config = require('../../../src/assets/json/_config/config.json');
 
 
 async function isMuted({user, guild, bot}) {
-    database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = ? AND guild_id = ?`, [user.id, 1, guild.id]).then(async result => {
+    return await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = ? AND guild_id = ?`, [user.id, 1, guild.id]).then(async result => {
         let MutedRole = await getMutedRole(bot.guilds.cache.get(guild.id))
 
         if(MutedRole.error) return MutedRole;
