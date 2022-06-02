@@ -25,6 +25,7 @@ async function hasPermission(message, adminOnly, modOnly) {
                 ishelper = res[i].ishelper;
 
                 hasPermission = checkPerms({role_id, isadmin, ismod, ishelper});
+                if(hasPermission) break;
             }
             return hasPermission;
         }).catch(err => console.log(err))
@@ -37,6 +38,7 @@ async function hasPermission(message, adminOnly, modOnly) {
             ishelper = cache[0].modroles[i].ishelper;
 
             hasPermission = checkPerms({role_id, isadmin, ismod, ishelper});
+            if(hasPermission) break;
         }
         return hasPermission;
     }
