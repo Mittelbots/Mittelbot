@@ -30,8 +30,6 @@ module.exports.getMemberInfo = async ({guild_id}) => {
         guild_id: guild_id,
     });
 
-    console.log(cache);
-
     return await database.query(`SELECT * FROM ${guild_id}_guild_member_info`)
     .then(res => {
         if(res.length > 0) {
