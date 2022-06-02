@@ -8,7 +8,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         .setColor("#0099ff")
         .setTitle(`**Click to view ${user.username} Avatar**`)
         .setURL(`${user.displayAvatarURL()}`)
-        .setImage(user.displayAvatarURL({ format: "png", dynamic: true }))
+        .setImage(user.displayAvatarURL({ format: "png"}) + '?size=1024')
         .setTimestamp()
     return main_interaction.reply({
         embeds: [newMessageEmbed]

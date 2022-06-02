@@ -15,12 +15,12 @@ module.exports.run = async ({main_interaction, bot}) => {
             ephemeral: true
         }).catch(err => {})
     }
-    // else if(user.bot) {
-    //     return main_interaction.reply({
-    //         content: `You can't ship with bots!`,
-    //         ephemeral: true
-    //     }).catch(err => {})
-    // }
+    else if(user.bot) {
+        return main_interaction.reply({
+            content: `You can't ship with bots!`,
+            ephemeral: true
+        }).catch(err => {})
+    }
 
     await main_interaction.reply({
         files: [new MessageAttachment('https://media.tenor.com/images/c2f392370c8b20cc99d04148c7b6bebc/tenor.gif')]

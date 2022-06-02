@@ -171,8 +171,6 @@ module.exports.updateWarnroles = async ({guild_id, roles, message}) => {
                 cacheName: 'warnroles',
                 param_id: guild_id
             })
-
-            console.log(cache[0].roles)
         }
     }
     return message.reply(`Warn roles successfully saved!`).catch(err => {});

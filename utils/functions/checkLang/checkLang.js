@@ -20,5 +20,3 @@ module.exports.checkLang = async (message) => {
         return false;
     }else return true;
 }
-
-console.log();
