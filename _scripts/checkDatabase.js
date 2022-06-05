@@ -44,10 +44,10 @@ async function main() {
                 });
 
             for(let c in tables.dynamical[t]) {
-                await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} ADD COLUMN ${tables.dynamical[t][c].name} ${tables.dynamical[t][c].val} ${(tables.dynamical[t][c].default) ? 'DEFAULT '+ tables.dynamical[t][c].default : ''} `)
+                await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} ADD COLUMN ${tables.dynamical[t][c].name} ${tables.dynamical[t][c].val} ${(tables.dynamical[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables.dynamical[t][c].default) : ''} `)
                     .then(() => col_count++)
                     .catch(err => {
-                        //console.log(err)
+                        //console.log(err)  
                     });
             }
         }

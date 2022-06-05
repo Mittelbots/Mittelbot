@@ -234,7 +234,7 @@
             },
             "disabled_modules": {
                 "name": "disabled_modules",
-                "val": "LONGTEXT",
+                "val": "VARCHAR(255)",
                 "default": "[]"
             }
         },
