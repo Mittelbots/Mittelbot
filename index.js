@@ -123,8 +123,10 @@ bot.once('ready', async () => {
   handleUploads({bot});
   
   if(config.debug == 'false') {
-    await delay(60000);
-    db_backup();
+    setTimeout(() => {
+      db_backup();
+    }, 60000);
+
     setTimeout(() => {
         db_backup();
     }, 86400000); // 24h
