@@ -67,11 +67,10 @@ module.exports.run = async ({main_interaction, bot}) => {
         .addField(`Members`, `${server.members.cache.size}`, true)
         .addField(`Roles`, `${server.roles.cache.size}`, true)
         .addField(`Created At`, `${new Intl.DateTimeFormat('de-DE').format(server.createdAt)} \n<t:${convertDateToDiscordTimestamp(server.createdAt)}:R>`, true)
-        .addField('\u200B', '\u200B')
         .addField('Bot Uptime', format(uptime))
-        .addField('Memory usage', os.totalmem())
+        .addField('Memory usage', JSON.stringify(os.totalmem()))
+        .addField('\u200B', '\u200B')
         .setTimestamp();
-
     if(tag) {
         var joined_at = await database.query(`SELECT user_joined FROM ${server.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
             if(res.length === 0) return false;
