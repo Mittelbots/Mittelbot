@@ -7,6 +7,7 @@ const {
 const database = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
+const os = require('os');
 
 const config = require('../../../src/assets/json/_config/config.json');
 
@@ -42,6 +43,19 @@ module.exports.run = async ({main_interaction, bot}) => {
         return Math.floor(converteDate/1000);
     }
 
+    function format(seconds){
+        function pad(s){
+          return (s < 10 ? '0' : '') + s;
+        }
+        var hours = Math.floor(seconds / (60*60));
+        var minutes = Math.floor(seconds % (60*60) / 60);
+        var seconds = Math.floor(seconds % 60);
+      
+        return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+      }
+      
+      var uptime = process.uptime();
+
     const serverInfoEmbed = new MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`**Serverinfos - ${server.name}**`)
@@ -54,6 +68,8 @@ module.exports.run = async ({main_interaction, bot}) => {
         .addField(`Roles`, `${server.roles.cache.size}`, true)
         .addField(`Created At`, `${new Intl.DateTimeFormat('de-DE').format(server.createdAt)} \n<t:${convertDateToDiscordTimestamp(server.createdAt)}:R>`, true)
         .addField('\u200B', '\u200B')
+        .addField('Bot Uptime', format(uptime))
+        .addField('Memory usage', os.totalmem())
         .setTimestamp();
 
     if(tag) {
