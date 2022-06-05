@@ -16,7 +16,8 @@ module.exports.gainXP = async function (message, newxp) {
         cacheName: 'xp',
         param_id: message.guild.id,
     });
-
+    if(!cache) return false;
+    
     if(cache[0].xp.length === 0) {
         return await database.query(`SELECT xp, id, level_announce FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [message.author.id]).then(async res => {
             if(res.length > 0) {       
