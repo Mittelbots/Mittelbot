@@ -85,7 +85,7 @@ bot.on("messageCreate", async message => {
   return await messageCreate(message, bot);
 });
 
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', async err => {
   errorhandler({err, fatal: true})
 
   errorhandler({err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`, fatal: true});
@@ -98,7 +98,7 @@ process.on('unhandledRejection', err => {
   process.exit()
 });
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', async err => {
   errorhandler({err:'----BOT CRASHED-----', fatal: true});
   errorhandler({err, fatal: true})
 
