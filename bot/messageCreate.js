@@ -86,16 +86,25 @@ async function messageCreate(message, bot) {
             }); //? CURRENTLY ONLY ON GUSTIXA SERVER
         }
 
-        if (!levelCooldown.has(message.author.id)) {
-            levelSystem.run(message, bot);
+        var {disabled_modules} = await getConfig({
+            guild_id: main_interaction.guild.id,
+        });
+    
+        disabled_modules = JSON.parse(disabled_modules);
 
-            if (message.author.id !== config.Bot_Owner_ID) {
-                //levelCooldown.add(message.author.id);
+        if(disabled_modules.indexOf('level') > -1) return;
+        else {
+            if (!levelCooldown.has(message.author.id)) {
+                levelSystem.run(message, bot);
+
+                if (message.author.id !== config.Bot_Owner_ID) {
+                    //levelCooldown.add(message.author.id);
+                }
+            } else {
+                setTimeout(() => {
+                    levelCooldown.delete(message.author.id)
+                }, lvlconfig.timeout);
             }
-        } else {
-            setTimeout(() => {
-                levelCooldown.delete(message.author.id)
-            }, lvlconfig.timeout);
         }
     }
 }
