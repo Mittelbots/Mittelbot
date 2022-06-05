@@ -16,7 +16,6 @@ module.exports.gainXP = async function (message, newxp) {
         cacheName: 'xp',
         param_id: message.guild.id,
     });
-    console.log(message.guild.id)
     if(!cache) return false;
     
     if(cache[0].xp.length === 0) {

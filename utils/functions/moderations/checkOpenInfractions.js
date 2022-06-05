@@ -44,6 +44,7 @@ async function isMuted({user, guild, bot}) {
 }
 
 async function isOnBanList({user, guild}) {
+    console.log(guild)
     return guild.bans.fetch()
         .then(async bans => {
             let list = bans.filter(list_user => list_user.user.id === user.id);

@@ -35,7 +35,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         }).catch(err => {});
     }
 
-    const unbanned = await unbanUser({user, bot, mod: main_interaction.user, reason, guild: main_interaction.guild});
+    const unbanned = await unbanUser({user, bot: bot.user, mod: main_interaction.user, reason, guild: main_interaction.guild});
 
     if (unbanned.error) {
         return main_interaction.reply({
