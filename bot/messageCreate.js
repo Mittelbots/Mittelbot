@@ -87,7 +87,7 @@ async function messageCreate(message, bot) {
         }
 
         var {disabled_modules} = await getConfig({
-            guild_id: main_interaction.guild.id,
+            guild_id: message.guild.id,
         });
     
         disabled_modules = JSON.parse(disabled_modules);
