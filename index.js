@@ -117,12 +117,12 @@ bot.once('ready', async () => {
   setActivity();
   handleUploads({bot});
   
-  if(config.debug == 'false') {
-    db_backup();
-    setTimeout(() => {
-        db_backup();
-    }, 86400000); // 24h
-  }
+  // if(config.debug == 'false') {
+  //   db_backup();
+  //   setTimeout(() => {
+  //       db_backup();
+  //   }, 86400000); // 24h
+  // }
 
   
   bot.on('interactionCreate', async (main_interaction) => {
