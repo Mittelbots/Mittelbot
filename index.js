@@ -53,7 +53,7 @@ const { startUpCache } = require("./utils/functions/cache/startUpCache");
 const { delay } = require("./utils/functions/delay/delay");
 
 const bot = new Discord.Client({
-  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
+  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS", "GUILD_BANS"],
   makeCache: Discord.Options.cacheWithLimits({
     MessageManager: 10,
     PresenceManager: 0,

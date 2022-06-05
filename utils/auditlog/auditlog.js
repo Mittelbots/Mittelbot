@@ -2,6 +2,9 @@ const {MessageEmbed} = require('discord.js');
 const config = require('../../src/assets/json/_config/config.json');
 const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
 const database = require('../../src/db/db');
+const { isOnBanList } = require('../functions/moderations/checkOpenInfractions');
+const { getFromCache } = require('../functions/cache/cache');
+const { setNewModLogMessage } = require('../modlog/modlog');
 
 
 var c = config.auditTypes;
@@ -38,10 +41,13 @@ function auditLog(bot) {
     //bot.on(c.roleupdate, (oldrole, newrole) => sendToAudit(bot, c.roleupdate, oldrole, newrole));
 
     bot.on(c.roledelete, role => sendToAudit(bot, c.roledelete, role));
+
+    bot.on(c.guildBanAdd, (guild, user) => sendToAudit(bot, c.guildBanAdd, guild, user));
+
+    bot.on(c.guildBanRemove, (guild, user) => sendToAudit(bot, c.guildBanRemove, guild, user));
 }
 
-function sendToAudit(bot, type, content1, content2) {
-    
+async function sendToAudit(bot, type, content1, content2) {
     if(ignorechannel.c.indexOf(content1.channelId) !== -1) return;
 
     var Message = new MessageEmbed()
@@ -159,7 +165,18 @@ function sendToAudit(bot, type, content1, content2) {
             Message.setDescription(`**Role ${content1} deleted**`);
             break;
         
-
+        case c.guildBanAdd:
+            let banlist = await isOnBanList({
+                user: content1.user, 
+                guild: content1.guild,
+            });
+            setNewModLogMessage(bot, config.defaultModTypes.ban, null, content1.user, banlist[1], null, content1.guild.id);
+            break;
+        
+        case c.guildBanRemove:
+            setNewModLogMessage(bot, config.defaultModTypes.unban, null, content1.user, null, null, content1.guild.id);
+            break;
+        
     }
 
     if(type === c.debug) {
@@ -172,6 +189,21 @@ function sendToAudit(bot, type, content1, content2) {
         return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.warnchannel).send({embeds: [Message]}).catch(err => {});
     }else if(type === c.reconnecting){
         return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.reconnectingchannel).send({embeds: [Message]}).catch(err => {});
+    }
+
+    const cache = await getFromCache({
+        cacheName: "logs",
+        param_id: gid
+    });
+
+    if(cache) {
+        if(type === c.messageupdate && cache[0].messagelog !== null) {
+            return bot.channels.cache.get(cache[0].messagelog).send({embeds: [Message]}).catch(err => {});
+        }else {
+            if(cache[0].auditlog !== null) {
+                return bot.channels.cache.get(cache[0].auditlog).send({embeds: [Message]}).catch(err => {});
+            }
+        }
     }
 
     database.query(`SELECT * FROM ${gid}_guild_logs`).then(res => {
