@@ -6,7 +6,9 @@ const {
     getAllGuildIds
 } = require("./getAllGuildIds");
 const {
-    getFromCache
+    getFromCache,
+    updateCache,
+    config
 } = require('../cache/cache');
 
 module.exports.getAllConfig = async () => {
@@ -30,11 +32,10 @@ module.exports.getConfig = async ({
     guild_id
 }) => {
 
-    const cache = getFromCache({
+    const cache = await getFromCache({
         cacheName: "config",
         param_id: guild_id
     });
-
     if (cache.length > 0) {
         return cache[0];
     }
@@ -57,9 +58,21 @@ module.exports.getConfig = async ({
 }
 
 module.exports.updateConfig = async ({guild_id, value, valueName}) => {
-    return await database.query(`UPDATE ${guild_id}_config SET ${valueName} = ?`, [value]).catch(err => {
-        return errorhandler({err, fatal: true});
-    });
+
+    for(let i in config) {
+        if(config[i].id === guild_id) {
+            config[i][valueName] = value;
+        }
+    }
+
+    return await database.query(`UPDATE ${guild_id}_config SET ${valueName} = ?`, [value])
+        .then(() => {
+            return true;
+        })
+        .catch(err => {
+            errorhandler({err, fatal: true});
+            return false;
+        });
 }
 
 

@@ -25,9 +25,9 @@ async function guildCreate(guild, bot) {
   });
 
   await database.query(`CREATE TABLE ${guild.id}_guild_logs LIKE _guild_logs_template`).then(async () => {
-    await database.query(`INSERT INTO ${guild.id}_guild_logs (id) VALUES (?)`, [1]).catch(err => {
-      log.fatal(err)
-    });
+    // await database.query(`INSERT INTO ${guild.id}_guild_logs (id) VALUES (?)`, [1]).catch(err => {
+    //   log.fatal(err)
+    // });
   }).catch(err => {
     log.fatal(err)
   });

@@ -43,6 +43,7 @@ module.exports.startUpCache = async () => {
                     levelsettings: guildConfigs[i].levelsettings,
                     translate_channel: guildConfigs[i].translate_channel,
                     translate_language: guildConfigs[i].translate_language,
+                    disabled_modules: guildConfigs[i].disabled_modules,
                 }
             }
         });

@@ -231,6 +231,11 @@
             "translate_language": {
                 "name": "translate_language",
                 "val": "VARCHAR(2)"
+            },
+            "disabled_modules": {
+                "name": "disabled_modules",
+                "val": "LONGTEXT",
+                "default": "[]"
             }
         },
         "_guild_joinroles": {
@@ -246,7 +251,8 @@
         "_guild_logs": {
             "id": {
                 "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+                "val": "INT AUTO_INCREMENT PRIMARY KEY",
+                "default": "1"
             },
             "auditlog": {
                 "name": "auditlog",
