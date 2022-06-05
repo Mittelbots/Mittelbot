@@ -57,7 +57,8 @@ module.exports.gainXP = async function (message, newxp) {
             return false;
         });
     }else {
-        return cache[0].xp.find(x => x.user_id === message.author.id).xp;
+        const user = cache[0].xp.find(x => x.user_id === message.author.id);
+        return user.xp;
     }
 }
 
