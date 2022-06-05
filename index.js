@@ -50,6 +50,7 @@ const { createSlashCommands } = require("./utils/functions/createSlashCommands/c
 const { handleSlashCommands } = require("./src/slash_commands");
 const { handleUploads } = require("./src/events/notfifier/yt_notifier");
 const { startUpCache } = require("./utils/functions/cache/startUpCache");
+const { delay } = require("./utils/functions/delay/delay");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS"],
@@ -88,6 +89,8 @@ process.on('unhandledRejection', err => {
   errorhandler({err, fatal: true})
 
   errorhandler({err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`, fatal: true});
+
+  await delay(5000);
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]
@@ -100,6 +103,8 @@ process.on('uncaughtException', err => {
   errorhandler({err, fatal: true})
 
   errorhandler({err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`, fatal: true});
+
+  await delay(5000);
   spawn(process.argv[1], process.argv.slice(2), {
       detached: true,
       stdio: ['ignore', null, null]
@@ -117,12 +122,13 @@ bot.once('ready', async () => {
   setActivity();
   handleUploads({bot});
   
-  // if(config.debug == 'false') {
-  //   db_backup();
-  //   setTimeout(() => {
-  //       db_backup();
-  //   }, 86400000); // 24h
-  // }
+  if(config.debug == 'false') {
+    await delay(60000);
+    db_backup();
+    setTimeout(() => {
+        db_backup();
+    }, 86400000); // 24h
+  }
 
   
   bot.on('interactionCreate', async (main_interaction) => {
