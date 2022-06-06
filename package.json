@@ -22,7 +22,7 @@
   "author": "BlackDayz",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/builders": "^0.13.0",
+    "@discordjs/builders": "^0.14.0",
     "@discordjs/rest": "^0.4.1",
     "@napi-rs/canvas": "^0.1.22",
     "axios": "^0.27.2",
