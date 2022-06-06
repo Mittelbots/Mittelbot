@@ -30,8 +30,16 @@ async function messageCreate(message, bot) {
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
 
+    var {disabled_modules} = await getConfig({
+        guild_id: message.guild.id,
+    });
 
-    await checkForScam(message, bot, config, log);
+    disabled_modules = JSON.parse(disabled_modules);
+
+    if(disabled_modules.indexOf('scamdetection') > -1) return;
+    else {
+        await checkForScam(message, bot, config, log);
+    }
 
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
@@ -86,11 +94,7 @@ async function messageCreate(message, bot) {
             }); //? CURRENTLY ONLY ON GUSTIXA SERVER
         }
 
-        var {disabled_modules} = await getConfig({
-            guild_id: message.guild.id,
-        });
-    
-        disabled_modules = JSON.parse(disabled_modules);
+
 
         if(disabled_modules.indexOf('level') > -1) return;
         else {
