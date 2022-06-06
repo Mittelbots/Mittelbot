@@ -41,7 +41,8 @@ module.exports.startUpCache = async () => {
                     deleteModCommandAfterUsage: guildConfigs[i].deleteModCommandAfterUsage,
                     deleteCommandAfterUsage: guildConfigs[i].deleteCommandAfterUsage,
                     levelsettings: guildConfigs[i].levelsettings,
-                    translate_channel: guildConfigs[i].translate_channel,
+                    translate_target: guildConfigs[i].translate_target,
+                    translate_log_channel: guildConfigs[i].translate_log_channel,
                     translate_language: guildConfigs[i].translate_language,
                     disabled_modules: guildConfigs[i].disabled_modules,
                 }

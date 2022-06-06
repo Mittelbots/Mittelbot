@@ -12,11 +12,10 @@ const {
 const {
     delay
 } = require('../utils/functions/delay/delay');
-
-const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
 const {
     translateMessage
-} = require('../utils/functions/checkLang/translateMessage');
+} = require('../utils/functions/data/translate');
+const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
 const {
     getConfig
 } = require('../utils/functions/data/getConfig');
@@ -36,10 +35,7 @@ async function messageCreate(message, bot) {
 
     disabled_modules = JSON.parse(disabled_modules);
 
-    if(disabled_modules.indexOf('scamdetection') > -1) return;
-    else {
-        await checkForScam(message, bot, config, log);
-    }
+    if(disabled_modules.indexOf('scamdetection') === -1) await checkForScam(message, bot, config, log);
 
     let messageArray = message.content.split(" ");
     let cmd = messageArray[0];
@@ -88,16 +84,16 @@ async function messageCreate(message, bot) {
         } else return;
 
     } else { //? NO COMMAND
-        if(message.guild.id === '967081567929380924' && message.channel.id === '978313607752335390') {
-            await translateMessage({
+        
+        if(disabled_modules.indexOf('autotranslate') === -1){
+            translateMessage({
                 message
-            }); //? CURRENTLY ONLY ON GUSTIXA SERVER
+            })
         }
 
 
 
-        if(disabled_modules.indexOf('level') > -1) return;
-        else {
+        if(disabled_modules.indexOf('level') === -1) {
             if (!levelCooldown.has(message.author.id)) {
                 levelSystem.run(message, bot);
 
