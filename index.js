@@ -36,6 +36,9 @@ const {
   guildMemberAdd
 } = require("./bot/guildMemberAdd");
 const {
+  interactionCreate
+} = require('./bot/interactionCreate');
+const {
   guildMemberRemove
 } = require("./bot/guildMemberRemove");
 const database = require("./src/db/db");
@@ -121,6 +124,9 @@ bot.once('ready', async () => {
   auditLog(bot);
   setActivity();
   handleUploads({bot});
+  interactionCreate({
+    bot
+  })
   
   if(config.debug == 'false') {
     setTimeout(() => {
@@ -133,14 +139,7 @@ bot.once('ready', async () => {
   }
 
   
-  bot.on('interactionCreate', async (main_interaction) => {
-    if(main_interaction.isCommand()) {
-        handleSlashCommands({
-            main_interaction: main_interaction,
-            bot: bot
-        })
-      }
-  });
+
 
   setInterval(() => {
     setActivity();
@@ -157,7 +156,7 @@ bot.once('ready', async () => {
     });
   }
 
-  console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server****`);
+  console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
 });
 
