@@ -75,6 +75,10 @@ module.exports.data = new SlashCommandBuilder()
                 name: 'Level',
                 value: 'level'
             })
+            .addChoices({
+                name: 'scamdetection',
+                value: 'scamdetection'
+            })
             .setRequired(true)
     )
     .addStringOption(option =>

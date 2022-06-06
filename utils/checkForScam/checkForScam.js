@@ -12,8 +12,8 @@ async function checkForScam(message, bot, config, log) {
 
     const advancedScamList = await database.query('SELECT link, whitelist_link FROM advancedScamList')
     .catch(err => {
-        return errorhandler({err, fatal: true});
-        return message.delete().catch(err => {return;});
+        errorhandler({err, fatal: true});
+        return message.delete().catch(err => {});
     });
 
     const whitelist_links = advancedScamList.map(link => link.whitelist_link).filter(Boolean)

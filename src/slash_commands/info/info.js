@@ -8,6 +8,8 @@ const database = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
 const os = require('os');
+const { version } = require('../../../package.json');
+var os_utils = require('os-utils');
 
 const config = require('../../../src/assets/json/_config/config.json');
 
@@ -67,8 +69,10 @@ module.exports.run = async ({main_interaction, bot}) => {
         .addField(`Members`, `${server.members.cache.size}`, true)
         .addField(`Roles`, `${server.roles.cache.size}`, true)
         .addField(`Created At`, `${new Intl.DateTimeFormat('de-DE').format(server.createdAt)} \n<t:${convertDateToDiscordTimestamp(server.createdAt)}:R>`, true)
-        .addField('Bot Uptime', format(uptime))
-        .addField('Memory usage', JSON.stringify(os.totalmem()))
+        .addField('BOT INFORMATIONS', 'Everything you need to know about the bot.')
+        .addField('Bot Uptime', format(uptime), true)
+        .addField('Memory usage', JSON.stringify(os.totalmem()), true)
+        .addField('Bot Version', version.toString(), true)
         .addField('\u200B', '\u200B')
         .setTimestamp();
     if(tag) {
