@@ -194,7 +194,8 @@
         "_config": {
             "id": {
                 "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+                "val": "INT AUTO_INCREMENT PRIMARY KEY",
+                "default": "1"
             },
             "welcome_channel": {
                 "name": "welcome_channel",
@@ -221,16 +222,16 @@
                 "val": "LONGTEXT"
             },
             "translate": {
-                "name": "translate",
-                "val": "INT(4)"
+                "name": "translate_target",
+                "val": "VARCHAR(255)"
             },
             "translate_channel": {
-                "name": "translate_channel",
+                "name": "translate_log_channel",
                 "val": "VARCHAR(255)"
             },
             "translate_language": {
                 "name": "translate_language",
-                "val": "VARCHAR(2)"
+                "val": "VARCHAR(6)"
             },
             "disabled_modules": {
                 "name": "disabled_modules",
