@@ -14,6 +14,7 @@ async function deleteEntries(infraction_id,) {
 }
 
 function checkTemproles(bot) {
+    console.log("🔎 CheckTemproles handler started");
     setInterval(() => {
         database.query('SELECT * FROM temproles').then(async results => {
             let done = 0;

@@ -23,6 +23,7 @@ async function deleteEntries(infraction) {
 }
 
 function checkInfractions(bot) {
+    console.log("🔎 CheckInfraction handler started");
     setInterval(async () => {
         await database.query(`SELECT * FROM open_infractions`).then(async results => {
             let done = 0;

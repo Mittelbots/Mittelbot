@@ -237,6 +237,14 @@
                 "name": "disabled_modules",
                 "val": "VARCHAR(255)",
                 "default": "[]"
+            },
+            "twitter_id": {
+                "name": "twitter_id",
+                "val": "VARCHAR(255)"
+            },
+            "twitter_channel": {
+                "name": "twitter_channel",
+                "val": "VARCHAR(255)"
             }
         },
         "_guild_joinroles": {
