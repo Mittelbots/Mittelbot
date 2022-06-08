@@ -7,13 +7,12 @@ const {
 const {
     MessageEmbed
 } = require("discord.js");
-const tables = require('../../db/table.json');
 
 module.exports.handleUploads = async ({
     bot
 }) => {
 
-    console.log("🔎 Uploads handler started");
+    console.log("🔎 Youtube upload handler started");
 
     setInterval(async () => {
         const uploads = await database.query(`SELECT * FROM guild_uploads`).then(async results => {

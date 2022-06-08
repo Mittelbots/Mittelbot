@@ -91,8 +91,6 @@ async function messageCreate(message, bot) {
             })
         }
 
-
-
         if(disabled_modules.indexOf('level') === -1) {
             if (!levelCooldown.has(message.author.id)) {
                 levelSystem.run(message, bot);

@@ -1,4 +1,5 @@
 const { handleSlashCommands } = require("../src/slash_commands");
+const { manageNewWelcomeSetting } = require("../utils/functions/data/welcomechannel");
 
 module.exports.interactionCreate = ({
     bot
@@ -9,6 +10,15 @@ module.exports.interactionCreate = ({
                 main_interaction,
                 bot
             })
+          }else {
+                await main_interaction.deferUpdate();
+              switch(main_interaction.customId) {
+                    case "welcomemessage":
+                        manageNewWelcomeSetting({
+                            main_interaction,
+                        })
+                    break;
+              }
           }
       });
 }

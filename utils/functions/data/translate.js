@@ -61,7 +61,7 @@ module.exports.translateMessage = async ({message}) => {
     }).then(res => {
         const log = res.translate_log_channel;
         if(message.channel.id === res.translate_target) {
-            translatte(message.content, {to: res.translate_language}).then(res => {
+            return translatte(message.content, {to: res.translate_language}).then(res => {
                 const channel = message.guild.channels.cache.find(c => c.id === log);
                 if(channel) {
                     channel.send(`${message.author} ${message.channel} | ${res.text}`).catch(err => {});
@@ -70,8 +70,6 @@ module.exports.translateMessage = async ({message}) => {
                 errorhandler({err: err, fatal: true});
             });
         }
-    }).catch(err => {
-        console.log(err)
-    })
+    }).catch(err => {})
 
 }

@@ -1,4 +1,3 @@
-const config = require('../src/assets/json/_config/config.json');
 const {
     giveAllRoles
 } = require("../utils/functions/roles/giveAllRoles");
@@ -7,10 +6,18 @@ const {
 } = require('../utils/functions/errorhandler/errorhandler');
 const database = require('../src/db/db');
 const { getJoinroles } = require('../utils/functions/data/joinroles');
-const { getConfig } = require('../utils/functions/data/getConfig');
 const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/data/getMemberInfo');
+const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
 
 async function guildMemberAdd(member, bot) {
+
+    sendWelcomeMessage({
+        guild_id: member.guild.id,
+        bot,
+        joined_user: member
+    }).catch(err => {
+        console.log(err);
+    })
 
     const memberInfo = await getMemberInfoById({
         guild_id: member.guild.id,
@@ -58,24 +65,6 @@ async function guildMemberAdd(member, bot) {
     }).catch(err => {
         return errorhandler({err, fatal: true})
     });
-
-    const guild_config = await getConfig({
-        guild_id: member.guild.id
-    });
-
-    if (!guild_config) {
-        return await message.channel.send(config.errormessages.general)
-            .then(async msg => {
-                await delay(5000);
-                msg.delete().catch(err => {});
-            }).catch(err => {});
-    }
-
-    const welcome_channel = guild_config.welcome_channel;
-    
-    if (welcome_channel !== null) {
-        bot.channels.cache.find(c => c.id === welcome_channel).send('Welcome ' + member.user.username)
-    }
 
     if(!member.user.bot) {
         const joinroles = await getJoinroles({

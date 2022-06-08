@@ -6,7 +6,15 @@
     "DEVELOPER_DISCORD_GUILD_ID": "",
     "defaultprefix": "!",
     "debug": "false",
+    "db_debug": "false",
     "ytkey": "",
+    "twitter": {
+        "consumer_key": "",
+        "consumer_secret": "",
+        "access_token": "",
+        "access_token_secret": ""
+    },
+    "google_translate_projectID": "",
     "defaultCooldown": {
         "format": "2000",
         "text": "2 seconds"
@@ -75,7 +83,9 @@
         "rolecreate": "roleCreate",
         "roledelete": "roleDelete",
         "roleupdate": "roleUpdate",
-        "warn": "warn"
+        "warn": "warn",
+        "guildBanAdd": "guildBanAdd",
+        "guildBanRemove": "guildBanRemove"
     },
     "icons": {
         "ban": "🔒",

@@ -188,6 +188,20 @@
                 "name": "info_channel_id",
                 "val": "VARCHAR(255)"
             }
+        },
+        "guild_config": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            },
+            "welcome_channel": {
+                "name": "welcome_channel",
+                "val": "LONGTEXT"
+            }
         }
     },
     "dynamical": {
@@ -237,6 +251,14 @@
                 "name": "disabled_modules",
                 "val": "VARCHAR(255)",
                 "default": "[]"
+            },
+            "twitter_id": {
+                "name": "twitter_id",
+                "val": "VARCHAR(255)"
+            },
+            "twitter_channel": {
+                "name": "twitter_channel",
+                "val": "VARCHAR(255)"
             }
         },
         "_guild_joinroles": {
