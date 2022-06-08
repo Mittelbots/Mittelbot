@@ -100,7 +100,7 @@
             "name": "Welcome Channel",
             "alias": "welcomechannel",
             "desc": "Setup a welcome channel to say welcome to everyone who join.",
-            "icon": "923231733309132830",
+            "icon": "960276994396925982",
             "colname": "welcome_channel",
             "val": "string",
             "exp": "[#channel]"
@@ -109,7 +109,7 @@
             "name": "Prefix",
             "alias": "prefix",
             "desc": "Set an own prefix",
-            "icon": "923232537285918782",
+            "icon": "960276994489212959",
             "colname": "prefix",
             "val": "string",
             "required": ["!", "?", "$", "§", "%", "/", "(", ")", "=", "?", "{", "[", "]", "}", "@", "€", ";", ".", ":", "-", "_", "#", "*", "+", "~", "<", ">", "|", "^", "°"],
@@ -119,7 +119,7 @@
             "name": "Command Cooldown",
             "alias": "cmdcooldown",
             "desc": "Setup a cooldown to reduce spam in your command channels.",
-            "icon": "923232537126510653",
+            "icon": "960276994543742976",
             "colname": "cooldown",
             "val": "time",
             "exp": "[1m] or [0s]"
@@ -128,64 +128,64 @@
             "name": "Delete Mod Command after usage.",
             "alias": "dmcau",
             "desc": "Delete Modcommand (!ban, etc) after usage",
-            "icon": "923232537277513739",
+            "icon": "960276994443071569",
             "colname": "deleteModCommandAfterUsage",
             "val": "boolean",
-            "exp": "[false]"
+            "exp": "[True/False]"
         },
         "dcau": {
             "name": "Delete Command after usage",
             "alias": "dcau",
             "desc": "Delete Command after usage.",
-            "icon": "923232537277513739",
+            "icon": "960276994443071569",
             "colname": "deleteCommandAfterUsage",
             "val": "boolean",
-            "exp": "[true]"
+            "exp": "[True/False]"
         },
         "joinroles": {
             "name": "Joinroles",
             "alias": "joinroles",
             "desc": "Setup a Joiningrole when a user joins the server",
-            "icon": "923232537655017482",
+            "icon": "960276994317250711",
             "colname": "joinroles",
             "val": "mention",
-            "exp": "[@role1 @role2 @role3]"
+            "exp": "[@role1] [@role2] [@role3] [@role4] [@role5]"
         },
         "auditlog": {
             "name": "Audit-Log",
             "alias": "auditlog",
             "desc": "Logs action like delted Messages, channel update, guild update and much more.",
-            "icon": "925792424243101696",
+            "icon": "960276994472415332",
             "colname": "auditlog",
-            "val": "mention",
-            "exp": "[#mention]"
+            "val": "string",
+            "exp": "[#channel]"
         },
         "messagelog": {
             "name": "Message-Log",
             "alias": "messagelog",
             "desc": "Logs updated messages (before and after).",
-            "icon": "925792424243101696",
+            "icon": "960276994472415332",
             "colname": "messagelog",
-            "val": "mention",
-            "exp": "[#mention]"
+            "val": "string",
+            "exp": "[#channel]"
         },
         "modlog": {
             "name": "Mod-Log",
             "alias": "modlog",
             "desc": "Logs moderation action like warn, mute, and much more.",
-            "icon": "925792424243101696",
+            "icon": "960276994472415332",
             "colname": "modlog",
-            "val": "mention",
-            "exp": "[#mention]"
+            "val": "string",
+            "exp": "[#channel]"
         },
         "warnroles": {
             "name": "Warn roles",
             "alias": "warnroles",
             "desc": "The bot adds one by one role after warning a user.",
-            "icon": "925792709871042560",
+            "icon": "960276994367586344",
             "colname": "role_id",
             "val": "mention",
-            "exp": "[@warn1 @warn2 @warn3]"
+            "exp": "[@warn1 [@warn2] [@warn3] [@warn4] [@warn5]"
         }
     },
     "commandhelp": {

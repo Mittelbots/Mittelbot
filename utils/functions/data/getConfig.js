@@ -8,8 +8,9 @@ const {
 const {
     getFromCache,
     updateCache,
-    config
+    cache_config
 } = require('../cache/cache');
+const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.getAllConfig = async () => {
     const all_guild_id = await getAllGuildIds();
@@ -59,9 +60,9 @@ module.exports.getConfig = async ({
 
 module.exports.updateConfig = async ({guild_id, value, valueName}) => {
 
-    for(let i in config) {
-        if(config[i].id === guild_id) {
-            config[i][valueName] = value;
+    for(let i in cache_config) {
+        if(cache_config[i].id === guild_id) {
+            cache_config[i][valueName] = value;
         }
     }
 
