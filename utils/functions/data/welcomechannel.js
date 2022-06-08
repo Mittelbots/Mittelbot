@@ -272,11 +272,8 @@ module.exports.manageNewWelcomeSetting = async ({
                         name: main_interaction.message.embeds[0].author.name
                     })
                     .setTitle(main_interaction.message.embeds[0].title)
-                    .setURL(validateCustomStrings({
-                        string: main_interaction.message.embeds[0].url,
-                        joined_user: main_interaction
-                    }))
-                    .setDescription(main_interaction.message.embeds[0].description)
+                    .setURL(main_interaction.message.embeds[0].url)
+                    .setDescription(main_interaction.message.embeds[0].description || '')
                     
                     .addField('This is an example field name', 'This is an example field value')
                     
@@ -340,9 +337,6 @@ module.exports.sendWelcomeSetting = async ({
                 .setTitle(res.title || 'This is an example title')
                 .setURL(res.url || 'https://www.youtube.com/watch?v=d1YBv2mWll0')
                 .setDescription(res.description || 'This is an example description')
-                .setThumbnail(main_interaction.user.avatarURL({
-                    format: 'jpg'
-                }))
                 .addField('This is an example field name', 'This is an example field value')
                 .setImage(res.image || 'https://cdn.boop.pl/uploads/2021/05/E1LVzWfWQAMbRiA.jpg')
                 .setFooter({
@@ -350,6 +344,13 @@ module.exports.sendWelcomeSetting = async ({
                 })
                 .setTimestamp()
 
+            if(res.thumbnail === '{pfp}') {
+                exampleEmbed.setThumbnail(main_interaction.user.avatarURL({
+                    format: 'jpg'
+                }))
+            }else {
+                exampleEmbed.setThumbnail(res.thumbnail || 'https://cdn.boop.pl/uploads/2021/05/E1LVzWfWQAMbRiA.jpg')
+            }
 
             //=========================================================//
 
