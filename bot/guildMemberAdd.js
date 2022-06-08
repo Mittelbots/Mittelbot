@@ -8,16 +8,25 @@ const database = require('../src/db/db');
 const { getJoinroles } = require('../utils/functions/data/joinroles');
 const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/data/getMemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
+const { getConfig } = require("../utils/functions/data/getConfig");
 
 async function guildMemberAdd(member, bot) {
 
-    sendWelcomeMessage({
+    var {disabled_modules} = await getConfig({
         guild_id: member.guild.id,
-        bot,
-        joined_user: member
-    }).catch(err => {
-        console.log(err);
-    })
+    });
+
+    disabled_modules = JSON.parse(disabled_modules);
+
+    if(disabled_modules.indexOf('welcomemessage') === -1) {
+        sendWelcomeMessage({
+            guild_id: member.guild.id,
+            bot,
+            joined_user: member
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     const memberInfo = await getMemberInfoById({
         guild_id: member.guild.id,
