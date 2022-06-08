@@ -3,6 +3,7 @@ blacklist.json
 autoresponse.json
 _secret/token.json
 src/db/db_config.json
+src/db/last_backup.json
 mittelbot-db-backup
 
 node_modules/
