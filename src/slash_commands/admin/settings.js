@@ -23,6 +23,14 @@ module.exports.run = async ({
     bot
 }) => {
 
+    const hasPermission = await main_interaction.member.permissions.has('ADMINISTRATOR');
+    if(!hasPermission) {
+        return main_interaction.reply({
+            content: lang.errors.noperms,
+            ephemeral: true
+        }).catch(err => {})
+    }
+
     switch (main_interaction.options.getSubcommand()) {
 
         case 'view':
