@@ -8,6 +8,11 @@ module.exports.interactionCreate = ({
     bot
 }) => {
     bot.on('interactionCreate', async (main_interaction) => {
+
+        var {cooldown} = await getConfig({
+            guild_id: main_interaction.guild.id,
+        });
+
         if(main_interaction.isCommand()) {
             if(main_interaction.user.id !== config.Bot_Owner_ID){
                 if (defaultCooldown.has(main_interaction.user.id)) {
