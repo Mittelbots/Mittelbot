@@ -22,35 +22,34 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
     await guild_user.roles.add(MutedRole)
     .then(() => pass = true)
     .catch(err => {
-        errorhandler({err});
-        return {
-            error: true,
-            message: config.errormessages.nopermissions.manageRoles
-        }
+        errorhandler({err, fatal: false});
     });
 
     if(pass) {
         if(user_roles.length !== 0) await removeAllRoles(guild_user);
 
-        if (guild_user.roles.cache.has(MutedRole)) {
-            try {
-                await insertDataToOpenInfraction(user.id, mod.id, 1, 0, getFutureDate(dbtime), reason, await createInfractionId(), guild.id, JSON.stringify(user_roles))
-                await setNewModLogMessage(bot, config.defaultModTypes.mute, mod.id, user, reason, time, guild.id);
-                await privateModResponse(user, config.defaultModTypes.mute, reason, time, bot, guild.name);
-                const p_response = await publicModResponses(config.defaultModTypes.mute, mod, user.id, reason, time, bot);
+        try {
+            await insertDataToOpenInfraction(user.id, mod.id, 1, 0, getFutureDate(dbtime), reason, await createInfractionId(), guild.id, JSON.stringify(user_roles))
+            await setNewModLogMessage(bot, config.defaultModTypes.mute, mod.id, user, reason, time, guild.id);
+            await privateModResponse(user, config.defaultModTypes.mute, reason, time, bot, guild.name);
+            const p_response = await publicModResponses(config.defaultModTypes.mute, mod, user.id, reason, time, bot);
 
-                return {
-                    error: false,
-                    message: p_response
-                }
-
-            } catch (err) {
-                errorhandler({err, fatal: true});
-                return {
-                    error: true,
-                    message: config.errormessages.general
-                }
+            return {
+                error: false,
+                message: p_response
             }
+
+        } catch (err) {
+            errorhandler({err, fatal: true});
+            return {
+                error: true,
+                message: config.errormessages.general
+            }
+        }
+    }else {
+        return {
+            error: true,
+            message: config.errormessages.nopermissions.manageRoles
         }
     }
 }
