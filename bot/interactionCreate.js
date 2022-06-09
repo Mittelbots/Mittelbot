@@ -10,16 +10,16 @@ module.exports.interactionCreate = ({
     bot.on('interactionCreate', async (main_interaction) => {
         if(main_interaction.isCommand()) {
             if(main_interaction.user.id !== config.Bot_Owner_ID){
-                if (defaultCooldown.has(message.author.id)) {
+                if (defaultCooldown.has(main_interaction.user.id)) {
                     return main_interaction.reply({
                         content: `You have to wait ${cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`,
                         ephemeral: true
                     }).catch(err => {})
                 } else {
 
-                    defaultCooldown.add(message.author.id);
+                    defaultCooldown.add(main_interaction.user.id);
                     setTimeout(async () => {
-                        defaultCooldown.delete(message.author.id);
+                        defaultCooldown.delete(main_interaction.user.id);
                     }, cooldown || config.defaultCooldown.format);
 
                     return handleSlashCommands({
