@@ -44,14 +44,27 @@ async function isMuted({user, guild, bot}) {
 }
 
 async function isOnBanList({user, guild}) {
-    console.log(guild)
+
+    const fetchedLogs = await guild.fetchAuditLogs({
+		limit: 1,
+		type: 'MEMBER_BAN_ADD',
+	});
+
+    const banLog = fetchedLogs.entries.first();
+    if(banLog) {
+        var { executor, target } = banLog;
+    }
+
     return guild.bans.fetch()
         .then(async bans => {
             let list = bans.filter(list_user => list_user.user.id === user.id);
             let reason = list.map(list => list.reason)[0];
+            let user_id = list.map(list => list.user.id)[0];
+            let banned_by = (target.id === user_id) ? executor.id : null;
+            
 
             if(JSON.stringify(list).length < 10) return [false];
-            else return [true, reason];
+            else return [true, reason, banned_by];
 
         }).catch(err => {
             return false;
