@@ -170,11 +170,21 @@ async function sendToAudit(bot, type, content1, content2) {
                 user: content1.user, 
                 guild: content1.guild,
             });
-            setNewModLogMessage(bot, config.defaultModTypes.ban, null, content1.user, banlist[1], null, content1.guild.id);
+            setNewModLogMessage(bot, config.defaultModTypes.ban, banlist[2], content1.user, banlist[1], null, content1.guild.id);
             break;
         
         case c.guildBanRemove:
-            setNewModLogMessage(bot, config.defaultModTypes.unban, null, content1.user, null, null, content1.guild.id);
+            const fetchedLogs = await content1.guild.fetchAuditLogs({
+                limit: 1,
+                type: 'MEMBER_BAN_REMOVED',
+            });
+        
+            const banLog = fetchedLogs.entries.first();
+            if(banLog) {
+                var { executor, target } = banLog;
+            }
+
+            setNewModLogMessage(bot, config.defaultModTypes.unban, (target.id === content1.user.id) ? executor.id : null, content1.user, null, null, content1.guild.id);
             break;
         
     }

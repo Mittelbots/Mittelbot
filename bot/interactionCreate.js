@@ -1,6 +1,7 @@
 const { handleSlashCommands } = require("../src/slash_commands");
 const { manageNewWelcomeSetting } = require("../utils/functions/data/welcomechannel");
 const config = require("../src/assets/json/_config/config.json");
+const { getConfig } = require("../utils/functions/data/getConfig");
 
 const defaultCooldown = new Set();
 
