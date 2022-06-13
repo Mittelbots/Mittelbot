@@ -31,13 +31,13 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
         try {
             await insertDataToOpenInfraction(user.id, mod.id, 1, 0, getFutureDate(dbtime), reason, await createInfractionId(), guild.id, JSON.stringify(user_roles))
             await setNewModLogMessage(bot, config.defaultModTypes.mute, mod.id, user, reason, time, guild.id);
+            
             await privateModResponse(user, config.defaultModTypes.mute, reason, time, bot, guild.name);
+
             const p_response = await publicModResponses(config.defaultModTypes.mute, mod, user.id, reason, time, bot);
 
-            return {
-                error: false,
-                message: p_response
-            }
+            return p_response
+
 
         } catch (err) {
             errorhandler({err, fatal: true});
