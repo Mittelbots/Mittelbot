@@ -10,7 +10,14 @@ async function isMuted({user, guild, bot}) {
 
         if(MutedRole.error) return MutedRole;
 
-        if (result.length > 0 && await guild.members.cache.get(user.id).roles.cache.has(MutedRole)) {
+        const member = guild.members.cache.get(user.id);
+
+        if(!member) return {
+            error: true,
+            message: "No member found!"
+        }
+
+        if (result.length > 0 && await member.roles.cache.has(MutedRole)) {
             for (let i in result) {
                 let currentdate = new Date().toLocaleString('de-DE', {timeZone: 'Europe/Berlin'})
                 currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
