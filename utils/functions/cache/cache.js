@@ -6,6 +6,7 @@ module.exports.xp = [];
 module.exports.memberInfo = [];
 module.exports.global = [];
 module.exports.warnroles = [];
+module.exports.applyforms = [];
 
 /**
  * 
@@ -125,7 +126,6 @@ module.exports.updateCache = async ({
                     else if(cacheName === 'xp') {
                         this[cacheName][i][updateValName].find(x => x.user_id === param_id[1]).xp = updateVal;
                     }else {
-                        console.log('7')
                         this[cacheName][i][updateValName] = updateVal;
                     }
                 }
@@ -144,7 +144,6 @@ module.exports.deleteFromCache = async ({
 
     for (let i in this[cacheName]) {
         if (this[cacheName][i].id === param_id) {
-            console.log(this[cacheName][i])
             delete this[cacheName][i].id;
             this[cacheName][i].filter(Boolean);
             return;
