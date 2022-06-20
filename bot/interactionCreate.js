@@ -1,7 +1,16 @@
-const { handleSlashCommands } = require("../src/slash_commands");
-const { manageNewWelcomeSetting } = require("../utils/functions/data/welcomechannel");
+const {
+    handleSlashCommands
+} = require("../src/slash_commands");
+const {
+    manageNewWelcomeSetting
+} = require("../utils/functions/data/welcomechannel");
+const {
+    manageNewForm, manageApplication
+} = require("../utils/functions/data/apply_form");
 const config = require("../src/assets/json/_config/config.json");
-const { getConfig } = require("../utils/functions/data/getConfig");
+const {
+    getConfig
+} = require("../utils/functions/data/getConfig");
 
 const defaultCooldown = new Set();
 
@@ -9,13 +18,16 @@ module.exports.interactionCreate = ({
     bot
 }) => {
     bot.on('interactionCreate', async (main_interaction) => {
-
-        var {cooldown} = await getConfig({
+        var {
+            cooldown
+        } = await getConfig({
             guild_id: main_interaction.guild.id,
         });
 
-        if(main_interaction.isCommand()) {
-            if(main_interaction.user.id !== config.Bot_Owner_ID){
+        main_interaction.bot = bot;
+
+        if (main_interaction.isCommand()) {
+            if (main_interaction.user.id !== config.Bot_Owner_ID) {
                 if (defaultCooldown.has(main_interaction.user.id)) {
                     return main_interaction.reply({
                         content: `You have to wait ${cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`,
@@ -33,23 +45,43 @@ module.exports.interactionCreate = ({
                         bot
                     })
                 }
-            }else {
+            } else {
                 //BOT OWNER BYPASS ;)
                 return handleSlashCommands({
                     main_interaction,
                     bot
                 })
             }
-            
-          }else {
-                await main_interaction.deferUpdate();
-              switch(main_interaction.customId) {
-                    case "welcomemessage":
-                        manageNewWelcomeSetting({
-                            main_interaction,
-                        })
+
+        } else {
+            switch (main_interaction.customId) {
+                case "welcomemessage":
+                    await main_interaction.deferUpdate();
+                    manageNewWelcomeSetting({
+                        main_interaction,
+                    })
                     break;
-              }
-          }
-      });
+
+                case 'manage_apply':
+                    await main_interaction.deferUpdate();
+                    manageNewForm({
+                        main_interaction
+                    }).catch(err => {
+                        main_interaction.reply({
+                            content: err,
+                            ephemeral: true
+                        }).catch(err => {})
+                    })
+                    break;
+            }
+
+            let apply_regex = /apply_[1-9][0-9]+/i;
+            if (apply_regex.test(main_interaction.customId)) {
+                manageApplication({
+                    main_interaction,
+                    apply_id: main_interaction.customId.match(apply_regex)[0].replace('apply_', '')
+                })
+            }
+        }
+    });
 }

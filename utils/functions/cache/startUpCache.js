@@ -2,11 +2,12 @@ const { getAllConfig } = require("../data/getConfig");
 const { getAllModroles } = require("../data/getModroles");
 const { getAllJoinroles } = require("../data/joinroles");
 const { getAllLogs } = require('../data/getLogs');
-const { addToCache } = require("./cache");
+const { addToCache, applyforms } = require("./cache");
 const { getAllXP } = require("../levelsystem/levelsystemAPI");
 const { getAllMemberInfo } = require('../data/getMemberInfo');
 const { getAllWarnroles } = require("../data/warnroles");
 const { getFromCache } = require('./cache');
+const { getAllForms } = require("../data/apply_form");
 
 module.exports.startUpCache = async () => {
 
@@ -23,6 +24,7 @@ module.exports.startUpCache = async () => {
     const guildXp = await getAllXP();
     const guildMemberInfo = await getAllMemberInfo();
     const guildWarnRoles = await getAllWarnroles();
+    const guildApplyForms = await getAllForms();
 
     console.log('✅ Data collected...');
 
@@ -128,6 +130,19 @@ module.exports.startUpCache = async () => {
                 data: {
                     id: guildWarnRoles[i].guild_id,
                     roles: (typeof guildWarnRoles[i].warnroles === "object") ? guildWarnRoles[i].warnroles : [],
+                }
+            }
+        });
+    }
+
+    for(let i in guildApplyForms) {
+        if(!guildApplyForms[i]) continue;
+        await addToCache({
+            value: {
+                name: "applyforms",
+                id: guildApplyForms[i].forms[0].guild_id,
+                data: {
+                    forms: guildApplyForms[i].forms || [],
                 }
             }
         });

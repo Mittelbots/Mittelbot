@@ -162,7 +162,7 @@ module.exports.manageNewWelcomeSetting = async ({
 
         const collector = main_interaction.message.channel.createMessageCollector({
             max: 1,
-            time: 300000,
+            time: 120000,
             filter: ((user) => user.author.id === main_interaction.user.id)
         })
 
@@ -307,11 +307,6 @@ module.exports.manageNewWelcomeSetting = async ({
             }
             sentMessage.delete();
         })
-
-        switch (value) {
-            case 'message':
-
-        }
     })
 }
 

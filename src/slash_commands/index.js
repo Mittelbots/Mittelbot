@@ -10,7 +10,7 @@ module.exports.handleSlashCommands = async ({
 
     let moderation = ['ban', 'infractions', 'isbanned', 'kick', 'mute', 'unban', 'unmute', 'purge', 'warn'];
     let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs'];
-    let admin = ['modules', 'scam', 'autotranslate', 'settings'];
+    let admin = ['modules', 'scam', 'autotranslate', 'settings', 'apply'];
 
     //=========================================================
 
