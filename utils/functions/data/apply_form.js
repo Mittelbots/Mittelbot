@@ -8,7 +8,9 @@ const {
     MessageEmbed
 } = require("discord.js");
 const database = require("../../../src/db/db");
-const { applyforms } = require("../cache/cache");
+const {
+    applyforms
+} = require("../cache/cache");
 const {
     errorhandler
 } = require("../errorhandler/errorhandler");
@@ -25,10 +27,10 @@ const {
 module.exports.getAllForms = async () => {
     return await database.query('SELECT apply_form FROM guild_config')
         .then(res => {
-            if(res[0].length === 0) return [];
+            if (res[0].length === 0) return [];
 
             let response = [];
-            for(let i in res) {
+            for (let i in res) {
                 res[i].apply_form = JSON.parse(res[i].apply_form);
                 const obj = {
                     guild_id: res[i].apply_form[0].guild_id,
@@ -47,17 +49,17 @@ module.exports.getFormByGuild = async ({
 }) => {
 
     let cache;
-    for(let i in applyforms) {
-        if(applyforms[i].id === guild_id) {
+    for (let i in applyforms) {
+        if (applyforms[i].id === guild_id) {
             return cache = applyforms[i].forms;
         }
     }
 
-    if(cache) return cache;
+    if (cache) return cache;
 
     return await database.query('SELECT apply_form FROM guild_config WHERE guild_id = ?', [guild_id])
         .then(res => {
-            if(!res[0].apply_form) return false;
+            if (!res[0].apply_form) return false;
             return JSON.parse(res[0].apply_form);
         }).catch(err => {
             errorhandler({
@@ -73,10 +75,10 @@ module.exports.getFormById = async ({
     apply_id
 }) => {
 
-    for(let i in applyforms) {
-        if(applyforms[i].id === guild_id) {
-            for(let x in applyforms[i].forms) {
-                if(applyforms[i].forms[x].id === apply_id) {
+    for (let i in applyforms) {
+        if (applyforms[i].id === guild_id) {
+            for (let x in applyforms[i].forms) {
+                if (applyforms[i].forms[x].id === apply_id) {
                     return {
                         error: false,
                         apply: applyforms[i].forms[x]
@@ -158,12 +160,12 @@ module.exports.sendApplyForm = async ({
             });
 
             var applyButton
-            if(applyForm.applylink) {
+            if (applyForm.applylink) {
                 applyButton = new MessageButton()
                     .setLabel('Apply')
                     .setURL(applyForm.applylink)
                     .setStyle('LINK')
-            }else {
+            } else {
                 applyButton = new MessageButton({
                     style: 'SUCCESS',
                     label: 'Apply',
@@ -286,7 +288,7 @@ module.exports.saveApplyForm = async ({
     content,
 }) => {
     return new Promise(async (resolve, reject) => {
-        
+
         const exists = await this.getFormByGuild({
             guild_id
         });
@@ -319,8 +321,8 @@ module.exports.saveApplyForm = async ({
 
         res[index][embed_name] = content;
 
-        if(embed_name === 'active') {
-            if(index - 1 >= 5) {
+        if (embed_name === 'active') {
+            if (index - 1 >= 5) {
                 return main_interaction.channel.send({
                     content: `You can only have 5 apply forms.`,
                     ephemeral: true
@@ -328,8 +330,8 @@ module.exports.saveApplyForm = async ({
             }
         }
 
-        for(let i in applyforms) {
-            if(applyforms[i].id === guild_id && applyforms[0].forms[index].id === apply_id) {
+        for (let i in applyforms) {
+            if (applyforms[i].id === guild_id && applyforms[0].forms[index].id === apply_id) {
                 applyforms[0].forms[index][embed_name] = content;
                 break;
             }
@@ -483,6 +485,11 @@ module.exports.manageNewForm = async ({
                         return collector.stop();
                     }
                     break;
+                case 'applylink':
+                    if (validURL(data[value])) {
+                        if (data[value].search('http://') === -1 && data[value].search('https://') === -1) data[value] = 'https://' + data[value];
+                    }
+                    break;
             }
 
             if (value.search('field') !== -1) {
@@ -570,7 +577,7 @@ module.exports.manageApplication = async ({
     }
     applyForm = applyForm.apply
 
-    if(applyForm.messageId !== main_interaction.message.id) return;
+    if (applyForm.messageId !== main_interaction.message.id) return;
 
     const category = main_interaction.guild.channels.cache.get(applyForm.category);
     const channel_name = `application-${main_interaction.user.username.toLowerCase()}-${apply_id}`
