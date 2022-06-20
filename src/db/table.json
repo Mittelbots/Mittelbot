@@ -201,6 +201,10 @@
             "welcome_channel": {
                 "name": "welcome_channel",
                 "val": "LONGTEXT"
+            },
+            "apply_form": {
+                "name": "apply_form",
+                "val": "LONGTEXT"
             }
         }
     },
