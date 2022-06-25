@@ -83,6 +83,10 @@ module.exports.data = new SlashCommandBuilder()
                 name: 'Welcomemessage',
                 value: 'welcomemessage'
             })
+            .addChoices({
+                name: 'Autotranslate',
+                value: 'autotranslate'
+            })
             .setRequired(true)
     )
     .addStringOption(option =>
