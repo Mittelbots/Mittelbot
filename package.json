@@ -1,6 +1,6 @@
 {
   "name": "chilled-sad-discord-bot",
-  "version": "0.43.15",
+  "version": "0.43.16",
   "description": "A Discord Bot written in Node.js",
   "main": "shard.js",
   "scripts": {
