@@ -96,7 +96,7 @@ async function messageCreate(message, bot) {
                 levelSystem.run(message, bot);
 
                 if (message.author.id !== config.Bot_Owner_ID) {
-                    //levelCooldown.add(message.author.id);
+                    levelCooldown.add(message.author.id);
                 }
             } else {
                 setTimeout(() => {
