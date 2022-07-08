@@ -7,7 +7,6 @@ const {
 } = require("./getAllGuildIds");
 const {
     getFromCache,
-    updateCache,
     cache_config
 } = require('../cache/cache');
 const config = require('../../../src/assets/json/_config/config.json');

@@ -16,9 +16,6 @@ const {
     errorhandler
 } = require('../../../utils/functions/errorhandler/errorhandler');
 const {
-    log
-} = require('../../../logs');
-const {
     removeMention
 } = require('../../../utils/functions/removeCharacters');
 

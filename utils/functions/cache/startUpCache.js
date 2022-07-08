@@ -2,11 +2,10 @@ const { getAllConfig } = require("../data/getConfig");
 const { getAllModroles } = require("../data/getModroles");
 const { getAllJoinroles } = require("../data/joinroles");
 const { getAllLogs } = require('../data/getLogs');
-const { addToCache, applyforms } = require("./cache");
+const { addToCache } = require("./cache");
 const { getAllXP } = require("../levelsystem/levelsystemAPI");
 const { getAllMemberInfo } = require('../data/getMemberInfo');
 const { getAllWarnroles } = require("../data/warnroles");
-const { getFromCache } = require('./cache');
 const { getAllForms } = require("../data/apply_form");
 
 module.exports.startUpCache = async () => {
@@ -108,6 +107,7 @@ module.exports.startUpCache = async () => {
             }
         });
     }
+
 
     for(let i in guildMemberInfo) {
         if(!guildMemberInfo[i]) continue;
