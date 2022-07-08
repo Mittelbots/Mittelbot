@@ -356,8 +356,14 @@ module.exports.getRankByGuildId = async ({
     if(cache) {
         const xp = cache[0].xp;
 
-        const sorted = xp.sort((a, b) => {
-            return a - b;
+        var sorted = [];
+
+        for(let i in xp) {
+            sorted.push([xp[i].user_id, xp[i].xp, xp[i].level_announce])
+        }
+
+        sorted = sorted.sort((a, b) => {
+            return b[1] - a[1];
         });
 
         return sorted;
