@@ -2,7 +2,6 @@ const config = require('../src/assets/json/_config/config.json');
 const {
     checkActiveCommand
 } = require('../utils/functions/checkActiveCommand/checkActiveCommand');
-const levelSystem = require("../utils/functions/levelsystem/levelsystem");
 const {
     checkForScam
 } = require("../utils/checkForScam/checkForScam");
@@ -15,13 +14,13 @@ const {
 const {
     translateMessage
 } = require('../utils/functions/data/translate');
-const lvlconfig = require('../src/assets/json/levelsystem/levelsystem.json');
 const {
     getConfig
 } = require('../utils/functions/data/getConfig');
+const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 
 const defaultCooldown = new Set();
-const levelCooldown = new Set();
+
 
 async function messageCreate(message, bot) {
 
@@ -92,18 +91,9 @@ async function messageCreate(message, bot) {
         }
 
         if(disabled_modules.indexOf('level') === -1) {
-            if (!levelCooldown.has(message.author.id)) {
-                levelSystem.run(message, bot);
-
-                //if (message.author.id !== config.Bot_Owner_ID) {
-                    levelCooldown.add(message.author.id);
-                //}
-            } else {
-                setTimeout(() => {
-                    levelCooldown.delete(message.author.id)
-                }, lvlconfig.timeout);
-            }
+            levelCooldown({message, bot})
         }
+
     }
 }
 

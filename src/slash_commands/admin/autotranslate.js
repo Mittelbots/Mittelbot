@@ -1,10 +1,20 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { saveNewTranslateConfig } = require("../../../utils/functions/data/translate");
+const {
+    hasPermission
+} = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({main_interaction, bot}) => {
     const translate_language = main_interaction.options.getString("language");
     const translate_target = main_interaction.options.getChannel("target").id;
     const translate_log_channel = main_interaction.options.getChannel("log").id;
+
+    if (!await hasPermission(main_interaction, 1, 0)) {
+        return main_interaction.reply({
+            content: `${config.errormessages.nopermission}`,
+            ephemeral: true
+        }).catch(err => {});
+    }
 
     saveNewTranslateConfig({
         guild_id: main_interaction.guild.id,

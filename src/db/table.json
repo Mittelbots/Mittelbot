@@ -239,12 +239,8 @@
                 "name": "levelsettings",
                 "val": "LONGTEXT"
             },
-            "translate": {
+            "translate_target": {
                 "name": "translate_target",
-                "val": "VARCHAR(255)"
-            },
-            "translate_channel": {
-                "name": "translate_log_channel",
                 "val": "VARCHAR(255)"
             },
             "translate_language": {
@@ -256,14 +252,8 @@
                 "val": "VARCHAR(255)",
                 "default": "[]"
             },
-            "twitter_id": {
-                "name": "twitter_id",
-                "val": "VARCHAR(255)"
-            },
-            "twitter_channel": {
-                "name": "twitter_channel",
-                "val": "VARCHAR(255)"
-            }
+
+            "_DELETE": ["twitter_id", "twitter_channel", "translate_channel", "translate"]
         },
         "_guild_joinroles": {
             "id": {
@@ -360,7 +350,8 @@
             "level_announce": {
                 "name": "level_announce",
                 "val": "VARCHAR(255)"
-            }
+            },
+            "_DELETE": ["multiplier"]
         }
     }
 }

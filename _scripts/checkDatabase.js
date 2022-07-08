@@ -8,6 +8,7 @@ async function main() {
     
     var table_count = 0;
     var col_count = 0;
+    var del_col_count = 0;
 
     //?CREATE ALL NONDYNAMICAL TABLES LIKE advancedScamList, etc
     for(let t in tables.nondynamical) {
@@ -44,6 +45,16 @@ async function main() {
                 });
 
             for(let c in tables.dynamical[t]) {
+                if(c === "_DELETE") {
+                    for(let delete_column in tables.dynamical[t][c]) {
+                        await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} DROP COLUMN ${tables.dynamical[t][c][delete_column]}`)
+                            .then(() => del_col_count++)
+                            .catch(err => {
+                                //console.log(err);
+                            })
+                        continue;
+                    }
+                }
                 await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} ADD COLUMN ${tables.dynamical[t][c].name} ${tables.dynamical[t][c].val} ${(tables.dynamical[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables.dynamical[t][c].default) : ''} `)
                     .then(() => col_count++)
                     .catch(err => {
@@ -53,7 +64,7 @@ async function main() {
         }
     }
 
-    console.log(`Main function passed! ${table_count} Tables and ${col_count} Columns created!`)
+    console.log(`Main function passed! ${table_count} Tables and ${col_count} Columns created and ${del_col_count} Columns deleted!`)
     process.exit();
 }
 
@@ -70,6 +81,16 @@ async function createTemplates() {
             });
 
             for(let c in tables.dynamical[t]) {
+                if(c === "_DELETE") {
+                    for(let delete_column in tables.dynamical[t][c]) {
+                        await database.query(`ALTER TABLE ${t}_template DROP COLUMN ${tables.dynamical[t][c][delete_column]}`)
+                            .then(() => del_col_count++)
+                            .catch(err => {
+                                //console.log(err);
+                            })
+                    }
+                    continue;
+                }
                 await database.query(`ALTER TABLE ${t}_template ADD COLUMN ${tables.dynamical[t][c].name} ${tables.dynamical[t][c].val}`)
                     .then(() => {col_count++})
                     .catch(err => {
@@ -87,7 +108,7 @@ async function createTemplates() {
         output: process.stdout
     });
 
-    read_line_interface.question('Do you want to create Templates? [Default: No]', function(status) {
+    read_line_interface.question('Do you want to create Templates? [Default: No]\n', function(status) {
 
         if(status.toLowerCase() === 'yes' || status.toLowerCase() === 'y') {
             createTemplates(); 
