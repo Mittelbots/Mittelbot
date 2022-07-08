@@ -12,5 +12,5 @@ module.exports.run = async (message, bot) => {
     const checkXP = await levelAPI.checkXP(bot, message.guild.id, newxp, message);
     if(!checkXP) return;
     
-    await levelAPI.sendNewLevelMessage(checkXP, message.author, newxp)
+    await levelAPI.sendNewLevelMessage(checkXP[0], message.author, newxp, checkXP[1])
 }

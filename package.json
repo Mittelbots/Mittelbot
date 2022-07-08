@@ -19,6 +19,9 @@
     "updateActiveCommands": "node _scripts/active_commands/updateCommandsInDatabase.js",
     "install_bot": "mkdir _logs && npm i"
   },
+  "nodemonConfig": {
+    "ignore": ["*.json"]
+  },
   "author": "BlackDayz",
   "license": "ISC",
   "dependencies": {
