@@ -95,9 +95,9 @@ async function messageCreate(message, bot) {
             if (!levelCooldown.has(message.author.id)) {
                 levelSystem.run(message, bot);
 
-                if (message.author.id !== config.Bot_Owner_ID) {
+                //if (message.author.id !== config.Bot_Owner_ID) {
                     levelCooldown.add(message.author.id);
-                }
+                //}
             } else {
                 setTimeout(() => {
                     levelCooldown.delete(message.author.id)
