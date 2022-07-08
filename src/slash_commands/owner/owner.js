@@ -10,6 +10,7 @@ const {
     spawn
 } = require('child_process');
 const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
+const { startUpCache } = require('../../../utils/functions/cache/startUpCache');
 
 module.exports.run = async ({
     main_interaction,
@@ -56,6 +57,7 @@ module.exports.run = async ({
                     }).catch(err => {});
                 }
                 break;
+
             case 'generatelevel':
                 generateLevelConfig({
                     lvl_count: main_interaction.options.getNumber('maxlevel'),
@@ -66,6 +68,14 @@ module.exports.run = async ({
                         ephemeral: true
                     })
                 })
+                break;
+
+            case 'cachrefresh':
+                await startUpCache();
+                main_interaction.reply({
+                    content: '✅ Successfully refreshed',
+                    ephemeral: true
+                }).catch(err => {})
                 break;
         }
     }
@@ -108,4 +118,8 @@ module.exports.data = new SlashCommandBuilder()
             .setRequired(true)
             .setDescription('The maximum level to generate.')
         )
+    )
+    .addSubcommand(command =>
+        command.setName('cacherefresh')
+        .setDescription('Refreshes the bot cache')
     )
