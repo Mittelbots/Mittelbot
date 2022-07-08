@@ -33,7 +33,6 @@ module.exports.gainXP = async function (message, newxp) {
         cacheName: 'xp',
         param_id: message.guild.id,
     });
-
     if (!cache) return false;
     if (cache[0].xp.length === 0) {
         return await database.query(`SELECT xp, id, level_announce FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [message.author.id]).then(async res => {
@@ -76,9 +75,18 @@ module.exports.gainXP = async function (message, newxp) {
             return false;
         });
     } else {
-        const user = cache[0].xp.find(x => x.user_id === message.author.id);
+        const user = await cache[0].xp.find(x => x.user_id === message.author.id);
 
         if (!user) {
+
+            try {       
+                for(let i in cache[0].xp) {
+                    if(cache[0].xp[i].xp.user_id === message.author.id) {
+                        return cache[0].xp[i].xp.xp;
+                    }
+                }
+            }catch(err) {}
+
             database.query(`INSERT INTO ${message.guild.id}_guild_level (user_id, xp) VALUES (?, ?)`, [message.author.id, 10])
                 .then(async res => {
                     await addValueToCache({
@@ -281,7 +289,7 @@ module.exports.setLevelRolesFromGuild = async function (guildid, levelroles) {
  * @param {int} guildid 
  * @returns {String} Level mode
  */
-module.exports.getLevelSettingsFromGuild = async function (guildid) {
+module.exports.getLevelSettingsFromGuild = async (guildid) => {
     return await database.query(`SELECT levelsettings FROM ${guildid}_config`).then(async res => {
         if (res[0].levelsettings === undefined || res[0].levelsettings === '') {
             res = 'normal'; // NORMAL
@@ -299,13 +307,44 @@ module.exports.getLevelSettingsFromGuild = async function (guildid) {
     })
 }
 
-module.exports.getNextLevel = async function (levelSettings, currentlevel) {
-    const index = levelSettings.findIndex(getIndex)
-
-    function getIndex(level) {
-        return level.level === currentlevel
+module.exports.getNextLevel = async function (levels, currentlevel) {
+    var index = 1;
+    
+    for(let i in levels) {
+        if(levels[i].level === parseInt(currentlevel)) {
+            index = levels[i].level + 1
+        }
     }
-    return levelSettings[index];
+
+    return levels[index];
+}
+
+module.exports.getRankById = async ({user_id, guild_id}) => {
+    var cache = await getFromCache({
+        cacheName: 'xp',
+        param_id: guild_id,
+    });
+
+    if(cache) {
+
+        const xp = cache[0].xp;
+
+        const sorted = xp.sort((a, b) => {
+            return a - b;
+        })
+
+        var index;
+
+        for(let i in sorted) {
+            if(sorted[i].user_id === user_id) {
+                index = Number(i) + 1;
+            }
+        }
+        return parseInt(index);
+
+    }else {
+
+    }
 }
 
 module.exports.getLevelAnnounce = async function (guildid, user_id) {
