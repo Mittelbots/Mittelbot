@@ -342,8 +342,25 @@ module.exports.getRankById = async ({user_id, guild_id}) => {
         }
         return parseInt(index);
 
-    }else {
+    }
+}
 
+module.exports.getRankByGuildId = async ({
+    guild_id
+}) => {
+    var cache = await getFromCache({
+        cacheName: 'xp',
+        param_id: guild_id,
+    });
+
+    if(cache) {
+        const xp = cache[0].xp;
+
+        const sorted = xp.sort((a, b) => {
+            return a - b;
+        });
+
+        return sorted;
     }
 }
 

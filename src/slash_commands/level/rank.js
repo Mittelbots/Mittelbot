@@ -1,4 +1,4 @@
-const config = require('../../../src/assets/json/_config/config.json');
+const config = require('../../assets/json/_config/config.json');
 
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const levelAPI = require('../../../utils/functions/levelsystem/levelsystemAPI');
