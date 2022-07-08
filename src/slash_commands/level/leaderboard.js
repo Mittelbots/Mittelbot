@@ -27,7 +27,7 @@ module.exports.run = async ({main_interaction, bot}) => {
             userXP = leaderboard[i][1];
             userLevel = Number(leaderboard[i][2]) + 1
         }
-        if(i > 10) continue;
+        if(i >= 10) continue;
         lb_embed.addField(`Rank: ${Number(i) + 1}`, `<@${leaderboard[i][0]}>\nXP: ${leaderboard[i][1]} \nLevel: ${Number(leaderboard[i][2]) + 1}`)
     }
 
