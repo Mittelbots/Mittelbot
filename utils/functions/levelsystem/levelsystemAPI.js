@@ -18,7 +18,6 @@ module.exports.gainXP = async function (message, newxp) {
         param_id: message.guild.id,
     });
     if(!cache) return false;
-    
     if(cache[0].xp.length === 0) {
         return await database.query(`SELECT xp, id, level_announce FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [message.author.id]).then(async res => {
             if(res.length > 0) {       
@@ -58,7 +57,23 @@ module.exports.gainXP = async function (message, newxp) {
         });
     }else {
         const user = cache[0].xp.find(x => x.user_id === message.author.id);
-        if(!user) return false;
+        if(!user) {
+            database.query(`INSERT INTO ${message.guild.id}_guild_level (user_id, xp) VALUES (?, ?)`, [message.author.id, 10])
+            .then(async res => {
+                await addValueToCache({
+                    cacheName: 'xp',
+                    param_id: message.guild.id,
+                    value: {
+                        user_id: message.author.id,
+                        id: res.insertId,
+                        xp: 10,
+                        level_announce: '0'
+                    },
+                    valueName: 'xp'
+                })
+            })
+            return false;
+        }
         return user.xp;
     }
 }
