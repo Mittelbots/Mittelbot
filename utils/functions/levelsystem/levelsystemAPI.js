@@ -2,8 +2,9 @@ const { MessageEmbed } = require("discord.js");
 const database = require("../../../src/db/db");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getAllGuildIds } = require("../data/getAllGuildIds");
-const { getFromCache, addValueToCache, updateCache } = require('../cache/cache')
-
+const { getFromCache, addValueToCache, updateCache, xp } = require('../cache/cache')
+const fs = require('fs');
+const levelConfig = require('./levelconfig.json')
 /**
  * 
  * @param {object} message 
@@ -68,7 +69,7 @@ module.exports.gainXP = async function (message, newxp) {
  * @returns {int} newxp
  */
 module.exports.generateXP = function (currentxp) {
-    const randomNumber = Math.floor(Math.random() * 20) + 2; //4 - 21 ca.
+    const randomNumber = Math.floor(Math.random() * 20) + 1; //4 - 21 ca.
 
     let newxp = Number(currentxp) + Number(randomNumber);
 
@@ -78,12 +79,13 @@ module.exports.generateXP = function (currentxp) {
 module.exports.updateXP = async function (message, newxp) {
     return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ? WHERE user_id = ?`, [newxp, message.author.id])
         .then((res) => {
-            updateCache({
-                cacheName: 'xp',
-                param_id: [message.guild.id, message.author.id],
-                updateVal: newxp,
-                updateValName: 'xp'
-            })
+            for(let i in xp) {
+                if(xp[i].id === message.guild.id) {
+                    for(let x in xp[i].xp) {
+                        xp[i].xp[x].xp = newxp;
+                    }
+                }
+            }
             return true;
         })
         .catch(err => {
@@ -100,50 +102,43 @@ module.exports.updateXP = async function (message, newxp) {
 module.exports.checkXP = async function (bot, guildid, currentxp, message) {
     const levelSettings = await this.getLevelSettingsFromGuild(guildid);
 
-    if(!levelSettings) return false;
-
-    var possibleNewRankRole;
-    var newRoleDB;
     var level;
-    for(let i in levelSettings) {
-        if(levelSettings[i].needXP <= currentxp) {
-            possibleNewRankRole = levelSettings[i].role;
-            newRoleDB = levelSettings[i];
-            level = levelSettings[i].level;
+    var nextlevel;
+
+    let setting = levelConfig[levelSettings];
+
+    if(!setting) return false;
+
+    for(let i in setting) {
+        if(setting[i].xp <= currentxp) {
+            newRoleDB = setting[i];
+            level = setting[i].level;
+
+            nextlevel = setting[Number(i) + 1]
+
             continue;
-        }else if(levelSettings[i].needXP > currentxp) {
-            return;
+        }else if(setting[i].xp > currentxp) {
+            continue;
         }
     }
 
-    if(possibleNewRankRole) {
-        const guild = await bot.guilds.cache.get(message.guild.id)
-        const user = await guild.members.cache.get(message.author.id);
+    const level_announce = await this.getLevelAnnounce(guildid, message.author.id);
 
-        var hasRole = await user.roles.cache.some(r => r.id === possibleNewRankRole);
-
-        if(!hasRole) {
-            user.roles.add(guild.roles.cache.find(role => role.id === possibleNewRankRole)).catch(err => {})
-
-            const level_announce = await this.getLevelAnnounce(guildid, message.author.id);
-            
-            if(Number(level_announce) < Number(level)) {
-                this.setLevelAnnounce(guildid, message.author.id, level);
-                return newRoleDB;
-            }else {
-                return false;
-            }
-            
-        }
+    if(Number(level_announce) < Number(level)) {
+        this.setLevelAnnounce(guildid, message.author.id, level);
+        return [level, nextlevel];
+    }else {
         return false;
-    }else return false;
+    }
+    
 }
 
-module.exports.sendNewLevelMessage = async function (newLevel, member, currentxp) {
+module.exports.sendNewLevelMessage = async function (newLevel, member, currentxp, nextlevel) {
     var newLevelMessage = new MessageEmbed()
-        .setDescription('You reached a new Level!')
-        .addField(`You reached Level: `, `**${newLevel.level}**`)
-        .addField(`Your current XP is: `, `**${currentxp}**`)
+        .setTitle('🎉 You reached a new Level!')
+        .addField(`You reached Level: `, `**${newLevel}**`)
+        .addField(`Your current xp are: `, `**${currentxp}**`)
+        .addField(`Your next Level:`, `Level: **${nextlevel.level}**, required: **${nextlevel.xp} xp**`)
         .setTimestamp()
 
     try {
@@ -223,14 +218,14 @@ module.exports.setLevelRolesFromGuild = async function (guildid, levelroles) {
 /**
  * 
  * @param {int} guildid 
- * @returns {array} LevelSettings
+ * @returns {String} Level mode
  */
 module.exports.getLevelSettingsFromGuild = async function (guildid) {
     return await database.query(`SELECT levelsettings FROM ${guildid}_config`).then(async res => {
         if(res[0].levelsettings === undefined || res[0].levelsettings === '') {
-            res = false;
+            res = 'normal'; // NORMAL
         }else {
-            res = JSON.parse(res[0].levelsettings);
+            res = res[0].levelsettings
         }
 
         return res;
@@ -267,4 +262,62 @@ module.exports.setLevelAnnounce = async function (guildid, user_id, state) {
             errorhandler({err: err, fatal: true})
             return false;
         })
+}
+
+module.exports.generateLevelConfig = function ({
+    lvl_count = 1,
+    mode = '0'
+}) {
+    return new Promise((resolve, rejects) => {
+        console.log(mode)
+        var xp = 10;
+        var config = {
+            easy: (mode == 'easy') ? [] : levelConfig.easy,
+            normal: (mode == 'normal') ? [] : levelConfig.normal,
+            hard: (mode == 'hard') ? [] : levelConfig.hard
+        };
+
+        //EASY: 20; NORMAL: 50; HARD: 70
+        var lvl_multi;
+        switch(mode) {
+            case 'easy':
+                lvl_multi = 100 // EASY
+                break;
+            case 'normal':
+                lvl_multi = 130 // NORMAL
+                break;
+            case 'hard':
+                lvl_multi = 180; // HARD
+                break;
+            default:
+                lvl_multi = 130; // NORMAL
+                break;
+        }
+
+
+        for(let i = 1; i <= lvl_count; i++) {
+            const obj = {
+                level: i,
+                xp: xp + (lvl_multi * i)
+            }
+            switch(mode) {
+                case 'easy':
+                    config.easy.push(obj); // EASY
+                    break;
+                case 'normal':
+                    config.normal.push(obj); // NORMAL
+                    break;
+                case 'hard':
+                    config.hard.push(obj); // HARD
+                    break;
+                default:
+                    config.normal.push(obj); // NORMAL
+                    break;
+            }
+        }
+        fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', '', 'utf8');
+        fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', JSON.stringify(config), 'utf8');
+
+        resolve(true);
+})
 }

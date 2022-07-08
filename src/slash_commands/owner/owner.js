@@ -9,6 +9,7 @@ const {
 const {
     spawn
 } = require('child_process');
+const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
 
 module.exports.run = async ({
     main_interaction,
@@ -55,6 +56,17 @@ module.exports.run = async ({
                     }).catch(err => {});
                 }
                 break;
+            case 'generatelevel':
+                generateLevelConfig({
+                    lvl_count: main_interaction.options.getNumber('maxlevel'),
+                    mode: main_interaction.options.getString('mode')
+                }).then(() => {
+                    main_interaction.reply({
+                        content: 'Successfully created!',
+                        ephemeral: true
+                    })
+                })
+                break;
         }
     }
 }
@@ -62,7 +74,7 @@ module.exports.run = async ({
 module.exports.data = new SlashCommandBuilder()
     .setName('owner')
     .setDescription('Master! Do things for me!')
-    .setDefaultPermission(false)
+    .setDefaultMemberPermissions(0)
     .addSubcommand(command =>
         command.setName('restart')
         .setDescription('Restart the bot')
@@ -70,4 +82,30 @@ module.exports.data = new SlashCommandBuilder()
     .addSubcommand(command =>
         command.setName('shutdown')
         .setDescription('Shutdown the bot')
+    )
+    .addSubcommand(command => 
+        command.setName('generatelevel')
+        .setDescription('Generate Level xp for easy, normal or hard mode')
+        .addStringOption(option =>
+            option.setName('mode')
+            .setDescription('Easy, Normal or Hard')
+            .setRequired(true)
+            .addChoices({
+                name: 'Easy',
+                value: 'easy'
+            })
+            .addChoices({
+                name: 'Normal',
+                value: 'normal'
+            })
+            .addChoices({
+                name: 'Hard',
+                value: 'hard'
+            })
+        )
+        .addNumberOption(option =>
+            option.setName('maxlevel')
+            .setRequired(true)
+            .setDescription('The maximum level to generate.')
+        )
     )

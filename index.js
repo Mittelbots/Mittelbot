@@ -54,6 +54,7 @@ const { handleSlashCommands } = require("./src/slash_commands");
 const { handleUploads } = require("./src/events/notfifier/yt_notifier");
 const { startUpCache } = require("./utils/functions/cache/startUpCache");
 const { delay } = require("./utils/functions/delay/delay");
+const { generateLevelConfig } = require("./utils/functions/levelsystem/levelsystemAPI");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS", "GUILD_BANS"],
@@ -117,7 +118,6 @@ process.on('uncaughtException', async err => {
 
 bot.once('ready', async () => {
   await startUpCache();
-
   
   checkInfractions(bot, database);
   checkTemproles(bot, database)
@@ -137,9 +137,6 @@ bot.once('ready', async () => {
         db_backup();
     }, 86400000); // 24h
   }
-
-  
-
 
   setInterval(() => {
     setActivity();
