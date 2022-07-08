@@ -2,16 +2,15 @@ const config = require('../../../src/assets/json/_config/config.json');
 
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const levelAPI = require('../../../utils/functions/levelsystem/levelsystemAPI');
-const { log } = require('../../../logs');
 
 const canvacord = require("canvacord");
 const { MessageAttachment } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const levels = require('../../../utils/functions/levelsystem/levelconfig.json')
 
 module.exports.run = async ({main_interaction, bot}) => {
     const user = main_interaction.options.getUser('user') || main_interaction.user; 
     const anonymous = main_interaction.options.getBoolean('anonymous');
-
 
     const playerXP = await levelAPI.getXP(main_interaction.guild.id, user.id);
 
@@ -23,19 +22,24 @@ module.exports.run = async ({main_interaction, bot}) => {
     }
 
     const levelSettings = await levelAPI.getLevelSettingsFromGuild(main_interaction.guild.id);
+    const nextLevel = await levelAPI.getNextLevel(levels[levelSettings], playerXP.level_announce);
+
+    const userRank = await levelAPI.getRankById({
+        user_id: user.id,
+        guild_id: main_interaction.guild.id
+    });
 
     const rank = new canvacord.Rank()
-        .setAvatar(user.avatarURL({ format: 'jpg' }))
+        .setAvatar(user.avatarURL({ format: 'jpg' }) || user.displayAvatarURL())
         .setCurrentXP(parseInt(playerXP.xp))
         .setStatus("online")
-        .setProgressBar("#FFFFFF", "COLOR")
+        .setProgressBar("#33ab43", "COLOR")
         .setUsername(user.username)
-        .setDiscriminator(user.discriminator);
-
-    if(levelSettings) {
-        const nextLevel = await levelAPI.getNextLevel(levelSettings, playerXP.level_announce);
-        rank.setRequiredXP(nextLevel.needXP)
-    }
+        .setDiscriminator(user.discriminator)
+        .setRank(userRank)
+        .setLevel(parseInt(playerXP.level_announce))
+        .setStatus('online', true, '30')
+        .setRequiredXP(nextLevel.xp)
 
     rank.build()
     .then(data => {
