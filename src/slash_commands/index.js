@@ -11,6 +11,7 @@ module.exports.handleSlashCommands = async ({
     let moderation = ['ban', 'infractions', 'isbanned', 'kick', 'mute', 'unban', 'unmute', 'purge', 'warn'];
     let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs'];
     let admin = ['modules', 'scam', 'autotranslate', 'settings', 'apply', 'levelsettings'];
+    let level = ['rank', 'leaderboard'];
 
     //=========================================================
 
@@ -62,7 +63,13 @@ module.exports.handleSlashCommands = async ({
             main_interaction: main_interaction,
             bot: bot
         });
-    } else {
+    }else if(level.indexOf(main_interaction.commandName) !== -1)
+        return require(`./level/${main_interaction.commandName}`).run({
+            main_interaction: main_interaction,
+            bot: bot
+        });
+    
+    else {
         return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
             main_interaction: main_interaction,
             bot: bot
