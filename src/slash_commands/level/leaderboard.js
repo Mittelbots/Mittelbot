@@ -7,7 +7,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     const leaderboard = await getRankByGuildId({
         guild_id: main_interaction.guild.id
     });
-
+    
     const guild = bot.guilds.cache.get(main_interaction.guild.id)
 
     const lb_embed = new MessageEmbed()
@@ -21,14 +21,14 @@ module.exports.run = async ({main_interaction, bot}) => {
     var userLevel;
 
     for (let i in leaderboard) {
-        if(leaderboard[i].user_id === main_interaction.user.id) {
+        if(leaderboard[i][0] === main_interaction.user.id) {
             isInTopTen = true;
             userRank = Number(i) + 1;
-            userXP = leaderboard[i].xp;
-            userLevel = Number(leaderboard[i].level_announce) + 1
+            userXP = leaderboard[i][1];
+            userLevel = Number(leaderboard[i][2]) + 1
         }
         if(i > 10) continue;
-        lb_embed.addField(`Rank: ${Number(i) + 1}`, `<@${leaderboard[i].user_id}>\nXP: ${leaderboard[i].xp} \nLevel: ${Number(leaderboard[i].level_announce) + 1}`)
+        lb_embed.addField(`Rank: ${Number(i) + 1}`, `<@${leaderboard[i][0]}>\nXP: ${leaderboard[i][1]} \nLevel: ${Number(leaderboard[i][2]) + 1}`)
     }
 
     if(!isInTopTen) {
