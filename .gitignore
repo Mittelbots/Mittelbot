@@ -8,5 +8,7 @@ mittelbot-db-backup
 
 node_modules/
 
+.DS_Store
+
 _logs/*
 core

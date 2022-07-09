@@ -11,6 +11,7 @@ const {
 } = require('child_process');
 const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
 const { startUpCache } = require('../../../utils/functions/cache/startUpCache');
+const { delay } = require('../../../utils/functions/delay/delay');
 
 module.exports.run = async ({
     main_interaction,
@@ -62,11 +63,12 @@ module.exports.run = async ({
                 generateLevelConfig({
                     lvl_count: main_interaction.options.getNumber('maxlevel'),
                     mode: main_interaction.options.getString('mode')
-                }).then(() => {
+                }).then(async () => {
+                    await delay(2000);
                     main_interaction.reply({
                         content: 'Successfully created!',
                         ephemeral: true
-                    })
+                    }).catch(err => {})
                 })
                 break;
 

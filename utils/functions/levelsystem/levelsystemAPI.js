@@ -404,7 +404,6 @@ module.exports.generateLevelConfig = function ({
     mode = '0'
 }) {
     return new Promise((resolve, rejects) => {
-        console.log(mode)
         var xp = 10;
         var config = {
             easy: (mode == 'easy') ? [] : levelConfig.easy,
