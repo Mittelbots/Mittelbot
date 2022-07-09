@@ -471,7 +471,7 @@ module.exports.levelCooldown = ({
     if (index === -1) {
         levelSystem.run(message, bot);
 
-        //levelCooldown.push(obj);
+        levelCooldown.push(obj);
         
     } else {
         setTimeout(() => {
