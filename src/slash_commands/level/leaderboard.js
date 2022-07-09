@@ -20,9 +20,17 @@ module.exports.run = async ({main_interaction, bot}) => {
     var userXP;
     var userLevel;
 
+    if(leaderboard.length === 0) {
+        return main_interaction.reply({
+            content: '❌ There\'s no one who is ranked. Write your first messages first.'
+        }).catch(err => {})
+    }
+
     for (let i in leaderboard) {
         if(leaderboard[i][0] === main_interaction.user.id) {
-            isInTopTen = true;
+            if(i <= 10) {
+                isInTopTen = true;
+            }
             userRank = Number(i) + 1;
             userXP = leaderboard[i][1];
             userLevel = Number(leaderboard[i][2]) + 1
