@@ -57,7 +57,7 @@ async function isOnBanList({user, guild}) {
 		type: 'MEMBER_BAN_ADD',
 	});
 
-    const banLog = fetchedLogs.entries.first();
+    const banLog = await fetchedLogs.entries.first();
     if(banLog) {
         var { executor, target } = banLog;
     }
