@@ -121,7 +121,7 @@ module.exports.generateXP = function (currentxp) {
 }
 
 module.exports.updateXP = async function (message, newxp) {
-    return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ? WHERE user_id = ?`, [newxp, message.author.id])
+    return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ?, message_count = message_count + 1 WHERE user_id = ?`, [newxp, message.author.id])
         .then((res) => {
             for (let i in xp) {
                 if (xp[i].id === message.guild.id) {
@@ -359,7 +359,7 @@ module.exports.getRankByGuildId = async ({
         var sorted = [];
 
         for(let i in xp) {
-            sorted.push([xp[i].user_id, xp[i].xp, xp[i].level_announce])
+            sorted.push([xp[i].user_id, xp[i].xp, xp[i].level_announce, xp[i].message_count])
         }
 
         sorted = sorted.sort((a, b) => {
@@ -416,16 +416,16 @@ module.exports.generateLevelConfig = function ({
         var lvl_multi;
         switch (mode) {
             case 'easy':
-                lvl_multi = 100 // EASY
+                lvl_multi = 500 // EASY
                 break;
             case 'normal':
-                lvl_multi = 130 // NORMAL
+                lvl_multi = 650 // NORMAL
                 break;
             case 'hard':
-                lvl_multi = 180; // HARD
+                lvl_multi = 800; // HARD
                 break;
             default:
-                lvl_multi = 130; // NORMAL
+                lvl_multi = 650; // NORMAL
                 break;
         }
 

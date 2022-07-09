@@ -28,7 +28,7 @@ module.exports.run = async ({main_interaction, bot}) => {
             userLevel = Number(leaderboard[i][2]) + 1
         }
         if(i >= 10) continue;
-        lb_embed.addField(`Rank: ${Number(i) + 1}`, `<@${leaderboard[i][0]}>\nXP: ${leaderboard[i][1]} \nLevel: ${Number(leaderboard[i][2]) + 1}`)
+        lb_embed.addField(`Rank: ${Number(i) + 1}`, `<@${leaderboard[i][0]}>\nXP: ${leaderboard[i][1]} \nLevel: ${Number(leaderboard[i][2]) + 1}\nMessages: ${leaderboard[i][3]}`)
     }
 
     if(!isInTopTen) {

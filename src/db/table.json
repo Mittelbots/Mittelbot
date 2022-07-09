@@ -351,7 +351,12 @@
                 "name": "level_announce",
                 "val": "VARCHAR(255)"
             },
-            "_DELETE": ["multiplier"]
+            "message_count": {
+                "name": "message_count",
+                "val": "BIGINT(20)",
+                "default": "0"
+            },
+            "_DELETE": [""]
         }
     }
 }
