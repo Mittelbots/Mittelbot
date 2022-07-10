@@ -96,7 +96,8 @@ module.exports.gainXP = async function (message, newxp) {
                             user_id: message.author.id,
                             id: res.insertId,
                             xp: 10,
-                            level_announce: '0'
+                            level_announce: '0',
+                            message_count: 0
                         },
                         valueName: 'xp'
                     })
@@ -121,13 +122,14 @@ module.exports.generateXP = function (currentxp) {
 }
 
 module.exports.updateXP = async function (message, newxp) {
-    return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ?, message_count = message_count + 1 WHERE user_id = ?`, [newxp, message.author.id])
+    return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ?, message_count = message_count + 1 WHERE user_id = ?; SELECT message_count FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [newxp, message.author.id, message.author.id])
         .then((res) => {
             for (let i in xp) {
                 if (xp[i].id === message.guild.id) {
                     for (let x in xp[i].xp) {
                         if(xp[i].xp[x].user_id === message.author.id) {
                             xp[i].xp[x].xp = newxp;
+                            xp[i].xp[x].message_count = res[1][0].message_count;
                         }
                     }
                 }
@@ -359,6 +361,11 @@ module.exports.getRankByGuildId = async ({
         var sorted = [];
 
         for(let i in xp) {
+            if(typeof xp[i].xp == 'object') {
+                let cachexp = xp[i].xp;
+                sorted.push([cachexp.user_id, cachexp.xp, cachexp.level_announce, cachexp.message_count]);
+                continue;
+            }
             sorted.push([xp[i].user_id, xp[i].xp, xp[i].level_announce, xp[i].message_count])
         }
 
