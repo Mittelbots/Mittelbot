@@ -26,7 +26,7 @@ module.exports.handleSlashCommands = async ({
     if (module) {
         if (disabled_modules.indexOf(module) > -1) {
             return main_interaction.reply({
-                content: `${module} is disabled.`,
+                content: `This Module (${module}) is disabled.`,
                 ephemeral: true
             }).catch(err => {});
         }

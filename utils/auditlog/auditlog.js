@@ -208,10 +208,14 @@ async function sendToAudit(bot, type, content1, content2) {
 
     if(cache) {
         if(type === c.messageupdate && cache[0].messagelog !== null) {
-            return bot.channels.cache.get(cache[0].messagelog).send({embeds: [Message]}).catch(err => {});
+            try {
+                return bot.channels.cache.get(cache[0].messagelog).send({embeds: [Message]}).catch(err => {});
+            }catch(err) {}
         }else {
             if(cache[0].auditlog !== null) {
-                return bot.channels.cache.get(cache[0].auditlog).send({embeds: [Message]}).catch(err => {});
+                try {
+                    return bot.channels.cache.get(cache[0].auditlog).send({embeds: [Message]}).catch(err => {});
+                }catch(err) {}
             }
         }
     }

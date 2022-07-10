@@ -48,13 +48,21 @@ const {
 const {
   spawn
 } = require('child_process');
-const { db_backup } = require("./src/db/db_backup");
-const { createSlashCommands } = require("./utils/functions/createSlashCommands/createSlashCommands");
-const { handleSlashCommands } = require("./src/slash_commands");
-const { handleUploads } = require("./src/events/notfifier/yt_notifier");
-const { startUpCache } = require("./utils/functions/cache/startUpCache");
-const { delay } = require("./utils/functions/delay/delay");
-const { generateLevelConfig } = require("./utils/functions/levelsystem/levelsystemAPI");
+const {
+  db_backup
+} = require("./src/db/db_backup");
+const {
+  createSlashCommands
+} = require("./utils/functions/createSlashCommands/createSlashCommands");
+const {
+  handleUploads
+} = require("./src/events/notfifier/yt_notifier");
+const {
+  startUpCache
+} = require("./utils/functions/cache/startUpCache");
+const {
+  delay
+} = require("./utils/functions/delay/delay");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS", "GUILD_BANS"],
@@ -90,51 +98,69 @@ bot.on("messageCreate", async message => {
 });
 
 process.on('unhandledRejection', async err => {
-  errorhandler({err, fatal: true})
+  errorhandler({
+    err,
+    fatal: true
+  })
 
-  errorhandler({err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`, fatal: true});
+  errorhandler({
+    err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
+    fatal: true
+  });
 
   await delay(5000);
   spawn(process.argv[1], process.argv.slice(2), {
-      detached: true,
-      stdio: ['ignore', null, null]
+    detached: true,
+    stdio: ['ignore', null, null]
   }).unref()
   process.exit()
 });
 
 process.on('uncaughtException', async err => {
-  errorhandler({err:'----BOT CRASHED-----', fatal: true});
-  errorhandler({err, fatal: true})
+  errorhandler({
+    err: '----BOT CRASHED-----',
+    fatal: true
+  });
+  errorhandler({
+    err,
+    fatal: true
+  })
 
-  errorhandler({err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`, fatal: true});
+  errorhandler({
+    err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
+    fatal: true
+  });
 
   await delay(5000);
   spawn(process.argv[1], process.argv.slice(2), {
-      detached: true,
-      stdio: ['ignore', null, null]
+    detached: true,
+    stdio: ['ignore', null, null]
   }).unref()
   process.exit()
 })
 
+
 bot.once('ready', async () => {
   await startUpCache();
-  
+
   checkInfractions(bot, database);
   checkTemproles(bot, database)
   auditLog(bot);
   setActivity();
-  handleUploads({bot});
+  handleUploads({
+    bot
+  });
   interactionCreate({
     bot
   })
-  
-  if(config.debug == 'false') {
+
+  if (config.debug == 'false') {
     setTimeout(() => {
       db_backup();
     }, 60000);
 
     setTimeout(() => {
-        db_backup();
+      db_backup();
     }, 86400000); // 24h
   }
 

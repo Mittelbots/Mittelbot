@@ -166,9 +166,7 @@ module.exports.updateJoinroles = async ({
             await this.saveJoinRoles({
                 guild_id: guild.id,
                 joinrole_id: passedRoles[i]
-            }).then(res => {
-                console.log(res)
-            })
+            }).then(res => {})
             .catch(err => {
                 console.log(err);
             })

@@ -115,13 +115,22 @@
         }
     },
     "levelsystem": {
-        "_desc": "View your or other rank.",
+        "_desc": "Get information about your current rank or the leaderboard of the server.",
         "_icon": "🏆",
         "rank": {
             "name": "rank",
             "description": "View Rank of user",
             "usage": "/rank <Mention User> <anonymus>",
             "icon": "🏆"
+        },
+        "leaderboard": {
+            "name": "leaderboard",
+            "description": "View the leaderboard of your current server.",
+            "usage": "/leaderboard",
+            "icon": "🏆"
         }
+    },
+    "fun": {
+        "_desc": ""
     }
 }
