@@ -7,9 +7,9 @@ const {
 } = require("./getAllGuildIds");
 const {
     getFromCache,
-    cache_config
+    config
 } = require('../cache/cache');
-const config = require('../../../src/assets/json/_config/config.json');
+const config_file = require('../../../src/assets/json/_config/config.json');
 
 module.exports.getAllConfig = async () => {
     const all_guild_id = await getAllGuildIds();
@@ -59,9 +59,9 @@ module.exports.getConfig = async ({
 
 module.exports.updateConfig = async ({guild_id, value, valueName}) => {
 
-    for(let i in cache_config) {
-        if(cache_config[i].id === guild_id) {
-            cache_config[i][valueName] = value;
+    for(let i in config) {
+        if(config[i].id === guild_id) {
+            config[i][valueName] = value;
         }
     }
 
@@ -86,10 +86,10 @@ module.exports.checkPrefix = async ({
     value
 }) => {
     let pass = 0;
-    for (let i in config.settings.prefix.required) {
-        if (!value.endsWith(config.settings.prefix.required[i])) pass++;
+    for (let i in config_file.settings.prefix.required) {
+        if (!value.endsWith(config_file.settings.prefix.required[i])) pass++;
     }
-    if (pass === (config.settings.prefix.required).length) return false
+    if (pass === (config_file.settings.prefix.required).length) return false
 
     return true;
 }
