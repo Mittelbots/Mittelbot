@@ -1,10 +1,8 @@
 const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
-const config = require('../../../src/assets/json/_config/config.json');
 const {
     MessageEmbed
 } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { log } = require('../../../logs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports.run = async ({main_interaction, bot}) => {
@@ -15,14 +13,14 @@ module.exports.run = async ({main_interaction, bot}) => {
     for (const [index, [key, value]] of Object.entries(Object.entries(cmd_help))) {
         helpEmbedMessage.addField(`${value._icon} ${key.charAt(0).toUpperCase() + key.slice(1)}`, value._desc);
     }
-    //main_interaction.reply / ephemeral: true
-    await main_interaction.channel.send({
-        embeds: [helpEmbedMessage]
+
+    await main_interaction.reply({
+        embeds: [helpEmbedMessage],
+        fetchReply: true
     }).then(async msg => {
         var filterEmoji = [];
 
         let pass = true;    
-
 
         async function addCloseReaction() {
             if(!pass) return;
