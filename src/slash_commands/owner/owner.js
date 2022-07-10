@@ -72,7 +72,7 @@ module.exports.run = async ({
                 })
                 break;
 
-            case 'cachrefresh':
+            case 'cacherefresh':
                 await startUpCache();
                 main_interaction.reply({
                     content: '✅ Successfully refreshed',
