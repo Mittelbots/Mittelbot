@@ -354,7 +354,7 @@
             "message_count": {
                 "name": "message_count",
                 "val": "BIGINT(20)",
-                "default": "0"
+                "default": "1"
             },
             "_DELETE": [""]
         }
