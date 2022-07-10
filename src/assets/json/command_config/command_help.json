@@ -131,6 +131,37 @@
         }
     },
     "fun": {
-        "_desc": ""
+        "_desc": "Commands that have no real added value, but are funny",
+        "_icon": "😆",
+        "cats": {
+            "name": "cats",
+            "description": "View random images from cats",
+            "usage": "/cats",
+            "icon": "🐱"
+        },
+        "dogs": {
+            "name": "dogs",
+            "description": "View random images from dogs",
+            "usage": "/dogs",
+            "icon": "🐶"
+        },
+        "avatar": {
+            "name": "avatar",
+            "description": "View your or someone else avatar.",
+            "usage": "/avatar <Mention User>",
+            "icon": "📷"
+        },
+        "guessnumber": {
+            "name": "guessnumber",
+            "description": "Guess a random number",
+            "usage": "/guessnumber",
+            "icon": "🤔"
+        },
+        "ship": {
+            "name": "ship",
+            "description": "See how much percent are you compatible with someone else",
+            "usage": "/ship <Mention User>",
+            "icon": "💕"
+        }
     }
 }
