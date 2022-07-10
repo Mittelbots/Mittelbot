@@ -215,6 +215,10 @@
                 "val": "INT AUTO_INCREMENT PRIMARY KEY",
                 "default": "1"
             },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            },
             "welcome_channel": {
                 "name": "welcome_channel",
                 "val": "VARCHAR(255)"
@@ -356,7 +360,7 @@
                 "val": "BIGINT(20)",
                 "default": "1"
             },
-            "_DELETE": [""]
+            "_DELETE": ["multiplier"]
         }
     }
 }

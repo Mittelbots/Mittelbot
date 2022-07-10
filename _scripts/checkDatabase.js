@@ -1,10 +1,10 @@
 const database = require('../src/db/db');
 const tables = require('../src/db/table.json');
 const readline = require('readline');
+const { startUpCache } = require('../utils/functions/cache/startUpCache');
 
 
-
-async function main() {
+async function checkDatabase() {
     
     var table_count = 0;
     var col_count = 0;
@@ -65,7 +65,6 @@ async function main() {
     }
 
     console.log(`Main function passed! ${table_count} Tables and ${col_count} Columns created and ${del_col_count} Columns deleted!`)
-    process.exit();
 }
 
 async function createTemplates() {
@@ -99,23 +98,27 @@ async function createTemplates() {
             }
     }
 
+    await startUpCache();
     console.log(`createTemplate function passed! ${table_count} Tables and ${col_count} Columns created!`)
-    process.exit();
 }
 
+if(process.argv[1].includes('/_scripts/checkDatabase.js')) {
     const read_line_interface = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
-
     read_line_interface.question('Do you want to create Templates? [Default: No]\n', function(status) {
-
         if(status.toLowerCase() === 'yes' || status.toLowerCase() === 'y') {
             createTemplates(); 
         }
         else {
-            main();
+            checkDatabase();
         }
-
         read_line_interface.close();
     });
+}
+
+
+module.exports = {
+    checkDatabase
+}

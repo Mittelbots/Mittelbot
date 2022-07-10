@@ -1,4 +1,5 @@
 const database = require("../../../src/db/db");
+const { errorhandler } = require("../errorhandler/errorhandler");
 const { getAllGuildIds } = require("./getAllGuildIds");
 
 module.exports.getAllModroles = async () => {

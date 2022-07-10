@@ -23,9 +23,7 @@ async function guildMemberAdd(member, bot) {
             guild_id: member.guild.id,
             bot,
             joined_user: member
-        }).catch(err => {
-            console.log(err);
-        })
+        }).catch(err => {})
     }
 
     const memberInfo = await getMemberInfoById({
