@@ -100,6 +100,10 @@ module.exports.run = async (bot, message, args) => {
 
         const role = await bot.guilds.cache.get(message.guild.id).roles.fetch(value)
 
+        if(!role) {
+            return message.reply(`I could't found any role with this id. Please provide a existing one. (User ID doesnt work!)`)
+        }
+
         let modroleembed = new MessageEmbed()
         .setTitle(`Choose setting for _${role.name}_. \n\nCurrent: **${(db_isadmin) ? 'Admin': (db_ismod) ? 'Moderator': (db_ishelper) ? 'Helper' : 'Not set yet'}**`)
 
