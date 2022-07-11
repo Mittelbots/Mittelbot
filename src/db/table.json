@@ -225,7 +225,8 @@
             },
             "prefix": {
                 "name": "prefix",
-                "val": "VARCHAR(5)"
+                "val": "VARCHAR(5)",
+                "default": "!"
             },
             "cooldown": {
                 "name": "cooldown",
