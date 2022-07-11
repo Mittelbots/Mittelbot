@@ -17,6 +17,7 @@ const { updateCache } = require("../../../utils/functions/cache/cache");
 const database = require("../../db/db");
 const { updateWarnroles } = require("../../../utils/functions/data/warnroles");
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
+const { changeYtNotifier, delChannelFromList } = require("../../../utils/functions/data/youtube");
 
 module.exports.run = async ({
     main_interaction,
@@ -253,6 +254,48 @@ module.exports.run = async ({
                 }).catch(err => {});
             });
             break;
+
+        case 'youtube':
+            const ytchannel = main_interaction.options.getString('ytchannel');
+            const dcchannel = main_interaction.options.getChannel('dcchannel');
+            const pingrole = main_interaction.options.getRole('ytping')
+
+            changeYtNotifier({
+                ytchannel,
+                dcchannel,
+                pingrole,
+                guild: main_interaction.guild,
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {})
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            });
+            break;
+        
+        case 'delyoutube':
+            const delytchannel = main_interaction.options.getString('ytchannel');
+            
+            delChannelFromList({
+                guild_id: main_interaction.guild.id,
+                delytchannel
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {})
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            });
+
     }
 
     async function saveSetting({
@@ -432,5 +475,39 @@ module.exports.data = new SlashCommandBuilder()
             .setName('warnrole5')
             .setDescription('Add a role to the list of warn roles.')
             .setRequired(false)
+        )
+    )
+    .addSubcommand(command =>
+        command
+        .setName('youtube')
+        .setDescription('Add up to 3 channels to get a notification when a new video is uploaded.')
+        .addStringOption(ytchannel =>
+            ytchannel
+            .setName('ytchannel')
+            .setDescription('Add the youtube channel link [https://youtube.com/channel/XXXX]')
+            .setRequired(true)
+        )
+        .addChannelOption(dcchannel =>
+            dcchannel
+            .setName('dcchannel')
+            .setDescription('Select a text channel where the new videos will be post in.')
+            .setRequired(true)
+        )
+        .addRoleOption(warnrole =>
+            warnrole
+            .setName('ytping')
+            .setDescription('Add a ping role to be pinged each time a new Video is uploaded.')
+            .setRequired(false)
+        )
+    )
+    .addSubcommand(command =>
+        command
+        .setName('delyoutube')
+        .setDescription('Delete a channel from the notification list')
+        .addStringOption(ytchannel =>
+            ytchannel
+            .setName('ytchannel')
+            .setDescription('Add the youtube channel link [https://youtube.com/channel/XXXX]')
+            .setRequired(true)
         )
     )

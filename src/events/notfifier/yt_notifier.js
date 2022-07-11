@@ -7,6 +7,7 @@ const {
 const {
     MessageEmbed
 } = require("discord.js");
+const ytdl = require('ytdl-core');
 
 module.exports.handleUploads = async ({
     bot
@@ -31,9 +32,14 @@ module.exports.handleUploads = async ({
             if (uploads[i].channel_id) {
                 request.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`)
                     .then(async (feed) => {
-                        if (uploads.includes(feed.items[0].link)) return;
+                        const uploadedVideos = JSON.parse(uploads[i].uploads);
 
-                        const saved = await database.query(`INSERT INTO guild_uploads (guild_id, link) VALUES (?, ?)`, [uploads[i].guild_id, feed.items[0].link])
+                        const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
+                        if (videoAlreadyExists) return;
+
+                        uploadedVideos.push(feed.items[0].link)
+
+                        const saved = await database.query(`UPDATE guild_uploads SET uploads = ? WHERE guild_id = ? AND channel_id = ?`, [JSON.stringify(uploadedVideos), uploads[i].guild_id, uploads[i].channel_id])
                             .catch(err => {
                                 errorhandler({
                                     err,
@@ -43,19 +49,32 @@ module.exports.handleUploads = async ({
                             })
                         if (!saved) return;
 
-                        const channel = await bot.channels.cache.get(uploads[i].channel_id);
+                        const guild = await bot.guilds.cache.get(uploads[i].guild_id)
+                        if (!guild) return;
+                        const channel = await guild.channels.cache.get(uploads[i].info_channel_id);
                         if (!channel) return;
+
+                        let info = await ytdl.getInfo(feed.items[0].link);
 
                         const newMessageEmbed = new MessageEmbed()
                             .setTitle(feed.items[0].title)
+                            .setAuthor({
+                                name: 'Youtube',
+                                iconURL: 'https://clipart.info/images/ccovers/1590430652red-youtube-logo-png-xl.png'
+                            })
                             .setURL(feed.items[0].link)
-                            .setImage(feed.items[0].enclosure.url)
+                            .setImage(info.videoDetails.thumbnails[3].url)
+
+
+                        const pingrole = guild.roles.cache.get(uploads[i].pingrole);
+                        const isEveryone = pingrole.name === '@everyone';
 
                         channel.send({
+                            content: ((pingrole) ? (isEveryone) ? '@everyone ' : `<@&${uploads[i].pingrole}> ` : '') + feed.items[0].title,
                             embeds: [newMessageEmbed]
                         }).catch(err => {});
 
-                        console.log(`📥 New upload sent!`);
+                        console.log(`📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id}`);
                     }).catch(err => {
                         errorhandler({
                             err,
@@ -65,5 +84,5 @@ module.exports.handleUploads = async ({
                     })
             }
         }
-    }, 600000);//? 10 minutes
+    }, 600000); //?  10 minutes
 }
