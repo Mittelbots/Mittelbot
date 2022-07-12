@@ -36,11 +36,11 @@ module.exports.run = async ({main_interaction, bot}) => {
             userLevel = Number(leaderboard[i][2]) + 1
         }
         if(i >= 10) continue;
-        lb_embed.addField(`Rank: ${Number(i) + 1}`, `<@${leaderboard[i][0]}>\nXP: ${leaderboard[i][1]} \nLevel: ${Number(leaderboard[i][2]) + 1}\nMessages: ${leaderboard[i][3]}`)
+        lb_embed.addField(`Rank: ${Number(i) + 1}`, `<@${leaderboard[i][0]}>\n**XP:** \`${leaderboard[i][1]}\` - **Level:** \`${Number(leaderboard[i][2]) + 1}\` - **Messages:** \`${leaderboard[i][3]}\` `)
     }
 
     if(!isInTopTen) {
-        lb_embed.addField(`Your current rank: ${userRank}`, `XP: ${userXP}\nLevel: ${userLevel}`)
+        lb_embed.addField(`Your current rank: ${userRank}`, `XP: ${userXP}  Level: ${userLevel}`)
     }
 
     return main_interaction.reply({
