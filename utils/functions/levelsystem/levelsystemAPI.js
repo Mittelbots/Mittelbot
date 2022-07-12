@@ -26,22 +26,20 @@ const levelCooldown = [];
  * @param {object} message 
  * @returns {int | boolean} currentXP
  */
-module.exports.gainXP = async function (message, newxp) {
-    if (message.author.bot) return;
-
+module.exports.gainXP = async function ({guild_id, user_id}) {
     var cache = await getFromCache({
         cacheName: 'xp',
-        param_id: message.guild.id,
+        param_id: guild_id,
     });
     if (!cache) return false;
     if (cache[0].xp.length === 0) {
-        return await database.query(`SELECT xp, id, level_announce FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [message.author.id]).then(async res => {
+        return await database.query(`SELECT xp, id, level_announce FROM ${guild_id}_guild_level WHERE user_id = ?`, [guild_id]).then(async res => {
             if (res.length > 0) {
                 await addValueToCache({
                     cacheName: 'xp',
-                    param_id: message.guild.id,
+                    param_id: guild_id,
                     value: {
-                        user_id: message.author.id,
+                        user_id,
                         xp: res[0].xp,
                         id: res[0].id,
                         level_announce: res[0].level_announce
@@ -51,21 +49,27 @@ module.exports.gainXP = async function (message, newxp) {
 
                 return await res[0].xp;
             } else {
-                database.query(`INSERT INTO ${message.guild.id}_guild_level (user_id, xp) VALUES (?, ?)`, [message.author.id, 10])
+                return await database.query(`INSERT INTO ${guild_id}_guild_level (user_id, xp) VALUES (?, ?)`, [guild_id, 10])
                     .then(async res => {
                         await addValueToCache({
                             cacheName: 'xp',
-                            param_id: message.guild.id,
+                            param_id: guild_id,
                             value: {
-                                user_id: message.author.id,
+                                user_id,
                                 id: res.insertId,
                                 xp: 10,
                                 level_announce: '0'
                             },
                             valueName: 'xp'
                         })
-                    })
-                return true;
+                    }).catch(err => {
+                        errorhandler({
+                            err: err,
+                            fatal: true
+                        })
+                        return false;
+                    });
+                return 10;
             }
         }).catch(err => {
             errorhandler({
@@ -75,25 +79,25 @@ module.exports.gainXP = async function (message, newxp) {
             return false;
         });
     } else {
-        const user = await cache[0].xp.find(x => x.user_id === message.author.id);
+        const user = await cache[0].xp.find(x => x.user_id === user_id);
 
         if (!user) {
 
             try {       
                 for(let i in cache[0].xp) {
-                    if(cache[0].xp[i].xp.user_id === message.author.id) {
+                    if(cache[0].xp[i].xp.user_id === user_id) {
                         return cache[0].xp[i].xp.xp;
                     }
                 }
             }catch(err) {}
 
-            database.query(`INSERT INTO ${message.guild.id}_guild_level (user_id, xp) VALUES (?, ?)`, [message.author.id, 10])
+            database.query(`INSERT INTO ${guild_id}_guild_level (user_id, xp) VALUES (?, ?)`, [user_id, 10])
                 .then(async res => {
                     await addValueToCache({
                         cacheName: 'xp',
-                        param_id: message.guild.id,
+                        param_id: guild_id,
                         value: {
-                            user_id: message.author.id,
+                            user_id,
                             id: res.insertId,
                             xp: 10,
                             level_announce: '0',
@@ -121,13 +125,13 @@ module.exports.generateXP = function (currentxp) {
     return newxp;
 }
 
-module.exports.updateXP = async function (message, newxp) {
-    return await database.query(`UPDATE ${message.guild.id}_guild_level SET xp = ?, message_count = message_count + 1 WHERE user_id = ?; SELECT message_count FROM ${message.guild.id}_guild_level WHERE user_id = ?`, [newxp, message.author.id, message.author.id])
+module.exports.updateXP = async function ({guild_id, user_id , newxp}) {
+    return await database.query(`UPDATE ${guild_id}_guild_level SET xp = ?, message_count = message_count + 1 WHERE user_id = ?; SELECT message_count FROM ${guild_id}_guild_level WHERE user_id = ?`, [newxp, user_id, user_id])
         .then((res) => {
             for (let i in xp) {
-                if (xp[i].id === message.guild.id) {
+                if (xp[i].id === guild_id) {
                     for (let x in xp[i].xp) {
-                        if(xp[i].xp[x].user_id === message.author.id) {
+                        if(xp[i].xp[x].user_id === user_id) {
                             xp[i].xp[x].xp = newxp;
                             xp[i].xp[x].message_count = res[1][0].message_count;
                         }
@@ -200,6 +204,8 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
 
     try {
         if(level_up_channel) {
+            if(level_up_channel === 'disable') return;
+            
             const channel = await message.guild.channels.cache.get(level_up_channel);
             channel.send({
                 content: `${message.author}`,
@@ -521,11 +527,10 @@ module.exports.changeLevelUp = async ({
     channel
 }) => {
     return new Promise((resolve, reject) => {
-        if(type === 'dm') {
-
-            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [null, guild.id])
+        if(type === 'dm' || type === 'disable') {
+            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [(type === 'dm') ? null : 'disable', guild.id])
                 .then(() => {
-                    return resolve(`✅ Successfully update the levelup type to **DM**`)
+                    return resolve(`✅ Successfully update the levelup type to ${(type === 'dm') ? '**DM**' : '**disabled**'}`)
                 })
                 .catch(err => {
                     errorhandler({
