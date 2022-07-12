@@ -211,6 +211,10 @@
             "apply_form": {
                 "name": "apply_form",
                 "val": "LONGTEXT"
+            },
+            "levelup_channel": {
+                "name": "levelup_channel",
+                "val": "VARCHAR(255)"
             }
         },
         "twitch_streams": {
@@ -295,7 +299,7 @@
                 "default": "[]"
             },
 
-            "_DELETE": ["twitter_id", "twitter_channel", "translate_channel", "translate"]
+            "_DELETE": ["levelup"]
         },
         "_guild_joinroles": {
             "id": {

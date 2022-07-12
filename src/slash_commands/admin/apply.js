@@ -26,7 +26,7 @@ module.exports.run = async ({
 }) => {
     if (!await hasPermission(main_interaction, 1, 0)) {
         return main_interaction.reply({
-            content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
+            content: `${config.errormessages.nopermission}`,
             ephemeral: true
         }).catch(err => {});
     }

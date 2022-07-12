@@ -1,12 +1,13 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { getConfig, updateConfig } = require("../../../utils/functions/data/getConfig");
+const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async ({main_interaction, bot}) => {
     
     const hasPermission = await main_interaction.member.permissions.has('ADMINISTRATOR');
     if(!hasPermission) {
         return main_interaction.reply({
-            content: lang.errors.noperms,
+            content: config.errormessages.nopermission,
             ephemeral: true
         }).catch(err => {})
     }

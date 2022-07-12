@@ -13,12 +13,25 @@ const config = require('../../../src/assets/json/_config/config.json');
 const {
     updateJoinroles
 } = require('../../../utils/functions/data/joinroles');
-const { updateCache } = require("../../../utils/functions/cache/cache");
+const {
+    updateCache
+} = require("../../../utils/functions/cache/cache");
 const database = require("../../db/db");
-const { updateWarnroles } = require("../../../utils/functions/data/warnroles");
-const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
-const { changeYtNotifier, delChannelFromList } = require("../../../utils/functions/data/youtube");
-const { changeTwitchNotifier, delTwChannelFromList } = require("../../../utils/functions/data/twitch");
+const {
+    updateWarnroles
+} = require("../../../utils/functions/data/warnroles");
+const {
+    viewAllSettings
+} = require('../../../utils/functions/settings/viewAllSettings');
+const {
+    changeYtNotifier,
+    delChannelFromList
+} = require("../../../utils/functions/data/youtube");
+const {
+    changeTwitchNotifier,
+    delTwChannelFromList
+} = require("../../../utils/functions/data/twitch");
+const { changeLevelUp } = require("../../../utils/functions/levelsystem/levelsystemAPI");
 
 module.exports.run = async ({
     main_interaction,
@@ -26,7 +39,7 @@ module.exports.run = async ({
 }) => {
 
     const hasPermission = await main_interaction.member.permissions.has('ADMINISTRATOR');
-    if(!hasPermission) {
+    if (!hasPermission) {
         return main_interaction.reply({
             content: lang.errors.noperms,
             ephemeral: true
@@ -39,7 +52,10 @@ module.exports.run = async ({
             var currentsettings = await database.query(`SELECT * FROM ${main_interaction.guild.id}_config LIMIT 1`).then(async res => {
                 return await res[0];
             }).catch(err => {
-                errorhandler({err, fatal: true});
+                errorhandler({
+                    err,
+                    fatal: true
+                });
                 return main_interaction.reply({
                     content: `${config.errormessages.databasequeryerror}`
                 }).catch(err => {});
@@ -216,14 +232,14 @@ module.exports.run = async ({
                     updateVal: (JSON.parse(clear)) ? null : channel.id,
                     updateValName: dbcol
                 });
-    
+
                 database.query(`UPDATE ${main_interaction.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [(JSON.parse(clear)) ? null : channel.id])
-                .catch(err => {
-                    return errorhandler({
-                        err,
-                        fatal: true
+                    .catch(err => {
+                        return errorhandler({
+                            err,
+                            fatal: true
+                        });
                     });
-                });
             }
             main_interaction.reply({
                 content: `✅ Log channel updated!`,
@@ -278,10 +294,10 @@ module.exports.run = async ({
                 }).catch(err => {});
             });
             break;
-        
+
         case 'delyoutube':
             const delytchannel = main_interaction.options.getString('ytchannel');
-            
+
             delChannelFromList({
                 guild_id: main_interaction.guild.id,
                 delytchannel
@@ -323,10 +339,31 @@ module.exports.run = async ({
 
         case 'deltwitch':
             const deltwchannel = main_interaction.options.getString('twchannel');
-            
+
             delTwChannelFromList({
                 guild_id: main_interaction.guild.id,
                 deltwchannel
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {})
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            });
+            break;
+
+        case 'levelup':
+            const type = main_interaction.options.getString('type');
+            const channel = main_interaction.options.getChannel('channel')
+
+            changeLevelUp({
+                type,
+                guild: main_interaction.guild,
+                channel
             }).then(res => {
                 main_interaction.reply({
                     content: res,
@@ -587,5 +624,29 @@ module.exports.data = new SlashCommandBuilder()
             .setName('twchannel')
             .setDescription('Add the twitch name')
             .setRequired(true)
+        )
+    )
+
+    .addSubcommand(command =>
+        command
+        .setName('levelup')
+        .setDescription('Change the way the user get the levelup message')
+        .addStringOption(option =>
+            option.setName('type')
+            .setDescription('Select between dm or text channel.')
+            .setRequired(true)
+            .addChoices({
+                name: 'DM',
+                value: 'dm'
+            })
+            .addChoices({
+                name: 'Text Channel',
+                value: 'channel'
+            })
+        )
+        .addChannelOption(option =>
+            option.setName('channel')
+            .setDescription('Add a chennel if you want to send levelup messages to a text channel')
+            .setRequired(false)
         )
     )
