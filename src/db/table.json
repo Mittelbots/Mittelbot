@@ -283,7 +283,8 @@
             },
             "levelsettings": {
                 "name": "levelsettings",
-                "val": "LONGTEXT"
+                "val": "LONGTEXT",
+                "default": "normal"
             },
             "translate_target": {
                 "name": "translate_target",
@@ -395,7 +396,8 @@
             },
             "level_announce": {
                 "name": "level_announce",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255)",
+                "default": "0"
             },
             "message_count": {
                 "name": "message_count",
