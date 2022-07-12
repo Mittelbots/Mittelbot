@@ -184,7 +184,13 @@ module.exports.checkXP = async function (bot, guildid, currentxp, message) {
 
 }
 
-module.exports.sendNewLevelMessage = async function (newLevel, member, currentxp, nextlevel) {
+module.exports.sendNewLevelMessage = async function (newLevel, message, currentxp, nextlevel) {
+
+    const level_up_channel = await database.query(`SELECT levelup_channel FROM guild_config WHERE guild_id = ?`, message.guild.id)
+        .then(res => {
+            return res[0].levelup_channel;
+        })
+
     var newLevelMessage = new MessageEmbed()
         .setTitle('🎉 You reached a new Level!')
         .addField(`You reached Level: `, `**${newLevel}**`)
@@ -193,11 +199,21 @@ module.exports.sendNewLevelMessage = async function (newLevel, member, currentxp
         .setTimestamp()
 
     try {
-        member.send({
-            embeds: [newLevelMessage]
-        }).catch(err => {
-            return;
-        });
+        if(level_up_channel) {
+            const channel = await message.guild.channels.cache.get(level_up_channel);
+            channel.send({
+                content: `${message.author}`,
+                embeds: [newLevelMessage]
+            }).catch(err => {
+                return;
+            });
+        }else {
+            message.author.send({
+                embeds: [newLevelMessage]
+            }).catch(err => {
+                return;
+            });
+        }
     } catch (err) {
         return;
     }
@@ -485,4 +501,52 @@ module.exports.levelCooldown = ({
             levelCooldown.slice(index, 1)
         }, lvlconfig.timeout);
     }
+}
+
+module.exports.changeLevelUp = async ({
+    type,
+    guild,
+    channel
+}) => {
+    return new Promise((resolve, reject) => {
+        if(type === 'dm') {
+
+            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [null, guild.id])
+                .then(() => {
+                    return resolve(`✅ Successfully update the levelup type to **DM**`)
+                })
+                .catch(err => {
+                    errorhandler({
+                        err,
+                        fatal: true
+                    })
+                    return reject(`❌ Something went wrong while updating the config. Please contact the bot support.`)
+                })
+
+        }else {
+
+            if(!channel) {
+                return reject(`❌ You didn't pass any channel. Please add a channel if you select \`Text Channel\`.`);
+            }
+
+            const hasChannelPerms = guild.me.permissionsIn(channel).has(["VIEW_CHANNEL", "SEND_MESSAGES"]);
+
+            if (!hasChannelPerms) {
+                return reject(`❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES"\`. Change them and try again.`)
+            }
+
+            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [channel.id, guild.id])
+                .then(() => {
+                    return resolve(`✅ Successfully update the levelup type to **Text Channel** witht the channel ${channel}`)
+                })
+                .catch(err => {
+                    errorhandler({
+                        err,
+                        fatal: true
+                    })
+                    return reject(`❌ Something went wrong while updating the config. Please contact the bot support.`)
+                })
+
+        }
+    })
 }

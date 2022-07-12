@@ -3,6 +3,7 @@ const { saveNewTranslateConfig } = require("../../../utils/functions/data/transl
 const {
     hasPermission
 } = require('../../../utils/functions/hasPermissions');
+const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async ({main_interaction, bot}) => {
     const translate_language = main_interaction.options.getString("language");
