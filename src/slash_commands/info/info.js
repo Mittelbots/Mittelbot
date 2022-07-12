@@ -90,6 +90,12 @@ module.exports.run = async ({main_interaction, bot}) => {
     }catch(err) {
         dc_joinedAt = 'Not in this server';
     }
+    var first_joined_at;
+    try {
+        first_joined_at = `${(!joined_at) ? 'Not saved in Database' : new Intl.DateTimeFormat('de-DE').format(new Date(joined_at.slice(0,9)))} ${(joined_at) ? ` \n<t:${Math.floor(new Date(joined_at.slice(0,9))/1000)}:R>` : ''}`
+    }catch(err) {
+        first_joined_at = 'Not saved in Database ||Error||'
+    }
     
     const memberInfoEmbed = new MessageEmbed()
         .setColor('#0099ff')
@@ -97,7 +103,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         .addField(`Tag/ID: `, `<@${user.id}>/${user.id}`)
         .addField(`Created at`, `${new Intl.DateTimeFormat('de-DE').format(user.createdAt)} \n<t:${convertDateToDiscordTimestamp(user.createdAt)}:R>`, true)
         .addField(`Last Joined at`, dc_joinedAt, true)
-        .addField(`First Joined at`, `${(!joined_at) ? 'Not saved in Database' : new Intl.DateTimeFormat('de-DE').format(new Date(joined_at.slice(0,9)))} ${(joined_at) ? ` \n<t:${Math.floor(new Date(joined_at.slice(0,9))/1000)}:R>` : ''}`, true)
+        .addField(`First Joined at`, first_joined_at, true)
         .addField(`Roles`, `${userRole}`)
         .addField('\u200B', '\u200B')
         .setTimestamp();
