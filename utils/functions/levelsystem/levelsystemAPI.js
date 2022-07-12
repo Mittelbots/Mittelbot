@@ -537,7 +537,7 @@ module.exports.changeLevelUp = async ({
 
             return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [channel.id, guild.id])
                 .then(() => {
-                    return resolve(`✅ Successfully update the levelup type to **Text Channel** witht the channel ${channel}`)
+                    return resolve(`✅ Successfully update the levelup type to **Text Channel**. Levelup messages will no be send to ${channel}`)
                 })
                 .catch(err => {
                     errorhandler({
