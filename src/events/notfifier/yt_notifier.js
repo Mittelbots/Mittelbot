@@ -67,7 +67,9 @@ module.exports.handleUploads = async ({
 
 
                         const pingrole = guild.roles.cache.get(uploads[i].pingrole);
-                        const isEveryone = pingrole.name === '@everyone';
+                        if(pingrole) {
+                            var isEveryone = pingrole.name === '@everyone';
+                        }
 
                         channel.send({
                             content: ((pingrole) ? (isEveryone) ? '@everyone ' : `<@&${uploads[i].pingrole}> ` : '') + feed.items[0].title,
