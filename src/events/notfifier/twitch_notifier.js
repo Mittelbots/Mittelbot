@@ -100,5 +100,5 @@ module.exports.twitch_notifier = async ({
             await delay(3000);
         }
 
-    }, 10000); //?  600000 10 minutes
+    }, 600000); //? 10 minutes
 }
