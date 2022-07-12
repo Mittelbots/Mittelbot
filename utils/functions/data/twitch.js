@@ -88,3 +88,28 @@ module.exports.changeTwitchNotifier = async ({
 
     })
 }
+
+
+module.exports.delTwChannelFromList = async ({
+    guild_id,
+    deltwchannel
+}) => {
+    return new Promise(async (resolve, reject) => {
+        const twitch_user = await twitchApiClient.users.getUserByName(deltwchannel);
+        if (!twitch_user) {
+            return reject(`❌ I couldn't find the channel you have entered.`)
+        }
+
+        database.query(`DELETE FROM twitch_streams WHERE guild_id = ? AND channel_id = ?`, [guild_id, twitch_user.id])
+            .then(() => {
+                resolve('✅ Successfully removed the twitch channel to the notification list.')
+            })
+            .catch(err => {
+                errorhandler({
+                    err,
+                    fatal: true
+                });
+                reject('❌ Something went wrong while removing the channel from the database. Please contact the Bot support.')
+            })
+    })
+}

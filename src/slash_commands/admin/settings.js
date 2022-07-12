@@ -18,7 +18,7 @@ const database = require("../../db/db");
 const { updateWarnroles } = require("../../../utils/functions/data/warnroles");
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
 const { changeYtNotifier, delChannelFromList } = require("../../../utils/functions/data/youtube");
-const { changeTwitchNotifier } = require("../../../utils/functions/data/twitch");
+const { changeTwitchNotifier, delTwChannelFromList } = require("../../../utils/functions/data/twitch");
 
 module.exports.run = async ({
     main_interaction,
@@ -321,6 +321,25 @@ module.exports.run = async ({
             });
             break;
 
+        case 'deltwitch':
+            const deltwchannel = main_interaction.options.getString('twchannel');
+            
+            delTwChannelFromList({
+                guild_id: main_interaction.guild.id,
+                deltwchannel
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {})
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            });
+            break;
+
     }
 
     async function saveSetting({
@@ -557,5 +576,16 @@ module.exports.data = new SlashCommandBuilder()
             .setName('twitchping')
             .setDescription('Add a ping role to be pinged each time a the streamer is live.')
             .setRequired(false)
+        )
+    )
+    .addSubcommand(command =>
+        command
+        .setName('deltwitch')
+        .setDescription('Delete a channel from the notification list')
+        .addStringOption(twchannel =>
+            twchannel
+            .setName('twchannel')
+            .setDescription('Add the twitch name')
+            .setRequired(true)
         )
     )
