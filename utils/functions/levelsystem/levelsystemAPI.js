@@ -347,17 +347,29 @@ module.exports.getRankById = async ({user_id, guild_id}) => {
 
         const xp = cache[0].xp;
 
-        const sorted = xp.sort((a, b) => {
-            return a - b;
-        })
+        var sorted = [];
+
+        for(let i in xp) {
+            if(typeof xp[i].xp == 'object') {
+                let cachexp = xp[i].xp;
+                sorted.push([cachexp.user_id, cachexp.xp, cachexp.level_announce, cachexp.message_count]);
+                continue;
+            }
+            sorted.push([xp[i].user_id, xp[i].xp, xp[i].level_announce, xp[i].message_count])
+        }
+
+        sorted = sorted.sort((a, b) => {
+            return b[1] - a[1];
+        });
+
 
         var index;
-
         for(let i in sorted) {
-            if(sorted[i].user_id === user_id) {
+            if(sorted[i][0] === user_id) {
                 index = Number(i) + 1;
             }
         }
+        
         return parseInt(index);
 
     }
