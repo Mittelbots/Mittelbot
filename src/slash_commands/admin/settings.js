@@ -643,6 +643,10 @@ module.exports.data = new SlashCommandBuilder()
                 name: 'Text Channel',
                 value: 'channel'
             })
+            .addChoices({
+                name: 'Disable',
+                value: 'disable'
+            })
         )
         .addChannelOption(option =>
             option.setName('channel')

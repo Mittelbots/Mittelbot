@@ -204,6 +204,8 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
 
     try {
         if(level_up_channel) {
+            if(level_up_channel === 'disable') return;
+            
             const channel = await message.guild.channels.cache.get(level_up_channel);
             channel.send({
                 content: `${message.author}`,
@@ -525,11 +527,10 @@ module.exports.changeLevelUp = async ({
     channel
 }) => {
     return new Promise((resolve, reject) => {
-        if(type === 'dm') {
-
-            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [null, guild.id])
+        if(type === 'dm' || type === 'disable') {
+            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [(type === 'dm') ? null : 'disable', guild.id])
                 .then(() => {
-                    return resolve(`✅ Successfully update the levelup type to **DM**`)
+                    return resolve(`✅ Successfully update the levelup type to ${(type === 'dm') ? '**DM**' : '**disabled**'}`)
                 })
                 .catch(err => {
                     errorhandler({
