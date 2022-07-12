@@ -452,20 +452,19 @@ module.exports.generateLevelConfig = function ({
             hard: (mode == 'hard') ? [] : levelConfig.hard
         };
 
-        //EASY: 20; NORMAL: 50; HARD: 70
         var lvl_multi;
         switch (mode) {
             case 'easy':
-                lvl_multi = 500 // EASY
+                lvl_multi = 190 // EASY
                 break;
             case 'normal':
-                lvl_multi = 650 // NORMAL
+                lvl_multi = 390 // NORMAL
                 break;
             case 'hard':
-                lvl_multi = 800; // HARD
+                lvl_multi = 610; // HARD
                 break;
             default:
-                lvl_multi = 650; // NORMAL
+                lvl_multi = 390; // NORMAL
                 break;
         }
 
