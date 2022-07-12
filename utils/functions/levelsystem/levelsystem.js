@@ -1,12 +1,21 @@
 const levelAPI = require("./levelsystemAPI")
 
 module.exports.run = async (message, bot) => {
-    var currentxp = await levelAPI.gainXP(message);
+    if (message.author.bot || message.author.system) return;
+
+    var currentxp = await levelAPI.gainXP({
+        guild_id: message.guild.id,
+        user_id: message.author.id
+    });
     if(!currentxp) return;
 
     var newxp = await levelAPI.generateXP(currentxp);
 
-    var updateXP = await levelAPI.updateXP(message, newxp)
+    var updateXP = await levelAPI.updateXP({
+        guild_id: message.guild.id,
+        user_id: message.author.id,
+        newxp
+    })
     if(!updateXP) return;
 
     var checkXP = await levelAPI.checkXP(bot, message.guild.id, newxp, message);
