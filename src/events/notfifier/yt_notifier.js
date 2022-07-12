@@ -86,5 +86,5 @@ module.exports.handleUploads = async ({
                     })
             }
         }
-    }, 600000); //?  10 minutes
+    }, 600000); //? 10 minutes
 }
