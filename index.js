@@ -63,6 +63,7 @@ const {
 const {
   delay
 } = require("./utils/functions/delay/delay");
+const { twitch_notifier } = require("./src/events/notfifier/twitch_notifier");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS", "GUILD_BANS"],
@@ -150,6 +151,9 @@ bot.once('ready', async () => {
   handleUploads({
     bot
   });
+  twitch_notifier({
+    bot
+  })
   interactionCreate({
     bot
   })

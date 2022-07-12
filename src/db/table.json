@@ -212,6 +212,37 @@
                 "name": "apply_form",
                 "val": "LONGTEXT"
             }
+        },
+        "twitch_streams": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            },
+            "channel_id": {
+                "name": "channel_id",
+                "val": "VARCHAR(255)"
+            },
+            "channel_name": {
+                "name": "channel_name",
+                "val": "VARCHAR(255)"
+            },
+            "isStreaming": {
+                "name": "isStreaming",
+                "val": "INT(4)",
+                "default": "0"
+            },
+            "info_channel_id": {
+                "name": "info_channel_id",
+                "val": "VARCHAR(255)"
+            },
+            "pingrole": {
+                "name": "pingrole",
+                "val": "VARCHAR(255)"
+            }
         }
     },
     "dynamical": {

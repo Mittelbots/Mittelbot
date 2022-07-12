@@ -18,6 +18,7 @@ const database = require("../../db/db");
 const { updateWarnroles } = require("../../../utils/functions/data/warnroles");
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
 const { changeYtNotifier, delChannelFromList } = require("../../../utils/functions/data/youtube");
+const { changeTwitchNotifier, delTwChannelFromList } = require("../../../utils/functions/data/twitch");
 
 module.exports.run = async ({
     main_interaction,
@@ -295,6 +296,49 @@ module.exports.run = async ({
                     ephemeral: true
                 }).catch(err => {});
             });
+            break;
+
+        case 'twitch':
+            const twitchchannel = main_interaction.options.getString('twitchchannel');
+            const twdcchannel = main_interaction.options.getChannel('dcchannel');
+            const twpingrole = main_interaction.options.getRole('twitchping')
+
+            changeTwitchNotifier({
+                twitchchannel,
+                twdcchannel,
+                twpingrole,
+                guild: main_interaction.guild,
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {})
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            });
+            break;
+
+        case 'deltwitch':
+            const deltwchannel = main_interaction.options.getString('twchannel');
+            
+            delTwChannelFromList({
+                guild_id: main_interaction.guild.id,
+                deltwchannel
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {})
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            });
+            break;
 
     }
 
@@ -480,7 +524,7 @@ module.exports.data = new SlashCommandBuilder()
     .addSubcommand(command =>
         command
         .setName('youtube')
-        .setDescription('Add up to 3 channels to get a notification when a new video is uploaded.')
+        .setDescription('Add up to 3 youtube channels to get a notification when a new video is uploaded.')
         .addStringOption(ytchannel =>
             ytchannel
             .setName('ytchannel')
@@ -508,6 +552,40 @@ module.exports.data = new SlashCommandBuilder()
             ytchannel
             .setName('ytchannel')
             .setDescription('Add the youtube channel link [https://youtube.com/channel/XXXX]')
+            .setRequired(true)
+        )
+    )
+    .addSubcommand(command =>
+        command
+        .setName('twitch')
+        .setDescription('Add up to 3 twitch channels to get a notification when a new video is uploaded.')
+        .addStringOption(ytchannel =>
+            ytchannel
+            .setName('twitchchannel')
+            .setDescription('Add the twitch channel name.')
+            .setRequired(true)
+        )
+        .addChannelOption(dcchannel =>
+            dcchannel
+            .setName('dcchannel')
+            .setDescription('Select a text channel where the notification will be send it when the streamer is live.')
+            .setRequired(true)
+        )
+        .addRoleOption(warnrole =>
+            warnrole
+            .setName('twitchping')
+            .setDescription('Add a ping role to be pinged each time a the streamer is live.')
+            .setRequired(false)
+        )
+    )
+    .addSubcommand(command =>
+        command
+        .setName('deltwitch')
+        .setDescription('Delete a channel from the notification list')
+        .addStringOption(twchannel =>
+            twchannel
+            .setName('twchannel')
+            .setDescription('Add the twitch name')
             .setRequired(true)
         )
     )

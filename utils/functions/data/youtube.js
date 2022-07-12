@@ -19,7 +19,7 @@ module.exports.changeYtNotifier = async ({
                 return id;
             })
             .catch(err => {
-                reject(`I couldn't find the channel you have entered.`)
+                reject(`❌ I couldn't find the channel you have entered.`)
                 return false;
             })
         if (!channelid) return;
@@ -27,8 +27,7 @@ module.exports.changeYtNotifier = async ({
         const hasChannelPerms = guild.me.permissionsIn(dcchannel).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"]);
 
         if (!hasChannelPerms) {
-            reject(`I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`)
-            return;
+            return reject(`❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`)
         }
 
 
@@ -57,8 +56,7 @@ module.exports.changeYtNotifier = async ({
 
         if (allChannelsFromGuild) {
             if (allChannelsFromGuild.length >= 3 && !ytChannelExists) {
-                reject(`You already have 3 youtube channels. You have to delete one first.`)
-                return;
+                return reject(`You already have 3 youtube channels. You have to delete one first.`)
             }
         }
 
