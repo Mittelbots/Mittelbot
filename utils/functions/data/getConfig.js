@@ -67,7 +67,7 @@ module.exports.updateConfig = async ({guild_id, value, valueName}) => {
 
     return await database.query(`UPDATE ${guild_id}_config SET ${valueName} = ?`, [value])
         .then(() => {
-            return true;
+            return config;
         })
         .catch(err => {
             errorhandler({err, fatal: true});

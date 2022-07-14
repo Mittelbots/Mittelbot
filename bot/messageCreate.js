@@ -18,6 +18,7 @@ const {
     getConfig
 } = require('../utils/functions/data/getConfig');
 const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
+const { antiSpam } = require('../utils/automoderation/automoderation');
 
 const defaultCooldown = new Set();
 
@@ -27,6 +28,9 @@ async function messageCreate(message, bot) {
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
+
+    const isSpam = antiSpam(message, bot);
+    if(isSpam) return;
 
     var {disabled_modules} = await getConfig({
         guild_id: message.guild.id,

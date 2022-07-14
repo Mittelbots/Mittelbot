@@ -247,6 +247,20 @@
                 "name": "pingrole",
                 "val": "VARCHAR(255)"
             }
+        },
+        "guild_automod": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            },
+            "antispam": {
+                "name": "antispam",
+                "val": "LONGTEXT"
+            }
         }
     },
     "dynamical": {
