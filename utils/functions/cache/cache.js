@@ -7,6 +7,7 @@ module.exports.memberInfo = [];
 module.exports.global = [];
 module.exports.warnroles = [];
 module.exports.applyforms = [];
+module.exports.autoMod = [];
 
 /**
  * 

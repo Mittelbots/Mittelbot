@@ -32,6 +32,14 @@ async function guildCreate(guild, bot) {
     })
   });
 
+  const obj = {"antispam":{"enabled":false,"action":"[]"}}
+  await database.query(`INSERT INTO guild_automod (guild_id, settings) VALUES (?, ?)`, [guild.id, JSON.stringify(obj)]).catch(err => {
+    errorhandler({
+      err,
+      fatal: true
+    })
+  });
+
   let commands = [];
   await bot.commands.map(cmd => {
     commands.push(cmd.help.name);

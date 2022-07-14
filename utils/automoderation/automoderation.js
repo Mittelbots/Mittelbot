@@ -17,7 +17,7 @@ var userAction = [];
 
 module.exports.antiSpam = async (message, bot) => {
     const setting = await getAutomodbyGuild(message.guild.id)
-    if (!setting) return;
+    if (!setting || setting.length === 0) return;
 
     const antispamsetting = JSON.parse(setting).antispam;
 
