@@ -174,7 +174,8 @@ bot.once('ready', async () => {
 
   function setActivity() {
     getLinesOfCode((cb) => {
-      var codeLines = ` | Lines of Code: ${cb}` || '';
+      let membersCount = bot.guilds.cache.map(guild => guild.memberCount).reduce((a, b) => a + b, 0)
+      var codeLines = ` | ${bot.guilds.cache.size} guilds with ${membersCount} members | Code: ${cb}` || '';
       bot.user.setActivity({
         name: activity.name + ' v' + version + codeLines,
         type: activity.type,
