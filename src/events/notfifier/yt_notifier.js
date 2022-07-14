@@ -54,17 +54,6 @@ module.exports.handleUploads = async ({
                         const channel = await guild.channels.cache.get(uploads[i].info_channel_id);
                         if (!channel) return;
 
-                        let info = await ytdl.getInfo(feed.items[0].link);
-
-                        const newMessageEmbed = new MessageEmbed()
-                            .setTitle(feed.items[0].title)
-                            .setAuthor({
-                                name: 'Youtube',
-                                iconURL: 'https://clipart.info/images/ccovers/1590430652red-youtube-logo-png-xl.png'
-                            })
-                            .setURL(feed.items[0].link)
-                            .setImage(info.videoDetails.thumbnails[3].url)
-
 
                         const pingrole = guild.roles.cache.get(uploads[i].pingrole);
                         if(pingrole) {
@@ -72,8 +61,7 @@ module.exports.handleUploads = async ({
                         }
 
                         channel.send({
-                            content: ((pingrole) ? (isEveryone) ? '@everyone ' : `<@&${uploads[i].pingrole}> ` : '') + feed.items[0].title,
-                            embeds: [newMessageEmbed]
+                            content: ((pingrole) ? (isEveryone) ? '@everyone ' : `<@&${uploads[i].pingrole}> ` : '') + feed.items[0].title + ` ${feed.items[0].link}`,
                         }).catch(err => {});
 
                         console.log(`📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id}`);

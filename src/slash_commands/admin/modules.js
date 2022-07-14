@@ -46,7 +46,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     if(updated) {
         return main_interaction.reply({
-            content: `✅ ${module} ${(status === 'activate') ? 'activated' : 'disabled'}`,
+            content: `✅ ${module[0].toUpperCase() + module.slice(1)} ${(status === 'activate') ? 'activated' : 'disabled'}`,
             ephemeral: true
         }).catch(err => {});
     }else {
