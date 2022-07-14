@@ -517,7 +517,7 @@ module.exports.levelCooldown = ({
             newIndex = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
             delete levelCooldown[newIndex]
             levelCooldown = levelCooldown.filter(Boolean)
-        }, 5000);   //lvlconfig.timeout
+        }, lvlconfig.timeout);
     }
 }
 
