@@ -7,6 +7,7 @@ const { getAllXP } = require("../levelsystem/levelsystemAPI");
 const { getAllMemberInfo } = require('../data/getMemberInfo');
 const { getAllWarnroles } = require("../data/warnroles");
 const { getAllForms } = require("../data/apply_form");
+const { getAllAutoMod } = require("../data/automod");
 
 module.exports.startUpCache = async () => {
 
@@ -24,6 +25,7 @@ module.exports.startUpCache = async () => {
     const guildMemberInfo = await getAllMemberInfo();
     const guildWarnRoles = await getAllWarnroles();
     const guildApplyForms = await getAllForms();
+    const guildAutoMod = await getAllAutoMod();
 
     console.log('✅ Data collected...');
 
@@ -143,6 +145,19 @@ module.exports.startUpCache = async () => {
                 id: guildApplyForms[i].forms[0].guild_id,
                 data: {
                     forms: guildApplyForms[i].forms || [],
+                }
+            }
+        });
+    }
+
+    for(let i in guildAutoMod) {
+        if(!guildAutoMod[i]) continue;
+        await addToCache({
+            value: {
+                name: "autoMod",
+                id: guildAutoMod[i].guild_id,
+                data: {
+                    settings: guildAutoMod[i].setting || [],
                 }
             }
         });

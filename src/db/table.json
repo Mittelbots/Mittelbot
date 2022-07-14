@@ -255,11 +255,13 @@
             },
             "guild_id": {
                 "name": "guild_id",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255)",
+                "insert": "_GUILDID"
             },
-            "antispam": {
-                "name": "antispam",
-                "val": "LONGTEXT"
+            "settings": {
+                "name": "settings",
+                "val": "LONGTEXT",
+                "insert": "{\"antispam\":{\"enabled\":false,\"action\":\"[]\"}}"
             }
         }
     },

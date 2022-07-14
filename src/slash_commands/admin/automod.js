@@ -4,6 +4,7 @@ const { getAutomodbyGuild, updateAutoModbyGuild } = require("../../../utils/func
 module.exports.run = async ({main_interaction, bot}) => {
 
     var setting = await getAutomodbyGuild(main_interaction.guild.id);
+
     setting = JSON.parse(setting);
 
     switch(main_interaction.options.getSubcommand()) {
