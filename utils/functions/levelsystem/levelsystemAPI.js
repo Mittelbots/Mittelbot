@@ -19,7 +19,7 @@ const levelSystem = require("./levelsystem");
 const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
 
 
-const levelCooldown = [];
+var levelCooldown = [];
 
 /**
  * 
@@ -506,17 +506,18 @@ module.exports.levelCooldown = ({
         guild: message.guild.id
     }
 
-    const index = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
+    var index = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
 
     if (index === -1) {
         levelSystem.run(message, bot);
 
         levelCooldown.push(obj);
-        
-    } else {
+
         setTimeout(() => {
-            levelCooldown.slice(index, 1)
-        }, lvlconfig.timeout);
+            newIndex = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
+            delete levelCooldown[newIndex]
+            levelCooldown = levelCooldown.filter(Boolean)
+        }, 5000);   //lvlconfig.timeout
     }
 }
 
