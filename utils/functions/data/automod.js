@@ -1,11 +1,14 @@
 const database = require("../../../src/db/db");
 const {
-    getFromCache, autoMod
+    getFromCache,
+    autoMod
 } = require("../cache/cache");
 const {
     errorhandler
 } = require("../errorhandler/errorhandler");
-const { getAllGuildIds } = require("./getAllGuildIds");
+const {
+    getAllGuildIds
+} = require("./getAllGuildIds");
 
 module.exports.getAutomodbyGuild = async (guild_id) => {
     const cache = await getFromCache({
@@ -17,9 +20,9 @@ module.exports.getAutomodbyGuild = async (guild_id) => {
 
         return await database.query(`SELECT * FROM guild_automod WHERE guild_id = ?`, [guild_id])
             .then(res => {
-                if(res.length > 0) {
+                if (res.length > 0) {
                     return res[0].settings;
-                }else {
+                } else {
                     return false;
                 }
             })
@@ -61,7 +64,7 @@ module.exports.updateAutoModbyGuild = async ({
     return new Promise(async (resolve, reject) => {
 
         for (let i in autoMod) {
-            if(autoMod[i].id === guild_id) {
+            if (autoMod[i].id === guild_id) {
                 autoMod[i].settings = value;
             }
         }
@@ -78,4 +81,28 @@ module.exports.updateAutoModbyGuild = async ({
                 return reject(`❌ Error updating automod settings for your guild to \`${type}\`.`);
             })
     })
+}
+
+module.exports.isOnWhitelist = ({
+    setting,
+    user_roles,
+}) => {
+    let whitelist = JSON.parse(setting).whitelistrole;
+    if(!whitelist) return false;
+
+    user_roles = user_roles.map(role => role.id);
+    whitelist = whitelist.roles.filter(r => user_roles.includes(r));
+
+    return (whitelist.length > 0) ? true : false;
+
+}
+
+module.exports.isRoleOnWhitelist = ({
+    setting,
+    role_id
+}) => {
+    const whitelist = JSON.parse(setting).whitelistrole;
+    if(!whitelist) return false;
+
+    return (whitelist.roles.includes(role_id)) ? true : false;
 }

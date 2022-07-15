@@ -41,7 +41,7 @@ module.exports.run = async ({
     const hasPermission = await main_interaction.member.permissions.has('ADMINISTRATOR');
     if (!hasPermission) {
         return main_interaction.reply({
-            content: lang.errors.noperms,
+            content: config.errormessages.nopermission,
             ephemeral: true
         }).catch(err => {})
     }
