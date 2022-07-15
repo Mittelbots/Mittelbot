@@ -29,7 +29,8 @@ async function messageCreate(message, bot) {
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
 
-    const isSpam = antiSpam(message, bot);
+    const isSpam = await antiSpam(message, bot);
+    console.log(isSpam)
     if(isSpam) return;
 
     var {disabled_modules} = await getConfig({
