@@ -164,10 +164,12 @@ module.exports.antiSpam = async (message, bot) => {
     setTimeout(() => {
         userAction = userAction.filter(u => u.guild_id !== message.guild.id && u.user_id !== message.author.id);
         for (let i in spamCheck) {
-            if (spamCheck[i].user_id === userToSearch.user_id && spamCheck[i].guild_id === userToSearch.guild_id) {
-                delete spamCheck[i];
-                spamCheck = spamCheck.filter(Boolean);
-            }
+            try {
+                if (spamCheck[i].user_id === userToSearch.user_id && spamCheck[i].guild_id === userToSearch.guild_id) {
+                    delete spamCheck[i];
+                    spamCheck = spamCheck.filter(Boolean);
+                }
+            }catch(err) {}
         }
     }, 30000);
 
