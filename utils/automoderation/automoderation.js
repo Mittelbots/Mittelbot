@@ -1,5 +1,5 @@
 const {
-    getAutomodbyGuild
+    getAutomodbyGuild, isOnWhitelist
 } = require("../functions/data/automod");
 const {
     getModTime
@@ -18,6 +18,12 @@ var userAction = [];
 module.exports.antiSpam = async (message, bot) => {
     const setting = await getAutomodbyGuild(message.guild.id)
     if (!setting || setting.length === 0) return false;
+
+    const isWhitelist = isOnWhitelist({
+        setting,
+        user_roles: message.member.roles.cache
+    })
+    if(isWhitelist) return false;
 
     const antispamsetting = JSON.parse(setting).antispam;
 
