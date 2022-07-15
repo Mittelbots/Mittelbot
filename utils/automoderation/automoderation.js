@@ -17,11 +17,11 @@ var userAction = [];
 
 module.exports.antiSpam = async (message, bot) => {
     const setting = await getAutomodbyGuild(message.guild.id)
-    if (!setting || setting.length === 0) return;
+    if (!setting || setting.length === 0) return false;
 
     const antispamsetting = JSON.parse(setting).antispam;
 
-    if (!antispamsetting.enabled) return;
+    if (!antispamsetting.enabled) return false;
 
     const userToSearch = {
         guild_id: message.guild.id,
@@ -29,6 +29,7 @@ module.exports.antiSpam = async (message, bot) => {
     }
 
     var user;
+    var isSpam = false;
 
     if (spamCheck.length > 0) {
 
@@ -119,7 +120,7 @@ module.exports.antiSpam = async (message, bot) => {
                         user.messages = user.messages.filter(Boolean);
                     }
                     message_count = 0;
-                    return true;
+                    return isSpam = true;
                 }
 
             }
@@ -132,14 +133,13 @@ module.exports.antiSpam = async (message, bot) => {
                     spamCheck[i].messages.push(message)
                 }
             }
-
-            return;
         } else {
             addUser();
         }
     } else {
         addUser();
     }
+
 
 
     function addUser() {
@@ -164,5 +164,7 @@ module.exports.antiSpam = async (message, bot) => {
             }
         }
     }, 30000);
+
+    return isSpam;
 
 }
