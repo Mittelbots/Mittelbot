@@ -30,7 +30,6 @@ async function messageCreate(message, bot) {
     if (message.author.system) return;
 
     const isSpam = await antiSpam(message, bot);
-    console.log(isSpam)
     if(isSpam) return;
 
     var {disabled_modules} = await getConfig({
