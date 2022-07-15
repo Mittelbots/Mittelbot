@@ -25,7 +25,7 @@ module.exports.antiSpam = async (setting, message, bot) => {
     if(isWhitelist) return false;
 
     const antispamsetting = JSON.parse(setting).antispam;
-
+    if(!antispamsetting) return false;
     if (!antispamsetting.enabled) return false;
 
     const userToSearch = {
@@ -186,6 +186,7 @@ module.exports.antiInvite = async (setting, message, bot) => {
     if(isWhitelist) return false;
 
     const antiinvitesetting = JSON.parse(setting).antiinvite;
+    if(!antiinvitesetting) return false;
     if (!antiinvitesetting.enabled) return false;
 
     let inviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-zA-Z0-9]/;
