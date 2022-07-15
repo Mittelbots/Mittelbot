@@ -79,6 +79,33 @@ module.exports.run = async ({main_interaction, bot}) => {
             });
             break;
 
+            case "antiinvite":
+                if(!setting.antiinvite) {
+                    setting.antiinvite = {
+                        enabled: false,
+                        action: ""
+                    }
+                }
+
+                setting.antiinvite.enabled = JSON.parse(main_interaction.options.getString('enabled')),
+                setting.antiinvite.action = main_interaction.options.getString('action')
+
+                updateAutoModbyGuild({
+                    guild_id: main_interaction.guild.id,
+                    value: JSON.stringify(setting),
+                    type: setting.antiinvite.action
+                }).then(res => {
+                    main_interaction.reply({
+                        content: (setting.antiinvite.enabled) ? res : "✅ Successfully disabled Anti-invite.",
+                        ephemeral: true
+                    }).catch(err => {})
+                }).catch(err => {
+                    main_interaction.reply({
+                        content: err,
+                        ephemeral: true
+                    }).catch(err => {});
+                });
+                break;
     }
 
 }
@@ -146,9 +173,46 @@ module.exports.data = new SlashCommandBuilder()
                 name: 'delete',
                 value: 'delete'
             })
+        )
+    )
+
+    .addSubcommand(command =>
+        command.setName('antiinvite')
+        .setDescription('Prevent user from sending discord invite links.')
+        .addStringOption(option =>
+            option
+            .setName('enabled')
+            .setDescription('Enable/disable anti-invite.')
+            .setRequired(true)
             .addChoices({
-                name: 'none',
-                value: 'none'
+                name: 'true',
+                value: 'true'
+            })
+            .addChoices({
+                name: 'false',
+                value: 'false'
+            })
+        )
+        .addStringOption(option =>
+            option
+            .setName('action')
+            .setDescription('Select an action to take.')
+            .setRequired(true)
+            .addChoices({
+                name: 'ban',
+                value: 'ban'
+            })
+            .addChoices({
+                name: 'kick',
+                value: 'kick'
+            })
+            .addChoices({
+                name: 'mute',
+                value: 'mute'
+            })
+            .addChoices({
+                name: 'delete',
+                value: 'delete'
             })
         )
     )

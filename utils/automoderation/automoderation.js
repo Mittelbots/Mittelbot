@@ -1,5 +1,5 @@
 const {
-    getAutomodbyGuild, isOnWhitelist
+    isOnWhitelist
 } = require("../functions/data/automod");
 const {
     getModTime
@@ -15,8 +15,7 @@ const {
 var spamCheck = [];
 var userAction = [];
 
-module.exports.antiSpam = async (message, bot) => {
-    const setting = await getAutomodbyGuild(message.guild.id)
+module.exports.antiSpam = async (setting, message, bot) => {
     if (!setting || setting.length === 0) return false;
 
     const isWhitelist = isOnWhitelist({
@@ -175,4 +174,70 @@ module.exports.antiSpam = async (message, bot) => {
 
     return isSpam;
 
+}
+
+
+module.exports.antiInvite = async (setting, message, bot) => {
+    if (!setting || setting.length === 0) return false;
+    const isWhitelist = isOnWhitelist({
+        setting,
+        user_roles: message.member.roles.cache
+    })
+    if(isWhitelist) return false;
+
+    const antiinvitesetting = JSON.parse(setting).antiinvite;
+    if (!antiinvitesetting.enabled) return false;
+
+    let inviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-zA-Z0-9]/;
+    
+    const isInvite = (message.content.match(inviteRegex)) ? true : false;
+
+    if(isInvite) {
+        if (antiinvitesetting.action) {
+            switch (antiinvitesetting.action) {
+                case "kick":
+                    kickUser({
+                        user: message.author,
+                        mod: message.guild.me,
+                        guild: message.guild,
+                        reason: "[AUTO MOD] Sent a discord invite link",
+                        bot: bot
+                    })
+                    break;
+                case "ban":
+                    banUser({
+                        user: message.author,
+                        mod: message.guild.me,
+                        guild: message.guild,
+                        reason: "[AUTO MOD] Sent a discord invite link",
+                        bot,
+                        isAuto: true,
+                        time: "5d",
+                        dbtime: getModTime("5d")
+                    })
+                    break;
+
+                case "mute":
+                    muteUser({
+                        user: message.author,
+                        mod: message.guild.me,
+                        bot,
+                        guild: message.guild,
+                        reason: "[AUTO MOD] Sent a discord invite link",
+                        time: "5d",
+                        dbtime: getModTime("5d")
+                    })
+                    break;
+
+                case "delete":
+                    message.delete({
+                        reason: "[AUTO MOD] Sent a discord invite link"
+                    }).catch(err => {})
+                    break;
+            }
+        }
+        return isInvite;
+    }else {
+        return isInvite;
+    }
 }
