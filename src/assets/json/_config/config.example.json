@@ -14,6 +14,16 @@
         "access_token": "",
         "access_token_secret": ""
     },
+    "email": {
+        "email": "",
+        "host": "",
+        "port": 0,
+        "secure": true,
+        "auth": {
+            "user": "",
+            "pass": ""
+        }
+    },
     "google_translate_projectID": "",
     "twitch_client_id": "",
     "twitch_secret": "",
