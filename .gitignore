@@ -6,6 +6,8 @@ src/db/db_config.json
 src/db/last_backup.json
 mittelbot-db-backup
 
+crashs.json
+
 node_modules/
 
 .DS_Store

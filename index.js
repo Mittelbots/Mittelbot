@@ -46,7 +46,7 @@ const {
   getLinesOfCode
 } = require("./utils/functions/getLinesOfCode/getLinesOfCode");
 const {
-  spawn
+  spawn, exec
 } = require('child_process');
 const {
   db_backup
@@ -64,6 +64,8 @@ const {
   delay
 } = require("./utils/functions/delay/delay");
 const { twitch_notifier } = require("./src/events/notfifier/twitch_notifier");
+const { sendEmailToOwner } = require("./utils/functions/sendEmail/sendEmail");
+const crashs = require("./crashs.json");
 
 const bot = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS", "GUILD_BANS"],
@@ -109,6 +111,8 @@ process.on('unhandledRejection', async err => {
     fatal: true
   });
 
+  crashs.count = crashs.count++;
+  crashs.err = err;
   await delay(5000);
   spawn(process.argv[1], process.argv.slice(2), {
     detached: true,
@@ -127,21 +131,34 @@ process.on('uncaughtException', async err => {
     fatal: true
   })
 
-  errorhandler({
-    err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
-    fatal: true
-  });
-
+  crashs.count = crashs.count++;
+  crashs.err = err;
   await delay(5000);
   spawn(process.argv[1], process.argv.slice(2), {
     detached: true,
     stdio: ['ignore', null, null]
   }).unref()
+
+  errorhandler({
+    err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
+    fatal: true
+  });
+
   process.exit()
 })
 
 
 bot.once('ready', async () => {
+
+  if(crashs.count > 30) {
+    await sendEmailToOwner(crashs.err);
+    return exec(`kill ${process.pid}`);
+  };
+
+  setTimeout(() => {
+    crashs.count = 0;
+  }, 43200000) // 12hrs
+
   await startUpCache();
 
   checkInfractions(bot, database);
