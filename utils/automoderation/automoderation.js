@@ -2,15 +2,23 @@ const {
     isOnWhitelist
 } = require("../functions/data/automod");
 const {
+    delay
+} = require("../functions/delay/delay");
+const {
     getModTime
 } = require("../functions/getModTime");
 const {
     banUser
 } = require("../functions/moderations/banUser");
-const { kickUser } = require("../functions/moderations/kickUser");
+const {
+    kickUser
+} = require("../functions/moderations/kickUser");
 const {
     muteUser
 } = require("../functions/moderations/muteUser");
+const {
+    warnUser
+} = require("../functions/moderations/warnUser");
 
 var spamCheck = [];
 var userAction = [];
@@ -22,125 +30,123 @@ module.exports.antiSpam = async (setting, message, bot) => {
         setting,
         user_roles: message.member.roles.cache
     })
-    if(isWhitelist) return false;
+    if (isWhitelist) return false;
 
     const antispamsetting = JSON.parse(setting).antispam;
-    if(!antispamsetting) return false;
+    if (!antispamsetting) return false;
     if (!antispamsetting.enabled) return false;
-
-    const userToSearch = {
-        guild_id: message.guild.id,
-        user_id: message.author.id,
-    }
 
     var user;
     var isSpam = false;
+    //? CHECK IF USER EXISTS
+    user = spamCheck.find(user => user.user_id === message.author.id && user.guild_id === message.guild.id);
 
-    if (spamCheck.length > 0) {
+    //? IF USER EXISTS
+    if (user) {
 
-        //? CHECK IF USER EXISTS
-        for (let i in spamCheck) {
-            if (spamCheck[i].user_id === userToSearch.user_id && spamCheck[i].guild_id === userToSearch.guild_id) {
-                user = spamCheck[i];
+        var first_message = user.first_message;
+
+        var current_time = new Date().getTime();
+
+        user.messages.push(message);
+
+        var diff = first_message - current_time;
+        var secondsBetween = Math.abs(diff / 1000);
+
+        if (user.messages.length >= 6 || (user.messages.length >= 4 && secondsBetween <= 4) ) {
+            if (secondsBetween <= 4) {
+
+                user.first_message = current_time;
+                const alreadyPunished = userAction.filter(u => u.user_id === user.user_id && u.guild_id === user.guild_id & u.action !== 'delete').length === 0;
+
+                if (antispamsetting.action && alreadyPunished) {
+                    const obj = {
+                        guild_id: message.guild.id,
+                        user_id: message.author.id,
+                        action: ""
+                    }
+                    switch (antispamsetting.action) {
+                        case "kick":
+                            obj.action = "kick";
+                            kickUser({
+                                user: message.author,
+                                mod: message.guild.me,
+                                guild: message.guild,
+                                reason: "[AUTO MOD] Spamming too many letters in a short time",
+                                bot: bot
+                            })
+                            break;
+                        case "ban":
+                            obj.action = "ban";
+                            banUser({
+                                user: message.author,
+                                mod: message.guild.me,
+                                guild: message.guild,
+                                reason: "[AUTO MOD] Spamming too many letters in a short time.",
+                                bot,
+                                isAuto: true,
+                                time: "5d",
+                                dbtime: getModTime("5d")
+                            })
+                            break;
+
+                        case "mute":
+                            obj.action = "mute";
+                            muteUser({
+                                user: message.author,
+                                mod: message.guild.me,
+                                bot,
+                                guild: message.guild,
+                                reason: "[AUTO MOD] Spamming too many letters in a short time.",
+                                time: "5d",
+                                dbtime: getModTime("5d")
+                            })
+                            break;
+
+                        case "delete":
+                            message.channel.messages.fetch({
+                                limit: 30
+                            }).then(messages => {
+                                messages = messages.filter(m => m.author.id === message.author.id);
+                                message.channel.bulkDelete(messages).catch(err => {});
+                            }).catch(err => {})
+                            break;
+
+                        case "warn":
+                            obj.action = "warn";
+                            warnUser({
+                                bot,
+                                user: message.author,
+                                mod: message.guild.me,
+                                guild: message.guild,
+                                reason: "[AUTO MOD] Spamming too many letters in a short time.",
+                            })
+                            break;
+                    }
+                    userAction.push(obj);
+                }
+
+
+                user.messages = [];
+                return isSpam = true;
+            }
+
+        }
+
+        //? UPDATE SPAMCHECK
+        if (user.messages.length >= 6) {
+            user.first_message = current_time;
+        }
+        user.last_message = current_time
+
+        for(let i in spamCheck) {
+            if (spamCheck[i].user_id === message.author.id && spamCheck[i].guild_id === message.guild.id) {
+                spamCheck[i] = user;
+                break;
             }
         }
 
-        //? IF USER EXISTS
-        if (user) {
 
-            const first_message = user.first_message;
-
-            const current_time = new Date().getTime();
-            var message_count = Number(user.message_count) + 1;
-            user.messages.push(message);
-
-            const diff = first_message - current_time;
-            const secondsBetween = Math.abs(diff / 1000);
-
-            if (message_count > 6 || (message_count > 3 && secondsBetween < 4)) {
-
-                if (secondsBetween < 4) {
-
-                    user.first_message = current_time;
-                    
-                    if (antispamsetting.action && userAction.filter(u => u.user_id === user.user_id && u.guild_id === user.guild_id).length === 0) {
-                        const obj = {
-                            guild_id: message.guild.id,
-                            user_id: message.author.id,
-                            action: ""
-                        }
-                        switch (antispamsetting.action) {
-                            case "kick":
-                                obj.action = "kick";
-                                kickUser({
-                                    user: message.author,
-                                    mod: message.guild.me,
-                                    guild: message.guild,
-                                    reason: "Spamming too many letters in a short time",
-                                    bot: bot
-                                })
-                                break;
-                            case "ban":
-                                obj.action = "ban";
-                                banUser({
-                                    user: message.author,
-                                    mod: message.guild.me,
-                                    guild: message.guild,
-                                    reason: "Spamming too many letters in a short time.",
-                                    bot,
-                                    isAuto: true,
-                                    time: "5d",
-                                    dbtime: getModTime("5d")
-                                })
-                                break;
-
-                            case "mute":
-                                obj.action = "mute";
-                                muteUser({
-                                    user: message.author,
-                                    mod: message.guild.me,
-                                    bot,
-                                    guild: message.guild,
-                                    reason: "Spamming too many letters in a short time.",
-                                    time: "5d",
-                                    dbtime: getModTime("5d")
-                                })
-                                break;
-
-                            case "delete":
-                                message.channel.messages.fetch({
-                                    limit: 100
-                                }).then(messages => {
-                                    messages = messages.filter(m => m.createdTimestamp < first_message && m.author.id === message.author.id);
-                                    message.channel.bulkDelete(messages).catch(err => {});
-                                }).catch(err => {})
-                                break;
-                        }
-                        userAction.push(obj);
-                    }
-
-
-                    for (let i in user.messages) {
-                        delete user.messages[i];
-                        user.messages = user.messages.filter(Boolean);
-                    }
-                    message_count = 0;
-                    return isSpam = true;
-                }
-
-            }
-
-            //? UPDATE SPAMCHECK
-            for (let i in spamCheck) {
-                if (spamCheck[i].user_id === userToSearch.user_id && spamCheck[i].guild_id === userToSearch.guild_id) {
-                    spamCheck[i].last_message = current_time
-                    spamCheck[i].message_count = message_count;
-                    spamCheck[i].messages.push(message)
-                }
-            }
-        } else {
-            addUser();
-        }
     } else {
         addUser();
     }
@@ -162,14 +168,7 @@ module.exports.antiSpam = async (setting, message, bot) => {
 
     setTimeout(() => {
         userAction = userAction.filter(u => u.guild_id !== message.guild.id && u.user_id !== message.author.id);
-        for (let i in spamCheck) {
-            try {
-                if (spamCheck[i].user_id === userToSearch.user_id && spamCheck[i].guild_id === userToSearch.guild_id) {
-                    delete spamCheck[i];
-                    spamCheck = spamCheck.filter(Boolean);
-                }
-            }catch(err) {}
-        }
+        spamCheck = spamCheck.filter(u => u.guild_id !== message.guild.id && u.user_id !== message.author.id);
     }, 30000);
 
     return isSpam;
@@ -183,17 +182,17 @@ module.exports.antiInvite = async (setting, message, bot) => {
         setting,
         user_roles: message.member.roles.cache
     })
-    if(isWhitelist) return false;
+    if (isWhitelist) return false;
 
     const antiinvitesetting = JSON.parse(setting).antiinvite;
-    if(!antiinvitesetting) return false;
+    if (!antiinvitesetting) return false;
     if (!antiinvitesetting.enabled) return false;
 
     let inviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-zA-Z0-9]/;
-    
+
     const isInvite = (message.content.match(inviteRegex)) ? true : false;
 
-    if(isInvite) {
+    if (isInvite) {
         if (antiinvitesetting.action) {
             switch (antiinvitesetting.action) {
                 case "kick":
@@ -235,10 +234,20 @@ module.exports.antiInvite = async (setting, message, bot) => {
                         reason: "[AUTO MOD] Sent a discord invite link"
                     }).catch(err => {})
                     break;
+
+                case "warn":
+                    warnUser({
+                        bot,
+                        user: message.author,
+                        mod: message.guild.me,
+                        guild: message.guild,
+                        reason: "[AUTO MOD] Sent a discord invite link",
+                    })
+                    break;
             }
         }
         return isInvite;
-    }else {
+    } else {
         return isInvite;
     }
 }
