@@ -514,9 +514,7 @@ module.exports.levelCooldown = ({
         levelCooldown.push(obj);
 
         setTimeout(() => {
-            newIndex = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
-            delete levelCooldown[newIndex]
-            levelCooldown = levelCooldown.filter(Boolean)
+            levelCooldown = levelCooldown.filter(u => u.user !== message.author.id && u.guild !== message.guild.id)
         }, lvlconfig.timeout);
     }
 }
@@ -554,7 +552,7 @@ module.exports.changeLevelUp = async ({
 
             return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [channel.id, guild.id])
                 .then(() => {
-                    return resolve(`✅ Successfully update the levelup type to **Text Channel**. Levelup messages will no be send to ${channel}`)
+                    return resolve(`✅ Successfully update the levelup type to **Text Channel**. Levelup messages will now be send to ${channel}`)
                 })
                 .catch(err => {
                     errorhandler({
