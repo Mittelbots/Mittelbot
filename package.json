@@ -34,7 +34,7 @@
     "@twurple/api": "^5.1.6",
     "@twurple/auth": "^5.1.6",
     "axios": "^0.27.2",
-    "canvacord": "5.4.1",
+    "canvacord": "5.4.2",
     "discord-api-types": "^0.36.2",
     "discord-bettermarkdown": "^1.2.0",
     "discord.js": "^13.8.1",
