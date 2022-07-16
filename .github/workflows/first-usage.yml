@@ -1,14 +1,14 @@
 name: 'First interaction'
-description: 'Greet new contributors when they create their first issue or open their first pull request'
+description: 'Greet new contributors.'
 author: 'Mittelbot Github Bot'
 inputs:
   repo-token:
-    description: 'Token for the repository. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
+    description: 'Token for the repository. Can be passed using GITHUB_TOKEN'
     required: true
   issue-message:
-    description: 'Hello! As i see is this your first issue. Please make sure to explain your issue or request as detailed as possible.'
+    description: 'Hello! First issue? Please make sure to explain your issue as detailed as possible.'
   pr-message:
-    description: 'Hello! Your first pr? First take a look at the Github actions if they have passed successfully.\n A Developer will look into it as soon as possible.'
+    description: 'Hello! Your first pr? A Developer will look into it as soon as possible.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
