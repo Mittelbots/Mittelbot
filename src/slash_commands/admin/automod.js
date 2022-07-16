@@ -173,6 +173,10 @@ module.exports.data = new SlashCommandBuilder()
                 name: 'delete',
                 value: 'delete'
             })
+            .addChoices({
+                name: 'warn',
+                value: 'warn'
+            })
         )
     )
 
@@ -213,6 +217,10 @@ module.exports.data = new SlashCommandBuilder()
             .addChoices({
                 name: 'delete',
                 value: 'delete'
+            })
+            .addChoices({
+                name: 'warn',
+                value: 'warn'
             })
         )
     )

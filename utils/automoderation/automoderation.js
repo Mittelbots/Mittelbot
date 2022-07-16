@@ -11,6 +11,7 @@ const { kickUser } = require("../functions/moderations/kickUser");
 const {
     muteUser
 } = require("../functions/moderations/muteUser");
+const { warnUser } = require("../functions/moderations/warnUser");
 
 var spamCheck = [];
 var userAction = [];
@@ -76,7 +77,7 @@ module.exports.antiSpam = async (setting, message, bot) => {
                                     user: message.author,
                                     mod: message.guild.me,
                                     guild: message.guild,
-                                    reason: "Spamming too many letters in a short time",
+                                    reason: "[AUTO MOD] Spamming too many letters in a short time",
                                     bot: bot
                                 })
                                 break;
@@ -86,7 +87,7 @@ module.exports.antiSpam = async (setting, message, bot) => {
                                     user: message.author,
                                     mod: message.guild.me,
                                     guild: message.guild,
-                                    reason: "Spamming too many letters in a short time.",
+                                    reason: "[AUTO MOD] Spamming too many letters in a short time.",
                                     bot,
                                     isAuto: true,
                                     time: "5d",
@@ -101,7 +102,7 @@ module.exports.antiSpam = async (setting, message, bot) => {
                                     mod: message.guild.me,
                                     bot,
                                     guild: message.guild,
-                                    reason: "Spamming too many letters in a short time.",
+                                    reason: "[AUTO MOD] Spamming too many letters in a short time.",
                                     time: "5d",
                                     dbtime: getModTime("5d")
                                 })
@@ -114,6 +115,17 @@ module.exports.antiSpam = async (setting, message, bot) => {
                                     messages = messages.filter(m => m.createdTimestamp < first_message && m.author.id === message.author.id);
                                     message.channel.bulkDelete(messages).catch(err => {});
                                 }).catch(err => {})
+                                break;
+
+                            case "warn":
+                                obj.action = "warn";
+                                warnUser({
+                                    bot,
+                                    user: message.author,
+                                    mod: message.guild.me,
+                                    guild: message.guild,
+                                    reason: "[AUTO MOD] Spamming too many letters in a short time.",
+                                })
                                 break;
                         }
                         userAction.push(obj);
@@ -234,6 +246,16 @@ module.exports.antiInvite = async (setting, message, bot) => {
                     message.delete({
                         reason: "[AUTO MOD] Sent a discord invite link"
                     }).catch(err => {})
+                    break;
+
+                case "warn":
+                    warnUser({
+                        bot,
+                        user: message.author,
+                        mod: message.guild.me,
+                        guild: message.guild,
+                        reason: "[AUTO MOD] Sent a discord invite link",
+                    })
                     break;
             }
         }
