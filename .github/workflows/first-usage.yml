@@ -8,7 +8,7 @@ inputs:
   issue-message:
     description: 'Hello! As i see is this your first issue. Please make sure to explain your issue or request as detailed as possible.'
   pr-message:
-    description: `Hello! Your first pr? First take a look at the Github actions if they have passed successfully.\n A Developer will look into it as soon as possible.`
+    description: 'Hello! Your first pr? First take a look at the Github actions if they have passed successfully.\n A Developer will look into it as soon as possible.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
