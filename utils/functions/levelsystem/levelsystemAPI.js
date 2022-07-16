@@ -118,7 +118,7 @@ module.exports.gainXP = async function ({guild_id, user_id}) {
  * @returns {int} newxp
  */
 module.exports.generateXP = function (currentxp) {
-    const randomNumber = Math.floor(Math.random() * 20) + 1; //4 - 21 ca.
+    const randomNumber = Math.floor(Math.random() * 20) + 3; //8 - 27 ca.
 
     let newxp = Number(currentxp) + Number(randomNumber);
 
