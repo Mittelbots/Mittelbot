@@ -95,8 +95,6 @@ async function sendToAudit(bot, type, content1, content2) {
             if (content1.system) return;
             
             gid = content1.guildId;
-
-            console.log(content1)
             
             const attachment = content1.attachments.first();
 
