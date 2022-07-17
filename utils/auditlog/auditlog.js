@@ -102,7 +102,7 @@ async function sendToAudit(bot, type, content1, content2) {
             Message.setThumbnail(content1.author.avatarURL({ format: 'jpg' }))
             Message.setAuthor({name: content1.author.username + ' '+content1.author.discriminator, icon_url: content1.author.avatarURL({ format: 'jpg' })})
             Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n${(attachment !== undefined) ? '' : content1}`);
-            if(content1.stickers) Message.addField('Stickers', content1.stickers.map(s => s.url).join('\n'));
+            if(content1.stickers.size > 1) Message.addField('Stickers', content1.stickers.map(s => s.url).join('\n'));
             if(attachment !== undefined) Message.setImage(attachment.url)
             Message.setFooter({text: `Author: ${content1.author.id} | MessageID: ${content1.id}`});
             break;
