@@ -27,7 +27,7 @@
   "author": "BlackDayz",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/builders": "^0.15.0",
+    "@discordjs/builders": "^0.16.0",
     "@discordjs/rest": "^0.5.0",
     "@gonetone/get-youtube-id-by-url": "^1.0.0",
     "@napi-rs/canvas": "^0.1.25",
