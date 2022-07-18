@@ -24,7 +24,7 @@ module.exports.changeYtNotifier = async ({
             })
         if (!channelid) return;
 
-        const hasChannelPerms = guild.me.permissionsIn(dcchannel).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"]);
+        const hasChannelPerms = guild.members.me.permissionsIn(dcchannel).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"]);
 
         if (!hasChannelPerms) {
             return reject(`❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`)

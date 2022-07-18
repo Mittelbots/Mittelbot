@@ -306,7 +306,7 @@ module.exports.run = async ({
                 twitchchannel,
                 twdcchannel,
                 twpingrole,
-                guild: main_interaction.guild,
+                guild: main_interaction.guild
             }).then(res => {
                 main_interaction.reply({
                     content: res,
