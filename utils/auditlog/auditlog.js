@@ -53,6 +53,31 @@ async function sendToAudit(bot, type, content1, content2) {
     var Message = new EmbedBuilder()
     .setTimestamp()
 
+    function isOnWhitelist() {
+        const cache = await getFromCache({
+            cacheName: 'logs',
+            param_id: content1.guild.id
+        })
+        if(cache) {
+            var whitelist = JSON.parse(cache[0].whitelist) || [];
+
+            if(whitelist.length > 0) {
+                var userRoles = content1.member.roles.cache.map(role => role.id);
+                
+
+                var isOnWhitelist = whitelist.filter(function(item) {
+                    return userRoles.indexOf(item) > -1;
+                });
+
+                if(isOnWhitelist.length > 0) {
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        }
+    }
+
     switch(type) {
 
         case c.debug:
@@ -94,26 +119,7 @@ async function sendToAudit(bot, type, content1, content2) {
             if (content1.author.bot) return;
             if (content1.system) return;
 
-            const cache = await getFromCache({
-                cacheName: 'logs',
-                param_id: content1.guild.id
-            })
-            if(cache) {
-                var whitelist = JSON.parse(cache[0].whitelist) || [];
-
-                if(whitelist.length > 0) {
-                    var userRoles = content1.member.roles.cache.map(role => role.id);
-                    
-
-                    var isOnWhitelist = whitelist.filter(function(item) {
-                        return userRoles.indexOf(item) > -1;
-                    });
-
-                    if(isOnWhitelist.length > 0) {
-                        return;
-                    }
-                }
-            }
+            if(isOnWhitelist()) return;
             
             gid = content1.guildId;
             
@@ -137,6 +143,9 @@ async function sendToAudit(bot, type, content1, content2) {
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
             if (content1.content == content2.content) return;
+
+            if(isOnWhitelist()) return;
+            
             gid = content1.guildId
 
             Message.setColor('#2c4ff9');
