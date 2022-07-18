@@ -1,5 +1,5 @@
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require("discord.js");
 const ytdl = require('ytdl-core');
 
@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args) => {
     const video_link = "https://www.youtube.com/watch?v=BmjBU0IIR0k"
 
     let info = await ytdl.getInfo(video_link);
-    const lastUploadEmbed = new MessageEmbed()
+    const lastUploadEmbed = new EmbedBuilder()
         .setTitle(info.videoDetails.title)
         .setURL(video_link)
         .setImage(info.videoDetails.thumbnails[3].url)

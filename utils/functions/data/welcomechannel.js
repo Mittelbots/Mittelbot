@@ -1,11 +1,7 @@
 const {
-    MessageActionRow
-} = require("discord.js");
-const {
-    MessageEmbed
-} = require("discord.js");
-const {
-    MessageSelectMenu
+    ActionRowBuilder,
+    EmbedBuilder,
+    SelectMenuBuilder
 } = require("discord.js");
 const database = require("../../../src/db/db");
 const {
@@ -266,7 +262,7 @@ module.exports.manageNewWelcomeSetting = async ({
                 embed_name: value,
                 content: data[value]
             }).then(async () => {
-                const editEmbed = new MessageEmbed()
+                const editEmbed = new EmbedBuilder()
                     .setColor(main_interaction.message.embeds[0].color)
                     .setAuthor({
                         name: main_interaction.message.embeds[0].author.name
@@ -275,7 +271,7 @@ module.exports.manageNewWelcomeSetting = async ({
                     .setURL(main_interaction.message.embeds[0].url)
                     .setDescription(main_interaction.message.embeds[0].description || '')
                     
-                    .addField('This is an example field name', 'This is an example field value')
+                    .addFields([{name: 'This is an example field name', value: 'This is an example field value'}])
                     
                     .setFooter({
                         text: main_interaction.message.embeds[0].footer.text
@@ -324,7 +320,7 @@ module.exports.sendWelcomeSetting = async ({
             } else {
                 res = JSON.parse(res);
             }
-            const exampleEmbed = new MessageEmbed()
+            const exampleEmbed = new EmbedBuilder()
                 .setColor(res.color || '#0099ff')
                 .setAuthor({
                     name: res.author || main_interaction.user.username
@@ -332,7 +328,7 @@ module.exports.sendWelcomeSetting = async ({
                 .setTitle(res.title || 'This is an example title')
                 .setURL(res.url || 'https://www.youtube.com/watch?v=d1YBv2mWll0')
                 .setDescription(res.description || 'This is an example description')
-                .addField('This is an example field name', 'This is an example field value')
+                .addFields([{name: 'This is an example field name', value: 'This is an example field value'}])
                 .setImage(res.image || 'https://cdn.boop.pl/uploads/2021/05/E1LVzWfWQAMbRiA.jpg')
                 .setFooter({
                     text: res.footer || 'This is an example footer'
@@ -349,7 +345,7 @@ module.exports.sendWelcomeSetting = async ({
 
             //=========================================================//
 
-            const menu = new MessageSelectMenu()
+            const menu = new SelectMenuBuilder()
                 .setCustomId('welcomemessage')
                 .setPlaceholder('Choose the options')
 
@@ -423,7 +419,7 @@ module.exports.sendWelcomeSetting = async ({
 \n\n Your Message: \n${'**'+res.message+'**' || '_not set yet_'}
             `,
                 embeds: [exampleEmbed],
-                components: [new MessageActionRow({
+                components: [new ActionRowBuilder({
                     components: [menu]
                 })]
             }).catch(err => {
@@ -461,8 +457,8 @@ module.exports.sendWelcomeMessage = async ({
             if (res.active) {
                 if (!res.id) return reject("Welcome channel is not set.");
 
-                const welcomeMessage = new MessageEmbed()
-                    .setColor(res.color)
+                const welcomeMessage = new EmbedBuilder()
+                    .setColor(res.color || null)
                     .setAuthor({
                         name: validateCustomStrings({
                             string: res.author,

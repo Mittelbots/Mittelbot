@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+const {Client, Options, GatewayIntentBits, Collection} = require("discord.js");
 
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
@@ -67,9 +67,9 @@ const { twitch_notifier } = require("./src/events/notfifier/twitch_notifier");
 const { sendEmailToOwner } = require("./utils/functions/sendEmail/sendEmail");
 const crashs = require("./crashs.json");
 
-const bot = new Discord.Client({
-  intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_VOICE_STATES", "GUILD_MESSAGE_REACTIONS", "GUILD_BANS"],
-  makeCache: Discord.Options.cacheWithLimits({
+const bot = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates , GatewayIntentBits.GuildMessageReactions , GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent],
+  makeCache: Options.cacheWithLimits({
     MessageManager: 10,
     PresenceManager: 0,
     disableMentions: 'everyone'
@@ -82,7 +82,7 @@ bot.on('guildCreate', async (guild) => {
   return await guildCreate(guild, bot)
 });
 
-bot.commands = new Discord.Collection();
+bot.commands = new Collection();
 
 deployCommands(bot);
 createSlashCommands();

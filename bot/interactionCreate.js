@@ -11,6 +11,7 @@ const config = require("../src/assets/json/_config/config.json");
 const {
     getConfig
 } = require("../utils/functions/data/getConfig");
+const { InteractionType } = require("discord-api-types/v10");
 
 const defaultCooldown = new Set();
 
@@ -25,8 +26,7 @@ module.exports.interactionCreate = ({
         });
 
         main_interaction.bot = bot;
-
-        if (main_interaction.isCommand()) {
+        if (main_interaction.type === InteractionType.ApplicationCommand) {
             if (main_interaction.user.id !== config.Bot_Owner_ID) {
                 if (defaultCooldown.has(main_interaction.user.id)) {
                     return main_interaction.reply({

@@ -1,17 +1,19 @@
-const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require("discord.js");
 const { generateModEmote } = require("../functions/generateModEmote");
 
 async function publicModResponses(type, moderator, member, reason, time, bot) {
-    var publicModMessage = new MessageEmbed()
+    var publicModMessage = new EmbedBuilder()
     .setColor('#0099ff')
     .setTitle(`${await generateModEmote({bot, type}) }**Member ${type}!**`)
-    .addField(`Moderator`, `${moderator} (${moderator.id})`)
-    .addField(`Member`, `<@${member}> (${member})`)
-    .addField(`Reason`, `${reason || "No Reason Provided!"}`)
+    .addFields([
+        {name: `Moderator`, value: `${moderator} (${moderator.id})`},
+        {name: `Member`, value: `<@${member}> (${member})`},
+        {name: `Reason`, value: `${reason || "No Reason Provided!"}`}
+    ])
     .setTimestamp();
 
     if(time) {
-        publicModMessage.addField(`Time`, `**${time}** `)
+        publicModMessage.addFields([{name: `Time`, value: `**${time}** `}])
     }
 
     return {
@@ -46,9 +48,9 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
                 break;
         }
         //let user = await guild.members.fetch(infraction.user_id);
-        var publicOneInfractionMessage = new MessageEmbed()
+        var publicOneInfractionMessage = new EmbedBuilder()
         //.setAuthor(`${user.user.username}${user.user.discriminator}`)
-        .addField(`${infraction.infraction_id} - ${type} **${infraction.till_date}**`, `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`);
+        .addFields([{name: `${infraction.infraction_id} - ${type} **${infraction.till_date}**`, value: `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`}]);
         
         return {
             error: false,
@@ -58,14 +60,14 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
     }else {
         const backId = 'back'
         const forwardId = 'forward'
-        const backButton = new MessageButton({
-        style: 'SECONDARY',
+        const backButton = new ButtonBuilder({
+        style: ButtonStyle.Secondary,
         label: 'Back',
         emoji: '⬅️',
         customId: backId
         });
-        const forwardButton = new MessageButton({
-        style: 'SECONDARY',
+        const forwardButton = new ButtonBuilder({
+        style: ButtonStyle.Secondary,
         label: 'Forward',
         emoji: '➡️',
         customId: forwardId
@@ -76,7 +78,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
         const generateEmbed = async start => {
             const current = data.slice(start, start + 10);
 
-            return new MessageEmbed({
+            return new EmbedBuilder({
                 title: `Showing infractions ${start + 1}-${start + current.length} out of ${data.length}`,
                 fields: await Promise.all(
                     current.map(async inf => ({
@@ -91,7 +93,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
         
         const embedMessage = await main_interaction.channel.send({
             embeds: [await generateEmbed(0)],
-            components: canFitOnOnePage ? [] : [new MessageActionRow({components: [forwardButton]})]
+            components: canFitOnOnePage ? [] : [new ActionRowBuilder({components: [forwardButton]})]
         }).catch(err => {});
 
         if(canFitOnOnePage) return;
@@ -107,7 +109,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
             await interaction.update({
                 embeds: [await generateEmbed(currentIndex)],
                 components: [
-                    new MessageActionRow({
+                    new ActionRowBuilder({
                         components: [
                             ...(currentIndex ? [backButton] : []),
                             ...(currentIndex + 10 < data.length ? [forwardButton] : [])

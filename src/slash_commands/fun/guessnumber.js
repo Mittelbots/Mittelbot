@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 const { delay } = require("../../../utils/functions/delay/delay");
 
 module.exports.run = async ({main_interaction, bot}) => {

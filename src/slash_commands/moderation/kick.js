@@ -1,6 +1,6 @@
 const {
     SlashCommandBuilder
-} = require('@discordjs/builders');
+} = require('discord.js');
 const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');

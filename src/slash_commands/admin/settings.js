@@ -1,6 +1,7 @@
 const {
-    SlashCommandBuilder
-} = require("@discordjs/builders");
+    SlashCommandBuilder,
+    PermissionFlagsBits
+} = require("discord.js");
 const {
     save_welcomechannelId,
     sendWelcomeSetting
@@ -40,7 +41,7 @@ module.exports.run = async ({
     bot
 }) => {
 
-    const hasPermission = await main_interaction.member.permissions.has('ADMINISTRATOR');
+    const hasPermission = await main_interaction.member.permissions.has(PermissionFlagsBits.Administrator);
     if (!hasPermission) {
         return main_interaction.reply({
             content: config.errormessages.nopermission,

@@ -5,7 +5,7 @@ const {
     errorhandler
 } = require('../../../utils/functions/errorhandler/errorhandler');
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require("discord.js");
 const ytdl = require('ytdl-core');
 

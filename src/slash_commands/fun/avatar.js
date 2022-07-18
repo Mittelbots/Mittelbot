@@ -1,17 +1,17 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports.run = async ({main_interaction, bot}) => {
     const user = main_interaction.options.getUser('user') || main_interaction.user;
 
-    const newMessageEmbed = new MessageEmbed()
+    const newEmbedBuilder = new EmbedBuilder()
         .setColor("#0099ff")
         .setTitle(`**Click to view ${user.username} Avatar**`)
         .setURL(`${user.displayAvatarURL()}`)
         .setImage(user.displayAvatarURL({ format: "png"}) + '?size=1024')
         .setTimestamp()
     return main_interaction.reply({
-        embeds: [newMessageEmbed]
+        embeds: [newEmbedBuilder]
     })
 }
 

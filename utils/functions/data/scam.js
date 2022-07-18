@@ -5,15 +5,14 @@ const {
 const dns = require('dns');
 const url = require('url');
 const {
-    MessageEmbed,
-    MessageActionRow
+    EmbedBuilder,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle
 } = require("discord.js");
 const {
     removeHttp
 } = require("../removeCharacters");
-const {
-    MessageButton
-} = require("discord.js");
 const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.addScam = ({
@@ -71,7 +70,11 @@ module.exports.addScam = ({
                     guild_name,
                     author,
                     type: 'ADD'
-                }).catch(err => {
+                })
+                .then(() => {
+                    resolve(`\`${value}\` Your request was sent to the Bot Moderators. You'll receive an status update in your direkt messages!`)
+                })
+                .catch(err => {
                     reject(err);
                 })
 
@@ -108,7 +111,7 @@ module.exports.removeScam = ({
                 } else if (res[i].link === removeHttp(value)) {
                     exits = true
                     pass = true;
-                    resolve(`\`**${value}**\` Your request was sent to the Bot Moderators. You'll receive an status update in your direkt messages!`)
+                    resolve(`\`${value}\` Your request was sent to the Bot Moderators. You'll receive an status update in your direkt messages!`)
                 };
             }
         });
@@ -127,7 +130,11 @@ module.exports.removeScam = ({
             guild_name,
             author,
             type: 'DELETE'
-        }).catch(err => {
+        })
+        .then(() => {
+            resolve(`\`${value}\` Your request was sent to the Bot Moderators. You'll receive an status update in your direkt messages!`)
+        })
+        .catch(err => {
             reject(err);
         })
 
@@ -146,26 +153,26 @@ module.exports.viewScam = ({
                 .then(async res => {
                     const backId = 'back'
                     const forwardId = 'forward'
-                    const backButton = new MessageButton({
-                        style: 'SECONDARY',
+                    const backButton = new ButtonBuilder({
+                        style: ButtonStyle.Secondary,
                         label: 'Back',
                         emoji: '⬅️',
                         customId: backId
                     });
-                    const forwardButton = new MessageButton({
-                        style: 'SECONDARY',
+                    const forwardButton = new ButtonBuilder({
+                        style: ButtonStyle.Secondary,
                         label: 'Forward',
                         emoji: '➡️',
                         customId: forwardId
                     });
 
-                    const embedMessage = new MessageEmbed()
+                    const embedMessage = new EmbedBuilder()
                         .setTitle('Showing all current blacklist Links')
 
                     const generateEmbed = async start => {
                         for (i in res) {
                             if (i === (Number(start) + Number(30))) return;
-                            embedMessage.addField('LINK:', res[i].link)
+                            embedMessage.addFields([{name: 'LINK:', value: res[i].link}])
                         }
                         return embedMessage;
                     }
@@ -173,7 +180,7 @@ module.exports.viewScam = ({
                     const canFitOnOnePage = res.length <= 30;
                     const sentMessage = await channel.send({
                         embeds: [await generateEmbed(0)],
-                        components: canFitOnOnePage ? [] : [new MessageActionRow({
+                        components: canFitOnOnePage ? [] : [new ActionRowBuilder({
                             components: [forwardButton]
                         })]
                     }).catch(err => {});
@@ -193,7 +200,7 @@ module.exports.viewScam = ({
                         await interaction.update({
                             embeds: [await generateEmbed(currentIndex)],
                             components: [
-                                new MessageActionRow({
+                                new ActionRowBuilder({
                                     components: [
                                         ...(currentIndex ? [backButton] : []),
                                         ...(currentIndex + 10 < data.length ? [forwardButton] : [])
@@ -244,37 +251,41 @@ function sendScamEmbed({
         const blacklist = 'blacklist';
         const blacklistLabel = 'Blacklist Server';
 
-        const newScamLinkembed = new MessageEmbed()
+        const newScamLinkembed = new EmbedBuilder()
             .setTitle(`New **${type}** Scam Link request`)
-            .addField('**LINK:**', `\n${removeHttp(link)}`)
-            .addField('**VIEW SCAN**', `https://www.urlvoid.com/scan/${link}/`)
-            .addField('**SERVER:**', `\n${guild_id} (${guild_name})`)
+            .addFields([
+                {name: '**LINK:**', value: `\n${removeHttp(link)}`},
+                {name: '**VIEW SCAN**', value: `https://www.urlvoid.com/scan/${link}/`},
+                {name: '**SERVER:**', value: `\n${guild_id} (${guild_name})`},
+            ])
             .setTimestamp()
 
-        const buttons = new MessageActionRow()
+        const buttons = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                 .setCustomId(accept)
                 .setLabel(accept)
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
             )
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                 .setCustomId(deny)
                 .setLabel(deny)
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
             )
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                 .setCustomId(blacklist)
                 .setLabel(blacklistLabel)
-                .setStyle('DANGER')
+                .setStyle(ButtonStyle.Primary)
             )
 
         const sentMessage = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.scammanagechannel).send({
             embeds: [newScamLinkembed],
             components: [buttons]
         }).catch(err => {});
+
+        resolve(true);
 
         const collector = sentMessage.createMessageComponentCollector({
             max: 1
@@ -321,7 +332,7 @@ function sendScamEmbed({
             collected.forEach(x => {
                 for (let i in buttons.components) {
                     if (buttons.components[i].customId === x.customId) {
-                        buttons.components[i].setStyle('SUCCESS');
+                        buttons.components[i].setStyle(ButtonStyle.Primary);
                     }
                     buttons.components[i].setDisabled(true)
                 }

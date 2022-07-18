@@ -5,7 +5,7 @@ const {
     ClientCredentialsAuthProvider
 } = require('@twurple/auth');
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require('discord.js');
 const {
     delay

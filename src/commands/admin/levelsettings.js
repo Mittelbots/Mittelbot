@@ -7,9 +7,10 @@ const {
 } = require("../../../utils/functions/hasPermissions");
 const levelAPI = require('../../../utils/functions/levelsystem/levelsystemAPI');
 const {
-    MessageEmbed,
-    MessageButton,
-    MessageActionRow
+    EmbedBuilder,
+    ButtonBuilder,
+    ActionRowBuilder,
+    ButtonStyle
 } = require('discord.js');
 const database = require('../../db/db');
 const {
@@ -45,13 +46,13 @@ module.exports.run = async (bot, message, args) => {
             const current = levelSettings.slice(start, start + 1);
 
             if(levelSettings.length === 0) {
-                return new MessageEmbed({
+                return new EmbedBuilder({
                     title: `Ranksettings for ${message.guild}`,
                     description: 'You don\'t have any ranks. Please add one to manage it.',  
                 });
             }
 
-            return new MessageEmbed({
+            return new EmbedBuilder({
                 title: `Ranksettings for ${message.guild}`,
                 description: 'View, change, add or delete Ranksettings',
                 fields: await Promise.all(
@@ -78,11 +79,11 @@ module.exports.run = async (bot, message, args) => {
 
         const setComponentButtons = (min, max) => {
             currentIndex = max;
-            const buttonsEmbed = new MessageActionRow()
+            const buttonsEmbed = new ActionRowBuilder()
 
             buttonsEmbed.addComponents(
-                new MessageButton({
-                    style: 'SUCCESS',
+                new ButtonBuilder({
+                    style: ButtonStyle.Success,
                     label: `ADD`,
                     customId: 'ADD'
                 })
@@ -94,7 +95,7 @@ module.exports.run = async (bot, message, args) => {
 
             for (let i = min; i < max; i++) {
                 buttonsEmbed.addComponents(
-                    new MessageButton({
+                    new ButtonBuilder({
                         style: 'SECONDARY',
                         label: `Update Level ${levelSettings[i].level}`,
                         customId: levelSettings[i].level
@@ -110,7 +111,7 @@ module.exports.run = async (bot, message, args) => {
 
             if(!canFitOnOnePage) {
                 buttonsEmbed.addComponents(
-                    new MessageButton({
+                    new ButtonBuilder({
                         style: 'SUCCESS',
                         label: 'NEXT',
                         customId: 'NEXT'
@@ -119,7 +120,7 @@ module.exports.run = async (bot, message, args) => {
             }
             if(min > 0) {
                 buttonsEmbed.addComponents(
-                    new MessageButton({
+                    new ButtonBuilder({
                         style: 'DANGER',
                         label: 'BACK',
                         customId: 'BACK'
@@ -145,34 +146,36 @@ module.exports.run = async (bot, message, args) => {
                 if (interaction.customId === levelSettings[i].level) {
                     
                     const updateButtonId = 'update'
-                    const updateButton = new MessageButton({
+                    const updateButton = new ButtonBuilder({
                         style: 'SUCCESS',
                         label: 'UPDATE XP',
                         customId: updateButtonId
                     });
 
                     const updateRoleButtonId = 'updateRole';
-                    const updateRoleButton = new MessageButton({
+                    const updateRoleButton = new ButtonBuilder({
                         style: 'SUCCESS',
                         label: 'UPDATE ROLE',
                         customId: updateRoleButtonId
                     });
 
                     const deleteButtonId = 'delete'
-                    const deleteButton = new MessageButton({
+                    const deleteButton = new ButtonBuilder({
                         style: 'DANGER',
                         label: 'DELETE',
                         customId: deleteButtonId
                     });
                     
-                    var updateMessage = new MessageEmbed()
+                    var updateMessage = new EmbedBuilder()
                         .setDescription(`View delete or update ${guild.roles.cache.get(levelSettings[i].role)}`)
-                        .addField(`Level: ${levelSettings[i].level}`, `XP: **${levelSettings[i].needXP}**`)
+                        .addFields([
+                            { name: `Level: ${levelSettings[i].level}`, value: `XP: **${levelSettings[i].needXP}**` }
+                        ])
                         .setTimestamp()
 
                     updateMessage = await interaction.update({
                         embeds: [updateMessage],
-                        components: [new MessageActionRow({
+                        components: [new ActionRowBuilder({
                             components: [updateButton, updateRoleButton, deleteButton]
                         })]
                     }).catch(err => {});

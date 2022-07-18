@@ -1,5 +1,5 @@
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require("discord.js");
 const database = require("../../../src/db/db");
 const {
@@ -195,11 +195,13 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
             return res[0].levelup_channel;
         })
 
-    var newLevelMessage = new MessageEmbed()
+    var newLevelMessage = new EmbedBuilder()
         .setTitle('🎉 You reached a new Level!')
-        .addField(`You reached Level: `, `**${newLevel}**`)
-        .addField(`Your current xp are: `, `**${currentxp}**`)
-        .addField(`Your next Level:`, `Level: **${nextlevel.level}**, required: **${nextlevel.xp} xp**`)
+        .addFields([
+            {name: `You reached Level: `, value: `**${newLevel}**`},
+            {name: `Your XP: `, value: `**${currentxp}**`},
+            {name: `Next Level: `, value: `**${nextlevel.level}**, required: **${nextlevel.xp} xp**`},
+        ])
         .setTimestamp()
 
     try {
