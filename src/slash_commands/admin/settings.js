@@ -13,9 +13,6 @@ const config = require('../../../src/assets/json/_config/config.json');
 const {
     updateJoinroles
 } = require('../../../utils/functions/data/joinroles');
-const {
-    updateCache
-} = require("../../../utils/functions/cache/cache");
 const database = require("../../db/db");
 const {
     updateWarnroles
@@ -31,7 +28,12 @@ const {
     changeTwitchNotifier,
     delTwChannelFromList
 } = require("../../../utils/functions/data/twitch");
-const { changeLevelUp } = require("../../../utils/functions/levelsystem/levelsystemAPI");
+const {
+    changeLevelUp
+} = require("../../../utils/functions/levelsystem/levelsystemAPI");
+const {
+    updateLog
+} = require("../../../utils/functions/data/logs");
 
 module.exports.run = async ({
     main_interaction,
@@ -198,53 +200,33 @@ module.exports.run = async ({
             const auditlog = main_interaction.options.getChannel('auditlog');
             const messagelog = main_interaction.options.getChannel('messagelog');
             const modlog = main_interaction.options.getChannel('modlog');
+            const whitelistrole = main_interaction.options.getRole('whitelist');
             const clear = main_interaction.options.getString('clear');
 
-
-            if (auditlog !== null) {
-                await updateLog({
-                    channel: auditlog,
-                    dbcol: config.settings.auditlog.colname,
-                })
+            if (!auditlog && !messagelog && !modlog && !whitelistrole) {
+                return main_interaction.reply({
+                    content: `❌ You must specify at least one log channel! Or add a role to the whitelist!`,
+                    ephemeral: true
+                }).catch(err => {});
             }
 
-            if (messagelog !== null) {
-                await updateLog({
-                    channel: messagelog,
-                    dbcol: config.settings.messagelog.colname,
-                })
-            }
-
-            if (modlog !== null) {
-                await updateLog({
-                    channel: modlog,
-                    dbcol: config.settings.modlog.colname,
-                })
-            }
-
-            async function updateLog({
-                channel,
-                dbcol,
-            }) {
-                await updateCache({
-                    cacheName: 'logs',
-                    param_id: main_interaction.guild.id,
-                    updateVal: (JSON.parse(clear)) ? null : channel.id,
-                    updateValName: dbcol
-                });
-
-                database.query(`UPDATE ${main_interaction.guild.id}_guild_logs SET ${dbcol} = ? WHERE id = 1`, [(JSON.parse(clear)) ? null : channel.id])
-                    .catch(err => {
-                        return errorhandler({
-                            err,
-                            fatal: true
-                        });
-                    });
-            }
-            main_interaction.reply({
-                content: `✅ Log channel updated!`,
-                ephemeral: true
-            }).catch(err => {});
+            await updateLog({
+                guild_id: main_interaction.guild.id,
+                channel: auditlog || messagelog || modlog,
+                dbcol: (auditlog) ? config.settings.auditlog.colname : (messagelog) ? config.settings.messagelog.colname : config.settings.modlog.colname,
+                whitelistrole,
+                clear
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {});
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            })
 
             break;
 
@@ -510,6 +492,12 @@ module.exports.data = new SlashCommandBuilder()
             modlog
             .setName('modlog')
             .setDescription('Add a channel to see moderation logs for example if a user gets muted.')
+            .setRequired(false)
+        )
+        .addRoleOption(whitelist =>
+            whitelist
+            .setName('whitelist')
+            .setDescription('Add a role which won\'t be logged. [Only available for audit- and messagelog]')
             .setRequired(false)
         )
         .addStringOption(clear =>
