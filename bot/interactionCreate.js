@@ -11,7 +11,7 @@ const config = require("../src/assets/json/_config/config.json");
 const {
     getConfig
 } = require("../utils/functions/data/getConfig");
-const { InteractionType } = require("discord-api-types/v10");
+const { InteractionType } = require("discord.js");
 
 const defaultCooldown = new Set();
 
@@ -53,7 +53,12 @@ module.exports.interactionCreate = ({
                 })
             }
 
-        } else {
+        } else if(main_interaction.type === InteractionType.ModalSubmit) {
+            // if(main_interaction.customId === 'test') {
+            //     console.log(main_interaction.fields.getTextInputValue('text'));
+            // }
+        }
+        else {
             switch (main_interaction.customId) {
                 case "welcomemessage":
                     await main_interaction.deferUpdate();
