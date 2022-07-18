@@ -1,17 +1,19 @@
 const cmd_help = require('../../../src/assets/json/command_config/command_help.json');
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports.run = async ({main_interaction, bot}) => {
-    const helpEmbedMessage = new MessageEmbed()
+    const helpEmbedMessage = new EmbedBuilder()
         .setTitle('Everything you need to know from each Command \n Choose a category')
         .setDescription('Something wrong? Report it on my discord https://discord.gg/5d5ZDFQM4E \n _I\'ll use the default prefix \'!\'_ ')
 
     for (const [index, [key, value]] of Object.entries(Object.entries(cmd_help))) {
-        helpEmbedMessage.addField(`${value._icon} ${key.charAt(0).toUpperCase() + key.slice(1)}`, value._desc);
+        helpEmbedMessage.addFields([
+            {name: `${value._icon} ${key.charAt(0).toUpperCase() + key.slice(1)}`, value: value._desc}
+        ]);
     }
 
     await main_interaction.reply({
@@ -79,13 +81,15 @@ module.exports.run = async ({main_interaction, bot}) => {
             for (const [index, [key, value]] of Object.entries(Object.entries(cmd_help))) {
                 if(value._icon === reaction.emoji.name) {
 
-                    const edithelpEmbedMessage = new MessageEmbed()
+                    const edithelpEmbedMessage = new EmbedBuilder()
                         .setTitle(`Settings for ${key.charAt(0).toUpperCase() + key.slice(1)}`)
                         .setDescription('Something wrong? Report it on my discord https://discord.gg/5d5ZDFQM4E \n _I\'ll use the default prefix \'!\'_ ')
 
                     for(let i in value) {
                         if(typeof value[i] === 'object') {
-                            edithelpEmbedMessage.addField(`${value[i].icon || ''} ${value[i].name.charAt(0).toUpperCase() + value[i].name.slice(1)}`, `${value[i].description || 'Not set yet'} \n${'**'+value[i].usage+'**' || 'Not set'}`)
+                            edithelpEmbedMessage.addFields([
+                                {name:`${value[i].icon || ''} ${value[i].name.charAt(0).toUpperCase() + value[i].name.slice(1)}`, value: `${value[i].description || 'Not set yet'} \n${'**'+value[i].usage+'**' || 'Not set'}`}
+                            ])
                         }
                     }
 

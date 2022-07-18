@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 const { getAutomodbyGuild, updateAutoModbyGuild, isRoleOnWhitelist } = require("../../../utils/functions/data/automod");
 
 module.exports.run = async ({main_interaction, bot}) => {

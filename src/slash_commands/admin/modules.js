@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { getConfig, updateConfig } = require("../../../utils/functions/data/getConfig");
 const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async ({main_interaction, bot}) => {
     
-    const hasPermission = await main_interaction.member.permissions.has('ADMINISTRATOR');
+    const hasPermission = await main_interaction.member.permissions.has(PermissionFlagsBits.Administrator);
     if(!hasPermission) {
         return main_interaction.reply({
             content: config.errormessages.nopermission,

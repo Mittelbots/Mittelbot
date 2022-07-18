@@ -1,7 +1,7 @@
 const { getAllConfig } = require("../data/getConfig");
 const { getAllModroles } = require("../data/getModroles");
 const { getAllJoinroles } = require("../data/joinroles");
-const { getAllLogs } = require('../data/getLogs');
+const { getAllLogs } = require('../data/logs');
 const { addToCache } = require("./cache");
 const { getAllXP } = require("../levelsystem/levelsystemAPI");
 const { getAllMemberInfo } = require('../data/getMemberInfo');
@@ -91,6 +91,7 @@ module.exports.startUpCache = async () => {
                     auditlog: guildLogs[i].logs.auditlog,
                     messagelog: guildLogs[i].logs.messagelog,
                     modlog: guildLogs[i].logs.modlog,
+                    whitelist: guildLogs[i].logs.whitelist,
                 }
             }
         });

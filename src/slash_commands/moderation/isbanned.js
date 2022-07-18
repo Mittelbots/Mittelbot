@@ -1,6 +1,6 @@
 const {
     SlashCommandBuilder
-} = require('@discordjs/builders');
+} = require('discord.js');
 const {
     hasPermission
 } = require('../../../utils/functions/hasPermissions');
@@ -16,15 +16,15 @@ module.exports.run = async ({main_interaction, bot}) => {
     }
 
     const user = main_interaction.options.getUser('user');
-
     let isOnBanListCB = await isOnBanList({
         user, 
         guild: main_interaction.guild
     });
+    
     return main_interaction.reply({
-        content: (isOnBanListCB[0]) ? `This user is banned! Reason: ${isOnBanListCB[1]}` : 'This user isn\'t banned!',
+        content: (isOnBanListCB[0]) ? `This user is banned! Reason: \`${isOnBanListCB[1]}\` by ${isOnBanListCB[2]}` : 'This user isn\'t banned!',
         ephemeral: true
-    });
+    }).catch(err => {})
 }
 
 module.exports.data = new SlashCommandBuilder()

@@ -1,15 +1,13 @@
 const {
     SlashCommandBuilder
-} = require('@discordjs/builders');
+} = require('discord.js');
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require('discord.js');
 const database = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
-const os = require('os');
 const { version } = require('../../../package.json');
-var os_utils = require('os-utils');
 
 const config = require('../../../src/assets/json/_config/config.json');
 
@@ -58,22 +56,22 @@ module.exports.run = async ({main_interaction, bot}) => {
       
       var uptime = process.uptime();
 
-    const serverInfoEmbed = new MessageEmbed()
+    const serverInfoEmbed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle(`**Serverinfos - ${server.name}**`)
         .setURL('https://discord.gg/chilledsad/')
         .setThumbnail(server.iconURL())
         .setDescription(`${server.id}`)
-        .addField(`Owner: `, `<@${server.ownerId}>`, true)
-        .addField(`Channels`, `${server.channels.cache.size}`, true)
-        .addField(`Members`, `${server.members.cache.size}`, true)
-        .addField(`Roles`, `${server.roles.cache.size}`, true)
-        .addField(`Created At`, `${new Intl.DateTimeFormat('de-DE').format(server.createdAt)} \n<t:${convertDateToDiscordTimestamp(server.createdAt)}:R>`, true)
-        .addField('BOT INFORMATIONS', 'Everything you need to know about the bot.')
-        .addField('Bot Uptime', format(uptime), true)
-        .addField('Memory usage', JSON.stringify(os.totalmem()), true)
-        .addField('Bot Version', version.toString(), true)
-        .addField('\u200B', '\u200B')
+        .addFields([
+            {name: `Owner: `, value:`<@${server.ownerId}>`, inline: true},
+            {name: `Channels`, value: `${server.channels.cache.size}`, inline: true},
+            {name: `Members`, value: `${server.members.cache.size}`, inline: true},
+            {name: `Roles`, value: `${server.roles.cache.size}`, inline: true},
+            {name: `Created`, value: `${new Intl.DateTimeFormat('de-DE').format(server.createdAt)} \n<t:${convertDateToDiscordTimestamp(server.createdAt)}:R>`, inline: true},
+            {name: `Uptime`, value: `${format(uptime)}`, inline: true},
+            {name: `Version`, value: `${version}`, inline: true},
+            {name: '\u200B', value: '\u200B'}
+        ])
         .setTimestamp();
     if(tag) {
         var joined_at = await database.query(`SELECT user_joined FROM ${server.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
@@ -97,15 +95,17 @@ module.exports.run = async ({main_interaction, bot}) => {
         first_joined_at = 'Not saved in Database ||Error||'
     }
     
-    const memberInfoEmbed = new MessageEmbed()
+    const memberInfoEmbed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle(`**Memberinfos - ${user.username}#${user.discriminator}**`)
-        .addField(`Tag/ID: `, `<@${user.id}>/${user.id}`)
-        .addField(`Created at`, `${new Intl.DateTimeFormat('de-DE').format(user.createdAt)} \n<t:${convertDateToDiscordTimestamp(user.createdAt)}:R>`, true)
-        .addField(`Last Joined at`, dc_joinedAt, true)
-        .addField(`First Joined at`, first_joined_at, true)
-        .addField(`Roles`, `${userRole}`)
-        .addField('\u200B', '\u200B')
+        .addFields([
+            {name: `Tag/ID: `, value: `<@${user.id}>/${user.id}`},
+            {name: `Created at`, value: `${new Intl.DateTimeFormat('de-DE').format(user.createdAt)} \n<t:${convertDateToDiscordTimestamp(user.createdAt)}:R>`, inline: true},
+            {name: `Last joined at`, value: `${dc_joinedAt}`, inline: true},
+            {name: `First joined at`, value: `${first_joined_at}`, inline: true},
+            {name: `Roles`, value: `${userRole}`, inline: true},
+            {name: '\u200B', value: '\u200B'}
+        ])
         .setTimestamp();
 
         if(config.debug == 'true') console.info('info command passed!')

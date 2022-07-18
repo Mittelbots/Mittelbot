@@ -1,5 +1,5 @@
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
 const database = require('../../../src/db/db');

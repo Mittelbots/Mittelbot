@@ -2,7 +2,7 @@ const { log } = require("../../logs");
 const database = require("../../src/db/db");
 const { errorhandler } = require("./errorhandler/errorhandler");
 const config = require('../../src/assets/json/_config/config.json');
-const { updateCache, addValueToCache } = require("./cache/cache");
+const { updateCache, addValueToCache, modroles } = require("./cache/cache");
 
 async function insertDataToClosedInfraction (uid, modid, mute, ban, warn, kick, till_date, reason, infraction_id) {
     database.query('INSERT INTO closed_infractions (user_id, mod_id, mute, ban, warn, kick, till_date, reason, infraction_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',[uid, modid, mute, ban, warn, kick, till_date, reason, infraction_id])
@@ -51,19 +51,14 @@ async function insertPermsToModroles(guild_id, role_id, isadmin, ismod, ishelper
 }
 
 async function updatePermsFromModroles(guild_id, role_id, isadmin, ismod, ishelper) {
+    for(let i in modroles) {
+        if(modroles[i].guild_id === guild_id) {
 
-    updateCache({
-        cacheName: 'modroles',
-        param_id: [guild_id, role_id],
-        updateVal: {
-            'role_id': role_id,
-            'isadmin': isadmin,
-            'ismod': ismod,
-            'ishelper': ishelper
-        },
-        updateValName: 'modroles'
-
-    })
+            modroles[i][role_id].isadmin = isadmin;
+            modroles[i][role_id].ismod = ismod;
+            modroles[i][role_id].ishelper = ishelper;
+        }
+    }
 
     database.query(`UPDATE ${guild_id}_guild_modroles SET isadmin = ?, ismod = ?, ishelper = ? WHERE role_id = ?`, [isadmin, ismod, ishelper, role_id])
     .catch(err => {

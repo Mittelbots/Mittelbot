@@ -1,11 +1,8 @@
 const {
-    MessageButton
-} = require("discord.js");
-const {
-    MessageActionRow
-} = require("discord.js");
-const {
-    MessageEmbed
+    ButtonBuilder,
+    ActionRowBuilder,
+    EmbedBuilder,
+    ButtonStyle
 } = require("discord.js");
 const database = require("../../../src/db/db");
 const {
@@ -147,13 +144,13 @@ module.exports.sendApplyForm = async ({
         const isActive = applyForm.active;
 
         if (channel && isActive) {
-            const applyEmbed = new MessageEmbed()
+            const applyEmbed = new EmbedBuilder()
 
             if (applyForm.title) applyEmbed.setTitle(applyForm.title);
             if (applyForm.description) applyEmbed.setDescription(applyForm.description);
             if (applyForm.color) applyEmbed.setColor(applyForm.color);
-            if (applyForm.field1) applyEmbed.addField(applyForm.field1.name, applyForm.field1.value);
-            if (applyForm.field2) applyEmbed.addField(applyForm.field2.name, applyForm.field2.value);
+            if (applyForm.field1) applyEmbed.addFields([{name: applyForm.field1.name, value: applyForm.field1.value}]);
+            if (applyForm.field2) applyEmbed.addFields([{name: applyForm.field2.name, value: applyForm.field2.value}]);
             if (applyForm.image) applyEmbed.setImage(applyForm.image);
             if (applyForm.footer) applyEmbed.setFooter({
                 text: applyForm.footer
@@ -161,13 +158,13 @@ module.exports.sendApplyForm = async ({
 
             var applyButton
             if (applyForm.applylink) {
-                applyButton = new MessageButton()
+                applyButton = new ButtonBuilder()
                     .setLabel('Apply')
                     .setURL(applyForm.applylink)
-                    .setStyle('LINK')
+                    .setStyle(ButtonStyle.Link)
             } else {
-                applyButton = new MessageButton({
-                    style: 'SUCCESS',
+                applyButton = new ButtonBuilder({
+                    style: ButtonStyle.Success,
                     label: 'Apply',
                     emoji: '📩',
                     customId: `apply_${apply_id}`
@@ -209,7 +206,7 @@ module.exports.editMessage = ({
             .then(message => {
                 message.edit({
                         embeds: [applyEmbed],
-                        components: [new MessageActionRow({
+                        components: [new ActionRowBuilder({
                             components: [applyButton]
                         })]
                     })
@@ -255,7 +252,7 @@ module.exports.sendMessage = ({
         channel.send({
                 content: `||FormId: ${apply_id}||`,
                 embeds: [applyEmbed],
-                components: [new MessageActionRow({
+                components: [new ActionRowBuilder({
                     components: [applyButton]
                 })]
             })
@@ -519,7 +516,7 @@ module.exports.manageNewForm = async ({
                 content: data[value],
                 messageId: main_interaction.message.id
             }).then(async () => {
-                const editEmbed = new MessageEmbed()
+                const editEmbed = new EmbedBuilder()
                     .setColor(main_interaction.message.embeds[0].color)
                     .setTitle(main_interaction.message.embeds[0].title)
                     .setDescription(main_interaction.message.embeds[0].description || '')
@@ -528,10 +525,10 @@ module.exports.manageNewForm = async ({
                     })
 
                 if (main_interaction.message.embeds[0].fields[0]) {
-                    editEmbed.addField(main_interaction.message.embeds[0].fields[0].name, main_interaction.message.embeds[0].fields[0].value)
+                    editEmbed.addFields([{name: main_interaction.message.embeds[0].fields[0].name, value: main_interaction.message.embeds[0].fields[0].value}])
                 }
                 if (main_interaction.message.embeds[0].fields[1]) {
-                    editEmbed.addField(main_interaction.message.embeds[0].fields[1].name, main_interaction.message.embeds[0].fields[1].value)
+                    editEmbed.addFields([{name: main_interaction.message.embeds[0].fields[1].name, value: main_interaction.message.embeds[0].fields[1].value}])
                 }
 
                 if (main_interaction.message.embeds[0].image) {

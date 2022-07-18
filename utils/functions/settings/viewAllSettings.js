@@ -7,7 +7,7 @@ const {
     getEmote
 } = require('../../../utils/functions/getEmote');
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require('discord.js');
 
 module.exports.viewAllSettings = async ({
@@ -16,7 +16,7 @@ module.exports.viewAllSettings = async ({
     bot
 }) => {
     return new Promise(async (resolve, reject) => {
-        let settingMessage = new MessageEmbed()
+        let settingMessage = new EmbedBuilder()
             .setTitle(`**Settings for ${guild.name}**`)
             .setDescription(`**Change or view Settings**`);
 
@@ -84,7 +84,7 @@ module.exports.viewAllSettings = async ({
                 current = currentsettings[config.settings[i].colname];
             }
 
-            settingMessage.addField(`${emote} - ${config.settings[i].name}`, `${config.settings[i].desc} \n Current Setting: **${current ?? 'Not set yet'}** \n **_Exp: /settings ${config.settings[i].alias} ${config.settings[i].exp}_**`);
+            settingMessage.addFields([{name: `${emote} - ${config.settings[i].name}`, value:`${config.settings[i].desc} \n Current Setting: **${current ?? 'Not set yet'}** \n **_Exp: /settings ${config.settings[i].alias} ${config.settings[i].exp}_**`}]);
         }
         return resolve(settingMessage);
     })

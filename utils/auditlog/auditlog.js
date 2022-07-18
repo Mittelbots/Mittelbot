@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 const config = require('../../src/assets/json/_config/config.json');
 const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
 const database = require('../../src/db/db');
@@ -50,7 +50,7 @@ function auditLog(bot) {
 async function sendToAudit(bot, type, content1, content2) {
     if(ignorechannel.c.indexOf(content1.channelId) !== -1) return;
 
-    var Message = new MessageEmbed()
+    var Message = new EmbedBuilder()
     .setTimestamp()
 
     switch(type) {
@@ -93,6 +93,24 @@ async function sendToAudit(bot, type, content1, content2) {
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
             if (content1.system) return;
+
+            const cache = getFromCache({
+                cacheName: 'logs',
+                param_id: content1.guild.id
+            })
+
+            if(cache) {
+                var whitelist = cache[0].whitelist;
+
+                if(whitelist.length > 0) {
+                    //get all user role ids
+                    var userRoles = content1.member.roles.map(role => role.id);
+                    if(whitelist.find(userRoles)) {
+                        console.log('User is on whitelist');
+                        return;
+                    }
+                }
+            }
             
             gid = content1.guildId;
             
@@ -102,7 +120,11 @@ async function sendToAudit(bot, type, content1, content2) {
             Message.setThumbnail(content1.author.avatarURL({ format: 'jpg' }))
             Message.setAuthor({name: content1.author.username + ' '+content1.author.discriminator, icon_url: content1.author.avatarURL({ format: 'jpg' })})
             Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n${(attachment !== undefined) ? '' : content1}`);
-            if(content1.stickers) Message.addField('Stickers', content1.stickers.map(s => s.url).join('\n'));
+            if(content1.stickers.size > 1) { 
+                Message.addFields([
+                    {name: 'Stickers', value: content1.stickers.map(s => s.url).join('\n')}
+                ]);
+            }
             if(attachment !== undefined) Message.setImage(attachment.url)
             Message.setFooter({text: `Author: ${content1.author.id} | MessageID: ${content1.id}`});
             break;

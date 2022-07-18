@@ -64,7 +64,6 @@ async function messageCreate(message, bot) {
 
     const prefix = guild_config.prefix;
     const cooldown = guild_config.cooldown;
-
     if (cmd.startsWith(prefix)) {
 
         let commandfile = bot.commands.get(cmd.slice(prefix.length));

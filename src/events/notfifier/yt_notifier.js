@@ -5,7 +5,7 @@ const {
     errorhandler
 } = require('../../../utils/functions/errorhandler/errorhandler');
 const {
-    MessageEmbed
+    EmbedBuilder
 } = require("discord.js");
 const ytdl = require('ytdl-core');
 
@@ -32,10 +32,15 @@ module.exports.handleUploads = async ({
             if (uploads[i].channel_id) {
                 request.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`)
                     .then(async (feed) => {
-                        const uploadedVideos = JSON.parse(uploads[i].uploads);
+                        try {
+                            var uploadedVideos = JSON.parse(uploads[i].uploads);
 
-                        const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
-                        if (videoAlreadyExists) return;
+                            const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
+                            if (videoAlreadyExists) return;
+
+                        }catch(err) {
+                            uploadedVideos = [];
+                        }
 
                         uploadedVideos.push(feed.items[0].link)
 

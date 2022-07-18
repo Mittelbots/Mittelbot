@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const ytdl = require('ytdl-core');
 
 const request = new(require("rss-parser"))();
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
     request.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}`)
         .then(async feed => {
             let info = await ytdl.getInfo(feed.items[0].link);
-            const lastUploadEmbed = new MessageEmbed()
+            const lastUploadEmbed = new EmbedBuilder()
             .setTitle(feed.items[0].title)
             .setURL(feed.items[0].link)
             .setImage(info.videoDetails.thumbnails[3].url)

@@ -57,7 +57,7 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
         })
 
     if(!roles.error) {
-        await giveAllRoles(user.id, bot.guilds.cache.get(guild.id), JSON.parse(roles.roles))
+        giveAllRoles(user.id, bot.guilds.cache.get(guild.id), JSON.parse(roles.roles))
     }
 
     if(pass) {

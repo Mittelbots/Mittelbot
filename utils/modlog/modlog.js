@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 const database = require('../../src/db/db');
 const { errorhandler } = require('../functions/errorhandler/errorhandler');
 const { generateModEmote } = require('../functions/generateModEmote');
@@ -7,15 +7,17 @@ const {
 } = require('../functions/cache/cache');
 
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
-    var modLogMessage = new MessageEmbed()
+    var modLogMessage = new EmbedBuilder()
     .setTitle(`${await generateModEmote({bot, type})} **Member ${type}!**`)
-    .addField(`Moderator`, `${(moderator) ? '<@'+moderator+`> (${moderator})` : 'Auto Message'}`)
-    .addField(`${type.charAt(0).toUpperCase() + type.slice(1)} Member`, `${(member.username) ? `Username: **${member.username}**\n` : ''}Tag:<@${member.id || member}>\nUser ID: **(${member.id || member})**`)
-    .addField(`Reason`, `${reason || "No Reason Provided!"}`)
+    .addFields([
+        {name: `Moderator`, value: `${(moderator) ? '<@'+moderator+`> (${moderator})` : 'Auto Message'}`},
+        {name: `${type.charAt(0).toUpperCase() + type.slice(1)} Member`, value: `${(member.username) ? `Username: **${member.username}**\n` : ''}Tag:<@${member.id || member}>\nUser ID: **(${member.id || member})**`},
+        {name: `Reason`, value: `${reason || "No Reason Provided!"}`}
+    ])
     .setTimestamp();
 
     if(time) {
-        modLogMessage.addField(`Time`, `**${time}** `)
+        modLogMessage.addFields([{name: `Time`, value: `**${time}** `}])
     }
 
     await sendToModLog(bot, modLogMessage, gid);
@@ -28,7 +30,7 @@ async function sendToModLog(bot, message, gid) {
         param_id: gid
     });
 
-    if(cache) {
+    if(cache && cache[0].modlog) {
         return bot.channels.cache.get(cache[0].modlog).send({embeds: [message]}).catch(err => {});
     }
     

@@ -1,6 +1,6 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 const { MessageAttachment } = require("discord.js");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { readFile } = require('fs/promises');
 const { delay } = require("../../../utils/functions/delay/delay");
 const Canvas = require('@napi-rs/canvas');
@@ -85,7 +85,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     const attachment = new MessageAttachment(canvas.toBuffer(), `test.png`);
 
-    const newEmbed = new MessageEmbed()
+    const newEmbed = new EmbedBuilder()
         .setDescription(`**${user.username}** and **${main_interaction.user.username}** are \`${ship}%\` compatible! \n\n\`${quote}\``)
 
     await delay(Math.floor(Math.random() * (3000 - 1000) + 3000));

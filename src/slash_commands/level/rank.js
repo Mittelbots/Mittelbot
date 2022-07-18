@@ -4,8 +4,8 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const levelAPI = require('../../../utils/functions/levelsystem/levelsystemAPI');
 
 const canvacord = require("canvacord");
-const { MessageAttachment } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { AttachmentBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const levels = require('../../../utils/functions/levelsystem/levelconfig.json')
 
 module.exports.run = async ({main_interaction, bot}) => {
@@ -43,7 +43,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     rank.build()
     .then(data => {
-        const attachment = new MessageAttachment(data, "RankCard.png");
+        const attachment = new AttachmentBuilder(data, "RankCard.png");
         main_interaction.reply({
             files: [attachment],
             ephemeral: (anonymous) ? true : false

@@ -1,18 +1,12 @@
-const {
-    SlashCommandBuilder
-} = require('@discordjs/builders');
+const { SlashCommandBuilder } = require("discord.js");
 const {
     hasPermission
 } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const {
-    MessageEmbed
-} = require('discord.js');
-const {
-    MessageSelectMenu
-} = require('discord.js');
-const {
-    MessageActionRow
+    EmbedBuilder,
+    SelectMenuBuilder,
+    ActionRowBuilder
 } = require('discord.js');
 const {
     gernerateApplyId,
@@ -63,7 +57,7 @@ module.exports.run = async ({
     }
 
 
-    const newEmbed = new MessageEmbed()
+    const newEmbed = new EmbedBuilder()
         .setTitle(apply.title || 'Add new application form')
         .setDescription(apply.description || `You can change this Embed by selecting the options in the Dropdown Menu. \n Be sure to select a category where all application channels will be created in. \n If you don't want to create a form anymore, just ignore the message or delete it.`)
         .setColor(apply.color || '#0099ff')
@@ -73,18 +67,26 @@ module.exports.run = async ({
         })
 
     if (apply.field1) {
-        newEmbed.addField(apply.field1.name, apply.field1.value)
+        newEmbed.addFields([
+            { name:apply.field1.name, value:apply.field1.value }
+        ])
     }else {
-        newEmbed.addField('Titel, Description, Channel, Category (Name of Field 1)', 'All these four fields are required to let everything works perfectly. (Value of Field 1)')
+        newEmbed.addFields([
+            {name: 'Titel, Description, Channel, Category (Name of Field 1)', value: 'All these four fields are required to let everything works perfectly. (Value of Field 1)'}
+        ])
     }
 
     if (apply.field2) {
-        newEmbed.addField(apply.field2.name, apply.field2.value)
+        newEmbed.addFields([
+            {name: apply.field2.name, value: apply.field2.value}
+        ])
     }else {
-        newEmbed.addField('Each time you edit the Embed the form will be disabled until you save it again. (Name of Field 2)', 'But, each change will be edited into the new message automatically (Value of Field 2)')
+        newEmbed.addFields([
+            {name: 'Each time you edit the Embed the form will be disabled until you save it again. (Name of Field 2)', value: 'But, each change will be edited into the new message automatically (Value of Field 2)'}
+        ])
     }
 
-    const menu = new MessageSelectMenu()
+    const menu = new SelectMenuBuilder()
         .setCustomId('manage_apply')
         .setPlaceholder('Choose the options')
 
@@ -146,7 +148,7 @@ module.exports.run = async ({
     main_interaction.reply({
         content: `Formid: ${applyid}`,
         embeds: [newEmbed],
-        components: [new MessageActionRow({
+        components: [new ActionRowBuilder({
             components: [menu]
         })]
     }).catch(err => {});
