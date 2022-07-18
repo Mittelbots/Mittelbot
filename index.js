@@ -1,4 +1,4 @@
-const {Client, Options, GatewayIntentBits, Collection} = require("discord.js");
+const {Client, Options, GatewayIntentBits, Collection, ActivityType } = require("discord.js");
 
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
@@ -195,7 +195,7 @@ bot.once('ready', async () => {
       var codeLines = ` | ${bot.guilds.cache.size} guilds with ${membersCount} members | Code: ${cb}` || '';
       bot.user.setActivity({
         name: activity.name + ' v' + version + codeLines,
-        type: activity.type,
+        type: ActivityType.Playing,
       });
       log.info('------------BOT ACTIVITY SUCCESSFULLY STARTED------------', new Date())
     });
