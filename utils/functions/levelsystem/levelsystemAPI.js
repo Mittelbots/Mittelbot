@@ -546,7 +546,7 @@ module.exports.changeLevelUp = async ({
                 return reject(`❌ You didn't pass any channel. Please add a channel if you select \`Text Channel\`.`);
             }
 
-            const hasChannelPerms = guild.me.permissionsIn(channel).has(["VIEW_CHANNEL", "SEND_MESSAGES"]);
+            const hasChannelPerms = guild.members.me.permissionsIn(channel).has(["VIEW_CHANNEL", "SEND_MESSAGES"]);
 
             if (!hasChannelPerms) {
                 return reject(`❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES"\`. Change them and try again.`)

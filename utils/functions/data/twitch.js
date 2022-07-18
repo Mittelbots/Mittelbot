@@ -1,3 +1,4 @@
+const { PermissionFlagsBits } = require("discord.js");
 const database = require("../../../src/db/db");
 const { twitchApiClient } = require("../../../src/events/notfifier/twitch_notifier");
 const { errorhandler } = require("../errorhandler/errorhandler");
@@ -6,15 +7,14 @@ module.exports.changeTwitchNotifier = async ({
     twitchchannel,
     twdcchannel,
     twpingrole,
-    guild,
+    guild
 }) => {
     return new Promise(async (resolve, reject) => {
         const twitch_user = await twitchApiClient.users.getUserByName(twitchchannel);
         if (!twitch_user) {
             return reject(`❌ I couldn't find the channel you have entered.`)
         }
-
-        const hasChannelPerms = guild.me.permissionsIn(twdcchannel).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"]);
+        const hasChannelPerms = guild.members.me.permissionsIn(twdcchannel).has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks , PermissionFlagsBits.AttachFiles , PermissionFlagsBits.MentionEveryone]);
 
         if (!hasChannelPerms) {
             reject(`❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`)
