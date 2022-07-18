@@ -2,8 +2,7 @@ module.exports.validateCustomStrings = ({
     string,
     joined_user
 }) => {
-    if(!string) return '';
-    if(string.length === 0) return '';
+    if(!string || string.length === 0) return null;
     
     let isName = string.search('{name}')
     let isMention = string.search('{mention}')
