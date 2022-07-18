@@ -94,19 +94,22 @@ async function sendToAudit(bot, type, content1, content2) {
             if (content1.author.bot) return;
             if (content1.system) return;
 
-            const cache = getFromCache({
+            const cache = await getFromCache({
                 cacheName: 'logs',
                 param_id: content1.guild.id
             })
-
             if(cache) {
-                var whitelist = cache[0].whitelist;
+                var whitelist = JSON.parse(cache[0].whitelist) || [];
 
                 if(whitelist.length > 0) {
-                    //get all user role ids
-                    var userRoles = content1.member.roles.map(role => role.id);
-                    if(whitelist.find(userRoles)) {
-                        console.log('User is on whitelist');
+                    var userRoles = content1.member.roles.cache.map(role => role.id);
+                    
+
+                    var isOnWhitelist = whitelist.filter(function(item) {
+                        return userRoles.indexOf(item) > -1;
+                    });
+
+                    if(isOnWhitelist.length > 0) {
                         return;
                     }
                 }
