@@ -1,3 +1,4 @@
+
 const {Client, Options, GatewayIntentBits, Collection, ActivityType } = require("discord.js");
 
 const config = require('./src/assets/json/_config/config.json');
