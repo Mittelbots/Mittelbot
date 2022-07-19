@@ -120,25 +120,25 @@ module.exports.run = async (bot, message, args) => {
         let modroleembed = new EmbedBuilder()
             .setTitle(`Choose setting for _${role.name}_. \n\nCurrent: **${(db_isadmin) ? 'Admin': (db_ismod) ? 'Moderator': (db_ishelper) ? 'Helper' : 'Not set yet'}**`)
 
-        const isAdminButton =new ButtonBuilder()
-        .setCustomId(isadmin)
-        .setLabel(isadminLabel)
-        .setStyle(ButtonStyle.Primary)
+        const isAdminButton = new ButtonBuilder()
+            .setCustomId(isadmin)
+            .setLabel(isadminLabel)
+            .setStyle(ButtonStyle.Primary)
 
-        const isModButton =new ButtonBuilder()
-        .setCustomId(ismod)
-        .setLabel(ismodLabel)
-        .setStyle(ButtonStyle.Primary)
+        const isModButton = new ButtonBuilder()
+            .setCustomId(ismod)
+            .setLabel(ismodLabel)
+            .setStyle(ButtonStyle.Primary)
 
-        const isHelperButton =new ButtonBuilder()
-        .setCustomId(ishelper)
-        .setLabel(ishelperLabel)
-        .setStyle(ButtonStyle.Primary)
-        
-        const isRemoveButton =new ButtonBuilder()
-        .setCustomId(remove)
-        .setLabel(removeLabel)
-        .setStyle(ButtonStyle.Danger)
+        const isHelperButton = new ButtonBuilder()
+            .setCustomId(ishelper)
+            .setLabel(ishelperLabel)
+            .setStyle(ButtonStyle.Primary)
+
+        const isRemoveButton = new ButtonBuilder()
+            .setCustomId(remove)
+            .setLabel(removeLabel)
+            .setStyle(ButtonStyle.Danger)
 
         const row = new ActionRowBuilder()
         if (db_isadmin !== 1) {
@@ -202,7 +202,7 @@ module.exports.run = async (bot, message, args) => {
                 } else {
                     insertPermsToModroles(message.guild.id, value, 1, 0, 0)
                 }
-                
+
                 isAdminButton.setStyle(ButtonStyle.Success);
 
             } else if (interaction.customId === ismod) {
@@ -222,7 +222,7 @@ module.exports.run = async (bot, message, args) => {
                 } else {
                     insertPermsToModroles(message.guild.id, value, 0, 0, 1)
                 }
-                
+
                 isHelperButton.setStyle(ButtonStyle.Success);
 
             } else {
@@ -235,8 +235,10 @@ module.exports.run = async (bot, message, args) => {
             isModButton.setDisabled(true)
             isHelperButton.setDisabled(true)
             isRemoveButton.setDisabled(true)
-            interaction.update({components: [row]});
-            
+            interaction.update({
+                components: [row]
+            });
+
         });
 
         collector.on('end', (collected, reason) => {
