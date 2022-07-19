@@ -49,7 +49,7 @@
     "simple-youtube-api": "^5.2.1",
     "sloc": "0.2.1",
     "translatte": "^3.0.1",
-    "undici": "^5.7.0",
+    "undici": "^5.8.0",
     "ytdl-core": "^4.11.0"
   }
 }
