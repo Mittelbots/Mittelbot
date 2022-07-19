@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { MessageAttachment } = require("discord.js");
+const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 
 const axios = require('axios');
 
@@ -7,7 +6,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     const { data } = await axios.get(`https://dog.ceo/api/breeds/image/random`);
     if(data.status === 'success'){
         return main_interaction.reply({
-            files: [new MessageAttachment(data.message, 'dog.png')]
+            files: [new AttachmentBuilder(data.message, 'dog.png')]
         }).catch(err => {});
     }else {
         return main_interaction.reply('Something went wrong!').catch(err => {});

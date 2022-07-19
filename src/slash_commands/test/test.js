@@ -5,7 +5,6 @@ const {TextInputBuilder, SlashCommandBuilder, ModalBuilder, ActionRowBuilder, Te
 module.exports.run = async ({main_interaction, bot}) => {
 
     if(main_interaction.user.id !== config.Bot_Owner_ID) return;
-
         const modal = new ModalBuilder()
             .setTitle('Test')
             .setCustomId('test')

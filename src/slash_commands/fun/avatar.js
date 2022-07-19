@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports.run = async ({main_interaction, bot}) => {
     const user = main_interaction.options.getUser('user') || main_interaction.user;
