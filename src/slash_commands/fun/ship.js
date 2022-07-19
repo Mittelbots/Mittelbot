@@ -1,6 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { MessageAttachment } = require("discord.js");
-const { EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require("discord.js");
 const { readFile } = require('fs/promises');
 const { delay } = require("../../../utils/functions/delay/delay");
 const Canvas = require('@napi-rs/canvas');
@@ -23,7 +21,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     }
 
     await main_interaction.reply({
-        files: [new MessageAttachment('https://media.tenor.com/images/c2f392370c8b20cc99d04148c7b6bebc/tenor.gif')]
+        files: [new AttachmentBuilder('https://media.tenor.com/images/c2f392370c8b20cc99d04148c7b6bebc/tenor.gif')]
     }).catch(err => {})
 
 
@@ -83,7 +81,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     context.fillText(ship+'%', 420, 190);
 
-    const attachment = new MessageAttachment(canvas.toBuffer(), `test.png`);
+    const attachment = new AttachmentBuilder(canvas.toBuffer(), `test.png`);
 
     const newEmbed = new EmbedBuilder()
         .setDescription(`**${user.username}** and **${main_interaction.user.username}** are \`${ship}%\` compatible! \n\n\`${quote}\``)
