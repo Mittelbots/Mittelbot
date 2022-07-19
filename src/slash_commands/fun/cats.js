@@ -1,4 +1,4 @@
-
+const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
 
 const axios = require('axios');
 
