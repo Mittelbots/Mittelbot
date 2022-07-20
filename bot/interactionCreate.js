@@ -12,6 +12,7 @@ const {
     getConfig
 } = require("../utils/functions/data/getConfig");
 const { InteractionType } = require("discord.js");
+const { manageScam } = require("../utils/functions/data/scam");
 
 const defaultCooldown = new Set();
 
@@ -86,6 +87,21 @@ module.exports.interactionCreate = ({
                     main_interaction,
                     apply_id: main_interaction.customId.match(apply_regex)[0].replace('apply_', '')
                 })
+            }
+
+            if(main_interaction.customId.indexOf('scam') === 0) {
+                manageScam({main_interaction})
+                    .then(res => {
+                        main_interaction.reply({
+                            content: res,
+                            ephemeral: true
+                        }).catch(err => {})
+                    }).catch(err => {
+                        main_interaction.reply({
+                            content: err,
+                            ephemeral: true
+                        }).catch(err => {})
+                    })
             }
         }
     });

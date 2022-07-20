@@ -8,6 +8,7 @@ module.exports.global = [];
 module.exports.warnroles = [];
 module.exports.applyforms = [];
 module.exports.autoMod = [];
+module.exports.scamList = [];
 
 /**
  * 
