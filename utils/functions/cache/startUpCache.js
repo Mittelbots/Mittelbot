@@ -8,6 +8,7 @@ const { getAllMemberInfo } = require('../data/getMemberInfo');
 const { getAllWarnroles } = require("../data/warnroles");
 const { getAllForms } = require("../data/apply_form");
 const { getAllAutoMod } = require("../data/automod");
+const { getScamList } = require("../data/scam");
 
 module.exports.startUpCache = async () => {
 
@@ -26,6 +27,7 @@ module.exports.startUpCache = async () => {
     const guildWarnRoles = await getAllWarnroles();
     const guildApplyForms = await getAllForms();
     const guildAutoMod = await getAllAutoMod();
+    const scamList = await getScamList();
 
     console.log('✅ Data collected...');
 
@@ -163,6 +165,16 @@ module.exports.startUpCache = async () => {
             }
         });
     }
+
+    await addToCache({
+        value: {
+            name: "scamList",
+            id: 0,
+            data: {
+                scamList: scamList || [],
+            }
+        }
+    });
     
     console.log('✅ Everything is in cache...');
     console.log('----------------------------------------');

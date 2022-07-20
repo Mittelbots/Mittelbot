@@ -24,8 +24,36 @@
                 "name": "link",
                 "val": "VARCHAR(255)"
             },
-            "guild_id": {
-                "name": "guild_id",
+            "blacklist": {
+                "name": "blacklist",
+                "val": "VARCHAR(255)"
+            },
+            "whitelist_link": {
+                "name": "whitelist_link",
+                "val": "VARCHAR(255)"
+            },
+            "request_link": {
+                "name": "request_link",
+                "val": "VARCHAR(255)"
+            },
+            "request_user": {
+                "name": "request_user",
+                "val": "VARCHAR(255)"
+            },
+            "request_type": {
+                "name": "request_type",
+                "val": "VARCHAR(255)"
+            },
+            "request_guild": {
+                "name": "request_guild",
+                "val": "VARCHAR(255)"
+            },
+            "request_id": {
+                "name": "request_id",
+                "val": "VARCHAR(255)"
+            },
+            "request_message": {
+                "name": "request_message",
                 "val": "VARCHAR(255)"
             }
         },
