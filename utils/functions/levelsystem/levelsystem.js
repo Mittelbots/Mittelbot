@@ -1,7 +1,9 @@
 const levelAPI = require("./levelsystemAPI")
 
 module.exports.run = async (message, bot) => {
-    if (message.author.bot || message.author.system) return;
+    if (message.author.bot || message.author.system) return {
+        error: "bot"
+    };
 
     const isBlacklistChannel = await levelAPI.checkBlacklistChannels({
         message
