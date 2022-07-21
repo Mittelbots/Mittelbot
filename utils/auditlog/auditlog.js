@@ -63,10 +63,10 @@ async function sendToAudit(bot, type, content1, content2) {
 
             if(whitelist.length > 0) {
                 var userRoles = content1.member.roles.cache.map(role => role.id);
-                
+                var channel = content1.channel;
 
                 var isWhitelist = whitelist.filter(function(item) {
-                    return userRoles.indexOf(item) > -1;
+                    return userRoles.indexOf(item) > -1 || channel.id.indexOf(item) > -1;
                 });
 
                 if(isWhitelist.length > 0) {

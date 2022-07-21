@@ -425,6 +425,9 @@ module.exports.manageScam = async ({
                                             components: []
                                         }).catch(err => {})
                                     })
+                                    main_interaction.bot.guilds.cache.get(res[1][i].request_guild).members.cache.get(res[1][i].request_user).send({
+                                        content: (request.request_type == 'ADD') ? `✅ Your request got accepted.` : (request.request_type == 'DELETE') ? `❌ Your request got declined.` : `❌ Your request got declined.`,
+                                    }).catch(err => {})
                                 }
                             }catch(err) {}
                         }

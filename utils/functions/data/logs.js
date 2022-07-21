@@ -58,6 +58,7 @@ module.exports.updateLog = async ({
     channel,
     dbcol,
     whitelistrole,
+    whitelistchannel,
     clear
 }) => {
     return new Promise(async (resolve, reject) => {
@@ -67,22 +68,38 @@ module.exports.updateLog = async ({
         });
 
         if (cache) {
-            if (whitelistrole) {
+            if (whitelistrole || whitelistchannel) {
                 if (!cache[0].whitelist || cache[0].whitelist.length == 0) {
                     cache[0].whitelist = [];
                 } else {
                     cache[0].whitelist = JSON.parse(cache[0].whitelist);
                 }
-                if (!cache[0].whitelist.includes(whitelistrole.id)) {
-                    cache[0].whitelist.push(whitelistrole.id);
-                }else {
-                    if(!clear) {
-                        return reject('❌ That role is already whitelisted.')
+                if(whitelistrole){
+                    if (!cache[0].whitelist.includes(whitelistrole.id)) {
+                        cache[0].whitelist.push(whitelistrole.id);
+                    }else {
+                        if(!clear) {
+                            return reject('❌ That role is already whitelisted.')
+                        }
+                    }
+                }
+                if(whitelistchannel){
+                    if (!cache[0].whitelist.includes(whitelistchannel.id)) {
+                        cache[0].whitelist.push(whitelistchannel.id);
+                    }else {
+                        if(!clear) {
+                            return reject('❌ That channel is already whitelisted.')
+                        }
                     }
                 }
 
                 if (clear) {
-                    cache[0].whitelist = cache[0].whitelist.filter(id => id != whitelistrole.id);
+                    if(whitelistrole) {
+                        cache[0].whitelist = cache[0].whitelist.filter(id => id != whitelistrole.id);
+                    }
+                    if(whitelistchannel) {
+                        cache[0].whitelist = cache[0].whitelist.filter(id => id != whitelistchannel.id);
+                    }
                 }
 
 
@@ -101,7 +118,7 @@ module.exports.updateLog = async ({
             }
         }
 
-        if (whitelistrole) {
+        if (whitelistrole || whitelistchannel) {
             var whitelist = await database.query(`SELECT whitelist FROM ${guild_id}_guild_logs WHERE id = ?`, [1])
                 .then(res => {
                     return res[0].whitelist
@@ -121,16 +138,34 @@ module.exports.updateLog = async ({
             }
 
 
-            if (!whitelist.includes(whitelistrole.id)) {
-                whitelist.push(whitelistrole.id);
-            }else {
-                if(!clear) {
-                    return reject('❌ That role is already whitelisted.')
+            if(whitelistrole){
+                if (!whitelist.includes(whitelistrole.id)) {
+                    whitelist.push(whitelistrole.id);
+                }else {
+                    if(!clear) {
+                        return reject('❌ That role is already whitelisted.')
+                    }
                 }
             }
 
+            if(whitelistchannel){
+                if (!whitelist.includes(whitelistchannel.id)) {
+                    whitelist.push(whitelistchannel.id);
+                }else {
+                    if(!clear) {
+                        return reject('❌ That channel is already whitelisted.')
+                    }
+                }
+            }
+
+
             if (clear) {
-                whitelist = whitelist.filter(id => id != whitelistrole.id);
+                if(whitelistrole) {
+                    whitelist = whitelist.filter(id => id != whitelistrole.id);
+                }
+                if(whitelistchannel) {
+                    whitelist = whitelist.filter(id => id != whitelistchannel.id);
+                }
             }
 
             return await database.query(`UPDATE ${guild_id}_guild_logs SET whitelist = ? WHERE id = 1`, [JSON.stringify(whitelist)])
