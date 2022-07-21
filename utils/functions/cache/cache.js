@@ -9,6 +9,7 @@ module.exports.warnroles = [];
 module.exports.applyforms = [];
 module.exports.autoMod = [];
 module.exports.scamList = [];
+module.exports.guildConfig = [];
 
 /**
  * 

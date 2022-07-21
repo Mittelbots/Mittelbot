@@ -1,4 +1,4 @@
-const { getAllConfig } = require("../data/getConfig");
+const { getAllConfig, getAllGuildConfig } = require("../data/getConfig");
 const { getAllModroles } = require("../data/getModroles");
 const { getAllJoinroles } = require("../data/joinroles");
 const { getAllLogs } = require('../data/logs');
@@ -28,6 +28,7 @@ module.exports.startUpCache = async () => {
     const guildApplyForms = await getAllForms();
     const guildAutoMod = await getAllAutoMod();
     const scamList = await getScamList();
+    const guildConfig = await getAllGuildConfig();
 
     console.log('✅ Data collected...');
 
@@ -175,6 +176,20 @@ module.exports.startUpCache = async () => {
             }
         }
     });
+
+    for(let i in guildConfig) {
+        if(!guildConfig[i]) continue;
+        await addToCache({
+            value: {
+                name: "guildConfig",
+                id: guildConfig[i].guild_id,
+                data: {
+                    settings: guildConfig[i] || [],
+                }
+            }
+        });
+    }
+
     
     console.log('✅ Everything is in cache...');
     console.log('----------------------------------------');
