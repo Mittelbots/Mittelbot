@@ -421,13 +421,13 @@ module.exports.manageScam = async ({
                                     let message = JSON.parse(res[1][i].request_message);
                                     main_interaction.channel.messages.fetch(message.message).then(msg => {
                                         msg.edit({
-                                            content: (request.request_type == 'ADD') ? `✅ This request has been added to the scam list by ${main_interaction.user}` : (request.request_type == 'DELETE') ? `✅ This request has been declined from the scam list by ${main_interaction.user}` : `✅ This Guild has been added to the blacklist by ${main_interaction.user}`,
+                                            content: (request.request_type == 'ADD') ? `✅ This request has been added to the scam list by ${main_interaction.user}` : (request.request_type == 'DELETE') ? `✅ This request has been deleted from the scam list by ${main_interaction.user}` : `✅ This Guild has been added to the blacklist by ${main_interaction.user}`,
                                             components: []
                                         }).catch(err => {})
                                     })
                                     main_interaction.bot.guilds.cache.get(res[1][i].request_guild).members.cache.get(res[1][i].request_user).send({
-                                        content: (request.request_type == 'ADD') ? `✅ Your request got accepted.` : `✅ Your request got declined.`,
-                                    }).catch(err =>{})
+                                        content: (request.request_type == 'ADD') ? `✅ Your request got accepted.` : (request.request_type == 'DELETE') ? `❌ Your request got declined.` : `❌ Your request got declined.`,
+                                    }).catch(err => {})
                                 }
                             }catch(err) {}
                         }
