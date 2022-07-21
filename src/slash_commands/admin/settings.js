@@ -202,11 +202,12 @@ module.exports.run = async ({
             const messagelog = main_interaction.options.getChannel('messagelog');
             const modlog = main_interaction.options.getChannel('modlog');
             const whitelistrole = main_interaction.options.getRole('whitelist');
+            const whitelistchannel = main_interaction.options.getChannel('whitelistchannel');
             const clear = main_interaction.options.getString('clear');
 
-            if (!auditlog && !messagelog && !modlog && !whitelistrole) {
+            if (!auditlog && !messagelog && !modlog && !whitelistrole && !whitelistchannel) {
                 return main_interaction.reply({
-                    content: `❌ You must specify at least one log channel! Or add a role to the whitelist!`,
+                    content: `❌ You must specify at least one log channel! Or add a role/channel to the whitelist!`,
                     ephemeral: true
                 }).catch(err => {});
             }
@@ -216,6 +217,7 @@ module.exports.run = async ({
                 channel: auditlog || messagelog || modlog,
                 dbcol: (auditlog) ? config.settings.auditlog.colname : (messagelog) ? config.settings.messagelog.colname : config.settings.modlog.colname,
                 whitelistrole,
+                whitelistchannel,
                 clear
             }).then(res => {
                 main_interaction.reply({
@@ -499,6 +501,12 @@ module.exports.data = new SlashCommandBuilder()
             whitelist
             .setName('whitelist')
             .setDescription('Add a role which won\'t be logged. [Only available for audit- and messagelog]')
+            .setRequired(false)
+        )
+        .addChannelOption(whitelist =>
+            whitelist
+            .setName('whitelistchannel')
+            .setDescription('Add a channel which won\'t be logged. [Only available for audit- and messagelog]')
             .setRequired(false)
         )
         .addStringOption(clear =>
