@@ -29,13 +29,6 @@ module.exports.run = async ({main_interaction, bot}) => {
         user_id: user.id
     })
 
-    if(!currentXP) {
-        return main_interaction.reply({
-            content: '❌ Something went wrong while fetching the xp. Please contact the Bot support.',
-            ephemeral: true
-        }).catch(err => {})
-    }
-
     const updated = await updateXP({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
