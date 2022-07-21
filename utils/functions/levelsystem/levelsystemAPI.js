@@ -17,6 +17,7 @@ const fs = require('fs');
 const levelConfig = require('./levelconfig.json');
 const levelSystem = require("./levelsystem");
 const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
+const { getGuildConfig } = require("../data/getConfig");
 
 
 var levelCooldown = [];
@@ -498,7 +499,7 @@ module.exports.generateLevelConfig = function ({
     })
 }
 
-module.exports.levelCooldown = ({
+module.exports.levelCooldown = async ({
     message,
     bot
 }) => {
@@ -511,7 +512,9 @@ module.exports.levelCooldown = ({
     var index = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
 
     if (index === -1) {
-        levelSystem.run(message, bot);
+        const {error} = await levelSystem.run(message, bot);
+
+        if(error == "blacklist") return;
 
         levelCooldown.push(obj);
 
@@ -566,4 +569,47 @@ module.exports.changeLevelUp = async ({
 
         }
     })
+}
+
+
+module.exports.checkBlacklistChannels = async ({
+    message
+}) => {
+    const cache = await getFromCache({
+        cacheName: 'guildConfig',
+        param_id: message.guild.id
+    })
+
+    var blacklistchannels;
+
+    if(cache.length > 0) {
+        try {
+            blacklistchannels = JSON.parse(cache[0].settings.levelsettings).blacklistchannels;
+        }catch(err) {
+            blacklistchannels = [];
+        }
+    }else {
+        const settings = await getGuildConfig({
+            guild: message.guild.id
+        })
+
+        let levelsettings
+        try {
+            levelsettings = JSON.parse(settings.levelsettings);
+        }catch(err) {
+            levelsettings = {};
+        }
+
+        if(levelsettings.length > 0) {
+            blacklistchannels = levelsettings.levelsettings.blacklistchannels;
+        }
+        
+
+    }
+
+    if(blacklistchannels.includes(message.channel.id)) {
+        return true;
+    }else {
+        return false;
+    }
 }

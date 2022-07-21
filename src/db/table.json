@@ -242,6 +242,10 @@
             "levelup_channel": {
                 "name": "levelup_channel",
                 "val": "VARCHAR(255)"
+            },
+            "levelsettings": {
+                "name": "levelsettings",
+                "val": "LONGTEXT"
             }
         },
         "twitch_streams": {
