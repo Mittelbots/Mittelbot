@@ -38,5 +38,9 @@ module.exports.run = async (message, bot) => {
     
     await levelAPI.sendNewLevelMessage(checkXP[0], message, newxp, checkXP[1])
 
-    currentxp, newxp, updateXP, checkXP = null
+    currentxp, newxp, updateXP, checkXP = null;
+
+    return {
+        error: "none"
+    }
 }
