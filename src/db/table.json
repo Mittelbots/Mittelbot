@@ -294,6 +294,33 @@
                 "val": "LONGTEXT",
                 "insert": "{\"antispam\":{\"enabled\":false,\"action\":\"[]\"}}"
             }
+        },
+        "dashboard_users": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "user_id": {
+                "name": "user_id",
+                "val": "VARCHAR(255)"
+            },
+            "email": {
+                "name": "email",
+                "val": "VARCHAR(255)"
+            },
+            "verified": {
+                "name": "verified",
+                "val": "INT(4)",
+                "default": "0"
+            },
+            "username": {
+                "name": "username",
+                "val": "VARCHAR(255)"
+            },
+            "loginToken": {
+                "name": "loginToken",
+                "val": "VARCHAR(255)"
+            }
         }
     },
     "dynamical": {

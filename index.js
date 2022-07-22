@@ -86,6 +86,8 @@ bot.on('guildCreate', async (guild) => {
 
 bot.commands = new Collection();
 
+bot.version = version;
+
 deployCommands(bot);
 createSlashCommands();
 

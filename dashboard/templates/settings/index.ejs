@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+  <div class="page">
+    <!-- Main Navbar-->
+
+    <%- include("../partials/header", { bot, user, path, title: "Dashboard" }) %>
+
+    <div class="page-content d-flex align-items-stretch">
+
+      <%- include("../partials/sidebar", { user, guild: null}) %>
+
+      <div class="content-inner w-100">
+        <!-- Page Header-->
+        <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+          <div class="container-fluid px-0">
+            <h2 class="mb-0 p-1">Select a guild you want to edit</h2>
+          </div>
+        </header>
+        <!-- Dashboard Counts Section-->
+        <section class="pb-0">
+          <div class="container-fluid">
+            <div class="card mb-0">
+              <div class="card-body">
+                <div class="row gx-5 bg-white">
+                  <!-- Item -->
+                  <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                    <div class="d-flex align-items-center">
+                      <div class="icon flex-shrink-0 bg-violet">
+                        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                          <use xlink:href="#user-1"> </use>
+                        </svg>
+                      </div>
+                      <div class="mx-3">
+                        <h6 class="h4 fw-light text-gray-600 mb-3">Your<br>Guild count</h6>
+                      </div>
+                      <div class="number"><strong class="text-lg"><%= guilds.length %></strong></div>
+                    </div>
+                  </div>
+                  <!-- Item -->
+                  <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                    <div class="d-flex align-items-center">
+                      <div class="icon flex-shrink-0 bg-red">
+                        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                          <use xlink:href="#survey-1"> </use>
+                        </svg>
+                      </div>
+                      <div class="mx-3">
+                        <h6 class="h4 fw-light text-gray-600 mb-3">Member<br>Count</h6>
+                      </div>
+                      <div class="number">
+                        <strong class="text-lg">
+                          <% var memberCount = 0; %>
+                          <% guilds.forEach(guild => {
+                              const guild_data = bot.guilds.cache.get(guild.id);
+                              //get member size of guild
+                              if (guild_data) {
+                                memberCount += guild_data.memberCount;
+                              }
+
+                            })
+                          %>
+                          <%= memberCount  %>
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Item -->
+                  <div class="col-xl-3 col-sm-6 py-4 border-lg-end border-gray-200">
+                    <div class="d-flex align-items-center">
+                      <div class="icon flex-shrink-0 bg-green">
+                        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                          <use xlink:href="#numbers-1"> </use>
+                        </svg>
+                      </div>
+                      <div class="mx-3">
+                        <h6 class="h4 fw-light text-gray-600 mb-3">Bot<br>version</h6>
+                      </div>
+                      <div class="number"><strong class="text-lg">
+                          <%= bot.version %>
+                        </strong></div>
+                    </div>
+                  </div>
+                  <!-- Item -->
+                  <div class="col-xl-3 col-sm-6 py-4">
+                    <div class="d-flex align-items-center">
+                      <div class="icon flex-shrink-0 bg-orange">
+                        <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                          <use xlink:href="#list-details-1"> </use>
+                        </svg>
+                      </div>
+                      <div class="mx-3">
+                        <h6 class="h4 fw-light text-gray-600 mb-3">Am i<br>Beta?</h6>
+                      </div>
+                      <div class="number"><strong class="text-lg text-red">No</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dashboard Header Section    -->
+        <section class="pb-0">
+          <div class="container-fluid">
+            <div class="row p-3">
+              <% var count = 0;  %>
+              <% guilds.forEach(async guild => { 
+                  if(count === 3) {
+                    count = 0;
+                    %> <div class="w-100"></div> <%
+                  } %>
+                  <div class="col card <%= (count !== 0) ? "offset-md-1" : '' %>">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="icon flex-shrink-0 bg-red" style="margin: 0 10px 0 0;"><img
+                            src="<%- guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}` :  `https://preview.redd.it/5hf7zvlte4x51.png?auto=webp&s=9ff92e4c12d8ea4c92f1ea03a42a21c96bfefa65`%>"
+                            width="70px" />
+                          </div>
+                        <div class="ms-3">
+                          <strong class="text-lg d-block lh-1 mb-1"><%= guild.name %></strong>
+                    <% if(bot.guilds.cache.get(guild.id)) { %>
+                          <small class="text-uppercase text-gray-500 small d-block lh-1">I'm in this Guild</small>
+                        </div>
+                      </div>
+                    </div>
+                    <a class="btn btn-success mb-2" style="width: 50%; margin-left: 22%;" href="<%= `/dashboard/${guild.id}`  %>" role="button"><strong>EDIT GUILD</strong></a>
+                    <% }else {%>
+                      <small class="text-uppercase text-gray-500 small d-block lh-1">I'm <strong class="text-red">not</strong> in this Guild</small>
+                        </div>
+                      </div>
+                    </div>
+                    <a class="btn btn-secondary mb-2" style="width: 50%; margin-left: 22%;" href="<%= `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent(bot.callbackUrl)}`  %>" role="button">Invite Bot</a>
+                    <% } %>
+                  </div>
+                <% count++;
+                  }) 
+                %>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Page Footer-->
+        <footer class="position-absolute bottom-0 bg-darkBlue text-white text-center py-3 w-100 text-xs" id="footer">
+          <div class="container-fluid">
+            <div class="row gy-2">
+              <div class="col-sm-6 text-sm-start">
+                <p class="mb-0">Mittelbot &copy; 2017-2021</p>
+              </div>
+              <div class="col-sm-6 text-sm-end">
+                <p class="mb-0">Design by <a href="https://bootstrapious.com/p/admin-template"
+                    class="text-white text-decoration-none">Bootstrapious</a></p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+  <!-- JavaScript files-->
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/chart.js/Chart.min.js"></script>
+  <script src="/vendor/just-validate/js/just-validate.min.js"></script>
+  <script src="/vendor/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script src="/js/charts-home.js"></script>
+  <!-- Main File-->
+  <script src="/js/front.js"></script>
+  <script>
+    // ------------------------------------------------------- //
+    //   Inject SVG Sprite - 
+    //   see more here 
+    //   https://css-tricks.com/ajaxing-svg-sprite/
+    // ------------------------------------------------------ //
+    function injectSvgSprite(path) {
+
+      var ajax = new XMLHttpRequest();
+      ajax.open("GET", path, true);
+      ajax.send();
+      ajax.onload = function (e) {
+        var div = document.createElement("div");
+        div.className = 'd-none';
+        div.innerHTML = ajax.responseText;
+        document.body.insertBefore(div, document.body.childNodes[0]);
+      }
+    }
+    // this is set to BootstrapTemple website as you cannot 
+    // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+    // while using file:// protocol
+    // pls don't forget to change to your domain :)
+    injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
+  </script>
+  <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</body>
+
+</html>

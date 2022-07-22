@@ -1,0 +1,22 @@
+{
+  "homepage": {
+    "name": "homepage",
+    "path": "/"
+  },
+  "callback": {
+    "name": "callback",
+    "path": "/callback"
+  },
+  "dashboard": {
+    "name": "dashboard",
+    "path": "/dashboard"
+  },
+  "login": {
+    "name": "login",
+    "path": "/login"
+  },
+  "logout": {
+    "name": "logout",
+    "path": "/logout"
+  }
+}
