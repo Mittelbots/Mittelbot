@@ -67,7 +67,7 @@
     "passport-discord": "^0.1.4"
   },
   "devDependencies": {
-    "string-width": "^4.2.2",
+    "string-width": "^5.1.2",
     "nodemon": "^2.0.19",
     "chalk": "^4.1.0"
   }
