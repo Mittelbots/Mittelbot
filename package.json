@@ -63,7 +63,7 @@
     "validator": "^13.7.0",
     "ytdl-core": "^4.11.0",
     "memorystore": "^1.6.6",
-    "passport": "^0.4.1",
+    "passport": "^0.6.0",
     "passport-discord": "^0.1.4"
   },
   "devDependencies": {
