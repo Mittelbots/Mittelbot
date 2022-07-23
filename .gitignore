@@ -12,6 +12,7 @@ crashs.json
 node_modules/
 
 .DS_Store
+._*
 
 _logs/*
 core

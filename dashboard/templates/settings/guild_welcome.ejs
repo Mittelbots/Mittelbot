@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <div class="page">
+        <!-- Main Navbar-->
+
+        <%- include("../partials/header", { bot, user, path, title: "Dashboard" }) %>
+
+        <div class="page-content d-flex align-items-stretch">
+
+            <%- include("../partials/sidebar", { user, guild}) %>
+
+            <div class="content-inner w-100">
+                <!-- Page Header-->
+                <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+                    <div class="container-fluid px-0">
+                        <h2 class="mb-0 p-1"><%= guild.name %> <small class="fw-light">(<%= guild.id %>)</small></h2>
+                        <h6 class="mb-0 p-1">You <span
+                                class="<%= (guild.ownerId === user.id) ? 'text-green' : 'text-red'  %>"><%= (guild.ownerId === user.id) ? 'are' : 'are not'  %></span>
+                            the Owner. Welcome back!</h6>
+                    </div>
+                </header>
+
+                <!-- Dashboard Guild Config-->
+                <section class="pb-0">
+                    <div class="container-fluid">
+
+                        <div class="row p-3">
+                            <div class="col-md card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon flex-shrink-0 bg-red" style="margin: 0 10px 0 0;">
+                                            <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                                <use xlink:href="#question-1"> </use>
+                                            </svg>
+                                        </div>
+                                        <div class="ms-3">
+                                            <strong class="text-lg d-block lh-1 mb-1">How to use?</strong>
+                                            <small class="text-uppercase text-gray-500 small d-block lh-1">
+                                                <p>You can use these parameters to customize your welcome message</p>
+                                                <p><strong>{name}</strong> = Username of the new person </p>
+                                                <p><strong>{pfp}</strong> = Profile picture of the new person</p>
+                                                <p><strong>{mention}</strong> = Mentioned the user </p>
+                                                <p><strong>{guild}</strong> = Name of the guild </p>
+                                                <p><strong>{count}</strong> = Member Count (including bots & the new
+                                                    user)</p>
+                                                <p><strong>#channel</strong> = A tagged channel</p>
+                                                <p><strong>@role</strong> = A tagged role</p>
+                                                <p><strong>{everyone}</strong> = Tags everyone in the guild.</p>
+                                                <p><strong>{here}</strong> = Tags everyone who are online in the guild.
+                                                </p>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-md card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon flex-shrink-0 bg-red" style="margin: 0 10px 0 0;">
+                                            <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                                <use xlink:href="#time-1"> </use>
+                                            </svg>
+                                        </div>
+                                        <div class="ms-3">
+                                            <strong class="text-lg d-block lh-1 mb-1">Active</strong>
+                                            <small class="text-uppercase text-gray-500 small d-block lh-1">
+                                                <label for="module_yt" class="form-label"> Enable or disable your
+                                                    welcome message. </label>
+                                                <div class="form-check form-switch">
+                                                    <% console.log(settings.config) %>
+                                                    <input class="form-check-input" type="checkbox"
+                                                        style="width: 40px; height: 20px;" id="module_yt"
+                                                        <%= (settings.config.active) ? 'checked' : '' %>>
+                                                </div>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 50%; float: left;">
+                            <div class="row p-3">
+                                <div class="col-md mb-0 card">
+                                    <div class="card-body">
+                                        <div class="d-grid align-items-center">
+                                            <div class="ms-3">
+                                                <h2 class="text-lg text-gray-700 mb-6">Customize your welcome message.</h2>
+                                                <br />
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Message</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1">
+                                                    <span class="mb-2">Type into the input what should be send to the user.</span>
+                                                    <div class="input-group">
+                                                        <textarea class="form-control" aria-label="With textarea" placeholder="Your text..." style="min-height: 140px;resize: none;" ></textarea>
+                                                    </div>
+                                                </small>
+                                            </div>
+                                            <div class="ms-3 mt-5">
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Author</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Your text...">
+                                                    </div>
+                                                </small>
+                                            </div>
+                                            <div class="ms-3 mt-5">
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Title</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1">
+                                                    <span class="mb-2"></span>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Your text...">
+                                                    </div>
+                                                </small>
+                                            </div>
+                                            <div class="ms-3 mt-5">
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Thumbnail</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
+                                                    <span class="mb-2">Insert you image link or {pfp} if you want to set it as the users profilepicture</span>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="ONLY LINK ARE ALLOWED">
+                                                    </div>
+                                                </small>
+
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Image</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1">
+                                                    <span class="mb-2">Insert you image link or {pfp} if you want to set it as the users profilepicture</span>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Insert the image link. ONLY LINKS ALLOWED">
+                                                    </div>
+                                                </small>
+                                            </div>
+
+                                            <div class="ms-3 mt-5">
+                                                <div id="fileDropBox">Drop files here.</div>
+                                                <script src="/js/utilities.js" type="text/javascript"></script>
+                                                <!-- Provides the alert() method. -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div stlye="width: 50%; float:right">
+                            <div class="row p-3">
+                                <div class="col-md card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon flex-shrink-0 bg-red" style="margin: 0 10px 0 0;"
+                                                id="dmcau_icon">
+                                                <svg class="svg-icon svg-icon-sm svg-icon-heavy">
+                                                    <use xlink:href="#timer"> </use>
+                                                </svg>
+                                            </div>
+                                            <div class="ms-3">
+                                                <strong class="text-lg d-block lh-1 mb-1">Live Preview</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1">
+                                                    <p></p>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page Footer-->
+                <footer class="position-absolute bottom-0 bg-darkBlue text-white text-center py-3 w-100 text-xs"
+                    id="footer">
+                    <div class="container-fluid">
+                        <div class="row gy-2">
+                            <div class="col-sm-6 text-sm-start">
+                                <p class="mb-0">Mittelbot &copy; 2017-2021</p>
+                            </div>
+                            <div class="col-sm-6 text-sm-end">
+                                <p class="mb-0">Design by <a href="https://bootstrapious.com/p/admin-template"
+                                        class="text-white text-decoration-none">Bootstrapious</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/chart.js/Chart.min.js"></script>
+    <script src="/vendor/just-validate/js/just-validate.min.js"></script>
+    <script src="/vendor/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="/js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="/js/front.js"></script>
+    <script src="/js/index.js"></script>
+    <script>
+        // ------------------------------------------------------- //
+        //   Inject SVG Sprite - 
+        //   see more here 
+        //   https://css-tricks.com/ajaxing-svg-sprite/
+        // ------------------------------------------------------ //
+        function injectSvgSprite(path) {
+
+            var ajax = new XMLHttpRequest();
+            ajax.open("GET", path, true);
+            ajax.send();
+            ajax.onload = function (e) {
+                var div = document.createElement("div");
+                div.className = 'd-none';
+                div.innerHTML = ajax.responseText;
+                document.body.insertBefore(div, document.body.childNodes[0]);
+            }
+        }
+        // this is set to BootstrapTemple website as you cannot 
+        // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+        // while using file:// protocol
+        // pls don't forget to change to your domain :)
+        injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
+    </script>
+    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</body>
+
+</html>

@@ -8,7 +8,7 @@ const {
   PermissionsBitField
 } = require('discord.js');
 const axios = require("axios");
-const { getConfig } = require("../../../../utils/functions/data/getConfig");
+const { getConfig, getGuildConfig } = require("../../../../utils/functions/data/getConfig");
 
 module.exports = (app) => {
   // Dashboard endpoint.
@@ -61,6 +61,7 @@ module.exports = (app) => {
     if(!req.query.settings) {
       renderTemplate(res, req, "settings/guild_index.ejs", {
         guild,
+        path: req.query.settings,
         settings: {
           config: await getConfig({guild_id: req.params.guildID})
         },
@@ -70,14 +71,37 @@ module.exports = (app) => {
     else if(req.query.settings === 'settings') {
       renderTemplate(res, req, "settings/guild_settings.ejs", {
         guild,
+        path: req.query.settings,
         settings: {
           config: await getConfig({guild_id: req.params.guildID})
         },
         alert: null,
       }, app.settings.bot);
-    }else {
+    }
+    else if(req.query.settings === 'welcome') {
+      var guildConfig = await getGuildConfig({guild_id: req.params.guildID})
+      try {
+        guildConfig = JSON.parse(guildConfig.welcome_channel);
+      }catch(err) {
+        guildConfig = JSON.parse(guildConfig.settings.welcome_channel)
+      }
+
+      
+      renderTemplate(res, req, "settings/guild_welcome.ejs", {
+        guild,
+        path: req.query.settings,
+        settings: {
+          config: guildConfig
+        },
+        alert: null,
+      }, app.settings.bot);
+    }
+    
+    
+    else {
       renderTemplate(res, req, "settings/guild_index.ejs", {
         guild,
+        path: req.query.settings,
         settings: {
           config: await getConfig({guild_id: req.params.guildID})
         },

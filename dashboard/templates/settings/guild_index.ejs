@@ -10,7 +10,6 @@
         <!-- Main Navbar-->
 
         <%- include("../partials/header", { bot, user, path, title: "Dashboard" }) %>
-
         <div class="page-content d-flex align-items-stretch">
 
             <%- include("../partials/sidebar", { user, guild}) %>
@@ -99,10 +98,12 @@
                         </div>
                     </div>
                 </section>
-
+                
                 <!-- Dashboard Guild Config-->
                 <section class="pb-0">
                     <div class="container-fluid">
+
+                        <p class="text-uppercase fw-bold text-xl letter-spacing-0 m-3 px-2 heading">Modules</p>
 
                         <span class="text-uppercase text-black-400 text-xs letter-spacing-0 m-3 px-2 heading">Server management</span>
 
@@ -117,7 +118,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <label for="module_welcome" class="form-label">Add a welcome message or joinroles</label>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 15%; height: 20px;" id="module_welcome" <%= (settings.config.disabled_modules.indexOf('welcome') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_welcome" <%= (settings.config.disabled_modules.indexOf('welcome') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -136,7 +137,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <label for="module_moderation" class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </label>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 8%; height: 20px;" id="module_moderation" <%= (settings.config.disabled_modules.indexOf('moderation') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_moderation" <%= (settings.config.disabled_modules.indexOf('moderation') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -155,7 +156,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <label for="module_translate" class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </label>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 8%; height: 20px;" id="module_translate" <%= (settings.config.disabled_modules.indexOf('autotranslate') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_translate" <%= (settings.config.disabled_modules.indexOf('autotranslate') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -176,7 +177,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <label for="module_applyform" class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </label>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 8%; height: 20px;" id="module_applyform" <%= (settings.config.disabled_modules.indexOf('apply') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_applyform" <%= (settings.config.disabled_modules.indexOf('apply') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -197,7 +198,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <label for="module_yt" class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </label>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 8%; height: 20px;" id="module_yt" <%= (settings.config.disabled_modules.indexOf('youtube') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_yt" <%= (settings.config.disabled_modules.indexOf('youtube') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -216,7 +217,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <label for="module_tw" class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </label>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 8%; height: 20px;" id="module_tw" <%= (settings.config.disabled_modules.indexOf('twitch') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_tw" <%= (settings.config.disabled_modules.indexOf('twitch') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>

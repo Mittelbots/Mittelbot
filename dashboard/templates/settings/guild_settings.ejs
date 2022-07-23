@@ -20,7 +20,9 @@
                 <header class="bg-white shadow-sm px-4 py-3 z-index-20">
                     <div class="container-fluid px-0">
                         <h2 class="mb-0 p-1"><%= guild.name %> <small class="fw-light">(<%= guild.id %>)</small></h2>
-                        <h6 class="mb-0 p-1">You are <span class="text-red"><%= (guild.owner) ? '' : 'not'  %></span> the Owner </h6>
+                        <h6 class="mb-0 p-1">You <span
+                            class="<%= (guild.ownerId === user.id) ? 'text-green' : 'text-red'  %>"><%= (guild.ownerId === user.id) ? 'are' : 'are not'  %></span>
+                        the Owner. Welcome back!</h6>
                     </div>
                 </header>
                 <!-- Dashboard Counts Section-->
@@ -160,7 +162,6 @@
                                                 <label for="cooldownrange" class="form-label">Select your prefered option</label>
                                                 <select class="form-select" aria-label="Default select example">
                                                     <option disabled="true">Select between true and false</option>
-                                                    <% console.log(settings.config.deleteCommandAfterUsage) %> 
                                                     <option value="true" selected="<%= (settings.config.deleteCommandAfterUsage) ? 'true' : 'false' %>">True</option>
                                                     <option value="false" selected="<%= (settings.config.deleteCommandAfterUsage) ? 'false' : 'true' %>">False</option>
                                                   </select>
