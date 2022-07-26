@@ -13,6 +13,7 @@ const {
 } = require("../utils/functions/data/getConfig");
 const { InteractionType } = require("discord.js");
 const { manageScam } = require("../utils/functions/data/scam");
+const { handlerAFKInput } = require("../utils/functions/data/afk");
 
 const defaultCooldown = new Set();
 
@@ -55,9 +56,10 @@ module.exports.interactionCreate = ({
             }
 
         } else if(main_interaction.type === InteractionType.ModalSubmit) {
-            // if(main_interaction.customId === 'test') {
-            //     console.log(main_interaction.fields.getTextInputValue('text'));
-            // }
+            if(main_interaction.customId == 'afk_modal') {
+                handlerAFKInput({main_interaction})
+            }
+            
         }
         else {
             switch (main_interaction.customId) {
