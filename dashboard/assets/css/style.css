@@ -1,5 +1,9 @@
-/* 
-  Style.css file is linked in the header template, therefore
-  it is applied to every page of our application.
-  Write some style to begin.
-*/
+.joinrole_selected {
+  padding: 10px;
+  border: 1px solid red;
+  margin: 5px 10px;
+  width: fit-content;
+  border-radius: 20px;
+  cursor: pointer;
+
+}

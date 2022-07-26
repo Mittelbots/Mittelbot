@@ -6,6 +6,7 @@
 </head>
 
 <body>
+
     <div class="page">
         <!-- Main Navbar-->
 
@@ -76,7 +77,6 @@
                                                 <label for="module_yt" class="form-label"> Enable or disable your
                                                     welcome message. </label>
                                                 <div class="form-check form-switch">
-                                                    <% console.log(settings.config) %>
                                                     <input class="form-check-input" type="checkbox"
                                                         style="width: 40px; height: 20px;" id="module_yt"
                                                         <%= (settings.config.active) ? 'checked' : '' %>>
@@ -93,13 +93,18 @@
                                     <div class="card-body">
                                         <div class="d-grid align-items-center">
                                             <div class="ms-3">
-                                                <h2 class="text-lg text-gray-700 mb-6">Customize your welcome message.</h2>
+                                                <h2 class="text-lg text-gray-700 mb-6">Customize your welcome message.
+                                                </h2>
                                                 <br />
                                                 <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Message</strong>
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1">
-                                                    <span class="mb-2">Type into the input what should be send to the user.</span>
+                                                    <span class="mb-2">Type into the input what should be send to the
+                                                        user.</span>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" aria-label="With textarea" placeholder="Your text..." style="min-height: 140px;resize: none;" ></textarea>
+                                                        <textarea class="form-control" aria-label="With textarea"
+                                                            placeholder="Your text..."
+                                                            style="min-height: 140px;resize: none;"
+                                                            value="<%= (settings.config.message) ? settings.config.message : ''%> "></textarea>
                                                     </div>
                                                 </small>
                                             </div>
@@ -107,7 +112,11 @@
                                                 <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Author</strong>
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1">
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Your text...">
+                                                        <input type="text" class="form-control"
+                                                            aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm"
+                                                            placeholder="Your text..."
+                                                            value="<%= (settings.config.author) ? settings.config.author : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
@@ -116,34 +125,76 @@
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1">
                                                     <span class="mb-2"></span>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Your text...">
+                                                        <input type="text" class="form-control"
+                                                            aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm"
+                                                            placeholder="Your text..."
+                                                            value="<%= (settings.config.title) ? settings.config.title : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
                                             <div class="ms-3 mt-5">
                                                 <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Thumbnail</strong>
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
-                                                    <span class="mb-2">Insert you image link or {pfp} if you want to set it as the users profilepicture</span>
+                                                    <span class="mb-2">Insert you image link or {pfp} if you want to set
+                                                        it as the users profilepicture</span>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="ONLY LINK ARE ALLOWED">
+                                                        <input type="text" class="form-control"
+                                                            aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm"
+                                                            placeholder="ONLY LINK ARE ALLOWED"
+                                                            value="<%= (settings.config.thumbnail) ? settings.config.thumbnail : ''%>">
                                                     </div>
                                                 </small>
 
                                                 <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Image</strong>
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1">
-                                                    <span class="mb-2">Insert you image link or {pfp} if you want to set it as the users profilepicture</span>
+                                                    <span class="mb-2">Insert you image link or {pfp} if you want to set
+                                                        it as the users profilepicture</span>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Insert the image link. ONLY LINKS ALLOWED">
+                                                        <input type="text" class="form-control"
+                                                            aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm"
+                                                            placeholder="Insert the image link. ONLY LINKS ALLOWED"
+                                                            value="<%= (settings.config.image) ? settings.config.image : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
 
                                             <div class="ms-3 mt-5">
-                                                <div id="fileDropBox">Drop files here.</div>
-                                                <script src="/js/utilities.js" type="text/javascript"></script>
-                                                <!-- Provides the alert() method. -->
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Fields</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
+                                                    <span class="mb-2">Add a field with value to the welcome
+                                                        message</span>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control"
+                                                            aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm"
+                                                            placeholder="Field name">
+                                                    </div>
+                                                    <div class="input-group input-group-sm mt-2">
+                                                        <input type="text" class="form-control"
+                                                            aria-label="Sizing example input"
+                                                            aria-describedby="inputGroup-sizing-sm"
+                                                            placeholder="Field value">
+                                                    </div>
+                                                </small>
+                                            </div>
+
+                                            <div class="ms-3 mt-5">
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Color</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
+                                                    <span class="mb-2">Add a color for the left of the embed</span>
+                                                    <div class="input-group">
+                                                        <input type="color" id="favcolor" name="favcolor"
+                                                            value="#ff0000"
+                                                            value="<%= (settings.config.color) ? settings.config.color : ''%>"><br><br>
+                                                    </div>
+                                                </small>
                                             </div>
                                         </div>
+                                        <button type="button" class="btn btn-success"
+                                            style="float:right; width: 100px">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -160,11 +211,48 @@
                                                 </svg>
                                             </div>
                                             <div class="ms-3">
-                                                <strong class="text-lg d-block lh-1 mb-1">Live Preview</strong>
+                                                <strong class="text-lg d-block lh-1 mb-1">Live Preview <small
+                                                        class="text-red">Coming soon</small></strong>
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1">
                                                     <p></p>
                                                 </small>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-3">
+                            <div class="col-md card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3 mt-5">
+                                            <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Joinroles</strong>
+                                            <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
+                                                <span class="mb-2">Add or remove joinroles</span>
+
+                                                <p>
+                                                    <div
+                                                        style="width: 150%; height:200px; border: 1px solid black; padding: 10px; overflow: scroll;" id="joinroles_selected">
+                                                        <%  for(let i in settings.joinroles) { 
+                                                        let guild_role = guild.roles.cache.get(settings.joinroles[i].role_id);
+                                                    %>
+                                                        <div class="joinrole_selected"> <%= guild_role.name %> </div>
+                                                        <% } %>
+                                                    </div>
+                                                </p>
+
+                                                <select class="form-select" aria-label="Default select example"
+                                                    onchange="addJoinRoleToDiv(this)">
+                                                    <option selected disabled>Select a role</option>
+                                                    <%  let all_roles = guild.roles.cache.filter(role => role.id !== guild.id && role.name !== '@here' && !role.tags.botId)%>
+                                                    <% all_roles.forEach((role) => { %>
+                                                    <option value="<%= role.id %>" <%= (settings.joinroles.filter(r => r.role_id === role.id).length === 0) ? 'disabled' : '' %>"><%= role.name %></option>
+                                                    <%  })%>
+                                                </select>
+
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
@@ -201,11 +289,6 @@
     <script src="/js/front.js"></script>
     <script src="/js/index.js"></script>
     <script>
-        // ------------------------------------------------------- //
-        //   Inject SVG Sprite - 
-        //   see more here 
-        //   https://css-tricks.com/ajaxing-svg-sprite/
-        // ------------------------------------------------------ //
         function injectSvgSprite(path) {
 
             var ajax = new XMLHttpRequest();
@@ -218,10 +301,16 @@
                 document.body.insertBefore(div, document.body.childNodes[0]);
             }
         }
-        // this is set to BootstrapTemple website as you cannot 
-        // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-        // while using file:// protocol
-        // pls don't forget to change to your domain :)
+
+        function addJoinRoleToDiv(e) {
+            let roleId = e.value;
+            let newDiv = document.createElement('div');
+            newDiv.className = 'joinrole_selected';
+            newDiv.innerHTML =  e.options[e.selectedIndex].text;
+            document.getElementById('joinroles_selected').appendChild(newDiv);
+            e.options[e.selectedIndex].disabled = true;
+        }
+
         injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
     </script>
     <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
