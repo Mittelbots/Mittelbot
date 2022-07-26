@@ -207,7 +207,7 @@ async function sendToAudit(bot, type, content1, content2) {
                 user: content1.user, 
                 guild: content1.guild,
             });
-            setNewModLogMessage(bot, config.defaultModTypes.ban, banlist[2], content1.user, banlist[1], null, content1.guild.id);
+            setNewModLogMessage(bot, config.defaultModTypes.ban, banlist[2].id, content1.user, banlist[1], null, content1.guild.id);
             break;
         
         case c.guildBanRemove:
