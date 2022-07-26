@@ -1,0 +1,67 @@
+<!-- Side Navbar -->
+<nav class="side-navbar z-index-40">
+  <!-- Sidebar Header-->
+  <div class="sidebar-header d-flex align-items-center py-4 px-3"><img class="avatar shadow-0 img-fluid rounded-circle"
+      src="<%= `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp` %>" alt="..." width="100%">
+    <div class="ms-3 title">
+      <h1 class="h4 mb-2"><%= user.username %></h1>
+      <p class="text-sm text-gray-500 fw-light mb-0 lh-1">#<%= user.discriminator %></p>
+    </div>
+  </div>
+  <% if(guild) {%>
+  <!-- Sidebar Navidation Menus-->
+  <ul class="list-unstyled py-4">
+    <li class="sidebar-item <%= (!path) ? 'active' : '' %>"><a class="sidebar-link" href="/dashboard/<%= guild.id %>">
+        <img src="https://img.icons8.com/material-outlined/24/00000/dashboard-layout.png" class="me-xl-2" /> Dashboard
+      </a></li>
+    <li class="sidebar-item <%= (path == 'settings') ? 'active' : '' %>"><a class="sidebar-link" href="/dashboard/<%= guild.id %>?settings=settings">
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png" class="me-xl-2" />Settings 
+      </a></li>
+    <span class="text-uppercase text-gray-400 text-xs letter-spacing-0 m-3 px-2 heading">Server management</span>
+    <li class="sidebar-item <%= (path == 'welcome') ? 'active' : '' %>"><a class="sidebar-link" href="/dashboard/<%= guild.id %>?settings=welcome">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#portfolio-grid-1"> </use>
+        </svg>Welcome </a></li>
+    <li class="sidebar-item"><a class="sidebar-link" href="/dashboard/<%= guild.id %>?settings=moderation">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#sales-up-1"> </use>
+        </svg>Moderation </a></li>
+    <li class="sidebar-item"><a class="sidebar-link" href="/dashboard/<%= guild.id %>?settings=welcome">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#survey-1"> </use>
+        </svg>Forms </a></li>
+    <li class="sidebar-item"><a class="sidebar-link" href="#exampledropdownDropdown" data-bs-toggle="collapse">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#browser-window-1"> </use>
+        </svg>Example dropdown </a>
+      <ul class="collapse list-unstyled " id="exampledropdownDropdown">
+        <li><a class="sidebar-link" href="#">Page</a></li>
+        <li><a class="sidebar-link" href="#">Page</a></li>
+        <li><a class="sidebar-link" href="#">Page</a></li>
+      </ul>
+    </li>
+    <li class="sidebar-item"><a class="sidebar-link" href="login.html">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#disable-1"> </use>
+        </svg>Login page </a></li>
+  </ul><span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Extras</span>
+  <ul class="list-unstyled py-4">
+    <li class="sidebar-item"> <a class="sidebar-link" href="#">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#imac-screen-1"> </use>
+        </svg>Demo </a></li>
+    <li class="sidebar-item"> <a class="sidebar-link" href="#">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#chart-1"> </use>
+        </svg>Demo </a></li>
+    <li class="sidebar-item"> <a class="sidebar-link" href="#">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#quality-1"> </use>
+        </svg>Demo </a></li>
+    <li class="sidebar-item"> <a class="sidebar-link" href="#">
+        <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+          <use xlink:href="#security-shield-1"> </use>
+        </svg>Demo </a></li>
+  </ul>
+  <% } %>
+</nav>

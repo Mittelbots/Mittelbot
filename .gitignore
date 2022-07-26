@@ -1,4 +1,5 @@
 config.json
+config.js
 blacklist.json
 autoresponse.json
 _secret/token.json
@@ -11,6 +12,7 @@ crashs.json
 node_modules/
 
 .DS_Store
+._*
 
 _logs/*
 core

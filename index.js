@@ -67,6 +67,7 @@ const {
 const { twitch_notifier } = require("./src/events/notfifier/twitch_notifier");
 const { sendEmailToOwner } = require("./utils/functions/sendEmail/sendEmail");
 const crashs = require("./crashs.json");
+const Dashboard = require("./dashboard/dashboard");
 
 const bot = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates , GatewayIntentBits.GuildMessageReactions , GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent],
@@ -84,6 +85,8 @@ bot.on('guildCreate', async (guild) => {
 });
 
 bot.commands = new Collection();
+
+bot.version = version;
 
 deployCommands(bot);
 createSlashCommands();
@@ -204,6 +207,9 @@ bot.once('ready', async () => {
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
+
+    //? START THE DASHBOARD
+    Dashboard(bot);
 });
 
 bot.login(token.BOT_TOKEN);

@@ -11,7 +11,7 @@ function deployCommands(bot) {
                     if (config.debug == 'true') console.log(`Mission Folder!!`, err);
                 }
                 files.forEach((file) => {
-                    if (!file.endsWith('.js')) return;
+                    if (!file.endsWith('.js') || file.startsWith('.')) return;
                     var command = require(`../../../src/commands/${module}/${file}`);
                     console.log(`${command.help.name} Command has been loaded!`);
                     if (command.help.name) bot.commands.set(command.help.name, command)
