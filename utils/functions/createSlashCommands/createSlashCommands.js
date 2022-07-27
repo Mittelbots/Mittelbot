@@ -18,8 +18,10 @@ module.exports.createSlashCommands = async () => {
     const guildId = config.DEVELOPER_DISCORD_GUILD_ID;
 
     for (const cmd_folder of modules) {
+        if(cmd_folder.startsWith('._')) continue;
         const files = fs.readdirSync(`./src/slash_commands/${cmd_folder}/`);
         for (const command_file of files) {
+            if(command_file.startsWith('._')) continue;
             console.log(`${command_file} Command has been loaded!`);
             const command = require(`../../../src/slash_commands/${cmd_folder}/${command_file}`);
             commands.push(command.data.toJSON());

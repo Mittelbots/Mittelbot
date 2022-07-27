@@ -12,6 +12,7 @@ module.exports.handleSlashCommands = async ({
     let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs'];
     let admin = ['modules', 'scam', 'autotranslate', 'settings', 'apply', 'levelsettings', 'automod'];
     let level = ['rank', 'leaderboard', 'givexp', 'removexp'];
+    let utils = ['afk'];
 
     //=========================================================
 
@@ -63,12 +64,18 @@ module.exports.handleSlashCommands = async ({
             main_interaction: main_interaction,
             bot: bot
         });
-    }else if(level.indexOf(main_interaction.commandName) !== -1)
+    }else if(level.indexOf(main_interaction.commandName) !== -1) {
         return require(`./level/${main_interaction.commandName}`).run({
             main_interaction: main_interaction,
             bot: bot
         });
-    
+    }
+    else if(utils.indexOf(main_interaction.commandName) !== -1) {
+        return require(`./utils/${main_interaction.commandName}`).run({
+            main_interaction: main_interaction,
+            bot: bot
+        });
+    }
     else {
         return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
             main_interaction: main_interaction,
