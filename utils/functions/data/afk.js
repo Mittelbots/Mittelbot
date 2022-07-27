@@ -1,4 +1,4 @@
-module.exports.userAFK = [];
+const { userAFK } = require("./variables");
 
 module.exports.handlerAFKInput = ({main_interaction}) => {
     const reason = main_interaction.fields.fields.get('afk_reason').value || 'No reason given.';
@@ -11,7 +11,7 @@ module.exports.handlerAFKInput = ({main_interaction}) => {
         time: Math.floor(date / 1000) + 3600
     }
 
-    this.userAFK.push(obj);
+    userAFK.push(obj);
 
     return main_interaction.reply({
         content: `✅ You are now afk. \`Reason: ${reason}\``,
@@ -27,7 +27,7 @@ module.exports.checkAFK = ({msgmentions}) => {
     if(mentions.size === 0) return isAFK;
 
     mentions.map(user => {
-        const isUserAFK = this.userAFK.find(afk => afk.user_id === user.id);
+        const isUserAFK = userAFK.find(afk => afk.user_id === user.id);
         if(isUserAFK) {
             return isAFK = isUserAFK;
         }
