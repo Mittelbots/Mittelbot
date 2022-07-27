@@ -238,12 +238,12 @@
                                                         <%  for(let i in settings.joinroles) { 
                                                         let guild_role = guild.roles.cache.get(settings.joinroles[i].role_id);
                                                     %>
-                                                        <div class="joinrole_selected"> <%= guild_role.name %> </div>
+                                                        <div class="joinrole_selected" data-id="<%= guild_role.id %>"> <%= guild_role.name %> </div>
                                                         <% } %>
                                                     </div>
                                                 </p>
 
-                                                <select class="form-select" aria-label="Default select example"
+                                                <select class="form-select" id="wc_joinrole_select" aria-label="Default select example"
                                                     onchange="addJoinRoleToDiv(this)">
                                                     <option selected disabled>Select a role</option>
                                                     <%  let all_roles = guild.roles.cache.filter(role => role.id !== guild.id && role.name !== '@here' && !role.tags.botId)%>

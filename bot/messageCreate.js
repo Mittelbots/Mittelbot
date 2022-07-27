@@ -20,7 +20,6 @@ const {
 const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { getAutomodbyGuild } = require('../utils/functions/data/automod');
-const { checkAFK } = require('../utils/functions/data/afk');
 
 const defaultCooldown = new Set();
 
@@ -102,20 +101,6 @@ async function messageCreate(message, bot) {
 
         if(disabled_modules.indexOf('level') === -1) {
             levelCooldown({message, bot})
-        }
-
-        if(disabled_modules.indexOf('utils') === -1) {
-            const isAFK = checkAFK({msgmentions: message.mentions});
-            if(isAFK) {
-                return message.reply(`${message.author} is currently afk.\`Reason: ${isAFK.reason}\` Since: <t:${isAFK.time}:R>`)
-                .then(async msg => {
-                    await delay(8000);
-                    msg.delete().catch(err => {});
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            }
         }
 
     }

@@ -4,9 +4,8 @@ const { checkAuth } = require('../../../functions/checkAuth/checkAuth');
 
 module.exports = (app) => {
   // Logout endpoint.
-  app.get("/logout", checkAuth, async (req, res) => {
+  app.get(app.settings.config.route.logout.path, checkAuth, async (req, res) => {
     //revokle the access token from discord
-
 
     const formData = new url.URLSearchParams({
       client_id: app.settings.config.id,
