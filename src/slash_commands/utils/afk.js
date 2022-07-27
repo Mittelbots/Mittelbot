@@ -7,13 +7,13 @@ module.exports.run = async ({main_interaction, bot}) => {
     const isUserAfk = userAFK.find(u => u.user_id === main_interaction.user.id);
 
     if(isRemove) {
-        if(!isUserAfk) return main_interaction.update({
+        if(!isUserAfk) return main_interaction.reply({
             content: `❌ You are not afk.`,
             ephemeral: true
         });
 
         userAFK = userAFK.filter(u => u.user_id !== main_interaction.user.id);
-        return main_interaction.update({
+        return main_interaction.reply({
             content: `✅ You are no longer afk.`,
             ephemeral: true
         });
