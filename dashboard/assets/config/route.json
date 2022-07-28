@@ -18,5 +18,9 @@
   "logout": {
     "name": "logout",
     "path": "/logout"
+  },
+  "changeSettings": {
+    "name": "rest",
+    "path": "/api/change/:module/:settings/:type/:guildid"
   }
 }

@@ -8,32 +8,40 @@ const {
   PermissionsBitField
 } = require('discord.js');
 const axios = require("axios");
-const { getConfig, getGuildConfig } = require("../../../../utils/functions/data/getConfig");
-const { getJoinroles } = require("../../../../utils/functions/data/joinroles");
+const {
+  getConfig,
+  getGuildConfig
+} = require("../../../../utils/functions/data/getConfig");
+const {
+  getJoinroles
+} = require("../../../../utils/functions/data/joinroles");
 
-module.exports = (app) => {
+module.exports = ({app}) => {
   // Dashboard endpoint.
   app.get("/dashboard", checkAuth, async (req, res) => {
 
-    const user_guilds = await axios.get('https://discord.com/api/v8/users/@me/guilds', {
+    const {
+      data
+    } = await axios.get('https://discord.com/api/v8/users/@me/guilds', {
         headers: {
           Authorization: `Bearer ${req.user.access_token}`
         }
       })
       .catch(err => {
-        err.response.status === 401 ? res.redirect(app.settings.config.route.homepage.path) : console.log(err.response);
-      })
+        (err.response.status === 401) ? req.redirect(app.settings.config.route.logout.path) : console.log(err.response);
+      }) || {};
 
     req.user.guilds = []
 
-    user_guilds.data.forEach(guild => {
-      const guild_perms = new PermissionsBitField(guild.permissions);
-      if(!guild_perms.has(PermissionsBitField.Flags.ManageGuild)) return;
-      else {
-        req.user.guilds.push(guild)
-      }
-    })
-
+    if (data) {
+      data.forEach(guild => {
+        const guild_perms = new PermissionsBitField(guild.permissions);
+        if (!guild_perms.has(PermissionsBitField.Flags.ManageGuild)) return;
+        else {
+          req.user.guilds.push(guild)
+        }
+      })
+    }
     renderTemplate(res, req, "settings/index.ejs", {
       guilds: req.user.guilds,
     }, app.settings.bot);
@@ -48,7 +56,7 @@ module.exports = (app) => {
     if (!member) {
       try {
         const members = await guild.members.fetch()
-        
+
         member = await members.get(req.user.id);
       } catch (err) {
         console.error(`Couldn't fetch the members of ${guild.id}: ${err}`);
@@ -59,39 +67,44 @@ module.exports = (app) => {
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) {
       return res.redirect("/dashboard");
     }
-    if(!req.query.settings) {
+    if (!req.query.settings) {
       renderTemplate(res, req, "settings/guild_index.ejs", {
         guild,
         path: req.query.settings,
         settings: {
-          config: await getConfig({guild_id: req.params.guildID})
+          config: await getConfig({
+            guild_id: req.params.guildID
+          })
         },
         alert: null,
       }, app.settings.bot);
-    }
-    else if(req.query.settings === 'settings') {
+    } else if (req.query.settings === 'settings') {
       renderTemplate(res, req, "settings/guild_settings.ejs", {
         guild,
         path: req.query.settings,
         settings: {
-          config: await getConfig({guild_id: req.params.guildID})
+          config: await getConfig({
+            guild_id: req.params.guildID
+          })
         },
         alert: null,
       }, app.settings.bot);
-    }
-    else if(req.query.settings === 'welcome') {
-      var guildConfig = await getGuildConfig({guild_id: req.params.guildID})
-      var joinroles = await getJoinroles({guild_id: req.params.guildID})
+    } else if (req.query.settings === 'welcome') {
+      var guildConfig = await getGuildConfig({
+        guild_id: req.params.guildID
+      })
+      var joinroles = await getJoinroles({
+        guild_id: req.params.guildID
+      })
       try {
         guildConfig = JSON.parse(guildConfig.welcome_channel);
-      }catch(err) {
+      } catch (err) {
         guildConfig = JSON.parse(guildConfig.settings.welcome_channel)
       }
       try {
         joinroles = JSON.parse(joinroles);
-      }catch(e) {
-      }
-      
+      } catch (e) {}
+
       renderTemplate(res, req, "settings/guild_welcome.ejs", {
         guild,
         path: req.query.settings,
@@ -101,15 +114,14 @@ module.exports = (app) => {
         },
         alert: null,
       }, app.settings.bot);
-    }
-    
-    
-    else {
+    } else {
       renderTemplate(res, req, "settings/guild_index.ejs", {
         guild,
         path: req.query.settings,
         settings: {
-          config: await getConfig({guild_id: req.params.guildID})
+          config: await getConfig({
+            guild_id: req.params.guildID
+          })
         },
         alert: null,
       }, app.settings.bot);

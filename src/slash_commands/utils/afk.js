@@ -4,7 +4,7 @@ const { userAFK } = require('../../../utils/functions/data/variables');
 
 module.exports.run = async ({main_interaction, bot}) => {
     const isRemove = main_interaction.options.getBoolean('remove');
-    const isUserAfk = userAFK.find(u => u.user_id === main_interaction.user.id);
+    const isUserAfk = userAFK.find(u => u.user_id === main_interaction.user.id && u.guild_id === main_interaction.guild.id);
     if(isRemove) {
         if(!isUserAfk) return main_interaction.reply({
             content: `❌ You are not afk.`,
