@@ -1,22 +1,22 @@
 const config = require('../../../src/assets/json/_config/config.json');
 const {TextInputBuilder, SlashCommandBuilder, ModalBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
-const { userAFK } = require('../../../utils/functions/data/afk');
+const { userAFK } = require('../../../utils/functions/data/variables');
 
 module.exports.run = async ({main_interaction, bot}) => {
     const isRemove = main_interaction.options.getBoolean('remove');
-    const isUserAfk = userAFK.find(u => u.user_id === main_interaction.user.id);
-
+    const isUserAfk = userAFK.find(u => u.user_id === main_interaction.user.id && u.guild_id === main_interaction.guild.id);
     if(isRemove) {
-        if(!isUserAfk) return main_interaction.update({
+        if(!isUserAfk) return main_interaction.reply({
             content: `❌ You are not afk.`,
             ephemeral: true
         });
 
-        userAFK = userAFK.filter(u => u.user_id !== main_interaction.user.id);
-        return main_interaction.update({
+        userAFKuserAFK = userAFK.splice(userAFK.indexOf(isUserAfk), 1);
+
+        return main_interaction.reply({
             content: `✅ You are no longer afk.`,
             ephemeral: true
-        });
+        }).catch(err => {})
     }else {
 
         if(isUserAfk) return main_interaction.reply({

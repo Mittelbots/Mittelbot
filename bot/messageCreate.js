@@ -103,6 +103,19 @@ async function messageCreate(message, bot) {
             levelCooldown({message, bot})
         }
 
+        if(disabled_modules.indexOf('utils') === -1) {
+            const isAFK = checkAFK({message});
+            if(isAFK) {
+                return message.reply(`${message.author} is currently afk.\`Reason: ${isAFK.reason}\` Since: <t:${isAFK.time}:R>`)
+                .then(async msg => {
+                    await delay(8000);
+                    msg.delete().catch(err => {});
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+        }
     }
 }
 
