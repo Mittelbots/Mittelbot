@@ -9,7 +9,15 @@ const { muteUser } = require('../../../utils/functions/moderations/muteUser');
 const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfractions');
 
 module.exports.run = async ({main_interaction, bot}) => {
-    if (!await hasPermission(main_interaction, 0, 0)) {
+
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: false,
+        modOnly: false,
+        user: main_interaction.member
+    })
+
+    if (!hasPermissions) {
         return main_interaction.reply({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true

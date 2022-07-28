@@ -7,7 +7,14 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({main_interaction, bot}) => {
 
-    if (!await hasPermission(main_interaction, 0, 1)) {
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: false,
+        modOnly: true,
+        user: main_interaction.member
+    })
+
+    if (!hasPermissions) {
         return main_interaction.reply({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = (app) => {
+module.exports = ({app}) => {
   app.get("/login", (req, res) => {
     const loginToken = req.cookies.token;
     if(!loginToken) {

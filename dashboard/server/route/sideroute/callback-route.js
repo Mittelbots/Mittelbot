@@ -5,7 +5,7 @@ const {
 } = require("crypto");
 const url = require('url');
 const database = require("../../../../src/db/db");
-module.exports = (app) => {
+module.exports = ({app}) => {
   // Callback endpoint.
   app.get("/callback", async (req, res, ) => {
     const {

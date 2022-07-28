@@ -20,7 +20,6 @@ const {
 const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { getAutomodbyGuild } = require('../utils/functions/data/automod');
-const { checkAFK } = require('../utils/functions/data/afk');
 
 const defaultCooldown = new Set();
 
@@ -117,7 +116,6 @@ async function messageCreate(message, bot) {
                 })
             }
         }
-
     }
 }
 

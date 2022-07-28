@@ -10,7 +10,13 @@ module.exports.run = async ({main_interaction, bot}) => {
     const translate_target = main_interaction.options.getChannel("target").id;
     const translate_log_channel = main_interaction.options.getChannel("log").id;
 
-    if (!await hasPermission(main_interaction, 1, 0)) {
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.member
+    });
+    if (!hasPermissions) {
         return main_interaction.reply({
             content: `${config.errormessages.nopermission}`,
             ephemeral: true

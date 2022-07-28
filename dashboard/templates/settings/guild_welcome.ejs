@@ -2,7 +2,7 @@
 <html>
 
 <head>
-
+<script src="https://blackdayz.de/js/changerjs" async defer></script>
 </head>
 
 <body>
@@ -77,7 +77,7 @@
                                                 <label for="module_yt" class="form-label"> Enable or disable your
                                                     welcome message. </label>
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox"
+                                                    <input class="form-check-input ChangerJSInput" data-cid="wc_enable_<%= guild.id %>" type="checkbox"
                                                         style="width: 40px; height: 20px;" id="module_yt"
                                                         <%= (settings.config.active) ? 'checked' : '' %>>
                                                 </div>
@@ -101,8 +101,10 @@
                                                     <span class="mb-2">Type into the input what should be send to the
                                                         user.</span>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" aria-label="With textarea"
+                                                        <textarea class="form-control ChangerJSInput" 
+                                                            aria-label="With textarea"
                                                             placeholder="Your text..."
+                                                            data-cid="wc_message_<%= guild.id %>"
                                                             style="min-height: 140px;resize: none;"
                                                             value="<%= (settings.config.message) ? settings.config.message : ''%> "></textarea>
                                                     </div>
@@ -112,10 +114,11 @@
                                                 <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Author</strong>
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1">
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
+                                                            data-cid="wc_author_<%= guild.id %>"
                                                             value="<%= (settings.config.author) ? settings.config.author : ''%>">
                                                     </div>
                                                 </small>
@@ -125,10 +128,11 @@
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1">
                                                     <span class="mb-2"></span>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
+                                                            data-cid="wc_title_<%= guild.id %>"
                                                             value="<%= (settings.config.title) ? settings.config.title : ''%>">
                                                     </div>
                                                 </small>
@@ -139,10 +143,11 @@
                                                     <span class="mb-2">Insert you image link or {pfp} if you want to set
                                                         it as the users profilepicture</span>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="ONLY LINK ARE ALLOWED"
+                                                            data-cid="wc_thumbnail_<%= guild.id %>"
                                                             value="<%= (settings.config.thumbnail) ? settings.config.thumbnail : ''%>">
                                                     </div>
                                                 </small>
@@ -152,10 +157,11 @@
                                                     <span class="mb-2">Insert you image link or {pfp} if you want to set
                                                         it as the users profilepicture</span>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Insert the image link. ONLY LINKS ALLOWED"
+                                                            data-cid="wc_image_<%= guild.id %>"
                                                             value="<%= (settings.config.image) ? settings.config.image : ''%>">
                                                     </div>
                                                 </small>
@@ -167,15 +173,17 @@
                                                     <span class="mb-2">Add a field with value to the welcome
                                                         message</span>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
+                                                            data-cid="wc_field_name_<%= guild.id %>"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Field name">
                                                     </div>
                                                     <div class="input-group input-group-sm mt-2">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
+                                                            data-cid="wc_field_value_<%= guild.id %>"
                                                             placeholder="Field value">
                                                     </div>
                                                 </small>
@@ -186,8 +194,9 @@
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
                                                     <span class="mb-2">Add a color for the left of the embed</span>
                                                     <div class="input-group">
-                                                        <input type="color" id="favcolor" name="favcolor"
+                                                        <input type="color" id="favcolor" class="ChangerJSInput" name="favcolor"
                                                             value="#ff0000"
+                                                            data-cid="wc_color_<%= guild.id %>"
                                                             value="<%= (settings.config.color) ? settings.config.color : ''%>"><br><br>
                                                     </div>
                                                 </small>
@@ -287,7 +296,7 @@
     <script src="/js/charts-home.js"></script>
     <!-- Main File-->
     <script src="/js/front.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/index.js" type="module"></script>
     <script>
         function injectSvgSprite(path) {
 
@@ -301,21 +310,10 @@
                 document.body.insertBefore(div, document.body.childNodes[0]);
             }
         }
-
-        function addJoinRoleToDiv(e) {
-            let roleId = e.value;
-            let newDiv = document.createElement('div');
-            newDiv.className = 'joinrole_selected';
-            newDiv.innerHTML =  e.options[e.selectedIndex].text;
-            document.getElementById('joinroles_selected').appendChild(newDiv);
-            e.options[e.selectedIndex].disabled = true;
-        }
-
         injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
     </script>
     <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </body>
-
 </html>
