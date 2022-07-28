@@ -1,14 +1,11 @@
 const database = require("../../src/db/db");
-const config = require('../../src/assets/json/_config/config.json');
 const { getFromCache } = require("./cache/cache");
 
 
-async function hasPermission(message, adminOnly, modOnly) {
-    //if(message.user.id === config.Bot_Owner_ID && config.debug == 'true') return true;
-
+async function hasPermission({guild_id, adminOnly, modOnly, user, isDashboard, bot}) {
     const cache = await getFromCache({
         cacheName: 'modroles',
-        param_id: message.guild.id
+        param_id: guild_id
     });
 
     var role_id;
@@ -16,7 +13,7 @@ async function hasPermission(message, adminOnly, modOnly) {
     var ismod;
     var ishelper;
     if(!cache) {
-        return await database.query(`SELECT * FROM ${message.guild.id}_guild_modroles`).then(async (res) => {
+        return await database.query(`SELECT * FROM ${guild_id}_guild_modroles`).then(async (res) => {
             var hasPermission = false
             for (let i in await res) {
                 role_id = res[i].role_id;
@@ -44,11 +41,18 @@ async function hasPermission(message, adminOnly, modOnly) {
     }
 
     function checkPerms({role_id, isadmin, ismod, ishelper}) {
-        const userHasRole = message.member.roles.cache.find(r => r.id === role_id);
+        var hasUserRole;
+
+        if(isDashboard) {
+            hasUserRole = bot.guilds.cache.get(guild_id).members.cache.get(user).roles.cache.find(r => r.id === role_id);
+        }else {
+            userHasRole = user.roles.cache.find(r => r.id === role_id);
+        }
 
         if(userHasRole) {
             if(adminOnly && userHasRole && (ismod == 1 || ishelper == 1)) return false;
             if(modOnly && userHasRole && ishelper == 1) {return false};
+            if(!isadmin && !ismod && !ishelper) return false;
             if (userHasRole) { 
                 return true;
             }
