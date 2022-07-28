@@ -16,7 +16,7 @@ const {
   getJoinroles
 } = require("../../../../utils/functions/data/joinroles");
 
-module.exports = (app) => {
+module.exports = ({app}) => {
   // Dashboard endpoint.
   app.get("/dashboard", checkAuth, async (req, res) => {
 

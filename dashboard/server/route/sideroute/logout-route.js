@@ -2,7 +2,7 @@ const axios = require('axios');
 const url = require('url');
 const { checkAuth } = require('../../../functions/checkAuth/checkAuth');
 
-module.exports = (app) => {
+module.exports = ({app}) => {
   // Logout endpoint.
   app.get(app.settings.config.route.logout.path, checkAuth, async (req, res) => {
     //revokle the access token from discord
