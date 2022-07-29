@@ -607,7 +607,7 @@ module.exports.checkBlacklistChannels = async ({
 
     }
 
-    if(blacklistchannels.includes(message.channel.id)) {
+    if(blacklistchannels.includes(message.channel.id) || blacklistchannels.includes(message.channel.parentId)) {
         return true;
     }else {
         return false;

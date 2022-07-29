@@ -8,6 +8,7 @@ module.exports.run = async (message, bot) => {
     const isBlacklistChannel = await levelAPI.checkBlacklistChannels({
         message
     });
+
     if(isBlacklistChannel) return {
         error: "blacklist",
     }

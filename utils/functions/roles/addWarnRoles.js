@@ -1,8 +1,8 @@
 const database = require("../../../src/db/db");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getFutureDate } = require("../getFutureDate");
-const { insertDataToTemproles } = require("../insertDataToDatabase");
 const config = require('../../../src/assets/json/_config/config.json');
+const { insertIntoTemproles } = require("../data/infractions");
 
 async function addWarnRoles({user, inf_id, guild}) {
     return await database.query(`SELECT role_id FROM ${guild.id}_guild_warnroles`).then(async res => {
@@ -15,7 +15,7 @@ async function addWarnRoles({user, inf_id, guild}) {
                     if(!guild_user.roles.cache.has(role)) {
                         return await guild_user.roles.add([role])
                             .then(() => {
-                                insertDataToTemproles(user.id, res[i].role_id, getFutureDate(2678400), inf_id, guild.id);
+                                insertIntoTemproles(user.id, res[i].role_id, getFutureDate(2678400), inf_id, guild.id);
                                 return true;
                             })
                             .catch(err => {

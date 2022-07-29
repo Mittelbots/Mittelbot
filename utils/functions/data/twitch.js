@@ -10,7 +10,11 @@ module.exports.changeTwitchNotifier = async ({
     guild
 }) => {
     return new Promise(async (resolve, reject) => {
-        const twitch_user = await twitchApiClient.users.getUserByName(twitchchannel);
+        try {
+            var twitch_user = await twitchApiClient.users.getUserByName(twitchchannel);
+        }catch(err) {
+            return reject(`❌ I couldn't find the channel you have entered.`)
+        }
         if (!twitch_user) {
             return reject(`❌ I couldn't find the channel you have entered.`)
         }
