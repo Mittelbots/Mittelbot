@@ -113,3 +113,24 @@ module.exports.insertIntoTemproles = async ({uid, role_id, till_date, infraction
     });
     return;
 }
+
+
+module.exports.getClosedInfractionsByUserId = async ({user_id}) => {
+    return await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? ORDER BY ID DESC`, [user_id])
+    .then(res => {
+        return res;
+    }).catch(err => {
+        errorhandler({err, fatal: true});
+        return false;
+    });
+}
+
+module.exports.getOpenInfractionsByUserId = async ({user_id}) => {
+    return await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY ID DESC`, [user_id])
+    .then(res => {
+        return res;
+    }).catch(err => {
+        errorhandler({err, fatal: true});
+        return false;
+    });
+}

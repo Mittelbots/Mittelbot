@@ -22,8 +22,6 @@ const { insertIntoOpenList } = require("../data/infractions");
 async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
     if (isAuto) mod = bot.user;
 
-    let infid = await createInfractionId();
-
     let pass = false;
 
     if (user) {
@@ -49,7 +47,7 @@ async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
             mute: 0,
             till_date: getFutureDate(dbtime),
             reason,
-            infid,
+            infraction_id: await createInfractionId(),
             gid: guild.id
         })
         setNewModLogMessage(bot, config.defaultModTypes.ban, mod.id, user.user || user, reason, time, guild.id);        

@@ -32,7 +32,7 @@ async function unbanUser({user, mod, guild, reason, bot}) {
                     kick: 0,
                     till_date: res[0].till_date,
                     reason: res[0].reason,
-                    infid: res[0].infraction_id,
+                    infraction_id: res[0].infraction_id,
                     start_date: res[0].start_date
                 })
                 await removeDataFromOpenInfractions(res[0].infraction_id)

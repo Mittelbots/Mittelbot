@@ -24,7 +24,7 @@ async function kickUser({user, mod, guild, reason, bot}) {
             warn: 0,
             kick: 0,
             reason,
-            infid: await createInfractionId(),
+            infraction_id: await createInfractionId(),
             start_date: getCurrentFullDate()
         })
         setNewModLogMessage(bot, config.defaultModTypes.kick, mod.id, user, reason, null, guild.id);

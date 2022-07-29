@@ -22,10 +22,8 @@ async function publicModResponses(type, moderator, member, reason, time, bot) {
     }
 }
 
-async function publicInfractionResponse({member, closed, open, main_interaction, isOne}) {
+async function publicInfractionResponse({member, closed, open, main_interaction, isOne, infraction}) {
     if(isOne) {
-        let infraction = member;
-
         let type;
         switch(true) {
             case infraction.mute == 1: 
@@ -91,7 +89,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
 
         const canFitOnOnePage = data.length <= 10;
         
-        const embedMessage = await main_interaction.channel.send({
+        const embedMessage = await main_interaction.reply({
             embeds: [await generateEmbed(0)],
             components: canFitOnOnePage ? [] : [new ActionRowBuilder({components: [forwardButton]})]
         }).catch(err => {});

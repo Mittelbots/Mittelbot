@@ -7,8 +7,6 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { insertIntoClosedList } = require("../data/infractions");
 
 async function warnUser({bot, user, mod, guild, reason}) {
-
-    let inf_id = await createInfractionId();
     
     const pass = await addWarnRoles({user, inf_id, guild});
 
@@ -27,7 +25,7 @@ async function warnUser({bot, user, mod, guild, reason}) {
             warn: 1,
             kick: 0,
             reason,
-            infid: inf_id,
+            infraction_id: await createInfractionId()
         });
             
         if(config.debug == 'true') console.info('Warn Command passed!');
