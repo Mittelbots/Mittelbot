@@ -70,6 +70,6 @@
   "devDependencies": {
     "chalk": "^4.1.0",
     "nodemon": "^2.0.19",
-    "string-width": "4.2.3"
+    "string-width": "5.1.2"
   }
 }
