@@ -24,7 +24,18 @@ async function unbanUser({user, mod, guild, reason, bot}) {
     if(pass) {
         const query = await database.query(`SELECT * FROM open_infractions WHERE user_id AND ban = 1`, [user.id]).then(async res => {
             if(res.length > 0) {
-                await insertDataToClosedInfraction(user, res[0].mod_id, res[0].mute, res[0].ban, 0, 0, res[0].till_date, res[0].reason, res[0].infraction_id)
+                //user, res[0].mod_id, res[0].mute, res[0].ban, 0, 0, res[0].till_date, res[0].reason, res[0].infraction_id
+                await insertDataToClosedInfraction({
+                    uid: user.id,
+                    modid: res[0].mod_id,
+                    ban: res[0].ban,
+                    mute: res[0].mute,
+                    kick: 0,
+                    till_date: res[0].till_date,
+                    reason: res[0].reason,
+                    infid: res[0].infraction_id,
+                    start_date: res[0].start_date
+                })
                 await removeDataFromOpenInfractions(res[0].infraction_id)
             }
             return {

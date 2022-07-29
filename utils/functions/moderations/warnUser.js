@@ -19,7 +19,16 @@ async function warnUser({bot, user, mod, guild, reason}) {
         const p_response = await publicModResponses(config.defaultModTypes.warn, mod, user.id, reason, null, bot);
         await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
 
-        await insertDataToClosedInfraction(user.id, mod.id, 0, 0, 1, 0, null, reason, inf_id);
+        await insertDataToClosedInfraction({
+            uid: user.id,
+            modid: mod.id,
+            ban: 0,
+            mute: 0,
+            warn: 1,
+            kick: 0,
+            reason,
+            infid: inf_id,
+        });
             
         if(config.debug == 'true') console.info('Warn Command passed!');
 

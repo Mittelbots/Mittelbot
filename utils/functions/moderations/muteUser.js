@@ -29,15 +29,25 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
         if(user_roles.length !== 0) await removeAllRoles(guild_user);
 
         try {
-            await insertDataToOpenInfraction(user.id, mod.id, 1, 0, getFutureDate(dbtime), reason, await createInfractionId(), guild.id, JSON.stringify(user_roles))
-            await setNewModLogMessage(bot, config.defaultModTypes.mute, mod.id, user, reason, time, guild.id);
+            insertDataToOpenInfraction({
+                uid: user.id,
+                modid: mod.id,
+                mute: 1,
+                ban: 0,
+                till_date: getFutureDate(dbtime),
+                reason,
+                infid: await createInfractionId(),
+                gid: guild.id,
+                roles: JSON.stringify(user_roles)
+            });
+
+            setNewModLogMessage(bot, config.defaultModTypes.mute, mod.id, user, reason, time, guild.id);
             
             await privateModResponse(user, config.defaultModTypes.mute, reason, time, bot, guild.name);
 
             const p_response = await publicModResponses(config.defaultModTypes.mute, mod, user.id, reason, time, bot);
 
-            return p_response
-
+            return p_response;
 
         } catch (err) {
             errorhandler({err, fatal: true});

@@ -12,7 +12,16 @@ const { errorhandler } = require('../../utils/functions/errorhandler/errorhandle
 
 async function deleteEntries(infraction) {
     try {
-        insertDataToClosedInfraction(infraction.user_id, infraction.mod_id, infraction.mute, infraction.ban, 0, 0, infraction.till_date, infraction.reason, infraction.infraction_id);
+        insertDataToClosedInfraction({
+            uid: infraction.user_id,
+            modid: infraction.mod_id,
+            mute: infraction.mute,
+            ban: infraction.ban,
+            till_date: infraction.till_date,
+            reason: infraction.reason,
+            infraction_id: infraction.infraction_id,
+            start_date: infraction.start_date,
+        });
 
         database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id]).catch(err => console.log(err));
 
