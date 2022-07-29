@@ -2,9 +2,9 @@ const { setNewModLogMessage } = require("../../modlog/modlog");
 const { privateModResponse } = require("../../privatResponses/privateModResponses");
 const { publicModResponses } = require("../../publicResponses/publicModResponses");
 const { createInfractionId } = require("../createInfractionId");
-const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
 const { addWarnRoles } = require("../roles/addWarnRoles");
 const config = require('../../../src/assets/json/_config/config.json');
+const { insertIntoClosedList } = require("../data/infractions");
 
 async function warnUser({bot, user, mod, guild, reason}) {
 
@@ -19,7 +19,7 @@ async function warnUser({bot, user, mod, guild, reason}) {
         const p_response = await publicModResponses(config.defaultModTypes.warn, mod, user.id, reason, null, bot);
         await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
 
-        await insertDataToClosedInfraction({
+        await insertIntoClosedList({
             uid: user.id,
             modid: mod.id,
             ban: 0,

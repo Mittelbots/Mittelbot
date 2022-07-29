@@ -5,11 +5,11 @@ const { publicModResponses } = require("../../publicResponses/publicModResponses
 const { createInfractionId } = require("../createInfractionId");
 const { errorhandler } = require("../errorhandler/errorhandler");
 const { getFutureDate } = require("../getFutureDate");
-const { insertDataToOpenInfraction } = require("../insertDataToDatabase");
 const { getAllRoles } = require("../roles/getAllRoles");
 const { getMutedRole } = require("../roles/getMutedRole");
 const { removeAllRoles } = require("../roles/removeAllRoles");
 const config = require('../../../src/assets/json/_config/config.json');
+const { insertIntoOpenList } = require("../data/infractions");
 
 async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
     const guild_user = guild.members.cache.get(user.id);
@@ -29,7 +29,7 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
         if(user_roles.length !== 0) await removeAllRoles(guild_user);
 
         try {
-            insertDataToOpenInfraction({
+            insertIntoOpenList({
                 uid: user.id,
                 modid: mod.id,
                 mute: 1,

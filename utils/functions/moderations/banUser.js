@@ -16,10 +16,8 @@ const {
 const {
     getFutureDate
 } = require("../getFutureDate");
-const {
-    insertDataToOpenInfraction
-} = require("../insertDataToDatabase");
 const config = require('../../../src/assets/json/_config/config.json');
+const { insertIntoOpenList } = require("../data/infractions");
 
 async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
     if (isAuto) mod = bot.user;
@@ -44,7 +42,7 @@ async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
             });
     }
     if (pass) {
-        insertDataToOpenInfraction({
+        insertIntoOpenList({
             uid: user.id,
             modid: mod.id,
             ban: 1,

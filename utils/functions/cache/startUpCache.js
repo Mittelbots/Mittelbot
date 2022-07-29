@@ -9,14 +9,15 @@ const { getAllWarnroles } = require("../data/warnroles");
 const { getAllForms } = require("../data/apply_form");
 const { getAllAutoMod } = require("../data/automod");
 const { getScamList } = require("../data/scam");
+const { getAllOpenInfractions, getAllClosedInfractions, getAllTemproles } = require("../data/infractions");
 
 module.exports.startUpCache = async () => {
 
     console.log('----------------------------------------');
-    console.log('🚀Starting up cache...');
+    console.log('🚀 Starting up cache...');
 
 
-    console.log('🕐Getting all Data...');
+    console.log('🕐 Getting all Data...');
 
     const guildConfigs = await getAllConfig();
     const guildModroles = await getAllModroles();
@@ -29,10 +30,13 @@ module.exports.startUpCache = async () => {
     const guildAutoMod = await getAllAutoMod();
     const scamList = await getScamList();
     const guildConfig = await getAllGuildConfig();
+    const openInfractions = await getAllOpenInfractions();
+    const closedInfractions = await getAllClosedInfractions();
+    const temproles = await getAllTemproles();
 
     console.log('✅ Data collected...');
 
-    console.log('🕐Adding to cache...');
+    console.log('🕐 Adding to cache...');
 
     for(let i in guildConfigs) {
         if(!guildConfigs[i] || !guildConfigs[i].guild_id) continue;
@@ -190,7 +194,36 @@ module.exports.startUpCache = async () => {
         });
     }
 
+    await addToCache({
+        value: {
+            name: "openInfractions",
+            id: 0,
+            data: {
+                list: openInfractions || [],
+            }
+        }
+    });
+
+    await addToCache({
+        value: {
+            name: "closedInfractions",
+            id: 0,
+            data: {
+                list: closedInfractions || [],
+            }
+        }
+    });
+
+    await addToCache({
+        value: {
+            name: "temproles",
+            id: 0,
+            data: {
+                list: temproles || [],
+            }
+        }
+    });
     
-    console.log('✅ Everything is in cache...');
+    console.log('✅ Cache init completed...');
     console.log('----------------------------------------');
 }

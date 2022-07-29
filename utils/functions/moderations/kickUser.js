@@ -2,9 +2,9 @@ const { setNewModLogMessage } = require("../../modlog/modlog");
 const { privateModResponse } = require("../../privatResponses/privateModResponses");
 const { publicModResponses } = require("../../publicResponses/publicModResponses");
 const { createInfractionId } = require("../createInfractionId");
-const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
 const config = require('../../../src/assets/json/_config/config.json');
 const { getCurrentFullDate } = require("../data/dates");
+const { insertIntoClosedList } = require("../data/infractions");
 
 async function kickUser({user, mod, guild, reason, bot}) {
     let pass = false;
@@ -16,7 +16,7 @@ async function kickUser({user, mod, guild, reason, bot}) {
     .then(() => pass = true)
 
     if(pass) {
-        insertDataToClosedInfraction({
+        insertIntoClosedList({
             uid: user.id,
             modid: mod.id,
             ban: 0,

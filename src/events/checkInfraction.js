@@ -1,5 +1,4 @@
 const config = require('../../src/assets/json/_config/config.json');
-const { insertDataToClosedInfraction } = require('../../utils/functions/insertDataToDatabase');
 const { setNewModLogMessage } = require('../../utils/modlog/modlog');
 const { privateModResponse } = require('../../utils/privatResponses/privateModResponses');
 const { log } = require('../../logs');
@@ -8,11 +7,12 @@ const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole
 const database = require('../db/db');
 const { saveAllRoles } = require('../../utils/functions/roles/saveAllRoles');
 const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
+const { insertIntoClosedList } = require('../../utils/functions/data/infractions');
 
 
 async function deleteEntries(infraction) {
     try {
-        insertDataToClosedInfraction({
+        insertIntoClosedList({
             uid: infraction.user_id,
             modid: infraction.mod_id,
             mute: infraction.mute,
