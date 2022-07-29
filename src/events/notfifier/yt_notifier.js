@@ -4,10 +4,7 @@ const database = require('../../db/db');
 const {
     errorhandler
 } = require('../../../utils/functions/errorhandler/errorhandler');
-const {
-    EmbedBuilder
-} = require("discord.js");
-const ytdl = require('ytdl-core');
+const { ytUploads } = require("../../../utils/functions/cache/cache");
 
 module.exports.handleUploads = async ({
     bot
@@ -16,15 +13,20 @@ module.exports.handleUploads = async ({
     console.log("🔎 Youtube upload handler started");
 
     setInterval(async () => {
-        const uploads = await database.query(`SELECT * FROM guild_uploads`).then(async results => {
-            return results;
-        }).catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            });
-            return false;
-        })
+        var uploads;
+
+        if(ytUploads) {
+            uploads = ytUploads;
+        }else {
+            uploads = await database.query(`SELECT * FROM guild_uploads`)
+            .catch(err => {
+                errorhandler({
+                    err,
+                    fatal: true
+                });
+                return false;
+            })
+        }
 
         if (!uploads || uploads.length === 0) return false;
 
@@ -45,6 +47,13 @@ module.exports.handleUploads = async ({
                         uploadedVideos.push(feed.items[0].link)
 
                         const saved = await database.query(`UPDATE guild_uploads SET uploads = ? WHERE guild_id = ? AND channel_id = ?`, [JSON.stringify(uploadedVideos), uploads[i].guild_id, uploads[i].channel_id])
+                            .then(() => {
+                                for(let i in ytUploads) {
+                                    if(ytUploads[i].guild_id === uploads[i].guild_id && ytUploads[i].channel_id === uploads[i].channel_id) {
+                                        ytUploads[i].uploads = uploadedVideos;
+                                    }
+                                }
+                            })
                             .catch(err => {
                                 errorhandler({
                                     err,

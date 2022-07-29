@@ -7,6 +7,7 @@ const {
 const {
     EmbedBuilder
 } = require('discord.js');
+const { twitchStreams } = require('../../../utils/functions/cache/cache');
 const {
     delay
 } = require('../../../utils/functions/delay/delay');
@@ -32,11 +33,6 @@ const twitchApiClient = new ApiClient({
 
 
 async function isStreamLive(channel_id) {
-    // const user = await apiClient.users.getUserByName(userName);
-    // if (!user) {
-    //     return false;
-    // }
-
     return await twitchApiClient.streams.getStreamByUserId(channel_id) !== null;
 }
 
@@ -48,18 +44,20 @@ module.exports.twitch_notifier = async ({
     console.log("🔎 Twitch streams handler started");
 
     setInterval(async () => {
+        var allTwitchAccounts;
 
-        const allTwitchAccounts = await database.query(`SELECT * FROM twitch_streams`)
-            .then(res => {
-                return res;
-            })
-            .catch(err => {
-                errorhandler({
-                    err,
-                    fatal: true
+        if(twitchStreams) {
+            allTwitchAccounts = twitchStreams;
+        }else {
+            allTwitchAccounts = await database.query(`SELECT * FROM twitch_streams`)
+                .catch(err => {
+                    errorhandler({
+                        err,
+                        fatal: true
+                    })
+                    return false;
                 })
-                return false;
-            })
+        }
 
         if (!allTwitchAccounts || allTwitchAccounts.length === 0) return;
 
@@ -72,6 +70,12 @@ module.exports.twitch_notifier = async ({
 
                     database.query(`UPDATE twitch_streams SET isStreaming = ? WHERE guild_id = ? AND channel_id = ?`, [JSON.parse(isLive), allTwitchAccounts[i].guild_id, allTwitchAccounts[i].channel_id])
                         .then(() => {
+
+                            for(let i in twitchStreams) {
+                                if(twitchStreams[i].guild_id === allTwitchAccounts[i].guild_id && twitchStreams[i].channel_id === allTwitchAccounts[i].channel_id) {
+                                    twitchStreams[i].isStreaming = isLive;
+                                }
+                            }
 
                             if(isLive) {
                                 const guild = bot.guilds.cache.get(allTwitchAccounts[i].guild_id);

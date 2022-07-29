@@ -13,6 +13,8 @@ module.exports.guildConfig = [];
 module.exports.openInfractions = [];
 module.exports.closedInfractions = [];
 module.exports.temproles = [];
+module.exports.ytUploads = [];
+module.exports.twitchStreams = [];
 
 /**
  * 

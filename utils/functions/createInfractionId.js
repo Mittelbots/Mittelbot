@@ -1,7 +1,5 @@
 const database = require("../../src/db/db");
 
-
-
 function generate() {
     return Math.random().toString(30).substr(2, 50)
 }

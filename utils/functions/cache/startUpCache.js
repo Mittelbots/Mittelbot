@@ -10,6 +10,7 @@ const { getAllForms } = require("../data/apply_form");
 const { getAllAutoMod } = require("../data/automod");
 const { getScamList } = require("../data/scam");
 const { getAllOpenInfractions, getAllClosedInfractions, getAllTemproles } = require("../data/infractions");
+const { getAllYoutubeUploads, getAllTwitchStreams } = require("../data/upload");
 
 module.exports.startUpCache = async () => {
 
@@ -33,6 +34,8 @@ module.exports.startUpCache = async () => {
     const openInfractions = await getAllOpenInfractions();
     const closedInfractions = await getAllClosedInfractions();
     const temproles = await getAllTemproles();
+    const ytUploads = await getAllYoutubeUploads();
+    const twitchStreams = await getAllTwitchStreams();
 
     console.log('✅ Data collected...');
 
@@ -220,6 +223,26 @@ module.exports.startUpCache = async () => {
             id: 0,
             data: {
                 list: temproles || [],
+            }
+        }
+    });
+
+    await addToCache({
+        value: {
+            name: "ytUploads",
+            id: 0,
+            data: {
+                list: ytUploads || [],
+            }
+        }
+    });
+
+    await addToCache({
+        value: {
+            name: "twitchStreams",
+            id: 0,
+            data: {
+                list: twitchStreams || [],
             }
         }
     });

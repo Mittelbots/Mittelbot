@@ -54,7 +54,7 @@ async function deleteEntries(infraction) {
 }
 
 function checkInfractions(bot) {
-    console.log("🔎 CheckInfraction handler started");
+    console.log("🔎📜 CheckInfraction handler started");
     setInterval(async () => {
 
         var results;
