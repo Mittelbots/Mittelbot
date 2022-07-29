@@ -116,6 +116,9 @@ module.exports.insertIntoTemproles = async ({uid, role_id, till_date, infraction
 
 
 module.exports.getClosedInfractionsByUserId = async ({user_id}) => {
+    const cache = closedInfractions[0].list.filter(infraction => infraction.user_id === user_id);
+    if(cache.length > 0) return cache;
+    
     return await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? ORDER BY ID DESC`, [user_id])
     .then(res => {
         return res;
@@ -126,6 +129,10 @@ module.exports.getClosedInfractionsByUserId = async ({user_id}) => {
 }
 
 module.exports.getOpenInfractionsByUserId = async ({user_id}) => {
+
+    const cache = openInfractions[0].list.filter(infraction => infraction.user_id === user_id);
+    if(cache.length > 0) return cache;
+
     return await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY ID DESC`, [user_id])
     .then(res => {
         return res;
