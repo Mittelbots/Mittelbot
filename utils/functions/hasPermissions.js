@@ -1,3 +1,4 @@
+const { PermissionFlagsBits } = require("discord.js");
 const database = require("../../src/db/db");
 const {
     getFromCache
@@ -12,6 +13,11 @@ async function hasPermission({
     isDashboard,
     bot
 }) {
+
+    let guildUser = bot.guilds.cache.get(guild_id).members.cache.get(user);
+    let hasAdminPerms = guildUser.permissions.has(PermissionFlagsBits.Administrator);
+    
+    if(hasAdminPerms) return true;
 
     const cache = await getFromCache({
         cacheName: 'modroles',

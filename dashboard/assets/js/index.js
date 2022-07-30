@@ -48,7 +48,6 @@ window.addEventListener('load', function () {
     } catch (e) {}
 
     try {
-        console.log('1')
         document.getElementById('wc_settings_red').addEventListener('click', function (evt) {
             if(evt.target.tagName === 'INPUT') return;
             
@@ -75,6 +74,8 @@ window.addEventListener('onChanges', function (evt) {
 
             settings = changedData[i].NewValue;
 
+            if(type == 'color') settings = settings.replace('#', '');
+
             guild_id = changedData[i].cid.split('_')[2];
 
             changedData[i].hasChanged = false;
@@ -88,7 +89,7 @@ window.addEventListener('onChanges', function (evt) {
                 new Notification('Settings saved', true).show();
             }
         }
-
+        console.log(`${module}/${settings}/${type}/${guild_id}`)
         request.open('POST', `/api/change/${module}/${settings}/${type}/${guild_id}`);
         request.setRequestHeader('Content-Type', 'application/json');
         request.send();
