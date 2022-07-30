@@ -1,4 +1,4 @@
-const request = new(require("rss-parser"))();
+const request = new (require("rss-parser"))();
 
 const database = require('../../db/db');
 const {
