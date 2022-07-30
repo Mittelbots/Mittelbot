@@ -80,7 +80,7 @@
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input ChangerJSInput" data-cid="wc_enable_<%= guild.id %>" type="checkbox"
                                                         style="width: 40px; height: 20px;" id="module_yt"
-                                                        <%= (settings.config.active) ? 'checked' : '' %> disabled>
+                                                        <%= (settings.config && settings.config.active) ? 'checked' : '' %> disabled>
                                                 </div>
                                             </small>
                                         </div>
@@ -107,7 +107,7 @@
                                                             placeholder="Your text..."
                                                             data-cid="wc_message_<%= guild.id %>"
                                                             style="min-height: 140px;resize: none;"
-                                                            value="<%= (settings.config.message) ? settings.config.message : ''%> "></textarea>
+                                                            value="<%= (settings.config && settings.config.message) ? settings.config.message : ''%> "></textarea>
                                                     </div>
                                                 </small>
                                             </div>
@@ -120,7 +120,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
                                                             data-cid="wc_author_<%= guild.id %>"
-                                                            value="<%= (settings.config.author) ? settings.config.author : ''%>">
+                                                            value="<%= (settings.config && settings.config.author) ? settings.config.author : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
@@ -134,7 +134,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
                                                             data-cid="wc_title_<%= guild.id %>"
-                                                            value="<%= (settings.config.title) ? settings.config.title : ''%>">
+                                                            value="<%= (settings.config && settings.config.title) ? settings.config.title : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
@@ -149,7 +149,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="ONLY LINK ARE ALLOWED"
                                                             data-cid="wc_thumbnail_<%= guild.id %>"
-                                                            value="<%= (settings.config.thumbnail) ? settings.config.thumbnail : ''%>">
+                                                            value="<%= (settings.config && settings.config.thumbnail) ? settings.config.thumbnail : ''%>">
                                                     </div>
                                                 </small>
 
@@ -163,7 +163,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Insert the image link. ONLY LINKS ALLOWED"
                                                             data-cid="wc_image_<%= guild.id %>"
-                                                            value="<%= (settings.config.image) ? settings.config.image : ''%>">
+                                                            value="<%= (settings.config && settings.config.image) ? settings.config.image : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
@@ -198,7 +198,7 @@
                                                         <input type="color" id="favcolor" class="ChangerJSInput" name="favcolor"
                                                             value="#ff0000"
                                                             data-cid="wc_color_<%= guild.id %>"
-                                                            value="<%= (settings.config.color) ? settings.config.color : ''%>"><br><br>
+                                                            value="<%= (settings.config && settings.config.color) ? settings.config.color : ''%>"><br><br>
                                                     </div>
                                                 </small>
                                             </div>
@@ -298,7 +298,7 @@
     <script src="/js/charts-home.js"></script>
     <!-- Main File-->
     <script src="/js/front.js"></script>
-    <script src="/js/index.js" type="module"></script>
+    <script src="/js/settings/welcome.js" type="module"></script>
     <script>
         function injectSvgSprite(path) {
 
