@@ -44,7 +44,7 @@ module.exports = async (bot) => {
     callbackUrl = `${domain.protocol}//${domain.host}/callback`;
   } else {
     callbackUrl = `${domain.protocol}//${domain.host}${
-      config.port == 80 ? "" : `:${config.port}`
+      (config.mode == 'dev') ? config.port == 80 ? "" : `:${config.port}` : ''
     }/callback`;
   }
 
