@@ -10,6 +10,7 @@ window.addEventListener('load', function () {
         })
     } catch (e) {}
 
+    try {
     document.getElementById('wc_joinrole_select').addEventListener('change', function () {
         
         let roleId = this.value;
@@ -22,7 +23,9 @@ window.addEventListener('load', function () {
 
         handlerJoinRoleSelect();
     });
+    } catch (e) {}
 
+    try {
     handlerJoinRoleSelect();
     function handlerJoinRoleSelect() {
         document.querySelectorAll('.joinrole_selected').forEach(function (element) {
@@ -42,6 +45,16 @@ window.addEventListener('load', function () {
             })
         });
     }
+    } catch (e) {}
+
+    try {
+        console.log('1')
+        document.getElementById('wc_settings_red').addEventListener('click', function (evt) {
+            if(evt.target.tagName === 'INPUT') return;
+            
+            location.href = document.body.dataset.guildid + '?settings=welcome';
+        })
+    } catch (e) {}
 })
 
 window.addEventListener('onChanges', function (evt) {

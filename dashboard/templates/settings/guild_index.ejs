@@ -5,7 +5,7 @@
 
 </head>
 
-<body>
+<body data-guildId="<%= guild.id %>">
     <div class="page">
         <!-- Main Navbar-->
 
@@ -107,7 +107,7 @@
 
                         <span class="text-uppercase text-black-400 text-xs letter-spacing-0 m-3 px-2 heading">Server management</span>
 
-                        <div class="card <%= (settings.config.disabled_modules.indexOf('welcome') === -1) ? '' : 'opacity-5' %>">
+                        <div class="card <%= (settings.config.disabled_modules.indexOf('welcome') === -1) ? '' : 'opacity-5' %>" id="wc_settings_red">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="icon flex-shrink-0" style="margin: 0 10px 0 0;">
@@ -255,7 +255,7 @@
     <script src="/js/charts-home.js"></script>
     <!-- Main File-->
     <script src="/js/front.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/index.js" type="module"></script>
     <script>
         // ------------------------------------------------------- //
         //   Inject SVG Sprite - 
