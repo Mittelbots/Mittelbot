@@ -2,9 +2,9 @@ const { setNewModLogMessage } = require("../../modlog/modlog");
 const { publicModResponses } = require("../../publicResponses/publicModResponses");
 const { removeDataFromOpenInfractions } = require("../removeData/removeDataFromDatabase");
 const { errorhandler } = require("../errorhandler/errorhandler");
-const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
 const database = require('../../../src/db/db');
 const config = require('../../../src/assets/json/_config/config.json');
+const { insertIntoClosedList } = require("../data/infractions");
 
 
 async function unbanUser({user, mod, guild, reason, bot}) {
@@ -24,7 +24,17 @@ async function unbanUser({user, mod, guild, reason, bot}) {
     if(pass) {
         const query = await database.query(`SELECT * FROM open_infractions WHERE user_id AND ban = 1`, [user.id]).then(async res => {
             if(res.length > 0) {
-                await insertDataToClosedInfraction(user, res[0].mod_id, res[0].mute, res[0].ban, 0, 0, res[0].till_date, res[0].reason, res[0].infraction_id)
+                await insertIntoClosedList({
+                    uid: user.id,
+                    modid: res[0].mod_id,
+                    ban: res[0].ban,
+                    mute: res[0].mute,
+                    kick: 0,
+                    till_date: res[0].till_date,
+                    reason: res[0].reason,
+                    infraction_id: res[0].infraction_id,
+                    start_date: res[0].start_date
+                })
                 await removeDataFromOpenInfractions(res[0].infraction_id)
             }
             return {

@@ -10,6 +10,11 @@ module.exports.applyforms = [];
 module.exports.autoMod = [];
 module.exports.scamList = [];
 module.exports.guildConfig = [];
+module.exports.openInfractions = [];
+module.exports.closedInfractions = [];
+module.exports.temproles = [];
+module.exports.ytUploads = [];
+module.exports.twitchStreams = [];
 
 /**
  * 

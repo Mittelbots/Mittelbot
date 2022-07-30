@@ -2,13 +2,11 @@ const { setNewModLogMessage } = require("../../modlog/modlog");
 const { privateModResponse } = require("../../privatResponses/privateModResponses");
 const { publicModResponses } = require("../../publicResponses/publicModResponses");
 const { createInfractionId } = require("../createInfractionId");
-const { insertDataToClosedInfraction } = require("../insertDataToDatabase");
 const { addWarnRoles } = require("../roles/addWarnRoles");
 const config = require('../../../src/assets/json/_config/config.json');
+const { insertIntoClosedList } = require("../data/infractions");
 
 async function warnUser({bot, user, mod, guild, reason}) {
-
-    let inf_id = await createInfractionId();
     
     const pass = await addWarnRoles({user, inf_id, guild});
 
@@ -19,7 +17,16 @@ async function warnUser({bot, user, mod, guild, reason}) {
         const p_response = await publicModResponses(config.defaultModTypes.warn, mod, user.id, reason, null, bot);
         await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
 
-        await insertDataToClosedInfraction(user.id, mod.id, 0, 0, 1, 0, null, reason, inf_id);
+        await insertIntoClosedList({
+            uid: user.id,
+            modid: mod.id,
+            ban: 0,
+            mute: 0,
+            warn: 1,
+            kick: 0,
+            reason,
+            infraction_id: await createInfractionId()
+        });
             
         if(config.debug == 'true') console.info('Warn Command passed!');
 

@@ -11,6 +11,7 @@ const database = require('../../db/db');
 const config = require('../../../src/assets/json/_config/config.json');
 
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { getClosedInfractionsByUserId, getOpenInfractionsByUserId } = require('../../../utils/functions/data/infractions');
 
 
 
@@ -40,22 +41,21 @@ module.exports.run = async ({
             var closed = [];
             var open = [];
 
-            await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? ORDER BY ID DESC`, [user.id]).then(async res => closed.push(await res)).catch(err => {
-                errorhandler({err, fatal: true});
-                return main_interaction.reply({
-                    content: config.errormessages.databasequeryerror,
-                    ephemeral: true
-                }).catch(err => {});
-            });
-            await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY ID DESC`, [user.id]).then(async res => open.push(await res)).catch(err => {
-                errorhandler({err, fatal: true});
-                return main_interaction.reply({
-                    content: config.errormessages.databasequeryerror,
-                    ephemeral: true
-                }).catch(err => {});
-            });
+            const closed_infractions = await getClosedInfractionsByUserId({user_id: user.id});
 
-            if (closed[0].length <= 0 && open[0].length <= 0) {
+            const open_infractions = await getOpenInfractionsByUserId({user_id: user.id});
+
+            if(!closed_infractions || !open_infractions) {
+                return main_interaction.reply({
+                    content: config.errormessages.databasequeryerror,
+                    ephemeral: true
+                }).catch(err => {});
+            }else {
+                closed = closed_infractions;
+                open = open_infractions;
+            }
+
+            if (closed.length <= 0 && open.length <= 0) {
                 return main_interaction.reply({
                     content:`${user} dont have any infractions!`,
                     ephemeral: true
@@ -65,10 +65,9 @@ module.exports.run = async ({
 
             await publicInfractionResponse({
                 member: user.id,
-                closed: closed[0],
-                open: open[0],
+                closed: closed,
+                open: open,
                 main_interaction,
-                isOne: false
             });
             
             break;
@@ -94,11 +93,9 @@ module.exports.run = async ({
             });
             
             const response = await publicInfractionResponse({
-                member: infraction[0],
                 guild: main_interaction.guild,
-                closed: null,
-                open: null,
-                isOne: true
+                isOne: true,
+                infraction: infraction[0]
             });
 
             main_interaction.reply({

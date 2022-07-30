@@ -96,6 +96,10 @@
                 "name": "till_date",
                 "val": "VARCHAR(255)"
             },
+            "start_date": {
+                "name": "start_date",
+                "val": "VARCHAR(255)"
+            },
             "reason": {
                 "name": "reason",
                 "val": "VARCHAR(255)"
@@ -128,6 +132,10 @@
             },
             "till_date": {
                 "name": "till_date",
+                "val": "VARCHAR(255)"
+            },
+            "start_date": {
+                "name": "start_date",
                 "val": "VARCHAR(255)"
             },
             "reason": {

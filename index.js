@@ -1,5 +1,10 @@
-
-const {Client, Options, GatewayIntentBits, Collection, ActivityType } = require("discord.js");
+const {
+  Client,
+  Options,
+  GatewayIntentBits,
+  Collection,
+  ActivityType
+} = require("discord.js");
 
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
@@ -47,7 +52,8 @@ const {
   getLinesOfCode
 } = require("./utils/functions/getLinesOfCode/getLinesOfCode");
 const {
-  spawn, exec
+  spawn,
+  exec
 } = require('child_process');
 const {
   db_backup
@@ -64,13 +70,17 @@ const {
 const {
   delay
 } = require("./utils/functions/delay/delay");
-const { twitch_notifier } = require("./src/events/notfifier/twitch_notifier");
-const { sendEmailToOwner } = require("./utils/functions/sendEmail/sendEmail");
+const {
+  twitch_notifier
+} = require("./src/events/notfifier/twitch_notifier");
+const {
+  sendEmailToOwner
+} = require("./utils/functions/sendEmail/sendEmail");
 const crashs = require("./crashs.json");
 const Dashboard = require("./dashboard/dashboard");
 
 const bot = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates , GatewayIntentBits.GuildMessageReactions , GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent],
   makeCache: Options.cacheWithLimits({
     MessageManager: 10,
     PresenceManager: 0,
@@ -154,7 +164,7 @@ process.on('uncaughtException', async err => {
 
 bot.once('ready', async () => {
 
-  if(crashs.count > 30) {
+  if (crashs.count > 30) {
     await sendEmailToOwner(crashs.err);
     return exec(`kill ${process.pid}`);
   };
@@ -208,8 +218,8 @@ bot.once('ready', async () => {
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
   log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
 
-    //? START THE DASHBOARD
-    Dashboard(bot);
+  //? START THE DASHBOARD
+  Dashboard(bot);
 });
 
 bot.login(token.BOT_TOKEN);

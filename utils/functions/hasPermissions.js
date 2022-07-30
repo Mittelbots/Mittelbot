@@ -12,6 +12,7 @@ async function hasPermission({
     isDashboard,
     bot
 }) {
+
     const cache = await getFromCache({
         cacheName: 'modroles',
         param_id: guild_id

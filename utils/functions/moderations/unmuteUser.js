@@ -2,12 +2,12 @@ const { setNewModLogMessage } = require('../../modlog/modlog');
 const { privateModResponse } = require('../../privatResponses/privateModResponses');
 const { publicModResponses } = require('../../publicResponses/publicModResponses');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { insertDataToClosedInfraction } = require('../insertDataToDatabase');
 const { getMutedRole } = require('../roles/getMutedRole');
 const { removeDataFromOpenInfractions } = require('../removeData/removeDataFromDatabase');
 const { giveAllRoles } = require('../roles/giveAllRoles');
 const config = require('../../../src/assets/json/_config/config.json');
 const database = require('../../../src/db/db');
+const { insertIntoClosedList } = require('../data/infractions');
 
 
 async function unmuteUser({user, bot, mod, reason, guild}) {
@@ -73,7 +73,18 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
                     let r = await userGuild.roles.cache.find(role => role.id == user_roles[x])
                     await guild_user.roles.add(r);
                 }
-                await insertDataToClosedInfraction(res[0].user_id, res[0].mod_id, res[0].mute, res[0].ban, 0, 0, res[0].till_date, res[0].reason, res[0].infraction_id);
+                await insertIntoClosedList({
+                    uid: res[0].user_id,
+                    modid: res[0].mod_id,
+                    mute: res[0].mute,
+                    ban: res[0].ban,
+                    warm: 0,
+                    kick: 0,
+                    till_date: res[0].till_date,
+                    reason: res[0].reason,
+                    infraction_id: res[0].infraction_id,
+                    start_date: res[0].start_date,
+                });
                 await removeDataFromOpenInfractions(res[0].infraction_id);
 
                 if(config.debug == 'true') console.info('Unmute Command passed!')
