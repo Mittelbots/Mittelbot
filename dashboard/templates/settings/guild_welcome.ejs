@@ -79,7 +79,7 @@
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input ChangerJSInput" data-cid="wc_enable_<%= guild.id %>" type="checkbox"
                                                         style="width: 40px; height: 20px;" id="module_yt"
-                                                        <%= (settings.config.active) ? 'checked' : '' %>>
+                                                        <%= (settings.config.active) ? 'checked' : '' %> disabled>
                                                 </div>
                                             </small>
                                         </div>
@@ -253,7 +253,7 @@
                                                 </p>
 
                                                 <select class="form-select" aria-label="Default select example"
-                                                    onchange="addJoinRoleToDiv(this)">
+                                                    onchange="addJoinRoleToDiv(this)" disabled>
                                                     <option selected disabled>Select a role</option>
                                                     <%  let all_roles = guild.roles.cache.filter(role => role.id !== guild.id && role.name !== '@here' && !role.tags.botId)%>
                                                     <% all_roles.forEach((role) => { %>

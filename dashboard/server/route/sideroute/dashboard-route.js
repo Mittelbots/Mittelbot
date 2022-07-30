@@ -28,7 +28,7 @@ module.exports = ({app}) => {
         }
       })
       .catch(err => {
-        (err.response.status === 401) ? req.redirect(app.settings.config.route.logout.path) : console.log(err.response);
+        (err.response.status === 401) ? res.redirect(app.settings.config.route.login.path) : console.log(err.response);
       }) || {};
 
     req.user.guilds = []
