@@ -73,7 +73,7 @@ module.exports.changeYtNotifier = async ({
                 .then(() => {
                     let cache = ytUploads[0].list;
                     for (let i in cache) {
-                        if (cache[i].guild_id === guild.id) {
+                        if (cache[i].guild_id === guild.id && cache[i].channel_id === channelid) {
                             cache[i].info_channel_id = dcchannel.id;
                             cache[i].pingrole = (pingrole) ? pingrole.id : null;
                             break;
@@ -98,24 +98,14 @@ module.exports.changeYtNotifier = async ({
                         .then((res) => {
 
                             let cache = ytUploads[0].list;
-                            for (let i in cache) {
-                                if (cache[i].guild_id === guild.id) {
-                                    cache[i].id = res.insertId;
-                                    cache[i].guild_id = guild.id;
-                                    cache[i].channel_id = channelid;
-                                    cache[i].info_channel_id = dcchannel.id;
-                                    cache[i].pingrole = (pingrole) ? pingrole.id : null;
-
-                                    try {
-                                        cache[i].uploads = JSON.parse(cache[i].uploads);
-                                    } catch (err) {
-                                        cache[i].uploads = [];
-                                    }
-
-                                    cache[i].uploads.push(feed.items[0].link);
-                                    break;
-                                }
-                            }
+                            
+                            cache.push({
+                                guild_id: guild.id,
+                                channel_id: channelid,
+                                info_channel_id: dcchannel.id,
+                                pingrole: (pingrole) ? pingrole.id : null,
+                                uploads: latestVideo
+                            });
 
                             resolve('✅ Successfully added the youtube channel to the notification list.')
                         })
@@ -159,13 +149,13 @@ module.exports.delChannelFromList = async ({
             .then(() => {
                 let cache = ytUploads[0].list;
                 for (let i in cache) {
-                    if (cache[i].guild_id === guild_id) {
+                    if (cache[i].guild_id === guild_id && cache[i].channel_id === channelid) {
                         delete cache[i];
                         break;
                     }
                 }
                 ytUploads[0].list = cache.filter(Boolean);
-                
+
                 resolve('✅ Successfully removed the youtube channel to the notification list.')
             })
             .catch(err => {

@@ -1,6 +1,7 @@
 const { PermissionFlagsBits } = require("discord.js");
 const database = require("../../../src/db/db");
 const { twitchApiClient } = require("../../../src/events/notfifier/twitch_notifier");
+const { twitchStreams } = require("../cache/cache");
 const { errorhandler } = require("../errorhandler/errorhandler");
 
 module.exports.changeTwitchNotifier = async ({
@@ -65,6 +66,13 @@ module.exports.changeTwitchNotifier = async ({
 
             database.query(`UPDATE twitch_streams SET info_channel_id = ?, pingrole = ? WHERE guild_id = ? AND channel_id = ?`, [twdcchannel.id, (twpingrole) ? twpingrole.id : null, guild.id, twitch_user.id])
                 .then(() => {
+                    let cache = twitchStreams[0].list;
+                    for(let i in cache) {
+                        if(cache[i].channel_id === twitch_user.id && cache[i].guild_id === guild.id) {
+                            cache[i].info_channel_id = twdcchannel.id;
+                            cache[i].pingrole = (twpingrole) ? twpingrole.id : null;
+                        }
+                    }
                     resolve(`✅ Successfully updated the twitch channel settings for ${twChannelExists.channel_name}.`)
                 })
                 .catch(err => {
@@ -77,6 +85,15 @@ module.exports.changeTwitchNotifier = async ({
         } else {
             database.query(`INSERT INTO twitch_streams (guild_id, channel_id, info_channel_id, pingrole, channel_name) VALUES (?, ?, ?, ?, ?)`, [guild.id, twitch_user.id, twdcchannel.id, (twpingrole) ? twpingrole.id : null, twitchchannel])
                 .then(() => {
+
+                    let cache = twitchStreams[0].list;
+                    cache.push({
+                        guild_id: guild.id,
+                        channel_id: twitch_user.id,
+                        info_channel_id: twdcchannel.id,
+                        pingrole: (twpingrole) ? twpingrole.id : null,
+                        channel_name: twitchchannel
+                    })
                     resolve(`✅ Successfully added ${twitchchannel} to the notification list.`)
                 })
                 .catch(err => {
