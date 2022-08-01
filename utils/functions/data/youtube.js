@@ -3,6 +3,9 @@ const {
 } = require('@gonetone/get-youtube-id-by-url');
 const database = require('../../../src/db/db');
 const {
+    ytUploads
+} = require('../cache/cache');
+const {
     errorhandler
 } = require('../errorhandler/errorhandler');
 const request = new(require("rss-parser"))();
@@ -68,6 +71,14 @@ module.exports.changeYtNotifier = async ({
 
             database.query(`UPDATE guild_uploads SET info_channel_id = ?, pingrole = ? WHERE guild_id = ? AND channel_id = ?`, [dcchannel.id, (pingrole) ? pingrole.id : null, guild.id, channelid])
                 .then(() => {
+                    let cache = ytUploads[0].list;
+                    for (let i in cache) {
+                        if (cache[i].guild_id === guild.id) {
+                            cache[i].info_channel_id = dcchannel.id;
+                            cache[i].pingrole = (pingrole) ? pingrole.id : null;
+                            break;
+                        }
+                    }
                     resolve('✅ Successfully updated the youtube channel settings.')
                 })
                 .catch(err => {
@@ -84,7 +95,28 @@ module.exports.changeYtNotifier = async ({
                     const latestVideo = JSON.stringify([feed.items[0].link]);
 
                     database.query(`INSERT INTO guild_uploads (guild_id, channel_id, info_channel_id, pingrole, uploads) VALUES (?, ?, ?, ?, ?)`, [guild.id, channelid, dcchannel.id, (pingrole) ? pingrole.id : null, latestVideo])
-                        .then(() => {
+                        .then((res) => {
+
+                            let cache = ytUploads[0].list;
+                            for (let i in cache) {
+                                if (cache[i].guild_id === guild.id) {
+                                    cache[i].id = res.insertId;
+                                    cache[i].guild_id = guild.id;
+                                    cache[i].channel_id = channelid;
+                                    cache[i].info_channel_id = dcchannel.id;
+                                    cache[i].pingrole = (pingrole) ? pingrole.id : null;
+
+                                    try {
+                                        cache[i].uploads = JSON.parse(cache[i].uploads);
+                                    } catch (err) {
+                                        cache[i].uploads = [];
+                                    }
+
+                                    cache[i].uploads.push(feed.items[0].link);
+                                    break;
+                                }
+                            }
+
                             resolve('✅ Successfully added the youtube channel to the notification list.')
                         })
                         .catch(err => {
@@ -114,17 +146,26 @@ module.exports.delChannelFromList = async ({
 }) => {
     return new Promise(async (resolve, reject) => {
         const channelid = await channelId(delytchannel)
-        .then(id => {
-            return id;
-        })
-        .catch(err => {
-            reject(`I couldn't find the channel you have entered.`)
-            return false;
-        })
+            .then(id => {
+                return id;
+            })
+            .catch(err => {
+                reject(`I couldn't find the channel you have entered.`)
+                return false;
+            })
         if (!channelid) return;
 
         database.query(`DELETE FROM guild_uploads WHERE guild_id = ? AND channel_id = ?`, [guild_id, channelid])
             .then(() => {
+                let cache = ytUploads[0].list;
+                for (let i in cache) {
+                    if (cache[i].guild_id === guild_id) {
+                        delete cache[i];
+                        break;
+                    }
+                }
+                ytUploads[0].list = cache.filter(Boolean);
+                
                 resolve('✅ Successfully removed the youtube channel to the notification list.')
             })
             .catch(err => {

@@ -28,6 +28,8 @@ module.exports.handleUploads = async ({
             })
         }
 
+        console.log(ytUploads[0].list)
+
         if (!uploads || uploads.length === 0) return false;
 
         for (let i in uploads) {
@@ -88,5 +90,5 @@ module.exports.handleUploads = async ({
                     })
             }
         }
-    }, 600000); //? 10 minutes
+    }, 600000); //?  10 minutes
 }
