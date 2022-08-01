@@ -56,13 +56,23 @@ module.exports = ({
                 config.settings[module] = JSON.parse(config.settings[module]);
             } catch (e) {}
 
-            try {
-                config.settings[module][type] = settings;
-            } catch (e) {
-                config.settings[module][type] = {};
-                config.settings[module][type] = settings;
+            if (module === "welcome_channel") {
+                try {
+                    config.settings[module][type] = settings;
+                } catch (e) {
+                    config.settings[module][type] = {};
+                    config.settings[module][type] = settings;
+                }
             }
 
+            if (module === "joinroles") {
+                try {
+                    config.settings[module] = JSON.parse(settings);
+                } catch (e) {
+                    config.settings[module] = {};
+                    config.settings[module] = JSON.parse(settings);
+                }
+            }
 
             return await updateGuildConfig({
                 guild_id: guildid,

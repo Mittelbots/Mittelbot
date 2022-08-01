@@ -1,6 +1,5 @@
 const { getAllConfig, getAllGuildConfig } = require("../data/getConfig");
 const { getAllModroles } = require("../data/getModroles");
-const { getAllJoinroles } = require("../data/joinroles");
 const { getAllLogs } = require('../data/logs');
 const { addToCache } = require("./cache");
 const { getAllXP } = require("../levelsystem/levelsystemAPI");
@@ -22,7 +21,6 @@ module.exports.startUpCache = async () => {
 
     const guildConfigs = await getAllConfig();
     const guildModroles = await getAllModroles();
-    const guildJoinroles = await getAllJoinroles();
     const guildLogs = await getAllLogs();
     const guildXp = await getAllXP();
     const guildMemberInfo = await getAllMemberInfo();
@@ -73,19 +71,6 @@ module.exports.startUpCache = async () => {
                 data: {
                     id: guildModroles[i].guild_id,
                     modroles: isObject ? guildModroles[i].modroles : ''
-                }
-            }
-        });
-    }
-
-    for(let i in guildJoinroles) {
-        if(!guildJoinroles[i]) continue;
-        await addToCache({
-            value: {
-                name: "joinroles",
-                data: {
-                    id: guildJoinroles[i].guild_id,
-                    role_id: (typeof guildJoinroles[i].joinroles === "object") ? guildJoinroles[i].joinroles : [],
                 }
             }
         });
