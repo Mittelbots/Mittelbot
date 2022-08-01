@@ -5,7 +5,7 @@
 <script src="https://blackdayz.de/js/changerjs" async defer></script>
 </head>
 
-<body>
+<body data-guildId="<%= guild.id %>">
 
     <div class="page">
         <!-- Main Navbar-->
@@ -62,6 +62,14 @@
                             </div>
                         </div>
 
+                        <% 
+                        try {
+                            settings.config.settings.welcome_channel = JSON.parse(settings.config.settings.welcome_channel);
+                        }catch(e) {
+                            settings.config.settings.welcome_channel = settings.config.settings.welcome_channel
+                        }   
+                        %> 
+
                         <div class="row p-3">
                             <div class="col-md card">
                                 <div class="card-body">
@@ -72,14 +80,15 @@
                                             </svg>
                                         </div>
                                         <div class="ms-3">
-                                            <strong class="text-lg d-block lh-1 mb-1">Active</strong>
+                                            <strong class="text-lg d-block lh-1 mb-1">Active <small
+                                                class="text-red">Coming soon</small></strong>
                                             <small class="text-uppercase text-gray-500 small d-block lh-1">
                                                 <label for="module_yt" class="form-label"> Enable or disable your
                                                     welcome message. </label>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input ChangerJSInput" data-cid="wc_enable_<%= guild.id %>" type="checkbox"
                                                         style="width: 40px; height: 20px;" id="module_yt"
-                                                        <%= (settings.config.active) ? 'checked' : '' %>>
+                                                        <%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.active) ? 'checked' : '' %> disabled>
                                                 </div>
                                             </small>
                                         </div>
@@ -105,8 +114,7 @@
                                                             aria-label="With textarea"
                                                             placeholder="Your text..."
                                                             data-cid="wc_message_<%= guild.id %>"
-                                                            style="min-height: 140px;resize: none;"
-                                                            value="<%= (settings.config.message) ? settings.config.message : ''%> "></textarea>
+                                                            style="min-height: 140px;resize: none;"><%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.message) ? settings.config.settings.welcome_channel.message : ''%></textarea>
                                                     </div>
                                                 </small>
                                             </div>
@@ -119,7 +127,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
                                                             data-cid="wc_author_<%= guild.id %>"
-                                                            value="<%= (settings.config.author) ? settings.config.author : ''%>">
+                                                            value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.author) ? settings.config.settings.welcome_channel.author : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
@@ -133,7 +141,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
                                                             data-cid="wc_title_<%= guild.id %>"
-                                                            value="<%= (settings.config.title) ? settings.config.title : ''%>">
+                                                            value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.title) ? settings.config.settings.welcome_channel.title : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
@@ -148,7 +156,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="ONLY LINK ARE ALLOWED"
                                                             data-cid="wc_thumbnail_<%= guild.id %>"
-                                                            value="<%= (settings.config.thumbnail) ? settings.config.thumbnail : ''%>">
+                                                            value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.thumbnail) ? settings.config.settings.welcome_channel.thumbnail : ''%>">
                                                     </div>
                                                 </small>
 
@@ -162,7 +170,7 @@
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Insert the image link. ONLY LINKS ALLOWED"
                                                             data-cid="wc_image_<%= guild.id %>"
-                                                            value="<%= (settings.config.image) ? settings.config.image : ''%>">
+                                                            value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.image) ? settings.config.settings.welcome_channel.image : ''%>">
                                                     </div>
                                                 </small>
                                             </div>
@@ -197,13 +205,13 @@
                                                         <input type="color" id="favcolor" class="ChangerJSInput" name="favcolor"
                                                             value="#ff0000"
                                                             data-cid="wc_color_<%= guild.id %>"
-                                                            value="<%= (settings.config.color) ? settings.config.color : ''%>"><br><br>
+                                                            value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.color) ? settings.config.settings.welcome_channel.color : ''%>"><br><br>
                                                     </div>
                                                 </small>
                                             </div>
                                         </div>
                                         <button type="button" class="btn btn-success"
-                                            style="float:right; width: 100px">Save</button>
+                                            style="float:right; width: 100px" id="wc_save">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -237,33 +245,41 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="ms-3 mt-5">
-                                            <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Joinroles</strong>
+                                            <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Joinroles<small
+                                                class="text-red">Coming soon</small></strong>
                                             <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
                                                 <span class="mb-2">Add or remove joinroles</span>
-
+                                                <% 
+                                                    try {
+                                                        settings.config.settings.joinroles = JSON.parse(settings.config.settings.joinroles);
+                                                    } catch (e) {
+                                                        settings.config.settings.joinroles = [];
+                                                    }
+                                                %> 
                                                 <p>
                                                     <div
                                                         style="width: 150%; height:200px; border: 1px solid black; padding: 10px; overflow: scroll;" id="joinroles_selected">
-                                                        <%  for(let i in settings.joinroles) { 
-                                                        let guild_role = guild.roles.cache.get(settings.joinroles[i].role_id);
+                                                        <%  for(let i in settings.config.settings.joinroles) { 
+                                                        let guild_role = guild.roles.cache.get(settings.config.settings.joinroles[i]);
                                                     %>
-                                                        <div class="joinrole_selected"> <%= guild_role.name %> </div>
+                                                        <div class="joinrole_selected" data-jrid="<%=guild_role.id%>"> <%= guild_role.name %> </div>
                                                         <% } %>
                                                     </div>
                                                 </p>
 
-                                                <select class="form-select" aria-label="Default select example"
-                                                    onchange="addJoinRoleToDiv(this)">
+                                                <select class="form-select" aria-label="Default select example" id="wc_joinrole_select">
                                                     <option selected disabled>Select a role</option>
-                                                    <%  let all_roles = guild.roles.cache.filter(role => role.id !== guild.id && role.name !== '@here' && !role.tags.botId)%>
+                                                    <% let all_roles = guild.roles.cache.filter(role => role.id !== guild.id && role.name !== '@here' && JSON.stringify(role.tags).length < 30)%>
                                                     <% all_roles.forEach((role) => { %>
-                                                    <option value="<%= role.id %>" <%= (settings.joinroles.filter(r => r.role_id === role.id).length === 0) ? 'disabled' : '' %>"><%= role.name %></option>
+                                                    <option value="<%= role.id %>" <%= (settings.config.settings.joinroles) ? (settings.config.settings.joinroles.filter(r => r === role.id).length !== 0) ? 'disabled' : '' : ''%>><%= role.name %></option>
                                                     <%  })%>
                                                 </select>
 
                                             </small>
                                         </div>
                                     </div>
+                                    <button type="button" class="btn btn-success"
+                                            style="float:right; width: 100px" id="joinroles_save">Save</button>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +312,7 @@
     <script src="/js/charts-home.js"></script>
     <!-- Main File-->
     <script src="/js/front.js"></script>
-    <script src="/js/index.js" type="module"></script>
+    <script src="/js/settings/welcome.js" type="module" async defer></script>
     <script>
         function injectSvgSprite(path) {
 

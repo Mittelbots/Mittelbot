@@ -119,7 +119,7 @@ module.exports.updateGuildConfig = async ({
     return new Promise(async (resolve, reject) => {
         for (let i in guildConfig) {
             if (guildConfig[i].id === guild_id) {
-                guildConfig[i][valueName] = value;
+                guildConfig[i].settings[valueName] = value;
             }
         }
 

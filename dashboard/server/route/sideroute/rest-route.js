@@ -1,14 +1,28 @@
-const { updateGuildConfig, getGuildConfig } = require("../../../../utils/functions/data/getConfig");
-const { checkRest } = require("../../../functions/checkRest/checkRest");
+const {
+    updateGuildConfig,
+    getGuildConfig
+} = require("../../../../utils/functions/data/getConfig");
+const {
+    checkRest
+} = require("../../../functions/checkRest/checkRest");
 
 const jwt = require("jsonwebtoken");
-const { hasPermission } = require("../../../../utils/functions/hasPermissions");
+const {
+    hasPermission
+} = require("../../../../utils/functions/hasPermissions");
 
-module.exports = ({app}) => {
+module.exports = ({
+    app
+}) => {
     app.post(app.settings.config.route.changeSettings.path, checkRest, async (req, res) => {
-        const {module, settings, guildid, type} = req.params;
+        const {
+            module,
+            settings,
+            guildid,
+            type
+        } = req.params;
 
-        if(!module || !settings || !guildid || !type) {
+        if (!module || !settings || !guildid || !type) {
             res.status(400).send({
                 error: "Missing parameters"
             });
@@ -29,9 +43,10 @@ module.exports = ({app}) => {
 
         if (!hasPermissions) {
             return res.status(401).json({
+                success: false,
                 error: "You do not have permission to do this!"
             });
-        }else {
+        } else {
 
             var config = await getGuildConfig({
                 guild_id: guildid
@@ -39,11 +54,25 @@ module.exports = ({app}) => {
 
             try {
                 config.settings[module] = JSON.parse(config.settings[module]);
-            }catch(e) {}
-            
-            config.settings[module][type] = settings;
+            } catch (e) {}
 
+            if (module === "welcome_channel") {
+                try {
+                    config.settings[module][type] = settings;
+                } catch (e) {
+                    config.settings[module][type] = {};
+                    config.settings[module][type] = settings;
+                }
+            }
 
+            if (module === "joinroles") {
+                try {
+                    config.settings[module] = JSON.parse(settings);
+                } catch (e) {
+                    config.settings[module] = {};
+                    config.settings[module] = JSON.parse(settings);
+                }
+            }
 
             return await updateGuildConfig({
                 guild_id: guildid,

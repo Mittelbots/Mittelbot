@@ -13,6 +13,27 @@
   right: 20px;
   padding: 10px 20px;
   z-index: 99;
+  max-height: 99px;
+  animation: notification 3s ease-in-out;
+}
+
+@keyframes notification {
+  0% {
+    top: -100px;
+    opacity: 0;
+  }
+  20% {
+    top: 20px;
+    opacity: 1;
+  }
+  80% {
+    top: 20px;
+    opacity: 1;
+  }
+  100% {
+    top: -100px;
+    opacity: 0;
+  }
 }
 
 .success {

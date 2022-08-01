@@ -4,6 +4,7 @@
     "DISCORD_APPLICATION_ID": "",
     "DISCORD_GUILD_ID": "",
     "DEVELOPER_DISCORD_GUILD_ID": "",
+    "DISCORD_SECRET": "",
     "defaultprefix": "!",
     "debug": "false",
     "db_debug": "false",

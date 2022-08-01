@@ -5,7 +5,7 @@
 
 </head>
 
-<body>
+<body data-guildId="<%= guild.id %>">
     <div class="page">
         <!-- Main Navbar-->
 
@@ -107,7 +107,7 @@
 
                         <span class="text-uppercase text-black-400 text-xs letter-spacing-0 m-3 px-2 heading">Server management</span>
 
-                        <div class="card <%= (settings.config.disabled_modules.indexOf('welcome') === -1) ? '' : 'opacity-5' %>">
+                        <div class="card <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('welcome') === -1) ? '' : 'opacity-5' %>" id="wc_settings_red">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="icon flex-shrink-0" style="margin: 0 10px 0 0;">
@@ -118,7 +118,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <span class="form-label">Add a welcome message or joinroles</span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_welcome" <%= (settings.config.disabled_modules.indexOf('welcome') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_welcome" <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('welcome') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -126,7 +126,7 @@
                             </div>
                         </div>
 
-                        <div class="card <%= (settings.config.disabled_modules.indexOf('moderation') === -1) ? '' : 'opacity-5' %>">
+                        <div class="card <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('moderation') === -1) ? '' : 'opacity-5' %>">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="icon flex-shrink-0" style="margin: 0 10px 0 0;">
@@ -137,7 +137,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <span class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_moderation" <%= (settings.config.disabled_modules.indexOf('moderation') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_moderation" <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('moderation') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -145,7 +145,7 @@
                             </div>
                         </div>
 
-                        <div class="card <%= (settings.config.disabled_modules.indexOf('autotranslate') === -1) ? '' : 'opacity-5' %>">
+                        <div class="card <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('autotranslate') === -1) ? '' : 'opacity-5' %>">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="icon flex-shrink-0" style="margin: 0 10px 0 0;">
@@ -156,7 +156,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <span class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_translate" <%= (settings.config.disabled_modules.indexOf('autotranslate') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_translate" <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('autotranslate') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -166,7 +166,7 @@
 
                         <span class="text-uppercase text-black-400 text-xs letter-spacing-0 m-3 px-2 heading">Forms</span>
 
-                        <div class="card <%= (settings.config.disabled_modules.indexOf('apply') === -1) ? '' : 'opacity-25' %>">
+                        <div class="card <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('apply') === -1) ? '' : 'opacity-25' %>">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="icon flex-shrink-0" style="margin: 0 10px 0 0;">
@@ -177,7 +177,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <span class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_applyform" <%= (settings.config.disabled_modules.indexOf('apply') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_applyform" <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('apply') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -187,7 +187,7 @@
 
                         <span class="text-uppercase text-black-400 text-xs letter-spacing-0 m-3 px-2 heading">Notifications</span>
 
-                        <div class="card <%= (settings.config.disabled_modules.indexOf('youtube') === -1) ? '' : 'opacity-5' %>">
+                        <div class="card <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('youtube') === -1) ? '' : 'opacity-5' %>">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="icon flex-shrink-0" style="margin: 0 10px 0 0;">
@@ -198,7 +198,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <span class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_yt" <%= (settings.config.disabled_modules.indexOf('youtube') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_yt" <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('youtube') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -206,7 +206,7 @@
                             </div>
                         </div>
 
-                        <div class="card <%= (settings.config.disabled_modules.indexOf('twitch') === -1) ? '' : 'opacity-5' %>">
+                        <div class="card <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('twitch') === -1) ? '' : 'opacity-5' %>">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="icon flex-shrink-0" style="margin: 0 10px 0 0;">
@@ -217,7 +217,7 @@
                                         <small class="text-uppercase text-gray-500 small d-block lh-1">
                                             <span class="form-label"> Enable Moderation commands, auto-moderation, warnroles or logs </span>
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_tw" <%= (settings.config.disabled_modules.indexOf('twitch') === -1) ? 'checked' : '' %>>
+                                                <input class="form-check-input" type="checkbox" style="width: 40px; height: 20px;" id="module_tw" <%= (settings.config.disabled_modules && settings.config.disabled_modules.indexOf('twitch') === -1) ? 'checked' : '' %>>
                                             </div>
                                         </small>
                                     </div>
@@ -255,7 +255,7 @@
     <script src="/js/charts-home.js"></script>
     <!-- Main File-->
     <script src="/js/front.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/index.js" type="module"></script>
     <script>
         // ------------------------------------------------------- //
         //   Inject SVG Sprite - 

@@ -5,10 +5,9 @@ const {
     errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
 const database = require('../src/db/db');
-const { getJoinroles } = require('../utils/functions/data/joinroles');
 const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/data/getMemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
-const { getConfig } = require("../utils/functions/data/getConfig");
+const { getConfig, getGuildConfig } = require("../utils/functions/data/getConfig");
 
 async function guildMemberAdd(member, bot) {
 
@@ -74,14 +73,22 @@ async function guildMemberAdd(member, bot) {
     });
 
     if(!member.user.bot) {
-        const joinroles = await getJoinroles({
+
+        const guild_config = await getGuildConfig({
             guild_id: member.guild.id
-        });
+        })
+
+        var joinroles;
+        try {
+            joinroles = JSON.parse(guild_config.joinroles);
+        }catch(err) {
+            joinroles = null 
+        }
 
         if(!joinroles) return;
 
         joinroles.map(role => {
-            let j_role = member.guild.roles.cache.find(r => r.id === role.role_id);
+            let j_role = member.guild.roles.cache.find(r => r.id === role);
             //setTimeout(function () {
             try {
                 member.roles.add(j_role).catch(err => {})

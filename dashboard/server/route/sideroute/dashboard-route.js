@@ -12,9 +12,6 @@ const {
   getConfig,
   getGuildConfig
 } = require("../../../../utils/functions/data/getConfig");
-const {
-  getJoinroles
-} = require("../../../../utils/functions/data/joinroles");
 
 module.exports = ({app}) => {
   // Dashboard endpoint.
@@ -28,7 +25,7 @@ module.exports = ({app}) => {
         }
       })
       .catch(err => {
-        (err.response.status === 401) ? req.redirect(app.settings.config.route.logout.path) : console.log(err.response);
+        (err.response.status === 401) ? res.redirect(app.settings.config.route.login.path) : console.log(err.response);
       }) || {};
 
     req.user.guilds = []
@@ -93,24 +90,12 @@ module.exports = ({app}) => {
       var guildConfig = await getGuildConfig({
         guild_id: req.params.guildID
       })
-      var joinroles = await getJoinroles({
-        guild_id: req.params.guildID
-      })
-      try {
-        guildConfig = JSON.parse(guildConfig.welcome_channel);
-      } catch (err) {
-        guildConfig = JSON.parse(guildConfig.settings.welcome_channel)
-      }
-      try {
-        joinroles = JSON.parse(joinroles);
-      } catch (e) {}
 
       renderTemplate(res, req, "settings/guild_welcome.ejs", {
         guild,
         path: req.query.settings,
         settings: {
-          config: guildConfig,
-          joinroles: joinroles
+          config: guildConfig
         },
         alert: null,
       }, app.settings.bot);
