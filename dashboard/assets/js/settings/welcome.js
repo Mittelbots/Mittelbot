@@ -130,6 +130,7 @@ window.addEventListener('load', function () {
         }
         request.open('POST', `/api/change/joinroles/${JSON.stringify(newJoinRoles)}/null/${document.body.dataset.guildid}`);
         request.setRequestHeader('Content-Type', 'application/json');
+        request.setRequestHeader('Referrer-Policy', 'same-origin');
         request.send();
     })
 
