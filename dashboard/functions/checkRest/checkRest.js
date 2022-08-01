@@ -1,6 +1,7 @@
 const config = require('../../config');
 module.exports.checkRest = (req, res, next) => {
-    if(req.headers.origin !== `${config.domain}:${config.port}`) {
+    const origin = (config.mode == 'dev') ? `${config.domain}:${config.port}` : `${config.domain}`
+    if(req.headers.origin !== origin) {
         res.status(403).send('Forbidden');
     }
     next();
