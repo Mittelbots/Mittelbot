@@ -56,10 +56,15 @@ window.addEventListener('load', function () {
     let newJoinRoles = [];
     let oldJoinRoles = [];
 
-    document.querySelectorAll('.joinrole_selected').forEach(div => {
-        newJoinRoles.push(div.dataset.jrid);
-        oldJoinRoles.push(div.dataset.jrid);
-    })
+    joinRoleSelected();
+    function joinRoleSelected() {
+        document.querySelectorAll('.joinrole_selected').forEach(div => {
+            newJoinRoles = [];
+            oldJoinRoles = [];
+            newJoinRoles.push(div.dataset.jrid);
+            oldJoinRoles.push(div.dataset.jrid);
+        })
+    }
 
 
     document.getElementById('wc_joinrole_select').addEventListener('change', function () {
@@ -127,6 +132,7 @@ window.addEventListener('load', function () {
 
         request.onreadystatechange = function () {
             if (this.status === 200) {
+                joinRoleSelected
                 new Notification('Settings saved', true).show();
             }
         }
