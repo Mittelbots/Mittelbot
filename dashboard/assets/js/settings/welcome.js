@@ -71,6 +71,8 @@ window.addEventListener('load', function () {
         document.getElementById('joinroles_selected').appendChild(newDiv);
         this.options[this.selectedIndex].disabled = true;
 
+        this.options[0].selected = true;
+
         newJoinRoles.push(roleId);
 
         handlerJoinRoleSelect();
