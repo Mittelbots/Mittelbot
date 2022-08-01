@@ -28,8 +28,6 @@ module.exports.handleUploads = async ({
             })
         }
 
-        console.log(ytUploads[0].list)
-
         if (!uploads || uploads.length === 0) return false;
 
         for (let i in uploads) {
