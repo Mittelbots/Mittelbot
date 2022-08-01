@@ -2,45 +2,49 @@ const {
     SlashCommandBuilder
 } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
+const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({main_interaction, bot}) => {
 
-    const hasPermissions = await hasPermission({
+    main_interaction.deferReply();
+
+    var hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: false,
         modOnly: false,
-        user: main_interaction.member
-    })
-
+        user: main_interaction.member,
+        bot
+    });
+    
     if (!hasPermissions) {
-        return main_interaction.reply({
-            content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
-            ephemeral: true
+        return main_interaction.followUp({
+            content: `${config.errormessages.nopermission}`
         }).catch(err => {});
     }
 
     const amount = main_interaction.options.getNumber('number');
 
     if(amount < 1 || amount >= Number(config.bulkDeleteLimit)) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: `You need to input a number between 1 and ${config.bulkDeleteLimit}.`,
-            ephemeral: true
         }).catch(err => {});
     }
-
     await main_interaction.channel.bulkDelete(amount, true).then(() => {
-        main_interaction.reply({
-            content: `Successfully pruned ${amount} messages`,
-            ephemeral: true
-        }).catch((err) => {})
+        main_interaction.followUp({
+            content: `Successfully pruned ${amount} messages`
+        })
+        .then(async msg => {
+            await delay(3000);
+            msg.delete().catch(err => {});
+        })
+        .catch((err) => {})
 
     }).catch(err => {
         errorhandler({err})
-        main_interaction.reply({
-            content: `There was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)`,
-            ephemeral: true
+        main_interaction.followUp({
+            content: `There was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)`
         }).catch((err) => {})
     });
 }

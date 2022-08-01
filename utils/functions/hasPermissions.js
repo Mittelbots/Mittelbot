@@ -14,7 +14,7 @@ async function hasPermission({
     bot
 }) {
 
-    let guildUser = bot.guilds.cache.get(guild_id).members.cache.get(user);
+    let guildUser = bot.guilds.cache.get(guild_id).members.cache.get(user.id || user);
     let hasAdminPerms = guildUser.permissions.has(PermissionFlagsBits.Administrator);
     
     if(hasAdminPerms) return true;

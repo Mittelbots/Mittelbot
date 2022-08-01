@@ -17,11 +17,15 @@ module.exports.run = async ({
     main_interaction,
     bot
 }) => {
+    await main_interaction.deferReply({
+        ephemeral: true
+    });
+
     const hasPermission = main_interaction.user.id === config.Bot_Owner_ID;
     if (hasPermission) {
         switch (main_interaction.options.getSubcommand()) {
             case 'restart':
-                await main_interaction.reply({
+                await main_interaction.followUp({
                     content: `Ok sir, Bot is restarting!`,
                     ephemeral: true
                 }).catch(err => {});
@@ -35,7 +39,7 @@ module.exports.run = async ({
                     process.exit();
                 } catch (err) {
                     log.fatal(err);
-                    main_interaction.reply({
+                    main_interaction.followUp({
                         content: config.errormessages.general,
                         ephemeral: true
                     }).catch(err => {});
@@ -44,7 +48,7 @@ module.exports.run = async ({
 
             case 'shutdown':
                 try {
-                    await main_interaction.reply({
+                    await main_interaction.followUp({
                         content: `Ok sir, Bot stopped!`,
                         ephemeral: true
                     }).catch(err => {});
@@ -52,7 +56,7 @@ module.exports.run = async ({
                     process.exit(1);
                 } catch (err) {
                     log.fatal(err);
-                    main_interaction.reply({
+                    main_interaction.followUp({
                         content: config.errormessages.general,
                         ephemeral: true
                     }).catch(err => {});
@@ -65,7 +69,7 @@ module.exports.run = async ({
                     mode: main_interaction.options.getString('mode')
                 }).then(async () => {
                     await delay(2000);
-                    main_interaction.reply({
+                    main_interaction.followUp({
                         content: 'Successfully created!',
                         ephemeral: true
                     }).catch(err => {})
@@ -74,10 +78,12 @@ module.exports.run = async ({
 
             case 'cacherefresh':
                 await startUpCache();
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: '✅ Successfully refreshed',
                     ephemeral: true
-                }).catch(err => {})
+                }).catch(err => {
+                    console.log(err)
+                })
                 break;
         }
     }
