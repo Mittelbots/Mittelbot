@@ -254,6 +254,10 @@
             "levelsettings": {
                 "name": "levelsettings",
                 "val": "LONGTEXT"
+            },
+            "joinroles": {
+                "name": "joinroles",
+                "val": "LONGTEXT"
             }
         },
         "twitch_streams": {
@@ -327,7 +331,7 @@
             },
             "loginToken": {
                 "name": "loginToken",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(600)"
             }
         }
     },

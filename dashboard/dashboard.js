@@ -22,10 +22,6 @@ const MemoryStore = require("memorystore")(session);
 module.exports = async (bot) => {
   const dataDir = path.resolve(`${process.cwd()}${path.sep}dashboard`); // The absolute path of current this directory.
 
-  // Deserializing and serializing users without any additional logic.
-  passport.serializeUser((user, done) => done(null, user));
-  passport.deserializeUser((obj, done) => done(null, obj));
-
   let domain;
   let callbackUrl;
 
@@ -44,7 +40,7 @@ module.exports = async (bot) => {
     callbackUrl = `${domain.protocol}//${domain.host}/callback`;
   } else {
     callbackUrl = `${domain.protocol}//${domain.host}${
-      config.port == 80 ? "" : `:${config.port}`
+      (config.mode == 'dev') ? config.port == 80 ? "" : `:${config.port}` : ''
     }/callback`;
   }
 
@@ -75,10 +71,6 @@ module.exports = async (bot) => {
 
   // Cookie parser
   app.use(cookieParser());
-
-  // We initialize passport middleware.
-  app.use(passport.initialize());
-  app.use(passport.session());
 
   // We bind the domain.
   app.locals.domain = config.domain.split("//")[1];
