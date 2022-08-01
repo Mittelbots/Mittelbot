@@ -600,7 +600,7 @@ module.exports.checkBlacklistChannels = async ({
             levelsettings = {};
         }
 
-        if(levelsettings.length > 0) {
+        if(levelsettings && levelsettings.length > 0) {
             blacklistchannels = levelsettings.levelsettings.blacklistchannels;
         }
         
