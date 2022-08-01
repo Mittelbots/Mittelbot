@@ -34,7 +34,7 @@
     "@twurple/auth": "^5.1.8",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
-    "canvacord": "5.4.2",
+    "canvacord": "5.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "discord-bettermarkdown": "^1.2.0",
