@@ -75,15 +75,17 @@ module.exports = ({
                 }
             }
 
-            return await updateGuildConfig({
+            await updateGuildConfig({
                 guild_id: guildid,
                 value: JSON.stringify(config.settings[module]),
                 valueName: module
             }).then(() => {
                 config = null;
+                try { 
                 res.status(200).json({
                     success: true
                 });
+            } catch (e) {}
             }).catch(err => {
                 errorhandler({err, fatal: true})
                 try {
