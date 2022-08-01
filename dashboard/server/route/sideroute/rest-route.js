@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 const {
     hasPermission
 } = require("../../../../utils/functions/hasPermissions");
+const { errorhandler } = require("../../../../utils/functions/errorhandler/errorhandler");
 
 module.exports = ({
     app
@@ -84,9 +85,12 @@ module.exports = ({
                     success: true
                 });
             }).catch(err => {
-                res.status(500).json({
-                    error: err
-                });
+                errorhandler({err, fatal: true})
+                try {
+                    res.status(500).json({
+                        error: err
+                    });
+                } catch (e) {}
             })
         }
     })
