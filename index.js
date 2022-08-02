@@ -3,7 +3,8 @@ const {
   Options,
   GatewayIntentBits,
   Collection,
-  ActivityType
+  ActivityType,
+  Partials
 } = require("discord.js");
 
 const config = require('./src/assets/json/_config/config.json');
@@ -78,9 +79,11 @@ const {
 } = require("./utils/functions/sendEmail/sendEmail");
 const crashs = require("./crashs.json");
 const Dashboard = require("./dashboard/dashboard");
+const { handleAddedReactions } = require("./utils/functions/data/reactionroles");
 
 const bot = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions],
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
   makeCache: Options.cacheWithLimits({
     MessageManager: 10,
     PresenceManager: 0,
@@ -113,6 +116,14 @@ bot.on('guildMemberRemove', async member => {
 bot.on("messageCreate", async message => {
   return await messageCreate(message, bot);
 });
+
+bot.on('messageReactionAdd', async (reaction, user) => {
+    return await handleAddedReactions({ reaction, user, bot });
+})
+
+bot.on('messageReactionRemove', async (reaction, user) => {
+  return await handleAddedReactions({ reaction, user, bot, remove: true });
+})
 
 process.on('unhandledRejection', async err => {
   errorhandler({

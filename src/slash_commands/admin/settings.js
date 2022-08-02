@@ -35,6 +35,7 @@ const {
 const {
     updateLog
 } = require("../../../utils/functions/data/logs");
+const { updateReactionRoles } = require("../../../utils/functions/data/reactionroles");
 
 module.exports.run = async ({
     main_interaction,
@@ -362,6 +363,31 @@ module.exports.run = async ({
             });
             break;
 
+        case 'reactionroles':
+            const message_link = main_interaction.options.getString('message_link');
+            const reactionroles = main_interaction.options.getString('roles');
+            const emojis = main_interaction.options.getString('emojis');
+
+            updateReactionRoles({
+                guild_id: main_interaction.guild.id,
+                message_link,
+                roles: reactionroles,
+                emojis,
+                main_interaction
+            }).then(res => {
+                main_interaction.reply({
+                    content: res,
+                    ephemeral: true
+                }).catch(err => {})
+            }).catch(err => {
+                main_interaction.reply({
+                    content: err,
+                    ephemeral: true
+                }).catch(err => {});
+            });
+            
+            break;
+
     }
 
     async function saveSetting({
@@ -650,4 +676,30 @@ module.exports.data = new SlashCommandBuilder()
             .setDescription('Add a chennel if you want to send levelup messages to a text channel')
             .setRequired(false)
         )
+    )
+
+    .addSubcommand(command =>
+        command
+        .setName('reactionroles')
+        .setDescription('Add a reaction role to a message.')
+        .addStringOption(messagelink =>
+            messagelink
+            .setName('message_link')
+            .setDescription('Add the message link [https://discordapp.com/channels/XXXX/XXXX/XXXX]')
+            .setRequired(true)
+        )
+        .addStringOption(roles =>
+            roles
+            .setName('roles')
+            .setDescription('Add the roles you want to add to the message. [Role1 Role2 Role3]')
+            .setRequired(true)
+        )
+
+        .addStringOption(emoji =>
+            emoji
+            .setName('emojis')
+            .setDescription('Add the emoji you want to add to the message. [:emoji: :emoji: :emoji:]')
+            .setRequired(true)
+        )
+
     )

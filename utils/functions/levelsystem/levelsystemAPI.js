@@ -475,7 +475,7 @@ module.exports.generateLevelConfig = function ({
         for (let i = 1; i <= lvl_count; i++) {
             const obj = {
                 level: i,
-                xp: Math.round(xp + (lvl_multi * i) * (multiplier.toFixed(2) * 100)),
+                xp: Math.round(xp + (lvl_multi * i) * (multiplier.toFixed(3) * 100)),
             }
             switch (mode) {
                 case 'easy':
@@ -491,7 +491,7 @@ module.exports.generateLevelConfig = function ({
                     config.normal.push(obj); // NORMAL
                     break;
             }
-            multiplier += 0.01;
+            multiplier += 0.005;
         }
         fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', '', 'utf8');
         fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', JSON.stringify(config), 'utf8');
