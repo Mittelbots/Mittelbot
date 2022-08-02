@@ -258,6 +258,10 @@
             "joinroles": {
                 "name": "joinroles",
                 "val": "LONGTEXT"
+            },
+            "reactionroles": {
+                "name": "reactionroles",
+                "val": "LONGTEXT"
             }
         },
         "twitch_streams": {

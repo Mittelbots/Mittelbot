@@ -8,7 +8,14 @@ function removeHttp(link) {
     else { return link = link.replace('https', ''); }
 }
 
+function removeEmojiTags(emoji) {
+    emoji = emoji.replaceAll('<', '').replaceAll('>', '');
+    emoji = emoji.split(':');
+    return emoji[emoji.length - 1];
+}
+
 module.exports = {
     removeMention,
-    removeHttp
+    removeHttp,
+    removeEmojiTags
 }
