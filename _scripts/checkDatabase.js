@@ -4,6 +4,7 @@ const readline = require('readline');
 const {
     startUpCache
 } = require('../utils/functions/cache/startUpCache');
+const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 
 
 async function checkDatabase() {
@@ -18,7 +19,7 @@ async function checkDatabase() {
     var guildids = await database.query(`SELECT * FROM all_guild_id`).then(async res => {
         return await res;
     }).catch(err => {
-        //console.log(err)
+        errorhandler({err, fatal: true});
     });
 
     //?CREATE ALL NONDYNAMICAL TABLES LIKE advancedScamList, etc
@@ -26,14 +27,14 @@ async function checkDatabase() {
         await database.query(`CREATE TABLE ${t} (id INT AUTO_INCREMENT PRIMARY KEY)`)
             .then(() => table_count++)
             .catch(err => {
-                //console.log(err)
+                errorhandler({err, fatal: false});
             });
 
         for (let c in tables.nondynamical[t]) {
             await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables.nondynamical[t][c].name} ${tables.nondynamical[t][c].val}`)
                 .then(() => col_count++)
                 .catch(err => {
-                    //console.log(err)
+                    errorhandler({err, fatal: false});
                 });
 
             // if (tables.nondynamical[t][c].insert) {
@@ -43,7 +44,7 @@ async function checkDatabase() {
             //             insert_count++;
             //         })
             //         .catch(err => {
-            //             console.log(err)
+            //            errorhandler({err, fatal: false});
             //         });
             // }
         }
@@ -56,7 +57,7 @@ async function checkDatabase() {
             await database.query(`CREATE TABLE ${guildids[g].guild_id}${t} (id INT AUTO_INCREMENT PRIMARY KEY)`)
                 .then(() => table_count++)
                 .catch(err => {
-                    //console.log(err)
+                    errorhandler({err, fatal: false});
                 });
 
             for (let c in tables.dynamical[t]) {
@@ -65,7 +66,7 @@ async function checkDatabase() {
                         await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} DROP COLUMN ${tables.dynamical[t][c][delete_column]}`)
                             .then(() => del_col_count++)
                             .catch(err => {
-                                //console.log(err);
+                                errorhandler({err, fatal: false});
                             })
                         continue;
                     }
@@ -75,13 +76,13 @@ async function checkDatabase() {
                         col_count++;
                     })
                     .catch(err => {
-                        //console.log(err)  
+                        errorhandler({err, fatal: false});
                     });
             }
         }
     }
 
-    console.log(`Main function passed! ${table_count} Tables and ${col_count} Columns created, ${del_col_count} Columns deleted and ${insert_count} values inserted!`)
+    console.info(`Main function passed! ${table_count} Tables and ${col_count} Columns created, ${del_col_count} Columns deleted and ${insert_count} values inserted!`)
 }
 
 async function createTemplates() {
@@ -95,7 +96,7 @@ async function createTemplates() {
                 table_count++
             })
             .catch(err => {
-                //console.log(err)
+                errorhandler({err, fatal: false});
             });
 
         for (let c in tables.dynamical[t]) {
@@ -104,7 +105,7 @@ async function createTemplates() {
                     await database.query(`ALTER TABLE ${t}_template DROP COLUMN ${tables.dynamical[t][c][delete_column]}`)
                         .then(() => del_col_count++)
                         .catch(err => {
-                            //console.log(err);
+                            errorhandler({err, fatal: false});
                         })
                 }
                 continue;
@@ -114,13 +115,13 @@ async function createTemplates() {
                     col_count++
                 })
                 .catch(err => {
-                    //console.log(err)
+                    errorhandler({err, fatal: false});
                 });
         }
     }
 
     await startUpCache();
-    console.log(`createTemplate function passed! ${table_count} Tables and ${col_count} Columns created!`)
+    console.info(`createTemplate function passed! ${table_count} Tables and ${col_count} Columns created!`)
 }
 
 if (process.argv[1].includes('/_scripts/checkDatabase.js')) {

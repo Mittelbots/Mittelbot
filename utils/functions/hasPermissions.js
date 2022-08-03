@@ -3,6 +3,7 @@ const database = require("../../src/db/db");
 const {
     getFromCache
 } = require("./cache/cache");
+const { errorhandler } = require("./errorhandler/errorhandler");
 
 
 async function hasPermission({
@@ -46,7 +47,9 @@ async function hasPermission({
                 if (hasPermission) break;
             }
             return hasPermission;
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            errorhandler({err, fatal: true});
+        })
 
     } else {
         for (let i in cache[0].modroles) {

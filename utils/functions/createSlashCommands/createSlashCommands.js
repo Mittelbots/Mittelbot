@@ -22,7 +22,7 @@ module.exports.createSlashCommands = async () => {
         const files = fs.readdirSync(`./src/slash_commands/${cmd_folder}/`);
         for (const command_file of files) {
             if(command_file.startsWith('._')) continue;
-            console.log(`${command_file} Command has been loaded!`);
+            console.info(`${command_file} Command has been loaded!`);
             const command = require(`../../../src/slash_commands/${cmd_folder}/${command_file}`);
             commands.push(command.data.toJSON());
         }
@@ -35,17 +35,17 @@ module.exports.createSlashCommands = async () => {
 
     (async () => {
         try {
-            console.log('🕐 Started refreshing application (/) commands.');
+            console.info('🕐 Started refreshing application (/) commands.');
 
             if (config.debug == 'true') {
-                console.log('🕐 Started refreshing in Development.');
+                console.info('🕐 Started refreshing in Development.');
                 await rest.put(
                     Routes.applicationGuildCommands(clientId, guildId), {
                         body: commands
                     },
                 );
             } else {
-                console.log('🕐 Started refreshing in Production.');
+                console.info('🕐 Started refreshing in Production.');
                 await rest.put(
                     Routes.applicationCommands(clientId), {
                         body: commands
@@ -54,7 +54,7 @@ module.exports.createSlashCommands = async () => {
             }
 
 
-            console.log('✅ Successfully reloaded application (/) commands.');
+            console.info('✅ Successfully reloaded application (/) commands.');
         } catch (error) {
             console.error(error);
         }

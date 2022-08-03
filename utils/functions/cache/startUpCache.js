@@ -13,11 +13,11 @@ const { getAllYoutubeUploads, getAllTwitchStreams } = require("../data/upload");
 
 module.exports.startUpCache = async () => {
 
-    console.log('----------------------------------------');
-    console.log('🚀 Starting up cache...');
+    console.info('----------------------------------------');
+    console.info('🚀 Starting up cache...');
 
 
-    console.log('🕐 Getting all Data...');
+    console.info('🕐 Getting all Data...');
 
     const guildConfigs = await getAllConfig();
     const guildModroles = await getAllModroles();
@@ -35,9 +35,9 @@ module.exports.startUpCache = async () => {
     const ytUploads = await getAllYoutubeUploads();
     const twitchStreams = await getAllTwitchStreams();
 
-    console.log('✅ Data collected...');
+    console.info('✅ Data collected...');
 
-    console.log('🕐 Adding to cache...');
+    console.info('🕐 Adding to cache...');
 
     for(let i in guildConfigs) {
         if(!guildConfigs[i] || !guildConfigs[i].guild_id) continue;
@@ -232,6 +232,6 @@ module.exports.startUpCache = async () => {
         }
     });
     
-    console.log('✅ Cache init completed...');
-    console.log('----------------------------------------');
+    console.info('✅ Cache init completed...');
+    console.info('----------------------------------------');
 }

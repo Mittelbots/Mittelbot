@@ -33,7 +33,7 @@ async function deleteEntries(infraction_id, ) {
 }
 
 module.exports.checkTemproles = async (bot) => {
-    console.log("🔎📜 CheckTemproles handler started");
+    console.info("🔎📜 CheckTemproles handler started");
     setInterval(async () => {
 
         var results;
@@ -70,6 +70,6 @@ module.exports.checkTemproles = async (bot) => {
                 }
             }
         }
-        console.log(`Check Temproles finished. ${done} roles removed`)
+        console.info(`Check Temproles finished. ${done} roles removed`)
     }, config.defaultCheckTemprolesTimer);
 }

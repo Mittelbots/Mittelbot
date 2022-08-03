@@ -54,7 +54,7 @@ async function deleteEntries(infraction) {
 }
 
 function checkInfractions(bot) {
-    console.log("🔎📜 CheckInfraction handler started");
+    console.info("🔎📜 CheckInfraction handler started");
     setInterval(async () => {
 
         var results;
@@ -136,7 +136,7 @@ function checkInfractions(bot) {
                 }
             }
         }
-        console.log(`Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`, new Date().toLocaleString('de-DE', {
+        console.info(`Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`, new Date().toLocaleString('de-DE', {
             timeZone: 'Europe/Berlin'
         }))
     }, config.defaultCheckInfractionTimer);
