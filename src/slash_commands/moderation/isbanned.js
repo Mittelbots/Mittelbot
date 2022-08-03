@@ -13,7 +13,8 @@ module.exports.run = async ({main_interaction, bot}) => {
         guild_id: main_interaction.guild.id,
         adminOnly: false,
         modOnly: false,
-        user: main_interaction.member
+        user: main_interaction.member,
+        bot
     })
 
     if(!hasPermissions) {

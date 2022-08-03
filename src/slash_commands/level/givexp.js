@@ -11,7 +11,8 @@ module.exports.run = async ({main_interaction, bot}) => {
         guild_id: main_interaction.guild.id,
         adminOnly: true,
         modOnly: false,
-        user: main_interaction.member
+        user: main_interaction.member,
+        bot
     });
 
     if (!hasPermissions) {
@@ -44,8 +45,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     if(updated) {
         return main_interaction.reply({
-            content: `✅ ${amount}xp has been added to ${user}`,
-            ephemeral: true
+            content: `✅ ${amount}xp has been added to ${user}`
         }).catch(err => {})
     }else {
         return main_interaction.reply({

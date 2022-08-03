@@ -61,6 +61,8 @@ module.exports.insertIntoClosedList = async ({uid, modid, mute = 0, ban = 0, war
         start_date: start_date
     }
 
+    console.log(closedInfractions[0].list[listLength])
+
     database.query('INSERT INTO closed_infractions (user_id, mod_id, mute, ban, warn, kick, till_date, reason, infraction_id, start_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[uid, modid, mute, ban, warn, kick, till_date, reason, infraction_id, start_date])
     .catch(err => {
         return errorhandler({err, fatal: true});
