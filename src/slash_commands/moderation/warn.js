@@ -4,7 +4,6 @@ const {
 const config = require('../../../src/assets/json/_config/config.json');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { warnUser } = require('../../../utils/functions/moderations/warnUser');
-const { log } = require('../../../logs');
 
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
@@ -16,11 +15,11 @@ module.exports.run = async ({main_interaction, bot}) => {
         modOnly: false,
         user: main_interaction.member,
         bot
-    })
+    });
 
     if (!hasPermissions) {
         return main_interaction.reply({
-            content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
+            content: `${config.errormessages.nopermission}`,
             ephemeral: true
         }).catch(err => {});
     }
@@ -35,7 +34,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         bot,
         type: 'warn'
     });
-    
+
     if(check) return main_interaction.reply({
         content: check,
         ephemeral: true
