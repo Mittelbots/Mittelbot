@@ -112,6 +112,7 @@ module.exports.handleAddedReactions = async ({
     bot,
     remove
 }) => {
+    if(user.bot || user.system) return;
     if (reaction.partial) {
         try {
             await reaction.fetch();

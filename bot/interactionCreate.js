@@ -23,6 +23,8 @@ module.exports.interactionCreate = ({
 }) => {
     bot.on('interactionCreate', async (main_interaction) => {
 
+        if(main_interaction.user.bot || main_interaction.user.system) return;
+
         const {ignoreMode} = await getGlobalConfig();
 
         if(JSON.parse(ignoreMode) && main_interaction.user.id !== config.Bot_Owner_ID) {
