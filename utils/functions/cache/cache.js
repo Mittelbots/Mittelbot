@@ -15,6 +15,7 @@ module.exports.closedInfractions = [];
 module.exports.temproles = [];
 module.exports.ytUploads = [];
 module.exports.twitchStreams = [];
+module.exports.globalConfig = [];
 
 /**
  * 

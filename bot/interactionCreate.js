@@ -14,6 +14,7 @@ const {
 const { InteractionType } = require("discord.js");
 const { manageScam } = require("../utils/functions/data/scam");
 const { handlerAFKInput } = require("../utils/functions/data/afk");
+const { getGlobalConfig } = require("../utils/functions/data/ignoreMode");
 
 const defaultCooldown = new Set();
 
@@ -21,6 +22,16 @@ module.exports.interactionCreate = ({
     bot
 }) => {
     bot.on('interactionCreate', async (main_interaction) => {
+
+        const {ignoreMode} = await getGlobalConfig();
+
+        if(JSON.parse(ignoreMode) && main_interaction.user.id !== config.Bot_Owner_ID) {
+            return main_interaction.reply({
+                content: "Sorry, I am currently in ignore mode. Join the support server to get more information https://blackdayz.de/mittelbot/support.",
+                ephemeral: true
+            }).catch(err => {})
+        }
+
         var {
             cooldown
         } = await getConfig({
