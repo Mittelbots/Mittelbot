@@ -29,12 +29,12 @@ module.exports.updateReactionRoles = async ({
         }
 
         for (let i in roles) {
-            let role = main_interaction.bot.guilds.cache.get(guild_id).roles.cache.find(role => role.id === roles[i]);
+            let role = main_interaction.bot.guilds.cache.get(guild_id).roles.fetch(roles[i]);
             if (!role) {
                 return reject(`❌< @&${roles[i]}> not found in this guild.`);
             }
 
-            let emoji = main_interaction.bot.guilds.cache.get(guild_id).emojis.cache.find(emoji => emoji.id === emojis[i]);
+            let emoji = main_interaction.bot.guilds.cache.get(guild_id).emojis.fetch(emojis[i]);
             if (!emoji) {
                 return reject(`❌<:${emojis[i]}> not found in this guild.`);
             }
