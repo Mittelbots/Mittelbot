@@ -471,7 +471,7 @@ module.exports.generateLevelConfig = function ({
                 break;
         }
 
-        let multiplier = 0.01;
+        let multiplier = 0.005;
         for (let i = 1; i <= lvl_count; i++) {
             const obj = {
                 level: i,
