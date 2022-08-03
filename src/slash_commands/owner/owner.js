@@ -13,6 +13,7 @@ const { generateLevelConfig } = require('../../../utils/functions/levelsystem/le
 const { startUpCache } = require('../../../utils/functions/cache/startUpCache');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { updateGlobalConfig } = require('../../../utils/functions/data/ignoreMode');
 
 module.exports.run = async ({
     main_interaction,
@@ -84,6 +85,14 @@ module.exports.run = async ({
                     ephemeral: true
                 }).catch(err => {})
                 break;
+
+            case 'ignoremode':
+                const mode = main_interaction.options.getBoolean('mode');
+                await updateGlobalConfig({valueName: 'ignoreMode', value: (mode) ? 1 : 0});
+                main_interaction.followUp({
+                    content: '✅ Successfully set ignoremode to ' + (mode ? 'on' : 'off'),
+                    ephemeral: true
+                }).catch(err => {})
         }
     }
 }
@@ -129,4 +138,13 @@ module.exports.data = new SlashCommandBuilder()
     .addSubcommand(command =>
         command.setName('cacherefresh')
         .setDescription('Refreshes the bot cache')
+    )
+    .addSubcommand(command =>
+        command.setName('ignoremode')
+        .setDescription('Activate the ignoremode')
+        .addBooleanOption(option =>
+            option.setName('mode')
+            .setRequired(true)
+            .setDescription('Activate or disable the ignoremode')
+        )
     )

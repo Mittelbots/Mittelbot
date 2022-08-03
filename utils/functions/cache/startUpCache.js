@@ -10,6 +10,7 @@ const { getAllAutoMod } = require("../data/automod");
 const { getScamList } = require("../data/scam");
 const { getAllOpenInfractions, getAllClosedInfractions, getAllTemproles } = require("../data/infractions");
 const { getAllYoutubeUploads, getAllTwitchStreams } = require("../data/upload");
+const { getGlobalConfig } = require("../data/ignoreMode");
 
 module.exports.startUpCache = async () => {
 
@@ -34,6 +35,7 @@ module.exports.startUpCache = async () => {
     const temproles = await getAllTemproles();
     const ytUploads = await getAllYoutubeUploads();
     const twitchStreams = await getAllTwitchStreams();
+    const globalConfig = await getGlobalConfig();
 
     console.info('✅ Data collected...');
 
@@ -229,6 +231,14 @@ module.exports.startUpCache = async () => {
             data: {
                 list: twitchStreams || [],
             }
+        }
+    });
+
+    await addToCache({
+        value: {
+            name: "globalConfig",
+            id: 0,
+            data: globalConfig || [],
         }
     });
     

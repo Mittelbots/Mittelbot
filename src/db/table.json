@@ -337,6 +337,16 @@
                 "name": "loginToken",
                 "val": "VARCHAR(600)"
             }
+        },
+        "global_config": {
+            "id": {
+                "name": "id",
+                "val": "INT(1)"
+            },
+            "ignoreMode": {
+                "name": "ignoreMode",
+                "val": "INT(1)"
+            }
         }
     },
     "dynamical": {
