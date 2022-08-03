@@ -28,18 +28,6 @@ module.exports.updateReactionRoles = async ({
             reject('❌ The number of roles and emojis must be equal');
         }
 
-        for (let i in roles) {
-            let role = main_interaction.bot.guilds.cache.get(guild_id).roles.fetch(roles[i]);
-            if (!role) {
-                return reject(`❌< @&${roles[i]}> not found in this guild.`);
-            }
-
-            let emoji = main_interaction.bot.guilds.cache.get(guild_id).emojis.fetch(emojis[i]);
-            if (!emoji) {
-                return reject(`❌<:${emojis[i]}> not found in this guild.`);
-            }
-        }
-
         const channel = message_link.split('/')[5];
         const messageId = message_link.split('/')[6];
 
@@ -51,6 +39,34 @@ module.exports.updateReactionRoles = async ({
 
         if (!message) {
             return reject('❌ The message does not exist');
+        }
+
+        for (let i in roles) {
+            let isDefault = false;
+            if (isNaN(emojis[i])) {
+                try {
+                    message.react(emojis[i])
+                    isDefault = true;
+                } catch (err) {
+                    return reject(`❌<:&${emojis[i]}> not found in this guild.`);
+                }
+            }
+            let role = await main_interaction.bot.guilds.cache.get(guild_id).roles.fetch(roles[i]).catch(err => {
+                return reject(`❌ The role ${roles[i]} does not exist.`);
+            })
+            if (!role) {
+                return reject(`❌< @&${roles[i]}> not found in this guild.`);
+            }
+
+            if (!isDefault) {
+                let emoji = await main_interaction.bot.guilds.cache.get(guild_id).emojis.fetch(emojis[i]).catch(err => {
+                    return reject(`❌ The emoji ${emojis[i]} does not exist.`);
+                });
+
+                if (!emoji) {
+                    return reject(`❌<:${emojis[i]}> not found in this guild.`);
+                }
+            }
         }
 
         message.reactions.removeAll().catch(err => {
@@ -112,7 +128,7 @@ module.exports.handleAddedReactions = async ({
     bot,
     remove
 }) => {
-    if(user.bot || user.system) return;
+    if (user.bot || user.system) return;
     if (reaction.partial) {
         try {
             await reaction.fetch();
