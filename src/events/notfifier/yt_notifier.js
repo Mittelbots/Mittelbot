@@ -10,7 +10,7 @@ module.exports.handleUploads = async ({
     bot
 }) => {
 
-    console.log("🔎 Youtube upload handler started");
+    console.info("🔎 Youtube upload handler started");
 
     setInterval(async () => {
         var uploads;
@@ -78,7 +78,7 @@ module.exports.handleUploads = async ({
                             content: ((pingrole) ? (isEveryone) ? '@everyone ' : `<@&${uploads[i].pingrole}> ` : '') + feed.items[0].title + ` ${feed.items[0].link}`,
                         }).catch(err => {});
 
-                        console.log(`📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id}`);
+                        console.info(`📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id}`);
                     }).catch(err => {
                         errorhandler({
                             err,

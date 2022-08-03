@@ -90,7 +90,9 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
                 if(config.debug == 'true') console.info('Unmute Command passed!')
                 
             }
-        }).catch(err => console.log(err));
+        }).catch(err => {
+            errorhandler({err, fatal: true});
+        });
 
         return p_response;
     }

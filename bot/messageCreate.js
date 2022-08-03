@@ -112,9 +112,7 @@ async function messageCreate(message, bot) {
                     await delay(8000);
                     msg.delete().catch(err => {});
                 })
-                .catch(err => {
-                    console.log(err);
-                })
+                .catch(err => {})
             }
         }
     }

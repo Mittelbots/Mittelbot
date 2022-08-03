@@ -115,9 +115,7 @@ module.exports.updateJoinroles = async ({
                 guild_id: guild.id,
                 joinrole_id: passedRoles[i]
             }).then(res => {})
-            .catch(err => {
-                console.log(err);
-            })
+            .catch(err => {})
         }
         return resolve(true)
     })
@@ -141,10 +139,11 @@ module.exports.saveJoinRoles = async ({
                     resolve(`Joinroles successfully cleared.`).catch(err => {});
                 })
                 .catch(err => {
-                    return errorhandler({
+                    errorhandler({
                         err,
                         fatal: true
                     });
+                    return reject(err)
                 });
         } else {
 
@@ -174,10 +173,11 @@ module.exports.saveJoinRoles = async ({
                     resolve(`<@&${joinrole_id}> added to joinroles.`)
                 })
                 .catch(err => {
-                    return errorhandler({
+                    errorhandler({
                         err,
                         fatal: true
                     });
+                    reject(err);
                 })
         }
     })

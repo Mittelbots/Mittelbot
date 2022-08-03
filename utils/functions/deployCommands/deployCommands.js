@@ -13,7 +13,7 @@ function deployCommands(bot) {
                 files.forEach((file) => {
                     if (!file.endsWith('.js') || file.startsWith('.')) return;
                     var command = require(`../../../src/commands/${module}/${file}`);
-                    console.log(`${command.help.name} Command has been loaded!`);
+                    console.info(`${command.help.name} Command has been loaded!`);
                     if (command.help.name) bot.commands.set(command.help.name, command)
                 })
             });

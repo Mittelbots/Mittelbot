@@ -32,7 +32,7 @@ async function getLinesOfCode(cb) {
     function readCode() {
         fs.readdir('./', "utf8", function (err, entity) {
 
-            if(err) console.log(err)
+            if(err) console.error(err)
 
             const folder = ['_logs', '_.github', 'node_modules', '.bashrc', '.gitattributes', '.gitignore', 'LICENSE', 'package-lock.json', 'package.json', 'README.md', '.git', '.github'];
 

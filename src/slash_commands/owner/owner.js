@@ -12,6 +12,7 @@ const {
 const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
 const { startUpCache } = require('../../../utils/functions/cache/startUpCache');
 const { delay } = require('../../../utils/functions/delay/delay');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({
     main_interaction,
@@ -81,9 +82,7 @@ module.exports.run = async ({
                 main_interaction.followUp({
                     content: '✅ Successfully refreshed',
                     ephemeral: true
-                }).catch(err => {
-                    console.log(err)
-                })
+                }).catch(err => {})
                 break;
         }
     }

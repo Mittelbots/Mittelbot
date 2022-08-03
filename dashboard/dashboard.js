@@ -102,6 +102,6 @@ module.exports = async (bot) => {
   require('./server/route/main-route')(app);
 
   app.listen(config.port, null, null, () =>
-    console.log(`Dashboard is up and running on port ${config.port}.`),
+    console.info(`Dashboard is up and running on port ${config.port}.`),
   );
 };

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { getConfig, updateConfig } = require("../../../utils/functions/data/getConfig");
 const config = require('../../../src/assets/json/_config/config.json');
+const { errorhandler } = require("../../../utils/functions/errorhandler/errorhandler");
 
 module.exports.run = async ({main_interaction, bot}) => {
     
@@ -32,7 +33,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         try {
             disabled_modules.splice(disabled_modules.indexOf(module), 1);
         }catch(e) {
-            console.log(err)
+            errorhandler({err: e, fatal: true});
         }
     }else {
         disabled_modules.push(module);

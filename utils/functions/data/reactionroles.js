@@ -24,8 +24,6 @@ module.exports.updateReactionRoles = async ({
             emojis[i] = removeEmojiTags(emojis[i]);
         }
 
-        console.log(emojis)
-
         if (roles.length !== emojis.length) {
             reject('❌ The number of roles and emojis must be equal');
         }

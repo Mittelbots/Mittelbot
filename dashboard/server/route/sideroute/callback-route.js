@@ -5,6 +5,7 @@ const {
 } = require("crypto");
 const url = require('url');
 const database = require("../../../../src/db/db");
+const { errorhandler } = require("../../../../utils/functions/errorhandler/errorhandler");
 module.exports = ({app}) => {
   // Callback endpoint.
   app.get("/callback", async (req, res, ) => {
@@ -70,13 +71,13 @@ module.exports = ({app}) => {
         if (userExists.length === 0) {
           await database.query(`INSERT IGNORE INTO dashboard_users (user_id, username, email, verified, loginToken) VALUES (?, ?, ?, ?, ?);`, [user.data.id, user.data.username, user.data.email, !!+user.data.verified, token])
             .catch(err => {
-              console.log(err);
+              errorhandler({err, fatal: true});
               return res.redirect(app.settings.config.route.homepage.path + "?error=true&message=Something went wrong, please try again.");
             })
         } else {
           await database.query(`UPDATE dashboard_users SET loginToken = ? WHERE email = ?`, [token, user.data.email])
             .catch(err => {
-              console.log(err);
+              errorhandler({err, fatal: true});
               return res.redirect(app.settings.config.route.homepage.path + "?error=true&message=Something went wrong, please try again.");
             })
         }

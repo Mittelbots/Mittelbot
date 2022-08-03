@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const ytdl = require('ytdl-core');
+const { errorhandler } = require("../../../utils/functions/errorhandler/errorhandler");
 
 const request = new(require("rss-parser"))();
 
@@ -22,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
             }).catch(err => {})
         })
         .catch(err => {
-            console.log(err);
+            errorhandler({err, fatal: true});
         })
 }
 

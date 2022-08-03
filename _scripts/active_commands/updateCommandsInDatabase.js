@@ -183,7 +183,7 @@ async function main(command_name, isEdit) {
         }
 
     }).catch(err => {
-        console.log(err);
+        errorhandler({err, fatal: true});
         process.exit();
     });
 }

@@ -12,6 +12,7 @@ const {
   getConfig,
   getGuildConfig
 } = require("../../../../utils/functions/data/getConfig");
+const { errorhandler } = require("../../../../utils/functions/errorhandler/errorhandler");
 
 module.exports = ({app}) => {
   // Dashboard endpoint.
@@ -25,7 +26,7 @@ module.exports = ({app}) => {
         }
       })
       .catch(err => {
-        (err.response.status === 401) ? res.redirect(app.settings.config.route.login.path) : console.log(err.response);
+        (err.response.status === 401) ? res.redirect(app.settings.config.route.login.path) : errorhandler({err, fatal: true});
       }) || {};
 
     req.user.guilds = []
