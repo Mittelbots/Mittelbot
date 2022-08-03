@@ -175,6 +175,10 @@ module.exports.run = async ({
             break;
 
         case 'joinroles':
+
+            return main_interaction.reply({
+                content: `Please use the dashboard to set the join roles. The command is temporarily disabled.`,
+            })
             var joinroles = []
             for (let i = 1; i <= 5; i++) {
                 let role = main_interaction.options.getRole('joinrole' + i)

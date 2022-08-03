@@ -30,7 +30,7 @@ module.exports.createSlashCommands = async () => {
     }
 
     const rest = new REST({
-        version: '9'
+        version: '10'
     }).setToken(token.BOT_TOKEN);
 
     (async () => {
