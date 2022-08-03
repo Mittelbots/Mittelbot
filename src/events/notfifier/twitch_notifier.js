@@ -47,7 +47,7 @@ module.exports.twitch_notifier = async ({
         var allTwitchAccounts;
 
         if(twitchStreams) {
-            allTwitchAccounts = twitchStreams;
+            allTwitchAccounts = twitchStreams[0].list;
         }else {
             allTwitchAccounts = await database.query(`SELECT * FROM twitch_streams`)
                 .catch(err => {

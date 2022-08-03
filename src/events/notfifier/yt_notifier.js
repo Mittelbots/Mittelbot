@@ -16,7 +16,7 @@ module.exports.handleUploads = async ({
         var uploads;
 
         if(ytUploads) {
-            uploads = ytUploads;
+            uploads = ytUploads[0].list;
         }else {
             uploads = await database.query(`SELECT * FROM guild_uploads`)
             .catch(err => {
@@ -36,13 +36,12 @@ module.exports.handleUploads = async ({
                     .then(async (feed) => {
                         try {
                             var uploadedVideos = JSON.parse(uploads[i].uploads);
-
-                            const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
-                            if (videoAlreadyExists) return;
-
                         }catch(err) {
-                            uploadedVideos = [];
+                            uploadedVideos = uploads[i].uploads;
                         }
+
+                        const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
+                        if (videoAlreadyExists) return;
 
                         uploadedVideos.push(feed.items[0].link)
 
@@ -88,5 +87,5 @@ module.exports.handleUploads = async ({
                     })
             }
         }
-    }, 600000); //?  10 minutes
+    }, 6000); //?600000  10 minutes
 }
