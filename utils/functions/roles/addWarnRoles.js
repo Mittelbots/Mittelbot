@@ -4,7 +4,7 @@ const { getFutureDate } = require("../getFutureDate");
 const config = require('../../../src/assets/json/_config/config.json');
 const { insertIntoTemproles } = require("../data/infractions");
 
-async function addWarnRoles({user, inf_id, guild}) {
+module.exports.addWarnRoles = async ({user, inf_id, guild}) => {
     return await database.query(`SELECT role_id FROM ${guild.id}_guild_warnroles`).then(async res => {
         let hasRoleAlready = false;
         if(res.length > 0) {   
@@ -49,7 +49,3 @@ async function addWarnRoles({user, inf_id, guild}) {
         }
     })
 }
-
-module.exports = {
-    addWarnRoles
-};

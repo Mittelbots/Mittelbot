@@ -7,9 +7,9 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { insertIntoClosedList } = require("../data/infractions");
 
 async function warnUser({bot, user, mod, guild, reason}) {
-    
-    const pass = await addWarnRoles({user, inf_id, guild});
 
+    const inf_id = await createInfractionId(guild.id);
+    const pass = await addWarnRoles({user, inf_id, guild});
     if(pass.error) return pass;
 
     if(!pass.error) {
