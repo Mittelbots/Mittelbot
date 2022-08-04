@@ -15,4 +15,5 @@ node_modules/
 ._*
 
 _logs/*
+_debug/*
 core
