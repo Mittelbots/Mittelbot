@@ -222,12 +222,12 @@ bot.once('ready', async () => {
         name: activity.name + ' v' + version + codeLines,
         type: ActivityType.Playing,
       });
-      log.info('------------BOT ACTIVITY SUCCESSFULLY STARTED------------', new Date())
+      errorhandler({err: '------------BOT ACTIVITY SUCCESSFULLY STARTED------------' + new Date(), fatal: false});
     });
   }
 
   console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
-  log.info('------------BOT SUCCESSFULLY STARTED------------', new Date());
+  errorhandler({err: '------------BOT SUCCESSFULLY STARTED------------' + new Date(), fatal: false});
 
   //? START THE DASHBOARD
   Dashboard(bot);
