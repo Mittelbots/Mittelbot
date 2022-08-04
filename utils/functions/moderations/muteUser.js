@@ -23,12 +23,12 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
             message: "Could not find/create Muted role."
         }
     };
-    let pass = false;
 
-    await guild_user.roles.add(MutedRole)
-    .then(() => pass = true)
+    const pass = await guild_user.roles.add(MutedRole)
+    .then(() => {return true})
     .catch(err => {
         errorhandler({err, fatal: false});
+        return false;
     });
 
     if(pass) {
