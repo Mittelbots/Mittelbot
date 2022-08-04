@@ -17,7 +17,7 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
     var user_roles = await getAllRoles(guild_user);
     var MutedRole = await getMutedRole(guild);
     if(!MutedRole) {
-        errorhandler({err, fatal: false})
+        errorhandler({err, fatal: false, message: MutedRole})
         return {
             error: true,
             message: "Could not find/create Muted role."
@@ -27,7 +27,7 @@ async function muteUser({user, mod, bot, guild, reason, time, dbtime}) {
     const pass = await guild_user.roles.add(MutedRole)
     .then(() => {return true})
     .catch(err => {
-        errorhandler({err, fatal: false});
+        errorhandler({err, fatal: false, message: MutedRole});
         return false;
     });
 

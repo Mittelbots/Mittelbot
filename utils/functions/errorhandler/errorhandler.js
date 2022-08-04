@@ -6,7 +6,7 @@ function errorhandler({err = '', message = '', channel = null, fatal = true}) {
 
     else if(fatal && log) log.fatal(err);
 
-    else if(!fatal) debug_log.info(err, message);
+    else if(!fatal) debug_log.info(err, `Message/Info: ${message}`);
 
     if(channel) return channel.send(message).catch(err => {});
     else return;
