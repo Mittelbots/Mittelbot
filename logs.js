@@ -8,7 +8,7 @@ const log = require('simple-node-logger').createRollingFileLogger(opts);
 
 const debug_opts = {
     errorEventName: 'debug',
-    logDirectory: './_dbug', // NOTE: folder must exist and be writable...
+    logDirectory: './_debug', // NOTE: folder must exist and be writable...
     fileNamePattern: 'roll-<DATE>.log',
     dateFormat: 'YYYY.MM.DD'
 };
