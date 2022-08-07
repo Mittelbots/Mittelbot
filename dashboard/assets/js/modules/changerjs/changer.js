@@ -159,9 +159,8 @@ document.querySelectorAll('.ChangerJSInput').forEach(function (el) {
             let InputData = (target.type === 'file') ? target.files[0] : target.value;
 
             for (let i in ChangerJSData) {
-                if (ChangerJSData[i].id === ChangerJSDataTag) ChangerJSData[i].NewValue = InputData;
-
-                if (ChangerJSData[i].NewValue !== ChangerJSData[i].OldValue) {
+                if (ChangerJSData[i].id == ChangerJSDataTag) ChangerJSData[i].NewValue = InputData;
+                if (ChangerJSData[i].NewValue != ChangerJSData[i].OldValue) {
                     ChangerJSData[i].hasChanged = true;
                 } else {
                     ChangerJSData[i].hasChanged = false;

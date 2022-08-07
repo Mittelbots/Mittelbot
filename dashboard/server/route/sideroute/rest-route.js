@@ -59,12 +59,14 @@ module.exports = ({
                 config.settings[module] = JSON.parse(config.settings[module]);
             } catch (e) {}
 
+            if(config.settings[module] == null) {
+                config.settings[module] = {};
+            }
+
             if (module === "welcome_channel") {
                 try {
                     config.settings[module][type] = settings;
                 } catch (e) {
-                    config.settings[module][type] = {};
-                    config.settings[module][type] = settings;
                 }
             }
 
@@ -72,8 +74,6 @@ module.exports = ({
                 try {
                     config.settings[module] = JSON.parse(settings);
                 } catch (e) {
-                    config.settings[module] = {};
-                    config.settings[module] = JSON.parse(settings);
                 }
             }
 

@@ -87,7 +87,7 @@
                                                     welcome message. </label>
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input ChangerJSInput"
-                                                        data-cid="wc_enable_<%= guild.id %>" type="checkbox"
+                                                        data-cid="wc_enable" type="checkbox"
                                                         style="width: 40px; height: 20px;" id="module_yt"
                                                         <%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.active) ? 'checked' : '' %>
                                                         disabled>
@@ -114,7 +114,7 @@
                                                     <div class="input-group">
                                                         <textarea class="form-control ChangerJSInput"
                                                             aria-label="With textarea" placeholder="Your text..."
-                                                            data-cid="wc_message_<%= guild.id %>"
+                                                            data-cid="wc_message"
                                                             style="min-height: 140px;resize: none;"><%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.message) ? settings.config.settings.welcome_channel.message : ''%></textarea>
                                                     </div>
                                                 </small>
@@ -127,7 +127,7 @@
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
-                                                            data-cid="wc_author_<%= guild.id %>"
+                                                            data-cid="wc_author"
                                                             value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.author) ? settings.config.settings.welcome_channel.author : ''%>">
                                                     </div>
                                                 </small>
@@ -141,7 +141,7 @@
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Your text..."
-                                                            data-cid="wc_title_<%= guild.id %>"
+                                                            data-cid="wc_title"
                                                             value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.title) ? settings.config.settings.welcome_channel.title : ''%>">
                                                     </div>
                                                 </small>
@@ -156,7 +156,7 @@
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="ONLY LINK ARE ALLOWED"
-                                                            data-cid="wc_thumbnail_<%= guild.id %>"
+                                                            data-cid="wc_thumbnail"
                                                             value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.thumbnail) ? settings.config.settings.welcome_channel.thumbnail : ''%>">
                                                     </div>
                                                 </small>
@@ -184,7 +184,7 @@
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
-                                                            data-cid="wc_field_name_<%= guild.id %>"
+                                                            data-cid="wc_field_name"
                                                             aria-describedby="inputGroup-sizing-sm"
                                                             placeholder="Field name">
                                                     </div>
@@ -192,7 +192,7 @@
                                                         <input type="text" class="form-control ChangerJSInput"
                                                             aria-label="Sizing example input"
                                                             aria-describedby="inputGroup-sizing-sm"
-                                                            data-cid="wc_field_value_<%= guild.id %>"
+                                                            data-cid="wc_field_value"
                                                             placeholder="Field value">
                                                     </div>
                                                 </small>
@@ -205,7 +205,7 @@
                                                     <div class="input-group">
                                                         <input type="color" id="favcolor" class="ChangerJSInput"
                                                             name="favcolor" value="#ff0000"
-                                                            data-cid="wc_color_<%= guild.id %>"
+                                                            data-cid="wc_color"
                                                             value="<%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.color) ? settings.config.settings.welcome_channel.color : ''%>"><br><br>
                                                     </div>
                                                 </small>
@@ -216,12 +216,13 @@
                                                 <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
                                                     <span class="mb-2">Where does the message will be sent in.</span>
                                                     <select class="form-select ChangerJSInput" aria-label="Default select example"
-                                                        id="wc_channel_select">
+                                                        data-cid="wc_id">
                                                         <option selected disabled>Select a channel</option>
                                                         <% var all_channels = guild.channels.cache%>
+                                                        <% var current_wc_channel = all_channels.filter(c => c.id === settings.config.settings.welcome_channel.id).map(c => {return c.id})[0]%> 
                                                         <% all_channels.forEach((channel) => { %>
                                                         <option value="<%= channel.id %>"
-                                                            <%= (settings.config.settings.welcome_channel) ? (all_channels.filter(c => c === channel.id).length !== 0) ? 'disabled' : '' : ''%>>
+                                                            <%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.id) ? (channel.id === current_wc_channel) ? 'selected' : '' : ''%>>
                                                             <%= channel.name %></option>
                                                         <%  })%>
                                                     </select>

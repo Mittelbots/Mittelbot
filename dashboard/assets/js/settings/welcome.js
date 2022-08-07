@@ -4,7 +4,7 @@ import {
 
 import {
     getCJChanges
-} from "https://blackdayz.de/js/changerjs";
+} from "../modules/changerjs/changer.js";
 
 window.addEventListener('load', function () {
 
@@ -37,7 +37,7 @@ window.addEventListener('load', function () {
 
                 if (type == 'color') settings = settings.replace('#', '');
 
-                let guild_id = changedData[i].cid.split('_')[2];
+                let guild_id = document.body.dataset.guildid;
 
                 changedData[i].hasChanged = false;
 
