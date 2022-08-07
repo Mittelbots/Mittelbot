@@ -2,54 +2,62 @@ import {
     Notification
 } from '../notification.js';
 
+import {
+    getCJChanges
+} from "../modules/changerjs/changer.js";
+
 window.addEventListener('load', function () {
 
-    document.getElementById('wc_save').addEventListener('click', function () {
-        window.addEventListener('onClickChanges', async function (evt) {
-            const {
-                changes,
-                isDataChanged
-            } = evt.detail;
-            if (isDataChanged) {
-                const changedData = changes.filter(data => data.hasChanged)
+    document.getElementById('wc_save').addEventListener('click', async (el) => {
+        const {
+            error,
+            changes,
+            isDataChanged
+        } = getCJChanges(el);
 
-                if (changedData.length === 0) {
-                    new Notification('Nothing has changed!', false).show();
-                    return;
-                }
+        if (error) {
+            new Notification('Something went wrong. Please report it to the developer.', false)
+            return;
+        }
+        if (isDataChanged) {
+            const changedData = changes.filter(data => data.hasChanged)
 
-                for (let i = 0; i < changedData.length; i++) {
-                    let module = changedData[i].cid.split('_')[0];
-                    if (module === 'wc') module = 'welcome_channel';
-
-                    let type = changedData[i].cid.split('_')[1];
-
-                    let settings = changedData[i].NewValue;
-
-                    if (type == 'color') settings = settings.replace('#', '');
-
-                    let guild_id = changedData[i].cid.split('_')[2];
-
-                    changedData[i].hasChanged = false;
-
-                    const request = new XMLHttpRequest();
-
-                    request.onreadystatechange = function () {
-                        if (this.status === 200) {
-                            new Notification('Settings saved', true).show();
-                        }
-                    }
-                    request.open('POST', `/api/change/${module}/${settings}/${type}/${guild_id}`);
-                    request.setRequestHeader('Content-Type', 'application/json');
-                    request.setRequestHeader('Referrer-Policy', 'same-origin');
-                    request.send();
-
-                    await setTimeout(() => {
-                        return true
-                    }, 500)
-                }
+            if (changedData.length === 0) {
+                new Notification('Nothing has changed!', false).show();
+                return;
             }
-        })
+
+            for (let i = 0; i < changedData.length; i++) {
+                let module = changedData[i].cid.split('_')[0];
+                if (module === 'wc') module = 'welcome_channel';
+
+                let type = changedData[i].cid.split('_')[1];
+
+                let settings = changedData[i].NewValue;
+
+                if (type == 'color') settings = settings.replace('#', '');
+
+                let guild_id = document.body.dataset.guildid;
+
+                changedData[i].hasChanged = false;
+
+                const request = new XMLHttpRequest();
+
+                request.onreadystatechange = function () {
+                    if (this.status === 200) {
+                        new Notification('Settings saved', true).show();
+                    }
+                }
+                request.open('POST', `/api/change/${module}/${settings}/${type}/${guild_id}`);
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.setRequestHeader('Referrer-Policy', 'same-origin');
+                request.send();
+
+                await setTimeout(() => {
+                    return true
+                }, 500)
+            }
+        }
     });
 
 
@@ -57,6 +65,7 @@ window.addEventListener('load', function () {
     let oldJoinRoles = [];
 
     joinRoleSelected();
+
     function joinRoleSelected() {
         document.querySelectorAll('.joinrole_selected').forEach(div => {
             newJoinRoles = [];
