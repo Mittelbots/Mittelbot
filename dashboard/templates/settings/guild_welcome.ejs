@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <script src="https://blackdayz.de/js/changerjs" async defer></script>
+
 </head>
 
 <body data-guildId="<%= guild.id %>">
@@ -210,9 +210,26 @@
                                                     </div>
                                                 </small>
                                             </div>
+
+                                            <div class="ms-3 mt-5">
+                                                <strong class="fs-2 d-block lh-1 mb-1 text-gray-600">Channel</strong>
+                                                <small class="text-uppercase text-gray-500 small d-block lh-1 mb-3">
+                                                    <span class="mb-2">Where does the message will be sent in.</span>
+                                                    <select class="form-select ChangerJSInput" aria-label="Default select example"
+                                                        id="wc_channel_select">
+                                                        <option selected disabled>Select a channel</option>
+                                                        <% var all_channels = guild.channels.cache%>
+                                                        <% all_channels.forEach((channel) => { %>
+                                                        <option value="<%= channel.id %>"
+                                                            <%= (settings.config.settings.welcome_channel) ? (all_channels.filter(c => c === channel.id).length !== 0) ? 'disabled' : '' : ''%>>
+                                                            <%= channel.name %></option>
+                                                        <%  })%>
+                                                    </select>
+                                                </small>
+                                            </div>
                                         </div>
-                                        <button type="button" class="btn btn-success" style="float:right; width: 100px"
-                                            id="wc_save">Save</button>
+                                        <button type="button" data-cjclick="true" class="btn btn-success"
+                                            style="float:right; width: 100px" id="wc_save">Save</button>
                                     </div>
                                 </div>
                             </div>

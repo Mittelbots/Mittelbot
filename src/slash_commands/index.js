@@ -9,7 +9,7 @@ module.exports.handleSlashCommands = async ({
 }) => {
 
     let moderation = ['ban', 'infractions', 'isbanned', 'kick', 'mute', 'unban', 'unmute', 'purge', 'warn'];
-    let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs'];
+    let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny'];
     let admin = ['modules', 'scam', 'autotranslate', 'settings', 'apply', 'levelsettings', 'automod'];
     let level = ['rank', 'leaderboard', 'givexp', 'removexp'];
     let utils = ['afk'];
