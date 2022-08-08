@@ -402,16 +402,6 @@
 
             "_DELETE": ["levelup"]
         },
-        "_guild_joinroles": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
-            },
-            "role_id": {
-                "name": "role_id",
-                "val": "VARCHAR(255)"
-            }
-        },
         "_guild_logs": {
             "id": {
                 "name": "id",
