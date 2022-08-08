@@ -84,17 +84,6 @@ module.exports.updateReactionRoles = async ({
             return reject('❌ You can only have up to 5 reaction roles.');
         }
 
-        await message.reactions.removeAll().catch(() => {
-            return reject(`❌ I dont have permissions to remove the reactions from the message.`);
-        })
-
-        for (let i = 0; i < length; i++) {
-            message.react(`${emojis[i]}`)
-                .catch(() => {
-                    return reject('❌ I do not have the permission to react to this message');
-                })
-        }
-
         if (reactionroles.length > 0) {
             for (let i in reactionroles) {
                 if (reactionroles[i].messageId == messageId) {
@@ -103,22 +92,38 @@ module.exports.updateReactionRoles = async ({
             }
         }
 
-        console.log(reactionroles);
+        const newReactionRoles = {
+            messageId: messageId,
+            channel: channel,
+            roles: []
+        }
 
         for (let i in roles) {
-            reactionroles.push({
+            newReactionRoles.roles.push({
                 role: roles[i],
                 emoji: (isNaN(emojis[i])) ? emojis[i].codePointAt(0) : emojis[i],
-                channel: channel,
-                messageId: messageId
             });
         }
+
+        reactionroles.push(newReactionRoles);
 
         return await updateGuildConfig({
             guild_id,
             value: JSON.stringify(reactionroles),
             valueName: 'reactionroles'
-        }).then(res => {
+        }).then(async res => {
+
+            await message.reactions.removeAll().catch(() => {
+                return reject(`❌ I dont have permissions to remove the reactions from the message.`);
+            })
+    
+            for (let i = 0; i < length; i++) {
+                await message.react(`${emojis[i]}`)
+                    .catch(() => {
+                        return reject('❌ I do not have the permission to react to this message');
+                    })
+            }
+
             resolve(`✅ The reaction roles have been updated.`);
         }).catch(err => {
             reject(`❌ There was an error updating the reaction roles.`);
@@ -157,20 +162,29 @@ module.exports.handleAddedReactions = async ({
     if (!reactionroles) return;
 
     for (let i in reactionroles) {
-        if (reactionroles[i].channel === reaction.message.channelId && reactionroles[i].messageId === reaction.message.id) {
+        if (reactionroles[i].messageId === reaction.message.id) {
 
-            let emoji = String.fromCodePoint(reactionroles[i].emoji);
-            if(!emoji) emoji = reactionroles[i].emoji;
-            
-            if (emoji === reaction.emoji.id || emoji === reaction.emoji.name) {
-                if (guild.roles.cache.find(role => role.id === reactionroles[i].role)) {
-                    if (remove) {
-                        return guild.members.cache.get(user.id).roles.remove(reactionroles[i].role).catch(err => {});
-                    } else {
-                        return guild.members.cache.get(user.id).roles.add(reactionroles[i].role).catch(err => {});
+            for(let e in reactionroles[i].roles) {
+                var emoji;
+                try {
+                    emoji = String.fromCodePoint(reactionroles[i].roles[e].emoji);
+                }catch(err) {
+                    emoji = reactionroles[i].roles[e].emoji;
+                }
+
+                
+                if (emoji === reaction.emoji.id || emoji === reaction.emoji.name) {
+                    if (guild.roles.cache.find(role => role.id === reactionroles[i].roles[e].role)) {
+                        if (remove) {
+                            return guild.members.cache.get(user.id).roles.remove(reactionroles[i].roles[e].role).catch(err => {});
+                        } else {
+                            return guild.members.cache.get(user.id).roles.add(reactionroles[i].roles[e].role).catch(err => {});
+                        }
                     }
                 }
             }
+
+
         }
     }
 }
