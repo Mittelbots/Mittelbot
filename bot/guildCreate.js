@@ -8,6 +8,8 @@ const { delay } = require('../utils/functions/delay/delay');
 
 async function guildCreate(guild, bot) {
 
+  errorhandler({fatal: false, message: ` I joined a new Guild: ${guild.name} (${guild.id})`});
+
   await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).then(async res => {
     if (res.length <= 0) await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
   });

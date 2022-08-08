@@ -434,81 +434,81 @@
                 "name": "whitelist",
                 "val": "LONGTEXT"
             }
+        },
+        "_guild_member_info": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "user_id": {
+                "name": "user_id",
+                "val": "VARCHAR(255)"
+            },
+            "member_roles": {
+                "name": "member_roles",
+                "val": "LONGTEXT"
+            },
+            "user_joined": {
+                "name": "user_joined",
+                "val": "VARCHAR(255)"
+            }
+        },
+        "_guild_modroles": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "role_id": {
+                "name": "role_id",
+                "val": "VARCHAR(255)"
+            },
+            "isadmin": {
+                "name": "isadmin",
+                "val": "INT(4)"
+            },
+            "ismod": {
+                "name": "ismod",
+                "val": "INT(4)"
+            },
+            "ishelper": {
+                "name": "ishelper",
+                "val": "INT(4)"
+            }
+        },
+        "_guild_warnroles": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "role_id": {
+                "name": "role_id",
+                "val": "VARCHAR(255)"
+            }
+        },
+        "_guild_level": {
+            "id": {
+                "name": "id",
+                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+            },
+            "xp": {
+                "name": "xp",
+                "val": "VARCHAR(255)"
+            },
+            "user_id": {
+                "name": "user_id",
+                "val": "VARCHAR(255)"
+            },
+            "level_announce": {
+                "name": "level_announce",
+                "val": "VARCHAR(255)",
+                "default": "0"
+            },
+            "message_count": {
+                "name": "message_count",
+                "val": "BIGINT(20)",
+                "default": "1"
+            },
+            "_DELETE": ["multiplier"]
         }
-    },
-    "_guild_member_info": {
-        "id": {
-            "name": "id",
-            "val": "INT AUTO_INCREMENT PRIMARY KEY"
-        },
-        "user_id": {
-            "name": "user_id",
-            "val": "VARCHAR(255)"
-        },
-        "member_roles": {
-            "name": "member_roles",
-            "val": "LONGTEXT"
-        },
-        "user_joined": {
-            "name": "user_joined",
-            "val": "VARCHAR(255)"
-        }
-    },
-    "_guild_modroles": {
-        "id": {
-            "name": "id",
-            "val": "INT AUTO_INCREMENT PRIMARY KEY"
-        },
-        "role_id": {
-            "name": "role_id",
-            "val": "VARCHAR(255)"
-        },
-        "isadmin": {
-            "name": "isadmin",
-            "val": "INT(4)"
-        },
-        "ismod": {
-            "name": "ismod",
-            "val": "INT(4)"
-        },
-        "ishelper": {
-            "name": "ishelper",
-            "val": "INT(4)"
-        }
-    },
-    "_guild_warnroles": {
-        "id": {
-            "name": "id",
-            "val": "INT AUTO_INCREMENT PRIMARY KEY"
-        },
-        "role_id": {
-            "name": "role_id",
-            "val": "VARCHAR(255)"
-        }
-    },
-    "_guild_level": {
-        "id": {
-            "name": "id",
-            "val": "INT AUTO_INCREMENT PRIMARY KEY"
-        },
-        "xp": {
-            "name": "xp",
-            "val": "VARCHAR(255)"
-        },
-        "user_id": {
-            "name": "user_id",
-            "val": "VARCHAR(255)"
-        },
-        "level_announce": {
-            "name": "level_announce",
-            "val": "VARCHAR(255)",
-            "default": "0"
-        },
-        "message_count": {
-            "name": "message_count",
-            "val": "BIGINT(20)",
-            "default": "1"
-        },
-        "_DELETE": ["multiplier"]
     }
 }
