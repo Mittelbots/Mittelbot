@@ -25,7 +25,7 @@ module.exports.updateReactionRoles = async ({
         }
 
         if (roles.length !== emojis.length) {
-            reject('❌ The number of roles and emojis must be equal');
+            return reject('❌ The number of roles and emojis must be equal');
         }
 
         const channel = message_link.split('/')[5];
@@ -33,7 +33,7 @@ module.exports.updateReactionRoles = async ({
 
         if (!channel || !messageId) {
             return reject('❌ The message link is not valid');
-        }
+        } 
 
         const message = await main_interaction.bot.guilds.cache.get(guild_id).channels.cache.get(channel).messages.fetch(messageId);
 
@@ -69,17 +69,6 @@ module.exports.updateReactionRoles = async ({
             }
         }
 
-        message.reactions.removeAll().catch(err => {
-            return reject(`❌ I dont have permissions to remove the reactions from the message.`);
-        })
-
-        for (let i = 0; i < length; i++) {
-            message.react(`${emojis[i]}`)
-                .catch(() => {
-                    return reject('❌ I do not have the permission to react to this message');
-                })
-        }
-
         const config = await getGuildConfig({
             guild_id
         });
@@ -91,20 +80,35 @@ module.exports.updateReactionRoles = async ({
 
         if (!reactionroles) reactionroles = [];
 
-        if (reactionroles.length > 0) {
+        if(reactionroles.length >= 5) {
+            return reject('❌ You can only have up to 5 reaction roles.');
+        }
 
+        await message.reactions.removeAll().catch(() => {
+            return reject(`❌ I dont have permissions to remove the reactions from the message.`);
+        })
+
+        for (let i = 0; i < length; i++) {
+            message.react(`${emojis[i]}`)
+                .catch(() => {
+                    return reject('❌ I do not have the permission to react to this message');
+                })
+        }
+
+        if (reactionroles.length > 0) {
             for (let i in reactionroles) {
-                if (reactionroles[i].channel === channel && reactionroles[i].message === messageId) {
+                if (reactionroles[i].messageId == messageId) {
                     reactionroles.splice(i, 1);
                 }
             }
-
         }
+
+        console.log(reactionroles);
 
         for (let i in roles) {
             reactionroles.push({
                 role: roles[i],
-                emoji: emojis[i],
+                emoji: (isNaN(emojis[i])) ? emojis[i].codePointAt(0) : emojis[i],
                 channel: channel,
                 messageId: messageId
             });
@@ -154,7 +158,11 @@ module.exports.handleAddedReactions = async ({
 
     for (let i in reactionroles) {
         if (reactionroles[i].channel === reaction.message.channelId && reactionroles[i].messageId === reaction.message.id) {
-            if (reactionroles[i].emoji === reaction.emoji.id) {
+
+            let emoji = String.fromCodePoint(reactionroles[i].emoji);
+            if(!emoji) emoji = reactionroles[i].emoji;
+            
+            if (emoji === reaction.emoji.id || emoji === reaction.emoji.name) {
                 if (guild.roles.cache.find(role => role.id === reactionroles[i].role)) {
                     if (remove) {
                         return guild.members.cache.get(user.id).roles.remove(reactionroles[i].role).catch(err => {});
