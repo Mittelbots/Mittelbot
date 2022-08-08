@@ -35,7 +35,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         }
         if(i >= 10) continue;
         lb_embed.addFields([
-            {name: `Rank: ${Number(i) + 1}`, value: `<@${leaderboard[i][0]}>\n**XP:** \`${leaderboard[i][1]}\` - **Level:** \`${Number(leaderboard[i][2]) + 1}\` - **Messages:** \`${leaderboard[i][3]}\` `}
+            {name: `Rank: ${Number(i) + 1}`, value: `<@${leaderboard[i][0]}>\n**XP:** \`${leaderboard[i][1]}\` - **Level:** \`${Number(leaderboard[i][2])}\` - **Messages:** \`${leaderboard[i][3]}\` `}
         ])
     }
 
