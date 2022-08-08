@@ -472,10 +472,14 @@ module.exports.generateLevelConfig = function ({
         }
 
         let multiplier = 0.005;
-        for (let i = 1; i <= lvl_count; i++) {
+        let top_multiplier = 1;
+
+        let prev;
+
+        for (let i = 0; i <= lvl_count; i++) {
             const obj = {
                 level: i,
-                xp: Math.round(xp + (lvl_multi * i) * (multiplier.toFixed(3) * 100)),
+                xp: Math.round(xp + (lvl_multi * top_multiplier.toFixed(3)) * (multiplier.toFixed(3) * 100)),
             }
             switch (mode) {
                 case 'easy':
@@ -492,6 +496,23 @@ module.exports.generateLevelConfig = function ({
                     break;
             }
             multiplier += 0.005;
+
+            if(i < 20) {
+                top_multiplier += 1;
+            }else {
+                if(mode == 'easy') {
+                    top_multiplier += 0.8;
+                }
+                if(mode == 'normal') {
+                    top_multiplier += 0.5;
+                }
+                if(mode == 'hard') {
+                    top_multiplier += 0.3;
+                }
+            }
+
+            errorhandler({err: [obj.level, obj.xp, 'multi '+multiplier.toFixed(3), 'top_multi '+top_multiplier.toFixed(3), 'diff '+(obj.xp - prev).toFixed(0)], fatal: false, message: 'Generating level config'})
+            prev = obj.xp;
         }
         fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', '', 'utf8');
         fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', JSON.stringify(config), 'utf8');

@@ -48,7 +48,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
         //let user = await guild.members.fetch(infraction.user_id);
         var publicOneInfractionMessage = new EmbedBuilder()
         //.setAuthor(`${user.user.username}${user.user.discriminator}`)
-        .addFields([{name: `${infraction.infraction_id} - ${type} **${infraction.till_date}**`, value: `Reason: **${infraction.reason}** \n From: <@${infraction.mod_id}>`}]);
+        .addFields([{name: `${infraction.infraction_id} - ${type} \nFrom: **${inf.start_date || `Uhm, i haven't found a start date :(`}** -> to **${infraction.till_date}**`, value: `Reason: **${infraction.reason}** \n Moderator: <@${infraction.mod_id}>`}]);
         
         return {
             error: false,
@@ -81,7 +81,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
                 fields: await Promise.all(
                     current.map(async inf => ({
                         name: `${inf.infraction_id} - ${inf.mute == 1 ? `${'Mute'}`: inf.kick == 1 ? `${'Kick'}` : inf.warn == 1 ? `${'Warn'}` : `${'Ban'}`}`,
-                        value: `Reason: ${inf.reason} \n ${inf.till_date ? `${`Till: ${inf.till_date}`}` : inf.mute == 1 ? `${'Till: Permanent'}` : inf.ban == 1 ? `${'Till: Permanent'}` : `${''}`}`
+                        value: `Reason: ${inf.reason} ${inf.warn == 0 ? `\nFrom **${inf.start_date || `Uhm, i haven't found a start date :(`}** -> to **${(inf.till_date) ? inf.till_date : (inf.mute == 1) ? 'Permanent' : (inf.ban == 1) ? 'Permanent' : ''}**` : '' }`
                     }))
                 )
             })
