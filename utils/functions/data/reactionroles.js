@@ -112,7 +112,6 @@ module.exports.updateReactionRoles = async ({
             value: JSON.stringify(reactionroles),
             valueName: 'reactionroles'
         }).then(async res => {
-
             await message.reactions.removeAll().catch(() => {
                 return reject(`❌ I dont have permissions to remove the reactions from the message.`);
             })

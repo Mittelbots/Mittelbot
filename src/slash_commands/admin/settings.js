@@ -372,6 +372,10 @@ module.exports.run = async ({
             const reactionroles = main_interaction.options.getString('roles');
             const emojis = main_interaction.options.getString('emojis');
 
+            main_interaction.deferReply({
+                ephemeral: true
+            });
+
             updateReactionRoles({
                 guild_id: main_interaction.guild.id,
                 message_link,
@@ -379,12 +383,12 @@ module.exports.run = async ({
                 emojis,
                 main_interaction
             }).then(res => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: res,
                     ephemeral: true
                 }).catch(err => {})
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: err,
                     ephemeral: true
                 }).catch(err => {});
