@@ -87,7 +87,7 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
                 });
                 await removeDataFromOpenInfractions(res[0].infraction_id);
 
-                if(config.debug == 'true') console.info('Unmute Command passed!')
+                errorhandler({fatal: false, message: `${mod.id} has triggered the unmute command in ${guild.id}`});
                 
             }
         }).catch(err => {

@@ -15,7 +15,7 @@ async function isMod({member, guild}) {
         }
         return isMod;
     }).catch(err => {
-        errorhandler({err, fatal:true});
+        errorhandler({err});
         return true;
     })
 }

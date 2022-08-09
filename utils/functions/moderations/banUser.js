@@ -53,7 +53,7 @@ async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
         setNewModLogMessage(bot, config.defaultModTypes.ban, mod.id, user.user || user, reason, time, guild.id);        
         const p_response = await publicModResponses(config.defaultModTypes.ban, mod, user.id || user, reason, time, bot);
 
-        if (config.debug == 'true') console.info('Ban Command passed!');
+        errorhandler({fatal: false, message: `${mod.id} has triggered the ban command in ${guild.id}`});
 
         return p_response;
     }

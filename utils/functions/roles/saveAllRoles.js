@@ -1,10 +1,7 @@
 const database = require('../../../src/db/db');
-const config = require('../../../src/assets/json/_config/config.json');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
-
-
-async function saveAllRoles(roles, member, log, guild_id) {
+async function saveAllRoles(roles, member, guild_id) {
     await database.query(`SELECT id FROM ${guild_id.id}_guild_member_info WHERE user_id = ?`, [member.id])
         .then(async res => {
             if(res.length === 0) {

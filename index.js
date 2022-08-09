@@ -10,7 +10,7 @@ const {
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
 const version = require('./package.json').version;
-if (config.debug == 'true') var activity = require('./src/assets/json/_config/activity_dev.json');
+if (config.debug) var activity = require('./src/assets/json/_config/activity_dev.json');
 else var activity = require('./src/assets/json/_config/activity_prod.json');
 
 const {

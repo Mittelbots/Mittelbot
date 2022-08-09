@@ -84,12 +84,14 @@ async function hasPermission({
                 userHasRole = user.roles.cache.find(r => r.id === role_id);
             }
         } catch (e) {
+            errorhandler({err, fatal: false, message: `${user.id} has tried a command with no permission in ${guild_id}`});
             return false;
         }
 
         if (userHasRole) {
             if (adminOnly && userHasRole && (ismod == 1 || ishelper == 1)) return false;
             if (modOnly && userHasRole && ishelper == 1) {
+                errorhandler({fatal: false, message: `${user.id} has tried a command with no permission in ${guild_id}`});
                 return false
             };
             if (!isadmin && !ismod && !ishelper) return false;
@@ -97,6 +99,7 @@ async function hasPermission({
                 return true;
             }
         } else {
+            errorhandler({fatal: false, message: `${user.id} has tried a command with no permission in ${guild_id}`});
             return false;
         }
     }

@@ -28,7 +28,7 @@ async function warnUser({bot, user, mod, guild, reason}) {
             infraction_id: await createInfractionId()
         });
             
-        if(config.debug == 'true') console.info('Warn Command passed!');
+        errorhandler({fatal: false, message: `${mod.id} has triggered the warn command in ${guild.id}`});
 
         return p_response;
     }

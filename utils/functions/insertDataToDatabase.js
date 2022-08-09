@@ -19,7 +19,7 @@ async function insertPermsToModroles(guild_id, role_id, isadmin, ismod, ishelper
 
     database.query(`INSERT INTO ${guild_id}_guild_modroles (role_id, isadmin, ismod, ishelper) VALUES (?, ?, ?, ?)`, [role_id, isadmin, ismod, ishelper])
     .catch(err => {
-        return errorhandler({err, fatal: true});
+        return errorhandler({err});
     });
     return;
 }
@@ -36,7 +36,7 @@ async function updatePermsFromModroles(guild_id, role_id, isadmin, ismod, ishelp
 
     database.query(`UPDATE ${guild_id}_guild_modroles SET isadmin = ?, ismod = ?, ishelper = ? WHERE role_id = ?`, [isadmin, ismod, ishelper, role_id])
     .catch(err => {
-        return errorhandler({err, fatal: true});
+        return errorhandler({err});
     });
     return;
 }
@@ -49,7 +49,7 @@ async function deletePermsFromModroles(guild_id, role_id) {
     })
     database.query(`DELETE FROM ${guild_id}_guild_modroles WHERE role_id = ?`, [role_id])
     .catch(err => {
-        return errorhandler({err, fatal: true});
+        return errorhandler({err});
     });
     return;
 }
