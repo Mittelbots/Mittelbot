@@ -2,9 +2,9 @@ const { log, debug_log } = require("../../../logs");
 const config = require('../../../src/assets/json/_config/config.json');
 
 function errorhandler({err = '', message = '', channel = null, fatal = true}) {
-    if(config.debug == 'true') console.log(err);
+    if(config.debug) console.log(err, message);
 
-    else if(fatal && log) log.fatal(err);
+    else if(fatal && log) log.fatal(err, message);
 
     else if(!fatal) debug_log.info(err, `Message/Info: ${message}`);
 

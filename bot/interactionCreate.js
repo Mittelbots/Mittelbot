@@ -15,6 +15,7 @@ const { InteractionType } = require("discord.js");
 const { manageScam } = require("../utils/functions/data/scam");
 const { handlerAFKInput } = require("../utils/functions/data/afk");
 const { getGlobalConfig } = require("../utils/functions/data/ignoreMode");
+const { errorhandler } = require("../utils/functions/errorhandler/errorhandler");
 
 const defaultCooldown = new Set();
 
@@ -44,6 +45,9 @@ module.exports.interactionCreate = ({
         if (main_interaction.type === InteractionType.ApplicationCommand) {
             if (main_interaction.user.id !== config.Bot_Owner_ID) {
                 if (defaultCooldown.has(main_interaction.user.id)) {
+
+                    errorhandler({fatal: false, message: `${main_interaction.user.username} is on slash command cooldown.`});
+
                     return main_interaction.reply({
                         content: `You have to wait ${cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`,
                         ephemeral: true
@@ -71,8 +75,7 @@ module.exports.interactionCreate = ({
         } else if(main_interaction.type === InteractionType.ModalSubmit) {
             if(main_interaction.customId == 'afk_modal') {
                 handlerAFKInput({main_interaction})
-            }
-            
+            }  
         }
         else {
             switch (main_interaction.customId) {

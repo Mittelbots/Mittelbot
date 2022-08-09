@@ -97,6 +97,7 @@ async function guildMemberAdd(member, bot) {
                 return  
             }
         })
+        errorhandler({err: null, fatal: false, message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`})
     }
 }
 

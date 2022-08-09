@@ -21,6 +21,7 @@ const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { getAutomodbyGuild } = require('../utils/functions/data/automod');
 const { checkAFK } = require('../utils/functions/data/afk');
+const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 
 const defaultCooldown = new Set();
 
@@ -34,10 +35,16 @@ async function messageCreate(message, bot) {
     const setting = await getAutomodbyGuild(message.guild.id)
 
     const isSpam = await antiSpam(setting, message, bot);
-    if(isSpam) return;
+    if(isSpam) {
+        errorhandler({fatal: false, message: `${main_interaction.user.id} has spammed in ${main_interaction.guild.id}.`});
+        return;
+    };
 
     const isInvite = await antiInvite(setting, message, bot);
-    if(isInvite) return;
+    if(isInvite) {
+        errorhandler({fatal: false, message: `${main_interaction.user.id} has sent an invite in ${main_interaction.guild.id}.`});
+        return;
+    };
 
     var {disabled_modules} = await getConfig({
         guild_id: message.guild.id,
@@ -56,7 +63,8 @@ async function messageCreate(message, bot) {
     });
 
     if (!guild_config) {
-        return await message.channel.send(config.errormessages.general)
+        errorhandler({err, message: `${main_interaction.guild.id} dont have any config.`});
+        return message.channel.send(config.errormessages.general)
             .then(async msg => {
                 await delay(5000);
                 msg.delete().catch(err => {});

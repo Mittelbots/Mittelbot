@@ -6,9 +6,6 @@ const {
     privateModResponse
 } = require('../../utils/privatResponses/privateModResponses');
 const {
-    log
-} = require('../../logs');
-const {
     giveAllRoles
 } = require('../../utils/functions/roles/giveAllRoles');
 const {
@@ -105,7 +102,7 @@ function checkInfractions(bot) {
 
                         await giveAllRoles(results[i].user_id, bot.guilds.cache.get(results[i].guild_id), JSON.parse(results[i].user_roles), bot);
 
-                        await saveAllRoles(JSON.parse(results[i].user_roles), bot.users.cache.get(results[i].user_id), log, bot.guilds.cache.get(results[i].guild_id));
+                        await saveAllRoles(JSON.parse(results[i].user_roles), bot.users.cache.get(results[i].user_id), bot.guilds.cache.get(results[i].guild_id));
 
                         await setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user, 'Auto', null, results[i].guild_id);
 
