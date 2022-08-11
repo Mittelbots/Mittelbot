@@ -10,7 +10,7 @@ const {
     spawn
 } = require('child_process');
 const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
-const { startUpCache } = require('../../../utils/functions/cache/startUpCache');
+const { startUpCache, resetCache } = require('../../../utils/functions/cache/startUpCache');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { updateGlobalConfig } = require('../../../utils/functions/data/ignoreMode');
@@ -79,11 +79,22 @@ module.exports.run = async ({
                 break;
 
             case 'cacherefresh':
-                await startUpCache();
-                main_interaction.followUp({
-                    content: '✅ Successfully refreshed',
-                    ephemeral: true
-                }).catch(err => {})
+                await resetCache()
+                .then(async () => {
+                    await startUpCache();
+                    main_interaction.followUp({
+                        content: '✅ Successfully refreshed',
+                        ephemeral: true
+                    }).catch(err => {})
+                })
+                .catch(err => {
+                    main_interaction.followUp({
+                        content: err,
+                        ephemeral: true
+                    }).catch(err => {});
+                })
+                
+
                 break;
 
             case 'ignoremode':
