@@ -22,6 +22,7 @@ const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation
 const { getAutomodbyGuild } = require('../utils/functions/data/automod');
 const { checkAFK } = require('../utils/functions/data/afk');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
+const { getMemberInfoById } = require('../utils/functions/data/getMemberInfo');
 
 const defaultCooldown = new Set();
 
