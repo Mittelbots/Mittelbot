@@ -8,7 +8,6 @@ const database = require('../src/db/db');
 const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/data/getMemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
 const { getConfig, getGuildConfig } = require("../utils/functions/data/getConfig");
-const { getCurrentDate } = require("../utils/functions/getCurrentDate");
 
 async function guildMemberAdd(member, bot) {
 

@@ -91,7 +91,7 @@ module.exports.updateMemberInfoById = async ({
     member_roles,
     user_joined
 }) => {
-    console.log(user_id + ' 1234')
+
     let args = [];
     if (member_roles) {
         args.push(member_roles);
@@ -104,7 +104,6 @@ module.exports.updateMemberInfoById = async ({
 
     return await database.query(`UPDATE member_info SET ${member_roles ? 'member_roles = ?' : ''} ${(member_roles && user_joined) ? ', ': ''} ${user_joined ? 'user_joined = ?' : ''} WHERE user_id = ? AND guild_id = ?`, [...args])
         .then((res) => {
-            console.log(res)
             for (let i in memberInfo) {
                 if (memberInfo[i].user_id === user_id && memberInfo[i].guild_id === guild_id) {
                     (member_roles) ? memberInfo[i].member_roles = member_roles : '';

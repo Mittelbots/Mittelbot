@@ -8,7 +8,6 @@ module.exports.guildMemberRemove = async ({member}) => {
   });
 
   const allRoles = getAllRoles(member);
-  console.log(member_info);
 
   if(!member_info) {
     await insertMemberInfo({
