@@ -32,7 +32,7 @@ async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
             })
             .then(() => pass = true)
             .catch(err => {
-                errorhandler({err, fatal: false});
+                errorhandler({err, fatal: false, message: `User-ID: ${user.id}`});
                 return {
                     error: true,
                     message: config.errormessages.nopermissions.ban

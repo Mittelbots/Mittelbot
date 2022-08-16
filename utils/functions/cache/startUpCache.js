@@ -60,6 +60,7 @@ const {
 const {
     errorhandler
 } = require("../errorhandler/errorhandler");
+const axios = require('axios');
 
 module.exports.startUpCache = async () => {
 
@@ -77,7 +78,7 @@ module.exports.startUpCache = async () => {
     const guildWarnRoles = await getAllWarnroles();
     const guildApplyForms = await getAllForms();
     const guildAutoMod = await getAllAutoMod();
-    const scamList = await getScamList();
+    const scamListData = await getScamList();
     const guildConfig = await getAllGuildConfig();
     const openInfractions = await getAllOpenInfractions();
     const closedInfractions = await getAllClosedInfractions();
@@ -215,7 +216,7 @@ module.exports.startUpCache = async () => {
             name: "scamList",
             id: 0,
             data: {
-                scamList: scamList || [],
+                scamList: scamListData || [],
             }
         }
     });
@@ -290,6 +291,23 @@ module.exports.startUpCache = async () => {
             data: globalConfig || [],
         }
     });
+
+    axios.get('https://discord-phishing-backend.herokuapp.com/all').then(async res => {
+        await addToCache({
+            value: {
+                name: "publicScamList",
+                id: 0,
+                data: {
+                    scamList: await res.data || []
+                },
+            }
+        })
+    }).catch(err => {
+        errorhandler({
+            err,
+            fatal: true
+        })
+    })
 
     console.info('✅ Cache init completed...');
     console.info('----------------------------------------');

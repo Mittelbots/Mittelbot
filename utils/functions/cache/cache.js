@@ -16,6 +16,7 @@ module.exports.temproles = [];
 module.exports.ytUploads = [];
 module.exports.twitchStreams = [];
 module.exports.globalConfig = [];
+module.exports.publicScamList = [];
 
 /**
  * 
