@@ -368,7 +368,7 @@ module.exports.run = async ({
             break;
 
         case 'reactionroles':
-            const message_link = main_interaction.options.getString('message_link');
+            const message_id = main_interaction.options.getString('message_id');
             const reactionroles = main_interaction.options.getString('roles');
             const emojis = main_interaction.options.getString('emojis');
 
@@ -378,7 +378,7 @@ module.exports.run = async ({
 
             updateReactionRoles({
                 guild_id: main_interaction.guild.id,
-                message_link,
+                message_id,
                 roles: reactionroles,
                 emojis,
                 main_interaction
@@ -692,8 +692,8 @@ module.exports.data = new SlashCommandBuilder()
         .setDescription('Add a reaction role to a message.')
         .addStringOption(messagelink =>
             messagelink
-            .setName('message_link')
-            .setDescription('Add the message link [https://discordapp.com/channels/XXXX/XXXX/XXXX]')
+            .setName('message_id')
+            .setDescription('Add the message id [Right-Click/Hold on the message -> Copy ID]')
             .setRequired(true)
         )
         .addStringOption(roles =>
@@ -706,7 +706,7 @@ module.exports.data = new SlashCommandBuilder()
         .addStringOption(emoji =>
             emoji
             .setName('emojis')
-            .setDescription('Add the emoji you want to add to the message. [:emoji: :emoji: :emoji:]')
+            .setDescription('Add the emoji you want to add to the message. [:emoji1: :emoji2: :emoji3:]')
             .setRequired(true)
         )
 
