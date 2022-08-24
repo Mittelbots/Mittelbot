@@ -108,7 +108,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         ])
         .setTimestamp();
 
-        if(config.debug == 'true') console.info('info command passed!')
+        if(config.debug) console.info('info command passed!')
     if(!tag) {
         return main_interaction.reply({
             embeds: [serverInfoEmbed],

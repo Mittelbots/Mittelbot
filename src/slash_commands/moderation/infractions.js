@@ -62,7 +62,7 @@ module.exports.run = async ({
                     ephemeral: true
                 }).catch(err => {});
             }
-            if (config.debug == 'true') console.info('Infraction Command passed!')
+            if (config.debug) console.info('Infraction Command passed!')
 
             await publicInfractionResponse({
                 member: user.id,

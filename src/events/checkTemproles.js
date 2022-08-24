@@ -66,7 +66,7 @@ module.exports.checkTemproles = async (bot) => {
                 } catch (err) {
                     // CAN'T FIND USER OR USER LEFT THE SERVER
                     done -= 1;
-                    if (config.debug == 'true') console.log(err);
+                    if (config.debug) console.log(err);
                 }
             }
         }
