@@ -53,7 +53,7 @@ module.exports.checkTemproles = async (bot) => {
         for (let i in results) {
             if (results[i].till_date == null) continue;
 
-            let currentdate = getCurrentDate();
+            let currentdate = getCurrentDate({timestamp: null});
             currentdate = currentdate.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
             results[i].till_date = await results[i].till_date.replace(',', '').replace(':', '').replace(' ', '').replace(':', '').replace('.', '').replace('.', '').replace('.', '');
             if ((currentdate - results[i].till_date) > 0 && currentdate[8] + currentdate[9] >= results[i].till_date[7] + results[i].till_date[7]) {
