@@ -23,15 +23,29 @@ const { getAutomodbyGuild } = require('../utils/functions/data/automod');
 const { checkAFK } = require('../utils/functions/data/afk');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { getMemberInfoById } = require('../utils/functions/data/getMemberInfo');
+const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
 
 const defaultCooldown = new Set();
 
 
 async function messageCreate(message, bot) {
 
+    if(isGuildBlacklist({guild_id: message.guild.id})) {
+        const guild = bot.guilds.cache.get(message.guild.id);
+
+        await bot.users.cache.get(guild.ownerId).send({
+            content: `Hello. I'm sorry but your server is on the blacklist and i'll leave your server again. If it's false please join the official discord support server. https://mittelbot.blackdayz.de/support.`
+          }).catch(err => {})
+      
+          errorhandler({fatal: false, message: ` I was in a BLACKLISTED Guild, but left after >messageCreate< : ${guild.name} (${guild.id})`});
+      
+          return guild.leave(); 
+    }
+
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
+
 
     const setting = await getAutomodbyGuild(message.guild.id)
 
