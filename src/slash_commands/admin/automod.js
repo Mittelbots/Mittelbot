@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { getAutomodbyGuild, updateAutoModbyGuild, isRoleOnWhitelist } = require("../../../utils/functions/data/automod");
+const { errorhandler } = require("../../../utils/functions/errorhandler/errorhandler");
 
 module.exports.run = async ({main_interaction, bot}) => {
 
@@ -37,6 +38,7 @@ module.exports.run = async ({main_interaction, bot}) => {
                 value: JSON.stringify(setting),
                 type: role
             }).then(res => {
+                errorhandler({fatal: false, message: `${main_interaction.guild.id} has been updated the automod config.`});
                 main_interaction.reply({
                     content: res,
                     ephemeral: true
@@ -67,6 +69,7 @@ module.exports.run = async ({main_interaction, bot}) => {
                 value: JSON.stringify(setting),
                 type: setting.antispam.action
             }).then(res => {
+                errorhandler({fatal: false, message: `${main_interaction.guild.id} has been updated the antispam config.`});
                 main_interaction.reply({
                     content: (setting.antispam.enabled) ? res : "✅ Successfully disabled antispam.",
                     ephemeral: true
@@ -95,6 +98,7 @@ module.exports.run = async ({main_interaction, bot}) => {
                     value: JSON.stringify(setting),
                     type: setting.antiinvite.action
                 }).then(res => {
+                    errorhandler({fatal: false, message: `${main_interaction.guild.id} has been updated the antiinvite config.`});
                     main_interaction.reply({
                         content: (setting.antiinvite.enabled) ? res : "✅ Successfully disabled Anti-invite.",
                         ephemeral: true

@@ -16,20 +16,14 @@ const {
     removeMention
 } = require('../../../utils/functions/removeCharacters');
 const {
-    insertPermsToModroles,
-    deletePermsFromModroles,
     updatePermsFromModroles
-} = require('../../../utils/functions/insertDataToDatabase');
+} = require('../../../utils/functions/data/modroles');
 const database = require('../../db/db');
 const {
-    getFromCache,
-    addToCache
-} = require('../../../utils/functions/cache/cache');
+    getGuildConfig
+} = require('../../../utils/functions/data/getConfig');
 
 module.exports.run = async (bot, message, args) => {
-    if (config.deleteModCommandsAfterUsage == 'true') {
-        message.delete().catch(err => {});
-    }
     if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
         message.delete().catch(err => {});
         return message.channel.send(`<@${message.author.id}> ${config.errormessages.nopermission}`).then(msg => {
@@ -63,48 +57,23 @@ module.exports.run = async (bot, message, args) => {
 
         var roleid;
 
-        var status = false;
-
         args[1] = removeMention(args[1])
 
-        const cache = await getFromCache({
-            cacheName: 'modroles',
-            param_id: message.guild.id
+        const config = await getGuildConfig({
+            guild_id: message.guild.id
         });
-
-        if (!cache) {
-            await addToCache({
-                value: {
-                    name: "joinroles",
-                    data: {
-                        id: message.guild.id,
-                        role_id: []
-                    }
-                }
-            });
-            await database.query(`SELECT * FROM ${message.guild.id}_guild_modroles WHERE role_id = ?`, [args[1]]).then(async res => {
-                if (await res.length > 0) {
-                    roleid = await res[0].role_id;
-                    db_isadmin = await res[0].isadmin
-                    db_ismod = await res[0].ismod
-                    db_ishelper = await res[0].ishelper
-                    status = true;
-                }
-            }).catch(err => {
-                return errorhandler({
-                    err,
-                    fatal: true
-                });
-            });
-        } else {
-            for (let i in cache[0].modroles) {
-                if (cache[0].modroles[i].role_id === args[1]) {
-                    roleid = cache[0].modroles[i].role_id;
-                    db_isadmin = cache[0].modroles[i].isadmin
-                    db_ismod = cache[0].modroles[i].ismod
-                    db_ishelper = cache[0].modroles[i].ishelper
-                    status = true;
-                }
+        var modroles;
+        try {
+            modroles = JSON.parse(config.settings.modroles);
+        } catch (e) {
+            modroles = config.settings.modroles;
+        }
+        for (let i in modroles) {
+            if (modroles[i].role === args[1]) {
+                roleid = modroles[i].role;
+                db_isadmin = modroles[i].isadmin
+                db_ismod = modroles[i].ismod
+                db_ishelper = modroles[i].ishelper
             }
         }
 
@@ -197,38 +166,70 @@ module.exports.run = async (bot, message, args) => {
         collector.on('collect', async interaction => {
             if (interaction.customId === isadmin) {
                 if (db_isadmin == 1) return;
-                if (status) {
-                    updatePermsFromModroles(message.guild.id, value, 1, 0, 0)
-                } else {
-                    insertPermsToModroles(message.guild.id, value, 1, 0, 0)
-                }
 
-                isAdminButton.setStyle(ButtonStyle.Success);
+                updatePermsFromModroles({
+                    guild_id: message.guild.id,
+                    role_id: value,
+                    isadmin: 1,
+                    ismod: 0,
+                    ishelper: 0
+                }).then(res => {
+                    isAdminButton.setStyle(ButtonStyle.Success);
+                    message.reply(res).catch(err => {})
+                }).catch(err => {
+                    isAdminButton.setStyle(ButtonStyle.Danger);
+                    message.reply(err).catch(err => {})
+                })
+
+
 
             } else if (interaction.customId === ismod) {
                 if (db_ismod == 1) return;
-                if (status) {
-                    updatePermsFromModroles(message.guild.id, value, 0, 1, 0)
-                } else {
-                    insertPermsToModroles(message.guild.id, value, 0, 1, 0)
-                }
 
-                isModButton.setStyle(ButtonStyle.Success);
+                updatePermsFromModroles({
+                    guild_id: message.guild.id,
+                    role_id: value,
+                    isadmin: 0,
+                    ismod: 1,
+                    ishelper: 0
+                }).then(res => {
+                    isModButton.setStyle(ButtonStyle.Success);
+                    message.reply(res).catch(err => {})
+                }).catch(err => {
+                    isModButton.setStyle(ButtonStyle.Danger);
+                    message.reply(err).catch(err => {})
+                })
 
             } else if (interaction.customId === ishelper) {
                 if (db_ishelper == 1) return;
-                if (status) {
-                    updatePermsFromModroles(message.guild.id, value, 0, 0, 1)
-                } else {
-                    insertPermsToModroles(message.guild.id, value, 0, 0, 1)
-                }
-
-                isHelperButton.setStyle(ButtonStyle.Success);
+                updatePermsFromModroles({
+                    guild_id: message.guild.id,
+                    role_id: value,
+                    isadmin: 0,
+                    ismod: 0,
+                    ishelper: 1
+                }).then(res => {
+                    isHelperButton.setStyle(ButtonStyle.Success);
+                    message.reply(res).catch(err => {})
+                }).catch(err => {
+                    isHelperButton.setStyle(ButtonStyle.Danger);
+                    message.reply(err).catch(err => {})
+                })
 
             } else {
-                deletePermsFromModroles(message.guild.id, value)
-
-                isRemoveButton.setStyle(ButtonStyle.Success);
+                updatePermsFromModroles({
+                    guild_id: message.guild.id,
+                    role_id: value,
+                    isadmin: 0,
+                    ismod: 0,
+                    ishelper: 0
+                }).then(res => {
+                    isRemoveButton.setStyle(ButtonStyle.Success);
+                    message.reply(res).catch(err => {})
+                }).catch(err => {
+                    isRemoveButton.setStyle(ButtonStyle.Danger);
+                    message.reply(err).catch(err => {})
+                })
             }
 
             isAdminButton.setDisabled(true)

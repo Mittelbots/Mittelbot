@@ -9,7 +9,7 @@ const {
 
 module.exports.updateReactionRoles = async ({
     guild_id,
-    message_link,
+    message_id,
     roles,
     emojis,
     main_interaction
@@ -28,8 +28,7 @@ module.exports.updateReactionRoles = async ({
             return reject('❌ The number of roles and emojis must be equal');
         }
 
-        const channel = message_link.split('/')[5];
-        const messageId = message_link.split('/')[6];
+        const messageId = message_id;
 
         if (!channel || !messageId) {
             return reject('❌ The message link is not valid');

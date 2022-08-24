@@ -6,8 +6,8 @@
     "DEVELOPER_DISCORD_GUILD_ID": "",
     "DISCORD_SECRET": "",
     "defaultprefix": "!",
-    "debug": "false",
-    "db_debug": "false",
+    "debug": false,
+    "db_debug": false,
     "ytkey": "",
     "twitter": {
         "consumer_key": "",

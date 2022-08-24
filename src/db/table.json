@@ -6,13 +6,12 @@
         "open_infractions",
         "temproles",
         "guild_uploads",
+        "guild_config",
         "_config",
         "_guild_joinroles",
         "_guild_logs",
-        "_guild_modroles",
         "_guild_warnroles",
-        "_guild_level",
-        "_guild_member_info"
+        "_guild_level"
     ],
     "nondynamical": {
         "advancedScamList": {
@@ -22,7 +21,7 @@
             },
             "link": {
                 "name": "link",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255) UNIQUE"
             },
             "blacklist": {
                 "name": "blacklist",
@@ -30,7 +29,7 @@
             },
             "whitelist_link": {
                 "name": "whitelist_link",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255) UNIQUE"
             },
             "request_link": {
                 "name": "request_link",
@@ -60,7 +59,7 @@
         "all_guild_id": {
             "guild_id": {
                 "name": "guild_id",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255) UNIQUE"
             }
         },
         "closed_infractions": {
@@ -237,7 +236,7 @@
             },
             "guild_id": {
                 "name": "guild_id",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255) UNIQUE"
             },
             "welcome_channel": {
                 "name": "welcome_channel",
@@ -261,6 +260,10 @@
             },
             "reactionroles": {
                 "name": "reactionroles",
+                "val": "LONGTEXT"
+            },
+            "modroles": {
+                "name": "modroles",
                 "val": "LONGTEXT"
             }
         },
@@ -318,11 +321,11 @@
             },
             "user_id": {
                 "name": "user_id",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255) UNIQUE"
             },
             "email": {
                 "name": "email",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255) UNIQUE"
             },
             "verified": {
                 "name": "verified",
@@ -425,46 +428,6 @@
                 "val": "LONGTEXT"
             }
         },
-        "_guild_member_info": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
-            },
-            "user_id": {
-                "name": "user_id",
-                "val": "VARCHAR(255)"
-            },
-            "member_roles": {
-                "name": "member_roles",
-                "val": "LONGTEXT"
-            },
-            "user_joined": {
-                "name": "user_joined",
-                "val": "VARCHAR(255)"
-            }
-        },
-        "_guild_modroles": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
-            },
-            "role_id": {
-                "name": "role_id",
-                "val": "VARCHAR(255)"
-            },
-            "isadmin": {
-                "name": "isadmin",
-                "val": "INT(4)"
-            },
-            "ismod": {
-                "name": "ismod",
-                "val": "INT(4)"
-            },
-            "ishelper": {
-                "name": "ishelper",
-                "val": "INT(4)"
-            }
-        },
         "_guild_warnroles": {
             "id": {
                 "name": "id",
@@ -497,8 +460,7 @@
                 "name": "message_count",
                 "val": "BIGINT(20)",
                 "default": "1"
-            },
-            "_DELETE": ["multiplier"]
+            }
         }
     }
 }

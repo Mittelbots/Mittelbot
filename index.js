@@ -10,7 +10,7 @@ const {
 const config = require('./src/assets/json/_config/config.json');
 const token = require('./_secret/token.json');
 const version = require('./package.json').version;
-if (config.debug == 'true') var activity = require('./src/assets/json/_config/activity_dev.json');
+if (config.debug) var activity = require('./src/assets/json/_config/activity_dev.json');
 else var activity = require('./src/assets/json/_config/activity_prod.json');
 
 const {
@@ -23,9 +23,6 @@ const {
   auditLog
 } = require("./utils/auditlog/auditlog");
 
-const {
-  log
-} = require('./logs');
 const {
   errorhandler
 } = require('./utils/functions/errorhandler/errorhandler');
@@ -82,19 +79,20 @@ const Dashboard = require("./dashboard/dashboard");
 const { handleAddedReactions } = require("./utils/functions/data/reactionroles");
 
 const bot = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildBans, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessageReactions],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
   makeCache: Options.cacheWithLimits({
     MessageManager: 10,
     PresenceManager: 0,
-    disableMentions: 'everyone'
+    GuildMemberManager: 10
     // Add more class names here
   }),
+  shards: 'auto'
 });
 bot.setMaxListeners(10);
 
 bot.on('guildCreate', async (guild) => {
-  return await guildCreate(guild, bot)
+  guildCreate(guild, bot)
 });
 
 bot.commands = new Collection();
@@ -104,25 +102,25 @@ bot.version = version;
 deployCommands(bot);
 createSlashCommands();
 
-bot.on('guildMemberAdd', async member => {
-  return await guildMemberAdd(member, bot)
+bot.on('guildMemberAdd', member => {
+  guildMemberAdd(member, bot)
 });
 
 
-bot.on('guildMemberRemove', async member => {
-  return await guildMemberRemove(member);
+bot.on('guildMemberRemove', member => {
+  guildMemberRemove({member});
 });
 
-bot.on("messageCreate", async message => {
-  return await messageCreate(message, bot);
+bot.on("messageCreate", message => {
+  messageCreate(message, bot);
 });
 
-bot.on('messageReactionAdd', async (reaction, user) => {
-    return await handleAddedReactions({ reaction, user, bot });
+bot.on('messageReactionAdd', (reaction, user) => {
+  handleAddedReactions({ reaction, user, bot });
 })
 
-bot.on('messageReactionRemove', async (reaction, user) => {
-  return await handleAddedReactions({ reaction, user, bot, remove: true });
+bot.on('messageReactionRemove', (reaction, user) => {
+  handleAddedReactions({ reaction, user, bot, remove: true });
 })
 
 process.on('unhandledRejection', async err => {
@@ -174,6 +172,11 @@ process.on('uncaughtException', async err => {
 
 
 bot.once('ready', async () => {
+  await bot.guilds.fetch().then(guilds => {
+    guilds.forEach(guild => {
+      bot.guilds.cache.get(guild.id).members.fetch();
+    });
+  })
 
   if (crashs.count > 30) {
     await sendEmailToOwner(crashs.err);

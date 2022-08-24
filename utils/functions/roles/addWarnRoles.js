@@ -15,6 +15,7 @@ module.exports.addWarnRoles = async ({user, inf_id, guild}) => {
                     if(!guild_user.roles.cache.has(role)) {
                         return await guild_user.roles.add([role])
                             .then(() => {
+                                errorhandler({fatal: false, message: `${user.id} has got a warn roles in ${guild.id}`});
                                 insertIntoTemproles(user.id, res[i].role_id, getFutureDate(2678400), inf_id, guild.id);
                                 return true;
                             })
@@ -42,7 +43,7 @@ module.exports.addWarnRoles = async ({user, inf_id, guild}) => {
             return true;
         }
     }).catch(err => {
-        errorhandler({err, fatal: true});
+        errorhandler({err});
         return {
             error: true,
             message: config.errormessages.general

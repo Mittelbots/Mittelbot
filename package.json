@@ -17,7 +17,8 @@
     "checkDatabase": "node _scripts/checkDatabase.js",
     "insertActiveCommands": "node _scripts/active_commands/insertCommandsInDatabase.js",
     "updateActiveCommands": "node _scripts/active_commands/updateCommandsInDatabase.js",
-    "install_bot": "mkdir _logs && npm i"
+    "install_bot": "mkdir _logs && npm i",
+    "transformDB": "node _scripts/transformData.js"
   },
   "nodemonConfig": {
     "ignore": [
@@ -27,18 +28,18 @@
   "author": "BlackDayz",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/rest": "^1.0.1",
+    "@discordjs/rest": "^1.1.0",
     "@gonetone/get-youtube-id-by-url": "^1.0.0",
-    "@napi-rs/canvas": "^0.1.26",
-    "@twurple/api": "^5.2.0",
-    "@twurple/auth": "^5.2.0",
+    "@napi-rs/canvas": "^0.1.28",
+    "@twurple/api": "^5.2.2",
+    "@twurple/auth": "^5.2.2",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
-    "canvacord": "5.4.3",
+    "canvacord": "5.4.6",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "discord-bettermarkdown": "^1.2.0",
-    "discord.js": "^14.1.2",
+    "discord.js": "^14.3.0",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
@@ -53,7 +54,7 @@
     "nconf": "^0.12.0",
     "node-notifier": "^10.0.1",
     "node-sloc": "^0.2.1",
-    "nodemailer": "^6.7.7",
+    "nodemailer": "^6.7.8",
     "os-utils": "^0.0.14",
     "passport": "^0.6.0",
     "path": "^0.12.7",
@@ -63,7 +64,7 @@
     "simple-youtube-api": "^5.2.1",
     "sloc": "0.2.1",
     "translatte": "^3.0.1",
-    "undici": "^5.8.1",
+    "undici": "^5.10.0",
     "uuid": "^8.3.2",
     "validator": "^13.7.0",
     "ytdl-core": "^4.11.0"

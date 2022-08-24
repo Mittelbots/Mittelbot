@@ -27,6 +27,7 @@ async function checkDatabase() {
         await database.query(`CREATE TABLE ${t} (id INT AUTO_INCREMENT PRIMARY KEY)`)
             .then(() => table_count++)
             .catch(err => {
+                if(err.code === "ER_TABLE_EXISTS_ERROR") return;
                 errorhandler({err, fatal: false});
             });
 
@@ -34,6 +35,7 @@ async function checkDatabase() {
             await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables.nondynamical[t][c].name} ${tables.nondynamical[t][c].val}`)
                 .then(() => col_count++)
                 .catch(err => {
+                    if(err.code === "ER_DUP_FIELDNAME") return
                     errorhandler({err, fatal: false});
                 });
 
@@ -57,6 +59,7 @@ async function checkDatabase() {
             await database.query(`CREATE TABLE ${guildids[g].guild_id}${t} (id INT AUTO_INCREMENT PRIMARY KEY)`)
                 .then(() => table_count++)
                 .catch(err => {
+                    if(err.code === "ER_TABLE_EXISTS_ERROR") return;
                     errorhandler({err, fatal: false});
                 });
 
@@ -66,6 +69,7 @@ async function checkDatabase() {
                         await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} DROP COLUMN ${tables.dynamical[t][c][delete_column]}`)
                             .then(() => del_col_count++)
                             .catch(err => {
+                                if(err.code === "ER_DUP_FIELDNAME") return
                                 errorhandler({err, fatal: false});
                             })
                         continue;
@@ -76,11 +80,24 @@ async function checkDatabase() {
                         col_count++;
                     })
                     .catch(err => {
+                        if(err.code === "ER_DUP_FIELDNAME") return
                         errorhandler({err, fatal: false});
                     });
             }
         }
+
+        //? INSERT INTO guild_config
+        await database.query(`INSERT IGNORE INTO guild_config (guild_id) VALUES (${guildids[g].guild_id})`)
+            .then(async () => {
+                insert_count++;
+            })
+            .catch(err => {
+                if(err.code === "ER_DUP_ENTRY") return;
+                errorhandler({err, fatal: false});
+            });
     }
+
+    
 
     console.info(`Main function passed! ${table_count} Tables and ${col_count} Columns created, ${del_col_count} Columns deleted and ${insert_count} values inserted!`)
 }
@@ -96,6 +113,7 @@ async function createTemplates() {
                 table_count++
             })
             .catch(err => {
+                if(err.code === "ER_TABLE_EXISTS_ERROR") return;
                 errorhandler({err, fatal: false});
             });
 
@@ -105,6 +123,7 @@ async function createTemplates() {
                     await database.query(`ALTER TABLE ${t}_template DROP COLUMN ${tables.dynamical[t][c][delete_column]}`)
                         .then(() => del_col_count++)
                         .catch(err => {
+                            if(err.code === "ER_DUP_FIELDNAME") return
                             errorhandler({err, fatal: false});
                         })
                 }
@@ -115,6 +134,7 @@ async function createTemplates() {
                     col_count++
                 })
                 .catch(err => {
+                    if(err.code === "ER_DUP_FIELDNAME") return
                     errorhandler({err, fatal: false});
                 });
         }

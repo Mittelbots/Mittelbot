@@ -17,7 +17,9 @@ const fs = require('fs');
 const levelConfig = require('./levelconfig.json');
 const levelSystem = require("./levelsystem");
 const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
-const { getGuildConfig } = require("../data/getConfig");
+const {
+    getGuildConfig
+} = require("../data/getConfig");
 
 
 var levelCooldown = [];
@@ -27,7 +29,10 @@ var levelCooldown = [];
  * @param {object} message 
  * @returns {int | boolean} currentXP
  */
-module.exports.gainXP = async function ({guild_id, user_id}) {
+module.exports.gainXP = async function ({
+    guild_id,
+    user_id
+}) {
     var cache = await getFromCache({
         cacheName: 'xp',
         param_id: guild_id,
@@ -84,13 +89,13 @@ module.exports.gainXP = async function ({guild_id, user_id}) {
 
         if (!user) {
 
-            try {       
-                for(let i in cache[0].xp) {
-                    if(cache[0].xp[i].xp.user_id === user_id) {
+            try {
+                for (let i in cache[0].xp) {
+                    if (cache[0].xp[i].xp.user_id === user_id) {
                         return cache[0].xp[i].xp.xp;
                     }
                 }
-            }catch(err) {}
+            } catch (err) {}
 
             database.query(`INSERT INTO ${guild_id}_guild_level (user_id, xp) VALUES (?, ?)`, [user_id, 10])
                 .then(async res => {
@@ -126,13 +131,17 @@ module.exports.generateXP = function (currentxp) {
     return newxp;
 }
 
-module.exports.updateXP = async function ({guild_id, user_id , newxp}) {
+module.exports.updateXP = async function ({
+    guild_id,
+    user_id,
+    newxp
+}) {
     return await database.query(`UPDATE ${guild_id}_guild_level SET xp = ?, message_count = message_count + 1 WHERE user_id = ?; SELECT message_count FROM ${guild_id}_guild_level WHERE user_id = ?`, [newxp, user_id, user_id])
         .then((res) => {
             for (let i in xp) {
                 if (xp[i].id === guild_id) {
                     for (let x in xp[i].xp) {
-                        if(xp[i].xp[x].user_id === user_id) {
+                        if (xp[i].xp[x].user_id === user_id) {
                             xp[i].xp[x].xp = newxp;
                             xp[i].xp[x].message_count = res[1][0].message_count;
                         }
@@ -198,17 +207,25 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
 
     var newLevelMessage = new EmbedBuilder()
         .setTitle('🎉 You reached a new Level!')
-        .addFields([
-            {name: `You reached Level: `, value: `**${newLevel}**`},
-            {name: `Your XP: `, value: `**${currentxp}**`},
-            {name: `Next Level: `, value: `**${nextlevel.level}**, required: **${nextlevel.xp} xp**`},
+        .addFields([{
+                name: `You reached Level: `,
+                value: `**${newLevel}**`
+            },
+            {
+                name: `Your XP: `,
+                value: `**${currentxp}**`
+            },
+            {
+                name: `Next Level: `,
+                value: `**${nextlevel.level}**, required: **${nextlevel.xp} xp**`
+            },
         ])
         .setTimestamp()
 
     try {
-        if(level_up_channel) {
-            if(level_up_channel === 'disable') return;
-            
+        if (level_up_channel) {
+            if (level_up_channel === 'disable') return;
+
             const channel = await message.guild.channels.cache.get(level_up_channel);
             channel.send({
                 content: `${message.author}`,
@@ -216,7 +233,7 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
             }).catch(err => {
                 return;
             });
-        }else {
+        } else {
             message.author.send({
                 embeds: [newLevelMessage]
             }).catch(err => {
@@ -336,9 +353,9 @@ module.exports.getLevelSettingsFromGuild = async (guildid) => {
 
 module.exports.getNextLevel = async function (levels, currentlevel) {
     var index = 1;
-    
-    for(let i in levels) {
-        if(levels[i].level === parseInt(currentlevel)) {
+
+    for (let i in levels) {
+        if (levels[i].level === parseInt(currentlevel)) {
             index = levels[i].level + 1
         }
     }
@@ -346,20 +363,23 @@ module.exports.getNextLevel = async function (levels, currentlevel) {
     return levels[index];
 }
 
-module.exports.getRankById = async ({user_id, guild_id}) => {
+module.exports.getRankById = async ({
+    user_id,
+    guild_id
+}) => {
     var cache = await getFromCache({
         cacheName: 'xp',
         param_id: guild_id,
     });
 
-    if(cache) {
+    if (cache) {
 
         const xp = cache[0].xp;
 
         var sorted = [];
 
-        for(let i in xp) {
-            if(typeof xp[i].xp == 'object') {
+        for (let i in xp) {
+            if (typeof xp[i].xp == 'object') {
                 let cachexp = xp[i].xp;
                 sorted.push([cachexp.user_id, cachexp.xp, cachexp.level_announce, cachexp.message_count]);
                 continue;
@@ -373,12 +393,12 @@ module.exports.getRankById = async ({user_id, guild_id}) => {
 
 
         var index;
-        for(let i in sorted) {
-            if(sorted[i][0] === user_id) {
+        for (let i in sorted) {
+            if (sorted[i][0] === user_id) {
                 index = Number(i) + 1;
             }
         }
-        
+
         return parseInt(index);
 
     }
@@ -392,13 +412,13 @@ module.exports.getRankByGuildId = async ({
         param_id: guild_id,
     });
 
-    if(cache) {
+    if (cache) {
         const xp = cache[0].xp;
 
         var sorted = [];
 
-        for(let i in xp) {
-            if(typeof xp[i].xp == 'object') {
+        for (let i in xp) {
+            if (typeof xp[i].xp == 'object') {
                 let cachexp = xp[i].xp;
                 sorted.push([cachexp.user_id, cachexp.xp, cachexp.level_announce, cachexp.message_count]);
                 continue;
@@ -497,21 +517,25 @@ module.exports.generateLevelConfig = function ({
             }
             multiplier += 0.005;
 
-            if(i < 20) {
+            if (i < 20) {
                 top_multiplier += 1;
-            }else {
-                if(mode == 'easy') {
+            } else {
+                if (mode == 'easy') {
                     top_multiplier += 0.8;
                 }
-                if(mode == 'normal') {
+                if (mode == 'normal') {
                     top_multiplier += 0.5;
                 }
-                if(mode == 'hard') {
+                if (mode == 'hard') {
                     top_multiplier += 0.3;
                 }
             }
 
-            errorhandler({err: [obj.level, obj.xp, 'multi '+multiplier.toFixed(3), 'top_multi '+top_multiplier.toFixed(3), 'diff '+(obj.xp - prev).toFixed(0)], fatal: false, message: 'Generating level config'})
+            errorhandler({
+                err: [obj.level, obj.xp, 'multi ' + multiplier.toFixed(3), 'top_multi ' + top_multiplier.toFixed(3), 'diff ' + (obj.xp - prev).toFixed(0)],
+                fatal: false,
+                message: 'Generating level config'
+            })
             prev = obj.xp;
         }
         fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', '', 'utf8');
@@ -534,9 +558,11 @@ module.exports.levelCooldown = async ({
     var index = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
 
     if (index === -1) {
-        const {error} = await levelSystem.run(message, bot);
+        const {
+            error
+        } = await levelSystem.run(message, bot);
 
-        if(error == "blacklist") return;
+        if (error == "blacklist") return;
 
         levelCooldown.push(obj);
 
@@ -552,7 +578,7 @@ module.exports.changeLevelUp = async ({
     channel
 }) => {
     return new Promise((resolve, reject) => {
-        if(type === 'dm' || type === 'disable') {
+        if (type === 'dm' || type === 'disable') {
             return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [(type === 'dm') ? null : 'disable', guild.id])
                 .then(() => {
                     return resolve(`✅ Successfully update the levelup type to ${(type === 'dm') ? '**DM**' : '**disabled**'}`)
@@ -565,9 +591,9 @@ module.exports.changeLevelUp = async ({
                     return reject(`❌ Something went wrong while updating the config. Please contact the bot support.`)
                 })
 
-        }else {
+        } else {
 
-            if(!channel) {
+            if (!channel) {
                 return reject(`❌ You didn't pass any channel. Please add a channel if you select \`Text Channel\`.`);
             }
 
@@ -604,13 +630,13 @@ module.exports.checkBlacklistChannels = async ({
 
     var blacklistchannels;
 
-    if(cache.length > 0) {
+    if (cache.length > 0) {
         try {
             blacklistchannels = JSON.parse(cache[0].settings.levelsettings).blacklistchannels;
-        }catch(err) {
+        } catch (err) {
             blacklistchannels = [];
         }
-    }else {
+    } else {
         const settings = await getGuildConfig({
             guild: message.guild.id
         })
@@ -618,19 +644,22 @@ module.exports.checkBlacklistChannels = async ({
         let levelsettings
         try {
             levelsettings = JSON.parse(settings.levelsettings);
-        }catch(err) {
+        } catch (err) {
             levelsettings = {};
         }
 
-        if(levelsettings && levelsettings.length > 0) {
+        if (levelsettings && levelsettings.length > 0) {
             blacklistchannels = levelsettings.levelsettings.blacklistchannels;
         }
-        
+
 
     }
-
-    if(blacklistchannels.includes(message.channel.id) || blacklistchannels.includes(message.channel.parentId)) {
-        return true;
+    if (blacklistchannels) {
+        if (blacklistchannels.includes(message.channel.id) || blacklistchannels.includes(message.channel.parentId)) {
+            return true;
+        } else {
+            return false;
+        }
     }else {
         return false;
     }

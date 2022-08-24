@@ -53,7 +53,7 @@ async function unbanUser({user, mod, guild, reason, bot}) {
         setNewModLogMessage(bot, config.defaultModTypes.unban, mod.id, user, reason, null, guild.id);
         const p_response = publicModResponses(config.defaultModTypes.unban, mod.id, user, reason, null, bot);
 
-        if(config.debug == 'true') console.info('Ban Command passed!')
+        errorhandler({fatal: false, message: `${main_interaction.user.id} has triggered the unban command in ${guild.id}`});
 
         return p_response;
     }

@@ -4,9 +4,19 @@ const {
   errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
 const { delay } = require('../utils/functions/delay/delay');
-
+const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
 
 async function guildCreate(guild, bot) {
+
+  if(isGuildBlacklist({guild_id: guild.id})) {
+    await bot.users.cache.get(guild.ownerId).send({
+      content: `Hello. I'm sorry but your server is on the blacklist and i'll leave your server again. If it's false please join the official discord support server. https://mittelbot.blackdayz.de/support.`
+    }).catch(err => {})
+
+    errorhandler({fatal: false, message: ` I joined a BLACKLISTED Guild: ${guild.name} (${guild.id})`});
+
+    return guild.leave();
+  }
 
   errorhandler({fatal: false, message: ` I joined a new Guild: ${guild.name} (${guild.id})`});
 

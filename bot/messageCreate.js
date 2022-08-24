@@ -21,23 +21,45 @@ const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { getAutomodbyGuild } = require('../utils/functions/data/automod');
 const { checkAFK } = require('../utils/functions/data/afk');
+const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
+const { getMemberInfoById } = require('../utils/functions/data/getMemberInfo');
+const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
 
 const defaultCooldown = new Set();
 
 
 async function messageCreate(message, bot) {
 
+    if(isGuildBlacklist({guild_id: message.guild.id})) {
+        const guild = bot.guilds.cache.get(message.guild.id);
+
+        await bot.users.cache.get(guild.ownerId).send({
+            content: `Hello. I'm sorry but your server is on the blacklist and i'll leave your server again. If it's false please join the official discord support server. https://mittelbot.blackdayz.de/support.`
+          }).catch(err => {})
+      
+          errorhandler({fatal: false, message: ` I was in a BLACKLISTED Guild, but left after >messageCreate< : ${guild.name} (${guild.id})`});
+      
+          return guild.leave(); 
+    }
+
     if (message.author.bot) return;
     if (message.channel.type === "dm") return;
     if (message.author.system) return;
 
+
     const setting = await getAutomodbyGuild(message.guild.id)
 
     const isSpam = await antiSpam(setting, message, bot);
-    if(isSpam) return;
+    if(isSpam) {
+        errorhandler({fatal: false, message: `${main_interaction.user.id} has spammed in ${main_interaction.guild.id}.`});
+        return;
+    };
 
     const isInvite = await antiInvite(setting, message, bot);
-    if(isInvite) return;
+    if(isInvite) {
+        errorhandler({fatal: false, message: `${main_interaction.user.id} has sent an invite in ${main_interaction.guild.id}.`});
+        return;
+    };
 
     var {disabled_modules} = await getConfig({
         guild_id: message.guild.id,
@@ -56,7 +78,8 @@ async function messageCreate(message, bot) {
     });
 
     if (!guild_config) {
-        return await message.channel.send(config.errormessages.general)
+        errorhandler({err, message: `${main_interaction.guild.id} dont have any config.`});
+        return message.channel.send(config.errormessages.general)
             .then(async msg => {
                 await delay(5000);
                 msg.delete().catch(err => {});
@@ -107,7 +130,7 @@ async function messageCreate(message, bot) {
         if(disabled_modules.indexOf('utils') === -1) {
             const isAFK = checkAFK({message});
             if(isAFK) {
-                return message.reply(`${message.author} is currently afk.\`Reason: ${isAFK.reason}\` Since: <t:${isAFK.time}:R>`)
+                return message.reply(`The user is currently afk.\`Reason: ${isAFK.reason}\` Since: <t:${isAFK.time}:R>`)
                 .then(async msg => {
                     await delay(8000);
                     msg.delete().catch(err => {});

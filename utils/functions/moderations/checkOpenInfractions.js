@@ -42,7 +42,7 @@ async function isMuted({user, guild, bot}) {
             }
         }
     }).catch(err => {
-        errorhandler({err, fatal:true});
+        errorhandler({err});
         return {
             error: true,
             message: config.errormessages.databasequeryerror
@@ -65,13 +65,12 @@ async function isOnBanList({user, guild}) {
     return await guild.bans.fetch()
         .then(async bans => {
             let list = bans.filter(ban => ban.user.id === user.id);
-            let user_id = target.id
-            let banned_by = (target.id === user_id) ? executor.id : null;
             
             if(list.size < 0) return [false];
             else return [true, reason, executor];
 
         }).catch(err => {
+            errorhandler({fatal: false, err});
             return [false];
         })
 }
@@ -107,7 +106,7 @@ async function isBanned(member, guild) {
             }
         }
     }).catch(err => {
-        errorhandler({err, fatal: true});
+        errorhandler({err});
         return {
             error: true,
             message: config.errormessages.databasequeryerror

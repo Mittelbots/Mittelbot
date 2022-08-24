@@ -29,23 +29,24 @@ async function guildMemberAdd(member, bot) {
         guild_id: member.guild.id,
         user_id: member.id
     })
-
     if (memberInfo.error) return;
+
+    //? If memberInfo is empty, insert new member info
     else if(!memberInfo) {
         await insertMemberInfo({
             guild_id: member.guild.id,
-            user_id: member.id,
-            member_roles: [],
-            user_joined: new Date()
+            user_id: member.user.id,
+            user_joined: new Date().getTime(),
+            member_roles: "[]"
         })
     }
 
+    //?If no join date is set, set it to the current date
     if(memberInfo.user_joined == null) {
         await updateMemberInfoById({
-            guild_id: member.guild.id,
-            user_id: member.id,
-            user_joined: new Date(),
-            member_roles: memberInfo.member_roles || []
+            guild_id: memberInfo.guild_id,
+            user_id: memberInfo.user_id,
+            user_joined: new Date().getTime(),
         })
     }
 
@@ -97,6 +98,7 @@ async function guildMemberAdd(member, bot) {
                 return  
             }
         })
+        errorhandler({err: null, fatal: false, message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`})
     }
 }
 
