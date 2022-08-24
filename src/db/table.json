@@ -6,13 +6,12 @@
         "open_infractions",
         "temproles",
         "guild_uploads",
+        "guild_config",
         "_config",
         "_guild_joinroles",
         "_guild_logs",
-        "_guild_modroles",
         "_guild_warnroles",
-        "_guild_level",
-        "_guild_member_info"
+        "_guild_level"
     ],
     "nondynamical": {
         "advancedScamList": {
@@ -429,24 +428,6 @@
                 "val": "LONGTEXT"
             }
         },
-        "_guild_member_info": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
-            },
-            "user_id": {
-                "name": "user_id",
-                "val": "VARCHAR(255)"
-            },
-            "member_roles": {
-                "name": "member_roles",
-                "val": "LONGTEXT"
-            },
-            "user_joined": {
-                "name": "user_joined",
-                "val": "VARCHAR(255)"
-            }
-        },
         "_guild_warnroles": {
             "id": {
                 "name": "id",
@@ -479,8 +460,7 @@
                 "name": "message_count",
                 "val": "BIGINT(20)",
                 "default": "1"
-            },
-            "_DELETE": ["multiplier"]
+            }
         }
     }
 }
