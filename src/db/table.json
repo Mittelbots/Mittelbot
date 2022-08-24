@@ -350,6 +350,28 @@
                 "name": "ignoreMode",
                 "val": "INT(1)"
             }
+        },
+        "member_info": {
+            "id": {
+                "name": "id",
+                "val": "INT(11)"
+            },
+            "user_id": {
+                "name": "user_id",
+                "val": "VARCHAR(255)"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
+            },
+            "member_roles": {
+                "name": "member_roles",
+                "val": "LONGTEXT"
+            },
+            "user_joined": {
+                "name": "user_joined",
+                "val": "VARCHAR(255)"
+            }
         }
     },
     "dynamical": {
