@@ -203,7 +203,7 @@ bot.once('ready', async () => {
     bot
   })
 
-  if (config.debug == 'false') {
+  if (!config.debug) {
     setTimeout(() => {
       db_backup();
     }, 60000);
