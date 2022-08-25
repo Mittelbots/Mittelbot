@@ -2,7 +2,7 @@ module.exports.getCurrentDate = ({
     timestamp = new Date().getTime()
 }) => {
     return new Date(timestamp).toLocaleString('de-DE', {
-        timeZone: 'Europe/Berlin',
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
