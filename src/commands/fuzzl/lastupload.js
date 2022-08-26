@@ -1,11 +1,11 @@
 const { EmbedBuilder } = require("discord.js");
 const ytdl = require('ytdl-core');
 const { errorhandler } = require("../../../utils/functions/errorhandler/errorhandler");
-
+const config = require('../../../src/assets/json/_config/config.json');
 const request = new(require("rss-parser"))();
 
 module.exports.run = async (bot, message, args) => {
-    if(message.guild.id !== '978916743097491466') return;
+    if(message.guild.id !== '978916743097491466' && !config.debug) return;
     
     const channel_id = "UCw9Y1aRo7z93z4oYX8R7w9Q"
 
