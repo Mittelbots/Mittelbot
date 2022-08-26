@@ -266,6 +266,37 @@
             "modroles": {
                 "name": "modroles",
                 "val": "LONGTEXT"
+            },
+            "prefix": {
+                "name": "prefix",
+                "val": "VARCHAR(10)"
+            },
+            "cooldown": {
+                "name": "cooldown",
+                "val": "int(11)"
+            },
+            "translate_target": {
+                "name": "translate_target",
+                "val": "VARCHAR(255)"
+            },
+            "translate_language": {
+                "name": "translate_language",
+                "val": "VARCHAR(6)"
+            },
+            "disabled_modules": {
+                "name": "disabled_modules",
+                "val": "VARCHAR(255)",
+                "default": "[]"
+            },           
+            "deleteModCommandAfterUsage": {
+                "name": "deleteModCommandAfterUsage",
+                "val": "INT(4)",
+                "default": "0"
+            },
+            "deleteCommandAfterUsage": {
+                "name": "deleteCommandAfterUsage",
+                "val": "INT(4)",
+                "default": "0"
             }
         },
         "twitch_streams": {
@@ -376,58 +407,6 @@
         }
     },
     "dynamical": {
-        "_config": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY",
-                "default": "1"
-            },
-            "guild_id": {
-                "name": "guild_id",
-                "val": "VARCHAR(255)"
-            },
-            "welcome_channel": {
-                "name": "welcome_channel",
-                "val": "VARCHAR(255)"
-            },
-            "prefix": {
-                "name": "prefix",
-                "val": "VARCHAR(5)",
-                "default": "!"
-            },
-            "cooldown": {
-                "name": "cooldown",
-                "val": "int(11)"
-            },
-            "deleteModCommandAfterUsage": {
-                "name": "deleteModCommandAfterUsage",
-                "val": "INT(4)"
-            },
-            "deleteCommandAfterUsage": {
-                "name": "deleteCommandAfterUsage",
-                "val": "INT(4)"
-            },
-            "levelsettings": {
-                "name": "levelsettings",
-                "val": "LONGTEXT",
-                "default": "normal"
-            },
-            "translate_target": {
-                "name": "translate_target",
-                "val": "VARCHAR(255)"
-            },
-            "translate_language": {
-                "name": "translate_language",
-                "val": "VARCHAR(6)"
-            },
-            "disabled_modules": {
-                "name": "disabled_modules",
-                "val": "VARCHAR(255)",
-                "default": "[]"
-            },
-
-            "_DELETE": ["levelup"]
-        },
         "_guild_logs": {
             "id": {
                 "name": "id",

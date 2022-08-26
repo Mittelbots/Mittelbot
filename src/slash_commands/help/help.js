@@ -6,6 +6,11 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports.run = async ({main_interaction, bot}) => {
+
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     const helpEmbedMessage = new EmbedBuilder()
         .setTitle('Everything you need to know from each Command \n Choose a category')
         .setDescription('Something wrong? Report it on my discord https://discord.gg/5d5ZDFQM4E \n _I\'ll use the default prefix \'!\'_ ')
@@ -16,7 +21,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         ]);
     }
 
-    await main_interaction.reply({
+    await main_interaction.followUp({
         embeds: [helpEmbedMessage],
         fetchReply: true
     }).then(async msg => {

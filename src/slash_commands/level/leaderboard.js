@@ -3,6 +3,10 @@ const { EmbedBuilder } = require("discord.js");
 const { getRankByGuildId } = require("../../../utils/functions/levelsystem/levelsystemAPI");
 module.exports.run = async ({main_interaction, bot}) => {
 
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     const leaderboard = await getRankByGuildId({
         guild_id: main_interaction.guild.id
     });
@@ -19,7 +23,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     var userLevel;
 
     if(leaderboard.length === 0) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: '❌ There\'s no one who is ranked. Write your first messages first.'
         }).catch(err => {})
     }
@@ -45,7 +49,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         ])
     }
 
-    return main_interaction.reply({
+    return main_interaction.followUp({
         embeds: [lb_embed]
     }).catch(err => {})
 }

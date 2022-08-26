@@ -9,13 +9,18 @@ const { SlashCommandBuilder } = require('discord.js');
 const levels = require('../../../utils/functions/levelsystem/levelconfig.json')
 
 module.exports.run = async ({main_interaction, bot}) => {
+
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     const user = main_interaction.options.getUser('user') || main_interaction.user; 
     const anonymous = main_interaction.options.getBoolean('anonymous');
 
     const playerXP = await levelAPI.getXP(main_interaction.guild.id, user.id);
 
     if (!playerXP) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: 'Not possible! You have to gain xp first.',
             ephemeral: true
         }).catch(err => {});
@@ -44,7 +49,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     rank.build()
     .then(data => {
         const attachment = new AttachmentBuilder(data, "RankCard.png");
-        main_interaction.reply({
+        main_interaction.followUp({
             files: [attachment],
             ephemeral: (anonymous) ? true : false
         }).catch(err => {

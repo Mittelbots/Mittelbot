@@ -20,6 +20,10 @@ module.exports.run = async ({
     bot
 }) => {
 
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: false,
@@ -29,7 +33,7 @@ module.exports.run = async ({
     })
 
     if (!hasPermissions) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true
         }).catch(err => {});
@@ -47,7 +51,7 @@ module.exports.run = async ({
             const open_infractions = await getOpenInfractionsByUserId({user_id: user.id});
 
             if(!closed_infractions || !open_infractions) {
-                return main_interaction.reply({
+                return main_interaction.followUp({
                     content: config.errormessages.databasequeryerror,
                     ephemeral: true
                 }).catch(err => {});
@@ -57,7 +61,7 @@ module.exports.run = async ({
             }
 
             if (closed.length <= 0 && open.length <= 0) {
-                return main_interaction.reply({
+                return main_interaction.followUp({
                     content:`${user} dont have any infractions!`,
                     ephemeral: true
                 }).catch(err => {});
@@ -132,13 +136,13 @@ module.exports.run = async ({
 
                 database.query(`DELETE FROM ${table} WHERE infraction_id = ?`, [infraction_id])
                     .then(() => {
-                        main_interaction.reply({
+                        main_interaction.followUp({
                             content: `Infraction with id \`${infraction_id}\` has been removed!`,
                             ephemeral: true
                         }).catch(err => {});
                     })
                     .catch(err => {
-                        main_interaction.reply({
+                        main_interaction.followUp({
                             content: `Infraction with id \`${infraction_id}\` could not be removed!`,
                             ephemeral: true
                         }).catch(err => {});
@@ -146,7 +150,7 @@ module.exports.run = async ({
                     })
                 
             }else {
-                return main_interaction.reply({
+                return main_interaction.followUp({
                     content: `Infraction with id \`${infraction_id}\` does not exist!`,
                     ephemeral: true
                 }).catch(err => {});

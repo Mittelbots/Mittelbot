@@ -7,6 +7,10 @@ const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser'
 
 module.exports.run = async ({main_interaction, bot}) => {
 
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: false,
@@ -16,7 +20,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     })
 
     if (!hasPermissions) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true
         }).catch(err => {});
@@ -28,13 +32,13 @@ module.exports.run = async ({main_interaction, bot}) => {
     const unmuted = await unmuteUser({user, bot, mod: main_interaction.user, reason, guild: main_interaction.guild});
 
     if (unmuted.error) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: unmuted.message,
             ephemeral: true
         }).catch(err => {});
     }
 
-    return main_interaction.reply({
+    return main_interaction.followUp({
         embeds: [unmuted.message],
         ephemeral: true
     }).catch(err => {});

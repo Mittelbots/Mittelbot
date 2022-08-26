@@ -7,6 +7,10 @@ const config = require('../../assets/json/_config/config.json');
 
 module.exports.run = async ({main_interaction, bot}) => {
 
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: true,
@@ -16,7 +20,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     });
 
     if (!hasPermissions) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: `${config.errormessages.nopermission}`,
             ephemeral: true
         }).catch(err => {});
@@ -26,7 +30,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     const amount = main_interaction.options.getNumber('xp')
 
     if(user.bot || user.system) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: '❌ You can\'t add xp to a bot or a system account.',
             ephemeral: true
         }).catch(err => {})
@@ -44,11 +48,11 @@ module.exports.run = async ({main_interaction, bot}) => {
     })
 
     if(updated) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: `✅ ${amount}xp has been added to ${user}`
         }).catch(err => {})
     }else {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: '❌ Something went wrong while adding the xp. Please contact the Bot support.',
             ephemeral: true
         }).catch(err => {})
