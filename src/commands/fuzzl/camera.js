@@ -3,7 +3,6 @@ const {
 } = require("discord.js");
 const ytdl = require('ytdl-core');
 const config = require('../../../src/assets/json/_config/config.json');
-const config = require('../../')
 
 module.exports.run = async (bot, message, args) => {
     if (message.guild.id !== '978916743097491466' && !config.debug) return;
