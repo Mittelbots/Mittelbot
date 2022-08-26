@@ -27,7 +27,7 @@ async function banUser({user, mod, guild, reason, bot, dbtime, time, isAuto}) {
     if (user) {
         privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name)
         await guild.members.ban(user, {
-                days: 7,
+                deleteMessageDays: 7,
                 reason: reason
             })
             .then(() => pass = true)

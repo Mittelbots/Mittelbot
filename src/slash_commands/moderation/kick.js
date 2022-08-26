@@ -7,6 +7,10 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({main_interaction, bot}) => {
 
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: false,
@@ -16,7 +20,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     })
 
     if (!hasPermissions) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
             ephemeral: true
         }).catch(err => {});
@@ -32,7 +36,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         type: 'kick'
     });
 
-    if(check) return main_interaction.reply({
+    if(check) return main_interaction.followUp({
         content: check,
         ephemeral: true
     }).catch(err => {});
@@ -41,12 +45,12 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     const kicked = await kickUser({user, mod: main_interaction.user, guild: main_interaction.guild, reason, bot});
 
-    if(kicked.error) return main_interaction.reply({
+    if(kicked.error) return main_interaction.followUp({
         content: kicked.message,
         ephemeral: true
     }).catch(err => {});
 
-    return main_interaction.reply({
+    return main_interaction.followUp({
         embeds: [kicked.message],
         ephemeral: true
     }).catch(err => {});

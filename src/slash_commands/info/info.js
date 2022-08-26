@@ -12,6 +12,11 @@ const { version } = require('../../../package.json');
 const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async ({main_interaction, bot}) => {
+
+    await main_interaction.deferReply({
+        ephemeral: true
+    })
+
     let server = main_interaction.guild;
 
     const userOption = main_interaction.options.getUser('user');
@@ -110,7 +115,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
         if(config.debug) console.info('info command passed!')
     if(!tag) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             embeds: [serverInfoEmbed],
             ephemeral: true
         }).catch(err => {
@@ -126,7 +131,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     });
 
     memberInfoEmbed.setThumbnail(await pfp);
-    return main_interaction.reply({
+    return main_interaction.followUp({
         embeds: [memberInfoEmbed],
         ephemeral: (isAnonym) ? true : false
     }).catch(err => {
