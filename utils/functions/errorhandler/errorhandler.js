@@ -1,7 +1,7 @@
 const { log, debug_log } = require("../../../logs");
 const config = require('../../../src/assets/json/_config/config.json');
 
-function errorhandler({err = '', message = '', channel = null, fatal = true}) {
+function errorhandler({err = 'No error passed! ', message = 'No message passed! ', channel = null, fatal = true}) {
     if(config.debug) console.log(err, message);
 
     else if(fatal && log) log.fatal(err, message);

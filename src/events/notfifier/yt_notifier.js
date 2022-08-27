@@ -30,6 +30,7 @@ module.exports.handleUploads = async ({
 
         if (!uploads || uploads.length === 0) return false;
 
+
         for (let i in uploads) {
             if (uploads[i].channel_id) {
                 request.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`)
@@ -40,6 +41,8 @@ module.exports.handleUploads = async ({
                             uploadedVideos = uploads[i].uploads;
                         }
 
+                        if(uploadedVideos == null || uploadedVideos == '') uploadedVideos = []
+
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
 
@@ -47,11 +50,12 @@ module.exports.handleUploads = async ({
 
                         const saved = await database.query(`UPDATE guild_uploads SET uploads = ? WHERE guild_id = ? AND channel_id = ?`, [JSON.stringify(uploadedVideos), uploads[i].guild_id, uploads[i].channel_id])
                             .then(() => {
-                                for(let i in ytUploads) {
-                                    if(ytUploads[i].guild_id === uploads[i].guild_id && ytUploads[i].channel_id === uploads[i].channel_id) {
-                                        ytUploads[i].uploads = uploadedVideos;
+                                for(let i in ytUploads[0].list) {
+                                    if(ytUploads[0].list[i].guild_id === uploads[i].guild_id && ytUploads[0].list[i].channel_id === uploads[i].channel_id) {
+                                        ytUploads[0].list[i].uploads = uploadedVideos;
                                     }
                                 }
+                                return true;
                             })
                             .catch(err => {
                                 errorhandler({
@@ -77,7 +81,7 @@ module.exports.handleUploads = async ({
                             content: ((pingrole) ? (isEveryone) ? '@everyone ' : `<@&${uploads[i].pingrole}> ` : '') + feed.items[0].title + ` ${feed.items[0].link}`,
                         }).catch(err => {});
 
-                        console.info(`📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id}`);
+                        errorhandler({fatal: false, message: `📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id}`});
                     }).catch(err => {
                         errorhandler({
                             err,
@@ -87,5 +91,5 @@ module.exports.handleUploads = async ({
                     })
             }
         }
-    }, 600000); //?  10 minutes
+    }, 5000); //? 600000 10 minutes
 }
