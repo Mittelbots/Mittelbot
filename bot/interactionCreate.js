@@ -9,7 +9,7 @@ const {
 } = require("../utils/functions/data/apply_form");
 const config = require("../src/assets/json/_config/config.json");
 const {
-    getConfig
+    getGuildConfig
 } = require("../utils/functions/data/getConfig");
 const { InteractionType } = require("discord.js");
 const { manageScam } = require("../utils/functions/data/scam");
@@ -36,8 +36,8 @@ module.exports.interactionCreate = ({
         }
 
         var {
-            cooldown
-        } = await getConfig({
+            settings
+        } = await getGuildConfig({
             guild_id: main_interaction.guild.id,
         });
 
@@ -49,7 +49,7 @@ module.exports.interactionCreate = ({
                     errorhandler({fatal: false, message: `${main_interaction.user.username} is on slash command cooldown.`});
 
                     return main_interaction.reply({
-                        content: `You have to wait ${cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`,
+                        content: `You have to wait ${settings.cooldown / 1000 + 's'|| config.defaultCooldown.text} after each Command.`,
                         ephemeral: true
                     }).catch(err => {})
                 } else {
@@ -57,7 +57,7 @@ module.exports.interactionCreate = ({
                     defaultCooldown.add(main_interaction.user.id);
                     setTimeout(async () => {
                         defaultCooldown.delete(main_interaction.user.id);
-                    }, cooldown || config.defaultCooldown.format);
+                    }, settings.cooldown || config.defaultCooldown.format);
 
                     return handleSlashCommands({
                         main_interaction,
