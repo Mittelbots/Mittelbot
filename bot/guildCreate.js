@@ -20,22 +20,13 @@ async function guildCreate(guild, bot) {
 
   errorhandler({fatal: false, message: ` I joined a new Guild: ${guild.name} (${guild.id})`});
 
-  await database.query(`SELECT guild_id FROM all_guild_id WHERE guild_id = ?`, [guild.id]).then(async res => {
-    if (res.length <= 0) await database.query(`INSERT INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
-  });
+  await database.query(`INSERT IGNORE INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
   
   await delay(1000);
 
   await checkDatabase();
 
   await delay(4000);
-
-  await database.query(`INSERT INTO ${guild.id}_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {
-    errorhandler({
-      err,
-      fatal: true
-    })
-  });
 
   await database.query(`INSERT INTO ${guild.id}_guild_logs (id) VALUES (?)`, [1]).catch(err => {
     errorhandler({
@@ -44,8 +35,8 @@ async function guildCreate(guild, bot) {
     })
   });
 
-  const obj = {"antispam":{"enabled":false,"action":"[]"}}
-  await database.query(`INSERT INTO guild_automod (guild_id, settings) VALUES (?, ?)`, [guild.id, JSON.stringify(obj)]).catch(err => {
+  const defaultAntiSpamSetttings = {"antispam":{"enabled":false,"action":"[]"}}
+  await database.query(`INSERT INTO guild_automod (guild_id, settings) VALUES (?, ?)`, [guild.id, JSON.stringify(defaultAntiSpamSetttings)]).catch(err => {
     errorhandler({
       err,
       fatal: true
