@@ -16,6 +16,10 @@ async function warnUser({bot, user, mod, guild, reason}) {
     if(!pass.error) {
         setNewModLogMessage(bot, config.defaultModTypes.warn, mod.id, user, reason, null, guild.id);
         const p_response = await publicModResponses(config.defaultModTypes.warn, mod, user.id, reason, null, bot);
+        if(pass.hasAllRoles) {
+            p_response.message.setDescription(`❗️This user has already all warnroles.❗️`)
+        }
+
         await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
 
         await insertIntoClosedList({
