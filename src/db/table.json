@@ -413,28 +413,6 @@
         }
     },
     "dynamical": {
-        "_guild_logs": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
-            },
-            "auditlog": {
-                "name": "auditlog",
-                "val": "VARCHAR(255)"
-            },
-            "modlog": {
-                "name": "modlog",
-                "val": "VARCHAR(255)"
-            },
-            "messagelog": {
-                "name": "messagelog",
-                "val": "VARCHAR(255)"
-            },
-            "whitelist": {
-                "name": "whitelist",
-                "val": "LONGTEXT"
-            }
-        },
         "_guild_warnroles": {
             "id": {
                 "name": "id",
