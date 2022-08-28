@@ -3,57 +3,32 @@ const {
     errorhandler
 } = require("../errorhandler/errorhandler");
 const {
-    getAllGuildIds
-} = require("./getAllGuildIds");
-const config = require('../../../src/assets/json/_config/config.json');
-const {
     updateCache,
-    addValueToCache,
-    getFromCache
 } = require("../cache/cache");
 const {
     checkRole
 } = require("../roles/checkRole");
-
-module.exports.getAllWarnroles = async () => {
-
-    const all_guild_id = await getAllGuildIds();
-
-    if (all_guild_id) {
-        let response = [];
-        for (let i in all_guild_id) {
-            const obj = {
-                guild_id: all_guild_id[i].guild_id,
-                warnroles: await this.getWarnroles({
-                    guild_id: all_guild_id[i].guild_id
-                })
-            }
-            response.push(obj);
-        }
-        return response;
-    } else {
-        return false;
-    }
-}
+const {
+    getGuildConfig,
+    updateGuildConfig
+} = require("./getConfig");
 
 module.exports.getWarnroles = async ({
     guild_id
 }) => {
-    return await database.query(`SELECT * FROM ${guild_id}_guild_warnroles`)
-        .then(res => {
-            if (res.length > 0) {
-                return res;
-            } else {
-                return false;
-            }
-        })
-        .catch(err => {
-            errorhandler({
-                err: err,
-                fatal: true
-            });
-            return false;
-        });
+    const {
+        settings
+    } = await getGuildConfig({
+        guild_id
+    });
+    var warnroles;
+    try {
+        warnroles = JSON.parse(settings.warnroles);
+    } catch (e) {
+        warnroles = settings.warnroles || [];
+    }
+
+    return warnroles || [];
 }
 
 
@@ -61,52 +36,48 @@ module.exports.addWarnroles = async ({
     guild_id,
     warnrole_id
 }) => {
-    return await database.query(`INSERT INTO ${guild_id}_guild_warnroles (${config.settings.warnroles.colname}) VALUES (?)`, [warnrole_id])
-        .then(() => {
-            return {
-                error: false
-            }
-        })
-        .catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            });
-            return {
-                error: true,
-                message: "An error occured while adding the warnrole"
-            }
+    const warnroles = await this.getWarnroles({
+        guild_id
+    });
 
-        });
+    warnroles.push(warnrole_id);
+
+    return await updateGuildConfig({
+        guild_id,
+        value: JSON.stringify(warnroles),
+        valueName: "warnroles"
+    }).then(() => {
+        return true;
+    }).catch(() => {
+        return false;
+    })
 }
 
-module.exports.removeWarnroles = ({
+module.exports.removeWarnroles = async ({
     guild_id,
     warnrole_id
 }) => {
-
-    updateCache({
-        cacheName: `warnroles`,
-        param_id: [guild_id, warnrole_id],
-        updateValName: `roles`
-    })
-
-    return database.query(`DELETE FROM ${guild_id}_guild_warnroles WHERE role_id = ?`, [warnrole_id])
-        .then(() => {
-            return {
-                error: false
-            }
+    try {
+        var warnroles = await this.getWarnroles({
+            guild_id
         })
-        .catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            });
-            return {
-                error: true,
-                message: "An error occured while removing the warnrole"
-            }
+
+        warnroles = warnroles.filter(r => r !== warnrole_id);
+
+        return {
+            error: false
+        }
+    } catch (e) {
+        errorhandler({
+            err: e,
+            fatal: true
         });
+        return {
+            error: true,
+            message: ""
+        }
+    }
+
 }
 
 
@@ -116,13 +87,12 @@ module.exports.updateWarnroles = async ({
     user
 }) => {
     return new Promise(async (resolve, reject) => {
-        const cache = await getFromCache({
-            cacheName: 'warnroles',
-            param_id: guild.id
-        });
 
-        if (cache[0].roles !== undefined && cache[0].roles.length !== 0) {
-            const cacheRoles = cache[0].roles;
+        const warnroles = await this.getWarnroles({
+            guild_id: guild.id
+        })
+
+        if (warnroles && warnroles.length !== 0) {
 
             let removedRoles = '';
             for (let i in roles) {
@@ -133,10 +103,12 @@ module.exports.updateWarnroles = async ({
                 });
 
                 if (!checkedRoles) {
-                    return reject(`${roles[i]} doesn't exists! All existing mentions before are saved.`)
+                    return reject(`❌ ${roles[i]} doesn't exists! All existing mentions before are saved.`)
                 }
-                await cacheRoles.map(role => {
-                    if (roles[i] === role.role_id) {
+
+                //check if warnroles already exists
+                for (let w in warnroles) {
+                    if (roles[i] === warnroles[w]) {
                         let removed = this.removeWarnroles({
                             guild_id: guild.id,
                             warnrole_id: roles[i],
@@ -149,7 +121,7 @@ module.exports.updateWarnroles = async ({
                             delete roles[i];
                         }
                     }
-                })
+                }
             }
             if (removedRoles !== '') {
                 return reject(`Removed ${removedRoles}`)
@@ -163,9 +135,10 @@ module.exports.updateWarnroles = async ({
             });
 
             if (!checkedRoles) {
-                return reject(`${roles[i]} doesn't exists! All existing mentions before are saved.`)
+                return reject(`❌ ${roles[i]} doesn't exists! All existing mentions before are saved.`)
             }
 
+            //guild.me doesnt work for some reasons
             try {
                 if (!user.roles.cache.find(r => r.id.toString() === roles[i].toString())) {
                     await user.roles.add(roles[i]).catch(err => {});
@@ -175,30 +148,14 @@ module.exports.updateWarnroles = async ({
                     user.roles.add(roles[i]).catch(err => {});
                 }
             } catch (err) {
-                return reject(`I don't have the permission to add this role: **<@&${roles[i]}>**`)
+                return reject(`❌ I don't have the permission to add this role: **<@&${roles[i]}>**`)
             }
         }
         for (let i in roles) {
-            const added = await this.addWarnroles({
+            await this.addWarnroles({
                 guild_id: guild.id,
                 warnrole_id: roles[i]
             })
-
-            if (added.error) {
-                return reject(added.message)
-            } else {
-                await addValueToCache({
-                    cacheName: 'warnroles',
-                    param_id: guild.id,
-                    value: roles[i],
-                    valueName: 'roles'
-                });
-
-                const cache = await getFromCache({
-                    cacheName: 'warnroles',
-                    param_id: guild.id
-                })
-            }
         }
         return resolve(true)
     })

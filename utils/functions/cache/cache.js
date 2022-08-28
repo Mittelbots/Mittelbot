@@ -3,7 +3,6 @@ module.exports.joinroles = [];
 module.exports.xp = [];
 module.exports.memberInfo = [];
 module.exports.global = [];
-module.exports.warnroles = [];
 module.exports.applyforms = [];
 module.exports.autoMod = [];
 module.exports.scamList = [];

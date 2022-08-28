@@ -30,9 +30,6 @@ const {
     getAllMemberInfo
 } = require('../data/getMemberInfo');
 const {
-    getAllWarnroles
-} = require("../data/warnroles");
-const {
     getAllForms
 } = require("../data/apply_form");
 const {
@@ -69,7 +66,6 @@ module.exports.startUpCache = async () => {
     const guildModroles = await getAllModroles();
     const guildXp = await getAllXP();
     const guildMemberInfo = await getAllMemberInfo();
-    const guildWarnRoles = await getAllWarnroles();
     const guildApplyForms = await getAllForms();
     const guildAutoMod = await getAllAutoMod();
     const scamListData = await getScamList();
@@ -122,19 +118,6 @@ module.exports.startUpCache = async () => {
                 data: {
                     id: guildMemberInfo[i].guild_id,
                     memberInfo: (guildMemberInfo[i].member_info) ? guildMemberInfo[i].member_info : '',
-                }
-            }
-        });
-    }
-
-    for (let i in guildWarnRoles) {
-        if (!guildWarnRoles[i]) continue;
-        await addToCache({
-            value: {
-                name: "warnroles",
-                data: {
-                    id: guildWarnRoles[i].guild_id,
-                    roles: (typeof guildWarnRoles[i].warnroles === "object") ? guildWarnRoles[i].warnroles : [],
                 }
             }
         });

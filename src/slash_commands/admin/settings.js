@@ -33,15 +33,20 @@ const {
     updateLog
 } = require("../../../utils/functions/data/logs");
 const { updateReactionRoles } = require("../../../utils/functions/data/reactionroles");
+const {removeMention} = require('../../../utils/functions/removeCharacters');
 
 module.exports.run = async ({
     main_interaction,
     bot
 }) => {
 
+    await main_interaction.deferReply({
+        ephemeral: true
+    });
+
     const hasPermission = await main_interaction.member.permissions.has(PermissionFlagsBits.Administrator);
     if (!hasPermission) {
-        return main_interaction.reply({
+        return main_interaction.followUp({
             content: config.errormessages.nopermission,
             ephemeral: true
         }).catch(err => {})
@@ -57,7 +62,7 @@ module.exports.run = async ({
                     err,
                     fatal: true
                 });
-                return main_interaction.reply({
+                return main_interaction.followUp({
                     content: `${config.errormessages.databasequeryerror}`
                 }).catch(err => {});
             });
@@ -67,12 +72,12 @@ module.exports.run = async ({
                 guild: main_interaction.guild,
                 bot
             }).then(res => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     embeds: [res],
                     ephemeral: true
                 }).catch(err => {})
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: err,
                     ephemeral: true
                 }).catch(err => {})
@@ -86,12 +91,12 @@ module.exports.run = async ({
                 welcomechannel_id: main_interaction.options.getChannel('channel').id
             }).then(res => {
                 pass = true;
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: '✅ ' + res,
                     ephemeral: true
                 }).catch(err => {})
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: '❌ ' + err,
                     ephemeral: true
                 }).catch(err => {})
@@ -108,7 +113,7 @@ module.exports.run = async ({
             const prefixCheck = checkPrefix({
                 value: prefix
             })
-            if (prefixCheck === false) return main_interaction.reply({
+            if (prefixCheck === false) return main_interaction.followUp({
                 content: `Invalid Prefix`,
                 ephemeral: true
             }).catch(err => {});
@@ -116,7 +121,7 @@ module.exports.run = async ({
                 value: prefix,
                 valueName: config.settings.prefix.colname,
             });
-            main_interaction.reply({
+            main_interaction.followUp({
                 content: `✅ Prefix updated to ${prefix}`,
                 ephemeral: true
             }).catch(err => {});
@@ -129,7 +134,7 @@ module.exports.run = async ({
                     value: 0, //? convert to milliseconds
                     valueName: config.settings.cooldown.colname,
                 });
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: `✅ Command Cooldown successfully turned off \n \n**Info: A default Cooldown of 2 Seconds is still enabled to protect the bot from spam!**`,
                     ephemeral: true
                 }).catch(err => {});
@@ -138,7 +143,7 @@ module.exports.run = async ({
                     value: cooldown * 1000, //? convert to milliseconds
                     valueName: config.settings.cooldown.colname,
                 });
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: `✅ Command Cooldown successfully changed to ${cooldown} seconds \n \n**Info: Cooldown can be interupted when the bot is offline!**`,
                     ephemeral: true
                 }).catch(err => {});
@@ -152,7 +157,7 @@ module.exports.run = async ({
                 value: dmcau,
                 valueName: config.settings.dmcau.colname,
             });
-            main_interaction.reply({
+            main_interaction.followUp({
                 content: `✅ Moderation commands will be **${(dmcau) ? 'deleted' : 'kept'}** after usage.`,
                 ephemeral: true
             }).catch(err => {});
@@ -165,7 +170,7 @@ module.exports.run = async ({
                 value: dcau,
                 valueName: config.settings.dcau.colname,
             });
-            main_interaction.reply({
+            main_interaction.followUp({
                 content: `✅ Commands will be **${(dcau) ? 'deleted' : 'kept'}** after usage.`,
                 ephemeral: true
             }).catch(err => {});
@@ -173,7 +178,7 @@ module.exports.run = async ({
 
         case 'joinroles':
 
-            return main_interaction.reply({
+            return main_interaction.followUp({
                 content: `Please use the dashboard to set the join roles. The command is temporarily disabled.`,
             })
             var joinroles = []
@@ -187,12 +192,12 @@ module.exports.run = async ({
                 roles: joinroles,
                 user: bot.guilds.cache.get(main_interaction.guild.id).members.cache.get(main_interaction.user.id),
             }).then(() => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: `✅ Join Roles updated!`,
                     ephemeral: true
                 }).catch(err => {});
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: `❌ ${err}`,
                     ephemeral: true
                 }).catch(err => {});
@@ -208,7 +213,7 @@ module.exports.run = async ({
             const clear = main_interaction.options.getString('clear');
 
             if (!auditlog && !messagelog && !modlog && !whitelistrole && !whitelistchannel) {
-                return main_interaction.reply({
+                return main_interaction.followUp({
                     content: `❌ You must specify at least one log channel! Or add a role/channel to the whitelist!`,
                     ephemeral: true
                 }).catch(err => {});
@@ -225,12 +230,12 @@ module.exports.run = async ({
                 whitelistchannel,
                 clear
             }).then(res => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: res,
                     ephemeral: true
                 }).catch(err => {});
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: err,
                     ephemeral: true
                 }).catch(err => {});
@@ -239,23 +244,21 @@ module.exports.run = async ({
             break;
 
         case 'warnroles':
-            var warnroles = []
-            for (let i = 1; i <= 5; i++) {
-                let role = main_interaction.options.getRole('warnrole' + i)
+            let warnroles = main_interaction.options.getString('warnroles');
+            warnroles = removeMention(warnroles);
+            warnroles = warnroles.split(" ")
 
-                if (role) warnroles.push(role.id)
-            }
             updateWarnroles({
                 guild: main_interaction.guild,
                 roles: warnroles,
                 user: bot.guilds.cache.get(main_interaction.guild.id).members.cache.get(main_interaction.user.id),
             }).then(() => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: `✅ Warn Roles updated!`,
                     ephemeral: true
                 }).catch(err => {});
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: `❌ ${err}`,
                     ephemeral: true
                 }).catch(err => {});
@@ -273,12 +276,12 @@ module.exports.run = async ({
                 pingrole,
                 guild: main_interaction.guild,
             }).then(res => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: res,
                     ephemeral: true
                 }).catch(err => {})
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: err,
                     ephemeral: true
                 }).catch(err => {});
@@ -292,12 +295,12 @@ module.exports.run = async ({
                 guild_id: main_interaction.guild.id,
                 delytchannel
             }).then(res => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: res,
                     ephemeral: true
                 }).catch(err => {})
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: err,
                     ephemeral: true
                 }).catch(err => {});
@@ -315,12 +318,12 @@ module.exports.run = async ({
                 twpingrole,
                 guild: main_interaction.guild
             }).then(res => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: res,
                     ephemeral: true
                 }).catch(err => {})
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: err,
                     ephemeral: true
                 }).catch(err => {});
@@ -334,12 +337,12 @@ module.exports.run = async ({
                 guild_id: main_interaction.guild.id,
                 deltwchannel
             }).then(res => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: res,
                     ephemeral: true
                 }).catch(err => {})
             }).catch(err => {
-                main_interaction.reply({
+                main_interaction.followUp({
                     content: err,
                     ephemeral: true
                 }).catch(err => {});
@@ -351,7 +354,7 @@ module.exports.run = async ({
             const reactionroles = main_interaction.options.getString('roles');
             const emojis = main_interaction.options.getString('emojis');
 
-            main_interaction.deferReply({
+            main_interaction.deferfollowUp({
                 ephemeral: true
             });
 
@@ -536,35 +539,11 @@ module.exports.data = new SlashCommandBuilder()
     .addSubcommand(command =>
         command
         .setName('warnroles')
-        .setDescription('Add up to 5 roles. Note: If you mention a existing role, it will be removed.')
-        .addRoleOption(warnrole =>
+        .setDescription('Add warnroles in the order they will be given to the user.')
+        .addStringOption(warnrole =>
             warnrole
-            .setName('warnrole1')
-            .setDescription('Add a role to the list of warn roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(warnrole =>
-            warnrole
-            .setName('warnrole2')
-            .setDescription('Add a role to the list of warn roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(warnrole =>
-            warnrole
-            .setName('warnrole3')
-            .setDescription('Add a role to the list of warn roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(warnrole =>
-            warnrole
-            .setName('warnrole4')
-            .setDescription('Add a role to the list of warn roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(warnrole =>
-            warnrole
-            .setName('warnrole5')
-            .setDescription('Add a role to the list of warn roles.')
+            .setName('warnroles')
+            .setDescription('Add roles. Split multiple roles with a space.')
             .setRequired(false)
         )
     )

@@ -77,8 +77,6 @@ module.exports.updateLog = async ({
             }
         }
 
-        console.log(logs)
-
         updateGuildConfig({
             guild_id,
             value: JSON.stringify(logs),

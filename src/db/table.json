@@ -303,6 +303,10 @@
                 "name": "logs",
                 "val": "LONGTEXT"
             },
+            "warnroles": {
+                "name": "warnroles",
+                "val": "LONGTEXT"
+            },
             "_DELETE": ["levelup_channel"]
         },
         "twitch_streams": {
