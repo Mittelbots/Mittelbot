@@ -1,5 +1,3 @@
-module.exports.modroles = [];
-module.exports.joinroles = [];
 module.exports.xp = [];
 module.exports.memberInfo = [];
 module.exports.global = [];
