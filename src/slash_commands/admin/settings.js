@@ -216,8 +216,11 @@ module.exports.run = async ({
 
             await updateLog({
                 guild_id: main_interaction.guild.id,
-                channel: auditlog || messagelog || modlog,
-                dbcol: (auditlog) ? config.settings.auditlog.colname : (messagelog) ? config.settings.messagelog.colname : config.settings.modlog.colname,
+                channel: {
+                    auditlog: auditlog,
+                    messagelog: messagelog,
+                    modlog: modlog,
+                },
                 whitelistrole,
                 whitelistchannel,
                 clear
@@ -522,7 +525,7 @@ module.exports.data = new SlashCommandBuilder()
         .addStringOption(clear =>
             clear
             .setName('clear')
-            .setDescription('Select true if you want to clear the log channels you have selected.')
+            .setDescription('Select true if you want to clear the log channels and/or whitelist roles/channels you have selected.')
             .setRequired(false)
             .addChoices({
                 name: 'Yes',

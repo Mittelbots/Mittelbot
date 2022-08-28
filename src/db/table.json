@@ -299,6 +299,10 @@
                 "val": "INT(4)",
                 "default": 0
             },
+            "logs": {
+                "name": "logs",
+                "val": "LONGTEXT"
+            },
             "_DELETE": ["levelup_channel"]
         },
         "twitch_streams": {
