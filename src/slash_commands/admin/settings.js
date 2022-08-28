@@ -30,9 +30,6 @@ const {
     delTwChannelFromList
 } = require("../../../utils/functions/data/twitch");
 const {
-    changeLevelUp
-} = require("../../../utils/functions/levelsystem/levelsystemAPI");
-const {
     updateLog
 } = require("../../../utils/functions/data/logs");
 const { updateReactionRoles } = require("../../../utils/functions/data/reactionroles");
@@ -346,27 +343,6 @@ module.exports.run = async ({
             });
             break;
 
-        case 'levelup':
-            const type = main_interaction.options.getString('type');
-            const channel = main_interaction.options.getChannel('channel')
-
-            changeLevelUp({
-                type,
-                guild: main_interaction.guild,
-                channel
-            }).then(res => {
-                main_interaction.reply({
-                    content: res,
-                    ephemeral: true
-                }).catch(err => {})
-            }).catch(err => {
-                main_interaction.reply({
-                    content: err,
-                    ephemeral: true
-                }).catch(err => {});
-            });
-            break;
-
         case 'reactionroles':
             const message_id = main_interaction.options.getString('message_id');
             const reactionroles = main_interaction.options.getString('roles');
@@ -655,34 +631,6 @@ module.exports.data = new SlashCommandBuilder()
             .setName('twchannel')
             .setDescription('Add the twitch name')
             .setRequired(true)
-        )
-    )
-
-    .addSubcommand(command =>
-        command
-        .setName('levelup')
-        .setDescription('Change the way the user get the levelup message')
-        .addStringOption(option =>
-            option.setName('type')
-            .setDescription('Select between dm or text channel.')
-            .setRequired(true)
-            .addChoices({
-                name: 'DM',
-                value: 'dm'
-            })
-            .addChoices({
-                name: 'Text Channel',
-                value: 'channel'
-            })
-            .addChoices({
-                name: 'Disable',
-                value: 'disable'
-            })
-        )
-        .addChannelOption(option =>
-            option.setName('channel')
-            .setDescription('Add a chennel if you want to send levelup messages to a text channel')
-            .setRequired(false)
         )
     )
 

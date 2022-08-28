@@ -247,10 +247,6 @@
                 "name": "apply_form",
                 "val": "LONGTEXT"
             },
-            "levelup_channel": {
-                "name": "levelup_channel",
-                "val": "VARCHAR(255)"
-            },
             "levelsettings": {
                 "name": "levelsettings",
                 "val": "LONGTEXT"
@@ -302,7 +298,8 @@
                 "name": "deleteCommandAfterUsage",
                 "val": "INT(4)",
                 "default": "0"
-            }
+            },
+            "_DELETE": ["levelup_channel"]
         },
         "twitch_streams": {
             "id": {

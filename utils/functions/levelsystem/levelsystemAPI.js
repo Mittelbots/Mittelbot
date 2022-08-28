@@ -18,11 +18,11 @@ const levelConfig = require('./levelconfig.json');
 const levelSystem = require("./levelsystem");
 const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
 const {
-    getGuildConfig
+    getGuildConfig, updateGuildConfig
 } = require("../data/getConfig");
 
 
-var levelCooldown = [];
+var levelCooldownArray = [];
 
 /**
  * 
@@ -200,10 +200,17 @@ module.exports.checkXP = async function (bot, guildid, currentxp, message) {
 
 module.exports.sendNewLevelMessage = async function (newLevel, message, currentxp, nextlevel) {
 
-    const level_up_channel = await database.query(`SELECT levelup_channel FROM guild_config WHERE guild_id = ?`, message.guild.id)
-        .then(res => {
-            return res[0].levelup_channel;
-        })
+    const {settings} = getGuildConfig({
+        guild_id: message.guild.id
+    })
+
+    var levelsettings;
+    try {
+        levelsettings = JSON.parse(settings.levelsettings) || {} 
+    }catch(e) {
+        levelsettings = settings.levelsettings;
+    }
+
 
     var newLevelMessage = new EmbedBuilder()
         .setTitle('🎉 You reached a new Level!')
@@ -223,10 +230,10 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
         .setTimestamp()
 
     try {
-        if (level_up_channel) {
+        if (levelsettings.level_up_channel !== 'dm') {
             if (level_up_channel === 'disable') return;
 
-            const channel = await message.guild.channels.cache.get(level_up_channel);
+            const channel = await message.guild.channels.cache.get(levelsettings.level_up_channel);
             channel.send({
                 content: `${message.author}`,
                 embeds: [newLevelMessage]
@@ -303,52 +310,14 @@ module.exports.getXP = async function (guildid, user_id) {
 /**
  * 
  * @param {int} guildid 
- * @param {array (JSON.stringyfy())} levelorder 
- */
-module.exports.setLevelSettingsFromGuild = async function (guildid, levelorder) {
-    await database.query(`UPDATE ${guildid}_config SET levelsettings = ?`, [levelorder]).catch(err => {
-        errorhandler({
-            err: err,
-            fatal: true
-        })
-    })
-}
-
-/**
- * 
- * @param {int} guildid 
- * @param {array (JSON.stringyfy())} levelroles 
- */
-module.exports.setLevelRolesFromGuild = async function (guildid, levelroles) {
-    await database.query(`UPDATE ${guildid}_config SET levelroles = ?`, [levelroles]).catch(err => {
-        errorhandler({
-            err: err,
-            fatal: true
-        })
-    })
-}
-
-/**
- * 
- * @param {int} guildid 
  * @returns {String} Level mode
  */
-module.exports.getLevelSettingsFromGuild = async (guildid) => {
-    return await database.query(`SELECT levelsettings FROM ${guildid}_config`).then(async res => {
-        if (res[0].levelsettings === undefined || res[0].levelsettings === '') {
-            res = 'normal'; // NORMAL
-        } else {
-            res = res[0].levelsettings
-        }
+module.exports.getLevelSettingsFromGuild = async (guild_id) => {
+    const {settings} = await getGuildConfig({
+        guild_id
+    });
 
-        return res;
-    }).catch(err => {
-        errorhandler({
-            err: err,
-            fatal: true
-        })
-        return false;
-    })
+    return settings.levelsettings;
 }
 
 module.exports.getNextLevel = async function (levels, currentlevel) {
@@ -555,7 +524,7 @@ module.exports.levelCooldown = async ({
         guild: message.guild.id
     }
 
-    var index = levelCooldown.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
+    var index = levelCooldownArray.findIndex((lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id)
 
     if (index === -1) {
         const {
@@ -564,10 +533,10 @@ module.exports.levelCooldown = async ({
 
         if (error == "blacklist") return;
 
-        levelCooldown.push(obj);
+        levelCooldownArray.push(obj);
 
         setTimeout(() => {
-            levelCooldown = levelCooldown.filter(u => u.user !== message.author.id && u.guild !== message.guild.id)
+            levelCooldownArray = levelCooldownArray.filter(u => u.user !== message.author.id && u.guild !== message.guild.id)
         }, lvlconfig.timeout);
     }
 }
@@ -577,22 +546,24 @@ module.exports.changeLevelUp = async ({
     guild,
     channel
 }) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+
+        const {settings} = await getGuildConfig({
+            guild_id: guild.id
+        });
+
+        var levelsettings;
+        try {
+            levelsettings = JSON.parse(settings.levelsettings) || {} 
+        }catch(e) {
+            levelsettings = settings.levelsettings;
+        }
+
         if (type === 'dm' || type === 'disable') {
-            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [(type === 'dm') ? null : 'disable', guild.id])
-                .then(() => {
-                    return resolve(`✅ Successfully update the levelup type to ${(type === 'dm') ? '**DM**' : '**disabled**'}`)
-                })
-                .catch(err => {
-                    errorhandler({
-                        err,
-                        fatal: true
-                    })
-                    return reject(`❌ Something went wrong while updating the config. Please contact the bot support.`)
-                })
+
+            levelsettings.levelup_channel = (type === 'dm') ? 'dm' : 'disable';
 
         } else {
-
             if (!channel) {
                 return reject(`❌ You didn't pass any channel. Please add a channel if you select \`Text Channel\`.`);
             }
@@ -603,19 +574,18 @@ module.exports.changeLevelUp = async ({
                 return reject(`❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES"\`. Change them and try again.`)
             }
 
-            return database.query(`UPDATE guild_config SET levelup_channel = ? WHERE guild_id = ?`, [channel.id, guild.id])
-                .then(() => {
-                    return resolve(`✅ Successfully update the levelup type to **Text Channel**. Levelup messages will now be send to ${channel}`)
-                })
-                .catch(err => {
-                    errorhandler({
-                        err,
-                        fatal: true
-                    })
-                    return reject(`❌ Something went wrong while updating the config. Please contact the bot support.`)
-                })
-
+            levelsettings.levelup_channel = channel.id;
         }
+
+        return updateGuildConfig({
+            guild_id: guild.id,
+            value: JSON.stringify(levelsettings),
+            valueName: "levelsettings"
+        }).then(() => {
+            return resolve(`✅ Successfully update the levelup ${(type === 'dm') ? 'type to **DM**' : (type === 'disable')  ? 'type to **disabled**' : 'channel to '+channel}`)
+        }).catch(() => {
+            return reject(`❌ Something went wrong while updating the config. Please contact the bot support.`)
+        })
     })
 }
 
@@ -637,7 +607,7 @@ module.exports.checkBlacklistChannels = async ({
             blacklistchannels = [];
         }
     } else {
-        const settings = await getGuildConfig({
+        const {settings} = await getGuildConfig({
             guild: message.guild.id
         })
 
