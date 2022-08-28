@@ -2,9 +2,6 @@ const {
     getAllGuildConfig
 } = require("../data/getConfig");
 const {
-    getAllModroles
-} = require("../data/getModroles");
-const {
     addToCache,
     config,
     modroles,
@@ -63,7 +60,6 @@ module.exports.startUpCache = async () => {
 
     console.info('🕐 Getting all Data...');
 
-    const guildModroles = await getAllModroles();
     const guildXp = await getAllXP();
     const guildMemberInfo = await getAllMemberInfo();
     const guildApplyForms = await getAllForms();
@@ -80,21 +76,6 @@ module.exports.startUpCache = async () => {
     console.info('✅ Data collected...');
 
     console.info('🕐 Adding to cache...');
-
-    for (let i in guildModroles) {
-        if (!guildModroles[i] || !guildModroles[i].modroles) continue;
-
-        const isObject = typeof guildModroles[i].modroles === 'object';
-        await addToCache({
-            value: {
-                name: "modroles",
-                data: {
-                    id: guildModroles[i].guild_id,
-                    modroles: isObject ? guildModroles[i].modroles : ''
-                }
-            }
-        });
-    }
 
     for (let i in guildXp) {
         if (!guildXp[i]) continue;
