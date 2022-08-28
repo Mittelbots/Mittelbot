@@ -8,7 +8,7 @@ const {
 } = require("../../../utils/functions/data/welcomechannel");
 const {
     checkPrefix,
-    updateConfig
+    updateGuildConfig
 } = require('../../../utils/functions/data/getConfig');
 const config = require('../../../src/assets/json/_config/config.json');
 const {
@@ -402,7 +402,7 @@ module.exports.run = async ({
         value,
         valueName
     }) {
-        await updateConfig({
+        await updateGuildConfig({
             guild_id: main_interaction.guild.id,
             value,
             valueName

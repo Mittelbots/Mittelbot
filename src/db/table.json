@@ -269,7 +269,8 @@
             },
             "prefix": {
                 "name": "prefix",
-                "val": "VARCHAR(10)"
+                "val": "VARCHAR(10)",
+                "default": "!"
             },
             "cooldown": {
                 "name": "cooldown",
@@ -282,6 +283,10 @@
             "translate_language": {
                 "name": "translate_language",
                 "val": "VARCHAR(6)"
+            },
+            "translate_log_channel": {
+                "name": "translate_log_channel",
+                "val": "VARCHAR(255)"
             },
             "disabled_modules": {
                 "name": "disabled_modules",
