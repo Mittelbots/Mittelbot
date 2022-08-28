@@ -69,11 +69,11 @@ module.exports.updateLog = async ({
             if(channel.auditlog) {
                 logs.auditlog = (clear) ? null : channel.auditlog.id;
             }
-            else if(channel.messaglog) {
-                logs.messaglog = (clear) ? null : channel.auditlog.id;
+            else if(channel.messagelog) {
+                logs.messagelog = (clear) ? null : channel.messagelog.id;
             }
             else if(channel.modlog) {
-                logs.modlog = (clear) ? null : channel.auditlog.id;
+                logs.modlog = (clear) ? null : channel.modlog.id;
             }
         }
 

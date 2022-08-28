@@ -5,6 +5,7 @@ const { createInfractionId } = require("../createInfractionId");
 const { addWarnRoles } = require("../roles/addWarnRoles");
 const config = require('../../../src/assets/json/_config/config.json');
 const { insertIntoClosedList } = require("../data/infractions");
+const { errorhandler } = require("../errorhandler/errorhandler");
 
 async function warnUser({bot, user, mod, guild, reason}) {
 
@@ -13,7 +14,7 @@ async function warnUser({bot, user, mod, guild, reason}) {
     if(pass.error) return pass;
 
     if(!pass.error) {
-        await setNewModLogMessage(bot, config.defaultModTypes.warn, mod.id, user, reason, null, guild.id);
+        setNewModLogMessage(bot, config.defaultModTypes.warn, mod.id, user, reason, null, guild.id);
         const p_response = await publicModResponses(config.defaultModTypes.warn, mod, user.id, reason, null, bot);
         await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
 
@@ -27,9 +28,8 @@ async function warnUser({bot, user, mod, guild, reason}) {
             reason,
             infraction_id: await createInfractionId()
         });
-            
+        
         errorhandler({fatal: false, message: `${mod.id} has triggered the warn command in ${guild.id}`});
-
         return p_response;
     }
 }

@@ -1,10 +1,6 @@
 const {EmbedBuilder} = require('discord.js');
-const database = require('../../src/db/db');
-const { errorhandler } = require('../functions/errorhandler/errorhandler');
 const { generateModEmote } = require('../functions/generateModEmote');
-const {
-    getFromCache,
-} = require('../functions/cache/cache');
+const { getLogs } = require('../functions/data/logs');
 
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
     var modLogMessage = new EmbedBuilder()
@@ -25,22 +21,14 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
 }
 
 async function sendToModLog(bot, message, gid) {
-    const cache = await getFromCache({
-        cacheName: "logs",
-        param_id: gid
-    });
-
-    if(cache && cache[0].modlog) {
-        return bot.channels.cache.get(cache[0].modlog).send({embeds: [message]}).catch(err => {});
-    }
-    
-    database.query(`SELECT modlog FROM ${gid}_guild_logs`).then(res => {
-        if(res.length > 0 && res[0].modlog) {
-            bot.channels.cache.get(res[0].modlog).send({embeds: [message]}).catch(err => {});
-        }
-    }).catch(err => {
-        return errorhandler({err, fatal: true});
+    const logs = await getLogs({
+        guild_id: gid
     })
+
+    if(logs && logs.modlog) {
+        await bot.channels.cache.get(logs.modlog).send({embeds: [message]}).catch(err => {});
+        return true;
+    }
     return;
 }
 
