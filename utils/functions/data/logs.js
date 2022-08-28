@@ -1,41 +1,15 @@
 const {
-    getAllGuildIds
-} = require("./getAllGuildIds");
-const {
     getGuildConfig, updateGuildConfig
 } = require("./getConfig");
-
-module.exports.getAllLogs = async () => {
-
-    const all_guild_id = await getAllGuildIds();
-
-    if (all_guild_id) {
-        let response = [];
-        for (let i in all_guild_id) {
-            const obj = {
-                guild_id: all_guild_id[i].guild_id,
-                logs: await this.getLogs({
-                    guild_id: all_guild_id[i].guild_id
-                })
-            }
-            response.push(obj);
-        }
-        return response;
-    } else {
-        return false;
-    }
-
-}
 
 module.exports.getLogs = async ({
     guild_id
 }) => {
     const {
         settings
-    } = getGuildConfig({
+    } = await getGuildConfig({
         guild_id
     });
-
     var logs;
     try {
         logs = JSON.parse(settings.logs);
@@ -54,7 +28,7 @@ module.exports.updateLog = async ({
     clear
 }) => {
     return new Promise(async (resolve, reject) => {
-        const logs = this.getLogs({
+        const logs = await this.getLogs({
             guild_id
         })
 
@@ -93,15 +67,17 @@ module.exports.updateLog = async ({
             }
         }else {
             if(channel.auditlog) {
-                logs.auditlog = (clear) ? null : channel.auditlog;
+                logs.auditlog = (clear) ? null : channel.auditlog.id;
             }
             else if(channel.messaglog) {
-                logs.messaglog = (clear) ? null : channel.auditlog;
+                logs.messaglog = (clear) ? null : channel.auditlog.id;
             }
             else if(channel.modlog) {
-                logs.modlog = (clear) ? null : channel.auditlog;
+                logs.modlog = (clear) ? null : channel.auditlog.id;
             }
         }
+
+        console.log(logs)
 
         updateGuildConfig({
             guild_id,

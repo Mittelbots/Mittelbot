@@ -65,8 +65,6 @@ async function messageCreate(message, bot) {
         guild_id: message.guild.id,
     });
 
-    console.log(settings)
-
     if (!settings) {
         errorhandler({err, message: `${main_interaction.guild.id} dont have any config.`});
         return message.channel.send(config.errormessages.general)
