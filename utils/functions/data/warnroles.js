@@ -1,10 +1,6 @@
-const database = require("../../../src/db/db");
 const {
     errorhandler
 } = require("../errorhandler/errorhandler");
-const {
-    updateCache,
-} = require("../cache/cache");
 const {
     checkRole
 } = require("../roles/checkRole");
