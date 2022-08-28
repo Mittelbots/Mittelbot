@@ -32,6 +32,7 @@ async function checkDatabase() {
             });
 
         for (let c in tables.nondynamical[t]) {
+            if(tables.nondynamical[t][c].name == undefined) continue;
             await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables.nondynamical[t][c].name} ${tables.nondynamical[t][c].val}`)
                 .then(() => col_count++)
                 .catch(err => {
@@ -74,21 +75,25 @@ async function checkDatabase() {
                             })
                         continue;
                     }
+                    continue;
+                }else {
+                    if(tables.dynamical[t][c].name == undefined) continue;
+                    await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} ADD COLUMN ${tables.dynamical[t][c].name} ${tables.dynamical[t][c].val} ${(tables.dynamical[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables.dynamical[t][c].default) : ''} `)
+                        .then(async () => {
+                            col_count++;
+                        })
+                        .catch(err => {
+                            if(err.code === "ER_DUP_FIELDNAME") return
+                            errorhandler({err, fatal: false});
+                        });
                 }
-                await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} ADD COLUMN ${tables.dynamical[t][c].name} ${tables.dynamical[t][c].val} ${(tables.dynamical[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables.dynamical[t][c].default) : ''} `)
-                    .then(async () => {
-                        col_count++;
-                    })
-                    .catch(err => {
-                        if(err.code === "ER_DUP_FIELDNAME") return
-                        errorhandler({err, fatal: false});
-                    });
             }
         }
 
         //? INSERT INTO guild_config
         await database.query(`INSERT IGNORE INTO guild_config (guild_id) VALUES (${guildids[g].guild_id})`)
-            .then(async () => {
+            .then(async (res) => {
+                if(res.affectedRows == 0) return;
                 insert_count++;
             })
             .catch(err => {

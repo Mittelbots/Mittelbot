@@ -1,13 +1,9 @@
 const {
-    getAllConfig,
     getAllGuildConfig
 } = require("../data/getConfig");
 const {
     getAllModroles
 } = require("../data/getModroles");
-const {
-    getAllLogs
-} = require('../data/logs');
 const {
     addToCache,
     config,
@@ -33,9 +29,6 @@ const {
 const {
     getAllMemberInfo
 } = require('../data/getMemberInfo');
-const {
-    getAllWarnroles
-} = require("../data/warnroles");
 const {
     getAllForms
 } = require("../data/apply_form");
@@ -70,12 +63,9 @@ module.exports.startUpCache = async () => {
 
     console.info('🕐 Getting all Data...');
 
-    const guildConfigs = await getAllConfig();
     const guildModroles = await getAllModroles();
-    const guildLogs = await getAllLogs();
     const guildXp = await getAllXP();
     const guildMemberInfo = await getAllMemberInfo();
-    const guildWarnRoles = await getAllWarnroles();
     const guildApplyForms = await getAllForms();
     const guildAutoMod = await getAllAutoMod();
     const scamListData = await getScamList();
@@ -91,28 +81,6 @@ module.exports.startUpCache = async () => {
 
     console.info('🕐 Adding to cache...');
 
-    for (let i in guildConfigs) {
-        if (!guildConfigs[i] || !guildConfigs[i].guild_id) continue;
-        await addToCache({
-            value: {
-                name: "config",
-                data: {
-                    id: guildConfigs[i].guild_id,
-                    prefix: guildConfigs[i].prefix,
-                    welcome_channel: guildConfigs[i].welcome_channel,
-                    cooldown: guildConfigs[i].cooldown,
-                    deleteModCommandAfterUsage: guildConfigs[i].deleteModCommandAfterUsage,
-                    deleteCommandAfterUsage: guildConfigs[i].deleteCommandAfterUsage,
-                    levelsettings: guildConfigs[i].levelsettings,
-                    translate_target: guildConfigs[i].translate_target,
-                    translate_log_channel: guildConfigs[i].translate_log_channel,
-                    translate_language: guildConfigs[i].translate_language,
-                    disabled_modules: guildConfigs[i].disabled_modules,
-                }
-            }
-        });
-    }
-
     for (let i in guildModroles) {
         if (!guildModroles[i] || !guildModroles[i].modroles) continue;
 
@@ -127,23 +95,6 @@ module.exports.startUpCache = async () => {
             }
         });
     }
-
-    for (let i in guildLogs) {
-        if (!guildLogs[i]) continue;
-        await addToCache({
-            value: {
-                name: "logs",
-                data: {
-                    id: guildLogs[i].guild_id,
-                    auditlog: guildLogs[i].logs.auditlog,
-                    messagelog: guildLogs[i].logs.messagelog,
-                    modlog: guildLogs[i].logs.modlog,
-                    whitelist: guildLogs[i].logs.whitelist,
-                }
-            }
-        });
-    }
-
 
     for (let i in guildXp) {
         if (!guildXp[i]) continue;
@@ -167,19 +118,6 @@ module.exports.startUpCache = async () => {
                 data: {
                     id: guildMemberInfo[i].guild_id,
                     memberInfo: (guildMemberInfo[i].member_info) ? guildMemberInfo[i].member_info : '',
-                }
-            }
-        });
-    }
-
-    for (let i in guildWarnRoles) {
-        if (!guildWarnRoles[i]) continue;
-        await addToCache({
-            value: {
-                name: "warnroles",
-                data: {
-                    id: guildWarnRoles[i].guild_id,
-                    roles: (typeof guildWarnRoles[i].warnroles === "object") ? guildWarnRoles[i].warnroles : [],
                 }
             }
         });

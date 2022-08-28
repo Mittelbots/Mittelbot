@@ -15,7 +15,7 @@ const {
     translateMessage
 } = require('../utils/functions/data/translate');
 const {
-    getConfig
+    getGuildConfig
 } = require('../utils/functions/data/getConfig');
 const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
@@ -61,23 +61,11 @@ async function messageCreate(message, bot) {
         return;
     };
 
-    var {disabled_modules} = await getConfig({
+    var {settings} = await getGuildConfig({
         guild_id: message.guild.id,
     });
 
-    disabled_modules = JSON.parse(disabled_modules);
-
-    if(disabled_modules.indexOf('scamdetection') === -1) await checkForScam(message, bot, config, log);
-
-    let messageArray = message.content.split(" ");
-    let cmd = messageArray[0];
-    let args = messageArray.slice(1);
-
-    const guild_config = await getConfig({
-        guild_id: message.guild.id
-    });
-
-    if (!guild_config) {
+    if (!settings) {
         errorhandler({err, message: `${main_interaction.guild.id} dont have any config.`});
         return message.channel.send(config.errormessages.general)
             .then(async msg => {
@@ -86,8 +74,16 @@ async function messageCreate(message, bot) {
             }).catch(err => {});
     }
 
-    const prefix = guild_config.prefix;
-    const cooldown = guild_config.cooldown;
+    disabled_modules = JSON.parse(settings.disabled_modules) || [];
+
+    if(disabled_modules.indexOf('scamdetection') === -1) await checkForScam(message, bot, config, log);
+
+    let messageArray = message.content.split(" ");
+    let cmd = messageArray[0];
+    let args = messageArray.slice(1);
+
+    const prefix = settings.prefix;
+    const cooldown = settings.cooldown;
     if (cmd.startsWith(prefix)) {
 
         let commandfile = bot.commands.get(cmd.slice(prefix.length));

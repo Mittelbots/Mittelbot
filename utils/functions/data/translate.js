@@ -1,7 +1,7 @@
-const { getConfig } = require("./getConfig");
+const { getConfig, getGuildConfig, updateGuildConfig } = require("./getConfig");
 const database = require("../../../src/db/db");
 const {
-    config
+    guildConfig
 } = require('../cache/cache');
 const { errorhandler } = require("../errorhandler/errorhandler");
 const translatte = require('translatte');
@@ -10,7 +10,7 @@ module.exports.getTranslateConfig = async ({
     guild_id
 }) => {
     return new Promise(async (resolve, reject) => {
-        const {translate_log_channel, translate_language, translate_target} = await getConfig({
+        const {translate_log_channel, translate_language, translate_target} = await getGuildConfig({
             guild_id
         });
         if(translate_log_channel && translate_language && translate_target)  {
@@ -33,24 +33,37 @@ module.exports.saveNewTranslateConfig = async ({
 }) => {
     return new Promise(async (resolve, reject) => {
 
-        for(let i in config) {
-            if(config[i].id === guild_id) {
-                config[i].translate_log_channel = translate_log_channel;
-                config[i].translate_language = translate_language;
-                config[i].translate_target = translate_target;
+        for(let i in guildConfig) {
+            if(guildConfig[i].id === guild_id) {
+                guildConfig[i].translate_log_channel = translate_log_channel;
+                guildConfig[i].translate_language = translate_language;
+                guildConfig[i].translate_target = translate_target;
             }
         }
 
-        await database.query(`UPDATE ${guild_id}_config SET translate_log_channel = ?, translate_language = ?, translate_target = ? WHERE id = 1`, [translate_log_channel, translate_language, translate_target])
-            .then(() => {
-                return resolve(true);
-            }).catch(err => {
-                reject(false);
-                return errorhandler({
-                    err: err,
-                    fatal: true
-                })
-            })
+        const logChannel = await updateGuildConfig({
+            guild_id,
+            value: translate_log_channel,
+            valueName: "translate_log_channel"
+        });
+
+        const language = await updateGuildConfig({
+            guild_id,
+            value: translate_language,
+            valueName: "translate_language"
+        });
+
+        const target = await updateGuildConfig({
+            guild_id,
+            value: translate_target,
+            valueName: "translate_target"
+        })
+
+        Promise.all([logChannel, language, target]).then((res) => {
+            resolve(true)
+        }).catch(err => {
+            reject(false)
+        })
     }); 
 }
 

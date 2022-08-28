@@ -247,10 +247,6 @@
                 "name": "apply_form",
                 "val": "LONGTEXT"
             },
-            "levelup_channel": {
-                "name": "levelup_channel",
-                "val": "VARCHAR(255)"
-            },
             "levelsettings": {
                 "name": "levelsettings",
                 "val": "LONGTEXT"
@@ -269,7 +265,8 @@
             },
             "prefix": {
                 "name": "prefix",
-                "val": "VARCHAR(10)"
+                "val": "VARCHAR(10)",
+                "default": "!"
             },
             "cooldown": {
                 "name": "cooldown",
@@ -283,6 +280,10 @@
                 "name": "translate_language",
                 "val": "VARCHAR(6)"
             },
+            "translate_log_channel": {
+                "name": "translate_log_channel",
+                "val": "VARCHAR(255)"
+            },
             "disabled_modules": {
                 "name": "disabled_modules",
                 "val": "VARCHAR(255)",
@@ -291,13 +292,22 @@
             "deleteModCommandAfterUsage": {
                 "name": "deleteModCommandAfterUsage",
                 "val": "INT(4)",
-                "default": "0"
+                "default": 0
             },
             "deleteCommandAfterUsage": {
                 "name": "deleteCommandAfterUsage",
                 "val": "INT(4)",
-                "default": "0"
-            }
+                "default": 0
+            },
+            "logs": {
+                "name": "logs",
+                "val": "LONGTEXT"
+            },
+            "warnroles": {
+                "name": "warnroles",
+                "val": "LONGTEXT"
+            },
+            "_DELETE": ["levelup_channel"]
         },
         "twitch_streams": {
             "id": {
@@ -319,7 +329,7 @@
             "isStreaming": {
                 "name": "isStreaming",
                 "val": "INT(4)",
-                "default": "0"
+                "default": 0
             },
             "info_channel_id": {
                 "name": "info_channel_id",
@@ -362,7 +372,7 @@
             "verified": {
                 "name": "verified",
                 "val": "INT(4)",
-                "default": "0"
+                "default": 0
             },
             "username": {
                 "name": "username",
@@ -407,29 +417,6 @@
         }
     },
     "dynamical": {
-        "_guild_logs": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY",
-                "default": "1"
-            },
-            "auditlog": {
-                "name": "auditlog",
-                "val": "VARCHAR(255)"
-            },
-            "modlog": {
-                "name": "modlog",
-                "val": "VARCHAR(255)"
-            },
-            "messagelog": {
-                "name": "messagelog",
-                "val": "VARCHAR(255)"
-            },
-            "whitelist": {
-                "name": "whitelist",
-                "val": "LONGTEXT"
-            }
-        },
         "_guild_warnroles": {
             "id": {
                 "name": "id",
@@ -456,12 +443,12 @@
             "level_announce": {
                 "name": "level_announce",
                 "val": "VARCHAR(255)",
-                "default": "0"
+                "default": 0
             },
             "message_count": {
                 "name": "message_count",
                 "val": "BIGINT(20)",
-                "default": "1"
+                "default": 1
             }
         }
     }
