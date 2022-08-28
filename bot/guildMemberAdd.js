@@ -7,15 +7,15 @@ const {
 const database = require('../src/db/db');
 const { insertMemberInfo, getMemberInfoById, updateMemberInfoById } = require('../utils/functions/data/getMemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
-const { getConfig, getGuildConfig } = require("../utils/functions/data/getConfig");
+const { getGuildConfig } = require("../utils/functions/data/getConfig");
 
 async function guildMemberAdd(member, bot) {
 
-    var {disabled_modules} = await getConfig({
+    var {settings} = await getGuildConfig({
         guild_id: member.guild.id,
     });
 
-    disabled_modules = JSON.parse(disabled_modules);
+    disabled_modules = JSON.parse(settings.disabled_modules);
 
     if(disabled_modules.indexOf('welcomemessage') === -1) {
         sendWelcomeMessage({

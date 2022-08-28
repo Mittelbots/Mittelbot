@@ -1,7 +1,7 @@
 const {
     checkActiveCommand
 } = require("../../utils/functions/checkActiveCommand/checkActiveCommand");
-const { getConfig } = require("../../utils/functions/data/getConfig");
+const { getGuildConfig } = require("../../utils/functions/data/getConfig");
 
 module.exports.handleSlashCommands = async ({
     main_interaction,
@@ -16,11 +16,11 @@ module.exports.handleSlashCommands = async ({
 
     //=========================================================
 
-    var {disabled_modules} = await getConfig({
+    var {settings} = await getGuildConfig({
         guild_id: main_interaction.guild.id,
     });
 
-    disabled_modules = JSON.parse(disabled_modules);
+    disabled_modules = JSON.parse(settings.disabled_modules);
 
     const module = moderation.indexOf(main_interaction.commandName) > -1 ? 'moderation' : fun.indexOf(main_interaction.commandName) > -1 ? 'fun' : false;
 

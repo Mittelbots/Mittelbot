@@ -1,5 +1,4 @@
-const { getConfig, getGuildConfig, updateGuildConfig } = require("./getConfig");
-const database = require("../../../src/db/db");
+const { getGuildConfig, updateGuildConfig } = require("./getConfig");
 const {
     guildConfig
 } = require('../cache/cache');
