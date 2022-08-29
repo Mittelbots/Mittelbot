@@ -3,7 +3,7 @@ const {
     getAllGuildIds
 } = require("../utils/functions/data/getAllGuildIds");
 
-const old_DB_name = "_config";
+const old_DB_name = "_guild_joinroles";
 const new_DB_name = "guild_config";
 const isGuildIdRequired = true;
 
@@ -38,77 +38,17 @@ async function main() {
 
         if (!data) continue;
 
-        if (old_DB_name == "_guild_modroles") {
-            let mod_roles = [];
-            for (let d in data) {
-                const obj = {
-                    role: data[d].role_id,
-                    isadmin: data[d].isadmin,
-                    ismod: data[d].ismod,
-                    ishelper: data[d].ishelper
-                }
-                mod_roles.push(obj);
-            }
-
-            await database.query(`UPDATE ${new_DB_name} SET modroles = ? WHERE guild_id = ? `, [JSON.stringify(mod_roles), all_guilds[i].guild_id])
-                .then(() => {
-                    console.log(`Successfully inserted new data.`);
-                })
-                .catch(err => {
-                    console.error("Error occured", err);
-                });
+        var array = [];
+        for(let i in data) {
+            array.push(data[i].role_id) 
         }
 
-        if (old_DB_name == "_config") {
-            data = data[0];
-
-            var levelsettings = {
-                "mode": "normal",
-                "levelup_channel": "disable"
-            }
-
-            levelsettings = JSON.stringify(levelsettings)
-
-            var logs = await database.query(`SELECT * FROM ${all_guilds[i].guild_id}_guild_logs`)
-                .then(res => {
-                    return res;
-                })
-                .catch(err => {
-                    console.error("Error occured", err);
-                });
-
-            var logsettings = {};
-
-            if (logs.length > 0) {
-                (logs[0].modlog) ? logsettings.modlog = logs[0].modlog: '';
-                (logs[0].auditlog) ? logsettings.auditlog = logs[0].auditlog: '';
-                (logs[0].messagelog) ? logsettings.messagelog = logs[0].messagelog: '';
-            }
-
-            var warnroles = await database.query(`SELECT * FROM ${all_guilds[i].guild_id}_guild_warnroles`)
-                .then(res => {
-                    return res;
-                })
-                .catch(err => {
-                    console.error("Error occured", err);
-                });
-
-            var roles = []
-            for (let i in warnroles) {
-                roles.push(warnroles[i].role_id);
-            }
-
-            roles = JSON.stringify(roles);
-
-            await database.query(`UPDATE ${new_DB_name} SET prefix = ?, cooldown = ?, deleteModCommandAfterUsage = ?, deleteCommandAfterUsage = ? , disabled_modules = ?, warnroles = ?, logs = ?, levelsettings = ?`, [data.prefix, data.cooldown || 0, data.deleteModCommandAfterUsage || 0, data.deleteCommandAfterUsage || 0, JSON.stringify(data.disabled_modules), roles, JSON.stringify(logsettings), levelsettings])
-                .then(() => {
-                    console.log(JSON.stringify(logsettings), all_guilds[i].guild_id)
-                    console.log(`Successfully inserted new data.`);
-                })
-                .catch(err => {
-                    console.error("Error occured", err);
-                });
-        }
+        await database.query(`UPDATE guild_config SET joinroles = ? WHERE guild_id = ?`, [JSON.stringify(array), all_guilds[i].guild_id])
+            .then(res => {
+                console.log('Success!')
+            }).catch(err => {
+                console.log(err)
+            })
     }
 }
 
