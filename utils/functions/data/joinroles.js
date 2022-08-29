@@ -1,44 +1,42 @@
-const database = require("../../../src/db/db");
 const {
-    getAllGuildIds
-} = require("./getAllGuildIds");
-const {
-    getFromCache,
-    updateCache
-} = require('../cache/cache');
-const {
-    errorhandler
-} = require("../errorhandler/errorhandler");
-const {
-    checkRole
-} = require("../roles/checkRole");
+    getGuildConfig,
+    updateGuildConfig
+} = require("./getConfig");
 
-module.exports.removeJoinrole = ({
+const _ = require('underscore');
+
+module.exports.removeJoinrole = async ({
     guild_id,
-    joinrole_id
+    roles
 }) => {
-    updateCache({
-        cacheName: `joinroles`,
-        param_id: [guild_id, joinrole_id],
-        updateValName: `role_id`
+    var joinroles = await this.getJoinroles({
+        guild_id
+    });
+
+    for (let i in roles) {
+        joinroles = joinroles.filter(r => r !== roles[i]);
+    }
+
+    await updateGuildConfig({
+        guild_id,
+        value: JSON.stringify(joinroles),
+        valueName: "joinroles"
     })
 
-    return database.query(`DELETE FROM ${guild_id}_guild_joinroles WHERE role_id = ?`, [joinrole_id])
-        .then(() => {
-            return {
-                error: false
-            }
-        })
-        .catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            });
-            return {
-                error: true,
-                message: "An error occured while removing the joinrole"
-            }
-        });
+    var tet = await this.getJoinroles({
+        guild_id
+    });
+}
+
+module.exports.getJoinroles = async ({
+    guild_id
+}) => {
+    const {
+        settings
+    } = await getGuildConfig({
+        guild_id
+    });
+    return JSON.parse(settings.joinroles) || [];
 }
 
 
@@ -48,45 +46,26 @@ module.exports.updateJoinroles = async ({
     user
 }) => {
     return new Promise(async (resolve, reject) => {
-        const cache = await getFromCache({
-            cacheName: 'joinroles',
-            param_id: guild.id
-        });
 
-        if (cache[0].role_id !== undefined && cache[0].role_id.length !== 0) {
-            const cacheRoles = cache[0].role_id;
-            let removedRoles = '';
+        var joinroles = await this.getJoinroles({
+            guild_id: guild.id
+        })
+        const rolesAlreadyExists = _.intersection(joinroles, roles);
 
-            for (let i in roles) {
+        if (rolesAlreadyExists.length > 0) {
+            await this.removeJoinrole({
+                guild_id: guild.id,
+                roles: rolesAlreadyExists
+            });
 
-                const checkedRoles = await checkRole({
-                    guild,
-                    role_id: roles[i]
-                });
-                if (!checkedRoles) {
-                    return reject(`<@&${roles[i]}> doesn't exists! All existing mentions before are saved.`)
-                }
-                await cacheRoles.map(role => {
-                    if (roles[i] === role.role_id) {
-                        let removed = this.removeJoinrole({
-                            guild_id: guild.id,
-                            joinrole_id: roles[i],
-                        });
-
-                        if (removed.error) {
-                            return reject(removed.message)
-                        } else {
-                            removedRoles += `<@&${roles[i]}> `;
-                            delete roles[i];
-                        }
-                    }
-                })
+            for (let i in rolesAlreadyExists) {
+                joinroles = joinroles.filter(r => r !== rolesAlreadyExists[i])
+                roles = roles.filter(r => r !== rolesAlreadyExists[i])
             }
-            if (removedRoles !== '') {
-                resolve(`Removed ${removedRoles}`)
+
+            if (joinroles.length == 0) {
+                return resolve(`Successfully removed all joinroles`);
             }
-        } else {
-            cache[0].role_id = [];
         }
 
         var passedRoles = [];
@@ -110,75 +89,38 @@ module.exports.updateJoinroles = async ({
             }
             passedRoles.push(role.id);
         }
-        for (let i in passedRoles) {
-            await this.saveJoinRoles({
+        return await this.saveJoinRoles({
                 guild_id: guild.id,
-                joinrole_id: passedRoles[i]
-            }).then(res => {})
-            .catch(err => {})
-        }
-        return resolve(true)
+                joinroles: [...passedRoles, ...joinroles]
+            })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                reject(err);
+            })
     })
 }
 
 module.exports.saveJoinRoles = async ({
     guild_id,
-    joinrole_id
+    joinroles
 }) => {
     return new Promise(async (resolve, reject) => {
-        if (!joinrole_id) {
+        await updateGuildConfig({
+            guild_id,
+            value: (joinroles.length > 0) ? JSON.stringify(joinroles) : null,
+            valueName: "joinroles"
+        }).then(() => {
 
-            await updateCache({
-                cacheName: 'joinroles',
-                param_id: [guild_id],
-                updateValName: 'role_id',
-            });
-
-            return await database.query(`DELETE FROM ${guild_id}_guild_joinroles`)
-                .then(() => {
-                    resolve(`Joinroles successfully cleared.`).catch(err => {});
-                })
-                .catch(err => {
-                    errorhandler({
-                        err,
-                        fatal: true
-                    });
-                    return reject(err)
-                });
-        } else {
-
-            const cache = await getFromCache({
-                cacheName: 'joinroles',
-                param_id: guild_id,
-            });
-
-            roles = cache[0].role_id;
-
-
-            const obj = {
-                id: (roles.length > 0) ? cache[0].role_id[cache[0].role_id.length - 1].id + 1 : 1,
-                role_id: joinrole_id,
+            if (joinroles.length == 0) {
+                resolve(`Joinroles successfully cleared.`)
+            } else {
+                resolve(`Successfully updated all joinroles`)
             }
 
-            roles.push(obj);
-
-            await updateCache({
-                cacheName: 'joinroles',
-                param_id: [guild_id],
-                updateVal: roles,
-                updateValName: 'role_id',
-            });
-            return await database.query(`INSERT INTO ${guild_id}_guild_joinroles (role_id) VALUES (?)`, [joinrole_id])
-                .then(() => {
-                    resolve(`<@&${joinrole_id}> added to joinroles.`)
-                })
-                .catch(err => {
-                    errorhandler({
-                        err,
-                        fatal: true
-                    });
-                    reject(err);
-                })
-        }
+        }).catch(() => {
+            reject(`Something went wrong while updating the joinroles config. Please try again later.`)
+        })
     })
 }

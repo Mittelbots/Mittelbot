@@ -177,23 +177,17 @@ module.exports.run = async ({
             break;
 
         case 'joinroles':
+            const roles = main_interaction.options.getString('joinroles')
+            var joinroles = removeMention(roles)
+            joinroles = joinroles.split(" ");
 
-            return main_interaction.followUp({
-                content: `Please use the dashboard to set the join roles. The command is temporarily disabled.`,
-            })
-            var joinroles = []
-            for (let i = 1; i <= 5; i++) {
-                let role = main_interaction.options.getRole('joinrole' + i)
-
-                if (role) joinroles.push(role.id)
-            }
             updateJoinroles({
                 guild: main_interaction.guild,
                 roles: joinroles,
                 user: bot.guilds.cache.get(main_interaction.guild.id).members.cache.get(main_interaction.user.id),
-            }).then(() => {
+            }).then(res => {
                 main_interaction.followUp({
-                    content: `✅ Join Roles updated!`,
+                    content: `✅ ${res}`,
                     ephemeral: true
                 }).catch(err => {});
             }).catch(err => {
@@ -459,36 +453,12 @@ module.exports.data = new SlashCommandBuilder()
     .addSubcommand(command =>
         command
         .setName('joinroles')
-        .setDescription('Add up to 5 join roles. Note: If you mention a existing role, it will be removed')
-        .addRoleOption(joinrole =>
+        .setDescription('Add up joinroles to your server. Note: If you mention a existing role, it will be removed')
+        .addStringOption(joinrole =>
             joinrole
-            .setName('joinrole1')
-            .setDescription('Add a role to the list of join roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(joinrole =>
-            joinrole
-            .setName('joinrole2')
-            .setDescription('Add a role to the list of join roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(joinrole =>
-            joinrole
-            .setName('joinrole3')
-            .setDescription('Add a role to the list of join roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(joinrole =>
-            joinrole
-            .setName('joinrole4')
-            .setDescription('Add a role to the list of join roles.')
-            .setRequired(false)
-        )
-        .addRoleOption(joinrole =>
-            joinrole
-            .setName('joinrole5')
-            .setDescription('Add a role to the list of join roles.')
-            .setRequired(false)
+            .setName('joinroles')
+            .setDescription('Add roles to the list of join roles. Split multiple roles with a space.')
+            .setRequired(true)
         )
     )
     .addSubcommand(command =>
