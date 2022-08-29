@@ -309,11 +309,11 @@ module.exports.getRank = async ({
     var sorted = [];
 
     for (let i in guildXp) {
-        sorted.push([guildXp[i].xp, guildXp[i].user_id, guildXp[i].level_announce, guildXp[i].message_count]);
+        sorted.push([guildXp[i].user_id,guildXp[i].xp, guildXp[i].level_announce, guildXp[i].message_count]);
     }
 
     sorted = sorted.sort((a, b) => {
-        return b[0] - a[0];
+        return b[1] - a[1];
     });
 
     if (user_id) {
