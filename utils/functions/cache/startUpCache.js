@@ -81,10 +81,10 @@ module.exports.startUpCache = async () => {
         if (!guildXp[i]) continue;
         await addToCache({
             value: {
-                name: "xp",
+                name: "guildLevel",
                 data: {
                     id: guildXp[i].guild_id,
-                    xp: (guildXp[i].xp) ? guildXp[i].xp : '',
+                    levels: guildXp[i].levels,
                 }
             }
         });

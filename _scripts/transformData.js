@@ -3,8 +3,8 @@ const {
     getAllGuildIds
 } = require("../utils/functions/data/getAllGuildIds");
 
-const old_DB_name = "_guild_joinroles";
-const new_DB_name = "guild_config";
+const old_DB_name = "_guild_level";
+
 const isGuildIdRequired = true;
 
 async function main() {
@@ -27,7 +27,6 @@ async function main() {
             }).catch(err => {
                 console.log(err)
             })
-
         var data = await database.query(`SELECT * FROM ${isGuildIdRequired ? all_guilds[i].guild_id : ""}${old_DB_name}`)
             .then(res => {
                 return res;
@@ -38,17 +37,31 @@ async function main() {
 
         if (!data) continue;
 
-        var array = [];
-        for(let i in data) {
-            array.push(data[i].role_id) 
+        if (old_DB_name === '_guild_joinroles') {
+
+            var array = [];
+            for (let i in data) {
+                array.push(data[i].role_id)
+            }
+
+            await database.query(`UPDATE guild_config SET joinroles = ? WHERE guild_id = ?`, [JSON.stringify(array), all_guilds[i].guild_id])
+                .then(res => {
+                    console.log('Success!')
+                }).catch(err => {
+                    console.log(err)
+                })
         }
 
-        await database.query(`UPDATE guild_config SET joinroles = ? WHERE guild_id = ?`, [JSON.stringify(array), all_guilds[i].guild_id])
-            .then(res => {
-                console.log('Success!')
-            }).catch(err => {
-                console.log(err)
-            })
+        if (old_DB_name === '_guild_level') {
+            for(let d in data) {
+                await database.query(`INSERT INTO guild_level (guild_id, xp, user_id, level_announce, message_count) VALUES (?, ?, ?, ?, ?)`, [all_guilds[i].guild_id, data[d].xp, data[d].user_id, data[d].level_announce, data[d].message_count])
+                .then(res => {
+                    console.log('Success!')
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        }
     }
 }
 

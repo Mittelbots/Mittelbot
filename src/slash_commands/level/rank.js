@@ -24,7 +24,11 @@ module.exports.run = async ({
     const user = main_interaction.options.getUser('user') || main_interaction.user;
     const anonymous = main_interaction.options.getBoolean('anonymous');
 
-    const playerXP = await levelAPI.getXP(main_interaction.guild.id, user.id);
+    const playerXP = await levelAPI.getXpOfUser({
+        guild_id: main_interaction.guild.id, 
+        user_id: user.id
+    });
+
 
     if (!playerXP) {
         return main_interaction.followUp({
@@ -32,7 +36,6 @@ module.exports.run = async ({
             ephemeral: true
         }).catch(err => {});
     }
-
     const levelSettings = await levelAPI.getLevelSettingsFromGuild(main_interaction.guild.id);
 
     var mode;
@@ -43,7 +46,7 @@ module.exports.run = async ({
     }
     const nextLevel = await levelAPI.getNextLevel(levels[mode], playerXP.level_announce);
 
-    const userRank = await levelAPI.getRankById({
+    const userRank = await levelAPI.getRank({
         user_id: user.id,
         guild_id: main_interaction.guild.id
     });

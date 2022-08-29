@@ -17,16 +17,18 @@ module.exports.run = async (message, bot) => {
         guild_id: message.guild.id,
         user_id: message.author.id
     });
+
     if(!currentxp) return{
         error: "noxp"
     };
 
     var newxp = await levelAPI.generateXP(currentxp);
 
-    var updateXP = await levelAPI.updateXP({
+    var updateXP = await levelAPI.updateGuildLevel({
         guild_id: message.guild.id,
         user_id: message.author.id,
-        newxp
+        value: newxp,
+        valueName: "xp"
     })
     if(!updateXP) return {
         error: "updatexp"

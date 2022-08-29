@@ -11,14 +11,15 @@ const {
 const {
     getFromCache,
     addValueToCache,
-    xp
+    guildLevel
 } = require('../cache/cache')
 const fs = require('fs');
 const levelConfig = require('./levelconfig.json');
 const levelSystem = require("./levelsystem");
 const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
 const {
-    getGuildConfig, updateGuildConfig
+    getGuildConfig,
+    updateGuildConfig
 } = require("../data/getConfig");
 
 
@@ -26,97 +27,30 @@ var levelCooldownArray = [];
 
 /**
  * 
- * @param {object} message 
+ * @param {object} guild_id 
+ * @param {object} user_id 
  * @returns {int | boolean} currentXP
  */
-module.exports.gainXP = async function ({
+module.exports.gainXP = async ({
     guild_id,
     user_id
-}) {
-    var cache = await getFromCache({
-        cacheName: 'xp',
-        param_id: guild_id,
+}) => {
+    const userXP = await this.getXpOfUser({
+        guild_id,
+        user_id
     });
-    if (!cache) return false;
-    if (cache[0].xp.length === 0) {
-        return await database.query(`SELECT xp, id, level_announce FROM ${guild_id}_guild_level WHERE user_id = ?`, [guild_id]).then(async res => {
-            if (res.length > 0) {
-                await addValueToCache({
-                    cacheName: 'xp',
-                    param_id: guild_id,
-                    value: {
-                        user_id,
-                        xp: res[0].xp,
-                        id: res[0].id,
-                        level_announce: res[0].level_announce
-                    },
-                    valueName: 'xp'
-                })
 
-                return await res[0].xp;
-            } else {
-                return await database.query(`INSERT INTO ${guild_id}_guild_level (user_id, xp) VALUES (?, ?)`, [guild_id, 10])
-                    .then(async res => {
-                        await addValueToCache({
-                            cacheName: 'xp',
-                            param_id: guild_id,
-                            value: {
-                                user_id,
-                                id: res.insertId,
-                                xp: 10,
-                                level_announce: '0'
-                            },
-                            valueName: 'xp'
-                        })
-                    }).catch(err => {
-                        errorhandler({
-                            err: err,
-                            fatal: true
-                        })
-                        return false;
-                    });
-                return 10;
-            }
-        }).catch(err => {
-            errorhandler({
-                err: err,
-                fatal: true
-            })
-            return false;
-        });
-    } else {
-        const user = await cache[0].xp.find(x => x.user_id === user_id);
-
-        if (!user) {
-
-            try {
-                for (let i in cache[0].xp) {
-                    if (cache[0].xp[i].xp.user_id === user_id) {
-                        return cache[0].xp[i].xp.xp;
-                    }
-                }
-            } catch (err) {}
-
-            database.query(`INSERT INTO ${guild_id}_guild_level (user_id, xp) VALUES (?, ?)`, [user_id, 10])
-                .then(async res => {
-                    await addValueToCache({
-                        cacheName: 'xp',
-                        param_id: guild_id,
-                        value: {
-                            user_id,
-                            id: res.insertId,
-                            xp: 10,
-                            level_announce: '0',
-                            message_count: 0
-                        },
-                        valueName: 'xp'
-                    })
-                })
-            return false;
-        }
-        return user.xp;
+    if(userXP) {
+        return userXP.xp
+    }else {
+        await this.addUserToGuildLevel({
+            guild_id,
+            user_id
+        })
+        return 10;
     }
 }
+
 
 /**
  * 
@@ -131,30 +65,28 @@ module.exports.generateXP = function (currentxp) {
     return newxp;
 }
 
-module.exports.updateXP = async function ({
+module.exports.updateGuildLevel = async function ({
     guild_id,
     user_id,
-    newxp
+    value,
+    valueName
 }) {
-    return await database.query(`UPDATE ${guild_id}_guild_level SET xp = ?, message_count = message_count + 1 WHERE user_id = ?; SELECT message_count FROM ${guild_id}_guild_level WHERE user_id = ?`, [newxp, user_id, user_id])
-        .then((res) => {
-            for (let i in xp) {
-                if (xp[i].id === guild_id) {
-                    for (let x in xp[i].xp) {
-                        if (xp[i].xp[x].user_id === user_id) {
-                            xp[i].xp[x].xp = newxp;
-                            xp[i].xp[x].message_count = res[1][0].message_count;
-                        }
-                    }
-                }
-            }
-            return true;
+
+    for (let i in guildLevel) {
+        if (guildLevel[i].id === guild_id) {
+            guildLevel[i].levels[valueName] = value;
+        }
+    }
+
+    return await database.query(`UPDATE guild_level SET ${valueName} = ? WHERE user_id = ? AND guild_id = ?`, [value, user_id, guild_id])
+        .then(() => {
+            return guildLevel;
         })
         .catch(err => {
             errorhandler({
-                err: err,
+                err,
                 fatal: true
-            })
+            });
             return false;
         });
 }
@@ -189,8 +121,13 @@ module.exports.checkXP = async function (bot, guildid, currentxp, message) {
 
     const level_announce = await this.getLevelAnnounce(guildid, message.author.id);
 
-    if (Number(level_announce) < Number(level)) {
-        this.setLevelAnnounce(guildid, message.author.id, level);
+    if (level_announce && Number(level_announce) < Number(level)) {
+        this.updateGuildLevel({
+            guild_id: guildid, 
+            user_id: message.author.id, 
+            val: level,
+            valueName: "level_announce"
+        });
         return [level, nextlevel];
     } else {
         return false;
@@ -200,14 +137,16 @@ module.exports.checkXP = async function (bot, guildid, currentxp, message) {
 
 module.exports.sendNewLevelMessage = async function (newLevel, message, currentxp, nextlevel) {
 
-    const {settings} = getGuildConfig({
+    const {
+        settings
+    } = getGuildConfig({
         guild_id: message.guild.id
     })
 
     var levelsettings;
     try {
-        levelsettings = JSON.parse(settings.levelsettings) || {} 
-    }catch(e) {
+        levelsettings = JSON.parse(settings.levelsettings) || {}
+    } catch (e) {
         levelsettings = settings.levelsettings;
     }
 
@@ -258,13 +197,15 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
  */
 
 module.exports.getAllXP = async () => {
+
     const all_guild_id = await getAllGuildIds();
+
     if (all_guild_id) {
         let response = [];
         for (let i in all_guild_id) {
             const obj = {
                 guild_id: all_guild_id[i].guild_id,
-                xp: await this.getXPOfGuild({
+                levels: await this.getXPOfGuild({
                     guildid: all_guild_id[i].guild_id
                 })
             }
@@ -274,12 +215,21 @@ module.exports.getAllXP = async () => {
     } else {
         return false;
     }
+
 }
 
 module.exports.getXPOfGuild = async ({
     guildid
 }) => {
-    return await database.query(`SELECT * FROM ${guildid}_guild_level`).then(async res => {
+    const cache = await getFromCache({
+        cacheName: "guildLevel",
+        param_id: guildid
+    });
+    if (cache.length > 0) {
+        return cache[0].levels;
+    }
+
+    return await database.query(`SELECT * FROM guild_level WHERE guild_id = ?`, [guildid]).then(async res => {
         return res;
     }).catch(err => {
         errorhandler({
@@ -290,21 +240,35 @@ module.exports.getXPOfGuild = async ({
     })
 }
 
-module.exports.getXP = async function (guildid, user_id) {
-    return await database.query(`SELECT * FROM ${guildid}_guild_level WHERE user_id = ?`, [user_id])
-        .then(res => {
-            if (res.length <= 0) {
-                return false;
-            }
-            return res[0];
+module.exports.getXpOfUser = async ({guild_id, user_id}) => {
+    const guildxp = await this.getXPOfGuild({
+        guildid: guild_id
+    });
+    return guildxp.filter(u => u.user_id === user_id)[0] || false;
+}
+
+module.exports.addUserToGuildLevel = async ({guild_id, user_id}) => {
+    return await database.query(`INSERT INTO guild_level (guild_id, user_id) VALUES (?, ?)`, [guild_id, user_id])
+    .then(async res => {
+        await addValueToCache({
+            cacheName: 'guildLevel',
+            param_id: guild_id,
+            value: {
+                user_id,
+                id: res.insertId,
+                xp: 10,
+                level_announce: '0'
+            },
+            valueName: 'levels'
         })
-        .catch(err => {
-            errorhandler({
-                err: err,
-                fatal: true
-            })
-            return false;
+        return true;
+    }).catch(err => {
+        errorhandler({
+            err: err,
+            fatal: true
         })
+        return false;
+    });
 }
 
 /**
@@ -313,7 +277,9 @@ module.exports.getXP = async function (guildid, user_id) {
  * @returns {String} Level mode
  */
 module.exports.getLevelSettingsFromGuild = async (guild_id) => {
-    const {settings} = await getGuildConfig({
+    const {
+        settings
+    } = await getGuildConfig({
         guild_id
     });
 
@@ -332,104 +298,44 @@ module.exports.getNextLevel = async function (levels, currentlevel) {
     return levels[index];
 }
 
-module.exports.getRankById = async ({
+module.exports.getRank = async ({
     user_id,
     guild_id
 }) => {
-    var cache = await getFromCache({
-        cacheName: 'xp',
-        param_id: guild_id,
+    const guildXp = await this.getXPOfGuild({
+        guildid: guild_id
+    })
+
+    var sorted = [];
+
+    for (let i in guildXp) {
+        sorted.push([guildXp[i].xp, guildXp[i].user_id, guildXp[i].level_announce, guildXp[i].message_count]);
+    }
+
+    sorted = sorted.sort((a, b) => {
+        return b[0] - a[0];
     });
 
-    if (cache) {
-
-        const xp = cache[0].xp;
-
-        var sorted = [];
-
-        for (let i in xp) {
-            if (typeof xp[i].xp == 'object') {
-                let cachexp = xp[i].xp;
-                sorted.push([cachexp.user_id, cachexp.xp, cachexp.level_announce, cachexp.message_count]);
-                continue;
-            }
-            sorted.push([xp[i].user_id, xp[i].xp, xp[i].level_announce, xp[i].message_count])
-        }
-
-        sorted = sorted.sort((a, b) => {
-            return b[1] - a[1];
-        });
-
-
+    if (user_id) {
         var index;
         for (let i in sorted) {
             if (sorted[i][0] === user_id) {
                 index = Number(i) + 1;
             }
         }
-
         return parseInt(index);
-
-    }
-}
-
-module.exports.getRankByGuildId = async ({
-    guild_id
-}) => {
-    var cache = await getFromCache({
-        cacheName: 'xp',
-        param_id: guild_id,
-    });
-
-    if (cache) {
-        const xp = cache[0].xp;
-
-        var sorted = [];
-
-        for (let i in xp) {
-            if (typeof xp[i].xp == 'object') {
-                let cachexp = xp[i].xp;
-                sorted.push([cachexp.user_id, cachexp.xp, cachexp.level_announce, cachexp.message_count]);
-                continue;
-            }
-            sorted.push([xp[i].user_id, xp[i].xp, xp[i].level_announce, xp[i].message_count])
-        }
-
-        sorted = sorted.sort((a, b) => {
-            return b[1] - a[1];
-        });
-
+    } else {
         return sorted;
     }
 }
 
 module.exports.getLevelAnnounce = async function (guildid, user_id) {
-    return await database.query(`SELECT level_announce FROM ${guildid}_guild_level WHERE user_id = ?`, [user_id])
-        .then(res => {
-            if (res.length <= 0) return false;
-            if (res[0].level_announce === null) return false;
+    const userXP = await this.getXpOfUser({
+        guild_id: guildid,
+        user_id
+    });
 
-            return res[0].level_announce;
-        }).catch(err => {
-            errorhandler({
-                err: err,
-                fatal: true
-            })
-            return false;
-        })
-}
-
-module.exports.setLevelAnnounce = async function (guildid, user_id, state) {
-    return await database.query(`UPDATE ${guildid}_guild_level SET level_announce = ? WHERE user_id = ?`, [state, user_id])
-        .then(() => {
-            return true
-        }).catch(err => {
-            errorhandler({
-                err: err,
-                fatal: true
-            })
-            return false;
-        })
+    return userXP.level_announce || false;
 }
 
 module.exports.generateLevelConfig = function ({
@@ -548,14 +454,16 @@ module.exports.changeLevelUp = async ({
 }) => {
     return new Promise(async (resolve, reject) => {
 
-        const {settings} = await getGuildConfig({
+        const {
+            settings
+        } = await getGuildConfig({
             guild_id: guild.id
         });
 
         var levelsettings;
         try {
-            levelsettings = JSON.parse(settings.levelsettings) || {} 
-        }catch(e) {
+            levelsettings = JSON.parse(settings.levelsettings) || {}
+        } catch (e) {
             levelsettings = settings.levelsettings;
         }
 
@@ -607,7 +515,9 @@ module.exports.checkBlacklistChannels = async ({
             blacklistchannels = [];
         }
     } else {
-        const {settings} = await getGuildConfig({
+        const {
+            settings
+        } = await getGuildConfig({
             guild: message.guild.id
         })
 
@@ -630,7 +540,7 @@ module.exports.checkBlacklistChannels = async ({
         } else {
             return false;
         }
-    }else {
+    } else {
         return false;
     }
 }

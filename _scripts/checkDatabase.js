@@ -14,14 +14,6 @@ async function checkDatabase() {
     var del_col_count = 0;
     var insert_count = 0;
 
-    
-    //?GET ALL GUILDIDS FROM DATABASE
-    var guildids = await database.query(`SELECT * FROM all_guild_id`).then(async res => {
-        return await res;
-    }).catch(err => {
-        errorhandler({err, fatal: true});
-    });
-
     //?CREATE ALL NONDYNAMICAL TABLES LIKE advancedScamList, etc
     for (let t in tables.nondynamical) {
         await database.query(`CREATE TABLE ${t} (id INT AUTO_INCREMENT PRIMARY KEY)`)
@@ -33,7 +25,7 @@ async function checkDatabase() {
 
         for (let c in tables.nondynamical[t]) {
             if(tables.nondynamical[t][c].name == undefined) continue;
-            await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables.nondynamical[t][c].name} ${tables.nondynamical[t][c].val}`)
+            await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables.nondynamical[t][c].name} ${tables.nondynamical[t][c].val} ${(tables.nondynamical[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables.nondynamical[t][c].default) : ''} `)
                 .then(() => col_count++)
                 .catch(err => {
                     if(err.code === "ER_DUP_FIELDNAME") return
@@ -52,58 +44,6 @@ async function checkDatabase() {
             // }
         }
     }
-
-
-    //?CREATE ALL DYNAMICAL TABLES LIKE _config
-    for (let g in guildids) {
-        for (let t in tables.dynamical) {
-            await database.query(`CREATE TABLE ${guildids[g].guild_id}${t} (id INT AUTO_INCREMENT PRIMARY KEY)`)
-                .then(() => table_count++)
-                .catch(err => {
-                    if(err.code === "ER_TABLE_EXISTS_ERROR") return;
-                    errorhandler({err, fatal: false});
-                });
-
-            for (let c in tables.dynamical[t]) {
-                if (c === "_DELETE") {
-                    for (let delete_column in tables.dynamical[t][c]) {
-                        await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} DROP COLUMN ${tables.dynamical[t][c][delete_column]}`)
-                            .then(() => del_col_count++)
-                            .catch(err => {
-                                if(err.code === "ER_DUP_FIELDNAME") return
-                                errorhandler({err, fatal: false});
-                            })
-                        continue;
-                    }
-                    continue;
-                }else {
-                    if(tables.dynamical[t][c].name == undefined) continue;
-                    await database.query(`ALTER TABLE ${guildids[g].guild_id}${t} ADD COLUMN ${tables.dynamical[t][c].name} ${tables.dynamical[t][c].val} ${(tables.dynamical[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables.dynamical[t][c].default) : ''} `)
-                        .then(async () => {
-                            col_count++;
-                        })
-                        .catch(err => {
-                            if(err.code === "ER_DUP_FIELDNAME") return
-                            errorhandler({err, fatal: false});
-                        });
-                }
-            }
-        }
-
-        //? INSERT INTO guild_config
-        await database.query(`INSERT IGNORE INTO guild_config (guild_id) VALUES (${guildids[g].guild_id})`)
-            .then(async (res) => {
-                if(res.affectedRows == 0) return;
-                insert_count++;
-            })
-            .catch(err => {
-                if(err.code === "ER_DUP_ENTRY") return;
-                errorhandler({err, fatal: false});
-            });
-    }
-
-    
-
     console.info(`Main function passed! ${table_count} Tables and ${col_count} Columns created, ${del_col_count} Columns deleted and ${insert_count} values inserted!`)
 }
 

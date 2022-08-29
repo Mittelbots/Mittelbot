@@ -292,12 +292,12 @@
             "deleteModCommandAfterUsage": {
                 "name": "deleteModCommandAfterUsage",
                 "val": "INT(4)",
-                "default": 0
+                "default": "0"
             },
             "deleteCommandAfterUsage": {
                 "name": "deleteCommandAfterUsage",
                 "val": "INT(4)",
-                "default": 0
+                "default": "0"
             },
             "logs": {
                 "name": "logs",
@@ -329,7 +329,7 @@
             "isStreaming": {
                 "name": "isStreaming",
                 "val": "INT(4)",
-                "default": 0
+                "default": "0"
             },
             "info_channel_id": {
                 "name": "info_channel_id",
@@ -414,27 +414,20 @@
                 "name": "user_joined",
                 "val": "VARCHAR(255)"
             }
-        }
-    },
-    "dynamical": {
-        "_guild_warnroles": {
-            "id": {
-                "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
-            },
-            "role_id": {
-                "name": "role_id",
-                "val": "VARCHAR(255)"
-            }
         },
-        "_guild_level": {
+        "guild_level": {
             "id": {
                 "name": "id",
-                "val": "INT AUTO_INCREMENT PRIMARY KEY"
+                "val": "INT(100) AUTO_INCREMENT PRIMARY KEY"
+            },
+            "guild_id": {
+                "name": "guild_id",
+                "val": "VARCHAR(255)"
             },
             "xp": {
                 "name": "xp",
-                "val": "VARCHAR(255)"
+                "val": "VARCHAR(255)",
+                "default": "10"
             },
             "user_id": {
                 "name": "user_id",
@@ -443,12 +436,12 @@
             "level_announce": {
                 "name": "level_announce",
                 "val": "VARCHAR(255)",
-                "default": 0
+                "default": "0"
             },
             "message_count": {
                 "name": "message_count",
                 "val": "BIGINT(20)",
-                "default": 1
+                "default": "1"
             }
         }
     }
