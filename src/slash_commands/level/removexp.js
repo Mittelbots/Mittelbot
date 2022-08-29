@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("discord.js")
 const {
     hasPermission
 } = require('../../../utils/functions/hasPermissions');
-const { updateXP, gainXP } = require("../../../utils/functions/levelsystem/levelsystemAPI");
+const { updateGuildLevel, gainXP } = require("../../../utils/functions/levelsystem/levelsystemAPI");
 const config = require('../../assets/json/_config/config.json');
 
 module.exports.run = async ({main_interaction, bot}) => {
@@ -51,19 +51,20 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     if(newAmount < 0) newAmount = 0;
 
-    const updated = await updateXP({
+    const updated = await updateGuildLevel({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
-        newxp: newAmount
+        value: newAmount,
+        valueName: "xp"
     })
 
     if(updated) {
         return main_interaction.followUp({
-            content: `✅ ${amount}xp has been added to ${user}`
+            content: `✅ ${amount}xp has been removed from ${user}`
         }).catch(err => {})
     }else {
         return main_interaction.followUp({
-            content: '❌ Something went wrong while adding the xp. Please contact the Bot support.',
+            content: '❌ Something went wrong while removing the xp. Please contact the Bot support.',
             ephemeral: true
         }).catch(err => {})
     }

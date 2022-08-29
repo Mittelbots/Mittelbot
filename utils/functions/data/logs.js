@@ -35,8 +35,6 @@ module.exports.updateLog = async ({
         if (whitelistrole || whitelistchannel) {
             if (!logs.whitelist || logs.whitelist.length == 0) {
                 logs.whitelist = [];
-            } else {
-                logs.whitelist = JSON.parse(logs.whitelist);
             }
             if (whitelistrole) {
                 if (!logs.whitelist.includes(whitelistrole.id)) {

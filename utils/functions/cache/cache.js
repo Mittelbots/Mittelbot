@@ -1,4 +1,4 @@
-module.exports.xp = [];
+module.exports.guildLevel = [];
 module.exports.memberInfo = [];
 module.exports.global = [];
 module.exports.applyforms = [];
