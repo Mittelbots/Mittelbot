@@ -3,12 +3,7 @@ const {
 } = require("../data/getConfig");
 const {
     addToCache,
-    config,
-    modroles,
-    logs,
-    xp,
     global,
-    warnroles,
     applyforms,
     autoMod,
     scamList,
@@ -18,7 +13,10 @@ const {
     temproles,
     ytUploads,
     twitchStreams,
-    globalConfig
+    globalConfig,
+    publicScamList,
+    guildLevel,
+    memberInfo
 } = require("./cache");
 const {
     getAllXP
@@ -60,173 +58,189 @@ module.exports.startUpCache = async () => {
 
     console.info('🕐 Getting all Data...');
 
-    const guildXp = await getAllXP();
-    const guildMemberInfo = await getAllMemberInfo();
-    const guildApplyForms = await getAllForms();
-    const guildAutoMod = await getAllAutoMod();
-    const scamListData = await getScamList();
-    const guildConfig = await getAllGuildConfig();
-    const openInfractions = await getAllOpenInfractions();
-    const closedInfractions = await getAllClosedInfractions();
-    const temproles = await getAllTemproles();
-    const ytUploads = await getAllYoutubeUploads();
-    const twitchStreams = await getAllTwitchStreams();
-    const globalConfig = await getGlobalConfig();
+    try {
+        var guildXp = await getAllXP();
+        var guildMemberInfo = await getAllMemberInfo();
+        var guildApplyForms = await getAllForms();
+        var guildAutoMod = await getAllAutoMod();
+        var scamListData = await getScamList();
+        var guildConfig = await getAllGuildConfig();
+        var openInfractions = await getAllOpenInfractions();
+        var closedInfractions = await getAllClosedInfractions();
+        var temproles = await getAllTemproles();
+        var ytUploads = await getAllYoutubeUploads();
+        var twitchStreams = await getAllTwitchStreams();
+        var globalConfig = await getGlobalConfig();
+    } catch (e) {
+        errorhandler({
+            err: e,
+            message: "Something went wrong while getting all data for cache."
+        });
+    }
 
     console.info('✅ Data collected...');
 
     console.info('🕐 Adding to cache...');
 
-    for (let i in guildXp) {
-        if (!guildXp[i]) continue;
-        await addToCache({
-            value: {
-                name: "guildLevel",
-                data: {
-                    id: guildXp[i].guild_id,
-                    levels: guildXp[i].levels,
+    try {
+
+        for (let i in guildXp) {
+            if (!guildXp[i]) continue;
+            await addToCache({
+                value: {
+                    name: "guildLevel",
+                    data: {
+                        id: guildXp[i].guild_id,
+                        levels: guildXp[i].levels,
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
 
 
-    for (let i in guildMemberInfo) {
-        if (!guildMemberInfo[i]) continue;
-        await addToCache({
-            value: {
-                name: "memberInfo",
-                data: {
-                    id: guildMemberInfo[i].guild_id,
-                    memberInfo: (guildMemberInfo[i].member_info) ? guildMemberInfo[i].member_info : '',
+        for (let i in guildMemberInfo) {
+            if (!guildMemberInfo[i]) continue;
+            await addToCache({
+                value: {
+                    name: "memberInfo",
+                    data: {
+                        id: guildMemberInfo[i].guild_id,
+                        memberInfo: (guildMemberInfo[i].member_info) ? guildMemberInfo[i].member_info : '',
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    for (let i in guildApplyForms) {
-        if (!guildApplyForms[i]) continue;
-        await addToCache({
-            value: {
-                name: "applyforms",
-                id: guildApplyForms[i].forms[0].guild_id,
-                data: {
-                    forms: guildApplyForms[i].forms || [],
+        for (let i in guildApplyForms) {
+            if (!guildApplyForms[i]) continue;
+            await addToCache({
+                value: {
+                    name: "applyforms",
+                    id: guildApplyForms[i].forms[0].guild_id,
+                    data: {
+                        forms: guildApplyForms[i].forms || [],
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    for (let i in guildAutoMod) {
-        if (!guildAutoMod[i]) continue;
-        await addToCache({
-            value: {
-                name: "autoMod",
-                id: guildAutoMod[i].guild_id,
-                data: {
-                    settings: guildAutoMod[i].setting || [],
+        for (let i in guildAutoMod) {
+            if (!guildAutoMod[i]) continue;
+            await addToCache({
+                value: {
+                    name: "autoMod",
+                    id: guildAutoMod[i].guild_id,
+                    data: {
+                        settings: guildAutoMod[i].setting || [],
+                    }
                 }
-            }
-        });
-    }
-
-    await addToCache({
-        value: {
-            name: "scamList",
-            id: 0,
-            data: {
-                scamList: scamListData || [],
-            }
+            });
         }
-    });
 
-    for (let i in guildConfig) {
-        if (!guildConfig[i]) continue;
         await addToCache({
             value: {
-                name: "guildConfig",
-                id: guildConfig[i].guild_id,
-                data: {
-                    settings: guildConfig[i] || [],
-                }
-            }
-        });
-    }
-
-    await addToCache({
-        value: {
-            name: "openInfractions",
-            id: 0,
-            data: {
-                list: openInfractions || [],
-            }
-        }
-    });
-
-    await addToCache({
-        value: {
-            name: "closedInfractions",
-            id: 0,
-            data: {
-                list: closedInfractions || [],
-            }
-        }
-    });
-
-    await addToCache({
-        value: {
-            name: "temproles",
-            id: 0,
-            data: {
-                list: temproles || [],
-            }
-        }
-    });
-
-    await addToCache({
-        value: {
-            name: "ytUploads",
-            id: 0,
-            data: {
-                list: ytUploads || [],
-            }
-        }
-    });
-
-    await addToCache({
-        value: {
-            name: "twitchStreams",
-            id: 0,
-            data: {
-                list: twitchStreams || [],
-            }
-        }
-    });
-
-    await addToCache({
-        value: {
-            name: "globalConfig",
-            id: 0,
-            data: globalConfig || [],
-        }
-    });
-
-    axios.get('https://discord-phishing-backend.herokuapp.com/all').then(async res => {
-        await addToCache({
-            value: {
-                name: "publicScamList",
+                name: "scamList",
                 id: 0,
                 data: {
-                    scamList: await res.data || []
-                },
+                    scamList: scamListData || [],
+                }
             }
+        });
+
+        for (let i in guildConfig) {
+            if (!guildConfig[i]) continue;
+            await addToCache({
+                value: {
+                    name: "guildConfig",
+                    id: guildConfig[i].guild_id,
+                    data: {
+                        settings: guildConfig[i] || [],
+                    }
+                }
+            });
+        }
+
+        await addToCache({
+            value: {
+                name: "openInfractions",
+                id: 0,
+                data: {
+                    list: openInfractions || [],
+                }
+            }
+        });
+
+        await addToCache({
+            value: {
+                name: "closedInfractions",
+                id: 0,
+                data: {
+                    list: closedInfractions || [],
+                }
+            }
+        });
+
+        await addToCache({
+            value: {
+                name: "temproles",
+                id: 0,
+                data: {
+                    list: temproles || [],
+                }
+            }
+        });
+
+        await addToCache({
+            value: {
+                name: "ytUploads",
+                id: 0,
+                data: {
+                    list: ytUploads || [],
+                }
+            }
+        });
+
+        await addToCache({
+            value: {
+                name: "twitchStreams",
+                id: 0,
+                data: {
+                    list: twitchStreams || [],
+                }
+            }
+        });
+
+        await addToCache({
+            value: {
+                name: "globalConfig",
+                id: 0,
+                data: globalConfig || [],
+            }
+        });
+
+        axios.get('https://discord-phishing-backend.herokuapp.com/all').then(async res => {
+            await addToCache({
+                value: {
+                    name: "publicScamList",
+                    id: 0,
+                    data: {
+                        scamList: await res.data || []
+                    },
+                }
+            })
+        }).catch(err => {
+            errorhandler({
+                err,
+                fatal: true
+            })
         })
-    }).catch(err => {
+
+    } catch (e) {
         errorhandler({
-            err,
-            fatal: true
-        })
-    })
+            err: e,
+            message: "Something went wrong while fetching cache!"
+        });
+    }
 
     console.info('✅ Cache init completed...');
     console.info('----------------------------------------');
@@ -240,12 +254,7 @@ module.exports.resetCache = async () => {
         console.info('----------------------------------------');
 
         try {
-            modroles.length = 0;
-            config.length = 0;
-            logs.length = 0;
-            xp.length = 0;
             global.length = 0;
-            warnroles.length = 0;
             applyforms.length = 0;
             autoMod.length = 0;
             scamList.length = 0;
@@ -256,6 +265,9 @@ module.exports.resetCache = async () => {
             ytUploads.length = 0;
             twitchStreams.length = 0;
             globalConfig.length = 0;
+            publicScamList.length = 0;
+            guildLevel.length = 0;
+            memberInfo.length = 0;
         } catch (err) {
             reject(`Something went wrong while resetting the cache: \`${err}\``);
             errorhandler({

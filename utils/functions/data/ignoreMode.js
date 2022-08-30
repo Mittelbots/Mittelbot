@@ -3,12 +3,12 @@ const { globalConfig } = require("../cache/cache")
 const { errorhandler } = require("../errorhandler/errorhandler")
 
 module.exports.updateGlobalConfig = async ({valueName, value}) => {
-    database.query(`UPDATE global_config SET ${valueName} = ? WHERE id = 1`, [value])
+    await database.query(`UPDATE global_config SET ${valueName} = ? WHERE id = 1`, [JSON.stringify(value)])
         .then(() => {
-            globalConfig[valueName] = value;
+            globalConfig[0][valueName] = JSON.stringify(value);
         })
         .catch(err => {
-            errorhandler({err, fatal: true})
+            errorhandler({err})
         })
 }
 
@@ -21,7 +21,7 @@ module.exports.getGlobalConfig = async () => {
                 return res[0];
             })
             .catch(err => {
-                errorhandler({err, fatal: true})
+                errorhandler({err})
                 return false;
             })
     }
