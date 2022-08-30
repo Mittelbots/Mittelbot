@@ -14,7 +14,7 @@ async function checkMessage({
     if (type === "mute" || type === "warn") {
         if (target.bot || target.system) return `You can't ${type} a bot!`;
     }
-    const isAMod = await isMod({member: guild.members.cache.get(target.id),guild})
+    const isAMod = await isMod({member: await guild.members.fetch(target.id), guild})
     if (isAMod) return `You can't ${type} a mod!`;
 
     if (type === "mute" || type === "ban" || type === "kick" || type === "unmute") {

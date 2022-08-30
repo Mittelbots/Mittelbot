@@ -2,10 +2,10 @@ const {
     getGuildConfig
 } = require("./data/getConfig");
 
-async function isMod({
+module.exports.isMod = async ({
     member,
     guild
-}) {
+}) => {
     if (!member) return false;
 
     const {
@@ -27,5 +27,5 @@ async function isMod({
 }
 
 module.exports = {
-    isMod
+    
 }
