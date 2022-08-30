@@ -74,7 +74,10 @@ module.exports.startUpCache = async () => {
         var twitchStreams = await getAllTwitchStreams();
         var globalConfig = await getGlobalConfig();
     } catch (e) {
-        console.log(e, ' Grabbing data')
+        errorhandler({
+            err: e,
+            message: "Something went wrong while getting all data for cache."
+        });
     }
 
     console.info('✅ Data collected...');
@@ -236,7 +239,7 @@ module.exports.startUpCache = async () => {
 
     } catch (e) {
         errorhandler({
-            e,
+            err: e,
             message: "Something went wrong while fetching cache!"
         });
     }
