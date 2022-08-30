@@ -28,6 +28,8 @@ module.exports.getAllForms = async () => {
 
             let response = [];
             for (let i in res) {
+                if(!res[i].apply_form) continue;
+                
                 res[i].apply_form = JSON.parse(res[i].apply_form);
                 const obj = {
                     guild_id: res[i].apply_form[0].guild_id,
