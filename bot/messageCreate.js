@@ -22,7 +22,6 @@ const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation
 const { getAutomodbyGuild } = require('../utils/functions/data/automod');
 const { checkAFK } = require('../utils/functions/data/afk');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
-const { getMemberInfoById } = require('../utils/functions/data/getMemberInfo');
 const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
 
 const defaultCooldown = new Set();
@@ -66,7 +65,7 @@ async function messageCreate(message, bot) {
     });
 
     if (!settings) {
-        errorhandler({err, message: `${main_interaction.guild.id} dont have any config.`});
+        errorhandler({fatal: false, message: `${main_interaction.guild.id} dont have any config.`});
         return message.channel.send(config.errormessages.general)
             .then(async msg => {
                 await delay(5000);

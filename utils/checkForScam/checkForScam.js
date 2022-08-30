@@ -19,11 +19,11 @@ async function checkForScam(message, bot, config, log) {
 
     if (await isMod({member, guild: message.guild})) return;
 
-    const advancedScamList = scamList[0].scamList;
+    const advancedScamList = scamList[0].scamList || [];
 
     const whitelist_links = advancedScamList.map(link => link.whitelist_link).filter(Boolean)
 
-    const scamLinks = publicScamList[0].scamList;
+    const scamLinks = publicScamList[0].scamList || [];
 
 
     for (let i in advancedScamList) {
