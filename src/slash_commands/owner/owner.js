@@ -9,11 +9,21 @@ const {
 const {
     spawn
 } = require('child_process');
-const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
-const { startUpCache, resetCache } = require('../../../utils/functions/cache/startUpCache');
-const { delay } = require('../../../utils/functions/delay/delay');
+const {
+    generateLevelConfig
+} = require('../../../utils/functions/levelsystem/levelsystemAPI');
+const {
+    startUpCache,
+    resetCache
+} = require('../../../utils/functions/cache/startUpCache');
+const {
+    delay
+} = require('../../../utils/functions/delay/delay');
+const {
+    updateGlobalConfig,
+    getGlobalConfig
+} = require('../../../utils/functions/data/ignoreMode');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { updateGlobalConfig } = require('../../../utils/functions/data/ignoreMode');
 
 module.exports.run = async ({
     main_interaction,
@@ -80,30 +90,68 @@ module.exports.run = async ({
 
             case 'cacherefresh':
                 await resetCache()
-                .then(async () => {
-                    await startUpCache();
-                    main_interaction.followUp({
-                        content: '✅ Successfully refreshed',
-                        ephemeral: true
-                    }).catch(err => {})
-                })
-                .catch(err => {
-                    main_interaction.followUp({
-                        content: err,
-                        ephemeral: true
-                    }).catch(err => {});
-                })
-                
+                    .then(async () => {
+                        await startUpCache();
+                        main_interaction.followUp({
+                            content: '✅ Successfully refreshed',
+                            ephemeral: true
+                        }).catch(err => {})
+                    })
+                    .catch(err => {
+                        main_interaction.followUp({
+                            content: err,
+                            ephemeral: true
+                        }).catch(err => {});
+                    })
+
 
                 break;
 
             case 'ignoremode':
                 const mode = main_interaction.options.getBoolean('mode');
-                await updateGlobalConfig({valueName: 'ignoreMode', value: (mode) ? 1 : 0});
+                await updateGlobalConfig({
+                    valueName: 'ignoreMode',
+                    value: (mode) ? 1 : 0
+                });
                 main_interaction.followUp({
                     content: '✅ Successfully set ignoremode to ' + (mode ? 'on' : 'off'),
                     ephemeral: true
                 }).catch(err => {})
+                break;
+
+            case 'disable_command':
+                const command = main_interaction.options.getString('command');
+                const global_config = await getGlobalConfig();
+                var disabled_commands = JSON.parse(global_config.disabled_commands) || global_config.disabled_commands || [];
+
+                let gotDisabled = false;
+                try {
+                    if (disabled_commands.includes(command)) {
+                        updateGlobalConfig({
+                            value: disabled_commands.filter(c => c !== command),
+                            valueName: "disabled_commands"
+                        })
+                    } else {
+                        gotDisabled = true;
+                        disabled_commands.push(command);
+                        updateGlobalConfig({
+                            value: disabled_commands,
+                            valueName: "disabled_commands"
+                        })
+                    }
+
+                    main_interaction.followUp({
+                        content: `✅ Successfully set \`${command}\` to ${gotDisabled ? 'Disabled' : 'Enabled'}`,
+                        ephemeral: true
+                    }).catch(err => {})
+                } catch (err) {
+                    errorhandler({err});
+                    main_interaction.followUp({
+                        content: `❌ Something went wrong: ${err}`,
+                        ephemeral: true
+                    }).catch(err => {})
+                }
+                break;
         }
     }
 }
@@ -120,7 +168,7 @@ module.exports.data = new SlashCommandBuilder()
         command.setName('shutdown')
         .setDescription('Shutdown the bot')
     )
-    .addSubcommand(command => 
+    .addSubcommand(command =>
         command.setName('generatelevel')
         .setDescription('Generate Level xp for easy, normal or hard mode')
         .addStringOption(option =>
@@ -157,5 +205,14 @@ module.exports.data = new SlashCommandBuilder()
             option.setName('mode')
             .setRequired(true)
             .setDescription('Activate or disable the ignoremode')
+        )
+    )
+    .addSubcommand(command =>
+        command.setName('disable_command')
+        .setDescription('Disable or activate a command')
+        .addStringOption(option =>
+            option.setName('command')
+            .setRequired(true)
+            .setDescription('Type the command name in here.')
         )
     )

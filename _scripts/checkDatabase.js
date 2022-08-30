@@ -15,7 +15,7 @@ async function checkDatabase() {
     var insert_count = 0;
 
     //?CREATE ALL NONDYNAMICAL TABLES LIKE advancedScamList, etc
-    for (let t in tables.nondynamical) {
+    for (let t in tables) {
         await database.query(`CREATE TABLE ${t} (id INT AUTO_INCREMENT PRIMARY KEY)`)
             .then(() => table_count++)
             .catch(err => {
@@ -23,18 +23,18 @@ async function checkDatabase() {
                 errorhandler({err, fatal: false});
             });
 
-        for (let c in tables.nondynamical[t]) {
-            if(tables.nondynamical[t][c].name == undefined) continue;
-            await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables.nondynamical[t][c].name} ${tables.nondynamical[t][c].val} ${(tables.nondynamical[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables.nondynamical[t][c].default) : ''} `)
+        for (let c in tables[t]) {
+            if(tables[t][c].name == undefined) continue;
+            await database.query(`ALTER TABLE ${t} ADD COLUMN ${tables[t][c].name} ${tables[t][c].val} ${(tables[t][c].default) ? 'DEFAULT '+ JSON.stringify(tables[t][c].default) : ''} `)
                 .then(() => col_count++)
                 .catch(err => {
                     if(err.code === "ER_DUP_FIELDNAME") return
                     errorhandler({err, fatal: false});
                 });
 
-            // if (tables.nondynamical[t][c].insert) {
+            // if (tables[t][c].insert) {
 
-            //     await database.query(`INSERT IGNORE INTO ${t} (${tables.nondynamical[t][c].name}) VALUES (${JSON.stringify(tables.nondynamical[t][c].insert)})`)
+            //     await database.query(`INSERT IGNORE INTO ${t} (${tables[t][c].name}) VALUES (${JSON.stringify(tables[t][c].insert)})`)
             //         .then(async () => {
             //             insert_count++;
             //         })

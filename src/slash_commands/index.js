@@ -35,10 +35,11 @@ module.exports.handleSlashCommands = async ({
 
     //=========================================================
 
+
     const isActive = await checkActiveCommand(main_interaction.commandName, main_interaction.guild.id);
 
     if (isActive.global_disabled) return main_interaction.reply({
-        content: "This command is currently disabled in all Servers. Join the offical support discord For more informations.",
+        content: "This command is currently disabled in all Servers. Join the offical support discord for more informations. https://mittelbot.blackdayz.de/support",
         ephemeral: true
     });
     if (!isActive.enabled) return main_interaction.reply({
