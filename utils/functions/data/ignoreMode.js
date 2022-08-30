@@ -3,9 +3,9 @@ const { globalConfig } = require("../cache/cache")
 const { errorhandler } = require("../errorhandler/errorhandler")
 
 module.exports.updateGlobalConfig = async ({valueName, value}) => {
-    database.query(`UPDATE global_config SET ${valueName} = ? WHERE id = 1`, [value])
+    await database.query(`UPDATE global_config SET ${valueName} = ? WHERE id = 1`, [value])
         .then(() => {
-            globalConfig[valueName] = value;
+            globalConfig[0][valueName] = value;
         })
         .catch(err => {
             errorhandler({err, fatal: true})
