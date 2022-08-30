@@ -10,22 +10,18 @@ module.exports.isMod = async ({
 
     const {
         settings
-    } = getGuildConfig({
+    } = await getGuildConfig({
         guild_id: guild.id
     })
 
     const modroles = JSON.parse(settings.modroles) || settings.modroles || [];
 
-    var isMod = false
+    var isTeam = false
     for (let i in await modroles) {
         if (member.roles.cache.find(r => r.id === modroles[i].role) !== undefined) {
-            isMod = true;
+            isTeam = true;
             break;
         }
     }
-    return isMod;
-}
-
-module.exports = {
-    
+    return isTeam;
 }
