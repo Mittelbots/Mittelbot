@@ -3,12 +3,7 @@ const {
 } = require("../data/getConfig");
 const {
     addToCache,
-    config,
-    modroles,
-    logs,
-    xp,
     global,
-    warnroles,
     applyforms,
     autoMod,
     scamList,
@@ -18,7 +13,10 @@ const {
     temproles,
     ytUploads,
     twitchStreams,
-    globalConfig
+    globalConfig,
+    publicScamList,
+    guildLevel,
+    memberInfo
 } = require("./cache");
 const {
     getAllXP
@@ -256,12 +254,7 @@ module.exports.resetCache = async () => {
         console.info('----------------------------------------');
 
         try {
-            modroles.length = 0;
-            config.length = 0;
-            logs.length = 0;
-            xp.length = 0;
             global.length = 0;
-            warnroles.length = 0;
             applyforms.length = 0;
             autoMod.length = 0;
             scamList.length = 0;
@@ -272,6 +265,9 @@ module.exports.resetCache = async () => {
             ytUploads.length = 0;
             twitchStreams.length = 0;
             globalConfig.length = 0;
+            publicScamList.length = 0;
+            guildLevel.length = 0;
+            memberInfo.length = 0;
         } catch (err) {
             reject(`Something went wrong while resetting the cache: \`${err}\``);
             errorhandler({
