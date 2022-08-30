@@ -28,13 +28,6 @@ async function guildCreate(guild, bot) {
 
   await delay(4000);
 
-  await database.query(`INSERT INTO ${guild.id}_guild_logs (id) VALUES (?)`, [1]).catch(err => {
-    errorhandler({
-      err,
-      fatal: true
-    })
-  });
-
   const defaultAntiSpamSetttings = {"antispam":{"enabled":false,"action":"[]"}}
   await database.query(`INSERT INTO guild_automod (guild_id, settings) VALUES (?, ?)`, [guild.id, JSON.stringify(defaultAntiSpamSetttings)]).catch(err => {
     errorhandler({
@@ -46,13 +39,6 @@ async function guildCreate(guild, bot) {
   let commands = [];
   await bot.commands.map(cmd => {
     commands.push(cmd.help.name);
-  });
-
-  await database.query(`INSERT INTO active_commands (active_commands, disabled_commands, guild_id, global_disabled) VALUES (?, ?, ?, ?)`, [JSON.stringify(commands), "[]", guild.id, "[]"]).catch(err => {
-    errorhandler({
-      err,
-      fatal: true
-    })
   });
 
   await database.query(`INSERT INTO guild_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {
