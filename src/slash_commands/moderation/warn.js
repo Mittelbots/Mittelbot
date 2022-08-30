@@ -13,6 +13,8 @@ module.exports.run = async ({main_interaction, bot}) => {
         ephemeral: true
     })
 
+    try {
+
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: false,
@@ -55,6 +57,9 @@ module.exports.run = async ({main_interaction, bot}) => {
         embeds: [warned.message],
         ephemeral: true
     }).catch(err => {});
+}catch(e) {
+    console.log(e)
+}
 }
 
 module.exports.data = new SlashCommandBuilder()
