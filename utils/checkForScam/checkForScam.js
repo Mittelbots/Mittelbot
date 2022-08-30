@@ -1,4 +1,3 @@
-const axios = require('axios');
 const {
     getModTime
 } = require('../functions/getModTime');
@@ -9,10 +8,6 @@ const {
     banUser
 } = require('../functions/moderations/banUser');
 const {
-    errorhandler
-} = require('../functions/errorhandler/errorhandler');
-const {
-    getFromCache,
     scamList,
     publicScamList
 } = require('../functions/cache/cache');
@@ -20,7 +15,9 @@ const {
 
 async function checkForScam(message, bot, config, log) {
 
-    if (await isMod(await message.guild.members.fetch(message.author), message)) return;
+    const member = await message.guild.members.fetch(message.author)
+
+    if (await isMod({member, guild: message.guild})) return;
 
     const advancedScamList = scamList[0].scamList;
 
