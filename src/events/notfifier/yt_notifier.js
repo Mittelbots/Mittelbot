@@ -19,6 +19,9 @@ module.exports.handleUploads = async ({
             uploads = ytUploads[0].list;
         }else {
             uploads = await database.query(`SELECT * FROM guild_uploads`)
+            .then(res => {
+                return res;
+            })
             .catch(err => {
                 errorhandler({
                     err,
@@ -35,13 +38,8 @@ module.exports.handleUploads = async ({
             if (uploads[i].channel_id) {
                 request.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`)
                     .then(async (feed) => {
-                        try {
-                            var uploadedVideos = JSON.parse(uploads[i].uploads);
-                        }catch(err) {
-                            uploadedVideos = uploads[i].uploads;
-                        }
 
-                        if(uploadedVideos == null || uploadedVideos == '') uploadedVideos = []
+                        var uploadedVideos = JSON.parse(uploads[i].uploads) || uploads[i].uploads || [];
 
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
@@ -52,7 +50,7 @@ module.exports.handleUploads = async ({
                             .then(() => {
                                 for(let i in ytUploads[0].list) {
                                     if(ytUploads[0].list[i].guild_id === uploads[i].guild_id && ytUploads[0].list[i].channel_id === uploads[i].channel_id) {
-                                        ytUploads[0].list[i].uploads = uploadedVideos;
+                                        ytUploads[0].list[i].uploads = JSON.stringify(uploadedVideos);
                                     }
                                 }
                                 return true;
@@ -81,7 +79,7 @@ module.exports.handleUploads = async ({
                             content: ((pingrole) ? (isEveryone) ? '@everyone ' : `<@&${uploads[i].pingrole}> ` : '') + feed.items[0].title + ` ${feed.items[0].link}`,
                         }).catch(err => {});
 
-                        errorhandler({fatal: false, message: `📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id}`});
+                        errorhandler({fatal: false, message: `📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`});
                     }).catch(err => {
                         errorhandler({
                             err,
