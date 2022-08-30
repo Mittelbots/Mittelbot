@@ -20,7 +20,11 @@ async function guildCreate(guild, bot) {
 
   errorhandler({fatal: false, message: ` I joined a new Guild: ${guild.name} (${guild.id})`});
 
-  await database.query(`INSERT IGNORE INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {})
+  await database.query(`INSERT IGNORE INTO all_guild_id (guild_id) VALUES (?)`, [guild.id]).catch(err => {
+    errorhandler({
+      err
+    })
+  })
   
   await delay(1000);
 
@@ -31,20 +35,13 @@ async function guildCreate(guild, bot) {
   const defaultAntiSpamSetttings = {"antispam":{"enabled":false,"action":"[]"}}
   await database.query(`INSERT INTO guild_automod (guild_id, settings) VALUES (?, ?)`, [guild.id, JSON.stringify(defaultAntiSpamSetttings)]).catch(err => {
     errorhandler({
-      err,
-      fatal: true
+      err
     })
-  });
-
-  let commands = [];
-  await bot.commands.map(cmd => {
-    commands.push(cmd.help.name);
   });
 
   await database.query(`INSERT INTO guild_config (guild_id) VALUES (?)`, [guild.id]).catch(err => {
     errorhandler({
-      err,
-      fatal: true
+      err
     })
   });
 
