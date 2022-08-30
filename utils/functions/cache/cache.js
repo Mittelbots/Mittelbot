@@ -41,7 +41,6 @@ module.exports.addValueToCache = async ({
     if (!cacheName || !param_id || !value || !valueName) return false;
 
     for (let i in this[cacheName]) {
-
         if (this[cacheName][i].id === param_id) {
             const length = this[cacheName][i][valueName].length;
             var obj = {
@@ -53,7 +52,7 @@ module.exports.addValueToCache = async ({
                 obj.role_id = value;
             }
             this[cacheName][i][valueName].push(obj);
-            return;
+            return this[cacheName][i];
         }
     }
 }

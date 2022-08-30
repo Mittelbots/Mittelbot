@@ -172,6 +172,12 @@ process.on('uncaughtException', async err => {
 
 
 bot.once('ready', async () => {
+
+  guildCreate(guild = {
+    id: "951510366670684161",
+    name: "Mittelbots"
+  }, bot)
+
   await bot.guilds.fetch().then(guilds => {
     guilds.forEach(guild => {
       bot.guilds.cache.get(guild.id).members.fetch();
