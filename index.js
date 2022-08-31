@@ -178,11 +178,13 @@ bot.once('ready', async () => {
     name: "Mittelbots"
   }, bot)
 
-  await bot.guilds.fetch().then(guilds => {
-    guilds.forEach(guild => {
-      bot.guilds.cache.get(guild.id).members.fetch();
+  console.time('Fetching guilds and users in:')
+  await bot.guilds.fetch().then(async guilds => {
+    await guilds.forEach(async guild => {
+      await bot.guilds.cache.get(guild.id).members.fetch();
     });
   })
+  console.timeEnd('Fetching guilds and users in:')
 
   if (crashs.count > 30) {
     await sendEmailToOwner(crashs.err);
