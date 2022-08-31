@@ -19,6 +19,7 @@ module.exports.changeTwitchNotifier = async ({
         if (!twitch_user) {
             return reject(`❌ I couldn't find the channel you have entered.`)
         }
+        await guild.members.fetch();
         const hasChannelPerms = guild.members.me.permissionsIn(twdcchannel).has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks , PermissionFlagsBits.AttachFiles , PermissionFlagsBits.MentionEveryone]);
 
         if (!hasChannelPerms) {

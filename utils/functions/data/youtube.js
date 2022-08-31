@@ -17,17 +17,28 @@ module.exports.changeYtNotifier = async ({
     guild
 }) => {
     return new Promise(async (resolve, reject) => {
+
+        const url = new URL(ytchannel);
+
+        try {
+
+        if(!url.hostname.startsWith('www.')) {
+            ytchannel = `https://www.${url.hostname}${url.pathname}`;
+        }
+
+
         const channelid = await channelId(ytchannel)
             .then(id => {
                 return id;
             })
             .catch(err => {
+                console.log(err);
                 reject(`❌ I couldn't find the channel you have entered.`)
                 return false;
             })
         if (!channelid) return;
-
-        const hasChannelPerms = guild.members.me.permissionsIn(dcchannel).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"]);
+            await guild.members.fetch();
+        const hasChannelPerms = guild.members.me.permissionsIn(dcchannel.id).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"]);
 
         if (!hasChannelPerms) {
             return reject(`❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`)
@@ -127,6 +138,9 @@ module.exports.changeYtNotifier = async ({
 
 
         }
+    }catch(err) {
+        console.log(err)
+    }
     })
 }
 

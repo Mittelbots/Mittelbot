@@ -55,6 +55,11 @@ module.exports.run = async ({
     switch (main_interaction.options.getSubcommand()) {
 
         case 'view':
+            return main_interaction.reply({
+                content: 'This command is currenty disabled',
+                ephemeral: true
+            }).catch(err => {})
+
             var currentsettings = await database.query(`SELECT * FROM ${main_interaction.guild.id}_config LIMIT 1`).then(async res => {
                 return await res[0];
             }).catch(err => {
