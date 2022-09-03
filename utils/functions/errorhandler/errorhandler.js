@@ -12,7 +12,7 @@ module.exports.errorhandler = ({err = 'No error passed! ', message = 'No message
         'Line': caller.lineNumber
     }
 
-    if(config.debug) debug_log.info(errObj);
+    if(config.debug) console.log(errObj);
 
     else if(fatal && log) log.fatal(errObj);
 
