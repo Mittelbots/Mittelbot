@@ -19,7 +19,7 @@ const {
     errorhandler
 } = require('../../utils/functions/errorhandler/errorhandler');
 const {
-    insertIntoClosedList
+    insertIntoClosedList, getAllOpenInfractions
 } = require('../../utils/functions/data/infractions');
 const {
     openInfractions
@@ -58,13 +58,7 @@ function checkInfractions(bot) {
         if (openInfractions) {
             results = openInfractions[0].list;
         }else {
-            results = await database.query('SELECT * FROM open_infractions').catch(err => {
-                errorhandler({
-                    err,
-                    fatal: true
-                });
-                return false;
-            });
+            results = await getAllOpenInfractions();
         }
         let done = 0;
         let mutecount = 0;

@@ -1,27 +1,18 @@
-const database = require("../../src/db/db");
-const { errorhandler } = require('./errorhandler/errorhandler');
+const { getInfractionById } = require("./data/infractions");
 
 function generate() {
     return Math.random().toString(30).substr(2, 50)
 }
 
-async function createInfractionId() {
-    let infractionid = generate();
-    await database.query('SELECT infraction_id FROM open_infractions WHERE infraction_id = ?', [infractionid]).then(res => {
-        if(res.length > 0) return createInfractionId();
-    }).catch(err => {
-        errorhandler({err, fatal: true})
-        return false;
-    })
+module.exports.createInfractionId = async () => {
 
-    await database.query('SELECT infraction_id FROM closed_infractions WHERE infraction_id = ?', [infractionid]).then(res => {
-        if(res.length > 0) return createInfractionId();
-    }).catch(err => {
-        errorhandler({err, fatal: true})
-        return false;
-    })
+    let infractionid = generate();
+
+    let open_infractions = await getInfractionById({
+        inf_id: infractionid
+    });
+
+    if(open_infractions) return this.createInfractionId();
     
     return infractionid;
 }
-
-module.exports = {createInfractionId}

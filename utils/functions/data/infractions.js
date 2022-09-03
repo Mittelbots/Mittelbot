@@ -115,11 +115,11 @@ module.exports.insertIntoTemproles = async ({uid, role_id, till_date, infraction
 }
 
 
-module.exports.getClosedInfractionsByUserId = async ({user_id}) => {
-    const cache = closedInfractions[0].list.filter(infraction => infraction.user_id === user_id);
+module.exports.getClosedInfractionsByUserId = async ({user_id, guild_id}) => {
+    const cache = closedInfractions[0].list.filter(infraction => infraction.user_id === user_id && infraction.guild_id === guild_id);
     if(cache.length > 0) return cache;
     
-    return await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? ORDER BY ID DESC`, [user_id])
+    return await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? AND guild = ? ORDER BY ID DESC`, [user_id, guild_id])
     .then(res => {
         return res;
     }).catch(err => {
@@ -128,16 +128,37 @@ module.exports.getClosedInfractionsByUserId = async ({user_id}) => {
     });
 }
 
-module.exports.getOpenInfractionsByUserId = async ({user_id}) => {
+module.exports.getOpenInfractionsByUserId = async ({user_id, guild_id}) => {
 
-    const cache = openInfractions[0].list.filter(infraction => infraction.user_id === user_id);
+    const cache = openInfractions[0].list.filter(infraction => infraction.user_id === user_id && infraction.guild_id === guild_id);
     if(cache.length > 0) return cache;
 
-    return await database.query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY ID DESC`, [user_id])
+    return await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? ORDER BY ID DESC`, [user_id, guild_id])
     .then(res => {
         return res;
     }).catch(err => {
         errorhandler({err, fatal: true});
         return false;
     });
+}
+
+
+module.exports.getInfractionById = async ({inf_id}) => {
+    const open_cache = openInfractions[0].list.filter(infraction => infraction.infraction_id === inf_id);
+    if(open_cache.length > 0) return open_cache;
+
+    const closed_cache = closedInfractions[0].list.filter(infraction => infraction.infraction_id === inf_id);
+    if(closed_cache.length > 0) return closed_cache;
+
+    return await database.query('SELECT * FROM open_infractions WHERE infraction_id = ?; SELECT * FROM closed_infractions WHERE infraction_id = ?', [...inf_id]).then(res => {
+        if(res[0].length > 0) {
+            return res[0]
+        }else if(res[1].length > 0) {
+            return res[1];
+        }
+    }).catch(err => {
+        errorhandler({err, fatal: true})
+        return false;
+    })
+
 }
