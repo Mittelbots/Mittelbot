@@ -1,4 +1,7 @@
 const {
+    errorhandler
+} = require("../errorhandler/errorhandler");
+const {
     isMod
 } = require("../isMod");
 
@@ -14,13 +17,23 @@ module.exports.checkMessage = async ({
     if (type === "mute" || type === "warn") {
         if (target.bot || target.system) return `You can't ${type} a bot!`;
     }
-    const isAMod = await isMod({member: await guild.members.fetch(target.id), guild})
+    const isAMod = await isMod({
+        member: await guild.members.fetch(target.id),
+        guild
+    })
     if (isAMod) return `You can't ${type} a mod!`;
 
     if (type === "mute" || type === "ban" || type === "kick" || type === "unmute") {
-        await guild.members.fetch();
-        if (guild.members.cache.get(target.id).roles.highest.position > guild.members.resolve(bot.user).roles.highest.position) {
-            return `The user has a higher role than the bot. I can't ${type} them.`;
+        try {
+            await guild.members.fetch();
+            if (guild.members.cache.get(target.id).roles.highest.position > guild.members.resolve(bot.user).roles.highest.position) {
+                return `The user has a higher role than the bot. I can't ${type} them.`;
+            }
+        } catch (err) {
+            errorhandler({
+                fatal: false,
+                err
+            });
         }
     }
 }
