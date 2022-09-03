@@ -2,18 +2,17 @@ const { log, debug_log } = require("../../../logs");
 const config = require('../../../src/assets/json/_config/config.json');
 const callerId = require('caller-id');
 
-function errorhandler({err = 'No error passed! ', message = 'No message passed! ', channel = null, fatal = true}) {
-
+module.exports.errorhandler = ({err = 'No error passed! ', message = 'No message passed! ', channel = null, fatal = true}) => {
     const caller = callerId.getData();
-    
+
     let errObj = {
-        'Error:': err,
+        'Error:': err.toString(),
         'Message': message,
         'Called From': caller.filePath,
         'Line': caller.lineNumber
     }
 
-    if(config.debug) console.log(errObj);
+    if(config.debug) debug_log.info(errObj);
 
     else if(fatal && log) log.fatal(errObj);
 
@@ -22,5 +21,3 @@ function errorhandler({err = 'No error passed! ', message = 'No message passed! 
     if(channel) return channel.send(message).catch(err => {});
     else return;
 }
-
-module.exports = {errorhandler}
