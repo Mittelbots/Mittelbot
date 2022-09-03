@@ -172,16 +172,14 @@ process.on('uncaughtException', async err => {
 
 
 bot.once('ready', async () => {
-
-  guildCreate(guild = {
-    id: "951510366670684161",
-    name: "Mittelbots"
-  }, bot)
-
+  
   console.time('Fetching guilds and users in:')
   await bot.guilds.fetch().then(async guilds => {
+    console.log('Guilds successfully fetched')
     await guilds.forEach(async guild => {
-      await bot.guilds.cache.get(guild.id).members.fetch();
+        await bot.guilds.cache.get(guild.id).members.fetch().then(() => {
+        console.log('Members successfully fetched')
+      })
     });
   })
   console.timeEnd('Fetching guilds and users in:')
@@ -237,11 +235,12 @@ bot.once('ready', async () => {
     });
   }
 
-  console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
-  errorhandler({err: '------------BOT SUCCESSFULLY STARTED------------' + new Date(), fatal: false});
-
   //? START THE DASHBOARD
   Dashboard(bot);
+
+
+  console.log(`****Ready! Logged in as  ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
+  errorhandler({err: '------------BOT SUCCESSFULLY STARTED------------' + new Date(), fatal: false});
 });
 
 bot.login(token.BOT_TOKEN);
