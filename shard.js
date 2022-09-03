@@ -10,7 +10,7 @@ if (!config.debug) {
         totalShards: 'auto',
         respawn: true,
     });
-    manager.on('shardCreate', shard => {
+    manager.once('shardCreate', shard => {
         console.log(`[SHARDS]: Launched shards ${shard.id}`)
     });
 
