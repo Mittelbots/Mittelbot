@@ -5,13 +5,13 @@ const callerId = require('caller-id');
 function errorhandler({err = 'No error passed! ', message = 'No message passed! ', channel = null, fatal = true}) {
 
     const caller = callerId.getData();
-
-    const errObj = JSON.stringify({
+    
+    let errObj = {
         'Error:': err,
         'Message': message,
         'Called From': caller.filePath,
         'Line': caller.lineNumber
-    }, null, 4)
+    }
 
     if(config.debug) console.log(errObj);
 

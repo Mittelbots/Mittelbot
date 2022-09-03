@@ -94,7 +94,7 @@ module.exports.updateMemberInfoById = async ({
 
     let args = [];
     if (member_roles) {
-        args.push(member_roles);
+        args.push(JSON.stringify(member_roles));
     }
     if (user_joined) {
         args.push(user_joined);
