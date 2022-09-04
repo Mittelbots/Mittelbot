@@ -1,15 +1,12 @@
 const {
-    SlashCommandBuilder
-} = require('discord.js');
-const {
+    SlashCommandBuilder,
     EmbedBuilder
 } = require('discord.js');
-const database = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { log } = require('../../../logs');
 const { version } = require('../../../package.json');
-
 const config = require('../../../src/assets/json/_config/config.json');
+const { getMemberInfoById } = require('../../../utils/functions/data/getMemberInfo');
 
 module.exports.run = async ({main_interaction, bot}) => {
 
@@ -79,13 +76,10 @@ module.exports.run = async ({main_interaction, bot}) => {
         ])
         .setTimestamp();
     if(tag) {
-        var joined_at = await database.query(`SELECT user_joined FROM ${server.id}_guild_member_info WHERE user_id = ?`, [user.id]).then(async res => {
-            if(res.length === 0) return false;
-            return await res[0].user_joined
-        }).catch(err => {
-            errorhandler(err, config.errormessages.databasequeryerror, main_interaction.channel, log, config, true);
-            return false
-        })
+        var {user_joined} = await getMemberInfoById({
+            guild_id: main_interaction.guild.id,
+            user_id: user.id
+        });
     }
     var dc_joinedAt;
     try {
@@ -95,7 +89,7 @@ module.exports.run = async ({main_interaction, bot}) => {
     }
     var first_joined_at;
     try {
-        first_joined_at = `${(!joined_at) ? 'Not saved in Database' : new Intl.DateTimeFormat('de-DE').format(new Date(joined_at.slice(0,9)))} ${(joined_at) ? ` \n<t:${Math.floor(new Date(joined_at.slice(0,9))/1000)}:R>` : ''}`
+        first_joined_at = `${(!user_joined) ? 'Not saved in Database' : new Intl.DateTimeFormat('de-DE').format(new Date(user_joined.slice(0,9)))} ${(user_joined) ? ` \n<t:${Math.floor(new Date(user_joined.slice(0,9))/1000)}:R>` : ''}`
     }catch(err) {
         first_joined_at = 'Not saved in Database ||Error||'
     }
