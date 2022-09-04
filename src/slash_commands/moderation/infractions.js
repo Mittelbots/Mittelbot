@@ -10,8 +10,14 @@ const {
 const database = require('../../db/db');
 const config = require('../../../src/assets/json/_config/config.json');
 
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { getClosedInfractionsByUserId, getOpenInfractionsByUserId } = require('../../../utils/functions/data/infractions');
+const {
+    errorhandler
+} = require('../../../utils/functions/errorhandler/errorhandler');
+const {
+    getClosedInfractionsByUserId,
+    getOpenInfractionsByUserId,
+    getInfractionById
+} = require('../../../utils/functions/data/infractions');
 
 
 
@@ -46,23 +52,27 @@ module.exports.run = async ({
             var closed = [];
             var open = [];
 
-            const closed_infractions = await getClosedInfractionsByUserId({user_id: user.id});
+            const closed_infractions = await getClosedInfractionsByUserId({
+                user_id: user.id
+            });
 
-            const open_infractions = await getOpenInfractionsByUserId({user_id: user.id});
+            const open_infractions = await getOpenInfractionsByUserId({
+                user_id: user.id
+            });
 
-            if(!closed_infractions || !open_infractions) {
+            if (!closed_infractions || !open_infractions) {
                 return main_interaction.followUp({
                     content: config.errormessages.databasequeryerror,
                     ephemeral: true
                 }).catch(err => {});
-            }else {
+            } else {
                 closed = closed_infractions;
                 open = open_infractions;
             }
 
             if (closed.length <= 0 && open.length <= 0) {
                 return main_interaction.followUp({
-                    content:`${user} dont have any infractions!`,
+                    content: `${user} dont have any infractions!`,
                     ephemeral: true
                 }).catch(err => {});
             }
@@ -74,41 +84,35 @@ module.exports.run = async ({
                 open: open,
                 main_interaction,
             });
-            
+
             break;
 
         case 'view':
             const inf_id = main_interaction.options.getString('infractionid');
 
-            var infraction = [];
-
-            await database.query(`SELECT * FROM closed_infractions WHERE infraction_id = ? LIMIT 1`, [inf_id]).then(async res => {
-                if (res.length > 0) {
-                    return infraction.push(res[0]);
-                }
-                await database.query(`SELECT * FROM open_infractions WHERE infraction_id = ? LIMIT 1`, [inf_id]).then(async res => {
-                    if (res.length > 0) {
-                        return infraction.push(res[0]);
-                    }
-                }).catch(err => {
-                    return errorhandler({err, fatal: true});
-                });
-            }).catch(err => {
-                return errorhandler({err, fatal: true});
+            var infraction = await getInfractionById({
+                inf_id
             });
-            
+
+            if (!infraction) {
+                return main_interaction.followUp({
+                    content: `There is no infraction with this id \`${inf_id}\` `,
+                    ephemeral: true
+                }).catch(err => {});
+            }
+
             const response = await publicInfractionResponse({
                 guild: main_interaction.guild,
                 isOne: true,
-                infraction: infraction[0]
+                infraction: infraction
             });
 
-            main_interaction.reply({
+            main_interaction.followUp({
                 embeds: [response.message],
                 ephemeral: true
             }).catch(err => {});
-        break;
-        
+            break;
+
         case 'remove':
             const infraction_id = main_interaction.options.getString('infractionid');
 
@@ -126,13 +130,19 @@ module.exports.run = async ({
                         return inf_exists = true;
                     }
                 }).catch(err => {
-                    return errorhandler({err, fatal: true});
+                    return errorhandler({
+                        err,
+                        fatal: true
+                    });
                 });
             }).catch(err => {
-                return errorhandler({err, fatal: true});
+                return errorhandler({
+                    err,
+                    fatal: true
+                });
             });
 
-            if(inf_exists) {
+            if (inf_exists) {
 
                 database.query(`DELETE FROM ${table} WHERE infraction_id = ?`, [infraction_id])
                     .then(() => {
@@ -146,16 +156,19 @@ module.exports.run = async ({
                             content: `Infraction with id \`${infraction_id}\` could not be removed!`,
                             ephemeral: true
                         }).catch(err => {});
-                        return errorhandler({err, fatal: true});
+                        return errorhandler({
+                            err,
+                            fatal: true
+                        });
                     })
-                
-            }else {
+
+            } else {
                 return main_interaction.followUp({
                     content: `Infraction with id \`${infraction_id}\` does not exist!`,
                     ephemeral: true
                 }).catch(err => {});
             }
-        break;
+            break;
     }
 
 

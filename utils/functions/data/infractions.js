@@ -156,9 +156,9 @@ module.exports.getInfractionById = async ({inf_id}) => {
         }else if(res[1].length > 0) {
             return res[1];
         }
+        return false;
     }).catch(err => {
         errorhandler({err, fatal: true})
         return false;
     })
-
 }
