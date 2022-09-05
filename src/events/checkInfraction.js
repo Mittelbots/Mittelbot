@@ -11,7 +11,6 @@ const {
 const {
     removeMutedRole
 } = require('../../utils/functions/roles/removeMutedRole');
-const database = require('../db/db');
 const {
     saveAllRoles
 } = require('../../utils/functions/roles/saveAllRoles');
@@ -19,7 +18,7 @@ const {
     errorhandler
 } = require('../../utils/functions/errorhandler/errorhandler');
 const {
-    insertIntoClosedList, getAllOpenInfractions
+    insertIntoClosedList, getAllOpenInfractions, removeInfractionById
 } = require('../../utils/functions/data/infractions');
 const {
     openInfractions
@@ -27,6 +26,8 @@ const {
 
 
 async function deleteEntries(infraction) {
+    removeInfractionById({inf_id: infraction.infraction_id});
+
     insertIntoClosedList({
         uid: infraction.user_id,
         modid: infraction.mod_id,
@@ -37,20 +38,9 @@ async function deleteEntries(infraction) {
         infraction_id: infraction.infraction_id,
         start_date: infraction.start_date,
     });
-
-    database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [infraction.infraction_id])
-    .then(() => {
-        for (let i in openInfractions[0].list) {
-            if (openInfractions[0].list[i].infraction_id == infraction.infraction_id) {
-                delete openInfractions[0].list[i];
-            }
-        }
-        openInfractions[0].list = openInfractions[0].list.filter(Boolean);
-    })
-    .catch(err => errorhandler({err, fatal: true}));
 }
 
-function checkInfractions(bot) {
+module.exports.checkInfractions = (bot) => {
     console.info("🔎📜 CheckInfraction handler started");
     setInterval(async () => {
 
@@ -131,8 +121,4 @@ function checkInfractions(bot) {
             timeZone: 'Europe/Berlin'
         }))
     }, config.defaultCheckInfractionTimer);
-}
-
-module.exports = {
-    checkInfractions
 }

@@ -162,3 +162,16 @@ module.exports.getInfractionById = async ({inf_id}) => {
         return false;
     })
 }
+
+module.exports.removeInfractionById = async ({inf_id}) => {
+    return await database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [inf_id])
+    .then(() => {
+        openInfractions[0].list.filter(infraction => infraction.infraction_id !== inf_id);
+
+        return true;
+    })
+    .catch(err => {
+        errorhandler({err});
+        return false;
+    });
+}
