@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require("discord.js");
 const { generateModEmote } = require("../functions/generateModEmote");
 
-async function publicModResponses(type, moderator, member, reason, time, bot) {
+module.exports.publicModResponses = async (type, moderator, member, reason, time, bot) => {
     var publicModMessage = new EmbedBuilder()
     .setColor('#0099ff')
     .setTitle(`${await generateModEmote({bot, type}) }**Member ${type}!**`)
@@ -22,7 +22,7 @@ async function publicModResponses(type, moderator, member, reason, time, bot) {
     }
 }
 
-async function publicInfractionResponse({member, closed, open, main_interaction, isOne, infraction}) {
+module.exports.publicInfractionResponse = async ({member, closed, open, main_interaction, isOne, infraction}) => {
     if(isOne) {
         let type;
         switch(true) {
@@ -48,7 +48,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
         //let user = await guild.members.fetch(infraction.user_id);
         var publicOneInfractionMessage = new EmbedBuilder()
         //.setAuthor(`${user.user.username}${user.user.discriminator}`)
-        .addFields([{name: `${infraction.infraction_id} - ${type} \nFrom: **${inf.start_date || `Uhm, i haven't found a start date :(`}** -> to **${infraction.till_date}**`, value: `Reason: **${infraction.reason}** \n Moderator: <@${infraction.mod_id}>`}]);
+        .addFields([{name: `${infraction.infraction_id} - ${type} \nFrom: **${inf.start_date || `404 Start date :(`}** -> to **${infraction.till_date}**`, value: `Reason: **${infraction.reason}** \n Moderator: <@${infraction.mod_id}>`}]);
         
         return {
             error: false,
@@ -81,7 +81,7 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
                 fields: await Promise.all(
                     current.map(async inf => ({
                         name: `${inf.infraction_id} - ${inf.mute == 1 ? `${'Mute'}`: inf.kick == 1 ? `${'Kick'}` : inf.warn == 1 ? `${'Warn'}` : `${'Ban'}`}`,
-                        value: `Reason: ${inf.reason} ${inf.warn == 0 ? `\nFrom **${inf.start_date || `Uhm, i haven't found a start date :(`}** -> to **${(inf.till_date) ? inf.till_date : (inf.mute == 1) ? 'Permanent' : (inf.ban == 1) ? 'Permanent' : ''}**` : '' }`
+                        value: `Reason: ${inf.reason} ${inf.warn == 0 ? `\nFrom **${inf.start_date || `404 start date :(`}** -> to **${(inf.till_date) ? inf.till_date : (inf.mute == 1) ? 'Permanent' : (inf.ban == 1) ? 'Permanent' : ''}**` : '' }`
                     }))
                 )
             })
@@ -89,9 +89,10 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
 
         const canFitOnOnePage = data.length <= 10;
         
-        const embedMessage = await main_interaction.reply({
+        const embedMessage = await main_interaction.followUp({
             embeds: [await generateEmbed(0)],
-            components: canFitOnOnePage ? [] : [new ActionRowBuilder({components: [forwardButton]})]
+            components: canFitOnOnePage ? [] : [new ActionRowBuilder({components: [forwardButton]})],
+            fetchReply: true
         }).catch(err => {});
 
         if(canFitOnOnePage) return;
@@ -113,11 +114,10 @@ async function publicInfractionResponse({member, closed, open, main_interaction,
                             ...(currentIndex + 10 < data.length ? [forwardButton] : [])
                         ]
                     })
-                ]
+                ],
+                fetchReply: true
             }).catch(err => {})
         });
     }
     return;
 }
-
-module.exports = {publicModResponses, publicInfractionResponse}

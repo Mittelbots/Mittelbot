@@ -20,7 +20,6 @@ const {
 } = require('../../../utils/functions/data/infractions');
 
 
-
 module.exports.run = async ({
     main_interaction,
     bot
@@ -28,7 +27,7 @@ module.exports.run = async ({
 
     await main_interaction.deferReply({
         ephemeral: true
-    })
+    });
 
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
@@ -36,7 +35,7 @@ module.exports.run = async ({
         modOnly: false,
         user: main_interaction.member,
         bot
-    })
+    });
 
     if (!hasPermissions) {
         return main_interaction.followUp({
@@ -47,6 +46,7 @@ module.exports.run = async ({
 
     switch (main_interaction.options.getSubcommand()) {
         case 'all':
+        try {
             const user = main_interaction.options.getUser('user');
 
             var closed = [];
@@ -84,13 +84,15 @@ module.exports.run = async ({
                 open: open,
                 main_interaction,
             });
-
+        }catch(err) {
+            console.log(err);
+        }
             break;
 
         case 'view':
             const inf_id = main_interaction.options.getString('infractionid');
 
-            var infraction = await getInfractionById({
+            const {infraction} = await getInfractionById({
                 inf_id
             });
 
@@ -104,7 +106,7 @@ module.exports.run = async ({
             const response = await publicInfractionResponse({
                 guild: main_interaction.guild,
                 isOne: true,
-                infraction: infraction
+                infraction
             });
 
             main_interaction.followUp({
@@ -116,33 +118,9 @@ module.exports.run = async ({
         case 'remove':
             const infraction_id = main_interaction.options.getString('infractionid');
 
-            let inf_exists = false;
-            let table = '';
-            await database.query(`SELECT id FROM closed_infractions WHERE infraction_id = ? LIMIT 1`, [infraction_id]).then(async res => {
-                if (res.length > 0) {
-                    table = 'closed_infractions';
-                    return inf_exists = true;
-                }
+            const {table} = await getInfractionById({inf_id: infraction_id});
 
-                await database.query(`SELECT id FROM open_infractions WHERE infraction_id = ? LIMIT 1`, [infraction_id]).then(async res => {
-                    if (res.length > 0) {
-                        table = 'open_infractions';
-                        return inf_exists = true;
-                    }
-                }).catch(err => {
-                    return errorhandler({
-                        err,
-                        fatal: true
-                    });
-                });
-            }).catch(err => {
-                return errorhandler({
-                    err,
-                    fatal: true
-                });
-            });
-
-            if (inf_exists) {
+            if (table) {
 
                 database.query(`DELETE FROM ${table} WHERE infraction_id = ?`, [infraction_id])
                     .then(() => {
@@ -163,6 +141,7 @@ module.exports.run = async ({
                     })
 
             } else {
+                console.log('1')
                 return main_interaction.followUp({
                     content: `Infraction with id \`${infraction_id}\` does not exist!`,
                     ephemeral: true
