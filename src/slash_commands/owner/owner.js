@@ -24,6 +24,8 @@ const {
     getGlobalConfig
 } = require('../../../utils/functions/data/ignoreMode');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { readFileSync } = require('fs');
+const { AttachmentBuilder } = require('discord.js');
 
 module.exports.run = async ({
     main_interaction,
@@ -152,6 +154,24 @@ module.exports.run = async ({
                     }).catch(err => {})
                 }
                 break;
+            
+            case 'export_logs':
+                const date = new Date();
+
+                let year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                month = ((month < 10) ? '0' : '') + month;
+                let day = ((date.getDate() < 10) ? '0' : '') + date.getDate();
+                 
+
+                return main_interaction.followUp({
+                    files: [new AttachmentBuilder(`./_logs/roll-${year}.${month}.${day}.log`)],
+                }).catch(err => {
+                    return main_interaction.followUp({
+                        content: `Something went wrong ${err.toString()}`,
+                        ephemeral: true
+                    }).catch(err => {})
+                })
         }
     }
 }
@@ -215,4 +235,8 @@ module.exports.data = new SlashCommandBuilder()
             .setRequired(true)
             .setDescription('Type the command name in here.')
         )
+    )
+    .addSubcommand(command =>
+        command.setName('export_logs')
+        .setDescription('Export the log of the current day')
     )
