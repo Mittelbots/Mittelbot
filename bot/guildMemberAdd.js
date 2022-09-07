@@ -4,7 +4,6 @@ const {
 const {
     errorhandler
 } = require('../utils/functions/errorhandler/errorhandler');
-const database = require('../src/db/db');
 const {
     insertMemberInfo,
     getMemberInfoById,
@@ -19,6 +18,9 @@ const {
 const {
     getJoinroles
 } = require("../utils/functions/data/joinroles");
+const {
+    getOpenInfractionsByUserId
+} = require("../utils/functions/data/infractions");
 
 async function guildMemberAdd(member, bot) {
 
@@ -63,54 +65,54 @@ async function guildMemberAdd(member, bot) {
         })
     }
 
-
-    await database.query(`SELECT * FROM open_infractions WHERE user_id = ? AND guild_id = ? AND mute = ?`, [member.user.id, member.guild.id, 1]).then(async inf => {
-        if (await inf.length !== 0) {
-            member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]).catch(err => {});
-        } else {
-            let user_roles = await memberInfo.member_roles;
-            if (!user_roles) return;
-
-            user_roles = JSON.parse(user_roles);
-
-            //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
-            const indexOfMuteRole = user_roles.indexOf(member.guild.roles.cache.find(r => r.name === 'Muted').id)
-            if (user_roles !== null && indexOfMuteRole !== -1) {
-                user_roles = await user_roles.filter(r => r !== member.guild.roles.cache.find(r => r.name === 'Muted').id)
-            }
-            setTimeout(async () => {
-                if (user_roles) await giveAllRoles(member.id, member.guild, user_roles);
-            }, 2000);
-        }
-    }).catch(err => {
-        return errorhandler({
-            err,
-            fatal: true
-        })
+    var userInfractions = await getOpenInfractionsByUserId({
+        user_id: member.user.id,
+        guild_id: member.guild.id
     });
+    
+    userInfractions = userInfractions.filter(inf => inf.mute) || [];
 
-    if (!member.user.bot) {
 
-        const joinroles = getJoinroles({
-            guild_id: member.guild.id
-        })
+    if (userInfractions.length !== 0) {
+        member.roles.add([member.guild.roles.cache.find(r => r.name === 'Muted')]).catch(err => {});
+    } else {
+        let user_roles = await memberInfo.member_roles;
+        if (!user_roles) return;
 
-        if (joinroles.length == 0) return;
+        user_roles = JSON.parse(user_roles);
 
-        for (let i in joinroles) {
-            let j_role = await member.guild.roles.cache.find(r => r.id === joinroles[i]);
-            try {
-                await member.roles.add(j_role).catch(err => {})
-            } catch (err) {
-                //NO PERMISSONS
-                return
-            }
+        //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
+        const indexOfMuteRole = user_roles.indexOf(member.guild.roles.cache.find(r => r.name === 'Muted').id)
+        if (user_roles !== null && indexOfMuteRole !== -1) {
+            user_roles = await user_roles.filter(r => r !== member.guild.roles.cache.find(r => r.name === 'Muted').id)
         }
-        errorhandler({
-            err: null,
-            fatal: false,
-            message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`
-        })
+        setTimeout(async () => {
+            if (user_roles) await giveAllRoles(member.id, member.guild, user_roles);
+        }, 2000);
+
+
+        // JOINROLES
+        if (!member.user.bot) {
+            const joinroles = getJoinroles({
+                guild_id: member.guild.id
+            })
+
+            if (joinroles.length == 0) return;
+
+            for (let i in joinroles) {
+                let j_role = await member.guild.roles.cache.find(r => r.id === joinroles[i]);
+                try {
+                    await member.roles.add(j_role).catch(err => {})
+                } catch (err) {
+                    //NO PERMISSONS
+                    return
+                }
+            }
+            errorhandler({
+                fatal: false,
+                message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`
+            })
+        }
     }
 }
 

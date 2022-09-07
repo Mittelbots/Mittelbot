@@ -24,16 +24,11 @@ module.exports.checkMessage = async ({
     if (isAMod) return `You can't ${type} a mod!`;
 
     if (type === "mute" || type === "ban" || type === "kick" || type === "unmute") {
-        try {
-            await guild.members.fetch();
-            if (guild.members.cache.get(target.id).roles.highest.position > guild.members.resolve(bot.user).roles.highest.position) {
-                return `The user has a higher role than the bot. I can't ${type} them.`;
-            }
-        } catch (err) {
-            errorhandler({
-                fatal: false,
-                err
-            });
-        }
+        // await guild.members.fetch();
+        // if (guild.members.cache.get(target.id).roles.highest.position > guild.members.resolve(bot.user).roles.highest.position) {
+        //     return `The user has a higher role than the bot. I can't ${type} them.`;
+        // }
     }
+
+    return false;
 }

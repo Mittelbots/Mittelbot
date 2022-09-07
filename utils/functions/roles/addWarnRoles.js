@@ -1,4 +1,3 @@
-const database = require("../../../src/db/db");
 const {
     errorhandler
 } = require("../errorhandler/errorhandler");
@@ -8,7 +7,7 @@ const {
 const config = require('../../../src/assets/json/_config/config.json');
 const {
     insertIntoTemproles
-} = require("../data/infractions");
+} = require("../data/temproles");
 const { getWarnroles } = require("../data/warnroles");
 
 module.exports.addWarnRoles = async ({

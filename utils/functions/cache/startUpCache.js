@@ -35,9 +35,11 @@ const {
 } = require("../data/scam");
 const {
     getAllOpenInfractions,
-    getAllClosedInfractions,
-    getAllTemproles
+    getAllClosedInfractions
 } = require("../data/infractions");
+const {
+    getAllTemproles
+}  = require("../data/temproles");
 const {
     getAllYoutubeUploads,
     getAllTwitchStreams

@@ -172,7 +172,6 @@ process.on('uncaughtException', async err => {
 
 
 bot.once('ready', async () => {
-
   console.time('Fetching guilds and users in:')
   await bot.guilds.fetch().then(async guilds => {
     console.log('Guilds successfully fetched')
