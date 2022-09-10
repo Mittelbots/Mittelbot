@@ -69,7 +69,7 @@ module.exports.startUpCache = async () => {
         var guildConfig = await getAllGuildConfig();
         var openInfractions = await getAllOpenInfractions();
         var closedInfractions = await getAllClosedInfractions();
-        var temproles = await getAllTemproles();
+        var allTemproles = await getAllTemproles();
         var ytUploads = await getAllYoutubeUploads();
         var twitchStreams = await getAllTwitchStreams();
         var globalConfig = await getGlobalConfig();
@@ -187,7 +187,7 @@ module.exports.startUpCache = async () => {
                 name: "temproles",
                 id: 0,
                 data: {
-                    list: temproles || [],
+                    list: allTemproles,
                 }
             }
         });

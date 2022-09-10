@@ -134,9 +134,7 @@ async function sendToAudit(bot, type, content1, content2) {
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
             if (content1.system) return;
-            console.log('1')
             if (await isOnWhitelist()) return;
-            console.log('2')
 
             gid = content1.guildId;
 

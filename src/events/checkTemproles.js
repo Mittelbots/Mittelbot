@@ -2,9 +2,6 @@ const config = require('../../src/assets/json/_config/config.json');
 const {
     getCurrentDate
 } = require("../../utils/functions/getCurrentDate");
-const {
-    log
-} = require('../../logs');
 const database = require('../db/db');
 const {
     temproles
@@ -12,6 +9,7 @@ const {
 const {
     errorhandler
 } = require('../../utils/functions/errorhandler/errorhandler');
+const { getAllTemproles } = require('../../utils/functions/data/temproles');
 
 
 async function deleteEntries(infraction_id, ) {
@@ -36,18 +34,7 @@ module.exports.checkTemproles = async (bot) => {
     console.info("🔎📜 CheckTemproles handler started");
     setInterval(async () => {
 
-        var results;
-
-        if (temproles) {
-            results = temproles[0].list;
-        } else {
-            results = await database.query('SELECT * FROM temproles').catch(err => {
-                errorhandler({
-                    err,
-                    fatal: true
-                })
-            });
-        }
+        var results = await getAllTemproles();
 
         let done = 0;
         for (let i in results) {
