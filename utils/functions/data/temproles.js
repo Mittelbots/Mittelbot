@@ -1,7 +1,12 @@
 const database = require("../../../src/db/db");
 const { temproles } = require("../cache/cache");
+const { errorhandler } = require("../errorhandler/errorhandler");
 
 module.exports.getAllTemproles = async () => {
+    if(temproles.length > 0) {
+        return temproles[0].list;
+    }
+
     return await database.query(`SELECT * FROM temproles`)
     .then(res => {
         return res;
@@ -30,4 +35,15 @@ module.exports.insertIntoTemproles = async ({uid, role_id, till_date, infraction
         return errorhandler({err, fatal: true});
     });
     return;
+}
+
+module.exports.deleteFromTemproles = async ({inf_id}) => {
+    return await database.query(`DELETE FROM temproles WHERE infraction_id = ?`, [inf_id])
+    .then(() => {
+        temproles[0].list.filter(tmp => tmp.infraction_id !== inf_id);
+        return true;
+    })
+    .catch(err => {
+        return errorhandler({err, fatal: true});
+    });
 }

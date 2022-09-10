@@ -16,7 +16,8 @@ const {
 const {
     getClosedInfractionsByUserId,
     getOpenInfractionsByUserId,
-    getInfractionById
+    getInfractionById,
+    removeInfractionById
 } = require('../../../utils/functions/data/infractions');
 
 
@@ -46,7 +47,6 @@ module.exports.run = async ({
 
     switch (main_interaction.options.getSubcommand()) {
         case 'all':
-        try {
             const user = main_interaction.options.getUser('user');
 
             var closed = [];
@@ -84,15 +84,14 @@ module.exports.run = async ({
                 open: open,
                 main_interaction,
             });
-        }catch(err) {
-            console.log(err);
-        }
             break;
 
         case 'view':
             const inf_id = main_interaction.options.getString('infractionid');
 
-            const {infraction} = await getInfractionById({
+            const {
+                infraction
+            } = await getInfractionById({
                 inf_id
             });
 
@@ -118,30 +117,22 @@ module.exports.run = async ({
         case 'remove':
             const infraction_id = main_interaction.options.getString('infractionid');
 
-            const {table} = await getInfractionById({inf_id: infraction_id});
+            const {
+                table
+            } = await getInfractionById({
+                inf_id: infraction_id
+            });
 
             if (table) {
 
-                database.query(`DELETE FROM ${table} WHERE infraction_id = ?`, [infraction_id])
-                    .then(() => {
-                        main_interaction.followUp({
-                            content: `Infraction with id \`${infraction_id}\` has been removed!`,
-                            ephemeral: true
-                        }).catch(err => {});
-                    })
-                    .catch(err => {
-                        main_interaction.followUp({
-                            content: `Infraction with id \`${infraction_id}\` could not be removed!`,
-                            ephemeral: true
-                        }).catch(err => {});
-                        return errorhandler({
-                            err,
-                            fatal: true
-                        });
-                    })
+                const response = await removeInfractionById({inf_id: infraction_id, type: table});
+
+                return main_interaction.followUp({
+                    content: `Infraction with id \`${infraction_id}\` ${response ? 'has been' : 'could not'} be removed!`,
+                    ephemeral: true
+                }).catch(err => {});
 
             } else {
-                console.log('1')
                 return main_interaction.followUp({
                     content: `Infraction with id \`${infraction_id}\` does not exist!`,
                     ephemeral: true

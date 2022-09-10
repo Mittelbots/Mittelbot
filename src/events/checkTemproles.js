@@ -2,52 +2,14 @@ const config = require('../../src/assets/json/_config/config.json');
 const {
     getCurrentDate
 } = require("../../utils/functions/getCurrentDate");
-const {
-    log
-} = require('../../logs');
-const database = require('../db/db');
-const {
-    temproles
-} = require('../../utils/functions/cache/cache');
-const {
-    errorhandler
-} = require('../../utils/functions/errorhandler/errorhandler');
+const { getAllTemproles, deleteFromTemproles } = require('../../utils/functions/data/temproles');
 
-
-async function deleteEntries(infraction_id, ) {
-    database.query('DELETE FROM temproles WHERE infraction_id = ?', [infraction_id])
-        .then(() => {
-            for (let i in temproles[0].list) {
-                if (temproles[0].list[i].infraction_id == infraction_id) {
-                    delete temproles[0].list[i];
-                }
-            }
-            temproles[0].list = temproles[0].list.filter(Boolean);
-        })
-        .catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            })
-        });
-}
 
 module.exports.checkTemproles = async (bot) => {
     console.info("🔎📜 CheckTemproles handler started");
     setInterval(async () => {
 
-        var results;
-
-        if (temproles) {
-            results = temproles[0].list;
-        } else {
-            results = await database.query('SELECT * FROM temproles').catch(err => {
-                errorhandler({
-                    err,
-                    fatal: true
-                })
-            });
-        }
+        var results = await getAllTemproles();
 
         let done = 0;
         for (let i in results) {
@@ -61,8 +23,8 @@ module.exports.checkTemproles = async (bot) => {
                     done++;
                     var guild = await bot.guilds.cache.get(results[i].guild_id);
                     var user = await guild.members.fetch(results[i].user_id).then(members => members);
-                    await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(r => r.id === results[i].role_id)])
-                    deleteEntries(results[i].infraction_id);
+                    await user.roles.remove([bot.guilds.cache.get(results[i].guild_id).roles.cache.find(r => r.id === results[i].role_id)]).catch(err => {});
+                    await deleteFromTemproles({inf_id: results[i].infraction_id});
                 } catch (err) {
                     // CAN'T FIND USER OR USER LEFT THE SERVER
                     done -= 1;

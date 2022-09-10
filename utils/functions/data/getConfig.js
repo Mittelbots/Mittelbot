@@ -37,31 +37,6 @@ module.exports.getGuildConfig = async ({
         });
 }
 
-module.exports.updateConfig = async ({
-    guild_id,
-    value,
-    valueName
-}) => {
-
-    for (let i in config) {
-        if (config[i].id === guild_id) {
-            config[i][valueName] = value;
-        }
-    }
-
-    return await database.query(`UPDATE ${guild_id}_config SET ${valueName} = ?`, [value])
-        .then(() => {
-            return config;
-        })
-        .catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            });
-            return false;
-        });
-}
-
 module.exports.updateGuildConfig = async ({
     guild_id,
     value,
