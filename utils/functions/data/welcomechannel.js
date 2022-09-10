@@ -19,6 +19,7 @@ const {
 const {
     validateCustomStrings
 } = require("../validate/validateCustomStrings");
+const { getGuildConfig, updateGuildConfig } = require("./getConfig");
 
 module.exports.save_welcomechannelId = async ({
     guild_id,
@@ -27,7 +28,7 @@ module.exports.save_welcomechannelId = async ({
     return new Promise(async (resolve, reject) => {
         await this.getWelcomechannel({
             guild_id
-        }).then(res => {
+        }).then(async res => {
             if (!res || res === "[]") {
                 res = {
                     id: "",
@@ -39,23 +40,13 @@ module.exports.save_welcomechannelId = async ({
 
             res.id = welcomechannel_id;
 
-            database.query(`UPDATE guild_config SET welcome_channel = ? WHERE guild_id = ?`, [JSON.stringify(res), guild_id])
-                .then(() => {
-                    return resolve('✅ Welcomechannel saved into the database. To activate it, select the option `Activate` in the Dropdown menu');
-                })
-                .catch(err => {
-                    errorhandler({
-                        err,
-                        fatal: true
-                    })
-                    return reject(err);
-                });
-
-        }).catch(err => {
-            errorhandler({
-                err,
-                fatal: true
+            await updateGuildConfig({
+                guild_id,
+                value: JSON.stringify(res),
+                valueName: 'welcome_channel'
             })
+
+        }).catch(() => {
             return reject('Something went wrong.');
         })
     })
@@ -67,16 +58,15 @@ module.exports.getWelcomechannel = async ({
     guild_id
 }) => {
     return new Promise(async (resolve, reject) => {
-        await database.query(`SELECT welcome_channel FROM guild_config WHERE guild_id = ?`, [guild_id])
-            .then(res => {
-                return resolve(res[0].welcome_channel);
-            }).catch(err => {
-                errorhandler({
-                    err,
-                    fatal: true
-                })
-                return reject(err);
-            });
+        const config = getGuildConfig({
+            guild_id
+        });
+
+        if(config) {
+            return resolve(config[0].welcome_channel);
+        }else {
+            return reject(false);
+        }
     })
 }
 
@@ -88,7 +78,7 @@ module.exports.saveWelcomeMessageContent = async ({
     return new Promise(async (resolve, reject) => {
         await this.getWelcomechannel({
             guild_id
-        }).then(res => {
+        }).then(async res => {
             if (!res || res === "[]") {
                 return reject("Welcome channel is not set.");
             }
@@ -97,22 +87,12 @@ module.exports.saveWelcomeMessageContent = async ({
 
             res[embed_name] = content;
 
-            database.query(`UPDATE guild_config SET welcome_channel = ? WHERE guild_id = ?`, [JSON.stringify(res), guild_id])
-                .then(() => {
-                    return resolve('✅ Welcome Message saved.');
-                })
-                .catch(err => {
-                    errorhandler({
-                        err,
-                        fatal: true
-                    })
-                    return reject('❌ Something went wrong.');
-                });
-        }).catch(err => {
-            errorhandler({
-                err,
-                fatal: true
+            await updateGuildConfig({
+                guild_id,
+                value: JSON.stringify(res),
+                valueName: 'welcome_channel'
             })
+        }).catch(() => {
             reject('Something went wrong.')
         })
     })

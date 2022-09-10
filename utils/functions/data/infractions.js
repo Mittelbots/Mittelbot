@@ -1,5 +1,5 @@
 const database = require("../../../src/db/db");
-const { openInfractions, closedInfractions, temproles } = require("../cache/cache");
+const { openInfractions, closedInfractions } = require("../cache/cache");
 const {
     errorhandler
 } = require("../errorhandler/errorhandler");
@@ -125,12 +125,12 @@ module.exports.getInfractionById = async ({inf_id}) => {
     return await database.query('SELECT * FROM open_infractions WHERE infraction_id = ?; SELECT * FROM closed_infractions WHERE infraction_id = ?', [...inf_id]).then(res => {
         if(res[0].length > 0) {
             return {
-                table: "open_infractions",
+                table: "open",
                 infraction: res[0]
             }
         }else if(res[1].length > 0) {
             return {
-                table: "closed_infractions",
+                table: "closed",
                 infraction: res[1]
             }
         }
@@ -141,10 +141,12 @@ module.exports.getInfractionById = async ({inf_id}) => {
     })
 }
 
-module.exports.removeInfractionById = async ({inf_id}) => {
-    return await database.query('DELETE FROM open_infractions WHERE infraction_id = ?', [inf_id])
+module.exports.removeInfractionById = async ({inf_id, type}) => {
+    return await database.query(`DELETE FROM ${type}_infractions WHERE infraction_id = ?`, [inf_id])
     .then(() => {
-        openInfractions[0].list.filter(infraction => infraction.infraction_id !== inf_id);
+        (type === 'open') 
+        ? openInfractions[0].list.filter(infraction => infraction.infraction_id !== inf_id)
+        : closedInfractions[0].list.filter(infraction => infraction.infraction_id !== inf_id);
 
         return true;
     })

@@ -16,7 +16,8 @@ const {
 const {
     getClosedInfractionsByUserId,
     getOpenInfractionsByUserId,
-    getInfractionById
+    getInfractionById,
+    removeInfractionById
 } = require('../../../utils/functions/data/infractions');
 
 
@@ -124,23 +125,12 @@ module.exports.run = async ({
 
             if (table) {
 
-                database.query(`DELETE FROM ${table} WHERE infraction_id = ?`, [infraction_id])
-                    .then(() => {
-                        main_interaction.followUp({
-                            content: `Infraction with id \`${infraction_id}\` has been removed!`,
-                            ephemeral: true
-                        }).catch(err => {});
-                    })
-                    .catch(err => {
-                        main_interaction.followUp({
-                            content: `Infraction with id \`${infraction_id}\` could not be removed!`,
-                            ephemeral: true
-                        }).catch(err => {});
-                        return errorhandler({
-                            err,
-                            fatal: true
-                        });
-                    })
+                const response = await removeInfractionById({inf_id: infraction_id, type: table});
+
+                return main_interaction.followUp({
+                    content: `Infraction with id \`${infraction_id}\` ${response ? 'has been' : 'could not'} be removed!`,
+                    ephemeral: true
+                }).catch(err => {});
 
             } else {
                 return main_interaction.followUp({

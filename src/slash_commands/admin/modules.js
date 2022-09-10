@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const { updateConfig, getGuildConfig } = require("../../../utils/functions/data/getConfig");
+const { getGuildConfig, updateGuildConfig } = require("../../../utils/functions/data/getConfig");
 const config = require('../../../src/assets/json/_config/config.json');
 const { errorhandler } = require("../../../utils/functions/errorhandler/errorhandler");
 
@@ -39,7 +39,7 @@ module.exports.run = async ({main_interaction, bot}) => {
         disabled_modules.push(module);
     }
 
-    const updated = await updateConfig({
+    const updated = await updateGuildConfig({
         guild_id: main_interaction.guild.id,
         value: JSON.stringify(disabled_modules),
         valueName: 'disabled_modules'

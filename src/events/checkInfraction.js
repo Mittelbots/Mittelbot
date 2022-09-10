@@ -26,7 +26,7 @@ const {
 
 
 async function deleteEntries(infraction) {
-    removeInfractionById({inf_id: infraction.infraction_id});
+    removeInfractionById({inf_id: infraction.infraction_id, type: 'open'});
 
     insertIntoClosedList({
         uid: infraction.user_id,
