@@ -124,7 +124,7 @@ module.exports.insertMemberInfo = async ({
     guild_id,
     user_id,
     member_roles = '[]',
-    user_joined = null
+    user_joined = 'null'
 }) => {
     return await database.query(`INSERT INTO member_info (user_id, guild_id, member_roles, user_joined) VALUES (?, ?, ?, ?)`, [user_id, guild_id, member_roles, user_joined])
         .then(res => {

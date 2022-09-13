@@ -93,16 +93,16 @@ module.exports.checkInfractions = (bot) => {
                         await privateModResponse(user, config.defaultModTypes.unmute, 'Auto', null, bot, guild.name);
 
                         await deleteEntries(results[i]);
-
-                        done++;
-                        mutecount++;
-                        continue;
                     } catch (err) {
-                        return errorhandler({
+                        errorhandler({
                             err,
                             fatal: true
                         });
                     }
+
+                    done++;
+                    mutecount++;
+                    continue;
                 } else { //Member got banned
                     done++;
                     bancount++;
