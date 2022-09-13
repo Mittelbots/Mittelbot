@@ -6,7 +6,15 @@ const { errorhandler } = require("../errorhandler/errorhandler");
 if (config.debug) var activity = require('../../../src/assets/json/_config/activity_dev.json');
 else var activity = require('../../../src/assets/json/_config/activity_prod.json');
 
-module.exports.setActivity = (bot) => {
+module.exports.setActivity = (bot, restart = false) => {
+
+  if(restart) {
+    return bot.user.setActivity({
+      name: 'Restarting...',
+      type: ActivityType.Competing,
+    });
+  }
+
     getLinesOfCode((cb) => {
       let membersCount = bot.guilds.cache.map(guild => guild.memberCount).reduce((a, b) => a + b, 0)
       var codeLines = ` | ${bot.guilds.cache.size} guilds with ${membersCount} members | Code: ${cb}` || '';

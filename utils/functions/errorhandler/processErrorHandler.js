@@ -1,9 +1,5 @@
-const { delay } = require("../delay/delay");
 const { errorhandler } = require("./errorhandler");
-const {
-    spawn,
-    exec
-  } = require('child_process');
+const { restartBot }  = require('../../../bot/core/core');
 
 module.exports.processErrorHandler = () => {
     process.on('unhandledRejection', async err => {
@@ -11,18 +7,13 @@ module.exports.processErrorHandler = () => {
           err,
           fatal: true
         })
-      
+
         errorhandler({
           err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
           fatal: true
-        });
+      });
       
-        await delay(5000);
-        spawn(process.argv[1], process.argv.slice(2), {
-          detached: true,
-          stdio: ['ignore', null, null]
-        }).unref()
-        process.exit()
+        restartBot();
       });
       
       process.on('uncaughtException', async err => {
@@ -34,18 +25,13 @@ module.exports.processErrorHandler = () => {
           err,
           fatal: true
         })
-      
-        await delay(5000);
-        spawn(process.argv[1], process.argv.slice(2), {
-          detached: true,
-          stdio: ['ignore', null, null]
-        }).unref()
-      
+
         errorhandler({
           err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
           fatal: true
-        });
+      });
       
-        process.exit()
+        restartBot();
+        
       })
 }
