@@ -2,7 +2,7 @@ const fs = require('fs');
 const { log } = require('../../../logs');
 const config = require('../../../src/assets/json/_config/config.json');
 
-function deployCommands(bot) {
+module.exports.deployCommands = async (bot) => {
         let modules = fs.readdirSync('./src/commands/');
         modules.forEach((module) => {
             fs.readdir(`./src/commands/${module}`, (err, files) => {
@@ -20,5 +20,3 @@ function deployCommands(bot) {
         });
     return;
 }
-
-module.exports = {deployCommands};
