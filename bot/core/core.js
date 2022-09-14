@@ -94,7 +94,7 @@ module.exports.startBot = async (bot) => {
 
       setActivity(bot);
 
-      console.log(`****Ready! Logged in as ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
+      console.info(`****Ready! Logged in as ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`);
       errorhandler({
         message: '------------BOT SUCCESSFULLY STARTED------------' + new Date(),
         fatal: false
@@ -102,7 +102,6 @@ module.exports.startBot = async (bot) => {
 
       return resolve(true);
     } catch (err) {
-      console.log(err)
       return reject(err);
     }
   })
@@ -174,7 +173,7 @@ module.exports.fetchUsers = async (bot, guilds) => {
 
     return await guilds.map(async guild => {
       await bot.guilds.cache.get(guild.id).members.fetch().then(() => {
-        console.log('Members successfully fetched');
+        console.info(`Members from ${guild.name}(${guild.id}) successfully fetched`);
         i = i + 1;
       });
       if (i === length) {
