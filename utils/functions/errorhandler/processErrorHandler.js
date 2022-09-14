@@ -1,5 +1,6 @@
+const { restartBot } = require("../../../bot/core/core");
 const { errorhandler } = require("./errorhandler");
-const { restartBot }  = require('../../../bot/core/core');
+
 
 module.exports.processErrorHandler = () => {
     process.on('unhandledRejection', async err => {
@@ -13,7 +14,7 @@ module.exports.processErrorHandler = () => {
           fatal: true
       });
       
-        restartBot();
+        await restartBot();
       });
       
       process.on('uncaughtException', async err => {
@@ -31,7 +32,7 @@ module.exports.processErrorHandler = () => {
           fatal: true
       });
       
-        restartBot();
+        await restartBot();
         
       })
 }
