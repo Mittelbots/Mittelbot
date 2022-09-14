@@ -62,7 +62,7 @@ module.exports.getWelcomechannel = async ({
             guild_id
         });
 
-        if(config && config[0].welcome_channel) {
+        if(config && config.welcome_channel) {
             return resolve(config[0].welcome_channel);
         }else {
             return reject(false);
