@@ -475,11 +475,7 @@ module.exports.sendWelcomeMessage = async ({
                 })
             }
 
-        }).catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            })
+        }).catch(() => {
             reject('Something went wrong.')
         })
     })
