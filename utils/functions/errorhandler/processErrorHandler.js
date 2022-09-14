@@ -1,5 +1,5 @@
 const { errorhandler } = require("./errorhandler");
-const { restartBot }  = require('../../../bot/core/core');
+const { restartBot } = require('../../../bot/core/core');
 
 module.exports.processErrorHandler = () => {
     process.on('unhandledRejection', async err => {
