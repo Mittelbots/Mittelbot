@@ -73,6 +73,7 @@ bot.once('ready', async () => {
     .catch(async err => {
       errorhandler({
         err,
+        message: "Error at startBot function",
         fatal: true
       })
       await delay(10000);

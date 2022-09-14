@@ -11,7 +11,7 @@ module.exports.setActivity = (bot, restart = false) => {
   if(restart) {
     return bot.user.setActivity({
       name: 'Restarting...',
-      type: ActivityType.Competing,
+      type: ActivityType.Playing,
     });
   }
 
