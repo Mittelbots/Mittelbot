@@ -16,4 +16,4 @@ node_modules/
 
 _logs/*
 _debug/*
-core
+./core
