@@ -44,7 +44,6 @@ module.exports.startBot = async (bot) => {
 
       await this.fetchCache(bot);
 
-      
       auditLog(bot);
       handleUploads({
         bot
@@ -129,5 +128,7 @@ module.exports.fetchCache = async (bot) => {
       })
     });
   })
-  console.timeEnd('Fetching guilds and users in:')
+  console.timeEnd('Fetching guilds and users in:');
+
+  return true;
 }
