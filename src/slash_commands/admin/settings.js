@@ -268,12 +268,12 @@ module.exports.run = async ({
             const ytchannel = main_interaction.options.getString('ytchannel');
             const dcchannel = main_interaction.options.getChannel('dcchannel');
             const pingrole = main_interaction.options.getRole('ytping')
-
+            
             changeYtNotifier({
                 ytchannel,
                 dcchannel,
                 pingrole,
-                guild: main_interaction.guild,
+                guild: await bot.guilds.cache.get(main_interaction.guild.id),
             }).then(res => {
                 main_interaction.followUp({
                     content: res,
