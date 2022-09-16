@@ -38,6 +38,7 @@ module.exports.changeYtNotifier = async ({
             })
         if (!channelid) return;
         
+        
         await guild.members.fetch();
         const hasChannelPerms = guild.members.me.permissionsIn(dcchannel.id).has(["VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"]);
 
