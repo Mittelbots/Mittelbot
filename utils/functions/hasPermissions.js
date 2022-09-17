@@ -7,7 +7,6 @@ const {
 const {
     errorhandler
 } = require("./errorhandler/errorhandler");
-const config = require('../../src/assets/json/_config/config.json');
 
 
 module.exports.hasPermission = async({
@@ -18,10 +17,12 @@ module.exports.hasPermission = async({
     isDashboard = false,
     bot
 }) => {
-    let guildUser = bot.guilds.cache.get(guild_id).members.cache.get(user.id || user);
+    let guild = await bot.guilds.cache.get(guild_id);
+    let guildUser = await guild.members.fetch(user.id || user);
+
     let hasAdminPerms = guildUser.permissions.has(PermissionFlagsBits.Administrator);
 
-    if (hasAdminPerms && !config.debug) return true;
+    if (hasAdminPerms) return true;
 
 
     const {

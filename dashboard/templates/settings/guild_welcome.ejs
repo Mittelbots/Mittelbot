@@ -218,13 +218,15 @@
                                                     <select class="form-select ChangerJSInput" aria-label="Default select example"
                                                         data-cid="wc_id">
                                                         <option selected disabled>Select a channel</option>
-                                                        <% var all_channels = guild.channels.cache%>
-                                                        <% var current_wc_channel = all_channels.filter(c => c.id === settings.config.settings.welcome_channel.id).map(c => {return c.id})[0]%> 
-                                                        <% all_channels.forEach((channel) => { %>
-                                                        <option value="<%= channel.id %>"
-                                                            <%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.id) ? (channel.id === current_wc_channel) ? 'selected' : '' : ''%>>
-                                                            <%= channel.name %></option>
-                                                        <%  })%>
+                                                        <% var all_channels = guild.channels.cache; %>
+                                                        <% if (settings.config.settings.welcome_channel) { %>
+                                                            <% var current_wc_channel = all_channels.filter(c => c.id === settings.config.settings.welcome_channel.id).map(c => {return c.id})[0]%> 
+                                                            <% all_channels.forEach((channel) => { %>
+                                                            <option value="<%= channel.id %>"
+                                                                <%= (settings.config.settings.welcome_channel && settings.config.settings.welcome_channel.id) ? (channel.id === current_wc_channel) ? 'selected' : '' : ''%>>
+                                                                <%= channel.name %></option>
+                                                            <%  })%>
+                                                        <% } %>
                                                     </select>
                                                 </small>
                                             </div>

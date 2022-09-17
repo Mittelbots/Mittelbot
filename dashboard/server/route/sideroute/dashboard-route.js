@@ -9,7 +9,6 @@ const {
 } = require('discord.js');
 const axios = require("axios");
 const {
-  getConfig,
   getGuildConfig
 } = require("../../../../utils/functions/data/getConfig");
 const { errorhandler } = require("../../../../utils/functions/errorhandler/errorhandler");
@@ -70,7 +69,7 @@ module.exports = ({app}) => {
         guild,
         path: req.query.settings,
         settings: {
-          config: await getConfig({
+          config: await getGuildConfig({
             guild_id: req.params.guildID
           })
         },
@@ -81,7 +80,7 @@ module.exports = ({app}) => {
         guild,
         path: req.query.settings,
         settings: {
-          config: await getConfig({
+          config: await getGuildConfig({
             guild_id: req.params.guildID
           })
         },
@@ -105,7 +104,7 @@ module.exports = ({app}) => {
         guild,
         path: req.query.settings,
         settings: {
-          config: await getConfig({
+          config: await getGuildConfig({
             guild_id: req.params.guildID
           })
         },

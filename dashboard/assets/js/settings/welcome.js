@@ -47,6 +47,9 @@ window.addEventListener('load', function () {
                     if (this.status === 200) {
                         new Notification('Settings saved', true).show();
                     }
+                    if (this.status === 401) {
+                        new Notification('You don\'t have permissions to do this.', false).show();
+                    }
                 }
                 request.open('POST', `/api/change/${module}/${settings}/${type}/${guild_id}`);
                 request.setRequestHeader('Content-Type', 'application/json');
