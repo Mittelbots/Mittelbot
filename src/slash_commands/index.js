@@ -12,7 +12,7 @@ module.exports.handleSlashCommands = async ({
     let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny'];
     let admin = ['modules', 'scam', 'autotranslate', 'settings', 'apply', 'levelsettings', 'automod'];
     let level = ['rank', 'leaderboard', 'givexp', 'removexp'];
-    let utils = ['afk'];
+    let utils = ['afk', 'info', 'ping', 'checkguild'];
 
     //=========================================================
 
