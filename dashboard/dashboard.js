@@ -5,7 +5,6 @@ const path = require("path");
 const chalk = require("chalk");
 const express = require("express");
 const config = require("./config");
-const passport = require("passport");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
@@ -13,7 +12,6 @@ require('dotenv').config()
 const {
   boxConsole
 } = require("./functions/boxConsole");
-
 
 
 const app = express();
