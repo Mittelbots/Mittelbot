@@ -10,6 +10,34 @@ const {
     getAllGuildIds
 } = require("./getAllGuildIds");
 
+module.exports.insertIntoGuildAutomod = async (guild_id) => {
+    return new Promise(async (resolve, reject) => {
+
+        const defaultAntiSpamSetttings = {
+            "antispam": {
+              "enabled": false,
+              "action": "[]"
+            }
+          }        
+
+        await database.query(`INSERT IGNORE INTO guild_automod (guild_id, settings) VALUES (?, ?)`, [guild_id, JSON.stringify(defaultAntiSpamSetttings)])
+        .then(() => {
+          autoMod[autoMod.length] = {
+            name: "autoMod",
+            id: guild_id,
+            settings: JSON.stringify(defaultAntiSpamSetttings)
+          }
+          return resolve(true)
+        })
+        .catch(err => {
+          errorhandler({
+            err
+          })
+          return reject(false);
+        });
+    })
+}
+
 module.exports.getAutomodbyGuild = async (guild_id) => {
     const cache = await getFromCache({
         cacheName: "autoMod",

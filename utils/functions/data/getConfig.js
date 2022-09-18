@@ -4,10 +4,26 @@ const {
 } = require("../errorhandler/errorhandler");
 const {
     getFromCache,
-    config,
     guildConfig
 } = require('../cache/cache');
 const config_file = require('../../../src/assets/json/_config/config.json');
+
+module.exports.insertGuildIntoGuildConfig = async (guild_id) => {
+    return new Promise(async (resolve, reject) => {
+        await database.query(`INSERT IGNORE INTO guild_config (guild_id) VALUES (?); SELECT * FROM guild_config WHERE guild_id = ?`, [guild_id, guild_id])
+        .then((res) => {
+            guildConfig[guildConfig.length] = {
+                name: "guildConfig",
+                id: guild_id,
+                settings: Object.values(JSON.parse(JSON.stringify(res[1])))[0] // removes rowdatapacket object
+              }
+            return resolve(true);
+        }).catch(err => {
+            errorhandler({err});
+            return reject(false);
+        })
+    })
+}
 
 module.exports.getGuildConfig = async ({
     guild_id
