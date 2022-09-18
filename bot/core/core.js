@@ -53,6 +53,10 @@ const {
   messageCreate
 } = require('../messageCreate');
 const Dashboard = require('../../dashboard/dashboard');
+const database = require('../../src/db/db');
+const { insertIntoAllGuildId } = require('../../utils/functions/data/all_guild_id');
+const { insertGuildIntoGuildConfig } = require('../../utils/functions/data/getConfig');
+const { insertIntoGuildAutomod } = require('../../utils/functions/data/automod');
 
 module.exports.restartBot = async () => {
   await delay(5000);
@@ -158,6 +162,10 @@ module.exports.fetchCache = async (bot) => {
     const guilds = await bot.guilds.fetch();
     console.timeEnd('Fetching guilds in:');
 
+    console.time('Checking data in database:');
+    await this.checkGuildsInDatabase(guilds);
+    console.timeEnd('Checking data in database:');
+
     console.time('Fetching users in:');
     await Promise.resolve(this.fetchUsers(bot, guilds));
     console.timeEnd('Fetching users in:');
@@ -180,5 +188,41 @@ module.exports.fetchUsers = async (bot, guilds) => {
         return resolve(true)
       };
     });
+  })
+}
+
+module.exports.checkGuildsInDatabase = async (guilds) => {
+  guilds.map(async guild => {
+    await database.query(`SELECT * FROM all_guild_id WHERE guild_id = ?; SELECT id FROM guild_config WHERE guild_id = ?; SELECT id FROM guild_automod WHERE guild_id = ?`, [guild.id, guild.id, guild.id])
+      .then(async res => {
+        if (res[0].length === 0) {
+          await insertIntoAllGuildId(guild.id)
+            .then(() => {
+              console.log(`Inserted ${guild.id} into all_guild_id.`);
+            }).catch(() => {
+              console.log(`Failed to insert ${guild.id} into all_guild_id`);
+            })
+        }
+        if (res[1].length === 0) {
+          await insertGuildIntoGuildConfig(guild.id)
+            .then(() => {
+              console.log(`Inserted ${guild.id} into guild_config.`);
+            }).catch(() => {
+              console.log(`Failed to insert ${guild.id} into guild_config`);
+            })
+        }
+        if (res[2].length === 0) {
+          await insertIntoGuildAutomod(guild.id)
+            .then(() => {
+              console.log(`Inserted ${guild.id} into guild_config.`);
+            }).catch(() => {
+              console.log(`Failed to insert ${guild.id} into guild_config`);
+            })
+        }
+      }).catch(err => {
+        errorhandler({
+          err
+        });
+      })
   })
 }
