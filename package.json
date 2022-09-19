@@ -32,7 +32,7 @@
     "@gonetone/get-youtube-id-by-url": "^1.0.0",
     "@napi-rs/canvas": "^0.1.29",
     "@twurple/api": "^5.2.4",
-    "@twurple/auth": "^5.2.3",
+    "@twurple/auth": "^5.2.4",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "caller-id": "^0.1.0",
