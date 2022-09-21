@@ -8,26 +8,6 @@
     "defaultprefix": "!",
     "debug": false,
     "db_debug": false,
-    "ytkey": "",
-    "twitter": {
-        "consumer_key": "",
-        "consumer_secret": "",
-        "access_token": "",
-        "access_token_secret": ""
-    },
-    "email": {
-        "email": "",
-        "host": "",
-        "port": 0,
-        "secure": true,
-        "auth": {
-            "user": "",
-            "pass": ""
-        }
-    },
-    "google_translate_projectID": "",
-    "twitch_client_id": "",
-    "twitch_secret": "",
     "defaultCooldown": {
         "format": "2000",
         "text": "2 seconds"
@@ -42,11 +22,11 @@
     "deleteModCommandsAfterUsage": "false",
     "deleteCommandsAfterUsage": "false",
     "errormessages": {
-        "general": "Something went wrong! <@395923095472570368> Fix it idiot!",
+        "general": "Something went wrong!",
         "nopermission": "You dont have permission to run this command!",
         "botnopermission": "Something went wrong! Either i don't have permissions or the bot is broken.",
         "databaseconnectionerror": "Error connecting the database! Try again in 5 seconds",
-        "databasequeryerror": "Error by executing the database request. <@395923095472570368> Fix it idiot!",
+        "databasequeryerror": "Error by executing the database request.",
         "nopermissions": {
             "ban": "I don't have permissions to ban people. Please check my Permissions and try again.",
             "unban": "I don't have permissions to unban people. Please check my Permissions and try again.",

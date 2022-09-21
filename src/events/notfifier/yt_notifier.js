@@ -82,8 +82,8 @@ module.exports.handleUploads = async ({
                         errorhandler({fatal: false, message: `📥 New upload sent! GUILD: ${uploads[i].guild_id} CHANNEL ID: ${uploads[i].info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`});
                     }).catch(err => {
                         errorhandler({
-                            err,
-                            fatal: true
+                            message: 'Youtube request run into Timeout.',
+                            fatal: (err.errno === 'ECONNREFUSED') ? false : true
                         });
                         return false;
                     })

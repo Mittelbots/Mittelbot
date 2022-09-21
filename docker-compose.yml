@@ -1,0 +1,13 @@
+networks:
+ app:
+
+services:
+  node:
+    image: node:16
+    user: node
+    volumes:
+    - .:/app
+    environment:
+      - END=development
+    working_dir: /app
+    command: bash -c "git pull && npm run pm2restartprod"

@@ -26,7 +26,8 @@ async function kickUser({user, mod, guild, reason, bot}) {
             kick: 0,
             reason,
             infraction_id: await createInfractionId(),
-            start_date: getCurrentFullDate()
+            start_date: getCurrentFullDate(),
+            guild_id: guild.id
         })
         setNewModLogMessage(bot, config.defaultModTypes.kick, mod.id, user, reason, null, guild.id);
         const p_response = await publicModResponses(config.defaultModTypes.kick, mod, user.id, reason, null, bot);

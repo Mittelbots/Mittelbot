@@ -30,7 +30,8 @@ async function warnUser({bot, user, mod, guild, reason}) {
             warn: 1,
             kick: 0,
             reason,
-            infraction_id: await createInfractionId()
+            infraction_id: await createInfractionId(),
+            guild_id: guild.id
         });
         
         errorhandler({fatal: false, message: `${mod.id} has triggered the warn command in ${guild.id}`});

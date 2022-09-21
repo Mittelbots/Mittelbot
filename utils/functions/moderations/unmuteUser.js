@@ -84,6 +84,7 @@ async function unmuteUser({user, bot, mod, reason, guild}) {
                     reason: res[0].reason,
                     infraction_id: res[0].infraction_id,
                     start_date: res[0].start_date,
+                    guild_id: guild.id
                 });
                 await removeDataFromOpenInfractions(res[0].infraction_id);
 

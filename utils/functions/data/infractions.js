@@ -31,24 +31,25 @@ module.exports.getAllClosedInfractions = async () => {
     });
 }
 
-module.exports.insertIntoClosedList = async ({uid, modid, mute = 0, ban = 0, warn = 0, kick = 0, till_date, reason, infraction_id, start_date = getCurrentFullDate()}) => {
+module.exports.insertIntoClosedList = async ({uid, modid, mute = 0, ban = 0, warn = 0, kick = 0, till_date, reason, infraction_id, start_date = getCurrentFullDate(), guild_id}) => {
     
-    //?Update cache
-    const listLength = closedInfractions[0].list.length;
-    closedInfractions[0].list[listLength] = {
-        user_id: uid,
-        mod_id: modid,
-        mute,
-        ban,
-        warn,
-        kick,
-        till_date,
-        reason,
-        infraction_id,
-        start_date: start_date
-    }
-
-    database.query('INSERT INTO closed_infractions (user_id, mod_id, mute, ban, warn, kick, till_date, reason, infraction_id, start_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[uid, modid, mute, ban, warn, kick, till_date, reason, infraction_id, start_date])
+    await database.query('INSERT INTO closed_infractions (user_id, mod_id, mute, ban, warn, kick, till_date, reason, infraction_id, start_date, guild_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',[uid, modid, mute, ban, warn, kick, till_date, reason, infraction_id, start_date, guild_id])
+    .then(() => {
+        const listLength = closedInfractions[0].list.length;
+        closedInfractions[0].list[listLength] = {
+            user_id: uid,
+            mod_id: modid,
+            mute,
+            ban,
+            warn,
+            kick,
+            till_date,
+            reason,
+            infraction_id,
+            start_date,
+            guild_id
+        }
+        })
     .catch(err => {
         return errorhandler({err, fatal: true});
     });
@@ -85,7 +86,7 @@ module.exports.getClosedInfractionsByUserId = async ({user_id, guild_id}) => {
     const cache = closedInfractions[0].list.filter(infraction => infraction.user_id === user_id && infraction.guild_id === guild_id);
     if(cache.length > 0) return cache;
     
-    return await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? AND guild = ? ORDER BY ID DESC`, [user_id, guild_id])
+    return await database.query(`SELECT * FROM closed_infractions WHERE user_id = ? AND guild_id = ? ORDER BY ID DESC`, [user_id, guild_id])
     .then(res => {
         return res;
     }).catch(err => {
