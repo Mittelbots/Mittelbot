@@ -40,7 +40,7 @@ module.exports.run = async ({
 
     if (!hasPermissions) {
         return main_interaction.followUp({
-            content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
+            content: config.errormessages.nopermission,
             ephemeral: true
         }).catch(err => {});
     }
@@ -53,11 +53,13 @@ module.exports.run = async ({
             var open = [];
 
             const closed_infractions = await getClosedInfractionsByUserId({
-                user_id: user.id
+                user_id: user.id,
+                guild_id: main_interaction.guild.id
             });
 
             const open_infractions = await getOpenInfractionsByUserId({
-                user_id: user.id
+                user_id: user.id,
+                guild_id: main_interaction.guild.id
             });
 
             if (!closed_infractions || !open_infractions) {

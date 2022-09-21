@@ -37,6 +37,7 @@ async function deleteEntries(infraction) {
         reason: infraction.reason,
         infraction_id: infraction.infraction_id,
         start_date: infraction.start_date,
+        guild_id: infraction.guild_id
     });
 }
 
