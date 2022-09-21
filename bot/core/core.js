@@ -57,6 +57,7 @@ const database = require('../../src/db/db');
 const { insertIntoAllGuildId } = require('../../utils/functions/data/all_guild_id');
 const { insertGuildIntoGuildConfig } = require('../../utils/functions/data/getConfig');
 const { insertIntoGuildAutomod } = require('../../utils/functions/data/automod');
+const { rateLimit } = require('../rateLimit');
 
 module.exports.restartBot = async () => {
   await delay(5000);
@@ -153,6 +154,10 @@ module.exports.acceptBotInteraction = (bot) => {
   interactionCreate({
     bot
   })
+
+  bot.on('rateLimit', (rateLimitData) => {
+    rateLimit({rateLimitData});
+  });
 }
 
 
