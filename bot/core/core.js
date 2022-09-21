@@ -69,6 +69,14 @@ module.exports.restartBot = async () => {
   process.exit();
 }
 
+module.exports.stopBot = async () => {
+  errorhandler({
+    message: 'Bot stopped due function call',
+    fatal: false
+  })
+  process.exit();
+}
+
 
 module.exports.startBot = async (bot) => {
   return new Promise(async (resolve, reject) => {

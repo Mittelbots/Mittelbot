@@ -4,6 +4,7 @@ const {
 const {
     errorhandler
 } = require("../utils/functions/errorhandler/errorhandler");
+const { stopBot } = require("./core/core");
 
 module.exports.rateLimit = async ({rateLimitData}) => {
     errorhandler({
@@ -14,5 +15,7 @@ module.exports.rateLimit = async ({rateLimitData}) => {
     updateGlobalConfig({
         valueName: 'ignoreMode',
         value: 1
-    })
+    });
+
+    return stopBot();
 }
