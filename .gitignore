@@ -17,3 +17,7 @@ node_modules/
 _logs/*
 _debug/*
 ./core
+
+.env
+.env.prod
+.env.local
