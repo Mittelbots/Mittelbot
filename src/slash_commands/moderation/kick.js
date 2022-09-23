@@ -43,17 +43,21 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     let reason = main_interaction.options.getString('reason') || 'No reason provided';
 
-    const kicked = await kickUser({user, mod: main_interaction.user, guild: main_interaction.guild, reason, bot});
-
-    if(kicked.error) return main_interaction.followUp({
-        content: kicked.message,
-        ephemeral: true
-    }).catch(err => {});
-
-    return main_interaction.followUp({
-        embeds: [kicked.message],
-        ephemeral: true
-    }).catch(err => {});
+    kickUser({user, mod: main_interaction.user, guild: main_interaction.guild, reason, bot})
+    .then(res => {
+        main_interaction.followUp({
+            embeds: [res.message],
+            ephemeral: true
+        }).catch(err => {});
+    })
+    .catch(err => {
+        main_interaction.followUp({
+            content: err,
+            ephemeral: true
+        }).catch(err => {});
+    
+    })
+    return;   
 }
 
 module.exports.data = new SlashCommandBuilder()
