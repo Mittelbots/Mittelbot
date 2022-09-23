@@ -30,7 +30,7 @@
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
     "@gonetone/get-youtube-id-by-url": "^1.0.0",
-    "@napi-rs/canvas": "^0.1.29",
+    "@napi-rs/canvas": "^0.1.30",
     "@twurple/api": "^5.2.4",
     "@twurple/auth": "^5.2.4",
     "axios": "^0.27.2",
