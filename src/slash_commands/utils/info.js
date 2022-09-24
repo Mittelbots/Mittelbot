@@ -12,7 +12,7 @@ module.exports.run = async ({main_interaction, bot}) => {
 
     await main_interaction.deferReply({
         ephemeral: true
-    })
+    });
 
     let server = main_interaction.guild;
 
