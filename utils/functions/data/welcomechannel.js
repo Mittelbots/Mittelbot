@@ -281,7 +281,7 @@ module.exports.sendWelcomeSetting = async ({
 
         const menu = new SelectMenuBuilder()
             .setCustomId('welcomemessage')
-            .setPlaceholder('Choose the options')
+            .setPlaceholder('Choose an option.')
 
         menu.addOptions([{
             'value': `message_${main_interaction.guild.id}`,
