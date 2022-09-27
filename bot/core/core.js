@@ -52,7 +52,6 @@ const {
 const {
   messageCreate
 } = require('../messageCreate');
-const Dashboard = require('../../dashboard/dashboard');
 const database = require('../../src/db/db');
 const { insertIntoAllGuildId } = require('../../utils/functions/data/all_guild_id');
 const { insertGuildIntoGuildConfig } = require('../../utils/functions/data/getConfig');
@@ -101,9 +100,6 @@ module.exports.startBot = async (bot) => {
 
       checkInfractions(bot);
       checkTemproles(bot);
-
-      //? START THE DASHBOARD
-      Dashboard(bot);
 
       setActivity(bot);
 
