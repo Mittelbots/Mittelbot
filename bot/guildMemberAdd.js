@@ -48,7 +48,6 @@ module.exports.guildMemberAdd = async(member, bot) => {
     })
     if (memberInfo.error) return;
 
-    //? If memberInfo is empty, insert new member info
     else if (!memberInfo) {
         await insertMemberInfo({
             guild_id: member.guild.id,
@@ -58,7 +57,6 @@ module.exports.guildMemberAdd = async(member, bot) => {
         })
     }
 
-    //?If no join date is set, set it to the current date
     if (memberInfo.user_joined == null) {
         await updateMemberInfoById({
             guild_id: memberInfo.guild_id,
@@ -80,10 +78,8 @@ module.exports.guildMemberAdd = async(member, bot) => {
     } else {
         let user_roles = await memberInfo.member_roles;
         if (!user_roles) return;
-
         user_roles = JSON.parse(user_roles);
 
-        //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
         const indexOfMuteRole = user_roles.indexOf(member.guild.roles.cache.find(r => r.name === 'Muted').id)
         if (user_roles !== null && indexOfMuteRole !== -1) {
             user_roles = await user_roles.filter(r => r !== member.guild.roles.cache.find(r => r.name === 'Muted').id)
@@ -92,8 +88,6 @@ module.exports.guildMemberAdd = async(member, bot) => {
             if (user_roles) await giveAllRoles(member.id, member.guild, user_roles);
         }, 2000);
 
-
-        // JOINROLES
 
         const joinroles = getJoinroles({
             guild_id: member.guild.id
@@ -106,7 +100,6 @@ module.exports.guildMemberAdd = async(member, bot) => {
             try {
                 await member.roles.add(j_role).catch(err => {})
             } catch (err) {
-                //NO PERMISSONS
                 return
             }
         }
