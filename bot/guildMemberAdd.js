@@ -22,7 +22,7 @@ const {
     getOpenInfractionsByUserId
 } = require("../utils/functions/data/infractions");
 
-async function guildMemberAdd(member, bot) {
+module.exports.guildMemberAdd = async(member, bot) => {
 
     var {
         settings
@@ -37,8 +37,10 @@ async function guildMemberAdd(member, bot) {
             guild_id: member.guild.id,
             bot,
             joined_user: member
-        }).catch(err => {})
+        })
     }
+
+    if (member.user.bot) return;
 
     const memberInfo = await getMemberInfoById({
         guild_id: member.guild.id,
@@ -46,7 +48,6 @@ async function guildMemberAdd(member, bot) {
     })
     if (memberInfo.error) return;
 
-    //? If memberInfo is empty, insert new member info
     else if (!memberInfo) {
         await insertMemberInfo({
             guild_id: member.guild.id,
@@ -56,7 +57,6 @@ async function guildMemberAdd(member, bot) {
         })
     }
 
-    //?If no join date is set, set it to the current date
     if (memberInfo.user_joined == null) {
         await updateMemberInfoById({
             guild_id: memberInfo.guild_id,
@@ -69,7 +69,7 @@ async function guildMemberAdd(member, bot) {
         user_id: member.user.id,
         guild_id: member.guild.id
     });
-    
+
     userInfractions = userInfractions.filter(inf => inf.mute) || [];
 
 
@@ -78,10 +78,8 @@ async function guildMemberAdd(member, bot) {
     } else {
         let user_roles = await memberInfo.member_roles;
         if (!user_roles) return;
-
         user_roles = JSON.parse(user_roles);
 
-        //? IF MUTED ROLE IS IN USERS DATASET -> MUTED ROLE WILL BE REMOVED
         const indexOfMuteRole = user_roles.indexOf(member.guild.roles.cache.find(r => r.name === 'Muted').id)
         if (user_roles !== null && indexOfMuteRole !== -1) {
             user_roles = await user_roles.filter(r => r !== member.guild.roles.cache.find(r => r.name === 'Muted').id)
@@ -91,31 +89,23 @@ async function guildMemberAdd(member, bot) {
         }, 2000);
 
 
-        // JOINROLES
-        if (!member.user.bot) {
-            const joinroles = getJoinroles({
-                guild_id: member.guild.id
-            })
+        const joinroles = getJoinroles({
+            guild_id: member.guild.id
+        })
 
-            if (joinroles.length == 0) return;
+        if (joinroles.length == 0) return;
 
-            for (let i in joinroles) {
-                let j_role = await member.guild.roles.cache.find(r => r.id === joinroles[i]);
-                try {
-                    await member.roles.add(j_role).catch(err => {})
-                } catch (err) {
-                    //NO PERMISSONS
-                    return
-                }
+        for (let i in joinroles) {
+            let j_role = await member.guild.roles.cache.find(r => r.id === joinroles[i]);
+            try {
+                await member.roles.add(j_role).catch(err => {})
+            } catch (err) {
+                return
             }
-            errorhandler({
-                fatal: false,
-                message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`
-            })
         }
+        errorhandler({
+            fatal: false,
+            message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`
+        })
     }
-}
-
-module.exports = {
-    guildMemberAdd
 }

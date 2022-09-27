@@ -4,7 +4,8 @@ const {
 } = require("discord.js");
 const {
     save_welcomechannelId,
-    sendWelcomeSetting
+    sendWelcomeSetting,
+    updateWelcomeSettings
 } = require("../../../utils/functions/data/welcomechannel");
 const {
     checkPrefix,
@@ -90,26 +91,19 @@ module.exports.run = async ({
             break;
 
         case 'welcomemessage':
-            let pass = false;
-            await save_welcomechannelId({
+            await updateWelcomeSettings({
                 guild_id: main_interaction.guild.id,
-                welcomechannel_id: main_interaction.options.getChannel('channel').id
-            }).then(res => {
-                pass = true;
-                main_interaction.followUp({
-                    content: '✅ ' + res,
-                    ephemeral: true
-                }).catch(err => {})
+                valueName: "id",
+                value: main_interaction.options.getChannel('channel').id
+            }).then(() => {
+                sendWelcomeSetting({
+                    main_interaction,
+                })
             }).catch(err => {
                 main_interaction.followUp({
                     content: '❌ ' + err,
                     ephemeral: true
                 }).catch(err => {})
-            })
-            if (!pass) return;
-
-            sendWelcomeSetting({
-                main_interaction,
             })
             break;
 
