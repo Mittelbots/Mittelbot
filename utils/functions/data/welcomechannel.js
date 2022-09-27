@@ -3,10 +3,6 @@ const {
     EmbedBuilder,
     SelectMenuBuilder
 } = require("discord.js");
-const database = require("../../../src/db/db");
-const {
-    errorhandler
-} = require("../errorhandler/errorhandler");
 const {
     delay
 } = require('../delay/delay');
@@ -19,35 +15,35 @@ const {
 const {
     validateCustomStrings
 } = require("../validate/validateCustomStrings");
-const { getGuildConfig, updateGuildConfig } = require("./getConfig");
+const {
+    getGuildConfig,
+    updateGuildConfig
+} = require("./getConfig");
+const {
+    defaultWelcomeMessage
+} = require("./variables");
+const { errorhandler } = require("../errorhandler/errorhandler");
 
-module.exports.save_welcomechannelId = async ({
+module.exports.updateWelcomeSettings = async ({
     guild_id,
-    welcomechannel_id
+    valueName,
+    value
 }) => {
     return new Promise(async (resolve, reject) => {
-        await this.getWelcomechannel({
+        const welcomeSettings = await this.getWelcomechannel({
             guild_id
-        }).then(async res => {
-            if (!res || res === "[]") {
-                res = {
-                    id: "",
-                    active: false
-                }
-            } else {
-                res = JSON.parse(res);
-            }
+        })
 
-            res.id = welcomechannel_id;
+        welcomeSettings[valueName] = value;
 
-            await updateGuildConfig({
-                guild_id,
-                value: JSON.stringify(res),
-                valueName: 'welcome_channel'
-            })
-
+        return await updateGuildConfig({
+            guild_id,
+            value: JSON.stringify(welcomeSettings),
+            valueName: 'welcome_channel'
+        }).then(() => {
+            resolve(true);
         }).catch(() => {
-            return reject('Something went wrong.');
+            reject(false);
         })
     })
 }
@@ -57,45 +53,10 @@ module.exports.save_welcomechannelId = async ({
 module.exports.getWelcomechannel = async ({
     guild_id
 }) => {
-    return new Promise(async (resolve, reject) => {
-        const config = getGuildConfig({
-            guild_id
-        });
-
-        if(config && config.welcome_channel) {
-            return resolve(config[0].welcome_channel);
-        }else {
-            return reject(false);
-        }
-    })
-}
-
-module.exports.saveWelcomeMessageContent = async ({
-    guild_id,
-    embed_name,
-    content
-}) => {
-    return new Promise(async (resolve, reject) => {
-        await this.getWelcomechannel({
-            guild_id
-        }).then(async res => {
-            if (!res || res === "[]") {
-                return reject("Welcome channel is not set.");
-            }
-
-            res = JSON.parse(res);
-
-            res[embed_name] = content;
-
-            await updateGuildConfig({
-                guild_id,
-                value: JSON.stringify(res),
-                valueName: 'welcome_channel'
-            })
-        }).catch(() => {
-            reject('Something went wrong.')
-        })
-    })
+    const {settings} = await getGuildConfig({
+        guild_id
+    });
+    return (settings && settings.welcome_channel) ? JSON.parse(settings.welcome_channel) : defaultWelcomeMessage;
 }
 
 //=========================================================
@@ -104,7 +65,6 @@ module.exports.manageNewWelcomeSetting = async ({
     main_interaction,
 }) => {
     return new Promise(async (resolve, reject) => {
-
         main_interaction.values = main_interaction.values[0]
 
         const value = main_interaction.values.split('_')[0];
@@ -112,25 +72,15 @@ module.exports.manageNewWelcomeSetting = async ({
 
 
         if (value === 'save') {
-            return await this.saveWelcomeMessageContent({
+            return await this.updateWelcomeSettings({
                     guild_id,
-                    embed_name: 'active',
-                    content: true
+                    valueName: 'active',
+                    value: true
                 }).then(res => {
-                    main_interaction.channel.send(res)
-                        .then(async msg => {
-                            await delay(2000);
-                            await msg.delete();
-                        })
-                        .catch(err => {});
+                    main_interaction.message.react(`✅`)
                 })
                 .catch(err => {
-                    main_interaction.channel.send(err)
-                        .then(async msg => {
-                            await delay(2000);
-                            await msg.delete();
-                        })
-                        .catch(err => {});
+                    main_interaction.channel.send(err).catch(err => {});
                 })
         }
 
@@ -162,6 +112,7 @@ module.exports.manageNewWelcomeSetting = async ({
             data[value] = message.content;
             message.delete().catch(err => {})
 
+            const messageEmbed = main_interaction.message.embeds[0].data;
             switch (value) {
                 case 'message':
                     if (!isClear) {
@@ -172,25 +123,26 @@ module.exports.manageNewWelcomeSetting = async ({
                     main_interaction.message.content = newMessage || ''
                     break;
                 case 'author':
-                    main_interaction.message.embeds[0].author.name = (isClear) ? '' : data[value];
+                    messageEmbed.author.name = (isClear) ? '' : data[value];
                     break;
                 case 'title':
-                    main_interaction.message.embeds[0].title = (isClear) ? '' : data[value];
+                console.log(messageEmbed.data)
+                    messageEmbed.title = (isClear) ? '' : data[value];
                     break;
                 case 'description':
-                    main_interaction.message.embeds[0].description = (isClear) ? '' : data[value];
+                    messageEmbed.description = (isClear) ? '' : data[value];
                     break;
                 case 'thumbnail':
                     if (isClear) {
-                        main_interaction.message.embeds[0].thumbnail = '';
+                        messageEmbed.thumbnail = '';
                         break;
                     }
                     if (validURL(data[value]) && data[value].endsWith('jpg') || data[value].endsWith('png') || data[value] === '{pfp}') {
                         if (data[value] !== '{pfp}') {
                             if (data[value].search('http://') === -1 && data[value].search('https://') === -1) data[value] = 'https://' + data[value];
                         }
-                        if(!main_interaction.message.embeds[0].thumbnail) main_interaction.message.embeds[0].thumbnail = {};
-                        main_interaction.message.embeds[0].thumbnail.url = validateCustomStrings({
+                        if (!messageEmbed.thumbnail) messageEmbed.thumbnail = {};
+                        messageEmbed.thumbnail.url = validateCustomStrings({
                             string: data[value],
                             joined_user: main_interaction
                         })
@@ -198,28 +150,28 @@ module.exports.manageNewWelcomeSetting = async ({
                     break;
                 case 'url':
                     if (isClear) {
-                        main_interaction.message.embeds[0].url = '';
+                        messageEmbed.url = '';
                         break;
                     }
                     if (validURL(data[value])) {
                         if (data[value].search('http://') === -1 && data[value].search('https://') === -1) data[value] = 'https://' + data[value];
 
-                        main_interaction.message.embeds[0].url = (isClear) ? '' : data[value];
+                        messageEmbed.url = (isClear) ? '' : data[value];
                     }
                     break;
                 case 'color':
                     if (isValidHexCode(data[value])) {
-                        main_interaction.message.embeds[0].color = data[value];
+                        messageEmbed.color = data[value];
                     }
                     break;
                 case 'image':
                     if (isClear) {
-                        main_interaction.message.embeds[0].image = '';
+                        messageEmbed.image = '';
                         break;
                     }
-                    if(data[value] === '{pfp}') {
-                        if(!main_interaction.message.embeds[0].image) main_interaction.message.embeds[0].image = {};
-                        main_interaction.message.embeds[0].image.url = validateCustomStrings({
+                    if (data[value] === '{pfp}') {
+                        if (!messageEmbed.image) messageEmbed.image = {};
+                        messageEmbed.image.url = validateCustomStrings({
                             string: data[value],
                             joined_user: main_interaction
                         });
@@ -228,42 +180,45 @@ module.exports.manageNewWelcomeSetting = async ({
                     if (validURL(data[value]) && data[value].endsWith('jpg') || data[value].endsWith('png') || data[value].endsWith('jpeg') || data[value].endsWith('gif')) {
                         if (data[value].search('http://') === -1 && data[value].search('https://') === -1) data[value] = 'https://' + data[value];
 
-                        if(!main_interaction.message.embeds[0].image) main_interaction.message.embeds[0].image = {};
-                        main_interaction.message.embeds[0].image.url = data[value];
+                        if (!messageEmbed.image) messageEmbed.image = {};
+                        messageEmbed.image.url = data[value];
                     }
                     break;
                 case 'footer':
-                    main_interaction.message.embeds[0].footer.text = (isClear) ? '' : data[value];
+                    messageEmbed.footer.text = (isClear) ? '' : data[value];
                     break;
             }
 
-            await this.saveWelcomeMessageContent({
+            await this.updateWelcomeSettings({
                 guild_id,
-                embed_name: value,
-                content: data[value]
+                valueName: value,
+                value: data[value]
             }).then(async () => {
                 const editEmbed = new EmbedBuilder()
-                    .setColor(main_interaction.message.embeds[0].color)
+                    .setColor(messageEmbed.color)
                     .setAuthor({
-                        name: main_interaction.message.embeds[0].author.name
+                        name: messageEmbed.author.name
                     })
-                    .setTitle(main_interaction.message.embeds[0].title)
-                    .setURL(main_interaction.message.embeds[0].url)
-                    .setDescription(main_interaction.message.embeds[0].description || '')
-                    
-                    .addFields([{name: 'This is an example field name', value: 'This is an example field value'}])
-                    
+                    .setTitle(messageEmbed.title)
+                    .setURL(messageEmbed.url)
+                    .setDescription(messageEmbed.description || '')
+
+                    .addFields([{
+                        name: 'This is an example field name',
+                        value: 'This is an example field value'
+                    }])
+
                     .setFooter({
-                        text: main_interaction.message.embeds[0].footer.text
+                        text: messageEmbed.footer.text
                     })
                     .setTimestamp()
 
-                if(main_interaction.message.embeds[0].thumbnail) {
-                    editEmbed.setThumbnail(main_interaction.message.embeds[0].thumbnail.url)
+                if (messageEmbed.thumbnail) {
+                    editEmbed.setThumbnail(messageEmbed.thumbnail.url)
                 }
 
-                if(main_interaction.message.embeds[0].image) {
-                    editEmbed.setImage(main_interaction.message.embeds[0].image.url)
+                if (messageEmbed.image) {
+                    editEmbed.setImage(messageEmbed.image.url)
                 }
 
                 await main_interaction.message.edit({
@@ -279,7 +234,7 @@ module.exports.manageNewWelcomeSetting = async ({
         collector.on('end', async (collected, reason) => {
             if (reason === 'time') {
                 sentMessage.edit('Timed out.')
-                await delay(4000);
+                await delay(10000);
             }
             sentMessage.delete();
         })
@@ -292,101 +247,100 @@ module.exports.sendWelcomeSetting = async ({
 }) => {
     return new Promise(async (resolve, reject) => {
 
-        await this.getWelcomechannel({
+        const welcomeChannel = await this.getWelcomechannel({
             guild_id: main_interaction.guild.id
-        }).then(async res => {
-            if (!res || res === "[]") {
-                res = null;
-            } else {
-                res = JSON.parse(res);
-            }
-            const exampleEmbed = new EmbedBuilder()
-                .setColor(res.color || '#0099ff')
-                .setAuthor({
-                    name: res.author || main_interaction.user.username
-                })
-                .setTitle(res.title || 'This is an example title')
-                .setURL(res.url || 'https://www.youtube.com/watch?v=d1YBv2mWll0')
-                .setDescription(res.description || 'This is an example description')
-                .addFields([{name: 'This is an example field name', value: 'This is an example field value'}])
-                .setImage(res.image || 'https://cdn.boop.pl/uploads/2021/05/E1LVzWfWQAMbRiA.jpg')
-                .setFooter({
-                    text: res.footer || 'This is an example footer'
-                })
-                .setTimestamp()
+        });
 
-            if(res.thumbnail === '{pfp}') {
-                exampleEmbed.setThumbnail(main_interaction.user.avatarURL({
-                    format: 'jpg'
-                }))
-            }else {
-                exampleEmbed.setThumbnail(res.thumbnail || 'https://cdn.boop.pl/uploads/2021/05/E1LVzWfWQAMbRiA.jpg')
-            }
-
-            //=========================================================//
-
-            const menu = new SelectMenuBuilder()
-                .setCustomId('welcomemessage')
-                .setPlaceholder('Choose the options')
-
-            menu.addOptions([{
-                'value': `message_${main_interaction.guild.id}`,
-                'label': 'Message over of the embed'
+        const exampleEmbed = new EmbedBuilder()
+            .setColor(welcomeChannel.color || '#0099ff')
+            .setAuthor({
+                name: welcomeChannel.author || main_interaction.user.username
+            })
+            .setTitle(welcomeChannel.title || 'This is an example title')
+            .setURL(welcomeChannel.url || 'https://www.youtube.com/watch?v=d1YBv2mWll0')
+            .setDescription(welcomeChannel.description || 'This is an example description')
+            .addFields([{
+                name: 'This is an example field name',
+                value: 'This is an example field value'
             }])
+            .setImage(welcomeChannel.image || 'https://cdn.boop.pl/uploads/2021/05/E1LVzWfWQAMbRiA.jpg')
+            .setFooter({
+                text: welcomeChannel.footer || 'This is an example footer'
+            })
+            .setTimestamp()
 
-            menu.addOptions([{
-                'value': `author_${main_interaction.guild.id}`,
-                'label': 'Author at the top of the embed'
-            }])
+        if (welcomeChannel.thumbnail === '{pfp}') {
+            exampleEmbed.setThumbnail(main_interaction.user.avatarURL({
+                format: 'jpg'
+            }))
+        } else {
+            exampleEmbed.setThumbnail(welcomeChannel.thumbnail || 'https://cdn.boop.pl/uploads/2021/05/E1LVzWfWQAMbRiA.jpg')
+        }
 
-            menu.addOptions([{
-                'value': `color_${main_interaction.guild.id}`,
-                'label': 'Set the color for your embed (#FFFFF)'
-            }])
+        //=========================================================//
 
-            menu.addOptions([{
-                'value': `title_${main_interaction.guild.id}`,
-                'label': 'Title of the embed'
-            }])
+        const menu = new SelectMenuBuilder()
+            .setCustomId('welcomemessage')
+            .setPlaceholder('Choose the options')
 
-            menu.addOptions([{
-                'value': `url_${main_interaction.guild.id}`,
-                'label': 'Set a URL for the title [LINK ONLY]'
-            }])
+        menu.addOptions([{
+            'value': `message_${main_interaction.guild.id}`,
+            'label': 'Message over of the embed'
+        }])
 
-            menu.addOptions([{
-                'value': `description_${main_interaction.guild.id}`,
-                'label': 'Description of the embed'
-            }])
+        menu.addOptions([{
+            'value': `author_${main_interaction.guild.id}`,
+            'label': 'Author at the top of the embed'
+        }])
 
-            menu.addOptions([{
-                'value': `thumbnail_${main_interaction.guild.id}`,
-                'label': 'Set a thumbnail for the embed [LINK ONLY + .jpg/.png]'
-            }])
+        menu.addOptions([{
+            'value': `color_${main_interaction.guild.id}`,
+            'label': 'Set the color for your embed (#FFFFF)'
+        }])
 
-            // menu.addOptions([{
-            //     'value': `field_${main_interaction.guild.id}`,
-            //     'label': 'Add a field to the embed'
-            // }])
+        menu.addOptions([{
+            'value': `title_${main_interaction.guild.id}`,
+            'label': 'Title of the embed'
+        }])
 
-            menu.addOptions([{
-                'value': `image_${main_interaction.guild.id}`,
-                'label': 'Set an image for the embed [LINK ONLY + .jpg/.png]'
-            }])
+        menu.addOptions([{
+            'value': `url_${main_interaction.guild.id}`,
+            'label': 'Set a URL for the title [LINK ONLY]'
+        }])
 
-            // menu.addOptions([{
-            //     'value': `timestamp_${main_interaction.guild.id}`,
-            //     'label': 'Activate or deactivate the timestamp'
-            // }])
+        menu.addOptions([{
+            'value': `description_${main_interaction.guild.id}`,
+            'label': 'Description of the embed'
+        }])
 
-            menu.addOptions([{
-                'value': `save_${main_interaction.guild.id}`,
-                'label': 'Save the current embed and activate it.'
-            }])
+        menu.addOptions([{
+            'value': `thumbnail_${main_interaction.guild.id}`,
+            'label': 'Set a thumbnail for the embed [LINK ONLY + .jpg/.png]'
+        }])
+
+        // menu.addOptions([{
+        //     'value': `field_${main_interaction.guild.id}`,
+        //     'label': 'Add a field to the embed'
+        // }])
+
+        menu.addOptions([{
+            'value': `image_${main_interaction.guild.id}`,
+            'label': 'Set an image for the embed [LINK ONLY + .jpg/.png]'
+        }])
+
+        // menu.addOptions([{
+        //     'value': `timestamp_${main_interaction.guild.id}`,
+        //     'label': 'Activate or deactivate the timestamp'
+        // }])
+
+        menu.addOptions([{
+            'value': `save_${main_interaction.guild.id}`,
+            'label': 'Save the current embed and activate it.'
+        }])
 
 
-            await main_interaction.channel.send({
-                content: `Please select the options you want to edit. (The example texts wont be saved!!!) \n
+        await main_interaction.channel.send({
+            content: `Please select the options you want to edit. (The example texts wont be saved!!!) \n
 **{name}** = Username of the new person 
 **{pfp}** = Profile picture of the new person
 **{mention}** = Mentioned the user 
@@ -396,25 +350,15 @@ module.exports.sendWelcomeSetting = async ({
 \`@role\` = A tagged role
 **{everyone}** = Tags everyone in the guild 
 **{here}** = Tags everyone who are online in the guild 
-\n\n Your Message: \n${'**'+res.message+'**' || '_not set yet_'}
+\n\n Your Message: \n${'**'+welcomeChannel.message+'**' || '_not set yet_'}
             `,
-                embeds: [exampleEmbed],
-                components: [new ActionRowBuilder({
-                    components: [menu]
-                })]
-            }).catch(err => {
-                reject(err);
-            })
-
+            embeds: [exampleEmbed],
+            components: [new ActionRowBuilder({
+                components: [menu]
+            })]
         }).catch(err => {
-            errorhandler({
-                err,
-                fatal: true
-            })
-            reject('Something went wrong.')
+            reject(err);
         })
-
-
     })
 }
 
@@ -424,59 +368,58 @@ module.exports.sendWelcomeMessage = async ({
     bot,
     joined_user
 }) => {
-    return new Promise(async (resolve, reject) => {
-        await this.getWelcomechannel({
-            guild_id
-        }).then(res => {
-            if (!res || res === "[]") {
-                return reject("Welcome channel is not set.");
-            }
+    const welcomeChannel = await this.getWelcomechannel({
+        guild_id
+    });
+    if (welcomeChannel.active) {
+        if (!welcomeChannel.id) return;
 
-            res = JSON.parse(res);
-
-            if (res.active) {
-                if (!res.id) return reject("Welcome channel is not set.");
-
-                const welcomeMessage = new EmbedBuilder()
-                    .setColor(res.color || null)
-                    .setAuthor({
-                        name: validateCustomStrings({
-                            string: res.author,
-                            joined_user,
-                        })
-                    })
-                    .setTitle(validateCustomStrings({
-                        string: res.title,
-                        joined_user
-                    }))
-                    .setURL(res.url)
-                    .setDescription(validateCustomStrings({
-                        string: res.description,
-                        joined_user
-                    }))
-                    .setImage(validateCustomStrings({
-                        string: res.image,
-                        joined_user
-                    }))
-                    .setThumbnail(validateCustomStrings({
-                        string: res.thumbnail,
-                        joined_user
-                    }))
-                    .setTimestamp()
-
-                bot.guilds.cache.get(guild_id).channels.cache.get(res.id).send({
-                    content: validateCustomStrings({
-                        string: res.message,
-                        joined_user
-                    }),
-                    embeds: [welcomeMessage]
-                }).catch(err => {
-                    reject(err);
+        const welcomeMessage = new EmbedBuilder()
+            .setColor(welcomeChannel.color || null)
+            .setAuthor({
+                name: validateCustomStrings({
+                    string: welcomeChannel.author,
+                    joined_user,
                 })
-            }
+            })
+            .setTitle(validateCustomStrings({
+                string: welcomeChannel.title,
+                joined_user
+            }))
+            .setURL(welcomeChannel.url)
+            .setDescription(validateCustomStrings({
+                string: welcomeChannel.description,
+                joined_user
+            }))
+            .setImage(validateCustomStrings({
+                string: welcomeChannel.image,
+                joined_user
+            }))
+            .setThumbnail(validateCustomStrings({
+                string: welcomeChannel.thumbnail,
+                joined_user
+            }))
+            .setTimestamp()
 
-        }).catch(() => {
-            reject('Something went wrong.')
-        })
-    })
+        return await bot.guilds.cache.get(guild_id).channels.cache.get(welcomeChannel.id).send({
+                content: validateCustomStrings({
+                    string: welcomeChannel.message,
+                    joined_user
+                }),
+                embeds: [welcomeMessage]
+            })
+            .then(() => {
+                errorhandler({
+                    message: `✅ I have successfully send a welcome message in Guild: ${member.guild.id}`,
+                    fatal: false
+                });
+            })
+            .catch(err => {
+                errorhandler({
+                    message: `❌ I have failed to send a welcome message in Guild: ${member.guild.id}`,
+                    err: err.toString(),
+                    fatal: false
+                })
+            })
+    }
 }

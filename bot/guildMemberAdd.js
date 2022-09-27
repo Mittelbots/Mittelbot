@@ -22,7 +22,7 @@ const {
     getOpenInfractionsByUserId
 } = require("../utils/functions/data/infractions");
 
-async function guildMemberAdd(member, bot) {
+module.exports.guildMemberAdd = async(member, bot) => {
 
     var {
         settings
@@ -37,8 +37,10 @@ async function guildMemberAdd(member, bot) {
             guild_id: member.guild.id,
             bot,
             joined_user: member
-        }).catch(err => {})
+        })
     }
+
+    if (member.user.bot) return;
 
     const memberInfo = await getMemberInfoById({
         guild_id: member.guild.id,
@@ -69,7 +71,7 @@ async function guildMemberAdd(member, bot) {
         user_id: member.user.id,
         guild_id: member.guild.id
     });
-    
+
     userInfractions = userInfractions.filter(inf => inf.mute) || [];
 
 
@@ -92,30 +94,25 @@ async function guildMemberAdd(member, bot) {
 
 
         // JOINROLES
-        if (!member.user.bot) {
-            const joinroles = getJoinroles({
-                guild_id: member.guild.id
-            })
 
-            if (joinroles.length == 0) return;
+        const joinroles = getJoinroles({
+            guild_id: member.guild.id
+        })
 
-            for (let i in joinroles) {
-                let j_role = await member.guild.roles.cache.find(r => r.id === joinroles[i]);
-                try {
-                    await member.roles.add(j_role).catch(err => {})
-                } catch (err) {
-                    //NO PERMISSONS
-                    return
-                }
+        if (joinroles.length == 0) return;
+
+        for (let i in joinroles) {
+            let j_role = await member.guild.roles.cache.find(r => r.id === joinroles[i]);
+            try {
+                await member.roles.add(j_role).catch(err => {})
+            } catch (err) {
+                //NO PERMISSONS
+                return
             }
-            errorhandler({
-                fatal: false,
-                message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`
-            })
         }
+        errorhandler({
+            fatal: false,
+            message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`
+        })
     }
-}
-
-module.exports = {
-    guildMemberAdd
 }
