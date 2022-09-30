@@ -281,7 +281,7 @@ module.exports.sendWelcomeSetting = async ({
 
         const menu = new SelectMenuBuilder()
             .setCustomId('welcomemessage')
-            .setPlaceholder('Choose the options')
+            .setPlaceholder('Choose an option.')
 
         menu.addOptions([{
             'value': `message_${main_interaction.guild.id}`,
@@ -410,13 +410,13 @@ module.exports.sendWelcomeMessage = async ({
             })
             .then(() => {
                 errorhandler({
-                    message: `✅ I have successfully send a welcome message in Guild: ${member.guild.id}`,
+                    message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}`,
                     fatal: false
                 });
             })
             .catch(err => {
                 errorhandler({
-                    message: `❌ I have failed to send a welcome message in Guild: ${member.guild.id}`,
+                    message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
                     err: err.toString(),
                     fatal: false
                 })
