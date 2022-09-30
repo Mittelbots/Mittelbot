@@ -1,16 +1,13 @@
 const mysql = require('mysql');
-const dbconfig = require('./db_config.json');
-const config = require('../assets/json/_config/config.json')
-
 class Database {
   constructor() {
     this.connection = mysql.createPool({
       connectionLimit: 50,
-      host: dbconfig.host,
-      user: dbconfig.user,
-      password: dbconfig.password,
-      database: dbconfig.database,
-      debug: config.db_config,
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      debug: JSON.parse(process.env.DB_DEBUG),
       multipleStatements: true
     });
 

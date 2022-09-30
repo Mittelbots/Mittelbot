@@ -15,7 +15,7 @@ module.exports.createSlashCommands = async () => {
 
     // Place your client and guild ids here
     const clientId = config.DISCORD_APPLICATION_ID;
-    const guildId = config.DEVELOPER_DISCORD_GUILD_ID;
+    const guildId = process.env.DEVELOPER_DISCORD_GUILD_ID;
 
     for (const cmd_folder of modules) {
         if(cmd_folder.startsWith('._')) continue;

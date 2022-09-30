@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const {
   Client,
   Options,
@@ -13,11 +15,9 @@ const version = require('./package.json').version;
 const {
   errorhandler
 } = require('./utils/functions/errorhandler/errorhandler');
-
 const {
   db_backup
 } = require("./src/db/db_backup");
-
 const {
   setActivity
 } = require("./utils/functions/data/activity");
