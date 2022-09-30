@@ -13,6 +13,7 @@ const {
 const {
     removeHttp
 } = require("../removeCharacters");
+const config = require('../../../src/assets/json/_config/config.json');
 const {
     scamList
 } = require("../cache/cache");
@@ -326,7 +327,7 @@ function sendScamEmbed({
                 .setStyle(ButtonStyle.Primary)
             )
 
-        let sent_message = await bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_SCAMMANAGE).send({
+        let sent_message = await bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.scammanagechannel).send({
             embeds: [newScamLinkembed],
             components: [buttons]
         }).then(async msg => {

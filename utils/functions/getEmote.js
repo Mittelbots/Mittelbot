@@ -1,5 +1,6 @@
+const config = require('../../src/assets/json/_config/config.json');
 function getEmote(bot, id) {
-    return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).emojis.cache.get(id);
+    return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).emojis.cache.get(id);
 }
 
 module.exports = {getEmote}

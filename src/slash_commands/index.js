@@ -13,7 +13,6 @@ module.exports.handleSlashCommands = async ({
     let admin = ['modules', 'scam', 'autotranslate', 'settings', 'apply', 'levelsettings', 'automod'];
     let level = ['rank', 'leaderboard', 'givexp', 'removexp'];
     let utils = ['afk', 'info', 'ping', 'checkguild', 'kickme'];
-    let help = ['help', 'tutorial'];
 
     //=========================================================
 
@@ -74,12 +73,6 @@ module.exports.handleSlashCommands = async ({
     }
     else if(utils.indexOf(main_interaction.commandName) !== -1) {
         return require(`./utils/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot
-        });
-    }
-    else if(help.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./help/${main_interaction.commandName}`).run({
             main_interaction: main_interaction,
             bot: bot
         });

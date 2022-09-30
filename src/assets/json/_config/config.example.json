@@ -1,21 +1,26 @@
 {
-    "Bot_Owner": "https://github.com/Mittelblut9",
+    "Bot_Owner": "<@395923095472570368>",
     "Bot_Owner_ID": "395923095472570368",
-    "DISCORD_APPLICATION_ID": "921779661795639336",
+    "DISCORD_APPLICATION_ID": "",
+    "DISCORD_GUILD_ID": "",
+    "DEVELOPER_DISCORD_GUILD_ID": "",
+    "DISCORD_SECRET": "",
     "defaultprefix": "!",
-    "debug": true,
-	"db_debug": false,
+    "debug": false,
+    "db_debug": false,
     "defaultCooldown": {
         "format": "2000",
         "text": "2 seconds"
     },
     "defaultSettingsCooldown": {
-        "format": "00000",
-        "text": "0 seconds"
+        "format": "30000",
+        "text": "30 seconds"
     },
     "bulkDeleteLimit": "100",
-    "defaultCheckInfractionTimer": "30000",
-    "defaultCheckTemprolesTimer": "5000",
+    "defaultCheckInfractionTimer": "60000",
+    "defaultCheckTemprolesTimer": "1800000",
+    "deleteModCommandsAfterUsage": "false",
+    "deleteCommandsAfterUsage": "false",
     "errormessages": {
         "general": "Something went wrong!",
         "nopermission": "You dont have permission to run this command!",
@@ -38,13 +43,23 @@
         "kicked": " was kicked from the server.",
         "database": "****Database successfully connected!****"
     },
+    "defaultChannels": {
+        "DEV_SERVER": {
+            "debugchannel": "921178549321367582",
+            "disconnectchannel": "921179868530610206",
+            "errorchannel": "921181513565999154",
+            "warnchannel": "921181992995946536",
+            "reconnectingchannel": "921188150519414844",
+            "scammanagechannel": "964204429941297162"
+        }
+    },
     "defaultModTypes": {
-        "warn": "warned",
-        "mute": "muted",
-        "kick": "kicked",
-        "ban": "banned",
-        "unmute": "unmuted",
-        "unban": "unbanned"
+        "warn": "Warned",
+        "mute": "Muted",
+        "kick": "Kicked",
+        "ban": "Banned",
+        "unmute": "Unmuted",
+        "unban": "Unbanned"
     },
     "auditTypes": {
         "messagedelete": "messageDelete",
@@ -166,7 +181,11 @@
             "exp": "[@warn1 [@warn2] [@warn3] [@warn4] [@warn5]"
         }
     },
-    "tutorial": {
-
+    "commandhelp": {
+        "info": {
+            "name": "info",
+            "description": "Get infos about the server or one user.",
+            "usage": "info [@user]"
+        }
     }
 }
