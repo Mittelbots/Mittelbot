@@ -1,22 +1,21 @@
-const config = require('../../../src/assets/json/_config/config.json');
 const nodemailer = require('nodemailer');
 const {
     errorhandler
 } = require('../errorhandler/errorhandler');
 
 const transporter = nodemailer.createTransport({
-    port: config.email.port,
-    host: config.email.host,
-    secure: config.email.secure,
+    port: process.env.EMAIL_PORT,
+    host: process.env.EMAIL_HOST,
+    secure: JSON.parse(process.env.EMAIL_SECURE),
     auth: {
-        user: config.email.auth.user,
-        pass: config.email.auth.pass
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PWD
     }
 });
 
 module.exports.sendEmailToOwner = async (err) => {
     var message = {
-      from: config.email.email,
+      from: process.env.EMAIL,
       to: email,
       subject: 'Mittelbot stopped working after too many restarts.',
       text: err
