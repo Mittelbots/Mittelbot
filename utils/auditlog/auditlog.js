@@ -264,23 +264,23 @@ async function sendToAudit(bot, type, content1, content2) {
     }
 
     if (type === c.debug) {
-        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_DEBUG).send({
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.debugchannel).send({
             embeds: [Message]
         }).catch(err => {});
     } else if (type === c.disconnect) {
-        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_DISCONNECT).send({
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.disconnectchannel).send({
             embeds: [Message]
         }).catch(err => {});
     } else if (type === c.error) {
-        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_ERROR).send({
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.errorchannel).send({
             embeds: [Message]
         }).catch(err => {});
     } else if (type === c.warn) {
-        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_WARN).send({
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.warnchannel).send({
             embeds: [Message]
         }).catch(err => {});
     } else if (type === c.reconnecting) {
-        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_RECONNECT).send({
+        return bot.guilds.cache.get(config.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(config.defaultChannels.DEV_SERVER.reconnectingchannel).send({
             embeds: [Message]
         }).catch(err => {});
     }
