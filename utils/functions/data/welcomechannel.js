@@ -410,13 +410,13 @@ module.exports.sendWelcomeMessage = async ({
             })
             .then(() => {
                 errorhandler({
-                    message: `✅ I have successfully send a welcome message in Guild: ${member.guild.id}`,
+                    message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}`,
                     fatal: false
                 });
             })
             .catch(err => {
                 errorhandler({
-                    message: `❌ I have failed to send a welcome message in Guild: ${member.guild.id}`,
+                    message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
                     err: err.toString(),
                     fatal: false
                 })
