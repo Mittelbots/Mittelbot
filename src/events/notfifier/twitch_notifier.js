@@ -15,11 +15,10 @@ const {
     errorhandler
 } = require('../../../utils/functions/errorhandler/errorhandler');
 
-const config = require('../../assets/json/_config/config.json');
 const database = require('../../db/db');
 
-const clientId = config.twitch_client_id;
-const clientSecret = config.twitch_secret;
+const clientId = process.env.TT_CLIENT_ID;
+const clientSecret = process.env.TT_SECRET;
 
 const authProvider = new ClientCredentialsAuthProvider(clientId, clientSecret);
 
