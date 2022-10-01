@@ -5,7 +5,7 @@ const config = require('../../../src/assets/json/_config/config.json');
 const request = new(require("rss-parser"))();
 
 module.exports.run = async (bot, message, args) => {
-    if(message.guild.id !== '978916743097491466' && !config.debug) return;
+    if(message.guild.id !== '978916743097491466' && !JSON.parse(process.env.DEBUG)) return;
     
     const channel_id = "UCw9Y1aRo7z93z4oYX8R7w9Q"
 

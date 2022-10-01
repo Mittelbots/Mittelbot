@@ -11,7 +11,7 @@ module.exports.errorhandler = ({err = 'No error passed! ', message = 'No message
         '------------': '------------'
     }
 
-    if(config.debug) console.log(err, '\n', message);
+    if(JSON.parse(process.env.DEBUG)) console.log(err, '\n', message);
 
     else if(fatal && log) log.fatal(err, '\n', JSON.stringify(errObj, null, 4));
 

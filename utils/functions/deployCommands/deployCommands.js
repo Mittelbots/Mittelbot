@@ -8,7 +8,7 @@ module.exports.deployCommands = async (bot) => {
             fs.readdir(`./src/commands/${module}`, (err, files) => {
                 if (err) {
                     log.warn('Missing folder!', err)
-                    if (config.debug) console.log(`Mission Folder!!`, err);
+                    if (JSON.parse(process.env.DEBUG)) console.log(`Mission Folder!!`, err);
                 }
                 files.forEach((file) => {
                     if (!file.endsWith('.js') || file.startsWith('.')) return;

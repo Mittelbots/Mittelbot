@@ -3,7 +3,7 @@ const { getLinesOfCode } = require("../getLinesOfCode/getLinesOfCode");
 const config = require('../../../src/assets/json/_config/config.json');
 const { ActivityType } = require("discord.js");
 const { errorhandler } = require("../errorhandler/errorhandler");
-if (config.debug) var activity = require('../../../src/assets/json/_config/activity_dev.json');
+if (JSON.parse(process.env.DEBUG)) var activity = require('../../../src/assets/json/_config/activity_dev.json');
 else var activity = require('../../../src/assets/json/_config/activity_prod.json');
 
 module.exports.setActivity = (bot, restart = false) => {
