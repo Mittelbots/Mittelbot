@@ -30,15 +30,17 @@ module.exports.guildMemberAdd = async(member, bot) => {
         guild_id: member.guild.id,
     });
 
-    disabled_modules = JSON.parse(settings.disabled_modules);
+    try {
+        disabled_modules = JSON.parse(settings.disabled_modules);
 
-    if (disabled_modules.indexOf('welcomemessage') === -1) {
-        sendWelcomeMessage({
-            guild_id: member.guild.id,
-            bot,
-            joined_user: member
-        })
-    }
+        if (disabled_modules.indexOf('welcomemessage') === -1) {
+            sendWelcomeMessage({
+                guild_id: member.guild.id,
+                bot,
+                joined_user: member
+            })
+        }
+    }catch(err){}
 
     if (member.user.bot) return;
 
