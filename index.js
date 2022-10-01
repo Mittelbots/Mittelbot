@@ -54,7 +54,7 @@ bot.commands = new Collection();
 bot.version = version;
 
 
-if (!config.debug) {
+if (!JSON.parse(process.env.DEBUG)) {
   setTimeout(() => {
     db_backup();
   }, 60000);

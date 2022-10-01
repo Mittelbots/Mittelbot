@@ -5,7 +5,7 @@ const ytdl = require('ytdl-core');
 const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async (bot, message, args) => {
-    if (message.guild.id !== '978916743097491466' && !config.debug) return;
+    if (message.guild.id !== '978916743097491466' && !JSON.parse(process.env.DEBUG)) return;
 
     const video_link = "https://www.youtube.com/watch?v=BmjBU0IIR0k"
 

@@ -1,10 +1,9 @@
-const config = require('./src/assets/json/_config/config.json')
 const {
     ShardingManager
 } = require('discord.js')
 const token = require('./_secret/token.json');
 
-if (!config.debug) {
+if (!JSON.parse(process.env.DEBUG)) {
     let manager = new ShardingManager('./index.js', {
         token: token.BOT_TOKEN,
         totalShards: 'auto',

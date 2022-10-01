@@ -37,7 +37,7 @@ module.exports.createSlashCommands = async () => {
         try {
             console.info('🕐 Started refreshing application (/) commands.');
 
-            if (config.debug) {
+            if (JSON.parse(process.env.DEBUG)) {
                 console.info('🕐 Started refreshing in Development.');
                 await rest.put(
                     Routes.applicationGuildCommands(clientId, guildId), {

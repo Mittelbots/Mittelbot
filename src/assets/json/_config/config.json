@@ -3,8 +3,6 @@
     "Bot_Owner_ID": "395923095472570368",
     "DISCORD_APPLICATION_ID": "921779661795639336",
     "defaultprefix": "!",
-    "debug": true,
-	"db_debug": false,
     "defaultCooldown": {
         "format": "2000",
         "text": "2 seconds"
