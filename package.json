@@ -28,7 +28,7 @@
     "@napi-rs/canvas": "^0.1.30",
     "@twurple/api": "^5.2.5",
     "@twurple/auth": "^5.2.5",
-    "axios": "^1.0.0",
+    "axios": "^1.1.2",
     "body-parser": "^1.20.0",
     "caller-id": "^0.1.0",
     "canvacord": "5.4.8",
