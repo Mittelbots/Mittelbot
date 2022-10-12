@@ -40,7 +40,7 @@ module.exports.db_backup = () => {
         exec(` cd ${process.env.DB_BACKUP_REPO} && git pull && git add . && git commit -m "${process.env.DB_BACKUP_REPO}" && git push`, (error, stdout, stderr) => {
           console.log(stdout);
           console.log(stderr);
-          if (error !== null) {
+          if (error !== null && error !== '' && error !== ' ') {
             errorhandler({
               error,
               fatal: true
