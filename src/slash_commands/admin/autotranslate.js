@@ -1,141 +1,147 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { saveNewTranslateConfig } = require("../../../utils/functions/data/translate");
-const {
-    hasPermission
-} = require('../../../utils/functions/hasPermissions');
+const { SlashCommandBuilder } = require('discord.js');
+const { saveNewTranslateConfig } = require('../../../utils/functions/data/translate');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 
-module.exports.run = async ({main_interaction, bot}) => {
-    const translate_language = main_interaction.options.getString("language");
-    const translate_target = main_interaction.options.getChannel("target").id;
-    const translate_log_channel = main_interaction.options.getChannel("log").id;
+module.exports.run = async ({ main_interaction, bot }) => {
+    const translate_language = main_interaction.options.getString('language');
+    const translate_target = main_interaction.options.getChannel('target').id;
+    const translate_log_channel = main_interaction.options.getChannel('log').id;
 
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: true,
         modOnly: false,
         user: main_interaction.member,
-        bot
+        bot,
     });
     if (!hasPermissions) {
-        return main_interaction.reply({
-            content: `${config.errormessages.nopermission}`,
-            ephemeral: true
-        }).catch(err => {});
+        return main_interaction
+            .reply({
+                content: `${config.errormessages.nopermission}`,
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     saveNewTranslateConfig({
         guild_id: main_interaction.guild.id,
         translate_log_channel,
         translate_language,
-        translate_target
-    }).then(() => {
-        return main_interaction.reply({
-            content: "Successfully updated translate config!",
-            ephemeral: true
-        }).catch(err => {})
-    }).catch(() => {
-        return main_interaction.reply({
-            content: "Something went wrong while updating translate config!",
-            ephemeral: true
-        }).catch(err => {})
+        translate_target,
     })
-}
+        .then(() => {
+            return main_interaction
+                .reply({
+                    content: 'Successfully updated translate config!',
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        })
+        .catch(() => {
+            return main_interaction
+                .reply({
+                    content: 'Something went wrong while updating translate config!',
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        });
+};
 
 module.exports.data = new SlashCommandBuilder()
-	.setName('autotranslate')
-	.setDescription('Translate messages from one language to another into a given Channel.')
-    .addChannelOption(channel => 
+    .setName('autotranslate')
+    .setDescription('Translate messages from one language to another into a given Channel.')
+    .addChannelOption((channel) =>
         channel
             .setName('target')
             .setDescription('The channel where the messages will be translated.')
             .setRequired(true)
     )
-    .addChannelOption(channel =>
+    .addChannelOption((channel) =>
         channel
             .setName('log')
-            .setDescription('The channel where the translated messages will be logged.')    
+            .setDescription('The channel where the translated messages will be logged.')
             .setRequired(true)
     )
-    .addStringOption(option =>
+    .addStringOption((option) =>
         option
             .setName('language')
             .setDescription('Select a language')
             .addChoices({
                 name: 'auto',
-                value: 'auto'
+                value: 'auto',
             })
             .addChoices({
                 name: 'Afrikaans',
-                value: 'af'
+                value: 'af',
             })
             .addChoices({
                 name: 'Arabic',
-                value: 'ar'
+                value: 'ar',
             })
             .addChoices({
                 name: 'Azerbaijani',
-                value: 'az'
+                value: 'az',
             })
             .addChoices({
                 name: 'Bosnian',
-                value: 'bs'
+                value: 'bs',
             })
             .addChoices({
                 name: 'Bulgarian',
-                value: 'bg'
+                value: 'bg',
             })
             .addChoices({
                 name: 'Chinese (Simplified)',
-                value: 'zh'
+                value: 'zh',
             })
             .addChoices({
                 name: 'Chinese (Traditional)',
-                value: 'zh-tw'
+                value: 'zh-tw',
             })
             .addChoices({
                 name: 'Croatian',
-                value: 'hr'
+                value: 'hr',
             })
             .addChoices({
                 name: 'Czech',
-                value: 'cs'
+                value: 'cs',
             })
             .addChoices({
                 name: 'Danish',
-                value: 'da'
+                value: 'da',
             })
             .addChoices({
                 name: 'Dutch',
-                value: 'nl'
+                value: 'nl',
             })
             .addChoices({
                 name: 'English',
-                value: 'en'
+                value: 'en',
             })
             .addChoices({
                 name: 'French',
-                value: 'fr'
+                value: 'fr',
             })
             .addChoices({
                 name: 'German',
-                value: 'de'
+                value: 'de',
             })
             .addChoices({
                 name: 'Indonesian',
-                value: 'id'
+                value: 'id',
             })
             .addChoices({
                 name: 'Latin',
-                value: 'la'
+                value: 'la',
             })
             .addChoices({
                 name: 'Russian',
-                value: 'ru'
+                value: 'ru',
             })
             .addChoices({
                 name: 'Ukrainian',
-                value: 'uk'
+                value: 'uk',
             })
             .setRequired(true)
-    )
+    );

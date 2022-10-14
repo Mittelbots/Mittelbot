@@ -13,7 +13,8 @@
     "kill": "pm2 stop Mittelbot && pm2 delete Mittelbot",
     "checkDatabase": "node _scripts/checkDatabase.js",
     "install_bot": "mkdir _logs && npm i",
-    "transformDB": "node _scripts/transformData.js"
+    "transformDB": "node _scripts/transformData.js",
+    "format": "prettier --write './**/*.{js, ejs}'"
   },
   "nodemonConfig": {
     "ignore": [
@@ -54,6 +55,7 @@
     "os-utils": "^0.0.14",
     "passport": "^0.6.0",
     "path": "^0.12.7",
+    "prettier": "^2.7.1",
     "random-animals-api": "^1.2.6",
     "rss-parser": "^3.12.0",
     "simple-node-logger": "^21.8.12",
