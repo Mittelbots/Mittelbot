@@ -37,22 +37,13 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
 
     disabled_modules = JSON.parse(settings.disabled_modules);
 
-    const module =
-        moderation.indexOf(main_interaction.commandName) > -1
-            ? 'moderation'
-            : fun.indexOf(main_interaction.commandName) > -1
-            ? 'fun'
-            : false;
-
-    if (module) {
-        if (disabled_modules.indexOf(module) > -1) {
-            return main_interaction
-                .reply({
-                    content: `This Module (${module}) is disabled.`,
-                    ephemeral: true,
-                })
-                .catch((err) => {});
-        }
+    function disabled(module) {
+        return main_interaction
+        .reply({
+            content: `This Module (${module}) is disabled.`,
+            ephemeral: true,
+        })
+        .catch((err) => {});
     }
 
     //=========================================================
@@ -77,37 +68,44 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     //=========================================================
 
     if (moderation.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./moderation/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot,
-        });
-    } else if (fun.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./fun/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot,
-        });
-    } else if (admin.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./admin/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot,
-        });
-    } else if (level.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./level/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot,
-        });
-    } else if (utils.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./utils/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot,
-        });
-    } else if (help.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./help/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot,
-        });
-    } else {
-        return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
+        if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
+        return requireModule('moderation');
+    } 
+
+    if (fun.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('fun') > -1) return disabled('fun');
+        return requireModule('fun');
+    } 
+    
+    if (admin.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
+        return requireModule('admin');
+    } 
+    
+    if (level.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('level') > -1) return disabled('level');
+        return requireModule('level');
+    } 
+
+    if (utils.indexOf(main_interaction.commandName) !== -1) { 
+        if (disabled_modules.indexOf('utils') > -1) return disabled('utils');
+        return requireModule('utils');
+    }
+
+    if (help.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('help') > -1) return disabled('help');
+        return requireModule('help');
+    } 
+    
+
+    return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
+        main_interaction: main_interaction,
+        bot: bot,
+    });
+
+
+    function requireModule(module) {
+        return require(`./${module}/${main_interaction.commandName}`).run({
             main_interaction: main_interaction,
             bot: bot,
         });
