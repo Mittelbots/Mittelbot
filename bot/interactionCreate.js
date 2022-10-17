@@ -33,34 +33,26 @@ module.exports.interactionCreate = ({ bot }) => {
 
         main_interaction.bot = bot;
         if (main_interaction.type === InteractionType.ApplicationCommand) {
-            if (main_interaction.user.id !== config.Bot_Owner_ID) {
-                if (defaultCooldown.has(main_interaction.user.id)) {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.user.username} is on slash command cooldown.`,
-                    });
+            if (defaultCooldown.has(main_interaction.user.id)) {
+                errorhandler({
+                    fatal: false,
+                    message: `${main_interaction.user.username} is on slash command cooldown.`,
+                });
 
-                    return main_interaction
-                        .reply({
-                            content: `You have to wait ${
-                                settings.cooldown / 1000 + 's' || config.defaultCooldown.text
-                            } after each Command.`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                } else {
-                    defaultCooldown.add(main_interaction.user.id);
-                    setTimeout(async () => {
-                        defaultCooldown.delete(main_interaction.user.id);
-                    }, settings.cooldown || config.defaultCooldown.format);
-
-                    return handleSlashCommands({
-                        main_interaction,
-                        bot,
-                    });
-                }
+                return main_interaction
+                    .reply({
+                        content: `You have to wait ${
+                            settings.cooldown / 1000 + 's' || config.defaultCooldown.text
+                        } after each Command.`,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             } else {
-                //BOT OWNER BYPASS ;)
+                defaultCooldown.add(main_interaction.user.id);
+                setTimeout(async () => {
+                    defaultCooldown.delete(main_interaction.user.id);
+                }, settings.cooldown || config.defaultCooldown.format);
+
                 return handleSlashCommands({
                     main_interaction,
                     bot,
