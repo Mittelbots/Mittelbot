@@ -1,17 +1,33 @@
-const { updateGuildConfig, getGuildConfig } = require('../../../../utils/functions/data/getConfig');
-const { checkRest } = require('../../../functions/checkRest/checkRest');
+const {
+    updateGuildConfig,
+    getGuildConfig
+} = require("../../../../utils/functions/data/getConfig");
+const {
+    checkRest
+} = require("../../../functions/checkRest/checkRest");
 
-const jwt = require('jsonwebtoken');
-const { hasPermission } = require('../../../../utils/functions/hasPermissions');
-const { errorhandler } = require('../../../../utils/functions/errorhandler/errorhandler');
+const jwt = require("jsonwebtoken");
+const {
+    hasPermission
+} = require("../../../../utils/functions/hasPermissions");
+const {
+    errorhandler
+} = require("../../../../utils/functions/errorhandler/errorhandler");
 
-module.exports = ({ app }) => {
+module.exports = ({
+    app
+}) => {
     app.post(app.settings.config.route.changeSettings.path, checkRest, async (req, res) => {
-        const { module, settings, guildid, type } = req.params;
+        const {
+            module,
+            settings,
+            guildid,
+            type
+        } = req.params;
 
         if (!module || !settings || !guildid || !type) {
             res.status(400).send({
-                error: 'Missing parameters',
+                error: "Missing parameters"
             });
             return;
         }
@@ -25,63 +41,64 @@ module.exports = ({ app }) => {
             modOnly: false,
             user: decoded.id,
             isDashboard: true,
-            bot: app.settings.bot,
-        });
+            bot: app.settings.bot
+        })
 
         if (!hasPermissions) {
             return res.status(401).json({
                 success: false,
-                error: 'You do not have permission to do this!',
+                error: "You do not have permission to do this!"
             });
         } else {
+
             var config = await getGuildConfig({
-                guild_id: guildid,
+                guild_id: guildid
             });
 
             try {
                 config.settings[module] = JSON.parse(config.settings[module]);
             } catch (e) {}
 
-            if (config.settings[module] == null) {
+            if(config.settings[module] == null) {
                 config.settings[module] = {};
             }
 
-            if (module === 'welcome_channel') {
+            if (module === "welcome_channel") {
                 try {
                     config.settings[module][type] = settings;
-                } catch (e) {}
+                } catch (e) {
+                }
             }
 
-            if (module === 'joinroles') {
+            if (module === "joinroles") {
                 try {
                     config.settings[module] = JSON.parse(settings);
-                } catch (e) {}
+                } catch (e) {
+                }
             }
 
             await updateGuildConfig({
                 guild_id: guildid,
                 value: JSON.stringify(config.settings[module]),
-                valueName: module,
-            })
-                .then(() => {
-                    config = null;
-                    try {
-                        res.status(200).json({
-                            success: true,
-                        });
-                    } catch (e) {}
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
+                valueName: module
+            }).then(() => {
+                config = null;
+                try {
+                    res.status(200).json({
+                        success: true
                     });
-                    try {
-                        res.status(500).json({
-                            error: err,
-                        });
-                    } catch (e) {}
-                });
+                } catch (e) {}
+            }).catch(err => {
+                errorhandler({
+                    err,
+                    fatal: true
+                })
+                try {
+                    res.status(500).json({
+                        error: err
+                    });
+                } catch (e) {}
+            })
         }
-    });
-};
+    })
+}

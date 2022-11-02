@@ -5,73 +5,66 @@ const { SlashCommandBuilder } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({main_interaction, bot}) => {
     const user = main_interaction.user;
 
     await main_interaction.deferReply({
-        ephemeral: true,
+        ephemeral: true
     });
 
     const buttons = new ButtonBuilder()
-        .setLabel('CANCEL')
-        .setStyle(ButtonStyle.Danger)
-        .setCustomId('kickme_cancel');
+    .setLabel('CANCEL')
+    .setStyle(ButtonStyle.Danger)
+    .setCustomId('kickme_cancel')
 
-    const message = await main_interaction
-        .editReply({
-            content: `⚠️ **YOU WILL BE KICKED IN 10 SECCONDS. TO CANCEL THIS CLICK THE BUTTON**`,
-            components: [
-                new ActionRowBuilder({
-                    components: [buttons],
-                }),
-            ],
-            fetchReply: true,
-        })
-        .catch((err) => {
-            return false;
-        });
+    const message = await main_interaction.editReply({
+        content: `⚠️ **YOU WILL BE KICKED IN 10 SECCONDS. TO CANCEL THIS CLICK THE BUTTON**`,
+        components: [new ActionRowBuilder({
+            components: [buttons]
+        })],
+        fetchReply: true
+    }).catch(err => {
+        return false;
+    });
+
 
     const collector = message.createMessageComponentCollector({
-        filter: ({ user }) => user.id === main_interaction.user.id,
+        filter: ({user}) => user.id === main_interaction.user.id,
         max: 1,
         time: 10000,
     });
 
-    collector.on('collect', async (interaction) => {
-        return await interaction
-            .update({
-                content: `✅ Successfully canceled.`,
-                components: [],
-                fetchReply: true,
-            })
-            .catch((err) => {});
+    collector.on('collect', async interaction => {            
+        return await interaction.update({
+            content: `✅ Successfully canceled.`,
+            components: [],
+            fetchReply: true
+        }).catch(err => {})
     });
 
     collector.on('end', async (collected, reason) => {
-        if (reason === 'time') {
+        if(reason === 'time') {
             kickUser({
                 user,
                 mod: bot.user,
                 guild: main_interaction.guild,
-                reason: 'User executed /kickme command.',
-                bot,
+                reason: "User executed /kickme command.",
+                bot
             })
-                .then((res) => {
-                    errorhandler({
-                        message: `${user.id} has triggered the /kickme command successfully.`,
-                    });
+            .then(res => {
+                errorhandler({message: `${user.id} has triggered the /kickme command successfully.`})
+            })
+            .catch(err => {
+                main_interaction.editReply({
+                    content: `❌ I don't have permissions to kick you.`,
+                    components: [],
+                    fetchReply: true
                 })
-                .catch((err) => {
-                    main_interaction.editReply({
-                        content: `❌ I don't have permissions to kick you.`,
-                        components: [],
-                        fetchReply: true,
-                    });
-                });
+            })
         }
-    });
-};
+    })
+}
 
 module.exports.data = new SlashCommandBuilder()
-    .setName('kickme')
-    .setDescription('WARNING! You will kick yourself!');
+	.setName('kickme')
+	.setDescription('WARNING! You will kick yourself!')

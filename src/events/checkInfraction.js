@@ -1,19 +1,32 @@
 const config = require('../../src/assets/json/_config/config.json');
-const { setNewModLogMessage } = require('../../utils/modlog/modlog');
-const { privateModResponse } = require('../../utils/privatResponses/privateModResponses');
-const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
-const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
-const { saveAllRoles } = require('../../utils/functions/roles/saveAllRoles');
-const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
 const {
-    insertIntoClosedList,
-    getAllOpenInfractions,
-    removeInfractionById,
+    setNewModLogMessage
+} = require('../../utils/modlog/modlog');
+const {
+    privateModResponse
+} = require('../../utils/privatResponses/privateModResponses');
+const {
+    giveAllRoles
+} = require('../../utils/functions/roles/giveAllRoles');
+const {
+    removeMutedRole
+} = require('../../utils/functions/roles/removeMutedRole');
+const {
+    saveAllRoles
+} = require('../../utils/functions/roles/saveAllRoles');
+const {
+    errorhandler
+} = require('../../utils/functions/errorhandler/errorhandler');
+const {
+    insertIntoClosedList, getAllOpenInfractions, removeInfractionById
 } = require('../../utils/functions/data/infractions');
-const { openInfractions } = require('../../utils/functions/cache/cache');
+const {
+    openInfractions
+} = require('../../utils/functions/cache/cache');
+
 
 async function deleteEntries(infraction) {
-    removeInfractionById({ inf_id: infraction.infraction_id, type: 'open' });
+    removeInfractionById({inf_id: infraction.infraction_id, type: 'open'});
 
     insertIntoClosedList({
         uid: infraction.user_id,
@@ -24,17 +37,18 @@ async function deleteEntries(infraction) {
         reason: infraction.reason,
         infraction_id: infraction.infraction_id,
         start_date: infraction.start_date,
-        guild_id: infraction.guild_id,
+        guild_id: infraction.guild_id
     });
 }
 
 module.exports.checkInfractions = (bot) => {
-    console.info('🔎📜 CheckInfraction handler started');
+    console.info("🔎📜 CheckInfraction handler started");
     setInterval(async () => {
+
         var results;
         if (openInfractions) {
             results = openInfractions[0].list;
-        } else {
+        }else {
             results = await getAllOpenInfractions();
         }
         let done = 0;
@@ -44,13 +58,13 @@ module.exports.checkInfractions = (bot) => {
             if (results[i].till_date == null) continue;
 
             //Member can be unmuted
-            let currentdate = new Date();
+            let currentdate = new Date()
 
             var inf_date = results[i].till_date.split('.');
 
             const year = inf_date[2].split(',')[0];
-            const month = inf_date[1] < 10 ? inf_date[1].replace('0', '') : inf_date[1];
-            const day = inf_date[0] < 10 ? inf_date[0].replace('0', '') : inf_date[0];
+            const month = (inf_date[1] < 10) ? inf_date[1].replace('0', '') : inf_date[1];
+            const day = (inf_date[0] < 10) ? inf_date[0].replace('0', '') : inf_date[0];
             const time = inf_date[2].split(':');
             const hr = time[0].split(',')[1].replace(' ', '');
             const min = time[1];
@@ -58,14 +72,11 @@ module.exports.checkInfractions = (bot) => {
 
             inf_date = new Date(year, month - 1, day, hr, min, sec);
 
-            if (currentdate.getTime() >= inf_date.getTime()) {
-                //&& currentdate.getFullYear() <= inf_date.getFullYear()
+            if (currentdate.getTime() >= inf_date.getTime()) { //&& currentdate.getFullYear() <= inf_date.getFullYear()
                 if (results[i].mute) {
                     try {
                         var guild = await bot.guilds.cache.get(results[i].guild_id);
-                        var user = await guild.members
-                            .fetch(results[i].user_id)
-                            .then((members) => members);
+                        var user = await guild.members.fetch(results[i].user_id).then(members => members);
                     } catch (err) {
                         //Member left or got kicked
                         deleteEntries(results[i]);
@@ -74,66 +85,31 @@ module.exports.checkInfractions = (bot) => {
                     try {
                         await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
 
-                        await giveAllRoles(
-                            results[i].user_id,
-                            bot.guilds.cache.get(results[i].guild_id),
-                            JSON.parse(results[i].user_roles),
-                            bot
-                        );
+                        await giveAllRoles(results[i].user_id, bot.guilds.cache.get(results[i].guild_id), JSON.parse(results[i].user_roles), bot);
 
-                        await saveAllRoles(
-                            JSON.parse(results[i].user_roles) || null,
-                            bot.users.cache.get(results[i].user_id),
-                            bot.guilds.cache.get(results[i].guild_id)
-                        );
+                        await saveAllRoles(JSON.parse(results[i].user_roles) || null, bot.users.cache.get(results[i].user_id), bot.guilds.cache.get(results[i].guild_id));
 
-                        await setNewModLogMessage(
-                            bot,
-                            config.defaultModTypes.unmute,
-                            bot.user.id,
-                            user,
-                            'Auto',
-                            null,
-                            results[i].guild_id
-                        );
+                        await setNewModLogMessage(bot, config.defaultModTypes.unmute, bot.user.id, user, 'Auto', null, results[i].guild_id);
 
-                        await privateModResponse(
-                            user,
-                            config.defaultModTypes.unmute,
-                            'Auto',
-                            null,
-                            bot,
-                            guild.name
-                        );
+                        await privateModResponse(user, config.defaultModTypes.unmute, 'Auto', null, bot, guild.name);
 
                         await deleteEntries(results[i]);
                     } catch (err) {
                         errorhandler({
                             err,
-                            fatal: true,
+                            fatal: true
                         });
                     }
 
                     done++;
                     mutecount++;
                     continue;
-                } else {
-                    //Member got banned
+                } else { //Member got banned
                     done++;
                     bancount++;
                     try {
-                        await bot.guilds.cache
-                            .get(results[i].guild_id)
-                            .members.unban(`${results[i].user_id}`, `Auto`);
-                        setNewModLogMessage(
-                            bot,
-                            config.defaultModTypes.unban,
-                            bot.user.id,
-                            results[i].user_id,
-                            'Auto',
-                            null,
-                            results[i].guild_id
-                        );
+                        await bot.guilds.cache.get(results[i].guild_id).members.unban(`${results[i].user_id}`, `Auto`)
+                        setNewModLogMessage(bot, config.defaultModTypes.unban, bot.user.id, results[i].user_id, 'Auto', null, results[i].guild_id);
                         deleteEntries(results[i]);
                     } catch (err) {
                         //Unknown ban
@@ -142,11 +118,8 @@ module.exports.checkInfractions = (bot) => {
                 }
             }
         }
-        console.info(
-            `Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`,
-            new Date().toLocaleString('de-DE', {
-                timeZone: 'Europe/Berlin',
-            })
-        );
+        console.info(`Check Infraction done. ${done} infractions removed! (${mutecount} Mutes & ${bancount} Bans)`, new Date().toLocaleString('de-DE', {
+            timeZone: 'Europe/Berlin'
+        }))
     }, config.defaultCheckInfractionTimer);
-};
+}

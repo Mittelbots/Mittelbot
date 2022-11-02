@@ -1,17 +1,28 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
+const {
+    SlashCommandBuilder
+} = require('discord.js');
+const {
+    hasPermission
+} = require('../../../utils/functions/hasPermissions');
+const {
+    publicInfractionResponse
+} = require('../../../utils/publicResponses/publicModResponses');
 const config = require('../../../src/assets/json/_config/config.json');
 const {
     getClosedInfractionsByUserId,
     getOpenInfractionsByUserId,
     getInfractionById,
-    removeInfractionById,
+    removeInfractionById
 } = require('../../../utils/functions/data/infractions');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+
+module.exports.run = async ({
+    main_interaction,
+    bot
+}) => {
+
     await main_interaction.deferReply({
-        ephemeral: true,
+        ephemeral: true
     });
 
     const hasPermissions = await hasPermission({
@@ -19,16 +30,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
         adminOnly: false,
         modOnly: false,
         user: main_interaction.member,
-        bot,
+        bot
     });
 
     if (!hasPermissions) {
-        return main_interaction
-            .followUp({
-                content: config.errormessages.nopermission,
-                ephemeral: true,
-            })
-            .catch((err) => {});
+        return main_interaction.followUp({
+            content: config.errormessages.nopermission,
+            ephemeral: true
+        }).catch(err => {});
     }
 
     switch (main_interaction.options.getSubcommand()) {
@@ -40,35 +49,31 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             const closed_infractions = await getClosedInfractionsByUserId({
                 user_id: user.id,
-                guild_id: main_interaction.guild.id,
+                guild_id: main_interaction.guild.id
             });
 
             const open_infractions = await getOpenInfractionsByUserId({
                 user_id: user.id,
-                guild_id: main_interaction.guild.id,
+                guild_id: main_interaction.guild.id
             });
 
             if (!closed_infractions || !open_infractions) {
-                return main_interaction
-                    .followUp({
-                        content: config.errormessages.databasequeryerror,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+                return main_interaction.followUp({
+                    content: config.errormessages.databasequeryerror,
+                    ephemeral: true
+                }).catch(err => {});
             } else {
                 closed = closed_infractions;
                 open = open_infractions;
             }
 
             if (closed.length <= 0 && open.length <= 0) {
-                return main_interaction
-                    .followUp({
-                        content: `${user} dont have any infractions!`,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+                return main_interaction.followUp({
+                    content: `${user} dont have any infractions!`,
+                    ephemeral: true
+                }).catch(err => {});
             }
-            if (JSON.parse(process.env.DEBUG)) console.info('Infraction Command passed!');
+            if (JSON.parse(process.env.DEBUG)) console.info('Infraction Command passed!')
 
             await publicInfractionResponse({
                 member: user.id,
@@ -81,96 +86,88 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'view':
             const inf_id = main_interaction.options.getString('infractionid');
 
-            const { infraction } = await getInfractionById({
-                inf_id,
+            const {
+                infraction
+            } = await getInfractionById({
+                inf_id
             });
 
             if (!infraction) {
-                return main_interaction
-                    .followUp({
-                        content: `There is no infraction with this id \`${inf_id}\` `,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+                return main_interaction.followUp({
+                    content: `There is no infraction with this id \`${inf_id}\` `,
+                    ephemeral: true
+                }).catch(err => {});
             }
 
             const response = await publicInfractionResponse({
                 guild: main_interaction.guild,
                 isOne: true,
-                infraction,
+                infraction
             });
 
-            main_interaction
-                .followUp({
-                    embeds: [response.message],
-                    ephemeral: true,
-                })
-                .catch((err) => {});
+            main_interaction.followUp({
+                embeds: [response.message],
+                ephemeral: true
+            }).catch(err => {});
             break;
 
         case 'remove':
             const infraction_id = main_interaction.options.getString('infractionid');
 
-            const { table } = await getInfractionById({
-                inf_id: infraction_id,
+            const {
+                table
+            } = await getInfractionById({
+                inf_id: infraction_id
             });
 
             if (table) {
-                const response = await removeInfractionById({ inf_id: infraction_id, type: table });
 
-                return main_interaction
-                    .followUp({
-                        content: `Infraction with id \`${infraction_id}\` ${
-                            response ? 'has been' : 'could not'
-                        } be removed!`,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+                const response = await removeInfractionById({inf_id: infraction_id, type: table});
+
+                return main_interaction.followUp({
+                    content: `Infraction with id \`${infraction_id}\` ${response ? 'has been' : 'could not'} be removed!`,
+                    ephemeral: true
+                }).catch(err => {});
+
             } else {
-                return main_interaction
-                    .followUp({
-                        content: `Infraction with id \`${infraction_id}\` does not exist!`,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+                return main_interaction.followUp({
+                    content: `Infraction with id \`${infraction_id}\` does not exist!`,
+                    ephemeral: true
+                }).catch(err => {});
             }
             break;
     }
-};
+
+
+}
 
 module.exports.data = new SlashCommandBuilder()
     .setName('infractions')
     .setDescription('See infractions of a user')
-    .addSubcommand((command) =>
-        command
-            .setName('all')
-            .setDescription('See all infractions of a user')
-            .addUserOption((option) =>
-                option
-                    .setName('user')
-                    .setRequired(true)
-                    .setDescription('The user to see infractions of')
-            )
+    .addSubcommand(command =>
+        command.setName('all')
+        .setDescription('See all infractions of a user')
+        .addUserOption(option =>
+            option.setName('user')
+            .setRequired(true)
+            .setDescription('The user to see infractions of')
+        )
     )
-    .addSubcommand((command) =>
-        command
-            .setName('view')
-            .setDescription('View an specific infraction')
-            .addStringOption((option) =>
-                option
-                    .setName('infractionid')
-                    .setRequired(true)
-                    .setDescription('The id of the infraction to view')
-            )
+    .addSubcommand(command =>
+        command.setName('view')
+        .setDescription('View an specific infraction')
+        .addStringOption(option =>
+            option.setName('infractionid')
+            .setRequired(true)
+            .setDescription('The id of the infraction to view')
+        )
     )
-    .addSubcommand((command) =>
-        command
-            .setName('remove')
-            .setDescription('Remove an specific infraction')
-            .addStringOption((option) =>
-                option
-                    .setName('infractionid')
-                    .setRequired(true)
-                    .setDescription('The id of the infraction to remove')
-            )
-    );
+    .addSubcommand(command =>
+        command.setName('remove')
+        .setDescription('Remove an specific infraction')
+        .addStringOption(option =>
+            option.setName('infractionid')
+            .setRequired(true)
+            .setDescription('The id of the infraction to remove')
+        )
+    )

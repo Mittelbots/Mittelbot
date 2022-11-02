@@ -1,12 +1,12 @@
-const { getEmote } = require('./getEmote');
+const { getEmote } = require("./getEmote");
 const config = require('../../src/assets/json/_config/config.json');
 
-async function generateModEmote({ bot, type }) {
+async function generateModEmote({bot, type}) {
     let emote;
 
-    switch (true) {
+    switch(true) {
         case type == config.defaultModTypes.warn:
-            emote = getEmote(bot, config.icons.warn);
+            emote = getEmote(bot, config.icons.warn)
             break;
         case type == config.defaultModTypes.kick:
             emote = config.icons.kick;
@@ -24,7 +24,7 @@ async function generateModEmote({ bot, type }) {
             emote = config.icons.unban;
             break;
     }
-    return type === config.defaultModTypes.warn ? emote : emote + ' ';
+    return (type === config.defaultModTypes.warn) ? emote : emote+' ';
 }
 
-module.exports = { generateModEmote };
+module.exports = {generateModEmote};

@@ -1,46 +1,22 @@
 'use strict';
 
-var _typeof =
-    typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
-        ? function (obj) {
-              return typeof obj;
-          }
-        : function (obj) {
-              return obj &&
-                  typeof Symbol === 'function' &&
-                  obj.constructor === Symbol &&
-                  obj !== Symbol.prototype
-                  ? 'symbol'
-                  : typeof obj;
-          };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true,
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 (function () {
     var typesToPatch = ['DocumentType', 'Element', 'CharacterData'],
         remove = function remove() {
-            // The check here seems pointless, since we're not adding this
-            // method to the prototypes of any any elements that CAN be the
-            // root of the DOM. However, it's required by spec (see point 1 of
-            // https://dom.spec.whatwg.org/#dom-childnode-remove) and would
-            // theoretically make a difference if somebody .apply()ed this
-            // method to the DOM's root node, so let's roll with it.
-            if (this.parentNode != null) {
-                this.parentNode.removeChild(this);
-            }
-        };
+        // The check here seems pointless, since we're not adding this
+        // method to the prototypes of any any elements that CAN be the
+        // root of the DOM. However, it's required by spec (see point 1 of
+        // https://dom.spec.whatwg.org/#dom-childnode-remove) and would
+        // theoretically make a difference if somebody .apply()ed this
+        // method to the DOM's root node, so let's roll with it.
+        if (this.parentNode != null) {
+            this.parentNode.removeChild(this);
+        }
+    };
 
     for (var i = 0; i < typesToPatch.length; i++) {
         var type = typesToPatch[i];
@@ -50,6 +26,7 @@ function _defineProperty(obj, key, value) {
     }
 })();
 (function (root) {
+
     // Store setTimeout reference so promise-polyfill will be unaffected by
     // other code modifying setTimeout (like sinon.useFakeTimers())
     var setTimeoutFunc = setTimeout;
@@ -104,11 +81,7 @@ function _defineProperty(obj, key, value) {
         try {
             // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
             if (newValue === self) throw new TypeError('A promise cannot be resolved with itself.');
-            if (
-                newValue &&
-                ((typeof newValue === 'undefined' ? 'undefined' : _typeof(newValue)) === 'object' ||
-                    typeof newValue === 'function')
-            ) {
+            if (newValue && ((typeof newValue === 'undefined' ? 'undefined' : _typeof(newValue)) === 'object' || typeof newValue === 'function')) {
                 var then = newValue.then;
                 if (newValue instanceof Promise) {
                     self._state = 3;
@@ -164,18 +137,15 @@ function _defineProperty(obj, key, value) {
     function doResolve(fn, self) {
         var done = false;
         try {
-            fn(
-                function (value) {
-                    if (done) return;
-                    done = true;
-                    resolve(self, value);
-                },
-                function (reason) {
-                    if (done) return;
-                    done = true;
-                    reject(self, reason);
-                }
-            );
+            fn(function (value) {
+                if (done) return;
+                done = true;
+                resolve(self, value);
+            }, function (reason) {
+                if (done) return;
+                done = true;
+                reject(self, reason);
+            });
         } catch (ex) {
             if (done) return;
             done = true;
@@ -203,20 +173,12 @@ function _defineProperty(obj, key, value) {
 
             function res(i, val) {
                 try {
-                    if (
-                        val &&
-                        ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' ||
-                            typeof val === 'function')
-                    ) {
+                    if (val && ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' || typeof val === 'function')) {
                         var then = val.then;
                         if (typeof then === 'function') {
-                            then.call(
-                                val,
-                                function (val) {
-                                    res(i, val);
-                                },
-                                reject
-                            );
+                            then.call(val, function (val) {
+                                res(i, val);
+                            }, reject);
                             return;
                         }
                     }
@@ -236,11 +198,7 @@ function _defineProperty(obj, key, value) {
     };
 
     Promise.resolve = function (value) {
-        if (
-            value &&
-            (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' &&
-            value.constructor === Promise
-        ) {
+        if (value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value.constructor === Promise) {
             return value;
         }
 
@@ -264,14 +222,11 @@ function _defineProperty(obj, key, value) {
     };
 
     // Use polyfill for setImmediate for performance gains
-    Promise._immediateFn =
-        (typeof setImmediate === 'function' &&
-            function (fn) {
-                setImmediate(fn);
-            }) ||
-        function (fn) {
-            setTimeoutFunc(fn, 0);
-        };
+    Promise._immediateFn = typeof setImmediate === 'function' && function (fn) {
+        setImmediate(fn);
+    } || function (fn) {
+        setTimeoutFunc(fn, 0);
+    };
 
     Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
         if (typeof console !== 'undefined' && console) {
@@ -330,23 +285,13 @@ function _defineProperty(obj, key, value) {
 
         var letter = method.toLowerCase() === 'post' ? '' : '?';
         if (Array.isArray(params)) {
-            return (
-                letter +
-                params
-                    .map(function (obj) {
-                        return obj.name + '=' + obj.value;
-                    })
-                    .join('&')
-            );
+            return letter + params.map(function (obj) {
+                return obj.name + '=' + obj.value;
+            }).join('&');
         }
-        return (
-            letter +
-            Object.keys(params)
-                .map(function (key) {
-                    return key + '=' + params[key];
-                })
-                .join('&')
-        );
+        return letter + Object.keys(params).map(function (key) {
+            return key + '=' + params[key];
+        }).join('&');
     };
 
     var ajax = function ajax(options) {
@@ -396,9 +341,7 @@ function _defineProperty(obj, key, value) {
         this.tooltip = this.options.tooltip || {};
         this.tooltipFadeOutTime = this.tooltip.fadeOutTime || 5000;
         this.tooltipFadeOutClass = this.tooltip.fadeOutClass || 'just-validate-tooltip-hide';
-        this.tooltipSelectorWrap = document.querySelectorAll(this.tooltip.selectorWrap).length
-            ? document.querySelectorAll(this.tooltip.selectorWrap)
-            : document.querySelectorAll('.just-validate-tooltip-container');
+        this.tooltipSelectorWrap = document.querySelectorAll(this.tooltip.selectorWrap).length ? document.querySelectorAll(this.tooltip.selectorWrap) : document.querySelectorAll('.just-validate-tooltip-container');
         this.bindHandlerKeyup = this.handlerKeyup.bind(this);
         this.submitHandler = this.options.submitHandler || undefined;
         this.invalidFormCallback = this.options.invalidFormCallback || undefined;
@@ -411,11 +354,11 @@ function _defineProperty(obj, key, value) {
             zip: /^\d{5}(-\d{4})?$/,
             phone: /^([0-9]( |-)?)?(\(?[0-9]{3}\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})$/,
             password: /[^\w\d]*(([0-9]+.*[A-Za-z]+.*)|[A-Za-z]+.*([0-9]+.*))/,
-            strengthPass: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/,
+            strengthPass: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/
         };
         this.DEFAULT_REMOTE_ERROR = 'Error';
         this.state = {
-            tooltipsTimer: null,
+            tooltipsTimer: null
         };
 
         this.setForm(document.querySelector(selector));
@@ -425,31 +368,31 @@ function _defineProperty(obj, key, value) {
         defaultRules: {
             email: {
                 required: true,
-                email: true,
+                email: true
             },
             name: {
                 required: true,
                 minLength: 3,
-                maxLength: 15,
+                maxLength: 15
             },
             text: {
                 required: true,
                 maxLength: 300,
-                minLength: 5,
+                minLength: 5
             },
             password: {
                 required: true,
                 password: true,
                 minLength: 4,
-                maxLength: 8,
+                maxLength: 8
             },
             zip: {
                 required: true,
-                zip: true,
+                zip: true
             },
             phone: {
-                phone: true,
-            },
+                phone: true
+            }
         },
 
         defaultMessages: {
@@ -459,9 +402,8 @@ function _defineProperty(obj, key, value) {
             minLength: 'The field must contain a minimum of :value characters',
             password: 'Password is not valid',
             remote: 'Email already exists',
-            strength:
-                'Password must contents at least one uppercase letter, one lowercase letter and one number',
-            function: 'Function returned false',
+            strength: 'Password must contents at least one uppercase letter, one lowercase letter and one number',
+            function: 'Function returned false'
         },
 
         /**
@@ -471,15 +413,15 @@ function _defineProperty(obj, key, value) {
         handlerKeyup: function handlerKeyup(ev) {
             var elem = ev.target,
                 item = {
-                    name: elem.getAttribute('data-validate-field'),
-                    value: elem.value,
-                };
+                name: elem.getAttribute('data-validate-field'),
+                value: elem.value
+            };
             delete this.result[item.name];
             this.validateItem({
                 name: item.name,
                 value: item.value,
                 group: [],
-                isKeyupChange: true,
+                isKeyupChange: true
             });
             this.renderErrors();
         },
@@ -489,14 +431,16 @@ function _defineProperty(obj, key, value) {
                 handler = this.bindHandlerKeyup;
             }
             switch (type) {
-                case 'add': {
-                    item.addEventListener(event, handler);
-                    break;
-                }
-                case 'remove': {
-                    item.removeEventListener(event, handler);
-                    break;
-                }
+                case 'add':
+                    {
+                        item.addEventListener(event, handler);
+                        break;
+                    }
+                case 'remove':
+                    {
+                        item.removeEventListener(event, handler);
+                        break;
+                    }
             }
         },
 
@@ -628,15 +572,15 @@ function _defineProperty(obj, key, value) {
                     item.addEventListener('change', function (ev) {
                         var elem = ev.target,
                             item = {
-                                name: elem.getAttribute('data-validate-field'),
-                                value: elem.checked,
-                            };
+                            name: elem.getAttribute('data-validate-field'),
+                            value: elem.checked
+                        };
 
                         delete _this2.result[item.name];
                         _this2.validateItem({
                             name: item.name,
                             value: item.value,
-                            group: [],
+                            group: []
                         });
                         _this2.renderErrors();
                     });
@@ -659,15 +603,15 @@ function _defineProperty(obj, key, value) {
                     item.addEventListener('change', function (ev) {
                         var elem = ev.target,
                             item = {
-                                name: elem.getAttribute('data-validate-field'),
-                                value: elem.checked,
-                            };
+                            name: elem.getAttribute('data-validate-field'),
+                            value: elem.checked
+                        };
 
                         delete _this2.result[item.name];
                         _this2.validateItem({
                             name: item.name,
                             value: item.value,
-                            group: [],
+                            group: []
                         });
                         _this2.renderErrors();
                     });
@@ -679,7 +623,7 @@ function _defineProperty(obj, key, value) {
                     _this2.elements.push({
                         name: name,
                         value: value,
-                        group: group,
+                        group: group
                     });
                 }
             };
@@ -793,33 +737,30 @@ function _defineProperty(obj, key, value) {
                         }
                         resolve({
                             type: 'incorrect',
-                            name: name,
+                            name: name
                         });
                     },
                     error: function error() {
                         resolve({
                             type: 'error',
-                            name: name,
+                            name: name
                         });
-                    },
+                    }
                 });
             });
         },
 
         generateMessage: function generateMessage(rule, name, value) {
             var messages = this.messages || this.defaultMessages;
-            var customMessage =
-                (messages[name] && messages[name][rule]) ||
-                (this.messages && typeof this.messages[name] === 'string' && messages[name]) ||
-                // (messages[name][rule]) ||
-                this.defaultMessages[rule] ||
-                this.DEFAULT_REMOTE_ERROR;
+            var customMessage = messages[name] && messages[name][rule] || this.messages && typeof this.messages[name] === 'string' && messages[name] ||
+            // (messages[name][rule]) ||
+            this.defaultMessages[rule] || this.DEFAULT_REMOTE_ERROR;
 
             if (value) {
                 customMessage = customMessage.replace(':value', value.toString());
             }
             this.result[name] = {
-                message: customMessage,
+                message: customMessage
             };
         },
 
@@ -831,7 +772,7 @@ function _defineProperty(obj, key, value) {
                 _this3.validateItem({
                     name: item.name,
                     value: item.value,
-                    group: item.group,
+                    group: item.group
                 });
             });
 
@@ -875,177 +816,176 @@ function _defineProperty(obj, key, value) {
                     return;
                 }
                 switch (rule) {
-                    case RULE_FUNCTION: {
-                        if (typeof ruleValue !== 'function') {
-                            break;
+                    case RULE_FUNCTION:
+                        {
+                            if (typeof ruleValue !== 'function') {
+                                break;
+                            }
+                            if (ruleValue(name, value)) {
+                                break;
+                            }
+                            this.generateMessage(RULE_FUNCTION, name, ruleValue);
+                            return;
                         }
-                        if (ruleValue(name, value)) {
-                            break;
-                        }
-                        this.generateMessage(RULE_FUNCTION, name, ruleValue);
-                        return;
-                    }
-                    case RULE_REQUIRED: {
-                        if (!ruleValue) {
-                            break;
-                        }
+                    case RULE_REQUIRED:
+                        {
+                            if (!ruleValue) {
+                                break;
+                            }
 
-                        if (group.length) {
-                            var isSuccessValidateGroup = false;
+                            if (group.length) {
+                                var isSuccessValidateGroup = false;
 
-                            // At least one item in group
-                            group.forEach(function (item) {
-                                if (_this4.validateRequired(item)) {
-                                    isSuccessValidateGroup = true;
+                                // At least one item in group
+                                group.forEach(function (item) {
+                                    if (_this4.validateRequired(item)) {
+                                        isSuccessValidateGroup = true;
+                                    }
+                                });
+
+                                if (isSuccessValidateGroup) {
+                                    break;
                                 }
-                            });
+                            } else {
+                                if (this.validateRequired(value)) {
+                                    break;
+                                }
+                            }
 
-                            if (isSuccessValidateGroup) {
+                            this.generateMessage(RULE_REQUIRED, name);
+                            return;
+                        }
+
+                    case RULE_EMAIL:
+                        {
+                            if (!ruleValue) {
                                 break;
                             }
-                        } else {
-                            if (this.validateRequired(value)) {
+                            if (this.validateEmail(value)) {
                                 break;
                             }
+                            this.generateMessage(RULE_EMAIL, name);
+                            return;
                         }
 
-                        this.generateMessage(RULE_REQUIRED, name);
-                        return;
-                    }
-
-                    case RULE_EMAIL: {
-                        if (!ruleValue) {
-                            break;
-                        }
-                        if (this.validateEmail(value)) {
-                            break;
-                        }
-                        this.generateMessage(RULE_EMAIL, name);
-                        return;
-                    }
-
-                    case RULE_MINLENGTH: {
-                        if (!ruleValue) {
-                            break;
-                        }
-                        if (this.validateMinLength(value, ruleValue)) {
-                            break;
-                        }
-                        this.generateMessage(RULE_MINLENGTH, name, ruleValue);
-                        return;
-                    }
-
-                    case RULE_MAXLENGTH: {
-                        if (!ruleValue) {
-                            break;
-                        }
-                        if (this.validateMaxLength(value, ruleValue)) {
-                            break;
-                        }
-                        this.generateMessage(RULE_MAXLENGTH, name, ruleValue);
-                        return;
-                    }
-
-                    case RULE_PHONE: {
-                        if (!ruleValue) {
-                            break;
-                        }
-                        if (this.validatePhone(value)) {
-                            break;
-                        }
-                        this.generateMessage(RULE_PHONE, name);
-                        return;
-                    }
-
-                    case RULE_PASSWORD: {
-                        if (!ruleValue) {
-                            break;
-                        }
-                        if (this.validatePassword(value)) {
-                            break;
-                        }
-                        this.generateMessage(RULE_PASSWORD, name);
-                        return;
-                    }
-
-                    case RULE_STRENGTH: {
-                        if (
-                            !ruleValue ||
-                            (typeof ruleValue === 'undefined'
-                                ? 'undefined'
-                                : _typeof(ruleValue)) !== 'object'
-                        ) {
-                            break;
-                        }
-
-                        if (ruleValue.default && this.validateStrengthPass(value)) {
-                            break;
-                        }
-
-                        if (ruleValue.custom) {
-                            var regexp = void 0;
-
-                            try {
-                                regexp = new RegExp(ruleValue.custom);
-                            } catch (e) {
-                                regexp = this.REGEXP.strengthPass;
-
-                                // eslint-disable-next-line no-console
-                                console.error(
-                                    'Custom regexp for strength rule is not valid. Default regexp was used.'
-                                );
-                            }
-
-                            if (regexp.test(value)) {
+                    case RULE_MINLENGTH:
+                        {
+                            if (!ruleValue) {
                                 break;
                             }
-                        }
-                        this.generateMessage(RULE_STRENGTH, name);
-                        return;
-                    }
-
-                    case RULE_ZIP: {
-                        if (!ruleValue) {
-                            break;
-                        }
-                        if (this.validateZip(value)) {
-                            break;
-                        }
-                        this.generateMessage(RULE_ZIP, name);
-                        return;
-                    }
-
-                    case RULE_REMOTE: {
-                        if (isKeyupChange) {
-                            break;
+                            if (this.validateMinLength(value, ruleValue)) {
+                                break;
+                            }
+                            this.generateMessage(RULE_MINLENGTH, name, ruleValue);
+                            return;
                         }
 
-                        if (!ruleValue) {
-                            break;
+                    case RULE_MAXLENGTH:
+                        {
+                            if (!ruleValue) {
+                                break;
+                            }
+                            if (this.validateMaxLength(value, ruleValue)) {
+                                break;
+                            }
+                            this.generateMessage(RULE_MAXLENGTH, name, ruleValue);
+                            return;
                         }
 
-                        var url = ruleValue.url,
-                            successAnswer = ruleValue.successAnswer,
-                            method = ruleValue.method,
-                            sendParam = ruleValue.sendParam;
+                    case RULE_PHONE:
+                        {
+                            if (!ruleValue) {
+                                break;
+                            }
+                            if (this.validatePhone(value)) {
+                                break;
+                            }
+                            this.generateMessage(RULE_PHONE, name);
+                            return;
+                        }
 
-                        var $elem = this.$form.querySelector(
-                            'input[data-validate-field="' + name + '"]'
-                        );
-                        this.setterEventListener($elem, 'keyup', this.handlerKeyup, 'remove');
+                    case RULE_PASSWORD:
+                        {
+                            if (!ruleValue) {
+                                break;
+                            }
+                            if (this.validatePassword(value)) {
+                                break;
+                            }
+                            this.generateMessage(RULE_PASSWORD, name);
+                            return;
+                        }
 
-                        this.promisesRemote.push(
-                            this.validateRemote({
+                    case RULE_STRENGTH:
+                        {
+                            if (!ruleValue || (typeof ruleValue === 'undefined' ? 'undefined' : _typeof(ruleValue)) !== 'object') {
+                                break;
+                            }
+
+                            if (ruleValue.default && this.validateStrengthPass(value)) {
+                                break;
+                            }
+
+                            if (ruleValue.custom) {
+                                var regexp = void 0;
+
+                                try {
+                                    regexp = new RegExp(ruleValue.custom);
+                                } catch (e) {
+                                    regexp = this.REGEXP.strengthPass;
+
+                                    // eslint-disable-next-line no-console
+                                    console.error('Custom regexp for strength rule is not valid. Default regexp was used.');
+                                }
+
+                                if (regexp.test(value)) {
+                                    break;
+                                }
+                            }
+                            this.generateMessage(RULE_STRENGTH, name);
+                            return;
+                        }
+
+                    case RULE_ZIP:
+                        {
+                            if (!ruleValue) {
+                                break;
+                            }
+                            if (this.validateZip(value)) {
+                                break;
+                            }
+                            this.generateMessage(RULE_ZIP, name);
+                            return;
+                        }
+
+                    case RULE_REMOTE:
+                        {
+                            if (isKeyupChange) {
+                                break;
+                            }
+
+                            if (!ruleValue) {
+                                break;
+                            }
+
+                            var url = ruleValue.url,
+                                successAnswer = ruleValue.successAnswer,
+                                method = ruleValue.method,
+                                sendParam = ruleValue.sendParam;
+
+                            var $elem = this.$form.querySelector('input[data-validate-field="' + name + '"]');
+                            this.setterEventListener($elem, 'keyup', this.handlerKeyup, 'remove');
+
+                            this.promisesRemote.push(this.validateRemote({
                                 name: name,
                                 value: value,
                                 url: url,
                                 method: method,
                                 sendParam: sendParam,
-                                successAnswer: successAnswer,
-                            })
-                        );
-                        return;
-                    }
+                                successAnswer: successAnswer
+                            }));
+                            return;
+                        }
                 }
             }
         },
@@ -1092,9 +1032,7 @@ function _defineProperty(obj, key, value) {
                 $elem.classList.add('js-validate-error-field');
 
                 if ($elem.type === 'checkbox' || $elem.type === 'radio') {
-                    var $label = document.querySelector(
-                        'label[for="' + $elem.getAttribute('id') + '"]'
-                    );
+                    var $label = document.querySelector('label[for="' + $elem.getAttribute('id') + '"]');
 
                     if ($elem.parentNode.tagName.toLowerCase() === 'label') {
                         $elem.parentNode.parentNode.insertBefore(div, null);
@@ -1147,7 +1085,7 @@ function _defineProperty(obj, key, value) {
                 $elems[i].style.webitFilter = '';
                 $elems[i].style.filter = '';
             }
-        },
+        }
     };
 
     window.JustValidate = JustValidate;

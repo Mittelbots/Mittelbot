@@ -1,17 +1,26 @@
-import { Notification } from '../notification.js';
+import {
+    Notification
+} from '../notification.js';
 
-import { getCJChanges } from '../modules/changerjs/changer.js';
+import {
+    getCJChanges
+} from "../modules/changerjs/changer.js";
 
 window.addEventListener('load', function () {
+
     document.getElementById('wc_save').addEventListener('click', async (el) => {
-        const { error, changes, isDataChanged } = getCJChanges(el);
+        const {
+            error,
+            changes,
+            isDataChanged
+        } = getCJChanges(el);
 
         if (error) {
-            new Notification('Something went wrong. Please report it to the developer.', false);
+            new Notification('Something went wrong. Please report it to the developer.', false)
             return;
         }
         if (isDataChanged) {
-            const changedData = changes.filter((data) => data.hasChanged);
+            const changedData = changes.filter(data => data.hasChanged)
 
             if (changedData.length === 0) {
                 new Notification('Nothing has changed!', false).show();
@@ -39,20 +48,21 @@ window.addEventListener('load', function () {
                         new Notification('Settings saved', true).show();
                     }
                     if (this.status === 401) {
-                        new Notification("You don't have permissions to do this.", false).show();
+                        new Notification('You don\'t have permissions to do this.', false).show();
                     }
-                };
+                }
                 request.open('POST', `/api/change/${module}/${settings}/${type}/${guild_id}`);
                 request.setRequestHeader('Content-Type', 'application/json');
                 request.setRequestHeader('Referrer-Policy', 'same-origin');
                 request.send();
 
                 await setTimeout(() => {
-                    return true;
-                }, 500);
+                    return true
+                }, 500)
             }
         }
     });
+
 
     let newJoinRoles = [];
     let oldJoinRoles = [];
@@ -60,13 +70,14 @@ window.addEventListener('load', function () {
     joinRoleSelected();
 
     function joinRoleSelected() {
-        document.querySelectorAll('.joinrole_selected').forEach((div) => {
+        document.querySelectorAll('.joinrole_selected').forEach(div => {
             newJoinRoles = [];
             oldJoinRoles = [];
             newJoinRoles.push(div.dataset.jrid);
             oldJoinRoles.push(div.dataset.jrid);
-        });
+        })
     }
+
 
     document.getElementById('wc_joinrole_select').addEventListener('change', function () {
         let roleId = this.value;
@@ -107,7 +118,7 @@ window.addEventListener('load', function () {
                         newJoinRoles.splice(i, 1);
                     }
                 }
-            });
+            })
         });
     }
 
@@ -122,6 +133,7 @@ window.addEventListener('load', function () {
         return true;
     }
 
+
     document.getElementById('joinroles_save').addEventListener('click', function () {
         if (arraysEqual(newJoinRoles, oldJoinRoles)) {
             new Notification('Nothing has changed!', false).show();
@@ -132,18 +144,14 @@ window.addEventListener('load', function () {
 
         request.onreadystatechange = function () {
             if (this.status === 200) {
-                joinRoleSelected;
+                joinRoleSelected
                 new Notification('Settings saved', true).show();
             }
-        };
-        request.open(
-            'POST',
-            `/api/change/joinroles/${JSON.stringify(newJoinRoles)}/null/${
-                document.body.dataset.guildid
-            }`
-        );
+        }
+        request.open('POST', `/api/change/joinroles/${JSON.stringify(newJoinRoles)}/null/${document.body.dataset.guildid}`);
         request.setRequestHeader('Content-Type', 'application/json');
         request.setRequestHeader('Referrer-Policy', 'same-origin');
         request.send();
-    });
-});
+    })
+
+})
