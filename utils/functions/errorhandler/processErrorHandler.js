@@ -1,38 +1,36 @@
-const { restartBot } = require("../../../bot/core/core");
-const { errorhandler } = require("./errorhandler");
-
+const { restartBot } = require('../../../bot/core/core');
+const { errorhandler } = require('./errorhandler');
 
 module.exports.processErrorHandler = () => {
-    process.on('unhandledRejection', async err => {
+    process.on('unhandledRejection', async (err) => {
         errorhandler({
-          err,
-          fatal: true
-        })
+            err,
+            fatal: true,
+        });
 
         errorhandler({
-          err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
-          fatal: true
-      });
-      
+            err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
+            fatal: true,
+        });
+
         await restartBot();
-      });
-      
-      process.on('uncaughtException', async err => {
+    });
+
+    process.on('uncaughtException', async (err) => {
         errorhandler({
-          err: '----BOT CRASHED-----',
-          fatal: true
+            err: '----BOT CRASHED-----',
+            fatal: true,
         });
         errorhandler({
-          err,
-          fatal: true
-        })
+            err,
+            fatal: true,
+        });
 
         errorhandler({
-          err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
-          fatal: true
-      });
-      
+            err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
+            fatal: true,
+        });
+
         await restartBot();
-        
-      })
-}
+    });
+};

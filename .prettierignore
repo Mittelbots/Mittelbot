@@ -1,0 +1,4 @@
+node_modules/
+mittelblot-db-backup/
+*.min.js
+._*

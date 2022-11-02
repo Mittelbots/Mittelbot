@@ -1,93 +1,111 @@
 const {
-    checkActiveCommand
-} = require("../../utils/functions/checkActiveCommand/checkActiveCommand");
-const { getGuildConfig } = require("../../utils/functions/data/getConfig");
+    checkActiveCommand,
+} = require('../../utils/functions/checkActiveCommand/checkActiveCommand');
+const { getGuildConfig } = require('../../utils/functions/data/getConfig');
 
-module.exports.handleSlashCommands = async ({
-    main_interaction,
-    bot
-}) => {
-
-    let moderation = ['ban', 'infractions', 'isbanned', 'kick', 'mute', 'unban', 'unmute', 'purge', 'warn'];
+module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
+    let moderation = [
+        'ban',
+        'infractions',
+        'isbanned',
+        'kick',
+        'mute',
+        'unban',
+        'unmute',
+        'purge',
+        'warn',
+    ];
     let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny'];
-    let admin = ['modules', 'scam', 'autotranslate', 'settings', 'apply', 'levelsettings', 'automod'];
+    let admin = [
+        'modules',
+        'scam',
+        'autotranslate',
+        'settings',
+        'apply',
+        'levelsettings',
+        'automod',
+    ];
     let level = ['rank', 'leaderboard', 'givexp', 'removexp'];
     let utils = ['afk', 'info', 'ping', 'checkguild', 'kickme'];
     let help = ['help', 'tutorial'];
 
     //=========================================================
 
-    var {settings} = await getGuildConfig({
+    var { settings } = await getGuildConfig({
         guild_id: main_interaction.guild.id,
     });
 
-    disabled_modules = JSON.parse(settings.disabled_modules);
+    disabled_modules = JSON.parse(settings.disabled_modules) || [];
 
-    const module = moderation.indexOf(main_interaction.commandName) > -1 ? 'moderation' : fun.indexOf(main_interaction.commandName) > -1 ? 'fun' : false;
-
-    if (module) {
-        if (disabled_modules.indexOf(module) > -1) {
-            return main_interaction.reply({
+    function disabled(module) {
+        return main_interaction
+            .reply({
                 content: `This Module (${module}) is disabled.`,
-                ephemeral: true
-            }).catch(err => {});
-        }
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     //=========================================================
 
+    const isActive = await checkActiveCommand(
+        main_interaction.commandName,
+        main_interaction.guild.id
+    );
 
-    const isActive = await checkActiveCommand(main_interaction.commandName, main_interaction.guild.id);
-
-    if (isActive.global_disabled) return main_interaction.reply({
-        content: "This command is currently disabled in all Servers. Join the offical support discord for more informations. https://mittelbot.blackdayz.de/support",
-        ephemeral: true
-    });
-    if (!isActive.enabled) return main_interaction.reply({
-        content: "This command is disabled in your Guild.",
-        ephemeral: true
-    });
+    if (isActive.global_disabled)
+        return main_interaction.reply({
+            content:
+                'This command is currently disabled in all Servers. Join the offical support discord for more informations. https://mittelbot.blackdayz.de/support',
+            ephemeral: true,
+        });
+    if (!isActive.enabled)
+        return main_interaction.reply({
+            content: 'This command is disabled in your Guild.',
+            ephemeral: true,
+        });
 
     //=========================================================
 
     if (moderation.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./moderation/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot
-        });
-    } else if (fun.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./fun/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot
-        });
+        if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
+        return requireModule('moderation');
+    }
 
-    }else if(admin.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./admin/${main_interaction.commandName}`).run({
+    if (fun.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('fun') > -1) return disabled('fun');
+        return requireModule('fun');
+    }
+
+    if (admin.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
+        return requireModule('admin');
+    }
+
+    if (level.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('level') > -1) return disabled('level');
+        return requireModule('level');
+    }
+
+    if (utils.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('utils') > -1) return disabled('utils');
+        return requireModule('utils');
+    }
+
+    if (help.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('help') > -1) return disabled('help');
+        return requireModule('help');
+    }
+
+    return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
+        main_interaction: main_interaction,
+        bot: bot,
+    });
+
+    function requireModule(module) {
+        return require(`./${module}/${main_interaction.commandName}`).run({
             main_interaction: main_interaction,
-            bot: bot
-        });
-    }else if(level.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./level/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot
+            bot: bot,
         });
     }
-    else if(utils.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./utils/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot
-        });
-    }
-    else if(help.indexOf(main_interaction.commandName) !== -1) {
-        return require(`./help/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot
-        });
-    }
-    else {
-        return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
-            main_interaction: main_interaction,
-            bot: bot
-        });
-    }
-}
+};

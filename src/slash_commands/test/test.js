@@ -1,27 +1,29 @@
 const config = require('../../../src/assets/json/_config/config.json');
-const {TextInputBuilder, SlashCommandBuilder, ModalBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
+const {
+    TextInputBuilder,
+    SlashCommandBuilder,
+    ModalBuilder,
+    ActionRowBuilder,
+    TextInputStyle,
+} = require('discord.js');
 
+module.exports.run = async ({ main_interaction, bot }) => {
+    if (main_interaction.user.id !== config.Bot_Owner_ID) return;
+    const modal = new ModalBuilder().setTitle('Test').setCustomId('test');
 
-module.exports.run = async ({main_interaction, bot}) => {
+    const textInput = new TextInputBuilder()
+        .setLabel('Text')
+        .setCustomId('text')
+        .setStyle(TextInputStyle.Paragraph)
+        .setRequired(true);
 
-    if(main_interaction.user.id !== config.Bot_Owner_ID) return;
-        const modal = new ModalBuilder()
-            .setTitle('Test')
-            .setCustomId('test')
+    const first = new ActionRowBuilder().addComponents([textInput]);
+    modal.addComponents([first]);
 
-        const textInput = new TextInputBuilder()
-            .setLabel('Text')
-            .setCustomId('text')
-            .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true)
-
-            const first = new ActionRowBuilder().addComponents([textInput])
-        modal.addComponents([first]);
-
-    main_interaction.showModal(modal)
-}
+    main_interaction.showModal(modal);
+};
 
 module.exports.data = new SlashCommandBuilder()
-	.setName('test')
-	.setDescription('Nothing.')
-    .setDefaultMemberPermissions(0)
+    .setName('test')
+    .setDescription('Nothing.')
+    .setDefaultMemberPermissions(0);

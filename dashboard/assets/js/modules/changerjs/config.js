@@ -16,9 +16,7 @@ export const config = {
         'text',
         'time',
         'url',
-        'week'
+        'week',
     ],
-    SupportedTypes: [
-        'textarea'
-    ]
+    SupportedTypes: ['textarea'],
 };

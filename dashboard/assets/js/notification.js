@@ -14,5 +14,4 @@ export class Notification {
             notification.remove();
         }, 3000);
     }
-
 }
