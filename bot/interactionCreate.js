@@ -17,15 +17,15 @@ module.exports.interactionCreate = ({ bot }) => {
 
         const { ignoreMode } = await getGlobalConfig();
 
-        if (JSON.parse(ignoreMode) && main_interaction.user.id !== config.Bot_Owner_ID) {
+        //if (JSON.parse(ignoreMode) && main_interaction.user.id !== config.Bot_Owner_ID) {
             return main_interaction
                 .reply({
                     content:
-                        'Sorry, I am currently in ignore mode. Join the support server to get more information https://blackdayz.de/mittelbot/support.',
+                        'Sorry, I am currently in ignore mode. Join the support server to get more information https://mittelbot.blackdayz.de/support.',
                     ephemeral: true,
                 })
                 .catch((err) => {});
-        }
+        //}
 
         var { settings } = await getGuildConfig({
             guild_id: main_interaction.guild.id,

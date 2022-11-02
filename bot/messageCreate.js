@@ -15,6 +15,13 @@ const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
 const defaultCooldown = new Set();
 
 async function messageCreate(message, bot) {
+    return message
+    .reply({
+        content:
+            'Sorry, I am currently in ignore mode. Join the support server to get more information https://mittelbot.blackdayz.de/support.',
+        ephemeral: true,
+    })
+    .catch((err) => {});
     if (isGuildBlacklist({ guild_id: message.guild.id })) {
         const guild = bot.guilds.cache.get(message.guild.id);
 
