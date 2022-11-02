@@ -176,7 +176,6 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
  * ! LEVEL SETTINGS !
  */
 
-
 module.exports.getXPOfGuild = async ({ guildid }) => {
     const cache = await getFromCache({
         cacheName: 'guildLevel',

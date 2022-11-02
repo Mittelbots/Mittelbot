@@ -5,27 +5,29 @@ class AllGuildId {
     constructor() {}
 
     async insert(guild_id) {
-        allGuildId.create(
-            {
+        allGuildId
+            .create({
                 guild_id,
-            }
-        ).then(() => {
-            resolve(true);
-        })
-        .catch(err => {
-            errorhandler({ err });
-            return reject(false);
-        });
+            })
+            .then(() => {
+                resolve(true);
+            })
+            .catch((err) => {
+                errorhandler({ err });
+                return reject(false);
+            });
     }
 
     async getAll() {
-        return await allGuildId.findAll().then((res) => {
-            return (res.length > 0) ? res : false;
-        })
-        .catch((err) => {
-            errorhandler({ err: err, fatal: true });
-            return false;
-        });
+        return await allGuildId
+            .findAll()
+            .then((res) => {
+                return res.length > 0 ? res : false;
+            })
+            .catch((err) => {
+                errorhandler({ err: err, fatal: true });
+                return false;
+            });
     }
 }
 

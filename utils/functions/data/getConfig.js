@@ -19,17 +19,19 @@ module.exports.insertGuildIntoGuildConfig = async (guild_id) => {
 };
 
 module.exports.getGuildConfig = async ({ guild_id }) => {
-    return await guildConfig.get({
-        where: {
-            guild_id,
-        },
-    }).then(res => {
-        return (res.length > 0) ? res : false;
-    })
-    .catch(err => {
-        errorhandler({ err });
-        return false;
-    });
+    return await guildConfig
+        .get({
+            where: {
+                guild_id,
+            },
+        })
+        .then((res) => {
+            return res.length > 0 ? res : false;
+        })
+        .catch((err) => {
+            errorhandler({ err });
+            return false;
+        });
 };
 
 module.exports.updateGuildConfig = async ({ guild_id, value, valueName }) => {

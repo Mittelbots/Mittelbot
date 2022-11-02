@@ -26,7 +26,7 @@ GuildConfig.init(
         },
         levelsettings: {
             type: DataTypes.JSON,
-            defaultValue: {"mode":"normal","levelup_channel":"disable"},
+            defaultValue: { mode: 'normal', levelup_channel: 'disable' },
         },
         joinroles: {
             type: DataTypes.JSON,
@@ -38,7 +38,7 @@ GuildConfig.init(
         },
         prefix: {
             type: DataTypes.STRING,
-            defaultValue: "!",
+            defaultValue: '!',
         },
         cooldown: {
             type: DataTypes.INTEGER,
@@ -49,7 +49,7 @@ GuildConfig.init(
         },
         translate_language: {
             type: DataTypes.STRING,
-            defaultValue: "en",
+            defaultValue: 'en',
         },
         disabled_modules: {
             type: DataTypes.JSON,
@@ -68,16 +68,16 @@ GuildConfig.init(
         },
         logs: {
             type: DataTypes.JSON,
-            defaultValue: {}
+            defaultValue: {},
         },
         warnroles: {
             type: DataTypes.JSON,
-            defaultValue: []
+            defaultValue: [],
         },
         disabled_commands: {
             type: DataTypes.JSON,
-            defaultValue: []
-        }
+            defaultValue: [],
+        },
     },
     {
         sequelize: database,
