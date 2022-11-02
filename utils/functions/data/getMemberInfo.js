@@ -1,27 +1,6 @@
 const database = require('../../../src/db/db');
-const { getAllGuildIds } = require('./getAllGuildIds');
 const { getFromCache, memberInfo } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
-
-module.exports.getAllMemberInfo = async () => {
-    const all_guild_id = await getAllGuildIds();
-
-    if (all_guild_id) {
-        let response = [];
-        for (let i in all_guild_id) {
-            const obj = {
-                guild_id: all_guild_id[i].guild_id,
-                member_info: await this.getMemberInfo({
-                    guild_id: all_guild_id[i].guild_id,
-                }),
-            };
-            response.push(obj);
-        }
-        return response;
-    } else {
-        return false;
-    }
-};
 
 /** cache */
 module.exports.getMemberInfo = async () => {

@@ -1,106 +1,58 @@
-const database = require('../../../src/db/db');
-const { getFromCache, autoMod } = require('../cache/cache');
+const guildAutomod = require('../../../src/db/Models/tables/guildAutomod');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { getAllGuildIds } = require('./getAllGuildIds');
 
 module.exports.insertIntoGuildAutomod = async (guild_id) => {
     return new Promise(async (resolve, reject) => {
-        const defaultAntiSpamSetttings = {
-            antispam: {
-                enabled: false,
-                action: '[]',
-            },
-        };
-
-        await database
-            .query(`INSERT IGNORE INTO guild_automod (guild_id, settings) VALUES (?, ?)`, [
+        await guildAutomod.create(
+            {
                 guild_id,
-                JSON.stringify(defaultAntiSpamSetttings),
-            ])
-            .then(() => {
-                autoMod[autoMod.length] = {
-                    name: 'autoMod',
-                    id: guild_id,
-                    settings: JSON.stringify(defaultAntiSpamSetttings),
-                };
-                return resolve(true);
-            })
-            .catch((err) => {
-                errorhandler({
-                    err,
-                });
-                return reject(false);
-            });
+            }
+        ).then(() => {
+            resolve(true);
+        })
+        .catch(err => {
+            errorhandler({ err });
+            return reject(false);
+        });
     });
 };
 
 module.exports.getAutomodbyGuild = async (guild_id) => {
-    const cache = await getFromCache({
-        cacheName: 'autoMod',
-        param_id: guild_id,
-    });
-
-    if (!cache || cache.length === 0) {
-        return await database
-            .query(`SELECT * FROM guild_automod WHERE guild_id = ?`, [guild_id])
-            .then((res) => {
-                if (res.length > 0) {
-                    return res[0].settings;
-                } else {
-                    return false;
-                }
-            })
-            .catch((err) => {
-                errorhandler({
-                    err,
-                    fatal: true,
-                });
-                return false;
-            });
-    } else {
-        return cache[0].settings;
-    }
-};
-
-module.exports.getAllAutoMod = async () => {
-    const all_guild_id = await getAllGuildIds();
-
-    if (all_guild_id) {
-        let response = [];
-        for (let i in all_guild_id) {
-            response.push({
-                guild_id: all_guild_id[i].guild_id,
-                setting: await this.getAutomodbyGuild(all_guild_id[i].guild_id),
-            });
+    return await guildAutomod.findOne(
+        {
+            where: {
+                guild_id,
+            },
         }
-        return response;
-    } else {
+    ).then((data) => {
+        return data;
+    })
+    .catch((err) => {
+        errorhandler({ err });
         return false;
-    }
+    });
 };
 
 module.exports.updateAutoModbyGuild = async ({ guild_id, value, type }) => {
     return new Promise(async (resolve, reject) => {
-        for (let i in autoMod) {
-            if (autoMod[i].id === guild_id) {
-                autoMod[i].settings = value;
+        await guildAutomod.update(
+            {
+                settings: value,
+            },
+            {
+                where: {
+                    guild_id,
+                },
             }
-        }
-
-        return await database
-            .query(`UPDATE guild_automod SET settings = ? WHERE guild_id = ?`, [value, guild_id])
-            .then(() => {
-                return resolve(
-                    `✅ Successfully updated automod settings for your guild to \`${type}\`.`
-                );
-            })
-            .catch((err) => {
-                errorhandler({
-                    err,
-                    fatal: true,
-                });
-                return reject(`❌ Error updating automod settings for your guild to \`${type}\`.`);
-            });
+        ).then(() => {
+            return resolve(
+                `✅ Successfully updated automod settings for your guild to \`${type}\`.`
+            );
+        })
+        .catch((err) => {
+            errorhandler({ err });
+            return reject(`❌ Error updating automod settings for your guild to \`${type}\`.`);
+        });
     });
 };
 

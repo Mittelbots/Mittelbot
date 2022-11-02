@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const database = require('../../../src/db/db');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { getAllGuildIds } = require('../data/getAllGuildIds');
 const { getFromCache, addValueToCache, guildLevel } = require('../cache/cache');
 const fs = require('fs');
 const levelConfig = require('./levelconfig.json');
@@ -177,25 +176,6 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
  * ! LEVEL SETTINGS !
  */
 
-module.exports.getAllXP = async () => {
-    const all_guild_id = await getAllGuildIds();
-
-    if (all_guild_id) {
-        let response = [];
-        for (let i in all_guild_id) {
-            const obj = {
-                guild_id: all_guild_id[i].guild_id,
-                levels: await this.getXPOfGuild({
-                    guildid: all_guild_id[i].guild_id,
-                }),
-            };
-            response.push(obj);
-        }
-        return response;
-    } else {
-        return false;
-    }
-};
 
 module.exports.getXPOfGuild = async ({ guildid }) => {
     const cache = await getFromCache({

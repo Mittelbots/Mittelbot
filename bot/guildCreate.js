@@ -2,7 +2,7 @@ const { errorhandler } = require('../utils/functions/errorhandler/errorhandler')
 const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
 const { insertGuildIntoGuildConfig } = require('../utils/functions/data/getConfig');
 const { insertIntoGuildAutomod } = require('../utils/functions/data/automod');
-const { insertIntoAllGuildId } = require('../utils/functions/data/all_guild_id');
+const AllGuildId = require('../utils/functions/data/all_guild_id');
 
 module.exports.guildCreate = async (guild, bot) => {
     if (
@@ -30,7 +30,7 @@ module.exports.guildCreate = async (guild, bot) => {
         message: ` I joined a new Guild: ${guild.name} (${guild.id})`,
     });
 
-    await insertIntoAllGuildId(guild.id).catch((err) => {});
+    await AllGuildId.insert(guild.id).catch((err) => {});
     await insertIntoGuildAutomod(guild.id).catch((err) => {});
     await insertGuildIntoGuildConfig(guild.id).catch((err) => {});
     return;

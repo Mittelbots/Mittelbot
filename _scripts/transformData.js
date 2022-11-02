@@ -1,6 +1,5 @@
 const database = require('../src/db/db');
-const { getAllGuildIds } = require('../utils/functions/data/getAllGuildIds');
-
+const all_guild_id = require('../utils/functions/data/all_guild_id');
 const old_DB_name = '_guild_level';
 
 const isGuildIdRequired = true;
@@ -8,7 +7,7 @@ const isGuildIdRequired = true;
 async function main() {
     var all_guilds = [];
     if (isGuildIdRequired) {
-        all_guilds = await getAllGuildIds();
+        all_guilds = await all_guild_id.getAll();
 
         if (!all_guilds) {
             console.error('No guilds found or an error occured', err);

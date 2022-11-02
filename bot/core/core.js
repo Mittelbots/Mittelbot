@@ -18,10 +18,10 @@ const { guildMemberRemove } = require('../guildMemberRemove');
 const { interactionCreate } = require('../interactionCreate');
 const { messageCreate } = require('../messageCreate');
 const database = require('../../src/db/db');
-const { insertIntoAllGuildId } = require('../../utils/functions/data/all_guild_id');
 const { insertGuildIntoGuildConfig } = require('../../utils/functions/data/getConfig');
 const { insertIntoGuildAutomod } = require('../../utils/functions/data/automod');
 const { rateLimit } = require('../rateLimit');
+const AllGuildId = require('../../utils/functions/data/all_guild_id');
 
 module.exports.restartBot = async () => {
     await delay(5000);
@@ -172,7 +172,7 @@ module.exports.checkGuildsInDatabase = async (guilds) => {
             )
             .then(async (res) => {
                 if (res[0].length === 0) {
-                    await insertIntoAllGuildId(guild.id)
+                    await AllGuildId.insert(guild.id)
                         .then(() => {
                             console.log(`Inserted ${guild.id} into all_guild_id.`);
                         })
