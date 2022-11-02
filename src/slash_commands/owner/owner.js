@@ -4,11 +4,9 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { log } = require('../../../logs');
 const { spawn } = require('child_process');
 const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
-const { startUpCache, resetCache } = require('../../../utils/functions/cache/startUpCache');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { updateGlobalConfig, getGlobalConfig } = require('../../../utils/functions/data/ignoreMode');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { readFileSync } = require('fs');
 const { AttachmentBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -79,28 +77,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         })
                         .catch((err) => {});
                 });
-                break;
-
-            case 'cacherefresh':
-                await resetCache()
-                    .then(async () => {
-                        await startUpCache();
-                        main_interaction
-                            .followUp({
-                                content: '✅ Successfully refreshed',
-                                ephemeral: true,
-                            })
-                            .catch((err) => {});
-                    })
-                    .catch((err) => {
-                        main_interaction
-                            .followUp({
-                                content: err,
-                                ephemeral: true,
-                            })
-                            .catch((err) => {});
-                    });
-
                 break;
 
             case 'ignoremode':
@@ -218,9 +194,6 @@ module.exports.data = new SlashCommandBuilder()
                     .setRequired(true)
                     .setDescription('The maximum level to generate.')
             )
-    )
-    .addSubcommand((command) =>
-        command.setName('cacherefresh').setDescription('Refreshes the bot cache')
     )
     .addSubcommand((command) =>
         command
