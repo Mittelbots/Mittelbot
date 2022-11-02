@@ -1,6 +1,6 @@
 function getFutureDate(dbtime) {
     let futuredate;
-    if (dbtime !== '') {
+    if(dbtime !== '') {
         futuredate = new Date();
         futuredate.setSeconds(futuredate.getSeconds() + dbtime);
         dbtime = futuredate.toLocaleString('de-DE', {
@@ -10,12 +10,12 @@ function getFutureDate(dbtime) {
             day: '2-digit',
             hour: '2-digit',
             minute: '2-digit',
-            second: '2-digit',
+            second: '2-digit'
         });
-    } else {
-        dbtime = 'Permanent';
+    }else {
+        dbtime = 'Permanent'
     }
     return dbtime;
 }
 
-module.exports = { getFutureDate };
+module.exports = {getFutureDate}

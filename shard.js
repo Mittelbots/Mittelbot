@@ -1,5 +1,7 @@
-require('dotenv').config();
-const { ShardingManager } = require('discord.js');
+require("dotenv").config();
+const {
+    ShardingManager
+} = require('discord.js')
 const token = require('./_secret/token.json');
 
 if (!JSON.parse(process.env.DEBUG)) {
@@ -8,8 +10,8 @@ if (!JSON.parse(process.env.DEBUG)) {
         totalShards: 'auto',
         respawn: true,
     });
-    manager.once('shardCreate', (shard) => {
-        console.log(`[SHARDS]: Launched shards ${shard.id}`);
+    manager.once('shardCreate', shard => {
+        console.log(`[SHARDS]: Launched shards ${shard.id}`)
     });
 
     manager.spawn();

@@ -1,5 +1,5 @@
-import { Information } from './info.js';
-import { config } from './config.js';
+import { Information } from "./info.js";
+import { config } from "./config.js";
 
 //Dev information
 new Information();
@@ -12,6 +12,7 @@ var ChangerJSDetector = false;
 
 // To check if the data is changed or not
 var ChangeJSOldArray = [];
+
 
 /**
  * @description Generate Error messages
@@ -26,22 +27,25 @@ class Error {
             error: {
                 type: this.type,
                 code: this.code,
-                message: this.message,
-            },
-        };
+                message: this.message
+            }
+        }
     }
 
-    constructor({ message, type, code }) {
+    constructor({
+        message,
+        type,
+        code
+    }) {
         this.message = message;
         this.type = type;
         this.code = code;
 
         if (!message || !type || !code) {
             return new Error({
-                message:
-                    'Internal Error: Error Message, Type and Code are required. Please report this error to the developer or open a pull request to help us.',
+                message: 'Internal Error: Error Message, Type and Code are required. Please report this error to the developer or open a pull request to help us.',
                 type: 'InternalError',
-                code: '001',
+                code: '001'
             });
         }
 
@@ -80,9 +84,9 @@ class onChanges {
             detail: {
                 error: false,
                 isDataChanged: ChangerJSDetector,
-                changes: obj,
-            },
-        });
+                changes: obj
+            }
+        })
 
         window.dispatchEvent(event);
     }
@@ -98,7 +102,7 @@ class returnChanges {
         return {
             error: false,
             isDataChanged: ChangerJSDetector,
-            changes: obj,
+            changes: obj
         };
     }
 }
@@ -114,10 +118,7 @@ class checkSupportedType {
         return this.#check();
     }
     #check() {
-        if (
-            config.InputTypes.indexOf(this.el.type) !== -1 ||
-            config.SupportedTypes.indexOf(this.el.tagName.toLowerCase()) !== -1
-        ) {
+        if (config.InputTypes.indexOf(this.el.type) !== -1 || config.SupportedTypes.indexOf(this.el.tagName.toLowerCase()) !== -1) {
             return true;
         } else {
             return false;
@@ -127,7 +128,8 @@ class checkSupportedType {
 
 document.querySelectorAll('.ChangerJSInput').forEach(function (el) {
     if (new checkSupportedType(el)) {
-        let OldValue = el.value === undefined ? '' : el.value;
+
+        let OldValue = (el.value === undefined) ? '' : el.value;
 
         let changerID = new Randomint().randomint;
 
@@ -135,24 +137,26 @@ document.querySelectorAll('.ChangerJSInput').forEach(function (el) {
             id: changerID,
             cid: el.dataset.cid || '',
             OldValue,
-            NewValue: OldValue,
-        };
+            NewValue: OldValue
+        }
 
         let oldobj = {
             id: changerID,
             cid: el.dataset.cid || '',
             OldValue,
-            NewValue: OldValue,
-        };
-
+            NewValue: OldValue
+        }
+  
         el.dataset.changerjs = changerID;
 
         ChangerJSData.push(newobj);
         ChangeJSOldArray.push(oldobj);
 
-        el.addEventListener('change', function ({ target }) {
+        el.addEventListener('change', function ({
+            target
+        }) {
             let ChangerJSDataTag = target.dataset.changerjs;
-            let InputData = target.type === 'file' ? target.files[0] : target.value;
+            let InputData = (target.type === 'file') ? target.files[0] : target.value;
 
             for (let i in ChangerJSData) {
                 if (ChangerJSData[i].id == ChangerJSDataTag) ChangerJSData[i].NewValue = InputData;
@@ -163,18 +167,13 @@ document.querySelectorAll('.ChangerJSInput').forEach(function (el) {
                 }
             }
 
-            if (JSON.stringify(ChangerJSData) !== JSON.stringify(ChangeJSOldArray))
-                ChangerJSDetector = true;
-            else ChangerJSDetector = false;
+            if (JSON.stringify(ChangerJSData) !== JSON.stringify(ChangeJSOldArray)) ChangerJSDetector = true;
+            else ChangerJSDetector = false
 
             new onChanges(ChangerJSData);
-        });
+        })
     } else {
-        new Error({
-            message: `Not supported type detected: ${el.type ? el.type : el.tagName.toLowerCase()}`,
-            type: 'NotSupportedType',
-            code: '002',
-        });
+        new Error({message: `Not supported type detected: ${ (el.type) ? el.type : el.tagName.toLowerCase()}`, type: 'NotSupportedType', code: '002'});
     }
 });
 
@@ -185,11 +184,7 @@ document.querySelectorAll('.ChangerJSInput').forEach(function (el) {
  */
 export function getCJChanges(el) {
     if (!el) {
-        return new Error({
-            message: 'Please pass the element as parameter',
-            type: 'NoElementPassed',
-            code: '003',
-        });
+        return new Error({message: 'Please pass the element as parameter', type: 'NoElementPassed', code: '003'});
     }
 
     var element;
@@ -199,12 +194,7 @@ export function getCJChanges(el) {
 
     if (element.dataset.cjclick == 'true') {
         return new returnChanges(ChangerJSData);
-    } else {
-        return new Error({
-            message:
-                'You have to declare the element with the data-cjclick="true" attribute to call the function',
-            type: 'NoCorrectDataset',
-            code: '004',
-        });
+    }else {
+        return new Error({message: 'You have to declare the element with the data-cjclick="true" attribute to call the function', type: 'NoCorrectDataset', code: '004'});
     }
 }

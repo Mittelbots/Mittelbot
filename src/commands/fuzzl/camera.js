@@ -1,17 +1,19 @@
-const { EmbedBuilder } = require('discord.js');
+const {
+    EmbedBuilder
+} = require("discord.js");
 const ytdl = require('ytdl-core');
 const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async (bot, message, args) => {
     if (message.guild.id !== '978916743097491466' && !JSON.parse(process.env.DEBUG)) return;
 
-    const video_link = 'https://www.youtube.com/watch?v=BmjBU0IIR0k';
+    const video_link = "https://www.youtube.com/watch?v=BmjBU0IIR0k"
 
     let info = await ytdl.getInfo(video_link);
     const lastUploadEmbed = new EmbedBuilder()
         .setTitle(info.videoDetails.title)
         .setURL(video_link)
-        .setImage(info.videoDetails.thumbnails[3].url);
+        .setImage(info.videoDetails.thumbnails[3].url)
 
     const camera_setting = `**The best camera setting for F1 2022**\n
 Camera: **TV Pod Offset**
@@ -25,16 +27,14 @@ Mirror Angle: **-1**
 Camera Shake: **4**
 Camera Movement: **4**
 Lock to Apex Limit: **4**
-Halo Column: **On**`;
+Halo Column: **On**`
 
-    return message
-        .reply({
-            content: camera_setting,
-            embeds: [lastUploadEmbed],
-        })
-        .catch((err) => {});
-};
+    return message.reply({
+        content: camera_setting,
+        embeds: [lastUploadEmbed]
+    }).catch(err => {})
+}
 
 module.exports.help = {
-    name: 'camera',
-};
+    name: "camera"
+}

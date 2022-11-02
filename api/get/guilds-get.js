@@ -1,1 +1,3 @@
-module.exports.getGuilds = async () => {};
+module.exports.getGuilds = async () => {
+    
+}

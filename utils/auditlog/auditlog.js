@@ -1,49 +1,53 @@
-const { EmbedBuilder } = require('discord.js');
+const {
+    EmbedBuilder
+} = require('discord.js');
 const config = require('../../src/assets/json/_config/config.json');
 const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
-const { isOnBanList } = require('../functions/moderations/checkOpenInfractions');
-const { setNewModLogMessage } = require('../modlog/modlog');
-const { getLogs } = require('../functions/data/logs');
+const {
+    isOnBanList
+} = require('../functions/moderations/checkOpenInfractions');
+const {
+    setNewModLogMessage
+} = require('../modlog/modlog');
+const {
+    getLogs
+} = require('../functions/data/logs');
+
 
 var c = config.auditTypes;
 var gid = '';
 
 function auditLog(bot) {
-    bot.on(c.messagedelete, (message) => sendToAudit(bot, c.messagedelete, message));
 
-    bot.on(c.channelcreate, (channel) => sendToAudit(bot, c.channelcreate, channel));
+    bot.on(c.messagedelete, message => sendToAudit(bot, c.messagedelete, message));
 
-    bot.on(c.channeldelete, (channel) => sendToAudit(bot, c.channeldelete, channel));
+    bot.on(c.channelcreate, channel => sendToAudit(bot, c.channelcreate, channel));
 
-    bot.on(c.channelupdate, (oldchannel, newchannel) =>
-        sendToAudit(bot, c.channelupdate, oldchannel, newchannel)
-    );
+    bot.on(c.channeldelete, channel => sendToAudit(bot, c.channeldelete, channel));
 
-    bot.on(c.debug, (info) => sendToAudit(bot, c.debug, info));
+    bot.on(c.channelupdate, (oldchannel, newchannel) => sendToAudit(bot, c.channelupdate, oldchannel, newchannel));
 
-    bot.on(c.disconnect, (event) => sendToAudit(bot, c.debug, event));
+    bot.on(c.debug, info => sendToAudit(bot, c.debug, info));
 
-    bot.on(c.reconnecting, (event) => sendToAudit(bot, c.reconnecting, event));
+    bot.on(c.disconnect, event => sendToAudit(bot, c.debug, event));
 
-    bot.on(c.error, (err) => sendToAudit(bot, c.error, err));
+    bot.on(c.reconnecting, event => sendToAudit(bot, c.reconnecting, event));
 
-    bot.on(c.warn, (warn) => sendToAudit(bot, c.warn, warn));
+    bot.on(c.error, err => sendToAudit(bot, c.error, err));
 
-    bot.on(c.guildupdate, (oldguild, newguild) =>
-        sendToAudit(bot, c.guildupdate, oldguild, newguild)
-    );
+    bot.on(c.warn, warn => sendToAudit(bot, c.warn, warn));
 
-    bot.on(c.messagedeletebulk, (messages) => sendToAudit(bot, c.messagedeletebulk, messages));
+    bot.on(c.guildupdate, (oldguild, newguild) => sendToAudit(bot, c.guildupdate, oldguild, newguild));
 
-    bot.on(c.messageupdate, (oldmessage, newmessage) =>
-        sendToAudit(bot, c.messageupdate, oldmessage, newmessage)
-    );
+    bot.on(c.messagedeletebulk, messages => sendToAudit(bot, c.messagedeletebulk, messages));
 
-    bot.on(c.rolecreate, (role) => sendToAudit(bot, c.rolecreate, role));
+    bot.on(c.messageupdate, (oldmessage, newmessage) => sendToAudit(bot, c.messageupdate, oldmessage, newmessage));
+
+    bot.on(c.rolecreate, role => sendToAudit(bot, c.rolecreate, role));
 
     //bot.on(c.roleupdate, (oldrole, newrole) => sendToAudit(bot, c.roleupdate, oldrole, newrole));
 
-    bot.on(c.roledelete, (role) => sendToAudit(bot, c.roledelete, role));
+    bot.on(c.roledelete, role => sendToAudit(bot, c.roledelete, role));
 
     bot.on(c.guildBanAdd, (guild, user) => sendToAudit(bot, c.guildBanAdd, guild, user));
 
@@ -53,16 +57,17 @@ function auditLog(bot) {
 async function sendToAudit(bot, type, content1, content2) {
     if (ignorechannel.c.indexOf(content1.channelId) !== -1) return;
 
-    var Message = new EmbedBuilder().setTimestamp();
+    var Message = new EmbedBuilder()
+        .setTimestamp()
 
     async function isOnWhitelist() {
         const logs = await getLogs({
-            guild_id: content1.guild.id,
-        });
+            guild_id: content1.guild.id
+        })
         var whitelist = logs.whitelist;
 
         if (whitelist && whitelist.length > 0) {
-            var userRoles = content1.member.roles.cache.map((role) => role.id);
+            var userRoles = content1.member.roles.cache.map(role => role.id);
             var channel = content1.channel;
 
             var isWhitelist = whitelist.filter(function (item) {
@@ -74,12 +79,14 @@ async function sendToAudit(bot, type, content1, content2) {
             } else {
                 return false;
             }
-        } else {
+        }else {
             return false;
         }
     }
 
+
     switch (type) {
+
         case c.debug:
             Message.setDescription(`**Debug info: ** \n ${content1}`);
             break;
@@ -100,33 +107,30 @@ async function sendToAudit(bot, type, content1, content2) {
             Message.setDescription(`**WARN ** \n ${content1}`);
             break;
 
+
         case c.messagedeletebulk:
-            if (!content1.guild) return;
+            if (!content1.guild) return
             if (content1.author.bot) return;
 
-            gid = content1.guildId;
+            gid = content1.guildId
             Message.setColor('#fc0509');
-            Message.setThumbnail(
-                content1.author.avatarURL({
-                    format: 'jpg',
-                })
-            );
+            Message.setThumbnail(content1.author.avatarURL({
+                format: 'jpg'
+            }))
             Message.setAuthor({
                 name: content1.author.username + ' ' + content1.author.discriminator,
                 icon_url: content1.author.avatarURL({
-                    format: 'jpg',
-                }),
-            });
-            Message.setDescription(
-                `**Bulkmessages sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n${content1}`
-            );
+                    format: 'jpg'
+                })
+            })
+            Message.setDescription(`**Bulkmessages sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n${content1}`);
             Message.setFooter({
-                text: `Author: ${content1.author.id} | MessageID: ${content1.id}`,
+                text: `Author: ${content1.author.id} | MessageID: ${content1.id}`
             });
             break;
 
         case c.messagedelete:
-            if (!content1.guild) return;
+            if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
             if (content1.system) return;
@@ -137,110 +141,96 @@ async function sendToAudit(bot, type, content1, content2) {
             const attachment = content1.attachments.first();
 
             Message.setColor('#fc0509');
-            Message.setThumbnail(
-                content1.author.avatarURL({
-                    format: 'jpg',
-                })
-            );
+            Message.setThumbnail(content1.author.avatarURL({
+                format: 'jpg'
+            }))
             Message.setAuthor({
                 name: content1.author.username + ' ' + content1.author.discriminator,
                 icon_url: content1.author.avatarURL({
-                    format: 'jpg',
-                }),
-            });
-            Message.setDescription(
-                `**Message sent by <@${content1.author.id}> deleted in <#${
-                    content1.channelId
-                }>** \n${attachment !== undefined ? '' : content1}`
-            );
+                    format: 'jpg'
+                })
+            })
+            Message.setDescription(`**Message sent by <@${content1.author.id}> deleted in <#${content1.channelId}>** \n${(attachment !== undefined) ? '' : content1}`);
             if (content1.stickers.size > 1) {
-                Message.addFields([
-                    {
-                        name: 'Stickers',
-                        value: content1.stickers.map((s) => s.url).join('\n'),
-                    },
-                ]);
+                Message.addFields([{
+                    name: 'Stickers',
+                    value: content1.stickers.map(s => s.url).join('\n')
+                }]);
             }
-            if (attachment !== undefined) Message.setImage(attachment.url);
+            if (attachment !== undefined) Message.setImage(attachment.url)
             Message.setFooter({
-                text: `Author: ${content1.author.id} | MessageID: ${content1.id}`,
+                text: `Author: ${content1.author.id} | MessageID: ${content1.id}`
             });
             break;
 
         case c.messageupdate:
-            if (!content1.guild) return;
+            if (!content1.guild) return
             if (content1.author.id === bot.user.id) return;
             if (content1.author.bot) return;
             if (content1.content == content2.content) return;
 
             if (await isOnWhitelist()) return;
 
-            gid = content1.guildId;
+            gid = content1.guildId
 
             Message.setColor('#2c4ff9');
-            Message.setThumbnail(
-                content1.author.avatarURL({
-                    format: 'jpg',
-                })
-            );
+            Message.setThumbnail(content1.author.avatarURL({
+                format: 'jpg'
+            }))
             Message.setAuthor({
                 name: content1.author.username + ' ' + content1.author.discriminator,
                 icon_url: content1.author.avatarURL({
-                    format: 'jpg',
-                }),
-            });
-            Message.setDescription(
-                `**Message edited in <#${content1.channelId}> [Jump to Message](https://discord.com/channels/${content2.guildId}/${content2.channelId}/${content2.id})** \n **Before** \n${content1} \n**After** \n${content2}`
-            );
+                    format: 'jpg'
+                })
+            })
+            Message.setDescription(`**Message edited in <#${content1.channelId}> [Jump to Message](https://discord.com/channels/${content2.guildId}/${content2.channelId}/${content2.id})** \n **Before** \n${content1} \n**After** \n${content2}`);
             Message.setFooter({
-                text: `Author: ${content1.author.id} | MessageID: ${content1.id}`,
+                text: `Author: ${content1.author.id} | MessageID: ${content1.id}`
             });
             break;
 
         case c.channelcreate:
-            gid = content1.guildId;
+            gid = content1.guildId
 
             Message.setColor('#36d30a');
             Message.setDescription(`**Channel ${content1} created**`);
             break;
 
         case c.channeldelete:
-            gid = content1.guildId;
+            gid = content1.guildId
 
             Message.setColor('#a80f2b');
             Message.setDescription(`**Channel #${content1.name} deleted**`);
             break;
 
-        // case c.channelupdate:
-        //     gid = content2.guildId
-        //     Message.setDescription(`**Channel ${content2} updated** `);
-        //     break;
+            // case c.channelupdate:
+            //     gid = content2.guildId
+            //     Message.setDescription(`**Channel ${content2} updated** `);
+            //     break;
 
         case c.guildupdate:
-            gid = content2.guildId;
+            gid = content2.guildId
 
             Message.setColor('#021982');
             Message.setDescription(`**Guild updated** \n ${content1} ---> ${content2}`);
             break;
 
         case c.rolecreate:
-            gid = content1.guildId;
+            gid = content1.guildId
 
             Message.setColor('#36d30a');
             Message.setDescription(`**Role ${content1} created**`);
             break;
 
         case c.roleupdate:
-            gid = content2.guildId;
+            gid = content2.guildId
 
             Message.setColor('#021982');
-            Message.setDescription(
-                `**Role ${content2} updated** \n **Before** \n ${content1} \n **After** \n ${content2}`
-            );
+            Message.setDescription(`**Role ${content2} updated** \n **Before** \n ${content1} \n **After** \n ${content2}`);
             break;
 
         case c.roledelete:
-            gid = content1.guildId;
+            gid = content1.guildId
 
             Message.setColor('#021982');
             Message.setDescription(`**Role ${content1} deleted**`);
@@ -251,15 +241,7 @@ async function sendToAudit(bot, type, content1, content2) {
                 user: content1.user,
                 guild: content1.guild,
             });
-            setNewModLogMessage(
-                bot,
-                config.defaultModTypes.ban,
-                banlist[2].id,
-                content1.user,
-                banlist[1],
-                null,
-                content1.guild.id
-            );
+            setNewModLogMessage(bot, config.defaultModTypes.ban, banlist[2].id, content1.user, banlist[1], null, content1.guild.id);
             break;
 
         case c.guildBanRemove:
@@ -270,90 +252,60 @@ async function sendToAudit(bot, type, content1, content2) {
 
             const banLog = fetchedLogs.entries.first();
             if (banLog) {
-                var { executor, target } = banLog;
+                var {
+                    executor,
+                    target
+                } = banLog;
             }
 
-            setNewModLogMessage(
-                bot,
-                config.defaultModTypes.unban,
-                target.id === content1.user.id ? executor.id : null,
-                content1.user,
-                null,
-                null,
-                content1.guild.id
-            );
+            setNewModLogMessage(bot, config.defaultModTypes.unban, (target.id === content1.user.id) ? executor.id : null, content1.user, null, null, content1.guild.id);
             break;
+
     }
 
     if (type === c.debug) {
-        return bot.guilds.cache
-            .get(process.env.DEVELOPER_DISCORD_GUILD_ID)
-            .channels.cache.get(process.env.DC_DEBUG)
-            .send({
-                embeds: [Message],
-            })
-            .catch((err) => {});
+        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_DEBUG).send({
+            embeds: [Message]
+        }).catch(err => {});
     } else if (type === c.disconnect) {
-        return bot.guilds.cache
-            .get(process.env.DEVELOPER_DISCORD_GUILD_ID)
-            .channels.cache.get(process.env.DC_DISCONNECT)
-            .send({
-                embeds: [Message],
-            })
-            .catch((err) => {});
+        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_DISCONNECT).send({
+            embeds: [Message]
+        }).catch(err => {});
     } else if (type === c.error) {
-        return bot.guilds.cache
-            .get(process.env.DEVELOPER_DISCORD_GUILD_ID)
-            .channels.cache.get(process.env.DC_ERROR)
-            .send({
-                embeds: [Message],
-            })
-            .catch((err) => {});
+        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_ERROR).send({
+            embeds: [Message]
+        }).catch(err => {});
     } else if (type === c.warn) {
-        return bot.guilds.cache
-            .get(process.env.DEVELOPER_DISCORD_GUILD_ID)
-            .channels.cache.get(process.env.DC_WARN)
-            .send({
-                embeds: [Message],
-            })
-            .catch((err) => {});
+        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_WARN).send({
+            embeds: [Message]
+        }).catch(err => {});
     } else if (type === c.reconnecting) {
-        return bot.guilds.cache
-            .get(process.env.DEVELOPER_DISCORD_GUILD_ID)
-            .channels.cache.get(process.env.DC_RECONNECT)
-            .send({
-                embeds: [Message],
-            })
-            .catch((err) => {});
+        return bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(process.env.DC_RECONNECT).send({
+            embeds: [Message]
+        }).catch(err => {});
     }
 
     const logs = await getLogs({
-        guild_id: content1.guild.id,
+        guild_id: content1.guild.id
     });
 
     if (type === c.messageupdate && logs.messagelog !== null) {
         try {
-            return bot.channels.cache
-                .get(logs.messagelog)
-                .send({
-                    embeds: [Message],
-                })
-                .catch((err) => {});
+            return bot.channels.cache.get(logs.messagelog).send({
+                embeds: [Message]
+            }).catch(err => {});
         } catch (err) {}
     } else {
         if (logs.auditlog !== null) {
             try {
-                return bot.channels.cache
-                    .get(logs.auditlog)
-                    .send({
-                        embeds: [Message],
-                    })
-                    .catch((err) => {});
+                return bot.channels.cache.get(logs.auditlog).send({
+                    embeds: [Message]
+                }).catch(err => {});
             } catch (err) {}
         }
     }
 }
 
 module.exports = {
-    auditLog,
+    auditLog
 };
