@@ -1,6 +1,5 @@
 const { channelId } = require('@gonetone/get-youtube-id-by-url');
 const database = require('../../../src/db/db');
-const { ytUploads } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const request = new (require('rss-parser'))();
 

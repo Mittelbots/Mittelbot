@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const database = require('../../../src/db/db');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { getFromCache, addValueToCache, guildLevel } = require('../cache/cache');
 const fs = require('fs');
 const levelConfig = require('./levelconfig.json');
 const levelSystem = require('./levelsystem');

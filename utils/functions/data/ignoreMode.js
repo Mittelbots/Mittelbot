@@ -1,5 +1,4 @@
 const database = require('../../../src/db/db');
-const { globalConfig } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports.updateGlobalConfig = async ({ valueName, value }) => {

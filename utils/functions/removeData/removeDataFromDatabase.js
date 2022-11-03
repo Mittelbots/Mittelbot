@@ -1,5 +1,4 @@
 const database = require('../../../src/db/db');
-const { openInfractions } = require('../cache/cache');
 const { getAllOpenInfractions } = require('../data/infractions');
 const { errorhandler } = require('../errorhandler/errorhandler');
 

@@ -1,5 +1,4 @@
 const database = require('../../../src/db/db');
-const { getFromCache, memberInfo } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
 /** cache */

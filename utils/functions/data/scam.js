@@ -4,7 +4,6 @@ const dns = require('dns');
 const url = require('url');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { removeHttp } = require('../removeCharacters');
-const { scamList } = require('../cache/cache');
 
 module.exports.addScam = ({ value, guild_id, guild_name, bot, author }) => {
     return new Promise(async (resolve, reject) => {

@@ -10,7 +10,6 @@ const {
     getAllOpenInfractions,
     removeInfractionById,
 } = require('../../utils/functions/data/infractions');
-const { openInfractions } = require('../../utils/functions/cache/cache');
 
 async function deleteEntries(infraction) {
     removeInfractionById({ inf_id: infraction.infraction_id, type: 'open' });

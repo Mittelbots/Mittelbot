@@ -1,7 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
 const database = require('../../../src/db/db');
 const { twitchApiClient } = require('../../../src/events/notfifier/twitch_notifier');
-const { twitchStreams } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpingrole, guild }) => {

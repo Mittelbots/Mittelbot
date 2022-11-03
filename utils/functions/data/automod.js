@@ -1,4 +1,4 @@
-const guildAutomod = require('../../../src/db/Models/tables/guildAutomod');
+const guildAutomod = require('../../../src/db/Models/tables/guildAutomod.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports.insertIntoGuildAutomod = async (guild_id) => {

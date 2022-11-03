@@ -1,5 +1,4 @@
 const database = require('../../../src/db/db');
-const { openInfractions, closedInfractions } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getCurrentFullDate } = require('./dates');
 

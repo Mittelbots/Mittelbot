@@ -8,6 +8,7 @@ GuildConfig.init(
         guild_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            unique: 'guild_id',
         },
         welcome_channel: {
             type: DataTypes.JSON,

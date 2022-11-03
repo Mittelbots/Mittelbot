@@ -1,6 +1,5 @@
 const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
 const database = require('../../../src/db/db');
-const { applyforms } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { removeMention } = require('../removeCharacters');
 const { isValidHexCode } = require('../validate/isValidHexCode');

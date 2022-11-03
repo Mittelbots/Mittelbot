@@ -1,7 +1,7 @@
-const allGuildId = require('../../../src/db/Models/tables/allGuildId');
+const allGuildId = require('../../../src/db/Models/tables/guilds.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
-class AllGuildId {
+class Guilds {
     constructor() {}
 
     async insert(guild_id) {
@@ -31,4 +31,4 @@ class AllGuildId {
     }
 }
 
-module.exports = new AllGuildId();
+module.exports = new Guilds();

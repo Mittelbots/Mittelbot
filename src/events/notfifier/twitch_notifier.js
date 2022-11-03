@@ -1,7 +1,6 @@
 const { ApiClient } = require('@twurple/api');
 const { ClientCredentialsAuthProvider } = require('@twurple/auth');
 const { EmbedBuilder } = require('discord.js');
-const { twitchStreams } = require('../../../utils/functions/cache/cache');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 

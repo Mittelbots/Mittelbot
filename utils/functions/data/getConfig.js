@@ -1,6 +1,6 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const config_file = require('../../../src/assets/json/_config/config.json');
-const guildConfig = require('../../../src/db/Models/tables/guildConfig');
+const guildConfig = require('../../../src/db/Models/tables/guildConfig.model');
 
 module.exports.insertGuildIntoGuildConfig = async (guild_id) => {
     return new Promise(async (resolve, reject) => {

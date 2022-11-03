@@ -62,13 +62,12 @@ const database = new Sequelize(
         console.log('Inserting default data from: ' + file);
         require(path.join(data_mg_path, file));
     });
+
+    process.exit(0);
 })();
 
 database.afterSync(async (connection) => {
-    errorhandler({
-        message: `Successfully synced ${connection.name.plural}.`,
-        fatal: false,
-    });
+    console.log(`Successfully synced ${connection.name.plural}.`)
 });
 
 database.afterDestroy((error) => {

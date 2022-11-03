@@ -1,5 +1,4 @@
 const { getGuildConfig, updateGuildConfig } = require('./getConfig');
-const { guildConfig } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const translatte = require('translatte');
 

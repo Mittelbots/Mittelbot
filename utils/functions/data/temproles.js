@@ -1,5 +1,4 @@
 const database = require('../../../src/db/db');
-const { temproles } = require('../cache/cache');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports.getAllTemproles = async () => {

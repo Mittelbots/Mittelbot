@@ -2,7 +2,6 @@ const request = new (require('rss-parser'))();
 
 const database = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { ytUploads } = require('../../../utils/functions/cache/cache');
 
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
