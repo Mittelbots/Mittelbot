@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const {
-    save_welcomechannelId,
     sendWelcomeSetting,
     updateWelcomeSettings,
 } = require('../../../utils/functions/data/welcomechannel');
