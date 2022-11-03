@@ -1,4 +1,4 @@
-const { getGuildConfig } = require('../data/getConfig');
+const { GuildConfig } = require('../data/Config');
 const { getGlobalConfig } = require('../data/ignoreMode');
 
 module.exports.checkActiveCommand = async (command_name, guild_id) => {
@@ -14,12 +14,9 @@ module.exports.checkActiveCommand = async (command_name, guild_id) => {
         };
     }
 
-    const { settings } = await getGuildConfig({
-        guild_id,
-    });
+    const guildConfig = await GuildConfig.get(guild_id);
 
-    const guild_disabled =
-        JSON.parse(settings.disabled_commands) || settings.disabled_commands || [];
+    const guild_disabled = guildConfig.disabled_commands;
 
     if (guild_disabled.includes(command_name)) {
         return {

@@ -3,7 +3,7 @@ const { delay } = require('../delay/delay');
 const { validURL } = require('../validate/isValidURL');
 const { isValidHexCode } = require('../validate/isValidHexCode');
 const { validateCustomStrings } = require('../validate/validateCustomStrings');
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { updateGuildConfig, GuildConfig } = require('./Config');
 const { defaultWelcomeMessage } = require('./variables');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
@@ -32,11 +32,9 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value }) =>
 //=========================================================
 
 module.exports.getWelcomechannel = async ({ guild_id }) => {
-    const { settings } = await getGuildConfig({
-        guild_id,
-    });
-    return settings && settings.welcome_channel
-        ? JSON.parse(settings.welcome_channel)
+    const guildConfig = await GuildConfig.get(guild_id);
+    return guildConfig && guildConfig.welcome_channel
+        ? guildConfig.welcome_channel
         : defaultWelcomeMessage;
 };
 

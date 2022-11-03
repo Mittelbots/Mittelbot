@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { updateGuildConfig, getGuildConfig } = require('../../../utils/functions/data/getConfig');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { changeLevelUp } = require('../../../utils/functions/levelsystem/levelsystemAPI');
+const { GuildConfig, updateGuildConfig } = require('../../../utils/functions/data/Config');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const hasPermissions = await hasPermission({
@@ -21,20 +21,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
+    const guildConfig = await GuildConfig.get(main_interaction.guild.id);
+    let levelsettings = guildConfig.levelsettings;
+
     switch (main_interaction.options.getSubcommand()) {
         case 'mode':
             const mode = main_interaction.options.getString('mode');
-
-            const { settings } = await getGuildConfig({
-                guild_id: main_interaction.guild.id,
-            });
-
-            var levelsettings;
-            try {
-                levelsettings = JSON.parse(settings.levelsettings) || {};
-            } catch (e) {
-                levelsettings = settings.levelsettings;
-            }
 
             levelsettings.mode = mode;
 
@@ -66,20 +58,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 }
             }
 
-            const guilConfig = await getGuildConfig({
-                guild_id: main_interaction.guild.id,
-            });
 
-            var levelsettings;
-            if (!guilConfig.settings.levelsettings) {
-                guilConfig.settings.levelsettings = {};
-            }
-
-            try {
-                levelsettings = JSON.parse(guilConfig.settings.levelsettings);
-            } catch (err) {
-                levelsettings = {};
-            }
+            levelsettings = guildConfig.levelsettings;
 
             if (!levelsettings.blacklistchannels) {
                 levelsettings.blacklistchannels = [];

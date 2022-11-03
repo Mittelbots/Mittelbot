@@ -5,7 +5,7 @@ const fs = require('fs');
 const levelConfig = require('./levelconfig.json');
 const levelSystem = require('./levelsystem');
 const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
-const { getGuildConfig, updateGuildConfig } = require('../data/getConfig');
+const { updateGuildConfig, GuildConfig } = require('../data/Config');
 
 var levelCooldownArray = [];
 
@@ -114,16 +114,10 @@ module.exports.checkXP = async function (bot, guildid, currentxp, message) {
 };
 
 module.exports.sendNewLevelMessage = async function (newLevel, message, currentxp, nextlevel) {
-    const { settings } = getGuildConfig({
-        guild_id: message.guild.id,
-    });
+    const guildConfig = await GuildConfig.get(message.guild.id);
 
-    var levelsettings;
-    try {
-        levelsettings = JSON.parse(settings.levelsettings) || {};
-    } catch (e) {
-        levelsettings = settings.levelsettings;
-    }
+    const levelsettings = guildConfig.levelsettings
+
 
     var newLevelMessage = new EmbedBuilder()
         .setTitle('🎉 You reached a new Level!')
@@ -176,14 +170,6 @@ module.exports.sendNewLevelMessage = async function (newLevel, message, currentx
  */
 
 module.exports.getXPOfGuild = async ({ guildid }) => {
-    const cache = await getFromCache({
-        cacheName: 'guildLevel',
-        param_id: guildid,
-    });
-    if (cache.length > 0) {
-        return cache[0].levels;
-    }
-
     return await database
         .query(`SELECT * FROM guild_level WHERE guild_id = ?`, [guildid])
         .then(async (res) => {
@@ -237,11 +223,9 @@ module.exports.addUserToGuildLevel = async ({ guild_id, user_id }) => {
  * @returns {String} Level mode
  */
 module.exports.getLevelSettingsFromGuild = async (guild_id) => {
-    const { settings } = await getGuildConfig({
-        guild_id,
-    });
+    const guildConfig = await GuildConfig.get(guild_id);
 
-    return settings.levelsettings;
+    return guildConfig.levelsettings;
 };
 
 module.exports.getNextLevel = async function (levels, currentlevel) {
@@ -416,16 +400,8 @@ module.exports.levelCooldown = async ({ message, bot }) => {
 
 module.exports.changeLevelUp = async ({ type, guild, channel }) => {
     return new Promise(async (resolve, reject) => {
-        const { settings } = await getGuildConfig({
-            guild_id: guild.id,
-        });
-
-        var levelsettings;
-        try {
-            levelsettings = JSON.parse(settings.levelsettings) || {};
-        } catch (e) {
-            levelsettings = settings.levelsettings;
-        }
+        const guildConfig = await GuildConfig.get(guild.id);
+        const levelsettings = guildConfig.levelsettings;
 
         if (type === 'dm' || type === 'disable') {
             levelsettings.levelup_channel = type === 'dm' ? 'dm' : 'disable';
@@ -489,31 +465,18 @@ module.exports.checkBlacklistChannels = async ({ message }) => {
             blacklistchannels = [];
         }
     } else {
-        const { settings } = await getGuildConfig({
-            guild: message.guild.id,
-        });
-
-        let levelsettings;
-        try {
-            levelsettings = JSON.parse(settings.levelsettings);
-        } catch (err) {
-            levelsettings = {};
-        }
-
+        const guildConfig = await GuildConfig.get(message.guild.id);
+        const levelsettings = guildConfig.levelsettings;
+        
         if (levelsettings && levelsettings.length > 0) {
             blacklistchannels = levelsettings.levelsettings.blacklistchannels;
         }
     }
-    if (blacklistchannels) {
-        if (
-            blacklistchannels.includes(message.channel.id) ||
-            blacklistchannels.includes(message.channel.parentId)
-        ) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
+
+    if(!blacklistchannels) return false;
+
+    return (
+        blacklistchannels.includes(message.channel.id) ||
+        blacklistchannels.includes(message.channel.parentId)
+    ) ? true : false
 };

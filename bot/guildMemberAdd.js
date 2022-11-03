@@ -6,17 +6,15 @@ const {
     updateMemberInfoById,
 } = require('../utils/functions/data/getMemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
-const { getGuildConfig } = require('../utils/functions/data/getConfig');
+const { GuildConfig } = require('../utils/functions/data/Config');
 const { getJoinroles } = require('../utils/functions/data/joinroles');
 const { getOpenInfractionsByUserId } = require('../utils/functions/data/infractions');
 
 module.exports.guildMemberAdd = async (member, bot) => {
-    var { settings } = await getGuildConfig({
-        guild_id: member.guild.id,
-    });
+    const config = GuildConfig.get(member.guild.id);
 
     try {
-        disabled_modules = JSON.parse(settings.disabled_modules);
+        disabled_modules = config.disabled_modules;
 
         if (disabled_modules.indexOf('welcomemessage') === -1) {
             sendWelcomeMessage({

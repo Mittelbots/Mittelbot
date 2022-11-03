@@ -1,7 +1,7 @@
 const {
     checkActiveCommand,
 } = require('../../utils/functions/checkActiveCommand/checkActiveCommand');
-const { getGuildConfig } = require('../../utils/functions/data/getConfig');
+const { GuildConfig } = require('../../utils/functions/data/Config');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     let moderation = [
@@ -31,11 +31,9 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
 
     //=========================================================
 
-    var { settings } = await getGuildConfig({
-        guild_id: main_interaction.guild.id,
-    });
+    const guildConfig = await GuildConfig.get(main_interaction.guild_id);
 
-    disabled_modules = JSON.parse(settings.disabled_modules) || [];
+    disabled_modules = guildConfig.disabled_modules
 
     function disabled(module) {
         return main_interaction

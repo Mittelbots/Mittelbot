@@ -1,19 +1,12 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { checkRole } = require('../roles/checkRole');
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { updateGuildConfig, GuildConfig } = require('./Config');
 
 module.exports.getWarnroles = async ({ guild_id }) => {
-    const { settings } = await getGuildConfig({
-        guild_id,
-    });
-    var warnroles;
-    try {
-        warnroles = JSON.parse(settings.warnroles);
-    } catch (e) {
-        warnroles = settings.warnroles || [];
-    }
+    const guildConfig = await GuildConfig.get(guild_id);
+    
 
-    return warnroles || [];
+    return guildConfig.warnroles;
 };
 
 module.exports.addWarnroles = async ({ guild_id, warnrole_id }) => {

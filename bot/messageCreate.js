@@ -4,18 +4,17 @@ const { checkForScam } = require('../utils/checkForScam/checkForScam');
 const { log } = require('../logs');
 const { delay } = require('../utils/functions/delay/delay');
 const { translateMessage } = require('../utils/functions/data/translate');
-const { getGuildConfig } = require('../utils/functions/data/getConfig');
 const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { getAutomodbyGuild } = require('../utils/functions/data/automod');
 const { checkAFK } = require('../utils/functions/data/afk');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
-const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
+const { Guilds } = require('../utils/functions/data/Guilds');
 
 const defaultCooldown = new Set();
 
 async function messageCreate(message, bot) {
-    if (isGuildBlacklist({ guild_id: message.guild.id })) {
+    if (Guilds.isBlacklist(message.guild.id)) {
         const guild = bot.guilds.cache.get(message.guild.id);
 
         await bot.users.cache
@@ -57,25 +56,9 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    var { settings } = await getGuildConfig({
-        guild_id: message.guild.id,
-    });
+    const guildConfig = Guilds.get(message.guild.id);
 
-    if (!settings) {
-        errorhandler({
-            fatal: false,
-            message: `${main_interaction.guild.id} dont have any config.`,
-        });
-        return message.channel
-            .send(config.errormessages.general)
-            .then(async (msg) => {
-                await delay(5000);
-                msg.delete().catch((err) => {});
-            })
-            .catch((err) => {});
-    }
-
-    disabled_modules = JSON.parse(settings.disabled_modules) || [];
+    disabled_modules = JSON.parse(guildConfig.disabled_modules) || [];
 
     if (disabled_modules.indexOf('scamdetection') === -1)
         await checkForScam(message, bot, config, log);
@@ -84,8 +67,9 @@ async function messageCreate(message, bot) {
     let cmd = messageArray[0];
     let args = messageArray.slice(1);
 
-    const prefix = settings.prefix;
-    const cooldown = settings.cooldown;
+    const prefix = guildConfig.prefix;
+    const cooldown = guildConfig.cooldown;
+    
     if (cmd.startsWith(prefix)) {
         let commandfile = bot.commands.get(cmd.slice(prefix.length));
         if (commandfile) {

@@ -2,7 +2,7 @@ const { handleSlashCommands } = require('../src/slash_commands');
 const { manageNewWelcomeSetting } = require('../utils/functions/data/welcomechannel');
 const { manageNewForm, manageApplication } = require('../utils/functions/data/apply_form');
 const config = require('../src/assets/json/_config/config.json');
-const { getGuildConfig } = require('../utils/functions/data/getConfig');
+const { GuildConfig } = require('../utils/functions/data/Config');
 const { InteractionType } = require('discord.js');
 const { manageScam } = require('../utils/functions/data/scam');
 const { handlerAFKInput } = require('../utils/functions/data/afk');
@@ -27,9 +27,7 @@ module.exports.interactionCreate = ({ bot }) => {
                 .catch((err) => {});
         }
 
-        var { settings } = await getGuildConfig({
-            guild_id: main_interaction.guild.id,
-        });
+        const guildConfig = await GuildConfig.get(main_interaction.guild.id);
 
         main_interaction.bot = bot;
         if (main_interaction.type === InteractionType.ApplicationCommand) {
@@ -42,7 +40,7 @@ module.exports.interactionCreate = ({ bot }) => {
                 return main_interaction
                     .reply({
                         content: `You have to wait ${
-                            settings.cooldown / 1000 + 's' || config.defaultCooldown.text
+                            guildConfig.cooldown / 1000 + 's' || config.defaultCooldown.text
                         } after each Command.`,
                         ephemeral: true,
                     })
@@ -51,7 +49,7 @@ module.exports.interactionCreate = ({ bot }) => {
                 defaultCooldown.add(main_interaction.user.id);
                 setTimeout(async () => {
                     defaultCooldown.delete(main_interaction.user.id);
-                }, settings.cooldown || config.defaultCooldown.format);
+                }, guildConfig.cooldown || config.defaultCooldown.format);
 
                 return handleSlashCommands({
                     main_interaction,

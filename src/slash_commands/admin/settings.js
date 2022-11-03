@@ -4,7 +4,7 @@ const {
     sendWelcomeSetting,
     updateWelcomeSettings,
 } = require('../../../utils/functions/data/welcomechannel');
-const { checkPrefix, updateGuildConfig } = require('../../../utils/functions/data/getConfig');
+const { checkPrefix, updateGuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
 const { updateJoinroles } = require('../../../utils/functions/data/joinroles');
 const database = require('../../db/db');

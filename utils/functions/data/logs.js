@@ -1,17 +1,9 @@
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { updateGuildConfig, GuildConfig } = require('./Config');
 
 module.exports.getLogs = async ({ guild_id }) => {
-    const { settings } = await getGuildConfig({
-        guild_id,
-    });
-    var logs;
-    try {
-        logs = JSON.parse(settings.logs);
-    } catch (e) {
-        logs = settings.logs || {};
-    }
+    const guildConfig = await GuildConfig.get(guild_id);
 
-    return logs;
+    return guildConfig.logs;
 };
 
 module.exports.updateLog = async ({

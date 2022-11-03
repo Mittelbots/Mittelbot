@@ -1,4 +1,5 @@
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { GuildConfig } = require('./Config');
+const { updateGuildConfig } = require('./Config');
 
 module.exports.updatePermsFromModroles = async ({
     guild_id,
@@ -8,21 +9,8 @@ module.exports.updatePermsFromModroles = async ({
     ishelper,
 }) => {
     return new Promise(async (resolve, reject) => {
-        const config = await getGuildConfig({
-            guild_id,
-        });
-        var modroles;
-        try {
-            modroles = JSON.parse(config.settings.modroles);
-        } catch (e) {
-            modroles = config.settings.modroles;
-        }
-
-        try {
-            modroles = JSON.parse(modroles);
-        } catch (e) {}
-
-        if (!modroles) modroles = [];
+        const guildConfig = await GuildConfig.get(guild_id);
+        const modroles = guildConfig.modroles;
 
         const obj = {
             role: role_id,

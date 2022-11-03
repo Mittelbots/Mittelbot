@@ -2,7 +2,7 @@ const { checkAuth } = require('../../../functions/checkAuth/checkAuth');
 const { renderTemplate } = require('../../../functions/renderTemplate/renderTemplate');
 const { PermissionsBitField } = require('discord.js');
 const axios = require('axios');
-const { getGuildConfig } = require('../../../../utils/functions/data/getConfig');
+const { getGuildConfig } = require('../../../../utils/functions/data/Config');
 const { errorhandler } = require('../../../../utils/functions/errorhandler/errorhandler');
 
 module.exports = ({ app }) => {

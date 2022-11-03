@@ -12,8 +12,7 @@ const {
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { updatePermsFromModroles } = require('../../../utils/functions/data/modroles');
-const database = require('../../db/db');
-const { getGuildConfig } = require('../../../utils/functions/data/getConfig');
+const { GuildConfig } = require('../../../utils/functions/data/Config');
 
 module.exports.run = async (bot, message, args) => {
     if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
@@ -55,15 +54,10 @@ module.exports.run = async (bot, message, args) => {
 
         args[1] = removeMention(args[1]);
 
-        const config = await getGuildConfig({
-            guild_id: message.guild.id,
-        });
-        var modroles;
-        try {
-            modroles = JSON.parse(config.settings.modroles);
-        } catch (e) {
-            modroles = config.settings.modroles;
-        }
+        const guildConfig = await GuildConfig.get(message.guild.id);
+        
+        const modroles = guildConfig.modroles;
+
         for (let i in modroles) {
             if (modroles[i].role === args[1]) {
                 roleid = modroles[i].role;
@@ -84,7 +78,7 @@ module.exports.run = async (bot, message, args) => {
             );
         }
 
-        let modroleembed = new EmbedBuilder().setTitle(
+        const modroleembed = new EmbedBuilder().setTitle(
             `Choose setting for _${role.name}_. \n\nCurrent: **${
                 db_isadmin
                     ? 'Admin'

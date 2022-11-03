@@ -1,13 +1,10 @@
-const { getGuildConfig } = require('./data/getConfig');
+const { GuildConfig } = require('./data/Config');
 
 module.exports.isMod = async ({ member, guild }) => {
     if (!member) return false;
 
-    const { settings } = await getGuildConfig({
-        guild_id: guild.id,
-    });
-
-    const modroles = JSON.parse(settings.modroles) || settings.modroles || [];
+    const guildConfig = await GuildConfig.get(guild.id);
+    const modroles = guildConfig.modroles;
 
     var isTeam = false;
     for (let i in await modroles) {

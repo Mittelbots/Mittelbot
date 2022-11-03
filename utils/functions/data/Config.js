@@ -1,38 +1,41 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const config_file = require('../../../src/assets/json/_config/config.json');
 const guildConfig = require('../../../src/db/Models/tables/guildConfig.model');
+const { Guilds } = require('./Guilds');
 
-module.exports.insertGuildIntoGuildConfig = async (guild_id) => {
-    return new Promise(async (resolve, reject) => {
-        await guildConfig
-            .create({
-                guild_id: guild_id,
-            })
-            .then(() => {
-                return resolve(true);
-            })
-            .catch((err) => {
-                errorhandler({ err });
-                return reject(err);
-            });
-    });
-};
+class GuildConfig {
+    constructor() {}
 
-module.exports.getGuildConfig = async ({ guild_id }) => {
-    return await guildConfig
-        .get({
-            where: {
-                guild_id,
-            },
-        })
-        .then((res) => {
-            return res.length > 0 ? res : false;
-        })
-        .catch((err) => {
-            errorhandler({ err });
-            return false;
+    add(guild_id) {
+        return new Promise(async (resolve, reject) => {
+            await guildConfig
+                .create({
+                    guild_id,
+                }, {
+                    ignoreDuplicates: true,
+                })
+                .then(() => {
+                    resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler({ err });
+                    return reject(false);
+                });
         });
-};
+    }
+
+    get(guild_id) {
+        return new Promise(async (resolve, reject) => {
+            const guild = await Guilds.get(guild_id);
+
+            return guild.getConfig();
+        });
+    }
+
+}
+
+module.exports.GuildConfig = new GuildConfig();
+
 
 module.exports.updateGuildConfig = async ({ guild_id, value, valueName }) => {
     return new Promise(async (resolve, reject) => {

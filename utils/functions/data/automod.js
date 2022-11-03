@@ -1,21 +1,29 @@
 const guildAutomod = require('../../../src/db/Models/tables/guildAutomod.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
-module.exports.insertIntoGuildAutomod = async (guild_id) => {
-    return new Promise(async (resolve, reject) => {
-        await guildAutomod
-            .create({
-                guild_id,
-            })
-            .then(() => {
-                resolve(true);
-            })
-            .catch((err) => {
-                errorhandler({ err });
-                return reject(false);
-            });
-    });
-};
+class Automod {
+    constructor() {}
+
+    add(guild_id) {
+        return new Promise(async (resolve, reject) => {
+            await guildAutomod
+                .create({
+                    guild_id,
+                }, {
+                    ignoreDuplicates: true,
+                })
+                .then(() => {
+                    resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler({ err });
+                    return reject(false);
+                });
+        });
+    }
+}
+
+module.exports.Automod = new Automod();
 
 module.exports.getAutomodbyGuild = async (guild_id) => {
     return await guildAutomod

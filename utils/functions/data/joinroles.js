@@ -1,4 +1,4 @@
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { updateGuildConfig, GuildConfig } = require('./Config');
 
 const _ = require('underscore');
 
@@ -23,10 +23,8 @@ module.exports.removeJoinrole = async ({ guild_id, roles }) => {
 };
 
 module.exports.getJoinroles = async ({ guild_id }) => {
-    const { settings } = await getGuildConfig({
-        guild_id,
-    });
-    return JSON.parse(settings.joinroles) || [];
+    const guildConfig = await GuildConfig.get(guild_id);
+    return guildConfig.joinroles;
 };
 
 module.exports.updateJoinroles = async ({ guild, roles, user }) => {

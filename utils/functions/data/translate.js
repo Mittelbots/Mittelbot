@@ -1,13 +1,10 @@
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { updateGuildConfig, GuildConfig } = require('./Config');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const translatte = require('translatte');
 
 module.exports.getTranslateConfig = async ({ guild_id }) => {
     return new Promise(async (resolve, reject) => {
-        const { translate_log_channel, translate_language, translate_target } =
-            await getGuildConfig({
-                guild_id,
-            });
+        const { translate_log_channel, translate_language, translate_target } = await GuildConfig.get(guild_id);
         if (translate_log_channel && translate_language && translate_target) {
             return resolve({
                 translate_log_channel,
@@ -27,14 +24,6 @@ module.exports.saveNewTranslateConfig = async ({
     translate_target,
 }) => {
     return new Promise(async (resolve, reject) => {
-        for (let i in guildConfig) {
-            if (guildConfig[i].id === guild_id) {
-                guildConfig[i].translate_log_channel = translate_log_channel;
-                guildConfig[i].translate_language = translate_language;
-                guildConfig[i].translate_target = translate_target;
-            }
-        }
-
         const logChannel = await updateGuildConfig({
             guild_id,
             value: translate_log_channel,
