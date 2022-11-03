@@ -67,7 +67,7 @@ const database = new Sequelize(
 })();
 
 database.afterSync(async (connection) => {
-    console.log(`Successfully synced ${connection.name.plural}.`)
+    console.log(`Successfully synced ${connection.name.plural}.`);
 });
 
 database.afterDestroy((error) => {

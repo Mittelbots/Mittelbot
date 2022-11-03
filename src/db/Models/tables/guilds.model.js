@@ -58,7 +58,6 @@ Guilds.hasMany(openInfractions, {
     onUpdate: 'CASCADE',
 });
 
-
 Guilds.hasMany(guildLevel, {
     foreignKey: 'guild_id',
     sourceKey: 'guild_id',
@@ -66,7 +65,6 @@ Guilds.hasMany(guildLevel, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
-
 
 Guilds.hasMany(guildUploads, {
     foreignKey: 'guild_id',
@@ -76,7 +74,6 @@ Guilds.hasMany(guildUploads, {
     onUpdate: 'CASCADE',
 });
 
-
 Guilds.hasMany(memberInfo, {
     foreignKey: 'guild_id',
     sourceKey: 'guild_id',
@@ -84,7 +81,6 @@ Guilds.hasMany(memberInfo, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
-
 
 Guilds.hasMany(temproles, {
     foreignKey: 'guild_id',
@@ -94,7 +90,6 @@ Guilds.hasMany(temproles, {
     onUpdate: 'CASCADE',
 });
 
-
 Guilds.hasMany(twitchStreams, {
     foreignKey: 'guild_id',
     sourceKey: 'guild_id',
@@ -102,9 +97,6 @@ Guilds.hasMany(twitchStreams, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
-
-
-
 
 const guilds = Guilds;
 module.exports = guilds;
