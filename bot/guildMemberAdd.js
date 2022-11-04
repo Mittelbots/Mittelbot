@@ -4,7 +4,7 @@ const { MemberInfo } = require('../utils/functions/data/MemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const { Infractions } = require('../utils/functions/data/Infractions');
-const { Joinroles } = require('../utils/functions/data/joinroles');
+const { Joinroles } = require('../utils/functions/data/Joinroles');
 
 module.exports.guildMemberAdd = async (member, bot) => {
     const config = GuildConfig.get(member.guild.id);

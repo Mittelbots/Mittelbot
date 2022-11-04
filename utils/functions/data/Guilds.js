@@ -1,5 +1,6 @@
 const allGuildId = require('../../../src/db/Models/tables/guilds.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const blacklist = require('../../../src/assets/json/blacklist/guilds.json');
 
 class Guilds {
     constructor() {}
@@ -60,8 +61,6 @@ class Guilds {
     }
 
     async isBlacklist(guild_id) {
-        const blacklist = require('../../src/assets/json/blacklist/guilds.json');
-
         return blacklist.find((g) => g === guild_id);
     }
 }

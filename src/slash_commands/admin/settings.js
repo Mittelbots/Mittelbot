@@ -5,7 +5,7 @@ const {
 } = require('../../../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
-const { Joinroles } = require('../../../utils/functions/data/joinroles');
+const { Joinroles } = require('../../../utils/functions/data/Joinroles');
 const database = require('../../db/db');
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
 const { changeYtNotifier, delChannelFromList } = require('../../../utils/functions/data/youtube');

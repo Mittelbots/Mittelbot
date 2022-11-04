@@ -15,7 +15,7 @@ module.exports.guildCreate = async (guild, bot) => {
             message: ` I joined a BLACKLISTED Guild: ${guild.name} (${guild.id})`,
         });
 
-        return guild.leave();
+        return guild.leave().catch(err => {});
     }
 
     errorhandler({
