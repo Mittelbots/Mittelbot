@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const {
-    Automod,
-} = require('../../../utils/functions/data/automod');
+const { Automod } = require('../../../utils/functions/data/automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction, bot }) => {

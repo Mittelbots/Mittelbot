@@ -33,7 +33,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
 
     const guildConfig = await GuildConfig.get(main_interaction.guild_id);
 
-    disabled_modules = guildConfig.disabled_modules
+    disabled_modules = guildConfig.disabled_modules;
 
     function disabled(module) {
         return main_interaction

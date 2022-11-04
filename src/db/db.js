@@ -63,7 +63,7 @@ database.init = async () => {
                 if (!file.includes('.default')) return;
                 console.log('Inserting default data from: ' + file);
                 require(path.join(data_mg_path, file));
-            })
+            });
             resolve(true);
         } catch (err) {
             reject(err);

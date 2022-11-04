@@ -2,9 +2,7 @@ const { errorhandler } = require('../utils/functions/errorhandler/errorhandler')
 const { Guilds } = require('../utils/functions/data/Guilds');
 
 module.exports.guildCreate = async (guild, bot) => {
-    if (
-        Guilds.isBlacklist(guild.id) 
-    ) {
+    if (Guilds.isBlacklist(guild.id)) {
         await bot.users.cache
             .get(guild.ownerId)
             .send({
@@ -26,4 +24,4 @@ module.exports.guildCreate = async (guild, bot) => {
     });
 
     Guilds.create(guild.id);
-}
+};

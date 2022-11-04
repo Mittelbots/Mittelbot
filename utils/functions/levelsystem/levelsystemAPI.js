@@ -116,8 +116,7 @@ module.exports.checkXP = async function (bot, guildid, currentxp, message) {
 module.exports.sendNewLevelMessage = async function (newLevel, message, currentxp, nextlevel) {
     const guildConfig = await GuildConfig.get(message.guild.id);
 
-    const levelsettings = guildConfig.levelsettings
-
+    const levelsettings = guildConfig.levelsettings;
 
     var newLevelMessage = new EmbedBuilder()
         .setTitle('🎉 You reached a new Level!')
@@ -467,16 +466,16 @@ module.exports.checkBlacklistChannels = async ({ message }) => {
     } else {
         const guildConfig = await GuildConfig.get(message.guild.id);
         const levelsettings = guildConfig.levelsettings;
-        
+
         if (levelsettings && levelsettings.length > 0) {
             blacklistchannels = levelsettings.levelsettings.blacklistchannels;
         }
     }
 
-    if(!blacklistchannels) return false;
+    if (!blacklistchannels) return false;
 
-    return (
-        blacklistchannels.includes(message.channel.id) ||
+    return blacklistchannels.includes(message.channel.id) ||
         blacklistchannels.includes(message.channel.parentId)
-    ) ? true : false
+        ? true
+        : false;
 };

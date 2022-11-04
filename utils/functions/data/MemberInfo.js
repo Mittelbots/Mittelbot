@@ -1,45 +1,33 @@
 const database = require('../../../src/db/db');
 const memberInfo = require('../../../src/db/Models/tables/memberInfo.model');
-const {
-    errorhandler
-} = require('../errorhandler/errorhandler');
-const {
-    Guilds
-} = require('./Guilds');
+const { errorhandler } = require('../errorhandler/errorhandler');
+const { Guilds } = require('./Guilds');
 
 class MemberInfo {
     constructor() {}
 
-
-    add({
-        guild_id,
-        user_id,
-        member_roles,
-        user_joined = 'null',
-    }) {
+    add({ guild_id, user_id, member_roles, user_joined = 'null' }) {
         return new Promise(async (resolve, reject) => {
-            memberInfo.create({
-                guild_id,
-                user_id,
-                member_roles,
-                user_joined,
-            })
-            .then(() => {
-                resolve(true);
-            })
-            .catch((err) => {
-                errorhandler({
-                    err,
+            memberInfo
+                .create({
+                    guild_id,
+                    user_id,
+                    member_roles,
+                    user_joined,
+                })
+                .then(() => {
+                    resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    return reject(false);
                 });
-                return reject(false);
-            });
         });
     }
 
-    get({
-        guild_id,
-        user_id
-    }) {
+    get({ guild_id, user_id }) {
         const guild = Guilds.get(guild_id);
         return guild.getMemberInfo({
             where: {
@@ -48,31 +36,30 @@ class MemberInfo {
         });
     }
 
-    update({
-        guild_id,
-        user_id,
-        member_roles,
-        user_joined
-    }) {
+    update({ guild_id, user_id, member_roles, user_joined }) {
         return new Promise(async (resolve, reject) => {
-            memberInfo.update({
-                member_roles: member_roles ? member_roles : null,
-                user_joined: user_joined ? user_joined : null,
-            }, {
-                where: {
-                    user_id,
-                    guild_id,
-                },
-            })
-            .then(() => {
-                resolve(true);
-            })
-            .catch((err) => {
-                errorhandler({
-                    err,
+            memberInfo
+                .update(
+                    {
+                        member_roles: member_roles ? member_roles : null,
+                        user_joined: user_joined ? user_joined : null,
+                    },
+                    {
+                        where: {
+                            user_id,
+                            guild_id,
+                        },
+                    }
+                )
+                .then(() => {
+                    resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    return reject(false);
                 });
-                return reject(false);
-            });
         });
     }
 }

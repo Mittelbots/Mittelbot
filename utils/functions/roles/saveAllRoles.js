@@ -1,6 +1,4 @@
-const {
-    MemberInfo,
-} = require('../data/MemberInfo');
+const { MemberInfo } = require('../data/MemberInfo');
 
 module.exports.saveAllRoles = async (roles, member, guild) => {
     const memberInfo = await MemberInfo.get({ guild_id: guild.id, user_id: member.id });

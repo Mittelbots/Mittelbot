@@ -58,7 +58,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 }
             }
 
-
             levelsettings = guildConfig.levelsettings;
 
             if (!levelsettings.blacklistchannels) {

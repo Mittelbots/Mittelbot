@@ -8,11 +8,14 @@ class Automod {
     add(guild_id) {
         return new Promise(async (resolve, reject) => {
             await guildAutomod
-                .create({
-                    guild_id,
-                }, {
-                    ignoreDuplicates: true,
-                })
+                .create(
+                    {
+                        guild_id,
+                    },
+                    {
+                        ignoreDuplicates: true,
+                    }
+                )
                 .then(() => {
                     resolve(true);
                 })
@@ -51,7 +54,9 @@ class Automod {
                 })
                 .catch((err) => {
                     errorhandler({ err });
-                    return reject(`❌ Error updating automod settings for your guild to \`${type}\`.`);
+                    return reject(
+                        `❌ Error updating automod settings for your guild to \`${type}\`.`
+                    );
                 });
         });
     }
@@ -59,14 +64,14 @@ class Automod {
     checkWhitelist({ setting, user_roles, role_id }) {
         let whitelist = JSON.parse(setting).whitelistrole;
         if (!whitelist) return false;
-    
-        if(user_roles) {
+
+        if (user_roles) {
             user_roles = user_roles.map((role) => role.id);
             whitelist = whitelist.roles.filter((r) => user_roles.includes(r));
             return whitelist.length > 0 ? true : false;
         }
 
-        if(role_id) {
+        if (role_id) {
             return whitelist.roles.includes(role_id) ? true : false;
         }
     }

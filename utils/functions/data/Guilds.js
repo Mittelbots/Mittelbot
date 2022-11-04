@@ -7,12 +7,15 @@ class Guilds {
     async create(guild_id) {
         return new Promise(async (resolve, reject) => {
             allGuildId
-                .create({
-                    guild_id,
-                }, {
-                    ignoreDuplicates: true,
-                })
-                .then(async guild => {
+                .create(
+                    {
+                        guild_id,
+                    },
+                    {
+                        ignoreDuplicates: true,
+                    }
+                )
+                .then(async (guild) => {
                     await guild.createConfig({}, { ignoreDuplicates: true });
                     await guild.createAutomod({}, { ignoreDuplicates: true });
                 })

@@ -4,7 +4,6 @@ const { GuildConfig } = require('./Config');
 
 module.exports.getWarnroles = async ({ guild_id }) => {
     const guildConfig = await GuildConfig.get(guild_id);
-    
 
     return guildConfig.warnroles;
 };

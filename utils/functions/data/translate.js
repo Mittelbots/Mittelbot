@@ -4,7 +4,8 @@ const translatte = require('translatte');
 
 module.exports.getTranslateConfig = async ({ guild_id }) => {
     return new Promise(async (resolve, reject) => {
-        const { translate_log_channel, translate_language, translate_target } = await GuildConfig.get(guild_id);
+        const { translate_log_channel, translate_language, translate_target } =
+            await GuildConfig.get(guild_id);
         if (translate_log_channel && translate_language && translate_target) {
             return resolve({
                 translate_log_channel,

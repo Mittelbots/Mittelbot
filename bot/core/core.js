@@ -64,7 +64,9 @@ module.exports.startBot = async (bot) => {
                 `****Ready! Logged in as ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`
             );
             errorhandler({
-                message: 'BOT SUCCESSFULLY STARTED' + `${new Date().getDay()}/ ${new Date().getMonth()}/${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+                message:
+                    'BOT SUCCESSFULLY STARTED' +
+                    `${new Date().getDay()}/ ${new Date().getMonth()}/${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}`,
                 fatal: false,
             });
 
@@ -129,7 +131,7 @@ module.exports.fetchCache = async (bot) => {
 
             console.time('Checking data in database:');
             await this.checkGuildsInDatabase(guilds);
-            
+
             console.timeEnd('Checking data in database:');
 
             console.time('Fetching users in:');
@@ -137,7 +139,7 @@ module.exports.fetchCache = async (bot) => {
             console.timeEnd('Fetching users in:');
 
             return resolve(true);
-        }catch(err) {
+        } catch (err) {
             return reject(err);
         }
     });

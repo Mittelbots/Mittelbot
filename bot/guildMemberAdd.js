@@ -1,8 +1,6 @@
 const { giveAllRoles } = require('../utils/functions/roles/giveAllRoles');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
-const {
-    MemberInfo,
-} = require('../utils/functions/data/MemberInfo');
+const { MemberInfo } = require('../utils/functions/data/MemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const { getJoinroles } = require('../utils/functions/data/joinroles');

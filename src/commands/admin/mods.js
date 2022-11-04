@@ -55,7 +55,7 @@ module.exports.run = async (bot, message, args) => {
         args[1] = removeMention(args[1]);
 
         const guildConfig = await GuildConfig.get(message.guild.id);
-        
+
         const modroles = guildConfig.modroles;
 
         for (let i in modroles) {

@@ -9,11 +9,14 @@ class GuildConfig {
     add(guild_id) {
         return new Promise(async (resolve, reject) => {
             await guildConfig
-                .create({
-                    guild_id,
-                }, {
-                    ignoreDuplicates: true,
-                })
+                .create(
+                    {
+                        guild_id,
+                    },
+                    {
+                        ignoreDuplicates: true,
+                    }
+                )
                 .then(() => {
                     resolve(true);
                 })
@@ -62,11 +65,10 @@ class GuildConfig {
                 if (!value.endsWith(config_file.settings.prefix.required[i])) pass++;
             }
             if (pass === config_file.settings.prefix.required.length) return resolve(false);
-        
+
             return resolve(true);
         });
     }
-
 }
 
 module.exports.GuildConfig = new GuildConfig();
