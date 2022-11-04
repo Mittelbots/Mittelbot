@@ -1,4 +1,4 @@
-const { updateGuildConfig, GuildConfig } = require('./Config');
+const { GuildConfig } = require('./Config');
 
 module.exports.getLogs = async ({ guild_id }) => {
     const guildConfig = await GuildConfig.get(guild_id);
@@ -59,7 +59,7 @@ module.exports.updateLog = async ({
             }
         }
 
-        updateGuildConfig({
+        GuildConfig.update({
             guild_id,
             value: JSON.stringify(logs),
             valueName: 'logs',

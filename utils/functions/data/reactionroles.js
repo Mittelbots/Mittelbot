@@ -1,5 +1,5 @@
 const { removeMention, removeEmojiTags } = require('../removeCharacters');
-const { updateGuildConfig, GuildConfig } = require('./Config');
+const { GuildConfig } = require('./Config');
 
 module.exports.updateReactionRoles = async ({
     guild_id,
@@ -101,7 +101,7 @@ module.exports.updateReactionRoles = async ({
 
         reactionroles.push(newReactionRoles);
 
-        return await updateGuildConfig({
+        return await GuildConfig.update({
             guild_id,
             value: JSON.stringify(reactionroles),
             valueName: 'reactionroles',

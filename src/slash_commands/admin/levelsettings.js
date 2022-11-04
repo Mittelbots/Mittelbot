@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { changeLevelUp } = require('../../../utils/functions/levelsystem/levelsystemAPI');
-const { GuildConfig, updateGuildConfig } = require('../../../utils/functions/data/Config');
+const { GuildConfig } = require('../../../utils/functions/data/Config');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const hasPermissions = await hasPermission({
@@ -30,7 +30,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             levelsettings.mode = mode;
 
-            return await updateGuildConfig({
+            return await GuildConfig.update({
                 guild_id: main_interaction.guild.id,
                 value: JSON.stringify(levelsettings),
                 valueName: 'levelsettings',
@@ -80,7 +80,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 }
             }
 
-            updateGuildConfig({
+            GuildConfig.update({
                 guild_id: main_interaction.guild.id,
                 value: JSON.stringify(levelsettings),
                 valueName: 'levelsettings',

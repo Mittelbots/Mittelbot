@@ -1,6 +1,6 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { checkRole } = require('../roles/checkRole');
-const { updateGuildConfig, GuildConfig } = require('./Config');
+const { GuildConfig } = require('./Config');
 
 module.exports.getWarnroles = async ({ guild_id }) => {
     const guildConfig = await GuildConfig.get(guild_id);
@@ -16,7 +16,7 @@ module.exports.addWarnroles = async ({ guild_id, warnrole_id }) => {
 
     warnroles.push(warnrole_id);
 
-    return await updateGuildConfig({
+    return await GuildConfig.update({
         guild_id,
         value: JSON.stringify(warnroles),
         valueName: 'warnroles',

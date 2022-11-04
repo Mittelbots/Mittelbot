@@ -5,7 +5,7 @@ const fs = require('fs');
 const levelConfig = require('./levelconfig.json');
 const levelSystem = require('./levelsystem');
 const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
-const { updateGuildConfig, GuildConfig } = require('../data/Config');
+const { GuildConfig } = require('../data/Config');
 
 var levelCooldownArray = [];
 
@@ -426,7 +426,7 @@ module.exports.changeLevelUp = async ({ type, guild, channel }) => {
             levelsettings.levelup_channel = channel.id;
         }
 
-        return updateGuildConfig({
+        return GuildConfig.update({
             guild_id: guild.id,
             value: JSON.stringify(levelsettings),
             valueName: 'levelsettings',

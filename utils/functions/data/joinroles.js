@@ -1,4 +1,4 @@
-const { updateGuildConfig, GuildConfig } = require('./Config');
+const { GuildConfig } = require('./Config');
 
 const _ = require('underscore');
 
@@ -11,14 +11,10 @@ module.exports.removeJoinrole = async ({ guild_id, roles }) => {
         joinroles = joinroles.filter((r) => r !== roles[i]);
     }
 
-    await updateGuildConfig({
+    await GuildConfig.update({
         guild_id,
         value: JSON.stringify(joinroles),
         valueName: 'joinroles',
-    });
-
-    var tet = await this.getJoinroles({
-        guild_id,
     });
 };
 
@@ -88,7 +84,7 @@ module.exports.updateJoinroles = async ({ guild, roles, user }) => {
 
 module.exports.saveJoinRoles = async ({ guild_id, joinroles }) => {
     return new Promise(async (resolve, reject) => {
-        await updateGuildConfig({
+        await GuildConfig.update({
             guild_id,
             value: joinroles.length > 0 ? JSON.stringify(joinroles) : null,
             valueName: 'joinroles',

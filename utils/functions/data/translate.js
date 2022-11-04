@@ -1,4 +1,4 @@
-const { updateGuildConfig, GuildConfig } = require('./Config');
+const { GuildConfig } = require('./Config');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const translatte = require('translatte');
 
@@ -24,19 +24,19 @@ module.exports.saveNewTranslateConfig = async ({
     translate_target,
 }) => {
     return new Promise(async (resolve, reject) => {
-        const logChannel = await updateGuildConfig({
+        const logChannel = await GuildConfig.update({
             guild_id,
             value: translate_log_channel,
             valueName: 'translate_log_channel',
         });
 
-        const language = await updateGuildConfig({
+        const language = await GuildConfig.update({
             guild_id,
             value: translate_language,
             valueName: 'translate_language',
         });
 
-        const target = await updateGuildConfig({
+        const target = await GuildConfig.update({
             guild_id,
             value: translate_target,
             valueName: 'translate_target',

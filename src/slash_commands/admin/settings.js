@@ -3,7 +3,7 @@ const {
     sendWelcomeSetting,
     updateWelcomeSettings,
 } = require('../../../utils/functions/data/welcomechannel');
-const { checkPrefix, updateGuildConfig } = require('../../../utils/functions/data/Config');
+const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
 const { updateJoinroles } = require('../../../utils/functions/data/joinroles');
 const database = require('../../db/db');
@@ -107,7 +107,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         case 'prefix':
             const prefix = main_interaction.options.getString('prefix');
-            const prefixCheck = checkPrefix({
+            const prefixCheck = await GuildConfig.checkPrefix({
                 value: prefix,
             });
             if (prefixCheck === false)
@@ -438,7 +438,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     async function saveSetting({ value, valueName }) {
-        await updateGuildConfig({
+        await GuildConfig.update({
             guild_id: main_interaction.guild.id,
             value,
             valueName,

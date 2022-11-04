@@ -1,5 +1,4 @@
 const { GuildConfig } = require('./Config');
-const { updateGuildConfig } = require('./Config');
 
 module.exports.updatePermsFromModroles = async ({
     guild_id,
@@ -27,7 +26,7 @@ module.exports.updatePermsFromModroles = async ({
 
         modroles.push(obj);
 
-        return await updateGuildConfig({
+        return await GuildConfig.update({
             guild_id,
             value: JSON.stringify(modroles),
             valueName: 'modroles',
