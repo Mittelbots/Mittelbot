@@ -5,9 +5,9 @@ const config = require('../src/assets/json/_config/config.json');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const { InteractionType } = require('discord.js');
 const { manageScam } = require('../utils/functions/data/scam');
-const { getGlobalConfig } = require('../utils/functions/data/ignoreMode');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
-const { Afk } = require('../utils/functions/data/afk');
+const { Afk } = require('../utils/functions/data/Afk');
+const { GlobalConfig } = require('../utils/functions/data/GlobalConfig');
 
 const defaultCooldown = new Set();
 
@@ -15,7 +15,7 @@ module.exports.interactionCreate = ({ bot }) => {
     bot.on('interactionCreate', async (main_interaction) => {
         if (main_interaction.user.bot || main_interaction.user.system) return;
 
-        const { ignoreMode } = await getGlobalConfig();
+        const { ignoreMode } = await GlobalConfig.get();
 
         if (JSON.parse(ignoreMode) && main_interaction.user.id !== config.Bot_Owner_ID) {
             return main_interaction

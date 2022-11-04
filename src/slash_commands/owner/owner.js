@@ -5,9 +5,9 @@ const { log } = require('../../../logs');
 const { spawn } = require('child_process');
 const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
 const { delay } = require('../../../utils/functions/delay/delay');
-const { updateGlobalConfig, getGlobalConfig } = require('../../../utils/functions/data/ignoreMode');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { AttachmentBuilder } = require('discord.js');
+const { GlobalConfig } = require('../../../utils/functions/data/GlobalConfig');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -81,7 +81,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             case 'ignoremode':
                 const mode = main_interaction.options.getBoolean('mode');
-                await updateGlobalConfig({
+                await GlobalConfig.update({
                     valueName: 'ignoreMode',
                     value: mode ? 1 : 0,
                 });
@@ -95,7 +95,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             case 'disable_command':
                 const command = main_interaction.options.getString('command');
-                const global_config = await getGlobalConfig();
+                const global_config = await GlobalConfig.get();
                 var disabled_commands =
                     JSON.parse(global_config.disabled_commands) ||
                     global_config.disabled_commands ||
@@ -104,14 +104,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 let gotDisabled = false;
                 try {
                     if (disabled_commands.includes(command)) {
-                        updateGlobalConfig({
+                        GlobalConfig.update({
                             value: disabled_commands.filter((c) => c !== command),
                             valueName: 'disabled_commands',
                         });
                     } else {
                         gotDisabled = true;
                         disabled_commands.push(command);
-                        updateGlobalConfig({
+                        GlobalConfig.update({
                             value: disabled_commands,
                             valueName: 'disabled_commands',
                         });
