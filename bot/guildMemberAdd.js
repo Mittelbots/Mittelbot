@@ -3,8 +3,8 @@ const { errorhandler } = require('../utils/functions/errorhandler/errorhandler')
 const { MemberInfo } = require('../utils/functions/data/MemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../utils/functions/data/Config');
-const { getJoinroles } = require('../utils/functions/data/joinroles');
 const { Infractions } = require('../utils/functions/data/Infractions');
+const { Joinroles } = require('../utils/functions/data/joinroles');
 
 module.exports.guildMemberAdd = async (member, bot) => {
     const config = GuildConfig.get(member.guild.id);
@@ -73,7 +73,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
             if (user_roles) await giveAllRoles(member.id, member.guild, user_roles);
         }, 2000);
 
-        const joinroles = getJoinroles({
+        const joinroles = Joinroles.get({
             guild_id: member.guild.id,
         });
 

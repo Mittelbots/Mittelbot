@@ -5,7 +5,7 @@ const {
 } = require('../../../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
-const { updateJoinroles } = require('../../../utils/functions/data/joinroles');
+const { Joinroles } = require('../../../utils/functions/data/joinroles');
 const database = require('../../db/db');
 const { updateWarnroles } = require('../../../utils/functions/data/warnroles');
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
@@ -191,7 +191,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             var joinroles = removeMention(roles);
             joinroles = joinroles.split(' ');
 
-            updateJoinroles({
+            Joinroles.update({
                 guild: main_interaction.guild,
                 roles: joinroles,
                 user: bot.guilds.cache
