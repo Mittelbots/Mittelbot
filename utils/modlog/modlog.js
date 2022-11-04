@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { generateModEmote } = require('../functions/generateModEmote');
-const { getLogs } = require('../functions/data/logs');
+const { Logs } = require('../functions/data/logs');
 
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
     var modLogMessage = new EmbedBuilder()
@@ -29,9 +29,7 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
 }
 
 async function sendToModLog(bot, message, gid) {
-    const logs = await getLogs({
-        guild_id: gid,
-    });
+    const logs = await Logs.get(gid);
 
     if (logs && logs.modlog) {
         await bot.channels.cache

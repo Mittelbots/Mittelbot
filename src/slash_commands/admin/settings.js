@@ -14,9 +14,9 @@ const {
     changeTwitchNotifier,
     delTwChannelFromList,
 } = require('../../../utils/functions/data/twitch');
-const { updateLog } = require('../../../utils/functions/data/logs');
 const { updateReactionRoles } = require('../../../utils/functions/data/reactionroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { Logs } = require('../../../utils/functions/data/logs');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -233,7 +233,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .catch((err) => {});
             }
 
-            await updateLog({
+            await Logs.update({
                 guild_id: main_interaction.guild.id,
                 channel: {
                     auditlog: auditlog,
