@@ -1,10 +1,8 @@
 const { giveAllRoles } = require('../utils/functions/roles/giveAllRoles');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const {
-    insertMemberInfo,
-    getMemberInfoById,
-    updateMemberInfoById,
-} = require('../utils/functions/data/getMemberInfo');
+    MemberInfo,
+} = require('../utils/functions/data/MemberInfo');
 const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const { getJoinroles } = require('../utils/functions/data/joinroles');
@@ -27,13 +25,13 @@ module.exports.guildMemberAdd = async (member, bot) => {
 
     if (member.user.bot) return;
 
-    const memberInfo = await getMemberInfoById({
+    const memberInfo = await MemberInfo.get({
         guild_id: member.guild.id,
         user_id: member.id,
     });
     if (memberInfo.error) return;
     else if (!memberInfo) {
-        await insertMemberInfo({
+        await MemberInfo.add({
             guild_id: member.guild.id,
             user_id: member.user.id,
             user_joined: new Date().getTime(),
@@ -42,7 +40,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
     }
 
     if (memberInfo.user_joined == null) {
-        await updateMemberInfoById({
+        await MemberInfo.update({
             guild_id: memberInfo.guild_id,
             user_id: memberInfo.user_id,
             user_joined: new Date().getTime(),
