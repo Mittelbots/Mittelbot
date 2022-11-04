@@ -1,4 +1,4 @@
-const { Automod } = require('../functions/data/automod');
+const { Automod } = require('../functions/data/Automod');
 const { getModTime } = require('../functions/getModTime');
 const { banUser } = require('../functions/moderations/banUser');
 const { kickUser } = require('../functions/moderations/kickUser');

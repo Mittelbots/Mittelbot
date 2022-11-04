@@ -4,8 +4,8 @@ const { publicModResponses } = require('../../publicResponses/publicModResponses
 const { createInfractionId } = require('../createInfractionId');
 const { addWarnRoles } = require('../roles/addWarnRoles');
 const config = require('../../../src/assets/json/_config/config.json');
-const { insertIntoClosedList } = require('../data/infractions');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { Infractions } = require('../data/Infractions');
 
 async function warnUser({ bot, user, mod, guild, reason }) {
     const inf_id = await createInfractionId(guild.id);
@@ -28,7 +28,7 @@ async function warnUser({ bot, user, mod, guild, reason }) {
 
         await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
 
-        await insertIntoClosedList({
+        await Infractions.insertClosed({
             uid: user.id,
             modid: mod.id,
             ban: 0,

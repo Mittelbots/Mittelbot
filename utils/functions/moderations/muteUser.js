@@ -8,7 +8,7 @@ const { getAllRoles } = require('../roles/getAllRoles');
 const { getMutedRole } = require('../roles/getMutedRole');
 const { removeAllRoles } = require('../roles/removeAllRoles');
 const config = require('../../../src/assets/json/_config/config.json');
-const { insertIntoOpenList } = require('../data/infractions');
+const { Infractions } = require('../data/Infractions');
 
 async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
     const guild_user = guild.members.cache.get(user.id);
@@ -37,7 +37,7 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
         if (user_roles.length !== 0) await removeAllRoles(guild_user);
 
         try {
-            insertIntoOpenList({
+            Infractions.insertOpen({
                 uid: user.id,
                 modid: mod.id,
                 mute: 1,

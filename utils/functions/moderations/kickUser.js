@@ -4,8 +4,8 @@ const { publicModResponses } = require('../../publicResponses/publicModResponses
 const { createInfractionId } = require('../createInfractionId');
 const config = require('../../../src/assets/json/_config/config.json');
 const { getCurrentFullDate } = require('../data/dates');
-const { insertIntoClosedList } = require('../data/infractions');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { Infractions } = require('../data/Infractions');
 
 module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
     return new Promise(async (resolve, reject) => {
@@ -20,7 +20,7 @@ module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
             .catch((err) => (pass = false));
 
         if (pass) {
-            insertIntoClosedList({
+            Infractions.insertClosed({
                 uid: user.id,
                 modid: mod.id,
                 ban: 0,

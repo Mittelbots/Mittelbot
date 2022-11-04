@@ -9,7 +9,7 @@ const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation
 const { checkAFK } = require('../utils/functions/data/afk');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
-const { Automod } = require('../utils/functions/data/automod');
+const { Automod } = require('../utils/functions/data/Automod');
 
 const defaultCooldown = new Set();
 

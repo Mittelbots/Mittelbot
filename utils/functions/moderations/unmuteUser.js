@@ -3,11 +3,10 @@ const { privateModResponse } = require('../../privatResponses/privateModResponse
 const { publicModResponses } = require('../../publicResponses/publicModResponses');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getMutedRole } = require('../roles/getMutedRole');
-const { removeDataFromOpenInfractions } = require('../removeData/removeDataFromDatabase');
 const { giveAllRoles } = require('../roles/giveAllRoles');
 const config = require('../../../src/assets/json/_config/config.json');
 const database = require('../../../src/db/db');
-const { insertIntoClosedList } = require('../data/infractions');
+const { Infractions } = require('../data/Infractions');
 
 async function unmuteUser({ user, bot, mod, reason, guild }) {
     const userGuild = await bot.guilds.cache.get(guild.id);
@@ -104,7 +103,7 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
                         );
                         await guild_user.roles.add(r);
                     }
-                    await insertIntoClosedList({
+                    await Infractions.insertClosed({
                         uid: res[0].user_id,
                         modid: res[0].mod_id,
                         mute: res[0].mute,
@@ -117,7 +116,7 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
                         start_date: res[0].start_date,
                         guild_id: guild.id,
                     });
-                    await removeDataFromOpenInfractions(res[0].infraction_id);
+                    await Infractions.deleteOpen(res[0].infraction_id);
 
                     errorhandler({
                         fatal: false,

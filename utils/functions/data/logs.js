@@ -2,7 +2,7 @@ const { GuildConfig } = require('./Config');
 
 class Logs {
     constructor() {}
-    
+
     get(guild_id) {
         return new Promise(async (resolve) => {
             const guildConfig = await GuildConfig.get(guild_id);
@@ -10,16 +10,10 @@ class Logs {
         });
     }
 
-    update({
-        guild_id,
-        channel,
-        whitelistrole,
-        whitelistchannel,
-        clear,
-    }) {
+    update({ guild_id, channel, whitelistrole, whitelistchannel, clear }) {
         return new Promise(async (resolve, reject) => {
             const logs = await this.get(guild_id);
-    
+
             if (whitelistrole || whitelistchannel) {
                 if (!logs.whitelist || logs.whitelist.length == 0) {
                     logs.whitelist = [];
@@ -42,7 +36,7 @@ class Logs {
                         }
                     }
                 }
-    
+
                 if (clear) {
                     if (whitelistrole) {
                         logs.whitelist = logs.whitelist.filter((id) => id != whitelistrole.id);
@@ -60,7 +54,7 @@ class Logs {
                     logs.modlog = clear ? null : channel.modlog.id;
                 }
             }
-    
+
             GuildConfig.update({
                 guild_id,
                 value: JSON.stringify(logs),
@@ -80,7 +74,6 @@ class Logs {
                 });
         });
     }
-
 }
 
 module.exports.Logs = new Logs();

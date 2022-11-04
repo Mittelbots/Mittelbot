@@ -5,16 +5,12 @@ const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
 const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
 const { saveAllRoles } = require('../../utils/functions/roles/saveAllRoles');
 const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
-const {
-    insertIntoClosedList,
-    getAllOpenInfractions,
-    removeInfractionById,
-} = require('../../utils/functions/data/infractions');
+const { Infractions } = require('../../utils/functions/data/Infractions');
 
 async function deleteEntries(infraction) {
-    removeInfractionById({ inf_id: infraction.infraction_id, type: 'open' });
+    Infractions.deleteOpen({ inf_id: infraction.infraction_id });
 
-    insertIntoClosedList({
+    Infractions.insertClosed({
         uid: infraction.user_id,
         modid: infraction.mod_id,
         mute: infraction.mute,
@@ -30,12 +26,8 @@ async function deleteEntries(infraction) {
 module.exports.checkInfractions = (bot) => {
     console.info('🔎📜 CheckInfraction handler started');
     setInterval(async () => {
-        var results;
-        if (openInfractions) {
-            results = openInfractions[0].list;
-        } else {
-            results = await getAllOpenInfractions();
-        }
+        const results = await Infractions.getAllOpen();
+
         let done = 0;
         let mutecount = 0;
         let bancount = 0;

@@ -2,12 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const config = require('../../../src/assets/json/_config/config.json');
-const {
-    getClosedInfractionsByUserId,
-    getOpenInfractionsByUserId,
-    getInfractionById,
-    removeInfractionById,
-} = require('../../../utils/functions/data/infractions');
+const { Infractions } = require('../../../utils/functions/data/Infractions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -38,12 +33,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             var closed = [];
             var open = [];
 
-            const closed_infractions = await getClosedInfractionsByUserId({
+            const closed_infractions = await Infractions.getClosed({
                 user_id: user.id,
                 guild_id: main_interaction.guild.id,
             });
 
-            const open_infractions = await getOpenInfractionsByUserId({
+            const open_infractions = await Infractions.getOpen({
                 user_id: user.id,
                 guild_id: main_interaction.guild.id,
             });
@@ -81,7 +76,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'view':
             const inf_id = main_interaction.options.getString('infractionid');
 
-            const { infraction } = await getInfractionById({
+            const { infraction } = await Infractions.get({
                 inf_id,
             });
 
@@ -111,12 +106,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'remove':
             const infraction_id = main_interaction.options.getString('infractionid');
 
-            const { table } = await getInfractionById({
+            const { table } = await Infractions.get({
                 inf_id: infraction_id,
             });
 
             if (table) {
-                const response = await removeInfractionById({ inf_id: infraction_id, type: table });
+                if (table === 'open') {
+                    await Infractions.deleteOpen({ inf_id: infraction_id });
+                } else {
+                    await Infractions.deleteClosed({ inf_id: infraction_id });
+                }
 
                 return main_interaction
                     .followUp({
