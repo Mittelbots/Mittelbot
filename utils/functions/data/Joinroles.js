@@ -23,17 +23,17 @@ class Joinroles {
                     guild_id: guild.id,
                     roles: rolesAlreadyExists,
                 });
-    
+
                 for (let i in rolesAlreadyExists) {
                     joinroles = joinroles.filter((r) => r !== rolesAlreadyExists[i]);
                     roles = roles.filter((r) => r !== rolesAlreadyExists[i]);
                 }
-    
+
                 if (joinroles.length == 0) {
                     return resolve(`Successfully removed all joinroles`);
                 }
             }
-    
+
             var passedRoles = [];
             for (let i in roles) {
                 try {
@@ -75,7 +75,6 @@ class Joinroles {
                         `Something went wrong while updating the joinroles config. Please try again later.`
                     );
                 });
-
         });
     }
 
@@ -84,11 +83,11 @@ class Joinroles {
             let joinroles = await this.get({
                 guild_id,
             });
-        
+
             for (let i in roles) {
                 joinroles = joinroles.filter((r) => r !== roles[i]);
             }
-        
+
             await GuildConfig.update({
                 guild_id,
                 value: JSON.stringify(joinroles),
@@ -96,7 +95,6 @@ class Joinroles {
             });
         });
     }
-
 }
 
 module.exports.Joinroles = new Joinroles();

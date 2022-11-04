@@ -2,27 +2,33 @@ const globalConfig = require('../../../src/db/Models/tables/globalConfig.model')
 const { errorhandler } = require('../errorhandler/errorhandler');
 
 class GlobalConfig {
-    constructor () {}
+    constructor() {}
 
     get() {
         return new Promise(async (resolve, reject) => {
-            await globalConfig.findAll().then((data) => {
-                return resolve(data);
-            }).catch((err) => {
-                errorhandler(err);
-                return reject(false);
-            });
+            await globalConfig
+                .findAll()
+                .then((data) => {
+                    return resolve(data);
+                })
+                .catch((err) => {
+                    errorhandler(err);
+                    return reject(false);
+                });
         });
     }
 
     update({ valueName, value }) {
         return new Promise(async (resolve, reject) => {
-            await globalConfig.update({ [valueName]: value }, { where: { id: 1 } }).then(() => {
-                return resolve(true);
-            }).catch((err) => {
-                errorhandler(err);
-                return reject(false);
-            });
+            await globalConfig
+                .update({ [valueName]: value }, { where: { id: 1 } })
+                .then(() => {
+                    return resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler(err);
+                    return reject(false);
+                });
         });
     }
 }
