@@ -6,10 +6,10 @@ const { delay } = require('../utils/functions/delay/delay');
 const { translateMessage } = require('../utils/functions/data/translate');
 const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
-const { getAutomodbyGuild } = require('../utils/functions/data/automod');
 const { checkAFK } = require('../utils/functions/data/afk');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
+const { Automod } = require('../utils/functions/data/automod');
 
 const defaultCooldown = new Set();
 
@@ -36,7 +36,7 @@ async function messageCreate(message, bot) {
     if (message.channel.type === 'dm') return;
     if (message.author.system) return;
 
-    const setting = await getAutomodbyGuild(message.guild.id);
+    const setting = await Automod.get(message.guild.id);
 
     const isSpam = await antiSpam(setting, message, bot);
     if (isSpam) {

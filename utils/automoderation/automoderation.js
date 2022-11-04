@@ -1,5 +1,5 @@
-const { isOnWhitelist } = require('../functions/data/automod');
-const { delay } = require('../functions/delay/delay');
+
+const { Automod } = require('../functions/data/automod');
 const { getModTime } = require('../functions/getModTime');
 const { banUser } = require('../functions/moderations/banUser');
 const { kickUser } = require('../functions/moderations/kickUser');
@@ -12,7 +12,7 @@ var userAction = [];
 module.exports.antiSpam = async (setting, message, bot) => {
     if (!setting || setting.length === 0) return false;
 
-    const isWhitelist = isOnWhitelist({
+    const isWhitelist = Automod.checkWhitelist({
         setting,
         user_roles: message.member.roles.cache,
     });
@@ -173,7 +173,7 @@ module.exports.antiSpam = async (setting, message, bot) => {
 
 module.exports.antiInvite = async (setting, message, bot) => {
     if (!setting || setting.length === 0) return false;
-    const isWhitelist = isOnWhitelist({
+    const isWhitelist = Automod.checkWhitelist({
         setting,
         user_roles: message.member.roles.cache,
     });
