@@ -56,7 +56,7 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    const guildConfig = Guilds.get(message.guild.id);
+    const guildConfig = await Guilds.get(message.guild.id);
 
     disabled_modules = JSON.parse(guildConfig.disabled_modules) || [];
 

@@ -1,55 +1,58 @@
 const database = require('../../../src/db/db');
+const temproles = require('../../../src/db/Models/tables/temproles.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { Guilds } = require('./Guilds');
 
-module.exports.getAllTemproles = async () => {
-    if (temproles.length > 0) {
-        return temproles[0].list;
+class Temproles {
+    constructor() {}
+
+    getAll() {
+        return new Promise(async (resolve, reject) => {
+            await temproles.findAll()
+                .then((data) => {
+                    return data;
+                })
+                .catch((err) => {
+                    return reject(err);
+                });
+            })       
     }
 
-    return await database
-        .query(`SELECT * FROM temproles`)
-        .then((res) => {
-            return res;
-        })
-        .catch((err) => {
-            errorhandler({
-                err,
-                fatal: true,
-            });
-            return false;
+    insert({ uid, role_id, till_date, infraction_id, gid }) {
+        return new Promise(async (resolve, reject) => {
+            const guild = await Guilds.get(gid);
+            await guild.createTemproles({
+                    user_id: uid,
+                    role_id,
+                    till_date,
+                    infraction_id,
+                    guild_id: gid,
+                })
+                .then((data) => {
+                    return resolve(data);
+                })
+                .catch((err) => {
+                    return reject(err);
+                });
         });
-};
+    }
 
-module.exports.insertIntoTemproles = async ({ uid, role_id, till_date, infraction_id, gid }) => {
-    //?Update cache
-    const listLength = temproles[0].list.length;
-    temproles[0].list[listLength] = {
-        user_id: uid,
-        role_id,
-        till_date,
-        infraction_id,
-        guild_id: gid,
-    };
-
-    database
-        .query(
-            'INSERT INTO temproles (user_id, role_id, till_date, infraction_id, guild_id) VALUES (?, ?, ?, ?, ?)',
-            [uid, role_id, till_date, infraction_id, gid]
-        )
-        .catch((err) => {
-            return errorhandler({ err, fatal: true });
+    delete(inf_id) {
+        return new Promise(async (resolve, reject) => {
+            await temproles
+                .destroy({
+                    where: {
+                        infraction_id: inf_id,
+                    },
+                })
+                .then(() => {
+                    return resolve(true);
+                })
+                .catch((err) => {
+                    return reject(err);
+                });
         });
-    return;
-};
+    }
+}
 
-module.exports.deleteFromTemproles = async ({ inf_id }) => {
-    return await database
-        .query(`DELETE FROM temproles WHERE infraction_id = ?`, [inf_id])
-        .then(() => {
-            temproles[0].list.filter((tmp) => tmp.infraction_id !== inf_id);
-            return true;
-        })
-        .catch((err) => {
-            return errorhandler({ err, fatal: true });
-        });
-};
+module.exports.Temproles = new Temproles();

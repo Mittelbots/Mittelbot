@@ -1,11 +1,11 @@
 const config = require('../../src/assets/json/_config/config.json');
 const { getCurrentDate } = require('../../utils/functions/getCurrentDate');
-const { getAllTemproles, deleteFromTemproles } = require('../../utils/functions/data/temproles');
+const { Temproles } = require('../../utils/functions/data/temproles');
 
 module.exports.checkTemproles = async (bot) => {
     console.info('🔎📜 CheckTemproles handler started');
     setInterval(async () => {
-        var results = await getAllTemproles();
+        const results = await Temproles.getAll();
 
         let done = 0;
         for (let i in results) {
@@ -45,7 +45,7 @@ module.exports.checkTemproles = async (bot) => {
                                 .roles.cache.find((r) => r.id === results[i].role_id),
                         ])
                         .catch((err) => {});
-                    await deleteFromTemproles({ inf_id: results[i].infraction_id });
+                    await Temproles.delete(results[i].infraction_id);
                 } catch (err) {
                     // CAN'T FIND USER OR USER LEFT THE SERVER
                     done -= 1;

@@ -26,6 +26,27 @@ class Guilds {
         });
     }
 
+    get(guild_id) {
+        return new Promise(async (resolve, reject) => {
+            allGuildId
+                .findOne({
+                    where: {
+                        guild_id,
+                    },
+                })
+                .then((guild) => {
+                    if (!guild) {
+                        return reject(false);
+                    }
+                    return resolve(guild);
+                })
+                .catch((err) => {
+                    errorhandler({ err });
+                    return reject(false);
+                });
+        });
+    }
+
     async getAll() {
         return await allGuildId
             .findAll()
