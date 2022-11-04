@@ -1,20 +1,14 @@
+FROM node:alpine as build
 
-FROM node:14
+ENV NPM_CONFIG_LOGLEVEL warn
 
-WORKDIR /usr/src/app
+WORKDIR /usr/app
+COPY . /usr/app
 
-ENV clientID= \
-    clientSecret= \
-    callBackURL= \
-    admin= \
-    token= \
-    prefix= \
-    port=
+# install dependencies
+RUN ["npm", "i"]
 
-ADD src .
+# start the bot
+ENTRYPOINT [ "npm", "run", "dev" ]
 
-COPY package*.json ./
-
-RUN npm install
-
-EXPOSE 3000
+USER worker
