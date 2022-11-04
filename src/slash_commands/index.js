@@ -4,7 +4,7 @@ const {
 const { GuildConfig } = require('../../utils/functions/data/Config');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
-    let moderation = [
+    const moderation = [
         'ban',
         'infractions',
         'isbanned',
@@ -15,8 +15,8 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'purge',
         'warn',
     ];
-    let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny'];
-    let admin = [
+    const fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny'];
+    const admin = [
         'modules',
         'scam',
         'autotranslate',
@@ -25,14 +25,13 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'levelsettings',
         'automod',
     ];
-    let level = ['rank', 'leaderboard', 'givexp', 'removexp'];
-    let utils = ['afk', 'info', 'ping', 'checkguild', 'kickme'];
-    let help = ['help', 'tutorial'];
+    const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
+    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme'];
+    const help = ['help', 'tutorial'];
 
     //=========================================================
 
-    const guildConfig = await GuildConfig.get(main_interaction.guild_id);
-
+    const guildConfig = await GuildConfig.get(main_interaction.guild.id);
     disabled_modules = guildConfig.disabled_modules;
 
     function disabled(module) {

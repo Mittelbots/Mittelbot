@@ -14,7 +14,7 @@ const { Afk } = require('../utils/functions/data/Afk');
 const defaultCooldown = new Set();
 
 async function messageCreate(message, bot) {
-    if (Guilds.isBlacklist(message.guild.id)) {
+    if (await Guilds.isBlacklist(message.guild.id)) {
         const guild = bot.guilds.cache.get(message.guild.id);
 
         await bot.users.cache
