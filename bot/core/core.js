@@ -66,7 +66,7 @@ module.exports.startBot = async (bot) => {
             errorhandler({
                 message:
                     'BOT SUCCESSFULLY STARTED' +
-                    `${new Date().getDay()}/ ${new Date().getMonth()}/${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+                    `${new Date().getDay()}/${new Date().getMonth()}/${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}`,
                 fatal: false,
             });
 
