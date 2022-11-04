@@ -6,10 +6,10 @@ const { delay } = require('../utils/functions/delay/delay');
 const { translateMessage } = require('../utils/functions/data/translate');
 const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
-const { checkAFK } = require('../utils/functions/data/afk');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
 const { Automod } = require('../utils/functions/data/Automod');
+const { Afk } = require('../utils/functions/data/afk');
 
 const defaultCooldown = new Set();
 
@@ -118,7 +118,7 @@ async function messageCreate(message, bot) {
         }
 
         if (disabled_modules.indexOf('utils') === -1) {
-            const isAFK = checkAFK({ message });
+            const isAFK = Afk.check({ message });
             if (isAFK) {
                 return message
                     .reply(
