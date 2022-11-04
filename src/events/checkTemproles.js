@@ -1,6 +1,6 @@
 const config = require('../../src/assets/json/_config/config.json');
 const { getCurrentDate } = require('../../utils/functions/getCurrentDate');
-const { Temproles } = require('../../utils/functions/data/temproles');
+const { Temproles } = require('../../utils/functions/data/Temproles');
 
 module.exports.checkTemproles = async (bot) => {
     console.info('🔎📜 CheckTemproles handler started');

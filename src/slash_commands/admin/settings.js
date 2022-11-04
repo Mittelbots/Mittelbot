@@ -7,7 +7,6 @@ const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Joinroles } = require('../../../utils/functions/data/joinroles');
 const database = require('../../db/db');
-const { updateWarnroles } = require('../../../utils/functions/data/warnroles');
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
 const { changeYtNotifier, delChannelFromList } = require('../../../utils/functions/data/youtube');
 const {
@@ -17,6 +16,7 @@ const {
 const { updateReactionRoles } = require('../../../utils/functions/data/reactionroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { Logs } = require('../../../utils/functions/data/logs');
+const { Warnroles } = require('../../../utils/functions/data/warnroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -268,7 +268,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             warnroles = removeMention(warnroles);
             warnroles = warnroles.split(' ');
 
-            updateWarnroles({
+            Warnroles.update({
                 guild: main_interaction.guild,
                 roles: warnroles,
                 user: bot.guilds.cache

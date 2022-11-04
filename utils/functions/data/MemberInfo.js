@@ -29,12 +29,12 @@ class MemberInfo {
 
     get({ guild_id, user_id }) {
         return new Promise(async (resolve, reject) => {
-        const guild = await Guilds.get(guild_id);
-        return guild.getMemberInfo({
-            where: {
-                user_id,
-            },
-        });
+            const guild = await Guilds.get(guild_id);
+            return guild.getMemberInfo({
+                where: {
+                    user_id,
+                },
+            });
         });
     }
 
