@@ -84,16 +84,6 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
                     [twdcchannel.id, twpingrole ? twpingrole.id : null, guild.id, twitch_user.id]
                 )
                 .then(() => {
-                    let cache = twitchStreams[0].list;
-                    for (let i in cache) {
-                        if (
-                            cache[i].channel_id === twitch_user.id &&
-                            cache[i].guild_id === guild.id
-                        ) {
-                            cache[i].info_channel_id = twdcchannel.id;
-                            cache[i].pingrole = twpingrole ? twpingrole.id : null;
-                        }
-                    }
                     resolve(
                         `✅ Successfully updated the twitch channel settings for ${twChannelExists.channel_name}.`
                     );
@@ -120,14 +110,6 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
                     ]
                 )
                 .then(() => {
-                    let cache = twitchStreams[0].list;
-                    cache.push({
-                        guild_id: guild.id,
-                        channel_id: twitch_user.id,
-                        info_channel_id: twdcchannel.id,
-                        pingrole: twpingrole ? twpingrole.id : null,
-                        channel_name: twitchchannel,
-                    });
                     resolve(`✅ Successfully added ${twitchchannel} to the notification list.`);
                 })
                 .catch((err) => {

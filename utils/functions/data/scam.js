@@ -11,35 +11,6 @@ module.exports.addScam = ({ value, guild_id, guild_name, bot, author }) => {
             value = `http://${value}/`;
         }
         var pass = false;
-
-        const cache = scamList[0].scamList;
-
-        if (cache.length > 0) {
-            var approved_links = [];
-            var blacklist_servers = [];
-
-            for (let i in cache) {
-                for (const key in cache[i]) {
-                    if (key === 'link') {
-                        approved_links.push(cache[i][key]);
-                    }
-                    if (key === 'blacklist') {
-                        blacklist_servers.push(cache[i][key]);
-                    }
-                }
-            }
-
-            if (approved_links.includes(removeHttp(value))) {
-                return reject('❌ This URL is already in the list and approved!');
-            }
-            if (blacklist_servers.includes(guild_id)) {
-                return reject(
-                    "❌ Your server is on blacklist! You can't sent any requests until the bot moderators removes your server from it."
-                );
-            }
-
-            pass = true;
-        } else {
             await database
                 .query(`SELECT * FROM advancedScamList`)
                 .then((res) => {
@@ -68,7 +39,7 @@ module.exports.addScam = ({ value, guild_id, guild_name, bot, author }) => {
                         fatal: true,
                     });
                 });
-        }
+
         if (!pass) return;
         const parsedLookupUrl = url.parse(value);
 

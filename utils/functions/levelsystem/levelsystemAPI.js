@@ -450,26 +450,13 @@ module.exports.changeLevelUp = async ({ type, guild, channel }) => {
 };
 
 module.exports.checkBlacklistChannels = async ({ message }) => {
-    const cache = await getFromCache({
-        cacheName: 'guildConfig',
-        param_id: message.guild.id,
-    });
+    let blacklistchannels;
 
-    var blacklistchannels;
+    const guildConfig = await GuildConfig.get(message.guild.id);
+    const levelsettings = guildConfig.levelsettings;
 
-    if (cache.length > 0) {
-        try {
-            blacklistchannels = JSON.parse(cache[0].settings.levelsettings).blacklistchannels;
-        } catch (err) {
-            blacklistchannels = [];
-        }
-    } else {
-        const guildConfig = await GuildConfig.get(message.guild.id);
-        const levelsettings = guildConfig.levelsettings;
-
-        if (levelsettings && levelsettings.length > 0) {
-            blacklistchannels = levelsettings.levelsettings.blacklistchannels;
-        }
+    if (levelsettings && levelsettings.length > 0) {
+        blacklistchannels = levelsettings.levelsettings.blacklistchannels;
     }
 
     if (!blacklistchannels) return false;

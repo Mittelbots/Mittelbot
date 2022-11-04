@@ -92,17 +92,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
                         [dcchannel.id, pingrole ? pingrole.id : null, guild.id, channelid]
                     )
                     .then(() => {
-                        let cache = ytUploads[0].list;
-                        for (let i in cache) {
-                            if (
-                                cache[i].guild_id === guild.id &&
-                                cache[i].channel_id === channelid
-                            ) {
-                                cache[i].info_channel_id = dcchannel.id;
-                                cache[i].pingrole = pingrole ? pingrole.id : null;
-                                break;
-                            }
-                        }
                         resolve('✅ Successfully updated the youtube channel settings.');
                     })
                     .catch((err) => {
@@ -132,16 +121,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
                                 ]
                             )
                             .then((res) => {
-                                let cache = ytUploads[0].list;
-
-                                cache.push({
-                                    guild_id: guild.id,
-                                    channel_id: channelid,
-                                    info_channel_id: dcchannel.id,
-                                    pingrole: pingrole ? pingrole.id : null,
-                                    uploads: latestVideo,
-                                });
-
                                 resolve(
                                     '✅ Successfully added the youtube channel to the notification list.'
                                 );
@@ -190,15 +169,6 @@ module.exports.delChannelFromList = async ({ guild_id, delytchannel }) => {
                 channelid,
             ])
             .then(() => {
-                let cache = ytUploads[0].list;
-                for (let i in cache) {
-                    if (cache[i].guild_id === guild_id && cache[i].channel_id === channelid) {
-                        delete cache[i];
-                        break;
-                    }
-                }
-                ytUploads[0].list = cache.filter(Boolean);
-
                 resolve('✅ Successfully removed the youtube channel to the notification list.');
             })
             .catch((err) => {

@@ -30,15 +30,6 @@ module.exports.getAllForms = async () => {
 };
 
 module.exports.getFormByGuild = async ({ guild_id }) => {
-    let cache;
-    for (let i in applyforms) {
-        if (applyforms[i].id === guild_id) {
-            return (cache = applyforms[i].forms);
-        }
-    }
-
-    if (cache) return cache;
-
     return await database
         .query('SELECT apply_form FROM guild_config WHERE guild_id = ?', [guild_id])
         .then((res) => {
