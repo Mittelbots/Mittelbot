@@ -1,4 +1,3 @@
-const database = require('../../../src/db/db');
 const memberInfo = require('../../../src/db/Models/tables/memberInfo.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { Guilds } = require('./Guilds');

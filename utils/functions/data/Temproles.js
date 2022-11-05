@@ -1,7 +1,4 @@
-const database = require('../../../src/db/db');
 const temproles = require('../../../src/db/Models/tables/temproles.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
-const { Guilds } = require('./Guilds');
 
 class Temproles {
     constructor() {}

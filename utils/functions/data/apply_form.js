@@ -1,108 +1,41 @@
 const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, ButtonStyle } = require('discord.js');
-const database = require('../../../src/db/db');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { removeMention } = require('../removeCharacters');
 const { isValidHexCode } = require('../validate/isValidHexCode');
 const { validURL } = require('../validate/isValidURL');
-
-module.exports.getAllForms = async () => {
-    return await database
-        .query('SELECT apply_form FROM guild_config')
-        .then((res) => {
-            if (res[0].length === 0) return [];
-
-            let response = [];
-            for (let i in res) {
-                if (!res[i].apply_form) continue;
-
-                res[i].apply_form = JSON.parse(res[i].apply_form);
-                const obj = {
-                    guild_id: res[i].apply_form[0].guild_id,
-                    forms: res[i].apply_form,
-                };
-                response.push(obj);
-            }
-            return response;
-        })
-        .catch((err) => {
-            errorhandler(err);
-        });
-};
+const { GuildConfig } = require('./Config');
 
 module.exports.getFormByGuild = async ({ guild_id }) => {
-    return await database
-        .query('SELECT apply_form FROM guild_config WHERE guild_id = ?', [guild_id])
-        .then((res) => {
-            if (!res[0].apply_form) return false;
-            return JSON.parse(res[0].apply_form);
-        })
-        .catch((err) => {
-            errorhandler({
-                err,
-                fatal: true,
-            });
-            return false;
-        });
+    const guildConfig = await GuildConfig.get(guild_id);
+    return await JSON.parse(guildConfig.apply_form);
 };
 
 module.exports.getFormById = async ({ guild_id, apply_id }) => {
-    for (let i in applyforms) {
-        if (applyforms[i].id === guild_id) {
-            for (let x in applyforms[i].forms) {
-                if (applyforms[i].forms[x].id === apply_id) {
-                    return {
-                        error: false,
-                        apply: applyforms[i].forms[x],
-                    };
-                }
-            }
-        }
-    }
+    const forms = await this.getFormByGuild({ guild_id });
 
-    return await database
-        .query('SELECT apply_form FROM guild_config WHERE guild_id = ?', [guild_id])
-        .then((res) => {
-            let apply = false;
-            res[0].apply_form = JSON.parse(res[0].apply_form);
-            for (let i in res[0].apply_form) {
-                if (res[0].apply_form[i].id == apply_id) {
-                    apply = res[0].apply_form[i];
-                }
-            }
-            return {
-                error: false,
-                apply: apply,
-            };
-        })
-        .catch((err) => {
-            errorhandler({
-                err,
-                fatal: true,
-            });
-            return {
-                error: true,
-                apply: false,
-            };
-        });
+    return new Promise(async (resolve, reject) => {
+        const form = forms.filter((form) => form.id === apply_id);
+
+        return form ? resolve({ error: false, apply: form[0] }) : reject({ error: '❌ Something went wrong.' });
+    });
 };
 
-module.exports.gernerateApplyId = (guild_id) => {
+module.exports.gernerateApplyId = async (guild_id) => {
     const newApplyId = Math.floor(Math.random() * 20 * 2000);
 
-    const exist = this.getFormById({
+    const exist = await this.getFormById({
         guild_id,
         apply_id: newApplyId,
     });
 
     if (exist.error) return exist;
 
-    if (exist.apply) this.gernerateApplyId(guild_id);
-    else return newApplyId;
+    return exist.apply ? this.gernerateApplyId(guild_id) : newApplyId;
 };
 
 module.exports.sendApplyForm = async ({ apply_id, main_interaction }) => {
     return new Promise(async (resolve, reject) => {
-        var applyForm = await this.getFormById({
+        let applyForm = await this.getFormById({
             guild_id: main_interaction.guild.id,
             apply_id,
         });
@@ -308,28 +241,22 @@ module.exports.saveApplyForm = async ({
             }
         }
 
-        for (let i in applyforms) {
-            if (applyforms[i].id === guild_id && applyforms[0].forms[index].id === apply_id) {
-                applyforms[0].forms[index][embed_name] = content;
-                break;
-            }
-        }
-
-        await database
-            .query(`UPDATE guild_config SET apply_form = ? WHERE guild_id = ?`, [
-                JSON.stringify(res),
-                guild_id,
-            ])
-            .then(() => {
-                return resolve(`✅ Welcome Message saved. ID: \`${apply_id}\``);
-            })
-            .catch((err) => {
-                errorhandler({
-                    err,
-                    fatal: true,
-                });
-                return reject(`❌ Something went wrong. ID: \`${apply_id}\``);
+        
+        await GuildConfig.update({
+            guild_id,
+            value: res,
+            valueName: 'apply_form',
+        })
+        .then(() => {
+            return resolve(`✅ Welcome Message saved. ID: \`${apply_id}\``);
+        })
+        .catch((err) => {
+            errorhandler({
+                err,
+                fatal: true,
             });
+            return reject(`❌ Something went wrong. ID: \`${apply_id}\``);
+        });
 
         if (embed_name === 'active') {
             if (res[index].channel) {

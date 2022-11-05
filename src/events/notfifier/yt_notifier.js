@@ -1,32 +1,21 @@
 const request = new (require('rss-parser'))();
-
-const database = require('../../db/db');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const guildUploads = require('../../db/Models/tables/guildUploads.model');
 
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
 
     setInterval(async () => {
-        var uploads;
+        const uploads = await guildUploads.findAll()
+        .then((res) => res).catch(err => {
+            errorhandler({
+                err,
+                fatal: true,
+            });
+            return false;
+        })
 
-        if (ytUploads) {
-            uploads = ytUploads[0].list;
-        } else {
-            uploads = await database
-                .query(`SELECT * FROM guild_uploads`)
-                .then((res) => {
-                    return res;
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
-                    return false;
-                });
-        }
-
-        if (!uploads || uploads.length === 0) return false;
+        if (uploads.length === 0) return false;
 
         for (let i in uploads) {
             if (uploads[i].channel_id) {
@@ -36,41 +25,32 @@ module.exports.handleUploads = async ({ bot }) => {
                     )
                     .then(async (feed) => {
                         var uploadedVideos =
-                            JSON.parse(uploads[i].uploads) || uploads[i].uploads || [];
+                            JSON.parse(uploads[i].uploads) || [];
 
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
 
                         uploadedVideos.push(feed.items[0].link);
 
-                        const saved = await database
-                            .query(
-                                `UPDATE guild_uploads SET uploads = ? WHERE guild_id = ? AND channel_id = ?`,
-                                [
-                                    JSON.stringify(uploadedVideos),
-                                    uploads[i].guild_id,
-                                    uploads[i].channel_id,
-                                ]
-                            )
-                            .then(() => {
-                                for (let i in ytUploads[0].list) {
-                                    if (
-                                        ytUploads[0].list[i].guild_id === uploads[i].guild_id &&
-                                        ytUploads[0].list[i].channel_id === uploads[i].channel_id
-                                    ) {
-                                        ytUploads[0].list[i].uploads =
-                                            JSON.stringify(uploadedVideos);
-                                    }
-                                }
-                                return true;
-                            })
-                            .catch((err) => {
-                                errorhandler({
-                                    err,
-                                    fatal: true,
-                                });
-                                return false;
+                        const saved = await guildUploads.update(
+                            {
+                                uploads: uploadedVideos,
+                            },
+                            {
+                                where: {
+                                    guild_id: uploads[i].guild_id,
+                                    channel_id: uploads[i].channel_id,
+                                },
+                            }
+                        ).then(() => {
+                            return true;    
+                        }).catch(err => {
+                            errorhandler({
+                                err,
+                                fatal: true,
                             });
+                            return false;
+                        })
                         if (!saved) return;
 
                         const guild = await bot.guilds.cache.get(uploads[i].guild_id);

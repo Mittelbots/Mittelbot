@@ -6,7 +6,6 @@ const {
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Joinroles } = require('../../../utils/functions/data/Joinroles');
-const database = require('../../db/db');
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
 const { changeYtNotifier, delChannelFromList } = require('../../../utils/functions/data/youtube');
 const {
@@ -44,7 +43,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .catch((err) => {});
 
-            var currentsettings = await database
+            const currentsettings = await database
                 .query(`SELECT * FROM ${main_interaction.guild.id}_config LIMIT 1`)
                 .then(async (res) => {
                     return await res[0];

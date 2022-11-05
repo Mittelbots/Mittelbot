@@ -3,7 +3,7 @@ const { ClientCredentialsAuthProvider } = require('@twurple/auth');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
-const database = require('../../db/db');
+const twitchStreams = require('../../db/Models/tables/twitchStreams.model');
 
 const clientId = process.env.TT_CLIENT_ID;
 const clientSecret = process.env.TT_SECRET;
@@ -26,8 +26,10 @@ module.exports.twitch_notifier = async ({ bot }) => {
     console.info('🔎 Twitch streams handler started');
 
     setInterval(async () => {
-        const allTwitchAccounts = await database
-            .query(`SELECT * FROM twitch_streams`)
+        const streams = twitchStreams.findAll()
+            .then((res) => {
+                return res;
+            })
             .catch((err) => {
                 errorhandler({
                     err,
@@ -43,15 +45,16 @@ module.exports.twitch_notifier = async ({ bot }) => {
                 const isLive = await isStreamLive(allTwitchAccounts[i].channel_id);
 
                 if (isLive !== !!+allTwitchAccounts[i].isStreaming) {
-                    database
-                        .query(
-                            `UPDATE twitch_streams SET isStreaming = ? WHERE guild_id = ? AND channel_id = ?`,
-                            [
-                                JSON.parse(isLive),
-                                allTwitchAccounts[i].guild_id,
-                                allTwitchAccounts[i].channel_id,
-                            ]
-                        )
+                    await twitchStreams.update(
+                        {
+                            isStreaming: isLive,
+                        },
+                        {
+                            where: {
+                                guild_id: allTwitchAccounts[i].guild_id,
+                                channel_id: allTwitchAccounts[i].channel_id,
+                            },
+                        })
                         .then(() => {
                             if (isLive) {
                                 const guild = bot.guilds.cache.get(allTwitchAccounts[i].guild_id);
