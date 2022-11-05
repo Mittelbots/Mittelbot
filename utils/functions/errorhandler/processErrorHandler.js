@@ -13,7 +13,7 @@ module.exports.processErrorHandler = () => {
             fatal: true,
         });
 
-        await restartBot();
+        //await restartBot();
     });
 
     process.on('uncaughtException', async (err) => {
@@ -31,6 +31,6 @@ module.exports.processErrorHandler = () => {
             fatal: true,
         });
 
-        await restartBot();
+        //await restartBot();
     });
 };
