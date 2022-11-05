@@ -62,7 +62,7 @@ bot.once('ready', async () => {
                 fatal: true,
             });
             await delay(10000);
-            await restartBot();
+            //await restartBot();
         });
 
     setInterval(() => {
