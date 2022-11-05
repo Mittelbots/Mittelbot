@@ -3,3 +3,5 @@ mittelblot-db-backup/
 *.min.*
 *.bundle.*
 ._*
+bootstrap/cache/*
+bootstrap/*
