@@ -27,33 +27,39 @@ class MemberInfo {
     }
 
     get({ guild_id, user_id }) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             const guild = await Guilds.get(guild_id);
-            return resolve(
-                await guild.getMemberInfo({
-                    where: {
-                        user_id,
-                    },
-                })
-            );
+            const memberInfo = await guild.getMemberInfo({
+                where: {
+                    user_id,
+                },
+            });
+            return resolve(memberInfo[0]);
         });
     }
 
     update({ guild_id, user_id, member_roles, user_joined }) {
         return new Promise(async (resolve, reject) => {
+            let updateQuery = {};
+
+            switch (true) {
+                case member_roles !== undefined:
+                    updateQuery.member_roles = member_roles;
+                    break;
+                case user_joined !== undefined:
+                    updateQuery.user_joined = user_joined;
+                    break;
+                default:
+                    return reject(false);
+            }
+
             memberInfo
-                .update(
-                    {
-                        member_roles: member_roles ? member_roles : null,
-                        user_joined: user_joined ? user_joined : null,
+                .update(updateQuery, {
+                    where: {
+                        user_id,
+                        guild_id,
                     },
-                    {
-                        where: {
-                            user_id,
-                            guild_id,
-                        },
-                    }
-                )
+                })
                 .then(() => {
                     resolve(true);
                 })

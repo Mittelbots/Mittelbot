@@ -47,7 +47,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
 
     const isUserMuted = await isMuted({ user, guild: main_interaction.guild, bot });
-    console.log(isUserMuted);
     if (isUserMuted.isMuted) {
         return main_interaction
             .followUp({

@@ -9,18 +9,18 @@ module.exports.guildMemberRemove = async ({ member }) => {
 
     const allRoles = getAllRoles(member);
 
-    if (!member_info) {
+    if (member_info.length === 0) {
         await MemberInfo.add({
             guild_id: member.guild.id,
             user_id: member.user.id,
             user_joined: member.joinedTimestamp,
-            member_roles: JSON.stringify(allRoles),
+            member_roles: allRoles,
         });
     } else {
         await MemberInfo.update({
             guild_id: member.guild.id,
             user_id: member.user.id,
-            member_roles: JSON.stringify(allRoles),
+            member_roles: allRoles,
         });
     }
 };
