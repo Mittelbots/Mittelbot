@@ -30,7 +30,7 @@ class MemberInfo {
         return new Promise(async (resolve, reject) => {
             const guild = await Guilds.get(guild_id);
             return resolve(
-                guild.getMemberInfo({
+                await guild.getMemberInfo({
                     where: {
                         user_id,
                     },
