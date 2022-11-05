@@ -26,7 +26,8 @@ module.exports.twitch_notifier = async ({ bot }) => {
     console.info('🔎 Twitch streams handler started');
 
     setInterval(async () => {
-        const streams = twitchStreams.findAll()
+        const streams = twitchStreams
+            .findAll()
             .then((res) => {
                 return res;
             })
@@ -45,16 +46,18 @@ module.exports.twitch_notifier = async ({ bot }) => {
                 const isLive = await isStreamLive(allTwitchAccounts[i].channel_id);
 
                 if (isLive !== !!+allTwitchAccounts[i].isStreaming) {
-                    await twitchStreams.update(
-                        {
-                            isStreaming: isLive,
-                        },
-                        {
-                            where: {
-                                guild_id: allTwitchAccounts[i].guild_id,
-                                channel_id: allTwitchAccounts[i].channel_id,
+                    await twitchStreams
+                        .update(
+                            {
+                                isStreaming: isLive,
                             },
-                        })
+                            {
+                                where: {
+                                    guild_id: allTwitchAccounts[i].guild_id,
+                                    channel_id: allTwitchAccounts[i].channel_id,
+                                },
+                            }
+                        )
                         .then(() => {
                             if (isLive) {
                                 const guild = bot.guilds.cache.get(allTwitchAccounts[i].guild_id);

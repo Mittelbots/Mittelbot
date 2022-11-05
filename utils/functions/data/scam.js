@@ -1,17 +1,8 @@
 const database = require('../../../src/db/db');
-const {
-    errorhandler
-} = require('../errorhandler/errorhandler');
+const { errorhandler } = require('../errorhandler/errorhandler');
 const dns = require('dns');
-const {
-    EmbedBuilder,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle
-} = require('discord.js');
-const {
-    removeHttp
-} = require('../removeCharacters');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { removeHttp } = require('../removeCharacters');
 const advancedScamList = require('../../../src/db/Models/tables/advancedScamList.model');
 
 class Scam {
@@ -33,13 +24,7 @@ class Scam {
         });
     }
 
-    add({
-        value,
-        guild_id,
-        guild_name,
-        bot,
-        author
-    }) {
+    add({ value, guild_id, guild_name, bot, author }) {
         return new Promise(async (resolve, reject) => {
             value = this.checkLinkStructure(value);
 
@@ -84,13 +69,13 @@ class Scam {
 
                         value = removeHttp(value);
                         return sendScamEmbed({
-                                bot,
-                                link: value,
-                                guild_id,
-                                guild_name,
-                                author,
-                                type: 'ADD',
-                            })
+                            bot,
+                            link: value,
+                            guild_id,
+                            guild_name,
+                            author,
+                            type: 'ADD',
+                        })
                             .then(() => {
                                 return resolve(
                                     `\`${value}\` Your request was sent to the Bot Moderators. You'll receive an status update in your direkt messages!`
@@ -108,13 +93,7 @@ class Scam {
         });
     }
 
-    remove({
-        value,
-        guild_id,
-        guild_name,
-        bot,
-        author
-    }) {
+    remove({ value, guild_id, guild_name, bot, author }) {
         return new Promise(async (resolve, reject) => {
             value = this.checkLinkStructure(value);
 
@@ -145,13 +124,13 @@ class Scam {
             value = removeHttp(value);
 
             sendScamEmbed({
-                    bot,
-                    link: value,
-                    guild_id,
-                    guild_name,
-                    author,
-                    type: 'DELETE',
-                })
+                bot,
+                link: value,
+                guild_id,
+                guild_name,
+                author,
+                type: 'DELETE',
+            })
                 .then(() => {
                     resolve(
                         `\`${value}\` Your request was sent to the Bot Moderators. You'll receive an status update in your direkt messages!`
@@ -160,23 +139,19 @@ class Scam {
                 .catch((err) => {
                     reject(err);
                 });
-
         });
     }
 
-    view({
-        value,
-        channel,
-        author
-    }) {
+    view({ value, channel, author }) {
         return new Promise(async (resolve, reject) => {
             if (!value) {
-                advancedScamList.findAll({
+                advancedScamList
+                    .findAll({
                         where: {
                             link: {
-                                $ne: null
-                            }
-                        }
+                                $ne: null,
+                            },
+                        },
                     })
                     .then(async (res) => {
                         const backId = 'back';
@@ -201,10 +176,12 @@ class Scam {
                         const generateEmbed = async (start) => {
                             for (i in res) {
                                 if (i === Number(start) + Number(30)) return;
-                                embedMessage.addFields([{
-                                    name: 'LINK:',
-                                    value: res[i].link,
-                                }, ]);
+                                embedMessage.addFields([
+                                    {
+                                        name: 'LINK:',
+                                        value: res[i].link,
+                                    },
+                                ]);
                             }
                             return embedMessage;
                         };
@@ -213,27 +190,27 @@ class Scam {
                         const sentMessage = await channel
                             .send({
                                 embeds: [await generateEmbed(0)],
-                                components: canFitOnOnePage ? [] : [
-                                    new ActionRowBuilder({
-                                        components: [forwardButton],
-                                    }),
-                                ],
+                                components: canFitOnOnePage
+                                    ? []
+                                    : [
+                                          new ActionRowBuilder({
+                                              components: [forwardButton],
+                                          }),
+                                      ],
                             })
                             .catch((err) => {});
 
                         if (canFitOnOnePage) return;
 
                         const collector = sentMessage.createMessageComponentCollector({
-                            filter: ({
-                                user
-                            }) => user.id === author.id,
+                            filter: ({ user }) => user.id === author.id,
                         });
 
                         let currentIndex = 0;
                         collector.on('collect', async (interaction) => {
-                            interaction.customId === backId ?
-                                (currentIndex -= 10) :
-                                (currentIndex += 10);
+                            interaction.customId === backId
+                                ? (currentIndex -= 10)
+                                : (currentIndex += 10);
 
                             await interaction.update({
                                 embeds: [await generateEmbed(currentIndex)],
@@ -241,7 +218,9 @@ class Scam {
                                     new ActionRowBuilder({
                                         components: [
                                             ...(currentIndex ? [backButton] : []),
-                                            ...(currentIndex + 10 < data.length ? [forwardButton] : []),
+                                            ...(currentIndex + 10 < data.length
+                                                ? [forwardButton]
+                                                : []),
                                         ],
                                     }),
                                 ],
@@ -256,11 +235,12 @@ class Scam {
                     });
             } else {
                 value = removeHttp(value);
-                advancedScamList.findOne({
+                advancedScamList
+                    .findOne({
                         where: {
-                            link: value
-                        }
-                })
+                            link: value,
+                        },
+                    })
                     .then((res) => {
                         if (res.length <= 0) {
                             return reject('❌ **No results by searching this URL**');
@@ -279,7 +259,9 @@ class Scam {
     }
 
     checkLinkStructure(link) {
-        return (link.search('http://') !== -1 && link.search('https://') !== -1) ? `http://${link}/` : link;
+        return link.search('http://') !== -1 && link.search('https://') !== -1
+            ? `http://${link}/`
+            : link;
     }
 }
 
@@ -287,14 +269,7 @@ module.exports.Scam = new Scam();
 
 // ============================================================
 
-function sendScamEmbed({
-    bot,
-    link,
-    guild_id,
-    guild_name,
-    author,
-    type
-}) {
+function sendScamEmbed({ bot, link, guild_id, guild_name, author, type }) {
     return new Promise(async (resolve, reject) => {
         const request_id =
             Math.random().toString(36).substring(2, 15) +
@@ -311,7 +286,8 @@ function sendScamEmbed({
 
         const newScamLinkembed = new EmbedBuilder()
             .setTitle(`New **${type}** Scam Link request`)
-            .addFields([{
+            .addFields([
+                {
                     name: '**LINK:**',
                     value: `\n${removeHttp(link)}`,
                 },
@@ -330,21 +306,21 @@ function sendScamEmbed({
         const buttons = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                .setCustomId(accept_id)
-                .setLabel(accept_label)
-                .setStyle(ButtonStyle.Primary)
+                    .setCustomId(accept_id)
+                    .setLabel(accept_label)
+                    .setStyle(ButtonStyle.Primary)
             )
             .addComponents(
                 new ButtonBuilder()
-                .setCustomId(deny_id)
-                .setLabel(deny_label)
-                .setStyle(ButtonStyle.Primary)
+                    .setCustomId(deny_id)
+                    .setLabel(deny_label)
+                    .setStyle(ButtonStyle.Primary)
             )
             .addComponents(
                 new ButtonBuilder()
-                .setCustomId(blacklist)
-                .setLabel(blacklistLabel)
-                .setStyle(ButtonStyle.Primary)
+                    .setCustomId(blacklist)
+                    .setLabel(blacklistLabel)
+                    .setStyle(ButtonStyle.Primary)
             );
 
         let sent_message = await bot.guilds.cache
@@ -367,14 +343,15 @@ function sendScamEmbed({
                 message: sent_message.id,
                 channel: sent_message.channel.id,
             };
-            return await advancedScamList.create({
+            return await advancedScamList
+                .create({
                     request_link: link,
                     request_user: author.id,
                     request_type: type,
                     request_guild: guild_id,
                     request_id: request_id,
                     request_message: sent_message,
-            })
+                })
                 .then((res) => {
                     return resolve(true);
                 })
@@ -389,9 +366,7 @@ function sendScamEmbed({
     });
 }
 
-module.exports.manageScam = async ({
-    main_interaction
-}) => {
+module.exports.manageScam = async ({ main_interaction }) => {
     return new Promise(async (resolve, reject) => {
         const data = main_interaction.customId.split('_');
         const request_id = data[1];
@@ -457,9 +432,12 @@ module.exports.manageScam = async ({
                                         .fetch(message.message)
                                         .then((msg) => {
                                             msg.edit({
-                                                content: request.request_type == 'ADD' ?
-                                                    `✅ This request has been added to the scam list by ${main_interaction.user}` : request.request_type == 'DELETE' ?
-                                                    `✅ This request has been deleted from the scam list by ${main_interaction.user}` : `✅ This Guild has been added to the blacklist by ${main_interaction.user}`,
+                                                content:
+                                                    request.request_type == 'ADD'
+                                                        ? `✅ This request has been added to the scam list by ${main_interaction.user}`
+                                                        : request.request_type == 'DELETE'
+                                                        ? `✅ This request has been deleted from the scam list by ${main_interaction.user}`
+                                                        : `✅ This Guild has been added to the blacklist by ${main_interaction.user}`,
                                                 components: [],
                                             }).catch((err) => {});
                                         });
@@ -467,9 +445,12 @@ module.exports.manageScam = async ({
                                         .get(res[1][i].request_guild)
                                         .members.cache.get(res[1][i].request_user)
                                         .send({
-                                            content: request.request_type == 'ADD' ?
-                                                `✅ Your request got accepted.` : request.request_type == 'DELETE' ?
-                                                `❌ Your request got declined.` : `❌ Your request got declined.`,
+                                            content:
+                                                request.request_type == 'ADD'
+                                                    ? `✅ Your request got accepted.`
+                                                    : request.request_type == 'DELETE'
+                                                    ? `❌ Your request got declined.`
+                                                    : `❌ Your request got declined.`,
                                         })
                                         .catch((err) => {});
                                 }

@@ -6,14 +6,16 @@ module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
 
     setInterval(async () => {
-        const uploads = await guildUploads.findAll()
-        .then((res) => res).catch(err => {
-            errorhandler({
-                err,
-                fatal: true,
+        const uploads = await guildUploads
+            .findAll()
+            .then((res) => res)
+            .catch((err) => {
+                errorhandler({
+                    err,
+                    fatal: true,
+                });
+                return false;
             });
-            return false;
-        })
 
         if (uploads.length === 0) return false;
 
@@ -24,33 +26,35 @@ module.exports.handleUploads = async ({ bot }) => {
                         `https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`
                     )
                     .then(async (feed) => {
-                        var uploadedVideos =
-                            JSON.parse(uploads[i].uploads) || [];
+                        var uploadedVideos = JSON.parse(uploads[i].uploads) || [];
 
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
 
                         uploadedVideos.push(feed.items[0].link);
 
-                        const saved = await guildUploads.update(
-                            {
-                                uploads: uploadedVideos,
-                            },
-                            {
-                                where: {
-                                    guild_id: uploads[i].guild_id,
-                                    channel_id: uploads[i].channel_id,
+                        const saved = await guildUploads
+                            .update(
+                                {
+                                    uploads: uploadedVideos,
                                 },
-                            }
-                        ).then(() => {
-                            return true;    
-                        }).catch(err => {
-                            errorhandler({
-                                err,
-                                fatal: true,
+                                {
+                                    where: {
+                                        guild_id: uploads[i].guild_id,
+                                        channel_id: uploads[i].channel_id,
+                                    },
+                                }
+                            )
+                            .then(() => {
+                                return true;
+                            })
+                            .catch((err) => {
+                                errorhandler({
+                                    err,
+                                    fatal: true,
+                                });
+                                return false;
                             });
-                            return false;
-                        })
                         if (!saved) return;
 
                         const guild = await bot.guilds.cache.get(uploads[i].guild_id);

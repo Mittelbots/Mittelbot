@@ -16,7 +16,9 @@ module.exports.getFormById = async ({ guild_id, apply_id }) => {
     return new Promise(async (resolve, reject) => {
         const form = forms.filter((form) => form.id === apply_id);
 
-        return form ? resolve({ error: false, apply: form[0] }) : reject({ error: '❌ Something went wrong.' });
+        return form
+            ? resolve({ error: false, apply: form[0] })
+            : reject({ error: '❌ Something went wrong.' });
     });
 };
 
@@ -241,22 +243,21 @@ module.exports.saveApplyForm = async ({
             }
         }
 
-        
         await GuildConfig.update({
             guild_id,
             value: res,
             valueName: 'apply_form',
         })
-        .then(() => {
-            return resolve(`✅ Welcome Message saved. ID: \`${apply_id}\``);
-        })
-        .catch((err) => {
-            errorhandler({
-                err,
-                fatal: true,
+            .then(() => {
+                return resolve(`✅ Welcome Message saved. ID: \`${apply_id}\``);
+            })
+            .catch((err) => {
+                errorhandler({
+                    err,
+                    fatal: true,
+                });
+                return reject(`❌ Something went wrong. ID: \`${apply_id}\``);
             });
-            return reject(`❌ Something went wrong. ID: \`${apply_id}\``);
-        });
 
         if (embed_name === 'active') {
             if (res[index].channel) {
