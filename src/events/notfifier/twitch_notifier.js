@@ -26,7 +26,7 @@ module.exports.twitch_notifier = async ({ bot }) => {
     console.info('🔎 Twitch streams handler started');
 
     setInterval(async () => {
-        const streams = twitchStreams
+        const allTwitchAccounts = twitchStreams
             .findAll()
             .then((res) => {
                 return res;
