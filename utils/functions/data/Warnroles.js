@@ -28,7 +28,7 @@ class Warnroles {
                 })
                 .catch((err) => {
                     errorhandler({
-                        err
+                        err,
                     });
                     return false;
                 });
@@ -51,7 +51,7 @@ class Warnroles {
                 })
                 .catch((err) => {
                     errorhandler({
-                        err
+                        err,
                     });
                     return false;
                 });

@@ -3,7 +3,7 @@ const config = require('../../src/assets/json/_config/config.json');
 const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
 const { isOnBanList } = require('../functions/moderations/checkOpenInfractions');
 const { setNewModLogMessage } = require('../modlog/modlog');
-const { Logs } = require('../functions/data/logs');
+const { Logs } = require('../functions/data/Logs');
 
 var c = config.auditTypes;
 var gid = '';

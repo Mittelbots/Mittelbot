@@ -11,34 +11,34 @@ module.exports.addScam = ({ value, guild_id, guild_name, bot, author }) => {
             value = `http://${value}/`;
         }
         var pass = false;
-            await database
-                .query(`SELECT * FROM advancedScamList`)
-                .then((res) => {
-                    if (res.length > 0) {
-                        for (let i in res) {
-                            if (res[i].blacklist === guild_id) {
-                                pass = false;
-                                return reject(
-                                    "❌ Your server is on blacklist! You can't sent any requests until the bot moderators removes your server from it."
-                                );
-                            }
-                            if (res[i].link === removeHttp(value)) {
-                                pass = false;
-                                return reject('❌ This URL is already in the list and approved!');
-                            }
-                            pass = true;
+        await database
+            .query(`SELECT * FROM advancedScamList`)
+            .then((res) => {
+                if (res.length > 0) {
+                    for (let i in res) {
+                        if (res[i].blacklist === guild_id) {
+                            pass = false;
+                            return reject(
+                                "❌ Your server is on blacklist! You can't sent any requests until the bot moderators removes your server from it."
+                            );
                         }
-                    } else {
-                        return (pass = true);
+                        if (res[i].link === removeHttp(value)) {
+                            pass = false;
+                            return reject('❌ This URL is already in the list and approved!');
+                        }
+                        pass = true;
                     }
-                })
-                .catch((err) => {
-                    reject(`❌ Error while checking something in the database!`);
-                    return errorhandler({
-                        err,
-                        fatal: true,
-                    });
+                } else {
+                    return (pass = true);
+                }
+            })
+            .catch((err) => {
+                reject(`❌ Error while checking something in the database!`);
+                return errorhandler({
+                    err,
+                    fatal: true,
                 });
+            });
 
         if (!pass) return;
         const parsedLookupUrl = url.parse(value);

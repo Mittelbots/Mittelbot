@@ -29,7 +29,7 @@ class GuildConfig {
 
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
-            const guild = await Guilds.get(guild_id).catch(err => {})
+            const guild = await Guilds.get(guild_id).catch((err) => {});
             return resolve(await guild.getConfig());
         });
     }

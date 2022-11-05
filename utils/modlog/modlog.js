@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { generateModEmote } = require('../functions/generateModEmote');
-const { Logs } = require('../functions/data/logs');
+const { Logs } = require('../functions/data/Logs');
 
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
     var modLogMessage = new EmbedBuilder()

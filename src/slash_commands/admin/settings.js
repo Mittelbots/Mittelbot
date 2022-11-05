@@ -15,7 +15,7 @@ const {
 } = require('../../../utils/functions/data/twitch');
 const { updateReactionRoles } = require('../../../utils/functions/data/reactionroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
-const { Logs } = require('../../../utils/functions/data/logs');
+const { Logs } = require('../../../utils/functions/data/Logs');
 const { Warnroles } = require('../../../utils/functions/data/Warnroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {

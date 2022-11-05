@@ -31,19 +31,19 @@
         "_desc": "Every important Command for all Moderators on your server.",
         "_icon": "🛡️",
         "ban": {
-            "name":"ban",
+            "name": "ban",
             "description": "Ban an User",
             "usage": "!ban <Mention User> <Reason>",
             "icon": "🔒"
         },
         "infraction": {
-            "name":"infraction",
+            "name": "infraction",
             "description": "View specific infraction from user",
             "usage": "!infraction <infraction id>",
             "icon": "📕"
         },
         "infractions": {
-            "name":"infractions",
+            "name": "infractions",
             "description": "View infractions from user",
             "usage": "!infraction <mention/ID>",
             "icon": "📚",
@@ -62,31 +62,31 @@
             "icon": "🔇"
         },
         "purge": {
-            "name":"purge",
+            "name": "purge",
             "description": "Purge an amount of messages",
             "usage": "!purge <number>",
             "icon": "❌"
         },
         "unban": {
-            "name":"unban",
+            "name": "unban",
             "description": "Unban an user",
             "usage": "!unban <mention/ID> <Reason>",
             "icon": "🔓"
         },
         "unmute": {
-            "name":"unmute",
+            "name": "unmute",
             "description": "Unmute an user",
             "usage": "!unmute <mention/ID> <Reason>",
             "icon": "🔈"
         },
         "warn": {
-            "name":"warn",
+            "name": "warn",
             "description": "Warn an user",
             "usage": "!warn <mention/ID> <Reason>",
             "icon": "⚠️"
         },
         "isbanned": {
-            "name":"isbanned",
+            "name": "isbanned",
             "description": "Check if a user banned or not",
             "usage": "!isbanned <mention/ID>",
             "icon": "⚠️"
@@ -96,7 +96,7 @@
         "_desc": "Utility Commands for everyone on the server.",
         "_icon": "📝",
         "ping": {
-            "name":"ping",
+            "name": "ping",
             "description": "Ping the bot",
             "usage": "/ping",
             "icon": "🌐"

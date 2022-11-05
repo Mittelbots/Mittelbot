@@ -29,7 +29,7 @@ async function messageCreate(message, bot) {
             message: ` I was in a BLACKLISTED Guild, but left after >messageCreate< : ${guild.name} (${guild.id})`,
         });
 
-        return guild.leave().catch(err => {});
+        return guild.leave().catch((err) => {});
     }
 
     if (message.author.bot) return;

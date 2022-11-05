@@ -1,4 +1,5 @@
 node_modules/
 mittelblot-db-backup/
-*.min.js
+*.min.*
+*.bundle.*
 ._*
