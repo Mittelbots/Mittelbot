@@ -5,6 +5,7 @@ const { Temproles } = require('../data/Temproles');
 const { Warnroles } = require('../data/Warnroles');
 
 module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
+
     const roles = await Warnroles.get(guild.id);
 
     let hasRoleAlready = false;
@@ -31,9 +32,6 @@ module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
                             return true;
                         })
                         .catch((err) => {
-                            errorhandler({
-                                err,
-                            });
                             return {
                                 error: true,
                                 message: config.errormessages.nopermissions.manageRoles,

@@ -21,9 +21,7 @@ class Temproles {
 
     insert({ uid, role_id, till_date, infraction_id, gid }) {
         return new Promise(async (resolve, reject) => {
-            const guild = await Guilds.get(gid);
-            await guild
-                .createTemproles({
+            await temproles.create({
                     user_id: uid,
                     role_id,
                     till_date,

@@ -36,7 +36,7 @@ ClosedInfractions.init(
             type: DataTypes.STRING,
         },
         infraction_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
         },
         start_date: {
             type: DataTypes.DATE,

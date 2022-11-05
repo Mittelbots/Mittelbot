@@ -29,7 +29,7 @@ OpenInfractions.init(
             defaultValue: 'No reason provided',
         },
         infraction_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         start_date: {

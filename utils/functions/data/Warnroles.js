@@ -7,8 +7,8 @@ class Warnroles {
 
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
-            const { warnroles } = await GuildConfig.get(guild_id);
-            return warnroles ? resolve(JSON.parse(warnroles)) : reject(false);
+            const guildConfig = await GuildConfig.get(guild_id);
+            return guildConfig.warnroles ? resolve(JSON.parse(guildConfig.warnroles)) : reject(false);
         });
     }
 
@@ -20,17 +20,17 @@ class Warnroles {
 
             return await GuildConfig.update({
                 guild_id,
-                value: JSON.stringify(warnroles),
+                value: warnroles,
                 valueName: 'warnroles',
             })
                 .then(() => {
-                    return true;
+                    return resolve(true);
                 })
                 .catch((err) => {
                     errorhandler({
                         err,
                     });
-                    return false;
+                    return reject(false);
                 });
         });
     }
@@ -38,12 +38,11 @@ class Warnroles {
     remove({ guild_id, warnrole_id }) {
         return new Promise(async (resolve, reject) => {
             const warnroles = await this.get(guild_id);
-
             const newWarnroles = warnroles.filter((role) => role !== warnrole_id);
 
             return await GuildConfig.update({
                 guild_id,
-                value: JSON.stringify(newWarnroles),
+                value: newWarnroles,
                 valueName: 'warnroles',
             })
                 .then(() => {
@@ -60,9 +59,7 @@ class Warnroles {
 
     update({ guild, roles, user }) {
         return new Promise(async (resolve, reject) => {
-            const warnroles = await this.get({
-                guild_id: guild.id,
-            });
+            const warnroles = await this.get(guild.id);
 
             if (warnroles && warnroles.length !== 0) {
                 let removedRoles = '';
