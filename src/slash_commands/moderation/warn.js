@@ -46,7 +46,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ephemeral: true,
                 })
                 .catch((err) => {});
-                
+
         const warned = await warnUser({
             bot,
             user,

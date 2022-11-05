@@ -11,7 +11,7 @@
         "text": "0 seconds"
     },
     "bulkDeleteLimit": "100",
-    "defaultCheckInfractionTimer": "30000",
+    "defaultCheckInfractionTimer": "10000",
     "defaultCheckTemprolesTimer": "5000",
     "errormessages": {
         "general": "Something went wrong!",

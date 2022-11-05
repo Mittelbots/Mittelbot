@@ -3,7 +3,7 @@ const { generateModEmote } = require('../functions/generateModEmote');
 const { Logs } = require('../functions/data/Logs');
 
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
-    var modLogMessage = new EmbedBuilder()
+    const modLogMessage = new EmbedBuilder()
         .setTitle(`${await generateModEmote({ bot, type })} **Member ${type}!**`)
         .addFields([
             {
@@ -12,7 +12,7 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
             },
             {
                 name: `${type.charAt(0).toUpperCase() + type.slice(1)} Member`,
-                value: `${member.username ? `Username: **${member.username}**\n` : ''}Tag:<@${
+                value: `${member ? `${`Username: **${member.username}**\n` || ''}` : ''}Tag:<@${
                     member.id || member
                 }>\nUser ID: **(${member.id || member})**`,
             },

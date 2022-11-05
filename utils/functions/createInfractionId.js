@@ -8,8 +8,8 @@ module.exports.createInfractionId = async (guild_id) => {
     const infractionid = generate();
     const open_infractions = await Infractions.get({
         inf_id: infractionid,
-        guild_id
+        guild_id,
     });
 
-    return (open_infractions.length > 0) ? this.createInfractionId(guild_id) : infractionid;
+    return open_infractions.length > 0 ? this.createInfractionId(guild_id) : infractionid;
 };

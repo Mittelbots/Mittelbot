@@ -29,6 +29,8 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
             return true;
         })
         .catch((err) => {
+            if (err.code === 50013) return false;
+
             errorhandler({ err, fatal: false, message: `${MutedRole} is not a valid Muted Role.` });
             return false;
         });

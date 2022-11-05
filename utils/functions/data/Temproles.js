@@ -21,7 +21,8 @@ class Temproles {
 
     insert({ uid, role_id, till_date, infraction_id, gid }) {
         return new Promise(async (resolve, reject) => {
-            await temproles.create({
+            await temproles
+                .create({
                     user_id: uid,
                     role_id,
                     till_date,

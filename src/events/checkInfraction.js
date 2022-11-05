@@ -8,7 +8,7 @@ const { errorhandler } = require('../../utils/functions/errorhandler/errorhandle
 const { Infractions } = require('../../utils/functions/data/Infractions');
 
 async function deleteEntries(infraction) {
-    Infractions.deleteOpen({ inf_id: infraction.infraction_id });
+    Infractions.deleteOpen(infraction.infraction_id);
 
     Infractions.insertClosed({
         uid: infraction.user_id,
@@ -31,37 +31,23 @@ module.exports.checkInfractions = (bot) => {
         let done = 0;
         let mutecount = 0;
         let bancount = 0;
-        for (let i in await results) {
+        for (let i in results) {
             if (results[i].till_date == null) continue;
 
-            //Member can be unmuted
-            let currentdate = new Date();
+            const currentdate = new Date().getTime();
+            const till_date = results[i].till_date.getTime();
 
-            var inf_date = results[i].till_date.split('.');
-
-            const year = inf_date[2].split(',')[0];
-            const month = inf_date[1] < 10 ? inf_date[1].replace('0', '') : inf_date[1];
-            const day = inf_date[0] < 10 ? inf_date[0].replace('0', '') : inf_date[0];
-            const time = inf_date[2].split(':');
-            const hr = time[0].split(',')[1].replace(' ', '');
-            const min = time[1];
-            const sec = time[2];
-
-            inf_date = new Date(year, month - 1, day, hr, min, sec);
-
-            if (currentdate.getTime() >= inf_date.getTime()) {
-                //&& currentdate.getFullYear() <= inf_date.getFullYear()
+            const currentYear = new Date().getFullYear();
+            const infYear = results[i].till_date.getFullYear();
+            if (currentdate - till_date >= 0 && currentYear <= infYear) {
                 if (results[i].mute) {
-                    try {
-                        var guild = await bot.guilds.cache.get(results[i].guild_id);
-                        var user = await guild.members
-                            .fetch(results[i].user_id)
-                            .then((members) => members);
-                    } catch (err) {
-                        //Member left or got kicked
-                        deleteEntries(results[i]);
-                        continue;
-                    }
+                    const guild = await bot.guilds.cache.get(results[i].guild_id);
+                    const user = await guild.members
+                        .fetch(results[i].user_id)
+                        .then((members) => {
+                            return members;
+                        })
+                        .catch((err) => {});
                     try {
                         await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
 
@@ -82,14 +68,14 @@ module.exports.checkInfractions = (bot) => {
                             bot,
                             config.defaultModTypes.unmute,
                             bot.user.id,
-                            user,
+                            user || results[i].user_id,
                             'Auto',
                             null,
                             results[i].guild_id
                         );
 
                         await privateModResponse(
-                            user,
+                            user || bot.users.cache.get(results[i].user_id),
                             config.defaultModTypes.unmute,
                             'Auto',
                             null,
@@ -112,24 +98,31 @@ module.exports.checkInfractions = (bot) => {
                     //Member got banned
                     done++;
                     bancount++;
-                    try {
-                        await bot.guilds.cache
-                            .get(results[i].guild_id)
-                            .members.unban(`${results[i].user_id}`, `Auto`);
-                        setNewModLogMessage(
-                            bot,
-                            config.defaultModTypes.unban,
-                            bot.user.id,
-                            results[i].user_id,
-                            'Auto',
-                            null,
-                            results[i].guild_id
-                        );
-                        deleteEntries(results[i]);
-                    } catch (err) {
-                        //Unknown ban
-                        deleteEntries(results[i]);
-                    }
+                    await deleteEntries(results[i]);
+                    await bot.guilds.cache
+                        .get(results[i].guild_id)
+                        .members.unban(`${results[i].user_id}`, `Auto`)
+                        .then(async () => {
+                            await setNewModLogMessage(
+                                bot,
+                                config.defaultModTypes.unban,
+                                bot.user.id,
+                                results[i].user_id,
+                                'Auto',
+                                null,
+                                results[i].guild_id
+                            );
+
+                            await privateModResponse(
+                                bot.users.cache.get(results[i].user_id),
+                                config.defaultModTypes.unmute,
+                                'Auto',
+                                null,
+                                bot,
+                                guild.name
+                            );
+                        })
+                        .catch((err) => {});
                 }
             }
         }

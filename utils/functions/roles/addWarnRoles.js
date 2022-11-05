@@ -5,7 +5,6 @@ const { Temproles } = require('../data/Temproles');
 const { Warnroles } = require('../data/Warnroles');
 
 module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
-
     const roles = await Warnroles.get(guild.id);
 
     let hasRoleAlready = false;

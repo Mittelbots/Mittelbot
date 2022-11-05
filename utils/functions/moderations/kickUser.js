@@ -3,7 +3,6 @@ const { privateModResponse } = require('../../privatResponses/privateModResponse
 const { publicModResponses } = require('../../publicResponses/publicModResponses');
 const { createInfractionId } = require('../createInfractionId');
 const config = require('../../../src/assets/json/_config/config.json');
-const { getCurrentFullDate } = require('../data/dates');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { Infractions } = require('../data/Infractions');
 
@@ -29,7 +28,6 @@ module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
                 kick: 0,
                 reason,
                 infraction_id: await createInfractionId(guild.id),
-                start_date: getCurrentFullDate(),
                 guild_id: guild.id,
             });
             setNewModLogMessage(

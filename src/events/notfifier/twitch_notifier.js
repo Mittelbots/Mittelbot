@@ -1,6 +1,5 @@
 const { ApiClient } = require('@twurple/api');
 const { ClientCredentialsAuthProvider } = require('@twurple/auth');
-const { EmbedBuilder } = require('discord.js');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
@@ -27,21 +26,15 @@ module.exports.twitch_notifier = async ({ bot }) => {
     console.info('🔎 Twitch streams handler started');
 
     setInterval(async () => {
-        var allTwitchAccounts;
-
-        if (twitchStreams) {
-            allTwitchAccounts = twitchStreams[0].list;
-        } else {
-            allTwitchAccounts = await database
-                .query(`SELECT * FROM twitch_streams`)
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
-                    return false;
+        const allTwitchAccounts = await database
+            .query(`SELECT * FROM twitch_streams`)
+            .catch((err) => {
+                errorhandler({
+                    err,
+                    fatal: true,
                 });
-        }
+                return false;
+            });
 
         if (!allTwitchAccounts || allTwitchAccounts.length === 0) return;
 
@@ -60,15 +53,6 @@ module.exports.twitch_notifier = async ({ bot }) => {
                             ]
                         )
                         .then(() => {
-                            for (let i in twitchStreams) {
-                                if (
-                                    twitchStreams[i].guild_id === allTwitchAccounts[i].guild_id &&
-                                    twitchStreams[i].channel_id === allTwitchAccounts[i].channel_id
-                                ) {
-                                    twitchStreams[i].isStreaming = isLive;
-                                }
-                            }
-
                             if (isLive) {
                                 const guild = bot.guilds.cache.get(allTwitchAccounts[i].guild_id);
                                 const channel = guild.channels.cache.get(

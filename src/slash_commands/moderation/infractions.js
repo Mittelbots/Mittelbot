@@ -114,9 +114,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             if (table) {
                 if (table === 'open') {
-                    await Infractions.deleteOpen({ inf_id: infraction_id });
+                    await Infractions.deleteOpen(inf_id);
                 } else {
-                    await Infractions.deleteClosed({ inf_id: infraction_id });
+                    await Infractions.deleteClosed(infraction_id);
                 }
 
                 return main_interaction

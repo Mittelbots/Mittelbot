@@ -1,7 +1,6 @@
 const closedInfractions = require('../../../src/db/Models/tables/closedInfractions.model');
 const openInfractions = require('../../../src/db/Models/tables/open_infractions.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { getCurrentFullDate } = require('./dates');
 const { Guilds } = require('./Guilds');
 
 class Infractions {
@@ -59,20 +58,19 @@ class Infractions {
         gid,
         roles = null,
     }) {
-        const start_date = getCurrentFullDate();
-
         return new Promise(async (resolve) => {
-            const guild = await Guilds.get(gid);
-            guild.openInfractions.create({
-                    uid,
-                    modid,
+            openInfractions
+                .create({
+                    user_id: uid,
+                    mod_id: modid,
                     mute,
                     ban,
                     till_date,
                     reason,
                     infraction_id,
-                    start_date,
+                    start_date: new Date(),
                     roles,
+                    guild_id: gid,
                 })
                 .then(() => {
                     return resolve(true);
@@ -138,11 +136,12 @@ class Infractions {
         till_date,
         reason,
         infraction_id,
-        start_date = getCurrentFullDate(),
+        start_date = new Date(),
         guild_id,
     }) {
         return new Promise(async (resolve) => {
-            closedInfractions.create({
+            closedInfractions
+                .create({
                     user_id: uid,
                     mod_id,
                     mute,
@@ -153,7 +152,7 @@ class Infractions {
                     reason,
                     infraction_id,
                     start_date,
-                    guild_id
+                    guild_id,
                 })
                 .then(() => {
                     return resolve(true);
