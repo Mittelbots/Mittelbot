@@ -8,7 +8,7 @@ class Warnroles {
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
             const { warnroles } = await GuildConfig.get(guild_id);
-            return warnroles ? resolve(warnroles) : reject(false);
+            return warnroles ? resolve(JSON.parse(warnroles)) : reject(false);
         });
     }
 

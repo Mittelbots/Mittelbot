@@ -26,7 +26,7 @@ async function unbanUser({ user, mod, guild, reason, bot }) {
                 if (res.length > 0) {
                     await Infractions.insertClosed({
                         uid: user.id,
-                        modid: res[0].mod_id,
+                        mod_id: res[0].mod_id,
                         ban: res[0].ban,
                         mute: res[0].mute,
                         kick: 0,

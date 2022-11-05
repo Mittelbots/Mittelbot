@@ -105,7 +105,7 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
                     }
                     await Infractions.insertClosed({
                         uid: res[0].user_id,
-                        modid: res[0].mod_id,
+                        mod_id: res[0].mod_id,
                         mute: res[0].mute,
                         ban: res[0].ban,
                         warm: 0,

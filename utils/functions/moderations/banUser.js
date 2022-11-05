@@ -36,7 +36,7 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
             mute: 0,
             till_date: getFutureDate(dbtime),
             reason,
-            infraction_id: await createInfractionId(),
+            infraction_id: await createInfractionId(guild.id),
             gid: guild.id,
         });
         setNewModLogMessage(

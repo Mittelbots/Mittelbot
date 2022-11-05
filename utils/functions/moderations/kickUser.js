@@ -22,13 +22,13 @@ module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
         if (pass) {
             Infractions.insertClosed({
                 uid: user.id,
-                modid: mod.id,
+                mod_id: mod.id,
                 ban: 0,
                 mute: 0,
                 warn: 0,
                 kick: 0,
                 reason,
-                infraction_id: await createInfractionId(),
+                infraction_id: await createInfractionId(guild.id),
                 start_date: getCurrentFullDate(),
                 guild_id: guild.id,
             });

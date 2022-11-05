@@ -78,6 +78,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             const { infraction } = await Infractions.get({
                 inf_id,
+                guild_id: main_interaction.guild.id,
             });
 
             if (!infraction) {
@@ -108,6 +109,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             const { table } = await Infractions.get({
                 inf_id: infraction_id,
+                guild_id: main_interaction.guild.id,
             });
 
             if (table) {

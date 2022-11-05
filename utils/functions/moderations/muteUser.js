@@ -44,7 +44,7 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                 ban: 0,
                 till_date: getFutureDate(dbtime),
                 reason,
-                infraction_id: await createInfractionId(),
+                infraction_id: await createInfractionId(guild.id),
                 gid: guild.id,
                 roles: JSON.stringify(user_roles),
             });

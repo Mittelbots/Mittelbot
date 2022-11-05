@@ -7,7 +7,7 @@ const { Guilds } = require('./Guilds');
 class Infractions {
     constructor() {}
 
-    get({ inf_id }) {
+    get({ inf_id, guild_id }) {
         return new Promise(async (resolve) => {
             const guild = await Guilds.get(guild_id);
 
@@ -63,8 +63,7 @@ class Infractions {
 
         return new Promise(async (resolve) => {
             const guild = await Guilds.get(gid);
-            guild
-                .createOpenInfractions({
+            guild.openInfractions.create({
                     uid,
                     modid,
                     mute,
@@ -131,7 +130,7 @@ class Infractions {
 
     insertClosed({
         uid,
-        modid,
+        mod_id,
         mute = 0,
         ban = 0,
         warn = 0,
@@ -143,11 +142,9 @@ class Infractions {
         guild_id,
     }) {
         return new Promise(async (resolve) => {
-            const guild = await Guilds.get(guild_id);
-            guild
-                .createClosedInfractions({
-                    uid,
-                    modid,
+            closedInfractions.create({
+                    user_id: uid,
+                    mod_id,
                     mute,
                     ban,
                     warn,
@@ -156,6 +153,7 @@ class Infractions {
                     reason,
                     infraction_id,
                     start_date,
+                    guild_id
                 })
                 .then(() => {
                     return resolve(true);

@@ -12,7 +12,7 @@ async function deleteEntries(infraction) {
 
     Infractions.insertClosed({
         uid: infraction.user_id,
-        modid: infraction.mod_id,
+        mod_id: infraction.mod_id,
         mute: infraction.mute,
         ban: infraction.ban,
         till_date: infraction.till_date,
