@@ -11,7 +11,7 @@ const {
 
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
-const { updatePermsFromModroles } = require('../../../utils/functions/data/modroles');
+const { updatePermsFromModroles } = require('../../../utils/functions/data/Modroles');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 
 module.exports.run = async (bot, message, args) => {
@@ -35,22 +35,11 @@ module.exports.run = async (bot, message, args) => {
         let value = args[1];
         if (!value || value === '') return message.reply('No role provied!');
 
-        const isadmin = 'isadmin';
-        const isadminLabel = 'Admin';
-        var db_isadmin;
+        let db_isadmin;
+        let db_ismod;
+        let db_ishelper;
 
-        const ismod = 'ismod';
-        const ismodLabel = 'Moderator';
-        var db_ismod;
-
-        const ishelper = 'ishelper';
-        const ishelperLabel = 'Helper';
-        var db_ishelper;
-
-        const remove = 'remove';
-        const removeLabel = 'Remove';
-
-        var roleid;
+        let roleid;
 
         args[1] = removeMention(args[1]);
 
@@ -77,38 +66,6 @@ module.exports.run = async (bot, message, args) => {
                 `I could't found any role with this id. Please provide a existing one. (User ID doesnt work!)`
             );
         }
-
-        const modroleembed = new EmbedBuilder().setTitle(
-            `Choose setting for _${role.name}_. \n\nCurrent: **${
-                db_isadmin
-                    ? 'Admin'
-                    : db_ismod
-                    ? 'Moderator'
-                    : db_ishelper
-                    ? 'Helper'
-                    : 'Not set yet'
-            }**`
-        );
-
-        const isAdminButton = new ButtonBuilder()
-            .setCustomId(isadmin)
-            .setLabel(isadminLabel)
-            .setStyle(ButtonStyle.Primary);
-
-        const isModButton = new ButtonBuilder()
-            .setCustomId(ismod)
-            .setLabel(ismodLabel)
-            .setStyle(ButtonStyle.Primary);
-
-        const isHelperButton = new ButtonBuilder()
-            .setCustomId(ishelper)
-            .setLabel(ishelperLabel)
-            .setStyle(ButtonStyle.Primary);
-
-        const isRemoveButton = new ButtonBuilder()
-            .setCustomId(remove)
-            .setLabel(removeLabel)
-            .setStyle(ButtonStyle.Danger);
 
         const row = new ActionRowBuilder();
         if (db_isadmin !== 1) {
