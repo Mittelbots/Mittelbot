@@ -28,8 +28,6 @@ module.exports.guildMemberAdd = async (member, bot) => {
         user_id: member.user.id,
     });
 
-    if (memberInfo.error) return;
-
     if (memberInfo.length === 0) {
         await MemberInfo.add({
             guild_id: member.guild.id,
