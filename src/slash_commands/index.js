@@ -21,7 +21,6 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'scam',
         'autotranslate',
         'settings',
-        'apply',
         'levelsettings',
         'automod',
         'modroles',
