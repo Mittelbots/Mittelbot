@@ -177,12 +177,31 @@ class Levelsystem {
                 guild_id,
             });
             if(!guild) return resolve([]);
-            const sorted = guild.sort((a, b) => b.xp - a.xp);
+            let sorted = [];
+
+            guild.forEach(element => {
+                sorted.push([
+                    element.user_id,
+                    element.xp,
+                    element.level_announce,
+                    element.message_count,
+                ]);
+            });
+
+            sorted.sort(function(a, b) {
+                return b[1] - a[1];
+            })[0];
         
-            for (let i in sorted) {
-                if (sorted[i].user_id == user_id) {
-                    return resolve(Number(i) + 1);
+            if (user_id) {
+                var index;
+                for (let i in sorted) {
+                    if (sorted[i][0] === user_id) {
+                        index = Number(i) + 1;
+                    }
                 }
+                return resolve(parseInt(index));
+            } else {
+                return resolve(sorted);
             }
         });
     }
