@@ -9,7 +9,7 @@ module.exports.guildMemberRemove = async ({ member }) => {
 
     const allRoles = getAllRoles(member);
 
-    if (member_info.length === 0) {
+    if (!member_info) {
         await MemberInfo.add({
             guild_id: member.guild.id,
             user_id: member.user.id,
