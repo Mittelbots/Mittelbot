@@ -1,23 +1,43 @@
+const advancedScamList = require('../../src/db/Models/tables/advancedScamList.model');
 const { getModTime } = require('../functions/getModTime');
 const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
+const axios = require('axios');
 
-async function checkForScam(message, bot, config, log) {
+let publicScamList = [];
+
+module.exports.loadScam = async () => {
+    await axios
+        .get('https://discord-phishing-backend.herokuapp.com/all')
+        .then((res) => {
+            console.log(`[SCAM] Loaded ${res.data.length} Scam Links`);
+            publicScamList = res.data;
+        })
+        .catch((err) => {
+            return;
+        });
+}
+
+module.exports.checkForScam = async (message, bot, config, log) => {
     const member = await message.guild.members.fetch(message.author);
 
     if (await isMod({ member, guild: message.guild })) return;
 
-    const advancedScamList = scamList[0].scamList || [];
+    const scamListDB = advancedScamList.findAll().then(res => {return res}).catch(err => {return []});
+    const scamLinksExt = publicScamList;
+    
+    
+    const whitelist_links = [];
 
-    const whitelist_links = advancedScamList.map((link) => link.whitelist_link).filter(Boolean);
-
-    const scamLinks = publicScamList[0].scamList || [];
-
-    for (let i in advancedScamList) {
-        scamLinks.push(advancedScamList[i].link);
+    for (let i in scamListDB) {
+        if (scamListDB[i].whitelist) {
+            whitelist_links.push(scamListDB[i].link);
+        }else {
+            scamLinksExt.push(scamListDB[i].link);
+        }
     }
 
-    let messageArray = message.content.split(' ');
+    const messageArray = message.content.split(' ');
 
     for (let i in whitelist_links) {
         const isWhitelist = messageArray.some((words) => words.includes(whitelist_links[i]));
@@ -27,16 +47,16 @@ async function checkForScam(message, bot, config, log) {
     for (let i in messageArray) {
         if (!messageArray[i]) continue;
 
-        const isInList = scamLinks.includes(messageArray[i]);
+        const isInList = scamLinksExt.includes(messageArray[i]);
 
         if (isInList) {
-            const index = scamLinks.indexOf(messageArray[i]);
+            const index = scamLinksExt.indexOf(messageArray[i]);
 
             let match = 0;
 
             if (index) {
                 for (let m = 0; m <= messageArray[i].length; m++) {
-                    if (messageArray[i][m] == scamLinks[index][m]) {
+                    if (messageArray[i][m] == scamLinksExt[index][m]) {
                         match++;
                     }
                 }
@@ -52,7 +72,7 @@ async function checkForScam(message, bot, config, log) {
                 await banUser(
                     await message.guild.members.fetch(message.author),
                     message,
-                    `User tried to sent a Scam Link : ${scamLinks[i]}`,
+                    `User tried to sent a Scam Link : ${scamLinksExt[i]}`,
                     bot,
                     config,
                     log,
@@ -64,12 +84,8 @@ async function checkForScam(message, bot, config, log) {
                     return;
                 });
                 i = 0;
-                return;
+                return true;
             }
         }
     }
 }
-
-module.exports = {
-    checkForScam,
-};

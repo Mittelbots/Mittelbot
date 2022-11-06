@@ -26,7 +26,7 @@ GuildUploads.init(
     },
     {
         sequelize: database,
-        tableName: 'guild_level',
+        tableName: 'guild_uploads',
         timestamps: false,
     }
 );

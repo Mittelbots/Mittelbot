@@ -17,7 +17,7 @@ module.exports.antiSpam = async (setting, message, bot) => {
     });
     if (isWhitelist) return false;
 
-    const antispamsetting = JSON.parse(setting).antispam;
+    const antispamsetting = setting.antispam;
     if (!antispamsetting) return false;
     if (!antispamsetting.enabled) return false;
 
@@ -178,7 +178,7 @@ module.exports.antiInvite = async (setting, message, bot) => {
     });
     if (isWhitelist) return false;
 
-    const antiinvitesetting = JSON.parse(setting).antiinvite;
+    const antiinvitesetting = setting.antiinvite;
     if (!antiinvitesetting) return false;
     if (!antiinvitesetting.enabled) return false;
 

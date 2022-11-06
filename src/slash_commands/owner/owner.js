@@ -3,11 +3,11 @@ const { SlashCommandBuilder } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
 const { log } = require('../../../logs');
 const { spawn } = require('child_process');
-const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { AttachmentBuilder } = require('discord.js');
 const { GlobalConfig } = require('../../../utils/functions/data/GlobalConfig');
+const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -65,7 +65,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 break;
 
             case 'generatelevel':
-                generateLevelConfig({
+                Levelsystem.generate({
                     lvl_count: main_interaction.options.getNumber('maxlevel'),
                     mode: main_interaction.options.getString('mode'),
                 }).then(async () => {

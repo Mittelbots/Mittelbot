@@ -20,6 +20,7 @@ const { messageCreate } = require('../messageCreate');
 const database = require('../../src/db/db');
 const { rateLimit } = require('../rateLimit');
 const { Guilds } = require('../../utils/functions/data/Guilds');
+const { loadScam } = require('../../utils/checkForScam/checkForScam');
 
 module.exports.restartBot = async () => {
     await delay(5000);
@@ -49,6 +50,7 @@ module.exports.startBot = async (bot) => {
             await deployCommands(bot);
             await createSlashCommands();
             await Promise.resolve(this.fetchCache(bot));
+            await loadScam();
             auditLog(bot);
             handleUploads({
                 bot,

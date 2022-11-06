@@ -4,12 +4,13 @@ const { checkForScam } = require('../utils/checkForScam/checkForScam');
 const { log } = require('../logs');
 const { delay } = require('../utils/functions/delay/delay');
 const { translateMessage } = require('../utils/functions/data/translate');
-const { levelCooldown } = require('../utils/functions/levelsystem/levelsystemAPI');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
 const { Automod } = require('../utils/functions/data/Automod');
 const { Afk } = require('../utils/functions/data/Afk');
+const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
+const { GuildConfig } = require('../utils/functions/data/Config');
 
 const defaultCooldown = new Set();
 
@@ -56,12 +57,13 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    const guildConfig = await Guilds.get(message.guild.id);
+    const guildConfig = await GuildConfig.get(message.guild.id);
+    disabled_modules = JSON.parse(guildConfig.disabled_modules);
 
-    disabled_modules = JSON.parse(guildConfig.disabled_modules) || [];
-
-    if (disabled_modules.indexOf('scamdetection') === -1)
-        await checkForScam(message, bot, config, log);
+    if (disabled_modules.indexOf('scamdetection') === -1) {
+        const isScam = await checkForScam(message, bot, config, log);
+        if (isScam) return;
+    }
 
     let messageArray = message.content.split(' ');
     let cmd = messageArray[0];
@@ -114,7 +116,7 @@ async function messageCreate(message, bot) {
         }
 
         if (disabled_modules.indexOf('level') === -1) {
-            levelCooldown({ message, bot });
+            Levelsystem.run({ message, bot });
         }
 
         if (disabled_modules.indexOf('utils') === -1) {

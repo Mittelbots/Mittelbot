@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
-const { getRank } = require('../../../utils/functions/levelsystem/levelsystemAPI');
+const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
 
-    const leaderboard = await getRank({
+    const leaderboard = await Levelsystem.getRank({
         guild_id: main_interaction.guild.id,
     });
 
@@ -28,7 +28,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     }
-
+2
     for (let i in leaderboard) {
         if (leaderboard[i][0] === main_interaction.user.id) {
             if (i <= 10) {

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
-const { changeLevelUp } = require('../../../utils/functions/levelsystem/levelsystemAPI');
+const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -101,7 +101,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const type = main_interaction.options.getString('type');
             const channel = main_interaction.options.getChannel('channel');
 
-            changeLevelUp({
+            Levelsystem.changeLevelUp({
                 type,
                 guild: main_interaction.guild,
                 channel,

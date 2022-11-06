@@ -30,7 +30,7 @@ class Automod {
         return new Promise(async (resolve, reject) => {
             const guild = await Guilds.get(guild_id);
 
-            return guild.getAutomod();
+            return resolve(guild.getAutomod());
         });
     }
 
@@ -62,7 +62,7 @@ class Automod {
     }
 
     checkWhitelist({ setting, user_roles, role_id }) {
-        let whitelist = JSON.parse(setting).whitelistrole;
+        let whitelist = setting.whitelistrole;
         if (!whitelist) return false;
 
         if (user_roles) {
