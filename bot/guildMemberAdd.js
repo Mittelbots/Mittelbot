@@ -27,7 +27,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
         guild_id: member.guild.id,
         user_id: member.user.id,
     });
-    console.log(memberInfo);
+
     if (!memberInfo) {
         await MemberInfo.add({
             guild_id: member.guild.id,
