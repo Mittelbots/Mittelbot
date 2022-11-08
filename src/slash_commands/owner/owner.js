@@ -117,7 +117,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ? '_logs/roll'
                     : '_debug/roll';
 
-
                 const date = new Date();
 
                 let year = date.getFullYear();
