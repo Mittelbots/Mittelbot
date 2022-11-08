@@ -17,7 +17,7 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value }) =>
 
         return await GuildConfig.update({
             guild_id,
-            value: JSON.stringify(welcomeSettings),
+            value: welcomeSettings,
             valueName: 'welcome_channel',
         })
             .then(() => {
@@ -34,7 +34,7 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value }) =>
 module.exports.getWelcomechannel = async ({ guild_id }) => {
     const guildConfig = await GuildConfig.get(guild_id);
     return guildConfig && guildConfig.welcome_channel
-        ? guildConfig.welcome_channel
+        ? JSON.parse(guildConfig.welcome_channel)
         : defaultWelcomeMessage;
 };
 
@@ -452,12 +452,23 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }) => {
                     fatal: false,
                 });
             })
-            .catch((err) => {
-                errorhandler({
-                    message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
-                    err: err.toString(),
-                    fatal: false,
-                });
+            .catch(async () => {
+                await bot.guilds.cache.get(guild_id).channels.cache.get(welcomeChannel.id).send({
+                    content: welcomeChannel.message,
+                })
+                .then(() =>  {
+                    errorhandler({
+                        message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}. ❌ But the embed failed.`,
+                        fatal: false,
+                    });
+                })
+                .catch(err => {
+                    errorhandler({
+                        message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
+                        err: err.toString(),
+                        fatal: false,
+                    });
+                })
             });
     }
 };

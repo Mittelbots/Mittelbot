@@ -7,7 +7,7 @@ const { Infractions } = require('../utils/functions/data/Infractions');
 const { Joinroles } = require('../utils/functions/data/Joinroles');
 
 module.exports.guildMemberAdd = async (member, bot) => {
-    const config = GuildConfig.get(member.guild.id);
+    const config = await GuildConfig.get(member.guild.id);
 
     try {
         disabled_modules = config.disabled_modules;
