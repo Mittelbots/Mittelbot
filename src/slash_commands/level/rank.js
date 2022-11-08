@@ -22,7 +22,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!playerXP) {
         return main_interaction
             .followUp({
-                content: 'Not possible! You have to gain xp first.',
+                content: '❌ I have nothing found for this user. Please gain some xp first.',
                 ephemeral: true,
             })
             .catch((err) => {});

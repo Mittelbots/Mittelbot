@@ -51,7 +51,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     }
-
+    
     const updated = await Levelsystem.update({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
