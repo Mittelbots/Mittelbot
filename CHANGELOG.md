@@ -15,6 +15,20 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.50.1**
+
+### Added things:
+    - /
+
+### Bug fixes & other changes:
+    - Removed Dashboard from repo
+    - Fixed workflows
+
+### Dashboard:
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.50.0**
 
 ### Added things:
