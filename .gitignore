@@ -5,8 +5,6 @@ _secret/token.json
 src/db/last_backup.json
 mittelbot-db-backup
 
-crashs.json
-
 node_modules/
 
 .DS_Store
