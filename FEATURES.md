@@ -2,14 +2,12 @@
 
 ### In the following list i'll show all currently avaiable features. This means, you don't have to request or ask for those features anymore!
 
----
+----
 
 <br>
 
 ## Moderation
-
----
-
+----
     - ban [mention/userid] [time] [reason]
     - unban [userid] [reason]
     - infraction [id]
@@ -24,9 +22,7 @@
 <br>
 
 ## Administration
-
----
-
+----
     - settings [setting] [value] ( ...[more values] )
     - - settings welcomechannel [#channel]
     - - settings prefix [prefix]
@@ -51,25 +47,21 @@
     - -  levelsettings rank
 
     - modules [module] [Activate/Deactivate]
-
 <br>
 
 ## Fun
-
----
-
+----
     - avatar [mention/userid]
     - cats
     - dogs
     - guessnumber
     - ship [mention/userid]
 
+
 <br>
 
 ## Information
-
----
-
+----
     - info (mention)
     - ping
     - rank (mention)
