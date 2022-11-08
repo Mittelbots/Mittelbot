@@ -6,7 +6,6 @@
     "private": true,
     "scripts": {
         "dev": "nodemon index.js",
-        "dashdev": "nodemon dashboard/dashboard.js",
         "pm2prod": "pm2 start shard.js --name Mittelbot  && pm2 logs",
         "pm2restart": "pm2 stop Mittelbot && pm2 delete Mittelbot && pm2 start shard.js --watch --name Mittelbot  && pm2 logs",
         "pm2restartprod": "pm2 stop Mittelbot && pm2 delete Mittelbot && pm2 start shard.js --name Mittelbot  && pm2 logs",

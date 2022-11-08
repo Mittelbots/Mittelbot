@@ -16,9 +16,6 @@ async function getLinesOfCode(cb) {
             'README.md',
             '.git',
             '.github',
-            'dashboard/assets/vendor',
-            'dashboard/assets/css',
-            'dashboard/assets/js',
         ], // A list of directories to ignore. Supports glob patterns.
         ignoreDefault: true, // Whether to ignore the default file extensions or not
     };
