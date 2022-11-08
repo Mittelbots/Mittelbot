@@ -54,7 +54,7 @@ module.exports.interactionCreate = ({ bot }) => {
             }
         } else if (main_interaction.type === InteractionType.ModalSubmit) {
             if (main_interaction.customId == 'afk_modal') {
-                Afk.handle({ main_interaction });
+                Afk.handle(main_interaction);
             }
         } else {
             switch (main_interaction.customId) {
