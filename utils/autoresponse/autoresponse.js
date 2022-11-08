@@ -4,17 +4,17 @@ const autoresponseconfig = require('../../autoresponse.json');
 function autoresponse(message) {
     var letUserPass = true;
     var forceUserPass = false;
-    for (let i in autoresponseconfig.whitelist)
-        if (message.member.roles.cache.find((r) => r.id === autoresponseconfig.whitelist[i])) {
-            letUserPass = true;
-            forceUserPass = true;
-        }
-    if (!forceUserPass) {
-        for (let i in autoresponseconfig) {
-            if (!letUserPass) continue;
-            if (i !== 'whitelist' && message.content.search(i) !== -1) {
+    for(let i in autoresponseconfig.whitelist)
+    if(message.member.roles.cache.find(r => r.id === autoresponseconfig.whitelist[i])) {
+        letUserPass = true;
+        forceUserPass = true;
+    }
+    if(!forceUserPass) {
+        for(let i in autoresponseconfig) {
+            if(!letUserPass) continue;
+            if(i !== 'whitelist' && message.content.search(i) !== -1) {
                 message.delete();
-                message.channel.send(`<@${message.author.id}> ${autoresponseconfig[i]}`);
+                message.channel.send(`<@${message.author.id}> ${autoresponseconfig[i]}`)
                 letUserPass = false;
             }
         }
@@ -22,4 +22,4 @@ function autoresponse(message) {
     return letUserPass;
 }
 
-module.exports = { autoresponse };
+module.exports = {autoresponse}
