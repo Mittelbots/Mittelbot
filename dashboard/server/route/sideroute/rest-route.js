@@ -1,4 +1,4 @@
-const { updateGuildConfig, getGuildConfig } = require('../../../../utils/functions/data/getConfig');
+const { updateGuildConfig, getGuildConfig } = require('../../../../utils/functions/data/Config');
 const { checkRest } = require('../../../functions/checkRest/checkRest');
 
 const jwt = require('jsonwebtoken');

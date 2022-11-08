@@ -1,21 +1,17 @@
-const {
-    getMemberInfoById,
-    insertMemberInfo,
-    updateMemberInfoById,
-} = require('../data/getMemberInfo');
+const { MemberInfo } = require('../data/MemberInfo');
 
 module.exports.saveAllRoles = async (roles, member, guild) => {
-    const memberInfo = await getMemberInfoById({ guild_id: guild.id, user_id: member.id });
+    const memberInfo = await MemberInfo.get({ guild_id: guild.id, user_id: member.id });
 
     if (!memberInfo) {
-        return await insertMemberInfo({
+        return await MemberInfo.add({
             guild_id: guild.id,
             user_id: member.id,
             member_roles: roles,
             user_joined: new Intl.DateTimeFormat('de-DE').format(member.joinedAt),
         });
     } else {
-        return await updateMemberInfoById({
+        return await MemberInfo.update({
             guild_id: guild.id,
             user_id: member.id,
             member_roles: roles,

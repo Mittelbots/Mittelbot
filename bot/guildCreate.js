@@ -1,15 +1,8 @@
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
-const { isGuildBlacklist } = require('../utils/blacklist/guildBlacklist');
-const { insertGuildIntoGuildConfig } = require('../utils/functions/data/getConfig');
-const { insertIntoGuildAutomod } = require('../utils/functions/data/automod');
-const { insertIntoAllGuildId } = require('../utils/functions/data/all_guild_id');
+const { Guilds } = require('../utils/functions/data/Guilds');
 
 module.exports.guildCreate = async (guild, bot) => {
-    if (
-        isGuildBlacklist({
-            guild_id: guild.id,
-        })
-    ) {
+    if (Guilds.isBlacklist(guild.id)) {
         await bot.users.cache
             .get(guild.ownerId)
             .send({
@@ -22,7 +15,7 @@ module.exports.guildCreate = async (guild, bot) => {
             message: ` I joined a BLACKLISTED Guild: ${guild.name} (${guild.id})`,
         });
 
-        return guild.leave();
+        return guild.leave().catch((err) => {});
     }
 
     errorhandler({
@@ -30,8 +23,5 @@ module.exports.guildCreate = async (guild, bot) => {
         message: ` I joined a new Guild: ${guild.name} (${guild.id})`,
     });
 
-    await insertIntoAllGuildId(guild.id).catch((err) => {});
-    await insertIntoGuildAutomod(guild.id).catch((err) => {});
-    await insertGuildIntoGuildConfig(guild.id).catch((err) => {});
-    return;
+    Guilds.create(guild.id);
 };

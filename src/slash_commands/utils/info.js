@@ -3,7 +3,7 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { log } = require('../../../logs');
 const { version } = require('../../../package.json');
 const config = require('../../../src/assets/json/_config/config.json');
-const { getMemberInfoById } = require('../../../utils/functions/data/getMemberInfo');
+const { MemberInfo } = require('../../../utils/functions/data/MemberInfo');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -86,7 +86,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ])
         .setTimestamp();
     if (tag) {
-        var { user_joined } = await getMemberInfoById({
+        var { user_joined } = await MemberInfo.get({
             guild_id: main_interaction.guild.id,
             user_id: user.id,
         });

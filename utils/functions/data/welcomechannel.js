@@ -3,7 +3,7 @@ const { delay } = require('../delay/delay');
 const { validURL } = require('../validate/isValidURL');
 const { isValidHexCode } = require('../validate/isValidHexCode');
 const { validateCustomStrings } = require('../validate/validateCustomStrings');
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { GuildConfig } = require('./Config');
 const { defaultWelcomeMessage } = require('./variables');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
@@ -15,9 +15,9 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value }) =>
 
         welcomeSettings[valueName] = value;
 
-        return await updateGuildConfig({
+        return await GuildConfig.update({
             guild_id,
-            value: JSON.stringify(welcomeSettings),
+            value: welcomeSettings,
             valueName: 'welcome_channel',
         })
             .then(() => {
@@ -32,11 +32,9 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value }) =>
 //=========================================================
 
 module.exports.getWelcomechannel = async ({ guild_id }) => {
-    const { settings } = await getGuildConfig({
-        guild_id,
-    });
-    return settings && settings.welcome_channel
-        ? JSON.parse(settings.welcome_channel)
+    const guildConfig = await GuildConfig.get(guild_id);
+    return guildConfig && guildConfig.welcome_channel
+        ? JSON.parse(guildConfig.welcome_channel)
         : defaultWelcomeMessage;
 };
 
@@ -454,12 +452,26 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }) => {
                     fatal: false,
                 });
             })
-            .catch((err) => {
-                errorhandler({
-                    message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
-                    err: err.toString(),
-                    fatal: false,
-                });
+            .catch(async () => {
+                await bot.guilds.cache
+                    .get(guild_id)
+                    .channels.cache.get(welcomeChannel.id)
+                    .send({
+                        content: welcomeChannel.message,
+                    })
+                    .then(() => {
+                        errorhandler({
+                            message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}. ❌ But the embed failed.`,
+                            fatal: false,
+                        });
+                    })
+                    .catch((err) => {
+                        errorhandler({
+                            message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
+                            err: err.toString(),
+                            fatal: false,
+                        });
+                    });
             });
     }
 };

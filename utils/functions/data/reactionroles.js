@@ -1,5 +1,5 @@
 const { removeMention, removeEmojiTags } = require('../removeCharacters');
-const { getGuildConfig, updateGuildConfig } = require('./getConfig');
+const { GuildConfig } = require('./Config');
 
 module.exports.updateReactionRoles = async ({
     guild_id,
@@ -71,16 +71,8 @@ module.exports.updateReactionRoles = async ({
             }
         }
 
-        const config = await getGuildConfig({
-            guild_id,
-        });
-        var reactionroles = config.settings.reactionroles;
-
-        try {
-            reactionroles = JSON.parse(reactionroles);
-        } catch (e) {}
-
-        if (!reactionroles) reactionroles = [];
+        const guildConfig = await GuildConfig.get(guild_id);
+        const reactionroles = guildConfig.reactionroles;
 
         if (reactionroles.length >= 5) {
             return reject('❌ You can only have up to 5 reaction roles.');
@@ -109,7 +101,7 @@ module.exports.updateReactionRoles = async ({
 
         reactionroles.push(newReactionRoles);
 
-        return await updateGuildConfig({
+        return await GuildConfig.update({
             guild_id,
             value: JSON.stringify(reactionroles),
             valueName: 'reactionroles',
@@ -148,17 +140,9 @@ module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) =>
 
     const guild = bot.guilds.cache.get(reaction.message.guildId);
 
-    const config = await getGuildConfig({
-        guild_id: guild.id,
-    });
+    const guildConfig = await GuildConfig.get(guild.id);
 
-    var reactionroles = config.settings.reactionroles;
-
-    try {
-        reactionroles = JSON.parse(reactionroles);
-    } catch (e) {}
-
-    if (!reactionroles) return;
+    const reactionroles = guildConfig.reactionroles;
 
     for (let i in reactionroles) {
         if (reactionroles[i].messageId === reaction.message.id) {

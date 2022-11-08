@@ -3,13 +3,12 @@ const { SlashCommandBuilder } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
 const { log } = require('../../../logs');
 const { spawn } = require('child_process');
-const { generateLevelConfig } = require('../../../utils/functions/levelsystem/levelsystemAPI');
-const { startUpCache, resetCache } = require('../../../utils/functions/cache/startUpCache');
 const { delay } = require('../../../utils/functions/delay/delay');
-const { updateGlobalConfig, getGlobalConfig } = require('../../../utils/functions/data/ignoreMode');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { readFileSync } = require('fs');
 const { AttachmentBuilder } = require('discord.js');
+const { GlobalConfig } = require('../../../utils/functions/data/GlobalConfig');
+const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
+const { restartBot, stopBot } = require('../../../bot/core/core');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -27,47 +26,22 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {});
 
-                log.info('------------BOT IS RESTARTING------------');
-                try {
-                    spawn(process.argv[1], process.argv.slice(2), {
-                        detached: true,
-                        stdio: ['ignore', null, null],
-                    }).unref();
-                    process.exit();
-                } catch (err) {
-                    log.fatal(err);
-                    main_interaction
-                        .followUp({
-                            content: config.errormessages.general,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                }
+                await restartBot();
                 break;
 
             case 'shutdown':
-                try {
-                    await main_interaction
-                        .followUp({
-                            content: `Ok sir, Bot stopped!`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                    log.info('------------BOT SUCCESSFULLY STOPPED------------');
-                    process.exit(1);
-                } catch (err) {
-                    log.fatal(err);
-                    main_interaction
-                        .followUp({
-                            content: config.errormessages.general,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                }
+                await main_interaction
+                    .followUp({
+                        content: `Ok sir, Bot stopped!`,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+
+                await stopBot();
                 break;
 
             case 'generatelevel':
-                generateLevelConfig({
+                await Levelsystem.generate({
                     lvl_count: main_interaction.options.getNumber('maxlevel'),
                     mode: main_interaction.options.getString('mode'),
                 }).then(async () => {
@@ -81,33 +55,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
                 break;
 
-            case 'cacherefresh':
-                await resetCache()
-                    .then(async () => {
-                        await startUpCache();
-                        main_interaction
-                            .followUp({
-                                content: '✅ Successfully refreshed',
-                                ephemeral: true,
-                            })
-                            .catch((err) => {});
-                    })
-                    .catch((err) => {
-                        main_interaction
-                            .followUp({
-                                content: err,
-                                ephemeral: true,
-                            })
-                            .catch((err) => {});
-                    });
-
-                break;
-
             case 'ignoremode':
                 const mode = main_interaction.options.getBoolean('mode');
-                await updateGlobalConfig({
+                await GlobalConfig.update({
                     valueName: 'ignoreMode',
-                    value: mode ? 1 : 0,
+                    value: mode,
                 });
                 main_interaction
                     .followUp({
@@ -119,7 +71,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             case 'disable_command':
                 const command = main_interaction.options.getString('command');
-                const global_config = await getGlobalConfig();
+                const global_config = await GlobalConfig.get();
                 var disabled_commands =
                     JSON.parse(global_config.disabled_commands) ||
                     global_config.disabled_commands ||
@@ -128,14 +80,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 let gotDisabled = false;
                 try {
                     if (disabled_commands.includes(command)) {
-                        updateGlobalConfig({
+                        GlobalConfig.update({
                             value: disabled_commands.filter((c) => c !== command),
                             valueName: 'disabled_commands',
                         });
                     } else {
                         gotDisabled = true;
                         disabled_commands.push(command);
-                        updateGlobalConfig({
+                        GlobalConfig.update({
                             value: disabled_commands,
                             valueName: 'disabled_commands',
                         });
@@ -218,9 +170,6 @@ module.exports.data = new SlashCommandBuilder()
                     .setRequired(true)
                     .setDescription('The maximum level to generate.')
             )
-    )
-    .addSubcommand((command) =>
-        command.setName('cacherefresh').setDescription('Refreshes the bot cache')
     )
     .addSubcommand((command) =>
         command

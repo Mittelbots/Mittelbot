@@ -1,4 +1,4 @@
-const { updateGlobalConfig } = require('../utils/functions/data/ignoreMode');
+const { GlobalConfig } = require('../utils/functions/data/GlobalConfig');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { stopBot } = require('./core/core');
 
@@ -8,7 +8,7 @@ module.exports.rateLimit = async ({ rateLimitData }) => {
         message: 'The bot hit the rate limit. Enable ignoremode automatically.',
     });
 
-    updateGlobalConfig({
+    GlobalConfig.update({
         valueName: 'ignoreMode',
         value: 1,
     });

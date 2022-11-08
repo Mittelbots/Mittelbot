@@ -1,11 +1,9 @@
 const { ApiClient } = require('@twurple/api');
 const { ClientCredentialsAuthProvider } = require('@twurple/auth');
-const { EmbedBuilder } = require('discord.js');
-const { twitchStreams } = require('../../../utils/functions/cache/cache');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
-const database = require('../../db/db');
+const twitchStreams = require('../../db/Models/tables/twitchStreams.model');
 
 const clientId = process.env.TT_CLIENT_ID;
 const clientSecret = process.env.TT_SECRET;
@@ -28,21 +26,18 @@ module.exports.twitch_notifier = async ({ bot }) => {
     console.info('🔎 Twitch streams handler started');
 
     setInterval(async () => {
-        var allTwitchAccounts;
-
-        if (twitchStreams) {
-            allTwitchAccounts = twitchStreams[0].list;
-        } else {
-            allTwitchAccounts = await database
-                .query(`SELECT * FROM twitch_streams`)
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
-                    return false;
+        const allTwitchAccounts = twitchStreams
+            .findAll()
+            .then((res) => {
+                return res;
+            })
+            .catch((err) => {
+                errorhandler({
+                    err,
+                    fatal: true,
                 });
-        }
+                return false;
+            });
 
         if (!allTwitchAccounts || allTwitchAccounts.length === 0) return;
 
@@ -51,25 +46,19 @@ module.exports.twitch_notifier = async ({ bot }) => {
                 const isLive = await isStreamLive(allTwitchAccounts[i].channel_id);
 
                 if (isLive !== !!+allTwitchAccounts[i].isStreaming) {
-                    database
-                        .query(
-                            `UPDATE twitch_streams SET isStreaming = ? WHERE guild_id = ? AND channel_id = ?`,
-                            [
-                                JSON.parse(isLive),
-                                allTwitchAccounts[i].guild_id,
-                                allTwitchAccounts[i].channel_id,
-                            ]
+                    await twitchStreams
+                        .update(
+                            {
+                                isStreaming: isLive,
+                            },
+                            {
+                                where: {
+                                    guild_id: allTwitchAccounts[i].guild_id,
+                                    channel_id: allTwitchAccounts[i].channel_id,
+                                },
+                            }
                         )
                         .then(() => {
-                            for (let i in twitchStreams) {
-                                if (
-                                    twitchStreams[i].guild_id === allTwitchAccounts[i].guild_id &&
-                                    twitchStreams[i].channel_id === allTwitchAccounts[i].channel_id
-                                ) {
-                                    twitchStreams[i].isStreaming = isLive;
-                                }
-                            }
-
                             if (isLive) {
                                 const guild = bot.guilds.cache.get(allTwitchAccounts[i].guild_id);
                                 const channel = guild.channels.cache.get(

@@ -11,7 +11,7 @@
         "text": "0 seconds"
     },
     "bulkDeleteLimit": "100",
-    "defaultCheckInfractionTimer": "30000",
+    "defaultCheckInfractionTimer": "60000",
     "defaultCheckTemprolesTimer": "5000",
     "errormessages": {
         "general": "Something went wrong!",
@@ -87,7 +87,38 @@
             "icon": "960276994489212959",
             "colname": "prefix",
             "val": "string",
-            "required": ["!", "?", "$", "§", "%", "/", "(", ")", "=", "?", "{", "[", "]", "}", "@", "€", ";", ".", ":", "-", "_", "#", "*", "+", "~", "<", ">", "|", "^", "°"],
+            "required": [
+                "!",
+                "?",
+                "$",
+                "§",
+                "%",
+                "/",
+                "(",
+                ")",
+                "=",
+                "?",
+                "{",
+                "[",
+                "]",
+                "}",
+                "@",
+                "€",
+                ";",
+                ".",
+                ":",
+                "-",
+                "_",
+                "#",
+                "*",
+                "+",
+                "~",
+                "<",
+                ">",
+                "|",
+                "^",
+                "°"
+            ],
             "exp": "[prefix]"
         },
         "cooldown": {
@@ -163,7 +194,5 @@
             "exp": "[@warn1 [@warn2] [@warn3] [@warn4] [@warn5]"
         }
     },
-    "tutorial": {
-
-    }
+    "tutorial": {}
 }

@@ -1,10 +1,10 @@
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const levelAPI = require('../../../utils/functions/levelsystem/levelsystemAPI');
 
 const canvacord = require('canvacord');
 const { AttachmentBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
-const levels = require('../../../utils/functions/levelsystem/levelconfig.json');
+const levels = require('../../../src/assets/json/levelsystem/levelconfig.json');
+const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -14,7 +14,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const user = main_interaction.options.getUser('user') || main_interaction.user;
     const anonymous = main_interaction.options.getBoolean('anonymous');
 
-    const playerXP = await levelAPI.getXpOfUser({
+    const playerXP = await Levelsystem.get({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
     });
@@ -22,22 +22,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!playerXP) {
         return main_interaction
             .followUp({
-                content: 'Not possible! You have to gain xp first.',
+                content: '❌ I have nothing found for this user. Please gain some xp first.',
                 ephemeral: true,
             })
             .catch((err) => {});
     }
-    const levelSettings = await levelAPI.getLevelSettingsFromGuild(main_interaction.guild.id);
+    const levelSettings = await Levelsystem.getSetting(main_interaction.guild.id);
 
-    var mode;
-    try {
-        mode = JSON.parse(levelSettings.mode);
-    } catch (e) {
-        mode = levelSettings.mode || 'normal';
-    }
-    const nextLevel = await levelAPI.getNextLevel(levels[mode], playerXP.level_announce);
+    const mode = levelSettings.mode || 'normal';
+    const nextLevel = await Levelsystem.getNextLevel(levels[mode], playerXP.level_announce);
 
-    const userRank = await levelAPI.getRank({
+    const userRank = await Levelsystem.getRank({
         user_id: user.id,
         guild_id: main_interaction.guild.id,
     });

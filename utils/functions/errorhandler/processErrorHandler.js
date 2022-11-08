@@ -13,7 +13,7 @@ module.exports.processErrorHandler = () => {
             fatal: true,
         });
 
-        await restartBot();
+        //await restartBot();
     });
 
     process.on('uncaughtException', async (err) => {
@@ -26,11 +26,11 @@ module.exports.processErrorHandler = () => {
             fatal: true,
         });
 
-        errorhandler({
-            err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
-            fatal: true,
-        });
+        // errorhandler({
+        //     err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
+        //     fatal: true,
+        // });
 
-        await restartBot();
+        //await restartBot();
     });
 };

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
-const { addScam, removeScam, viewScam } = require('../../../utils/functions/data/scam');
+const { Scam } = require('../../../utils/functions/data/scam');
 const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -19,7 +19,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     switch (main_interaction.options.getSubcommand()) {
         case 'add':
-            addScam({
+            Scam.add({
                 value: link,
                 guild_id: main_interaction.guild.id,
                 guild_name: main_interaction.guild.name,
@@ -45,7 +45,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
 
         case 'remove':
-            removeScam({
+            Scam.remove({
                 value: link,
                 guild_id: main_interaction.guild.id,
                 guild_name: main_interaction.guild.name,
@@ -70,7 +70,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
             break;
         case 'view':
-            viewScam({
+            Scam.view({
                 value: link,
                 channel: main_interaction.channel,
                 author: main_interaction.user,

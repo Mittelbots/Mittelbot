@@ -5,7 +5,7 @@ const { createInfractionId } = require('../createInfractionId');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getFutureDate } = require('../getFutureDate');
 const config = require('../../../src/assets/json/_config/config.json');
-const { insertIntoOpenList } = require('../data/infractions');
+const { Infractions } = require('../data/Infractions');
 
 async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) {
     if (isAuto) mod = bot.user;
@@ -29,14 +29,14 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
             });
     }
     if (pass) {
-        insertIntoOpenList({
+        Infractions.insertOpen({
             uid: user.id,
             modid: mod.id,
             ban: 1,
             mute: 0,
             till_date: getFutureDate(dbtime),
             reason,
-            infraction_id: await createInfractionId(),
+            infraction_id: await createInfractionId(guild.id),
             gid: guild.id,
         });
         setNewModLogMessage(

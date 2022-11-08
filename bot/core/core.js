@@ -4,7 +4,6 @@ const { checkTemproles } = require('../../src/events/checkTemproles');
 const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier');
 const { handleUploads } = require('../../src/events/notfifier/yt_notifier');
 const { auditLog } = require('../../utils/auditlog/auditlog');
-const { startUpCache } = require('../../utils/functions/cache/startUpCache');
 const {
     createSlashCommands,
 } = require('../../utils/functions/createSlashCommands/createSlashCommands');
@@ -19,14 +18,14 @@ const { guildMemberRemove } = require('../guildMemberRemove');
 const { interactionCreate } = require('../interactionCreate');
 const { messageCreate } = require('../messageCreate');
 const database = require('../../src/db/db');
-const { insertIntoAllGuildId } = require('../../utils/functions/data/all_guild_id');
-const { insertGuildIntoGuildConfig } = require('../../utils/functions/data/getConfig');
-const { insertIntoGuildAutomod } = require('../../utils/functions/data/automod');
 const { rateLimit } = require('../rateLimit');
+const { Guilds } = require('../../utils/functions/data/Guilds');
+const { loadScam } = require('../../utils/checkForScam/checkForScam');
 
 module.exports.restartBot = async () => {
     await delay(5000);
 
+    await database.close();
     spawn(process.argv[1], process.argv.slice(2), {
         detached: true,
         stdio: ['ignore', null, null],
@@ -35,6 +34,7 @@ module.exports.restartBot = async () => {
 };
 
 module.exports.stopBot = async () => {
+    await database.close();
     errorhandler({
         message: 'Bot stopped due function call',
         fatal: false,
@@ -45,16 +45,12 @@ module.exports.stopBot = async () => {
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
         try {
+            await database.init();
             await setActivity(bot, true);
-
             await deployCommands(bot);
-
             await createSlashCommands();
-
-            await startUpCache();
-
             await Promise.resolve(this.fetchCache(bot));
-
+            await loadScam();
             auditLog(bot);
             handleUploads({
                 bot,
@@ -62,17 +58,17 @@ module.exports.startBot = async (bot) => {
             twitch_notifier({
                 bot,
             });
-
             checkInfractions(bot);
             checkTemproles(bot);
-
             setActivity(bot);
 
             console.info(
                 `****Ready! Logged in as ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`
             );
             errorhandler({
-                message: '------------BOT SUCCESSFULLY STARTED------------' + new Date(),
+                message:
+                    'BOT SUCCESSFULLY STARTED' +
+                    `${new Date().getDay()}/${new Date().getMonth()}/${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}`,
                 fatal: false,
             });
 
@@ -130,19 +126,24 @@ module.exports.acceptBotInteraction = (bot) => {
 
 module.exports.fetchCache = async (bot) => {
     return new Promise(async (resolve, reject) => {
-        console.time('Fetching guilds in:');
-        const guilds = await bot.guilds.fetch();
-        console.timeEnd('Fetching guilds in:');
+        try {
+            console.time('Fetching guilds in:');
+            const guilds = await bot.guilds.fetch();
+            console.timeEnd('Fetching guilds in:');
 
-        console.time('Checking data in database:');
-        await this.checkGuildsInDatabase(guilds);
-        console.timeEnd('Checking data in database:');
+            console.time('Checking data in database:');
+            await this.checkGuildsInDatabase(guilds);
 
-        console.time('Fetching users in:');
-        await Promise.resolve(this.fetchUsers(bot, guilds));
-        console.timeEnd('Fetching users in:');
+            console.timeEnd('Checking data in database:');
 
-        return resolve(true);
+            console.time('Fetching users in:');
+            await Promise.resolve(this.fetchUsers(bot, guilds));
+            console.timeEnd('Fetching users in:');
+
+            return resolve(true);
+        } catch (err) {
+            return reject(err);
+        }
     });
 };
 
@@ -167,45 +168,10 @@ module.exports.fetchUsers = async (bot, guilds) => {
 };
 
 module.exports.checkGuildsInDatabase = async (guilds) => {
-    guilds.map(async (guild) => {
-        await database
-            .query(
-                `SELECT * FROM all_guild_id WHERE guild_id = ?; SELECT id FROM guild_config WHERE guild_id = ?; SELECT id FROM guild_automod WHERE guild_id = ?`,
-                [guild.id, guild.id, guild.id]
-            )
-            .then(async (res) => {
-                if (res[0].length === 0) {
-                    await insertIntoAllGuildId(guild.id)
-                        .then(() => {
-                            console.log(`Inserted ${guild.id} into all_guild_id.`);
-                        })
-                        .catch(() => {
-                            console.log(`Failed to insert ${guild.id} into all_guild_id`);
-                        });
-                }
-                if (res[1].length === 0) {
-                    await insertGuildIntoGuildConfig(guild.id)
-                        .then(() => {
-                            console.log(`Inserted ${guild.id} into guild_config.`);
-                        })
-                        .catch(() => {
-                            console.log(`Failed to insert ${guild.id} into guild_config`);
-                        });
-                }
-                if (res[2].length === 0) {
-                    await insertIntoGuildAutomod(guild.id)
-                        .then(() => {
-                            console.log(`Inserted ${guild.id} into guild_config.`);
-                        })
-                        .catch(() => {
-                            console.log(`Failed to insert ${guild.id} into guild_config`);
-                        });
-                }
-            })
-            .catch((err) => {
-                errorhandler({
-                    err,
-                });
-            });
+    return new Promise(async (resolve, reject) => {
+        await guilds.map(async (guild) => {
+            Guilds.create(guild.id).catch((err) => {});
+        });
+        resolve(true);
     });
 };

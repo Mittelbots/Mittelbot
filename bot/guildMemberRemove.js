@@ -1,12 +1,8 @@
 const { getAllRoles } = require('../utils/functions/roles/getAllRoles');
-const {
-    getMemberInfoById,
-    insertMemberInfo,
-    updateMemberInfoById,
-} = require('../utils/functions/data/getMemberInfo');
+const { MemberInfo } = require('../utils/functions/data/MemberInfo');
 
 module.exports.guildMemberRemove = async ({ member }) => {
-    const member_info = await getMemberInfoById({
+    const member_info = await MemberInfo.get({
         guild_id: member.guild.id,
         user_id: member.id,
     });
@@ -14,17 +10,17 @@ module.exports.guildMemberRemove = async ({ member }) => {
     const allRoles = getAllRoles(member);
 
     if (!member_info) {
-        await insertMemberInfo({
+        await MemberInfo.add({
             guild_id: member.guild.id,
             user_id: member.user.id,
             user_joined: member.joinedTimestamp,
-            member_roles: JSON.stringify(allRoles),
+            member_roles: allRoles,
         });
     } else {
-        await updateMemberInfoById({
+        await MemberInfo.update({
             guild_id: member.guild.id,
             user_id: member.user.id,
-            member_roles: JSON.stringify(allRoles),
+            member_roles: allRoles,
         });
     }
 };

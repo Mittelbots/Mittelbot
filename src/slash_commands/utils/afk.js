@@ -9,25 +9,22 @@ const {
 const { userAFK } = require('../../../utils/functions/data/variables');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    await main_interaction.deferReply({
-        ephemeral: true,
-    });
-
     const isRemove = main_interaction.options.getBoolean('remove');
     const isUserAfk = userAFK.find(
         (u) => u.user_id === main_interaction.user.id && u.guild_id === main_interaction.guild.id
     );
     if (isRemove) {
-        if (!isUserAfk)
-            return main_interaction.followUp({
+        if (!isUserAfk) {
+            return main_interaction.reply({
                 content: `❌ You are not afk.`,
                 ephemeral: true,
             });
+        }
 
         userAFKuserAFK = userAFK.splice(userAFK.indexOf(isUserAfk), 1);
 
         return main_interaction
-            .followUp({
+            .reply({
                 content: `✅ You are no longer afk.`,
                 ephemeral: true,
             })
@@ -35,7 +32,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     } else {
         if (isUserAfk)
             return main_interaction
-                .followUp({
+                .reply({
                     content: `❌ You are already afk. \`Reason: ${isUserAfk.reason}\` To remove your afk state add the remove option.`,
                     ephemeral: true,
                 })
@@ -54,7 +51,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
         const first = new ActionRowBuilder().addComponents([textInput]);
         modal.addComponents([first]);
 
-        main_interaction.showModal(modal);
+        await main_interaction.showModal(modal);
+
+        return main_interaction.reply({ content: `` });
     }
 };
 module.exports.data = new SlashCommandBuilder()

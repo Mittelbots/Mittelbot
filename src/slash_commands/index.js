@@ -1,10 +1,10 @@
 const {
     checkActiveCommand,
 } = require('../../utils/functions/checkActiveCommand/checkActiveCommand');
-const { getGuildConfig } = require('../../utils/functions/data/getConfig');
+const { GuildConfig } = require('../../utils/functions/data/Config');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
-    let moderation = [
+    const moderation = [
         'ban',
         'infractions',
         'isbanned',
@@ -15,35 +15,32 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'purge',
         'warn',
     ];
-    let fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny'];
-    let admin = [
+    const fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny'];
+    const admin = [
         'modules',
         'scam',
         'autotranslate',
         'settings',
-        'apply',
         'levelsettings',
         'automod',
+        'modroles',
     ];
-    let level = ['rank', 'leaderboard', 'givexp', 'removexp'];
-    let utils = ['afk', 'info', 'ping', 'checkguild', 'kickme'];
-    let help = ['help', 'tutorial'];
+    const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
+    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme'];
+    const help = ['help', 'tutorial'];
 
     //=========================================================
 
-    var { settings } = await getGuildConfig({
-        guild_id: main_interaction.guild.id,
-    });
-
-    disabled_modules = JSON.parse(settings.disabled_modules) || [];
+    const guildConfig = await GuildConfig.get(main_interaction.guild.id);
+    disabled_modules = guildConfig.disabled_modules;
 
     function disabled(module) {
         return main_interaction
-        .reply({
-            content: `This Module (${module}) is disabled.`,
-            ephemeral: true,
-        })
-        .catch((err) => {});
+            .reply({
+                content: `This Module (${module}) is disabled.`,
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     //=========================================================
@@ -70,24 +67,24 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     if (moderation.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
         return requireModule('moderation');
-    } 
+    }
 
     if (fun.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('fun') > -1) return disabled('fun');
         return requireModule('fun');
-    } 
-    
+    }
+
     if (admin.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
         return requireModule('admin');
-    } 
-    
+    }
+
     if (level.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('level') > -1) return disabled('level');
         return requireModule('level');
-    } 
+    }
 
-    if (utils.indexOf(main_interaction.commandName) !== -1) { 
+    if (utils.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('utils') > -1) return disabled('utils');
         return requireModule('utils');
     }
@@ -95,14 +92,12 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     if (help.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('help') > -1) return disabled('help');
         return requireModule('help');
-    } 
-    
+    }
 
     return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
         main_interaction: main_interaction,
         bot: bot,
     });
-
 
     function requireModule(module) {
         return require(`./${module}/${main_interaction.commandName}`).run({

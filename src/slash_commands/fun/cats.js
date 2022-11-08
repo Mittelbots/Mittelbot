@@ -12,8 +12,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             files: [new AttachmentBuilder(data[0].url, 'cat.png')],
         })
         .catch((err) => {
-            console.log(err);
-            main_interaction.reply('Something went wrong!').catch((err) => {});
+            main_interaction.reply('❌ Something went wrong!').catch((err) => {});
         });
 };
 

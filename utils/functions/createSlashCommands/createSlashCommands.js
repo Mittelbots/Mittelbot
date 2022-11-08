@@ -7,7 +7,6 @@ module.exports.createSlashCommands = async () => {
     const commands = [];
     const modules = fs.readdirSync('./src/slash_commands').filter((file) => file !== 'index.js');
 
-    // Place your client and guild ids here
     const clientId = process.env.DISCORD_APPLICATION_ID;
     const guildId = process.env.DEVELOPER_DISCORD_GUILD_ID;
 

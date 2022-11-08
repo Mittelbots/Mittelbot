@@ -1,76 +1,48 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { Infractions } = require('../data/Infractions');
 const { getMutedRole } = require('../roles/getMutedRole');
-const database = require('../../../src/db/db');
-const config = require('../../../src/assets/json/_config/config.json');
 
 async function isMuted({ user, guild, bot }) {
-    return await database
-        .query(`SELECT * FROM open_infractions WHERE user_id = ? AND mute = ? AND guild_id = ?`, [
-            user.id,
-            1,
-            guild.id,
-        ])
-        .then(async (result) => {
-            let MutedRole = await getMutedRole(bot.guilds.cache.get(guild.id));
-
-            if (MutedRole.error) return MutedRole;
-
-            const member = guild.members.cache.get(user.id);
-
-            if (!member)
-                return {
-                    error: true,
-                    message: 'No member found!',
-                };
-
-            if (result.length > 0 && (await member.roles.cache.has(MutedRole))) {
-                for (let i in result) {
-                    let currentdate = new Date().toLocaleString('de-DE', {
-                        timeZone: 'Europe/Berlin',
-                    });
-                    currentdate = currentdate
-                        .replace(',', '')
-                        .replace(':', '')
-                        .replace(' ', '')
-                        .replace(':', '')
-                        .replace('.', '')
-                        .replace('.', '')
-                        .replace('.', '');
-                    result[i].till_date = result[i].till_date
-                        .replace(',', '')
-                        .replace(':', '')
-                        .replace(' ', '')
-                        .replace(':', '')
-                        .replace('.', '')
-                        .replace('.', '')
-                        .replace('.', '');
-
-                    if (currentdate - result[i].till_date <= 0) {
-                        return {
-                            error: false,
-                            isMuted: true,
-                        };
-                    } else {
-                        return {
-                            error: false,
-                            isMuted: false,
-                        };
-                    }
-                }
-            } else {
-                return {
-                    error: false,
-                    isMuted: false,
-                };
-            }
-        })
-        .catch((err) => {
-            errorhandler({ err });
-            return {
-                error: true,
-                message: config.errormessages.databasequeryerror,
-            };
+    return new Promise(async (resolve) => {
+        let open_infractions = await Infractions.getOpen({
+            user_id: user.id,
+            guild_id: guild.id,
         });
+        open_infractions = open_infractions.filter((inf) => inf.mute);
+        const mutedRole = await getMutedRole(bot.guilds.cache.get(guild.id));
+        if (mutedRole.error) return resolve(mutedRole);
+
+        const member = guild.members.cache.get(user.id);
+
+        if (!member)
+            return resolve({
+                error: true,
+                message: 'No member found!',
+            });
+
+        if (open_infractions.length > 0 && (await member.roles.cache.has(mutedRole))) {
+            open_infractions.forEach((inf) => {
+                const currentdate = new Date().getTime();
+                const till_date = inf.till_date.getTime();
+                if (currentdate - till_date <= 0) {
+                    return resolve({
+                        error: false,
+                        isMuted: true,
+                    });
+                } else {
+                    return resolve({
+                        error: false,
+                        isMuted: false,
+                    });
+                }
+            });
+        } else {
+            return resolve({
+                error: false,
+                isMuted: false,
+            });
+        }
+    });
 }
 
 async function isOnBanList({ user, guild }) {
@@ -93,7 +65,10 @@ async function isOnBanList({ user, guild }) {
             else return [true, reason, executor];
         })
         .catch((err) => {
-            errorhandler({ fatal: false, err });
+            errorhandler({
+                fatal: false,
+                err,
+            });
             return [false];
         });
 }
@@ -101,63 +76,37 @@ async function isOnBanList({ user, guild }) {
 async function isBanned(member, guild) {
     let banList = await guild.bans.fetch();
 
-    return await database
-        .query(`SELECT * FROM open_infractions WHERE user_id = ? AND ban = ? AND guild_id = ?`, [
-            member.id,
-            1,
-            guild.id,
-        ])
-        .then(async (result) => {
-            if (result.length > 0) {
-                const isUserOnBanList = banList.get(member.id);
+    const open_infractions = await Infractions.getOpen({
+        user_id: member.id,
+        guild_id: guild.id,
+    });
 
-                for (let i in result) {
-                    let currentdate = new Date().toLocaleString('de-DE', {
-                        timeZone: 'Europe/Berlin',
-                    });
-                    currentdate = currentdate
-                        .replace(',', '')
-                        .replace(':', '')
-                        .replace(' ', '')
-                        .replace(':', '')
-                        .replace('.', '')
-                        .replace('.', '')
-                        .replace('.', '');
-                    result[i].till_date = result[i].till_date
-                        .replace(',', '')
-                        .replace(':', '')
-                        .replace(' ', '')
-                        .replace(':', '')
-                        .replace('.', '')
-                        .replace('.', '')
-                        .replace('.', '');
+    const banned = open_infractions.filter((inf) => inf.ban === 1);
 
-                    if (currentdate - result[i].till_date <= 0 || isUserOnBanList !== undefined) {
-                        return {
-                            error: false,
-                            isBanned: true,
-                        };
-                    } else {
-                        return {
-                            error: false,
-                            isBanned: false,
-                        };
-                    }
-                }
+    if (banned.length > 0) {
+        const isUserOnBanList = banList.get(member.id);
+
+        banned.forEach((inf) => {
+            const currentdate = new Date().getTime();
+            const till_date = inf.till_date.getTime();
+            if (currentdate - till_date <= 0 || isUserOnBanList !== undefined) {
+                return {
+                    error: false,
+                    isBanned: true,
+                };
             } else {
                 return {
                     error: false,
                     isBanned: false,
                 };
             }
-        })
-        .catch((err) => {
-            errorhandler({ err });
-            return {
-                error: true,
-                message: config.errormessages.databasequeryerror,
-            };
         });
+    } else {
+        return {
+            error: false,
+            isBanned: false,
+        };
+    }
 }
 
 module.exports = {

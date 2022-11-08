@@ -1,23 +1,21 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const {
-    save_welcomechannelId,
     sendWelcomeSetting,
     updateWelcomeSettings,
 } = require('../../../utils/functions/data/welcomechannel');
-const { checkPrefix, updateGuildConfig } = require('../../../utils/functions/data/getConfig');
+const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
-const { updateJoinroles } = require('../../../utils/functions/data/joinroles');
-const database = require('../../db/db');
-const { updateWarnroles } = require('../../../utils/functions/data/warnroles');
+const { Joinroles } = require('../../../utils/functions/data/Joinroles');
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
 const { changeYtNotifier, delChannelFromList } = require('../../../utils/functions/data/youtube');
 const {
     changeTwitchNotifier,
     delTwChannelFromList,
 } = require('../../../utils/functions/data/twitch');
-const { updateLog } = require('../../../utils/functions/data/logs');
 const { updateReactionRoles } = require('../../../utils/functions/data/reactionroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { Logs } = require('../../../utils/functions/data/Logs');
+const { Warnroles } = require('../../../utils/functions/data/Warnroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -45,7 +43,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .catch((err) => {});
 
-            var currentsettings = await database
+            const currentsettings = await database
                 .query(`SELECT * FROM ${main_interaction.guild.id}_config LIMIT 1`)
                 .then(async (res) => {
                     return await res[0];
@@ -108,7 +106,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         case 'prefix':
             const prefix = main_interaction.options.getString('prefix');
-            const prefixCheck = checkPrefix({
+            const prefixCheck = await GuildConfig.checkPrefix({
                 value: prefix,
             });
             if (prefixCheck === false)
@@ -192,7 +190,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             var joinroles = removeMention(roles);
             joinroles = joinroles.split(' ');
 
-            updateJoinroles({
+            Joinroles.update({
                 guild: main_interaction.guild,
                 roles: joinroles,
                 user: bot.guilds.cache
@@ -234,7 +232,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .catch((err) => {});
             }
 
-            await updateLog({
+            await Logs.update({
                 guild_id: main_interaction.guild.id,
                 channel: {
                     auditlog: auditlog,
@@ -269,7 +267,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             warnroles = removeMention(warnroles);
             warnroles = warnroles.split(' ');
 
-            updateWarnroles({
+            Warnroles.update({
                 guild: main_interaction.guild,
                 roles: warnroles,
                 user: bot.guilds.cache
@@ -439,7 +437,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     async function saveSetting({ value, valueName }) {
-        await updateGuildConfig({
+        await GuildConfig.update({
             guild_id: main_interaction.guild.id,
             value,
             valueName,

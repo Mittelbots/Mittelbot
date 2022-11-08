@@ -1,13 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js');
-const {
-    getAutomodbyGuild,
-    updateAutoModbyGuild,
-    isRoleOnWhitelist,
-} = require('../../../utils/functions/data/automod');
+const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    var setting = await getAutomodbyGuild(main_interaction.guild.id);
+    var setting = await Automod.get(main_interaction.guild.id);
 
     setting = JSON.parse(setting);
 
@@ -26,7 +22,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     (r) => r !== role.id
                 );
             } else {
-                const alreadyExists = isRoleOnWhitelist({
+                const alreadyExists = Automod.checkWhitelist({
                     setting: JSON.stringify(setting),
                     role_id: role.id,
                 });
@@ -38,7 +34,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 setting.whitelistrole.roles.push(role.id);
             }
 
-            updateAutoModbyGuild({
+            Automod.update({
                 guild_id: main_interaction.guild.id,
                 value: JSON.stringify(setting),
                 type: role,
@@ -77,7 +73,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             (setting.antispam.enabled = JSON.parse(main_interaction.options.getString('enabled'))),
                 (setting.antispam.action = main_interaction.options.getString('action'));
 
-            updateAutoModbyGuild({
+            Automod.update({
                 guild_id: main_interaction.guild.id,
                 value: JSON.stringify(setting),
                 type: setting.antispam.action,
@@ -119,7 +115,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             )),
                 (setting.antiinvite.action = main_interaction.options.getString('action'));
 
-            updateAutoModbyGuild({
+            Automod.update({
                 guild_id: main_interaction.guild.id,
                 value: JSON.stringify(setting),
                 type: setting.antiinvite.action,

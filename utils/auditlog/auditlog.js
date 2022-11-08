@@ -3,7 +3,7 @@ const config = require('../../src/assets/json/_config/config.json');
 const ignorechannel = require('../../src/assets/json/ignorechannel/ignorechannel.json');
 const { isOnBanList } = require('../functions/moderations/checkOpenInfractions');
 const { setNewModLogMessage } = require('../modlog/modlog');
-const { getLogs } = require('../functions/data/logs');
+const { Logs } = require('../functions/data/Logs');
 
 var c = config.auditTypes;
 var gid = '';
@@ -56,9 +56,7 @@ async function sendToAudit(bot, type, content1, content2) {
     var Message = new EmbedBuilder().setTimestamp();
 
     async function isOnWhitelist() {
-        const logs = await getLogs({
-            guild_id: content1.guild.id,
-        });
+        const logs = await Logs.get(content1.guild.id);
         var whitelist = logs.whitelist;
 
         if (whitelist && whitelist.length > 0) {
@@ -327,9 +325,7 @@ async function sendToAudit(bot, type, content1, content2) {
             .catch((err) => {});
     }
 
-    const logs = await getLogs({
-        guild_id: content1.guild.id,
-    });
+    const logs = await Logs.get(content1.guild.id);
 
     if (type === c.messageupdate && logs.messagelog !== null) {
         try {

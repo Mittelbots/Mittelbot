@@ -1,9 +1,8 @@
 const fs = require('fs');
 const { log } = require('../../../logs');
-const config = require('../../../src/assets/json/_config/config.json');
 
 module.exports.deployCommands = async (bot) => {
-    let modules = fs.readdirSync('./src/commands/');
+    const modules = fs.readdirSync('./src/commands/');
     modules.forEach((module) => {
         fs.readdir(`./src/commands/${module}`, (err, files) => {
             if (err) {
@@ -12,7 +11,7 @@ module.exports.deployCommands = async (bot) => {
             }
             files.forEach((file) => {
                 if (!file.endsWith('.js') || file.startsWith('.')) return;
-                var command = require(`../../../src/commands/${module}/${file}`);
+                const command = require(`../../../src/commands/${module}/${file}`);
                 console.info(`${command.help.name} Command has been loaded!`);
                 if (command.help.name) bot.commands.set(command.help.name, command);
             });

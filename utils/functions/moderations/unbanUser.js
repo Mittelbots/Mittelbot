@@ -1,10 +1,9 @@
 const { setNewModLogMessage } = require('../../modlog/modlog');
 const { publicModResponses } = require('../../publicResponses/publicModResponses');
-const { removeDataFromOpenInfractions } = require('../removeData/removeDataFromDatabase');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const database = require('../../../src/db/db');
 const config = require('../../../src/assets/json/_config/config.json');
-const { insertIntoClosedList } = require('../data/infractions');
+const { Infractions } = require('../data/Infractions');
 
 async function unbanUser({ user, mod, guild, reason, bot }) {
     let pass = false;
@@ -25,9 +24,9 @@ async function unbanUser({ user, mod, guild, reason, bot }) {
             .query(`SELECT * FROM open_infractions WHERE user_id AND ban = 1`, [user.id])
             .then(async (res) => {
                 if (res.length > 0) {
-                    await insertIntoClosedList({
+                    await Infractions.insertClosed({
                         uid: user.id,
-                        modid: res[0].mod_id,
+                        mod_id: res[0].mod_id,
                         ban: res[0].ban,
                         mute: res[0].mute,
                         kick: 0,
@@ -37,7 +36,7 @@ async function unbanUser({ user, mod, guild, reason, bot }) {
                         start_date: res[0].start_date,
                         guild_id: guild.id,
                     });
-                    await removeDataFromOpenInfractions(res[0].infraction_id);
+                    await Infractions.deleteOpen(res[0].infraction_id);
                 }
                 return {
                     error: false,

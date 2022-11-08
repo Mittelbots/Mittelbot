@@ -1,95 +1,95 @@
 .joinrole_selected {
-  padding: 10px;
-  border: 1px solid red;
-  margin: 5px 10px;
-  width: fit-content;
-  border-radius: 20px;
-  cursor: pointer;
+    padding: 10px;
+    border: 1px solid red;
+    margin: 5px 10px;
+    width: fit-content;
+    border-radius: 20px;
+    cursor: pointer;
 }
 
 .notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  z-index: 99;
-  max-height: 99px;
-  animation: notification 3s ease-in-out;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    z-index: 99;
+    max-height: 99px;
+    animation: notification 3s ease-in-out;
 }
 
 @keyframes notification {
-  0% {
-    top: -100px;
-    opacity: 0;
-  }
-  20% {
-    top: 20px;
-    opacity: 1;
-  }
-  80% {
-    top: 20px;
-    opacity: 1;
-  }
-  100% {
-    top: -100px;
-    opacity: 0;
-  }
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+    20% {
+        top: 20px;
+        opacity: 1;
+    }
+    80% {
+        top: 20px;
+        opacity: 1;
+    }
+    100% {
+        top: -100px;
+        opacity: 0;
+    }
 }
 
 .success {
-  background-color: #4CAF50;
-  color: white;
+    background-color: #4caf50;
+    color: white;
 }
 
 .error {
-  background-color: #f44336;
-  color: white;
+    background-color: #f44336;
+    color: white;
 }
 
 .loading_screen {
-  position: fixed;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  z-index: 9999;
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    z-index: 9999;
 }
 
 .loading_screen .ring {
-  height: 45px;
-  width: 45px;
-  border: 5px solid #ddd;
-  border-radius: 50%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    height: 45px;
+    width: 45px;
+    border: 5px solid #ddd;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .loading_screen .ring:after {
-  position: absolute;
-  content: "";
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-  border: 5px solid #ff3d00;
-  border-top-color: transparent;
-  animation: rotate 1.5s linear infinite;
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 5px solid #ff3d00;
+    border-top-color: transparent;
+    animation: rotate 1.5s linear infinite;
 }
 
 @keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes loading_out {
-  0% {
-    right: 0;
-  }
-  100% {
-    right: -100%;
-  }
+    0% {
+        right: 0;
+    }
+    100% {
+        right: -100%;
+    }
 }
