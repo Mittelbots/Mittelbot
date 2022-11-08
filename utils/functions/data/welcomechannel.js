@@ -453,22 +453,25 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }) => {
                 });
             })
             .catch(async () => {
-                await bot.guilds.cache.get(guild_id).channels.cache.get(welcomeChannel.id).send({
-                    content: welcomeChannel.message,
-                })
-                .then(() =>  {
-                    errorhandler({
-                        message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}. ❌ But the embed failed.`,
-                        fatal: false,
+                await bot.guilds.cache
+                    .get(guild_id)
+                    .channels.cache.get(welcomeChannel.id)
+                    .send({
+                        content: welcomeChannel.message,
+                    })
+                    .then(() => {
+                        errorhandler({
+                            message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}. ❌ But the embed failed.`,
+                            fatal: false,
+                        });
+                    })
+                    .catch((err) => {
+                        errorhandler({
+                            message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
+                            err: err.toString(),
+                            fatal: false,
+                        });
                     });
-                })
-                .catch(err => {
-                    errorhandler({
-                        message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
-                        err: err.toString(),
-                        fatal: false,
-                    });
-                })
             });
     }
 };

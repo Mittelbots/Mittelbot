@@ -12,7 +12,7 @@ class GlobalConfig {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({err, fatal: true});
+                    errorhandler({ err, fatal: true });
                     return reject(false);
                 });
         });
@@ -22,18 +22,20 @@ class GlobalConfig {
         return new Promise(async (resolve, reject) => {
             await globalConfig
                 .update(
-                    { 
-                        [valueName]: value 
-                    }, { 
+                    {
+                        [valueName]: value,
+                    },
+                    {
                         where: {
-                            id: 1 
-                        } 
-                    })
+                            id: 1,
+                        },
+                    }
+                )
                 .then(() => {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({err, fatal: true});
+                    errorhandler({ err, fatal: true });
                     return reject(false);
                 });
         });

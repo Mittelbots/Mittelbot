@@ -53,7 +53,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         await main_interaction.showModal(modal);
 
-        return main_interaction.reply({content: ``,});
+        return main_interaction.reply({ content: `` });
     }
 };
 module.exports.data = new SlashCommandBuilder()

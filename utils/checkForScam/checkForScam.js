@@ -16,23 +16,29 @@ module.exports.loadScam = async () => {
         .catch((err) => {
             return;
         });
-}
+};
 
 module.exports.checkForScam = async (message, bot, config, log) => {
     const member = await message.guild.members.fetch(message.author);
 
     if (await isMod({ member, guild: message.guild })) return;
 
-    const scamListDB = advancedScamList.findAll().then(res => {return res}).catch(err => {return []});
+    const scamListDB = advancedScamList
+        .findAll()
+        .then((res) => {
+            return res;
+        })
+        .catch((err) => {
+            return [];
+        });
     const scamLinksExt = publicScamList;
-    
-    
+
     const whitelist_links = [];
 
     for (let i in scamListDB) {
         if (scamListDB[i].whitelist) {
             whitelist_links.push(scamListDB[i].link);
-        }else {
+        } else {
             scamLinksExt.push(scamListDB[i].link);
         }
     }
@@ -88,4 +94,4 @@ module.exports.checkForScam = async (message, bot, config, log) => {
             }
         }
     }
-}
+};

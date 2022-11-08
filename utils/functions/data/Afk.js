@@ -34,7 +34,7 @@ class Afk {
         if (mentions.size === 0) return isAFK;
 
         mentions.map((user) => {
-            if(user.id === author.id) return;
+            if (user.id === author.id) return;
             const isUserAFK = userAFK.find(
                 (afk) => afk.user_id === user.id && afk.guild_id === message.guild.id
             );

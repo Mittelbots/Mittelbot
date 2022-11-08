@@ -35,7 +35,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
             user_joined: new Date().getTime(),
             member_roles: [],
         });
-    }else {
+    } else {
         if (memberInfo.user_joined == null) {
             await MemberInfo.update({
                 guild_id: member.guild.id,
@@ -59,7 +59,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
             .catch((err) => {});
     }
 
-    if(!memberInfo) return;
+    if (!memberInfo) return;
     const user_roles = JSON.parse(memberInfo.member_roles);
     if (!user_roles) return;
 

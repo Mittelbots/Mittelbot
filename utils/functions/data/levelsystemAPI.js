@@ -17,7 +17,7 @@ class Levelsystem {
                 guild_id,
                 user_id,
             });
-        
+
             if (userXP) {
                 return resolve(userXP.xp);
             } else {
@@ -32,14 +32,14 @@ class Levelsystem {
 
     generateNewXp(currentxp) {
         const randomNumber = Math.floor(Math.random() * 20) + 3; //8 - 27 ca.
-        return Number(currentxp) + Number(randomNumber);    
+        return Number(currentxp) + Number(randomNumber);
     }
 
-    updateMessageCount({user_id, guild_id}) {
+    updateMessageCount({ user_id, guild_id }) {
         return new Promise(async (resolve) => {
-            const userXp = await this.get({user_id, guild_id});
-            if(userXp.length == 0) {
-                return await this.add({user_id, guild_id});
+            const userXp = await this.get({ user_id, guild_id });
+            if (userXp.length == 0) {
+                return await this.add({ user_id, guild_id });
             }
 
             const newMessageCount = Number(userXp.message_count) + 1;
@@ -51,23 +51,29 @@ class Levelsystem {
                 valueName: 'message_count',
             });
             resolve(true);
-        })
+        });
     }
 
     update({ guild_id, user_id, value, valueName }) {
         return new Promise(async (resolve) => {
-            await guildLevel.update({
-                [valueName]: value,
-            }, {
-                where: {
-                    guild_id,
-                    user_id,
-                },
-            }).then((result) => {
-                return resolve(result);
-            }).catch((err) => {
-                return resolve(false);
-            });
+            await guildLevel
+                .update(
+                    {
+                        [valueName]: value,
+                    },
+                    {
+                        where: {
+                            guild_id,
+                            user_id,
+                        },
+                    }
+                )
+                .then((result) => {
+                    return resolve(result);
+                })
+                .catch((err) => {
+                    return resolve(false);
+                });
         });
     }
 
@@ -77,26 +83,26 @@ class Levelsystem {
 
             var level;
             var nextlevel;
-        
+
             const setting = levelConfig[levelSettings];
-        
+
             if (!setting) return resolve(false);
-        
+
             for (let i in setting) {
                 if (setting[i].xp <= currentxp) {
                     newRoleDB = setting[i];
                     level = setting[i].level;
-        
+
                     nextlevel = setting[Number(i) + 1];
-        
+
                     continue;
                 } else if (setting[i].xp > currentxp) {
                     continue;
                 }
             }
-        
+
             const level_announce = await this.getLevelAnnounce(guildid, message.author.id);
-        
+
             if (level_announce && Number(level_announce) < Number(level)) {
                 this.update({
                     guild_id: guildid,
@@ -113,47 +119,56 @@ class Levelsystem {
 
     getGuild({ guild_id }) {
         return new Promise(async (resolve) => {
-            await guildLevel.findAll({
-                where: {
-                    guild_id,
-                },
-            }).then((result) => {
-                return resolve(result);
-            }).catch((err) => {
-                return resolve(false);
-            });
+            await guildLevel
+                .findAll({
+                    where: {
+                        guild_id,
+                    },
+                })
+                .then((result) => {
+                    return resolve(result);
+                })
+                .catch((err) => {
+                    return resolve(false);
+                });
         });
     }
-    
+
     get({ guild_id, user_id }) {
         return new Promise(async (resolve) => {
-            await guildLevel.findOne({
-                where: {
-                    guild_id,
-                    user_id,
-                },
-            }).then((result) => {
-                return resolve(result);
-            }).catch((err) => {
-                return resolve(false);
-            });
+            await guildLevel
+                .findOne({
+                    where: {
+                        guild_id,
+                        user_id,
+                    },
+                })
+                .then((result) => {
+                    return resolve(result);
+                })
+                .catch((err) => {
+                    return resolve(false);
+                });
         });
     }
 
     add({ guild_id, user_id }) {
         return new Promise(async (resolve) => {
-            await guildLevel.create({
-                guild_id,
-                user_id,
-            }).then((result) => {
-                return resolve(result);
-            }).catch((err) => {
-                errorhandler({
-                    err,
-                    fatal: true
+            await guildLevel
+                .create({
+                    guild_id,
+                    user_id,
                 })
-                return resolve(false);
-            });
+                .then((result) => {
+                    return resolve(result);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                        fatal: true,
+                    });
+                    return resolve(false);
+                });
         });
     }
     getSetting(guild_id) {
@@ -179,10 +194,10 @@ class Levelsystem {
             const guild = await this.getGuild({
                 guild_id,
             });
-            if(!guild) return resolve([]);
+            if (!guild) return resolve([]);
             let sorted = [];
 
-            guild.forEach(element => {
+            guild.forEach((element) => {
                 sorted.push([
                     element.user_id,
                     element.xp,
@@ -191,10 +206,10 @@ class Levelsystem {
                 ]);
             });
 
-            sorted.sort(function(a, b) {
+            sorted.sort(function (a, b) {
                 return b[1] - a[1];
             })[0];
-        
+
             if (user_id) {
                 var index;
                 for (let i in sorted) {
@@ -215,7 +230,7 @@ class Levelsystem {
                 guild_id,
                 user_id,
             });
-        
+
             if (user) {
                 return resolve(user.level_announce);
             } else {
@@ -232,7 +247,7 @@ class Levelsystem {
                 normal: mode == 'normal' ? [] : levelConfig.normal,
                 hard: mode == 'hard' ? [] : levelConfig.hard,
             };
-    
+
             var lvl_multi;
             switch (mode) {
                 case 'easy':
@@ -248,12 +263,12 @@ class Levelsystem {
                     lvl_multi = 390;
                     break;
             }
-    
+
             let multiplier = 0.005;
             let top_multiplier = 1;
-    
+
             let prev;
-    
+
             for (let i = 0; i <= lvl_count; i++) {
                 const obj = {
                     level: i,
@@ -276,7 +291,7 @@ class Levelsystem {
                         break;
                 }
                 multiplier += 0.005;
-    
+
                 if (i < 20) {
                     top_multiplier += 1;
                 } else {
@@ -290,7 +305,7 @@ class Levelsystem {
                         top_multiplier += 0.3;
                     }
                 }
-    
+
                 errorhandler({
                     err: [
                         obj.level,
@@ -310,10 +325,9 @@ class Levelsystem {
                 JSON.stringify(config),
                 'utf8'
             );
-    
+
             return resolve(true);
         });
-
     }
 
     cooldown({ message, bot }) {
@@ -322,18 +336,18 @@ class Levelsystem {
                 user: message.author.id,
                 guild: message.guild.id,
             };
-        
+
             const index = levelCooldownArray.findIndex(
                 (lvlcd) => lvlcd.user === message.author.id && lvlcd.guild === message.guild.id
             );
-        
+
             if (index === -1) {
                 const { error } = await this.runLevelSystem(message);
-        
+
                 if (error == 'blacklist') return resolve(false);
-        
+
                 levelCooldownArray.push(obj);
-        
+
                 setTimeout(() => {
                     levelCooldownArray = levelCooldownArray.filter(
                         (u) => u.user !== message.author.id && u.guild !== message.guild.id
@@ -350,29 +364,28 @@ class Levelsystem {
                     error: 'bot',
                 };
             }
-        
-            
+
             const isBlacklistChannel = await this.checkBlacklist({
                 message,
             });
-        
+
             if (isBlacklistChannel)
                 return {
                     error: 'blacklist',
                 };
-        
+
             const currentxp = await this.gain({
                 guild_id: message.guild.id,
                 user_id: message.author.id,
             });
-        
+
             if (!currentxp)
                 return {
                     error: 'noxp',
                 };
-        
+
             const newxp = this.generateNewXp(currentxp);
-        
+
             const updateXP = await this.update({
                 guild_id: message.guild.id,
                 user_id: message.author.id,
@@ -385,18 +398,21 @@ class Levelsystem {
                 };
             }
 
-            await this.updateMessageCount({user_id: message.author.id, guild_id: message.guild.id});
-                
+            await this.updateMessageCount({
+                user_id: message.author.id,
+                guild_id: message.guild.id,
+            });
+
             const checkXP = await this.check(message.guild.id, newxp, message);
             if (!checkXP)
                 return {
                     error: 'checkxp',
                 };
-        
+
             await this.sendNewLevelMessage(checkXP[0], message, newxp, checkXP[1]);
-        
+
             currentxp, newxp, updateXP, (checkXP = null);
-        
+
             return {
                 error: 'none',
             };
@@ -413,7 +429,7 @@ class Levelsystem {
         return new Promise(async (resolve, reject) => {
             const guildConfig = await GuildConfig.get(guild.id);
             const levelsettings = guildConfig.levelsettings;
-    
+
             if (type === 'dm' || type === 'disable') {
                 levelsettings.levelup_channel = type === 'dm' ? 'dm' : 'disable';
             } else {
@@ -422,21 +438,21 @@ class Levelsystem {
                         `❌ You didn't pass any channel. Please add a channel if you select \`Text Channel\`.`
                     );
                 }
-    
+
                 await guild.members.fetch();
                 const hasChannelPerms = guild.members.me
                     .permissionsIn(channel)
                     .has(['VIEW_CHANNEL', 'SEND_MESSAGES']);
-    
+
                 if (!hasChannelPerms) {
                     return reject(
                         `❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES"\`. Change them and try again.`
                     );
                 }
-    
+
                 levelsettings.levelup_channel = channel.id;
             }
-    
+
             await GuildConfig.update({
                 guild_id: guild.id,
                 value: levelsettings,
@@ -470,9 +486,9 @@ class Levelsystem {
             if (levelsettings.length > 0) {
                 blacklistchannels = levelsettings.blacklistchannels;
             }
-        
+
             if (!blacklistchannels) return resolve(false);
-        
+
             return blacklistchannels.includes(message.channel.id) ||
                 blacklistchannels.includes(message.channel.parentId)
                 ? resolve(true)
