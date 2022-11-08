@@ -9,6 +9,6 @@ updates:
       directory: '/' # Location of package manifests
       schedule:
           interval: 'daily'
-      target-branch: 'development'
+      target-branch: 'dev'
       labels:
           - 'npm dependencies'
