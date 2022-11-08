@@ -113,6 +113,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 break;
 
             case 'export_logs':
+                const type = main_interaction.options.getBoolean('type')
+                    ? '_logs/roll'
+                    : '_debug/roll';
+
+
                 const date = new Date();
 
                 let year = date.getFullYear();
@@ -122,7 +127,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
                 return main_interaction
                     .followUp({
-                        files: [new AttachmentBuilder(`./_logs/roll-${year}.${month}.${day}.log`)],
+                        files: [new AttachmentBuilder(`./${type}-${year}.${month}.${day}.log`)],
                     })
                     .catch((err) => {
                         return main_interaction
@@ -194,5 +199,12 @@ module.exports.data = new SlashCommandBuilder()
             )
     )
     .addSubcommand((command) =>
-        command.setName('export_logs').setDescription('Export the log of the current day')
+        command
+            .setName('export_logs')
+            .setDescription('Export the log of the current day')
+            .addBooleanOption((option) =>
+                option
+                    .setName('type')
+                    .setDescription('Select if the error logs or the debug logs should be exported')
+            )
     );
