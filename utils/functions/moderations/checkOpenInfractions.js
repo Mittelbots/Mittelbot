@@ -24,7 +24,6 @@ async function isMuted({ user, guild, bot }) {
             open_infractions.forEach((inf) => {
                 const currentdate = new Date().getTime();
                 const till_date = inf.till_date.getTime();
-                console.log(currentdate - till_date <= 0);
                 if (currentdate - till_date <= 0) {
                     return resolve({
                         error: false,

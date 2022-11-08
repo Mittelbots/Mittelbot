@@ -10,7 +10,6 @@ const { Modroles } = require('../../../utils/functions/data/Modroles');
 const config = require('../../assets/json/_config/config.json');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    try {
         if (!main_interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return message
                 .reply({ content: `${config.errormessages.nopermission}`, ephemeral: true })
@@ -179,9 +178,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
             }
         });
-    } catch (err) {
-        console.log(err);
-    }
 };
 
 module.exports.data = new SlashCommandBuilder()

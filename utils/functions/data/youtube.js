@@ -7,7 +7,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
     return new Promise(async (resolve, reject) => {
         const url = new URL(ytchannel);
 
-        try {
             if (!url.hostname.startsWith('www.')) {
                 ytchannel = `https://www.${url.hostname}${url.pathname}`;
             }
@@ -17,7 +16,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
                     return id;
                 })
                 .catch((err) => {
-                    console.log(err);
                     reject(`❌ I couldn't find the channel you have entered.`);
                     return false;
                 });
@@ -145,9 +143,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
                         );
                     });
             }
-        } catch (err) {
-            console.log(err);
-        }
     });
 };
 

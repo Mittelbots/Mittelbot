@@ -148,7 +148,10 @@ class Levelsystem {
             }).then((result) => {
                 return resolve(result);
             }).catch((err) => {
-                console.log(err);
+                errorhandler({
+                    err,
+                    fatal: true
+                })
                 return resolve(false);
             });
         });
