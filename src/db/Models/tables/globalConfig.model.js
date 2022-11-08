@@ -5,7 +5,7 @@ class GlobalConfig extends Model {}
 
 GlobalConfig.init(
     {
-        ingoreMode: {
+        ignoreMode: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },

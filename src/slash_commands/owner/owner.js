@@ -8,6 +8,7 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { AttachmentBuilder } = require('discord.js');
 const { GlobalConfig } = require('../../../utils/functions/data/GlobalConfig');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
+const { restartBot, stopBot } = require('../../../bot/core/core');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -25,47 +26,22 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {});
 
-                log.info('------------BOT IS RESTARTING------------');
-                try {
-                    spawn(process.argv[1], process.argv.slice(2), {
-                        detached: true,
-                        stdio: ['ignore', null, null],
-                    }).unref();
-                    process.exit();
-                } catch (err) {
-                    log.fatal(err);
-                    main_interaction
-                        .followUp({
-                            content: config.errormessages.general,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                }
+                await restartBot();
                 break;
 
             case 'shutdown':
-                try {
-                    await main_interaction
-                        .followUp({
-                            content: `Ok sir, Bot stopped!`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                    log.info('------------BOT SUCCESSFULLY STOPPED------------');
-                    process.exit(1);
-                } catch (err) {
-                    log.fatal(err);
-                    main_interaction
-                        .followUp({
-                            content: config.errormessages.general,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                }
+                await main_interaction
+                    .followUp({
+                        content: `Ok sir, Bot stopped!`,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+
+                await stopBot();
                 break;
 
             case 'generatelevel':
-                Levelsystem.generate({
+                await Levelsystem.generate({
                     lvl_count: main_interaction.options.getNumber('maxlevel'),
                     mode: main_interaction.options.getString('mode'),
                 }).then(async () => {
@@ -83,7 +59,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 const mode = main_interaction.options.getBoolean('mode');
                 await GlobalConfig.update({
                     valueName: 'ignoreMode',
-                    value: mode ? 1 : 0,
+                    value: mode,
                 });
                 main_interaction
                     .followUp({
