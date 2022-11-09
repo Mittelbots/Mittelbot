@@ -60,8 +60,10 @@ class Guilds {
             });
     }
 
-    async isBlacklist(guild_id) {
-        return blacklist.find((g) => g === guild_id);
+    isBlacklist(guild_id) {
+        return new Promise(async (resolve) => {
+            return resolve(blacklist.find((g) => g === guild_id));
+        });
     }
 }
 

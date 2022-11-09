@@ -174,6 +174,26 @@ class Infractions {
             });
         });
     }
+
+    moveFromOpenToClosed(infraction) {
+        return new Promise(async (resolve) => {
+            this.deleteOpen(infraction.infraction_id);
+
+            this.insertClosed({
+                uid: infraction.user_id,
+                mod_id: infraction.mod_id,
+                mute: infraction.mute,
+                ban: infraction.ban,
+                till_date: infraction.till_date,
+                reason: infraction.reason,
+                infraction_id: infraction.infraction_id,
+                start_date: infraction.start_date,
+                guild_id: infraction.guild_id,
+            });
+
+            return resolve(true);
+        });
+    }
 }
 
 module.exports.Infractions = new Infractions();

@@ -1,10 +1,9 @@
 require('dotenv').config();
 const { ShardingManager } = require('discord.js');
-const token = require('./_secret/token.json');
 
 if (!JSON.parse(process.env.DEBUG)) {
     let manager = new ShardingManager('./index.js', {
-        token: token.BOT_TOKEN,
+        token: process.env.DISCORD_TOKEN,
         totalShards: 'auto',
         respawn: true,
     });
