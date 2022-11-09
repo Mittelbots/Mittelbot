@@ -1,6 +1,5 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const token = require('../../../_secret/token.json');
 const fs = require('node:fs');
 
 module.exports.createSlashCommands = async () => {
@@ -23,7 +22,7 @@ module.exports.createSlashCommands = async () => {
 
     const rest = new REST({
         version: '10',
-    }).setToken(token.BOT_TOKEN);
+    }).setToken(process.env.DISCORD_TOKEN);
 
     (async () => {
         try {

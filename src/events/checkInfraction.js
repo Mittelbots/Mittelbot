@@ -7,22 +7,6 @@ const { saveAllRoles } = require('../../utils/functions/roles/saveAllRoles');
 const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
 const { Infractions } = require('../../utils/functions/data/Infractions');
 
-async function deleteEntries(infraction) {
-    Infractions.deleteOpen(infraction.infraction_id);
-
-    Infractions.insertClosed({
-        uid: infraction.user_id,
-        mod_id: infraction.mod_id,
-        mute: infraction.mute,
-        ban: infraction.ban,
-        till_date: infraction.till_date,
-        reason: infraction.reason,
-        infraction_id: infraction.infraction_id,
-        start_date: infraction.start_date,
-        guild_id: infraction.guild_id,
-    });
-}
-
 module.exports.checkInfractions = (bot) => {
     console.info('🔎📜 CheckInfraction handler started');
     setInterval(async () => {
@@ -83,7 +67,7 @@ module.exports.checkInfractions = (bot) => {
                             guild.name
                         );
 
-                        await deleteEntries(results[i]);
+                        await Infractions.moveFromOpenToClosed(results[i]);
                     } catch (err) {
                         errorhandler({
                             err,
@@ -96,9 +80,7 @@ module.exports.checkInfractions = (bot) => {
                     continue;
                 } else {
                     //Member got banned
-                    done++;
-                    bancount++;
-                    await deleteEntries(results[i]);
+                    await Infractions.moveFromOpenToClosed(results[i]);
                     await bot.guilds.cache
                         .get(results[i].guild_id)
                         .members.unban(`${results[i].user_id}`, `Auto`)
@@ -123,6 +105,9 @@ module.exports.checkInfractions = (bot) => {
                             );
                         })
                         .catch((err) => {});
+
+                    done++;
+                    bancount++;
                 }
             }
         }

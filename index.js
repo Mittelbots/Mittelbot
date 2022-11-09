@@ -3,7 +3,6 @@ require('dotenv').config();
 const { Client, Options, GatewayIntentBits, Collection, Partials } = require('discord.js');
 
 const config = require('./src/assets/json/_config/config.json');
-const token = require('./_secret/token.json');
 const version = require('./package.json').version;
 
 const { errorhandler } = require('./utils/functions/errorhandler/errorhandler');
@@ -70,4 +69,4 @@ bot.once('ready', async () => {
     }, 3600000); // 1h
 });
 
-bot.login(token.BOT_TOKEN);
+bot.login(process.env.DISCORD_TOKEN);

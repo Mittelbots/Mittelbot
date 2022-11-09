@@ -1,8 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-
 const config = require('../../../src/assets/json/_config/config.json');
-const { log } = require('../../../logs');
-const { spawn } = require('child_process');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { AttachmentBuilder } = require('discord.js');
@@ -16,127 +13,125 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 
     const hasPermission = main_interaction.user.id === config.Bot_Owner_ID;
-    if (hasPermission) {
-        switch (main_interaction.options.getSubcommand()) {
-            case 'restart':
-                await main_interaction
-                    .followUp({
-                        content: `Ok sir, Bot is restarting!`,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+    if (!hasPermission) return;
 
-                await restartBot();
-                break;
+    switch (main_interaction.options.getSubcommand()) {
+        case 'restart':
+            await main_interaction
+                .followUp({
+                    content: `Ok sir, Bot is restarting!`,
+                    ephemeral: true,
+                })
+                .catch((err) => {});
 
-            case 'shutdown':
-                await main_interaction
-                    .followUp({
-                        content: `Ok sir, Bot stopped!`,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+            await restartBot();
+            break;
 
-                await stopBot();
-                break;
+        case 'shutdown':
+            await main_interaction
+                .followUp({
+                    content: `Ok sir, Bot stopped!`,
+                    ephemeral: true,
+                })
+                .catch((err) => {});
 
-            case 'generatelevel':
-                await Levelsystem.generate({
-                    lvl_count: main_interaction.options.getNumber('maxlevel'),
-                    mode: main_interaction.options.getString('mode'),
-                }).then(async () => {
-                    await delay(2000);
-                    main_interaction
-                        .followUp({
-                            content: 'Successfully created!',
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-                break;
+            await stopBot();
+            break;
 
-            case 'ignoremode':
-                const mode = main_interaction.options.getBoolean('mode');
-                await GlobalConfig.update({
-                    valueName: 'ignoreMode',
-                    value: mode,
-                });
+        case 'generatelevel':
+            await Levelsystem.generate({
+                lvl_count: main_interaction.options.getNumber('maxlevel'),
+                mode: main_interaction.options.getString('mode'),
+            }).then(async () => {
+                await delay(2000);
                 main_interaction
                     .followUp({
-                        content: '✅ Successfully set ignoremode to ' + (mode ? 'on' : 'off'),
+                        content: 'Successfully created!',
                         ephemeral: true,
                     })
                     .catch((err) => {});
-                break;
+            });
+            break;
 
-            case 'disable_command':
-                const command = main_interaction.options.getString('command');
-                const global_config = await GlobalConfig.get();
-                var disabled_commands =
-                    JSON.parse(global_config.disabled_commands) ||
-                    global_config.disabled_commands ||
-                    [];
+        case 'ignoremode':
+            const mode = main_interaction.options.getBoolean('mode');
+            await GlobalConfig.update({
+                valueName: 'ignoreMode',
+                value: mode,
+            });
+            main_interaction
+                .followUp({
+                    content: '✅ Successfully set ignoremode to ' + (mode ? 'on' : 'off'),
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+            break;
 
-                let gotDisabled = false;
-                try {
-                    if (disabled_commands.includes(command)) {
-                        GlobalConfig.update({
-                            value: disabled_commands.filter((c) => c !== command),
-                            valueName: 'disabled_commands',
-                        });
-                    } else {
-                        gotDisabled = true;
-                        disabled_commands.push(command);
-                        GlobalConfig.update({
-                            value: disabled_commands,
-                            valueName: 'disabled_commands',
-                        });
-                    }
+        case 'disable_command':
+            const command = main_interaction.options.getString('command');
+            const global_config = await GlobalConfig.get();
+            var disabled_commands =
+                JSON.parse(global_config.disabled_commands) ||
+                global_config.disabled_commands ||
+                [];
 
-                    main_interaction
-                        .followUp({
-                            content: `✅ Successfully set \`${command}\` to ${
-                                gotDisabled ? 'Disabled' : 'Enabled'
-                            }`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                } catch (err) {
-                    errorhandler({ err });
-                    main_interaction
-                        .followUp({
-                            content: `❌ Something went wrong: ${err}`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                }
-                break;
-
-            case 'export_logs':
-                const type = main_interaction.options.getBoolean('type')
-                    ? '_logs/roll'
-                    : '_debug/roll';
-
-                const date = new Date();
-
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1;
-                month = (month < 10 ? '0' : '') + month;
-                let day = (date.getDate() < 10 ? '0' : '') + date.getDate();
-
-                return main_interaction
-                    .followUp({
-                        files: [new AttachmentBuilder(`./${type}-${year}.${month}.${day}.log`)],
-                    })
-                    .catch((err) => {
-                        return main_interaction
-                            .followUp({
-                                content: `Something went wrong ${err.toString()}`,
-                                ephemeral: true,
-                            })
-                            .catch((err) => {});
+            let gotDisabled = false;
+            try {
+                if (disabled_commands.includes(command)) {
+                    GlobalConfig.update({
+                        value: disabled_commands.filter((c) => c !== command),
+                        valueName: 'disabled_commands',
                     });
-        }
+                } else {
+                    gotDisabled = true;
+                    disabled_commands.push(command);
+                    GlobalConfig.update({
+                        value: disabled_commands,
+                        valueName: 'disabled_commands',
+                    });
+                }
+
+                main_interaction
+                    .followUp({
+                        content: `✅ Successfully set \`${command}\` to ${
+                            gotDisabled ? 'Disabled' : 'Enabled'
+                        }`,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+            } catch (err) {
+                errorhandler({ err });
+                main_interaction
+                    .followUp({
+                        content: `❌ Something went wrong: ${err}`,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+            }
+            break;
+
+        case 'export_logs':
+            const type = main_interaction.options.getBoolean('type') ? '_logs/roll' : '_debug/roll';
+
+            const date = new Date();
+
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = (month < 10 ? '0' : '') + month;
+            let day = (date.getDate() < 10 ? '0' : '') + date.getDate();
+
+            return main_interaction
+                .followUp({
+                    files: [new AttachmentBuilder(`./${type}-${year}.${month}.${day}.log`)],
+                })
+                .catch((err) => {
+                    return main_interaction
+                        .followUp({
+                            content: `Something went wrong ${err.toString()}`,
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
     }
 };
 

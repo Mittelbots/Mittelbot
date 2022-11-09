@@ -15,7 +15,8 @@ const { GuildConfig } = require('../utils/functions/data/Config');
 const defaultCooldown = new Set();
 
 async function messageCreate(message, bot) {
-    if (await Guilds.isBlacklist(message.guild.id)) {
+    const isOnBlacklist = await Guilds.isBlacklist(message.guild.id);
+    if (isOnBlacklist) {
         const guild = bot.guilds.cache.get(message.guild.id);
 
         await bot.users.cache
@@ -33,9 +34,7 @@ async function messageCreate(message, bot) {
         return guild.leave().catch((err) => {});
     }
 
-    if (message.author.bot) return;
-    if (message.channel.type === 'dm') return;
-    if (message.author.system) return;
+    if (message.author.bot || message.channel.type === 'dm' || message.author.system) return;
 
     const setting = await Automod.get(message.guild.id);
 
