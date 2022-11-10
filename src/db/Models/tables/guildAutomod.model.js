@@ -12,7 +12,7 @@ GuildAutomod.init(
         },
         settings: {
             type: DataTypes.JSON,
-            defaultValue: { antispam: { enabled: false, action: '[]' } },
+            defaultValue: { antispam: { enabled: false, action: '' } },
         },
     },
     {

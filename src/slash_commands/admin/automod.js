@@ -3,8 +3,7 @@ const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    var setting = await Automod.get(main_interaction.guild.id);
-
+    let setting = await Automod.get(main_interaction.guild.id);
     setting = JSON.parse(setting);
 
     switch (main_interaction.options.getSubcommand()) {
@@ -23,7 +22,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 );
             } else {
                 const alreadyExists = Automod.checkWhitelist({
-                    setting: JSON.stringify(setting),
+                    setting: setting,
                     role_id: role.id,
                 });
                 if (alreadyExists)
@@ -36,7 +35,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             Automod.update({
                 guild_id: main_interaction.guild.id,
-                value: JSON.stringify(setting),
+                value: setting,
                 type: role,
             })
                 .then((res) => {
@@ -63,19 +62,25 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
 
         case 'antispam':
-            if (!setting.antispam) {
-                setting.antispam = {
-                    enabled: false,
-                    action: '',
-                };
+            const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
+            const antiSpamAction = main_interaction.options.getString('action');
+
+            setting.antispam.action = main_interaction.options.getString('action');
+            switch (true) {
+                case !setting.antispam:
+                    setting.antispam = {
+                        enabled: antiSpamEnabled,
+                        action: antiSpamAction,
+                    };
+                    break;
             }
 
-            (setting.antispam.enabled = JSON.parse(main_interaction.options.getString('enabled'))),
-                (setting.antispam.action = main_interaction.options.getString('action'));
+            setting.antispam.enabled = antiSpamEnabled;
+            setting.antispam.action = antiSpamAction;
 
             Automod.update({
                 guild_id: main_interaction.guild.id,
-                value: JSON.stringify(setting),
+                value: setting,
                 type: setting.antispam.action,
             })
                 .then((res) => {
@@ -103,21 +108,24 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
 
         case 'antiinvite':
-            if (!setting.antiinvite) {
-                setting.antiinvite = {
-                    enabled: false,
-                    action: '',
-                };
+            const antiInviteEnabled = JSON.parse(main_interaction.options.getString('enabled'));
+            const antiInviteAction = main_interaction.options.getString('action');
+
+            switch (true) {
+                case !setting.antiinvite:
+                    setting.antiinvite = {
+                        enabled: antiInviteEnabled,
+                        action: antiInviteAction,
+                    };
+                    break;
             }
 
-            (setting.antiinvite.enabled = JSON.parse(
-                main_interaction.options.getString('enabled')
-            )),
-                (setting.antiinvite.action = main_interaction.options.getString('action'));
+            setting.antiinvite.enabled = antiInviteEnabled;
+            setting.antiinvite.action = antiInviteAction;
 
             Automod.update({
                 guild_id: main_interaction.guild.id,
-                value: JSON.stringify(setting),
+                value: setting,
                 type: setting.antiinvite.action,
             })
                 .then((res) => {
