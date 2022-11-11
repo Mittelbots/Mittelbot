@@ -27,7 +27,7 @@ GuildConfig.init(
         },
         levelsettings: {
             type: DataTypes.JSON,
-            defaultValue: { mode: 'normal', levelup_channel: 'disable' },
+            defaultValue: { mode: 'normal', levelup_channel: 'disable', blacklistchannels: [] },
         },
         joinroles: {
             type: DataTypes.JSON,
