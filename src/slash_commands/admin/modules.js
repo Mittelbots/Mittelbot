@@ -19,9 +19,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const module = main_interaction.options.getString('module');
     const status = main_interaction.options.getString('status');
 
-    const guildConfig = await GuildConfig.get(main_interaction.guild_id);
-
-    disabled_modules = guildConfig.disabled_modules;
+    const guildConfig = await GuildConfig.get(main_interaction.guild.id);
+    disabled_modules = JSON.parse(guildConfig.disabled_modules);
 
     if (disabled_modules.indexOf(module) > -1 && status !== 'activate') {
         return main_interaction
@@ -44,7 +43,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const updated = await GuildConfig.update({
         guild_id: main_interaction.guild.id,
-        value: JSON.stringify(disabled_modules),
+        value: disabled_modules,
         valueName: 'disabled_modules',
     });
 
