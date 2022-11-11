@@ -1,13 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { saveNewTranslateConfig } = require('../../../utils/functions/data/translate');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
+const { GuildConfig } = require('../../../utils/functions/data/Config');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const translate_language = main_interaction.options.getString('language');
-    const translate_target = main_interaction.options.getChannel('target').id;
-    const translate_log_channel = main_interaction.options.getChannel('log').id;
-
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: true,
@@ -24,11 +20,21 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    saveNewTranslateConfig({
-        guild_id: main_interaction.guild.id,
-        translate_log_channel,
+    const translate_language = main_interaction.options.getString('language');
+    const translate_target = main_interaction.options.getChannel('target').id;
+    const translate_log_channel = main_interaction.options.getChannel('log').id;
+
+    const newTranslateConfig = {
+        mode: 'enable',
         translate_language,
         translate_target,
+        translate_log_channel,
+    };
+
+    GuildConfig.update({
+        guild_id: main_interaction.guild.id,
+        value: newTranslateConfig,
+        valueName: 'translate',
     })
         .then(() => {
             return main_interaction
@@ -66,7 +72,7 @@ module.exports.data = new SlashCommandBuilder()
     .addStringOption((option) =>
         option
             .setName('language')
-            .setDescription('Select a language')
+            .setDescription('Select a language to translate to.')
             .addChoices({
                 name: 'auto',
                 value: 'auto',

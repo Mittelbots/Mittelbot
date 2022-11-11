@@ -3,7 +3,6 @@ const { checkActiveCommand } = require('../utils/functions/checkActiveCommand/ch
 const { checkForScam } = require('../utils/checkForScam/checkForScam');
 const { log } = require('../logs');
 const { delay } = require('../utils/functions/delay/delay');
-const { translateMessage } = require('../utils/functions/data/translate');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
@@ -11,6 +10,7 @@ const { Automod } = require('../utils/functions/data/Automod');
 const { Afk } = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../utils/functions/data/Config');
+const Translate = require('../utils/functions/data/translate');
 
 const defaultCooldown = new Set();
 
@@ -109,9 +109,7 @@ async function messageCreate(message, bot) {
         //? NO COMMAND
 
         if (disabled_modules.indexOf('autotranslate') === -1) {
-            translateMessage({
-                message,
-            });
+            new Translate().translate(message);
         }
 
         if (disabled_modules.indexOf('level') === -1) {
