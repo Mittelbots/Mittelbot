@@ -27,7 +27,7 @@ GuildConfig.init(
         },
         levelsettings: {
             type: DataTypes.JSON,
-            defaultValue: { mode: 'normal', levelup_channel: 'disable' },
+            defaultValue: { mode: 'normal', levelup_channel: 'disable', blacklistchannels: [] },
         },
         joinroles: {
             type: DataTypes.JSON,
@@ -45,12 +45,14 @@ GuildConfig.init(
             type: DataTypes.INTEGER,
             defaultValue: 0,
         },
-        translate_target: {
-            type: DataTypes.BIGINT,
-        },
-        translate_language: {
-            type: DataTypes.STRING,
-            defaultValue: 'en',
+        translate: {
+            type: DataTypes.JSON,
+            defaultValue: {
+                mode: 'disable',
+                translate_log_channel: '',
+                translate_language: 'en',
+                translate_target: '',
+            },
         },
         disabled_modules: {
             type: DataTypes.JSON,
@@ -63,9 +65,6 @@ GuildConfig.init(
         deleteCommandAfterUsage: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-        },
-        translate_log_channel: {
-            type: DataTypes.BIGINT,
         },
         logs: {
             type: DataTypes.JSON,

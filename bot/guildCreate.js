@@ -2,7 +2,8 @@ const { errorhandler } = require('../utils/functions/errorhandler/errorhandler')
 const { Guilds } = require('../utils/functions/data/Guilds');
 
 module.exports.guildCreate = async (guild, bot) => {
-    if (Guilds.isBlacklist(guild.id)) {
+    const isOnBlacklist = await Guilds.isBlacklist(guild.id);
+    if (isOnBlacklist) {
         await bot.users.cache
             .get(guild.ownerId)
             .send({

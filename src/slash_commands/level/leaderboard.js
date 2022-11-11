@@ -30,7 +30,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
     2;
     for (let i in leaderboard) {
-        console.log(leaderboard[i]);
         if (leaderboard[i][0] === main_interaction.user.id) {
             if (i <= 10) {
                 isInTopTen = true;

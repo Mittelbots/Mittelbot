@@ -22,17 +22,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const guildConfig = await GuildConfig.get(main_interaction.guild.id);
-    let levelsettings = guildConfig.levelsettings;
+    let levelsettings = JSON.parse(guildConfig.levelsettings);
 
     switch (main_interaction.options.getSubcommand()) {
         case 'mode':
             const mode = main_interaction.options.getString('mode');
-
             levelsettings.mode = mode;
 
             return await GuildConfig.update({
                 guild_id: main_interaction.guild.id,
-                value: JSON.stringify(levelsettings),
+                value: levelsettings,
                 valueName: 'levelsettings',
             })
                 .then((res) => {
@@ -44,21 +43,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .catch((err) => {
                     return main_interaction.reply({
                         content:
-                            '❌ Somethings went wrong while changing your level confit to ' + mode,
+                            '❌ Somethings went wrong while changing your level config to ' + mode,
                         ephemeral: true,
                     });
                 });
 
         case 'blacklistchannels':
-            var channels = [];
+            let channels = [];
             for (let i = 1; i <= 5; i++) {
                 const channel = main_interaction.options.getChannel(`channel${i}`);
                 if (channel) {
                     channels.push(channel);
                 }
             }
-
-            levelsettings = guildConfig.levelsettings;
 
             if (!levelsettings.blacklistchannels) {
                 levelsettings.blacklistchannels = [];
@@ -81,7 +78,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             GuildConfig.update({
                 guild_id: main_interaction.guild.id,
-                value: JSON.stringify(levelsettings),
+                value: levelsettings,
                 valueName: 'levelsettings',
             })
                 .then(() => {
@@ -96,6 +93,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ephemeral: true,
                     });
                 });
+            break;
 
         case 'levelup':
             const type = main_interaction.options.getString('type');
@@ -107,7 +105,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 channel,
             })
                 .then((res) => {
-                    main_interaction
+                    return main_interaction
                         .reply({
                             content: res,
                             ephemeral: true,
@@ -115,7 +113,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 })
                 .catch((err) => {
-                    main_interaction
+                    return main_interaction
                         .reply({
                             content: err,
                             ephemeral: true,
@@ -157,23 +155,9 @@ module.exports.data = new SlashCommandBuilder()
     .addSubcommand((command) =>
         command
             .setName('blacklistchannels')
-            .setDescription(
-                "Select up to 5 channel at once which won't be affected by the leveling system."
-            )
-            .addChannelOption((channel) =>
-                channel.setName('channel1').setDescription('Choose the channel.').setRequired(true)
-            )
-            .addChannelOption((channel) =>
-                channel.setName('channel2').setDescription('Choose the channel.').setRequired(false)
-            )
-            .addChannelOption((channel) =>
-                channel.setName('channel3').setDescription('Choose the channel.').setRequired(false)
-            )
-            .addChannelOption((channel) =>
-                channel.setName('channel4').setDescription('Choose the channel.').setRequired(false)
-            )
-            .addChannelOption((channel) =>
-                channel.setName('channel5').setDescription('Choose the channel.').setRequired(false)
+            .setDescription("Select channels which won't be affected by the leveling system.")
+            .addStringOption((channel) =>
+                channel.setName('channel').setDescription('Chose your channels.').setRequired(true)
             )
             .addStringOption((string) =>
                 string

@@ -105,7 +105,6 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
                     messageEmbed.author.name = isClear ? '' : data[value];
                     break;
                 case 'title':
-                    console.log(messageEmbed.data);
                     messageEmbed.title = isClear ? '' : data[value];
                     break;
                 case 'description':

@@ -1,6 +1,5 @@
 blacklist.json
 autoresponse.json
-_secret/token.json
 src/db/last_backup.json
 mittelbot-db-backup
 
