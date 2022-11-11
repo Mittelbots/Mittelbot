@@ -155,9 +155,7 @@ module.exports.data = new SlashCommandBuilder()
     .addSubcommand((command) =>
         command
             .setName('blacklistchannels')
-            .setDescription(
-                "Select channels which won't be affected by the leveling system."
-            )
+            .setDescription("Select channels which won't be affected by the leveling system.")
             .addStringOption((channel) =>
                 channel.setName('channel').setDescription('Chose your channels.').setRequired(true)
             )
