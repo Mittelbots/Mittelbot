@@ -14,7 +14,10 @@ module.exports.interactionCreate = ({ bot }) => {
     bot.on('interactionCreate', async (main_interaction) => {
         if (main_interaction.user.bot || main_interaction.user.system) return;
         const { ignoreMode } = await GlobalConfig.get();
-        if (ignoreMode && main_interaction.user.id !== config.Bot_Owner_ID) {
+        if (ignoreMode) {
+            if (main_interaction.user.id !== config.Bot_Owner_ID) {
+                return main_interaction.react('🕒').catch((err) => {});
+            }
             return main_interaction
                 .reply({
                     content:

@@ -75,33 +75,27 @@ async function messageCreate(message, bot) {
         let commandfile = bot.commands.get(cmd.slice(prefix.length));
         if (commandfile) {
             //&& blacklist(0, message)
-            if (message.author.id !== config.Bot_Owner_ID) {
-                const isActive = await checkActiveCommand(commandfile.help.name, message.guild.id);
+            const isActive = await checkActiveCommand(commandfile.help.name, message.guild.id);
 
-                if (isActive.global_disabled)
-                    return message.reply(
-                        'This command is currently disabled in all Servers. Join the offical support discord For more informations.'
-                    );
-                if (!isActive.enabled)
-                    return message.reply('This command is disabled in your Guild.');
+            if (isActive.global_disabled)
+                return message.reply(
+                    'This command is currently disabled in all Servers. Join the offical support discord For more informations.'
+                );
+            if (!isActive.enabled) return message.reply('This command is disabled in your Guild.');
 
-                if (defaultCooldown.has(message.author.id)) {
-                    return message.channel
-                        .send(
-                            `You have to wait ${
-                                cooldown / 1000 + 's' || config.defaultCooldown.text
-                            } after each Command.`
-                        )
-                        .catch((err) => {});
-                } else {
-                    defaultCooldown.add(message.author.id);
-                    setTimeout(async () => {
-                        defaultCooldown.delete(message.author.id);
-                    }, cooldown || config.defaultCooldown.format);
-                    return commandfile.run(bot, message, args);
-                }
+            if (defaultCooldown.has(message.author.id)) {
+                return message.channel
+                    .send(
+                        `You have to wait ${
+                            cooldown / 1000 + 's' || config.defaultCooldown.text
+                        } after each Command.`
+                    )
+                    .catch((err) => {});
             } else {
-                //BOT OWNER BYPASS ;)
+                defaultCooldown.add(message.author.id);
+                setTimeout(async () => {
+                    defaultCooldown.delete(message.author.id);
+                }, cooldown || config.defaultCooldown.format);
                 return commandfile.run(bot, message, args);
             }
         } else return;

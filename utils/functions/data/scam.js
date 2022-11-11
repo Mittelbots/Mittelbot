@@ -371,11 +371,12 @@ module.exports.manageScam = async ({ main_interaction }) => {
         const data = main_interaction.customId.split('_');
         const request_id = data[1];
 
-        request = await advancedScamList.findOne({
-            where: {
-                request_id: request_id,
-            },
-        })
+        request = await advancedScamList
+            .findOne({
+                where: {
+                    request_id: request_id,
+                },
+            })
             .then((res) => {
                 return res;
             })
@@ -420,7 +421,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                     .create({
                         link: request.request_link,
                     })
-                    .then(async res => {
+                    .then(async (res) => {
                         await advancedScamList
                             .destroy({
                                 where: {
@@ -434,7 +435,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                                     fatal: true,
                                 });
                             });
-                            return res;
+                        return res;
                     })
                     .then((res) => {
                         for (let i in res) {
