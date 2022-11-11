@@ -371,22 +371,21 @@ module.exports.manageScam = async ({ main_interaction }) => {
         const data = main_interaction.customId.split('_');
         const request_id = data[1];
 
-        var request = scamList[0].scamList.find((x) => x.request_id === request_id);
-
-        if (!request) {
-            request = await database
-                .query(`SELECT * FROM advancedScamList WHERE request_id = ?`, [request_id])
-                .then((res) => {
-                    return res[0];
-                })
-                .catch((err) => {
-                    reject('❌ Error while getting data from the database!');
-                    return errorhandler({
-                        err,
-                        fatal: true,
-                    });
+        request = await advancedScamList.findOne({
+            where: {
+                request_id: request_id,
+            },
+        })
+            .then((res) => {
+                return res;
+            })
+            .catch((err) => {
+                reject('❌ Error while getting data from the database!');
+                return errorhandler({
+                    err,
+                    fatal: true,
                 });
-        }
+            });
 
         if (!request || !request.length === 0) {
             reject('❌ This request does not exist!');
@@ -403,12 +402,11 @@ module.exports.manageScam = async ({ main_interaction }) => {
 
         if (main_interaction.customId.search('scamAccept') !== -1) {
             if (request.request_type === 'DELETE') {
-                await database
-                    .query(`DELETE FROM advancedScamList WHERE link = ?`, [request.request_link])
-                    .then(() => {
-                        scamList[0].scamList = scamList[0].scamList.filter(
-                            (x) => x.request_link !== request.request_link
-                        );
+                await advancedScamList
+                    .destroy({
+                        where: {
+                            link: request.request_link,
+                        },
                     })
                     .catch((err) => {
                         reject(`❌ Error while deleting the link from the list`);
@@ -418,11 +416,26 @@ module.exports.manageScam = async ({ main_interaction }) => {
                         });
                     });
             } else {
-                await database
-                    .query(
-                        `INSERT IGNORE INTO advancedScamList (link) VALUES (?); SELECT * FROM advancedScamList WHERE request_link = ?; DELETE FROM advancedScamList WHERE request_link = ?`,
-                        [request.request_link, request.request_link, request.request_link]
-                    )
+                await advancedScamList
+                    .create({
+                        link: request.request_link,
+                    })
+                    .then(async res => {
+                        await advancedScamList
+                            .destroy({
+                                where: {
+                                    request_link: request.request_link,
+                                },
+                            })
+                            .catch((err) => {
+                                reject(`❌ Error while deleting the link from the list`);
+                                return errorhandler({
+                                    err,
+                                    fatal: true,
+                                });
+                            });
+                            return res;
+                    })
                     .then((res) => {
                         for (let i in res) {
                             try {

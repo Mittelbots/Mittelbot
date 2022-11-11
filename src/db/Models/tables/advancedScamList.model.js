@@ -24,10 +24,10 @@ AdvancedScamList.init(
             type: DataTypes.STRING,
         },
         request_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
         },
         request_message: {
-            type: DataTypes.STRING,
+            type: DataTypes.JSON,
         },
     },
     {
