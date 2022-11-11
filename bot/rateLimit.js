@@ -11,6 +11,11 @@ module.exports.rateLimit = async ({ rateLimitData }) => {
     GlobalConfig.update({
         valueName: 'ignoreMode',
         value: 1,
+    }).catch((err) => {
+        errorhandler({ 
+            err,
+            message: 'Error while updating the ignoremode.',
+        });
     });
 
     return stopBot();
