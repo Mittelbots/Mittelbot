@@ -36,9 +36,7 @@ async function messageCreate(message, bot) {
 
     if (message.author.bot || message.channel.type === 'dm' || message.author.system) return;
 
-    const setting = await Automod.get(message.guild.id);
-
-    const isSpam = await antiSpam(setting, message, bot);
+    const isSpam = await antiSpam(message, bot);
     if (isSpam) {
         errorhandler({
             fatal: false,
