@@ -12,7 +12,7 @@ module.exports.rateLimit = async ({ rateLimitData }) => {
         valueName: 'ignoreMode',
         value: 1,
     }).catch((err) => {
-        errorhandler({ 
+        errorhandler({
             err,
             message: 'Error while updating the ignoremode.',
         });

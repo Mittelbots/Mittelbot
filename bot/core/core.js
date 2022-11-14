@@ -124,7 +124,7 @@ module.exports.acceptBotInteraction = (bot) => {
     });
 
     bot.on('debug', (err) => {
-        if(err.substr(6, 3) === '429') {
+        if (err.substr(6, 3) === '429') {
             rateLimit({ rateLimitData: err });
         }
     });
