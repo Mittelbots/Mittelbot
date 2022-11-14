@@ -70,24 +70,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'disable_command':
             const command = main_interaction.options.getString('command');
             const global_config = await GlobalConfig.get();
-            var disabled_commands =
-                JSON.parse(global_config.disabled_commands) ||
-                global_config.disabled_commands ||
-                [];
-
+            const disabled_commands = JSON.parse(global_config.disabledCommands);
             let gotDisabled = false;
             try {
                 if (disabled_commands.includes(command)) {
                     GlobalConfig.update({
                         value: disabled_commands.filter((c) => c !== command),
-                        valueName: 'disabled_commands',
+                        valueName: 'disabledCommands',
                     });
                 } else {
                     gotDisabled = true;
                     disabled_commands.push(command);
                     GlobalConfig.update({
                         value: disabled_commands,
-                        valueName: 'disabled_commands',
+                        valueName: 'disabledCommands',
                     });
                 }
 

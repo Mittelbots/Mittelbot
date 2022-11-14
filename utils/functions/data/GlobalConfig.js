@@ -9,7 +9,7 @@ class GlobalConfig {
             await globalConfig
                 .findAll()
                 .then((data) => {
-                    return resolve(data);
+                    return resolve(data[0]);
                 })
                 .catch((err) => {
                     errorhandler({ err, fatal: true });

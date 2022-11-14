@@ -8,8 +8,8 @@ const { warnUser } = require('../functions/moderations/warnUser');
 var spamCheck = [];
 var userAction = [];
 
-module.exports.antiSpam = async (setting, message, bot) => {
-    if (!setting || setting.length === 0) return false;
+module.exports.antiSpam = async (message, bot) => {
+    const antiSpamSetting = JSON.parse(Automod.get(message.guild.id));
 
     const isWhitelist = Automod.checkWhitelist({
         setting,
@@ -17,12 +17,11 @@ module.exports.antiSpam = async (setting, message, bot) => {
     });
     if (isWhitelist) return false;
 
-    const antispamsetting = setting.antispam;
-    if (!antispamsetting) return false;
-    if (!antispamsetting.enabled) return false;
+    if (!antiSpamSetting) return false;
+    if (!antiSpamSetting.enabled) return false;
 
-    var user;
-    var isSpam = false;
+    let user;
+    let isSpam = false;
     //? CHECK IF USER EXISTS
     user = spamCheck.find(
         (user) => user.user_id === message.author.id && user.guild_id === message.guild.id
@@ -30,14 +29,14 @@ module.exports.antiSpam = async (setting, message, bot) => {
 
     //? IF USER EXISTS
     if (user) {
-        var first_message = user.first_message;
+        const first_message = user.first_message;
 
-        var current_time = new Date().getTime();
+        const current_time = new Date().getTime();
 
         user.messages.push(message);
 
-        var diff = first_message - current_time;
-        var secondsBetween = Math.abs(diff / 1000);
+        const diff = first_message - current_time;
+        const secondsBetween = Math.abs(diff / 1000);
 
         if (user.messages.length >= 6 || (user.messages.length >= 4 && secondsBetween <= 4)) {
             if (secondsBetween <= 4) {
@@ -49,13 +48,13 @@ module.exports.antiSpam = async (setting, message, bot) => {
                             (u.guild_id === user.guild_id) & (u.action !== 'delete')
                     ).length === 0;
 
-                if (antispamsetting.action && alreadyPunished) {
+                if (antiSpamSetting.action && alreadyPunished) {
                     const obj = {
                         guild_id: message.guild.id,
                         user_id: message.author.id,
                         action: '',
                     };
-                    switch (antispamsetting.action) {
+                    switch (antiSpamSetting.action) {
                         case 'kick':
                             obj.action = 'kick';
                             kickUser({

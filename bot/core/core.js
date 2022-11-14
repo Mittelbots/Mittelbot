@@ -122,6 +122,12 @@ module.exports.acceptBotInteraction = (bot) => {
     bot.on('rateLimit', (rateLimitData) => {
         rateLimit({ rateLimitData });
     });
+
+    bot.on('debug', (err) => {
+        if (err.substr(6, 3) === '429') {
+            rateLimit({ rateLimitData: err });
+        }
+    });
 };
 
 module.exports.fetchCache = async (bot) => {
