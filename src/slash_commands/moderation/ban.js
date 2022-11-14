@@ -39,7 +39,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
         bot,
         type: 'ban',
     });
-
     if (check)
         return main_interaction
             .followUp({
