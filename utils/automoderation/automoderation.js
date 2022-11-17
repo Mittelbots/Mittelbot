@@ -11,7 +11,7 @@ var userAction = [];
 module.exports.antiSpam = async (message, bot) => {
     const setting = JSON.parse(await Automod.get(message.guild.id));
     const antiSpamSetting = setting.antispam;
-    
+
     const isWhitelist = Automod.checkWhitelist({
         setting: antiSpamSetting,
         user_roles: message.member.roles.cache,
