@@ -9,10 +9,11 @@ var spamCheck = [];
 var userAction = [];
 
 module.exports.antiSpam = async (message, bot) => {
-    const antiSpamSetting = JSON.parse(Automod.get(message.guild.id));
+    const setting = JSON.parse(await Automod.get(message.guild.id));
+    const antiSpamSetting = setting.antispam;
 
     const isWhitelist = Automod.checkWhitelist({
-        setting,
+        setting: antiSpamSetting,
         user_roles: message.member.roles.cache,
     });
     if (isWhitelist) return false;
@@ -169,15 +170,17 @@ module.exports.antiSpam = async (message, bot) => {
     return isSpam;
 };
 
-module.exports.antiInvite = async (setting, message, bot) => {
-    if (!setting || setting.length === 0) return false;
+module.exports.antiInvite = async (message, bot) => {
+    const settings = JSON.parse(await Automod.get(message.guild.id));
+    const antiInviteSetting = settings.antiinvite;
+    if (!antiInviteSetting || antiInviteSetting.length === 0) return false;
     const isWhitelist = Automod.checkWhitelist({
-        setting,
+        setting: antiInviteSetting,
         user_roles: message.member.roles.cache,
     });
     if (isWhitelist) return false;
 
-    const antiinvitesetting = setting.antiinvite;
+    const antiinvitesetting = antiInviteSetting.antiinvite;
     if (!antiinvitesetting) return false;
     if (!antiinvitesetting.enabled) return false;
 

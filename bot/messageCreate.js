@@ -45,7 +45,7 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    const isInvite = await antiInvite(setting, message, bot);
+    const isInvite = await antiInvite(message, bot);
     if (isInvite) {
         errorhandler({
             fatal: false,
