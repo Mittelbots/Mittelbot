@@ -54,7 +54,7 @@
         "passport": "^0.6.0",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.12.0",
-        "sequelize": "^6.25.6",
+        "sequelize": "^6.25.7",
         "simple-node-logger": "^21.8.12",
         "simple-youtube-api": "^5.2.1",
         "translatte": "^3.0.1",
