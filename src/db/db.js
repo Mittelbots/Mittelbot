@@ -10,6 +10,7 @@ const database = new Sequelize(
     process.env.DB_PASSWORD,
     {
         host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
         dialect: 'mysql',
         logging: (...msg) => {
             if (msg[1].showWarnings) {
@@ -35,43 +36,39 @@ const database = new Sequelize(
     }
 );
 
-database.init = async () => {
+database.init = () => {
     return new Promise(async (resolve, reject) => {
-        try {
-            const dir = path.resolve('src/db/Models/tables/');
-            await database
-                .authenticate()
-                .then(() => {
-                    fs.readdirSync(dir).forEach(async (file) => {
-                        console.log('Loading model: ' + file);
-                        const model = require(path.join(dir, file));
-                        new model();
-                    });
-                })
-                .catch((err) => {
-                    errorhandler({
-                        message: 'There was an error when creating models: ' + err.toString(),
-                        fatal: true,
-                    });
+        const dir = path.resolve('src/db/Models/tables/');
+        await database
+            .authenticate()
+            .then(() => {
+                fs.readdirSync(dir).forEach((file) => {
+                    console.log('Loading model: ' + file);
+                    require(path.join(dir, file));
                 });
-            await database.sync({
-                alter: true,
+            })
+            .catch((err) => {
+                reject(err);
+                errorhandler({
+                    message: 'There was an error when creating models: ' + err.toString(),
+                    fatal: true,
+                });
             });
+        await database.sync({
+            alter: true,
+        });
 
-            const data_mg_path = path.resolve('src/db/data_migration/');
-            fs.readdirSync(data_mg_path).forEach(async (file) => {
-                if (!file.includes('.default')) return;
-                console.log('Inserting default data from: ' + file);
-                require(path.join(data_mg_path, file));
-            });
-            resolve(true);
-        } catch (err) {
-            reject(err);
-        }
+        const data_mg_path = path.resolve('src/db/data_migration/');
+        fs.readdirSync(data_mg_path).forEach((file) => {
+            if (!file.includes('.default')) return;
+            console.log('Loading data migration: ' + file);
+            require(path.join(data_mg_path, file));
+        });
+        resolve(true);
     });
 };
 
-database.afterSync(async (connection) => {
+database.afterSync((connection) => {
     console.log(`Successfully synced ${connection.name.plural}.`);
 });
 

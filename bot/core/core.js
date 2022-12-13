@@ -115,8 +115,11 @@ module.exports.acceptBotInteraction = (bot) => {
         });
     });
 
-    interactionCreate({
-        bot,
+    bot.on('interactionCreate', (main_interaction) => {
+        interactionCreate({
+            main_interaction,
+            bot
+        });
     });
 
     bot.on('rateLimit', (rateLimitData) => {

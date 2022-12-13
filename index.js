@@ -29,7 +29,6 @@ const bot = new Client({
         MessageManager: 10,
         PresenceManager: 10,
         GuildMemberManager: 10,
-        // Add more class names here
     }),
     shards: 'auto',
 });

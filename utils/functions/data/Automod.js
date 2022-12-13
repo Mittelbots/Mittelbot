@@ -29,8 +29,8 @@ class Automod {
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
             const guild = await Guilds.get(guild_id);
-
-            return resolve((await guild.getAutomod()).settings);
+            const { settings } = await guild.getAutomod();
+            return settings ? resolve(settings) : resolve([]);
         });
     }
 

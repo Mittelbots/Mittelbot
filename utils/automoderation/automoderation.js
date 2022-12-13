@@ -9,7 +9,7 @@ var spamCheck = [];
 var userAction = [];
 
 module.exports.antiSpam = async (message, bot) => {
-    const setting = JSON.parse(await Automod.get(message.guild.id));
+    const setting = await Automod.get(message.guild.id);
     const antiSpamSetting = setting.antispam;
 
     const isWhitelist = Automod.checkWhitelist({
@@ -171,7 +171,7 @@ module.exports.antiSpam = async (message, bot) => {
 };
 
 module.exports.antiInvite = async (message, bot) => {
-    const settings = JSON.parse(await Automod.get(message.guild.id));
+    const settings = await Automod.get(message.guild.id);
     const antiInviteSetting = settings.antiinvite;
     if (!antiInviteSetting || antiInviteSetting.length === 0) return false;
     const isWhitelist = Automod.checkWhitelist({

@@ -5,13 +5,11 @@
     "main": "shard.js",
     "private": true,
     "scripts": {
-        "dev": "nodemon index.js",
-        "pm2prod": "pm2 start shard.js --name Mittelbot  && pm2 logs",
-        "pm2restart": "pm2 stop Mittelbot && pm2 delete Mittelbot && pm2 start shard.js --watch --name Mittelbot  && pm2 logs",
-        "pm2restartprod": "pm2 stop Mittelbot && pm2 delete Mittelbot && pm2 start shard.js --name Mittelbot  && pm2 logs",
-        "kill": "pm2 stop Mittelbot && pm2 delete Mittelbot",
-        "install_bot": "mkdir _logs && npm i",
-        "format": "prettier --write ."
+        "start": "docker compose up -d && docker ps", 
+        "stop": "docker compose down",
+        "restart": "npm run stop && npm run start",
+        "format": "prettier --write .",
+        "check": "prettier --check ."
     },
     "nodemonConfig": {
         "ignore": [
@@ -19,7 +17,7 @@
         ]
     },
     "author": "BlackDayz",
-    "license": "ISC",
+    "license": "GLP-3.0",
     "dependencies": {
         "@discordjs/rest": "^1.2.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
