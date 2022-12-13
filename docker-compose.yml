@@ -1,44 +1,44 @@
 version: '3.9'
 
 volumes:
-  db_data:
+    db_data:
 
 services:
-  bot:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    depends_on:
-      - mysql
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-    ports:
-      - 5000:5000
+    bot:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        depends_on:
+            - mysql
+        env_file:
+            - .env
+        volumes:
+            - .:/app
+        ports:
+            - 5000:5000
 
-  mysql:
-    hostname: mysql
-    image: mysql:5.7
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_ROOT_HOST: mysql
-      MYSQL_DATABASE: mittelbot
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_PORT: 3306
-      MYSQL_HOSTNAME: mysql
-    env_file:
-      - .env
-    volumes:
-      - db_data:/var/lib/mysql
-    ports:
-      - 3307:3306
-    restart: unless-stopped
-    stdin_open: true
-    healthcheck:
-      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
-      timeout: 5s
-      retries: 10
+    mysql:
+        hostname: mysql
+        image: mysql:5.7
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_HOST: mysql
+            MYSQL_DATABASE: mittelbot
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            MYSQL_PORT: 3306
+            MYSQL_HOSTNAME: mysql
+        env_file:
+            - .env
+        volumes:
+            - db_data:/var/lib/mysql
+        ports:
+            - 3307:3306
+        restart: unless-stopped
+        stdin_open: true
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            timeout: 5s
+            retries: 10

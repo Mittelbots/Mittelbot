@@ -17,7 +17,6 @@ Some part of the code are old. So don't be scared of some mess :)
 That's great! Contact me on Discord (https://mittelbot.blackdayz.de/support).
 Or open issue if you want :)
 
-
 # **Docker**
 
 1. Add File "Dockerfile.prod" to your project root
@@ -47,9 +46,8 @@ CMD [ "npm", "start" ]
 
 ```yml
 services:
-  bot:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
-
+    bot:
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
 ```

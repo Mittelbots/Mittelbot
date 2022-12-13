@@ -118,7 +118,7 @@ module.exports.acceptBotInteraction = (bot) => {
     bot.on('interactionCreate', (main_interaction) => {
         interactionCreate({
             main_interaction,
-            bot
+            bot,
         });
     });
 
