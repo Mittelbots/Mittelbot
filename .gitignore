@@ -15,3 +15,6 @@ _debug/*
 .env
 .env.prod
 .env.local
+
+Dockerfile.prod
+docker-compose.override.yml
