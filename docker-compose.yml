@@ -1,0 +1,42 @@
+version: '3.9'
+
+volumes:
+    mysql:
+
+services:
+    bot:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        links:
+            - mysql
+        env_file:
+            - .env
+        volumes:
+            - .:/app
+        ports:
+            - 5000:5000
+
+    mysql:
+        image: mysql:5.7
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=mittelbot
+            - MYSQL_USER=mittelbot
+            - MYSQL_PASSWORD=root
+            - MYSQL_PORT=3306
+        env_file:
+            - .env
+        volumes:
+            - mysql:/var/lib/mysql
+        ports:
+            - '3307:3306'
+        restart: unless-stopped
+        stdin_open: true
+        command:
+            ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            timeout: 5s
+            retries: 10

@@ -55,7 +55,8 @@ async function messageCreate(message, bot) {
     }
 
     const guildConfig = await GuildConfig.get(message.guild.id);
-    disabled_modules = JSON.parse(guildConfig.disabled_modules);
+
+    disabled_modules = guildConfig.disabled_modules;
 
     if (disabled_modules.indexOf('scamdetection') === -1) {
         const isScam = await checkForScam(message, bot, config, log);

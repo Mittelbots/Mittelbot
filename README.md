@@ -16,3 +16,38 @@ Some part of the code are old. So don't be scared of some mess :)
 
 That's great! Contact me on Discord (https://mittelbot.blackdayz.de/support).
 Or open issue if you want :)
+
+# **Docker**
+
+1. Add File "Dockerfile.prod" to your project root
+
+2. Add File "docker-compose.override.yml" to your project root
+
+3. Insert this code into the Dockerfile.prod
+
+```Dockerfile
+
+FROM node:18.8
+
+WORKDIR /usr/src/app
+VOLUME [ "/usr/src/app" ]
+COPY . .
+
+RUN npm install -g npm@9.1.3
+RUN npm install --omit=dev
+
+EXPOSE 5000
+
+CMD [ "npm", "start" ]
+
+```
+
+4. Insert this code into the docker-compose.override.yml
+
+```yml
+services:
+    bot:
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
+```

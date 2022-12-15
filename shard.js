@@ -12,4 +12,6 @@ if (!JSON.parse(process.env.DEBUG)) {
     });
 
     manager.spawn();
+} else {
+    require('./index.js');
 }

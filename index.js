@@ -29,7 +29,6 @@ const bot = new Client({
         MessageManager: 10,
         PresenceManager: 10,
         GuildMemberManager: 10,
-        // Add more class names here
     }),
     shards: 'auto',
 });
@@ -38,6 +37,9 @@ bot.setMaxListeners(10);
 bot.commands = new Collection();
 
 bot.version = version;
+bot.owner = config.Bot_Owner;
+
+bot.config = config;
 
 if (!JSON.parse(process.env.DEBUG)) {
     setTimeout(() => {
@@ -61,7 +63,6 @@ bot.once('ready', async () => {
                 fatal: true,
             });
             await delay(10000);
-            //await restartBot();
         });
 
     setInterval(() => {

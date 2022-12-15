@@ -5,6 +5,10 @@ class GlobalConfig extends Model {}
 
 GlobalConfig.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+        },
         ignoreMode: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
@@ -20,6 +24,12 @@ GlobalConfig.init(
         timestamps: false,
     }
 );
+
+GlobalConfig.create({
+    id: 1,
+    ignoreMode: false,
+    disabledCommands: [],
+});
 
 const globalConfig = GlobalConfig;
 module.exports = globalConfig;

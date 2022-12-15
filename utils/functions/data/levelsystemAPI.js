@@ -175,7 +175,7 @@ class Levelsystem {
         return new Promise(async (resolve) => {
             const guildConfig = await GuildConfig.get(guild_id);
 
-            return resolve(JSON.parse(guildConfig.levelsettings));
+            return resolve(guildConfig.levelsettings);
         });
     }
 
@@ -482,7 +482,7 @@ class Levelsystem {
             let blacklistchannels;
 
             const guildConfig = await GuildConfig.get(message.guild.id);
-            const levelsettings = JSON.parse(guildConfig.levelsettings);
+            const levelsettings = guildConfig.levelsettings;
             if (levelsettings.length > 0) {
                 blacklistchannels = levelsettings.blacklistchannels;
             }

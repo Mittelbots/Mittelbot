@@ -4,8 +4,7 @@ const { GlobalConfig } = require('../data/GlobalConfig');
 module.exports.checkActiveCommand = async (command_name, guild_id) => {
     const global_config = await GlobalConfig.get();
 
-    const global_disabled =
-        global_config.disabled_commands || global_config.disabled_commands || [];
+    const global_disabled = global_config.disabled_commands || [];
 
     if (global_disabled.includes(command_name)) {
         return {
