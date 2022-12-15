@@ -48,16 +48,16 @@ CMD [ "node", "shard.js" ]
 
 ```yml
 services:
-  bot:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
+    bot:
+        build:
+            context: .
+            dockerfile: Dockerfile.prod
 
-  mysql:
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=mittelbot
-      - MYSQL_USER=xxxx
-      - MYSQL_PASSWORD=xxxxx
-      - MYSQL_PORT=3306
+    mysql:
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=mittelbot
+            - MYSQL_USER=xxxx
+            - MYSQL_PASSWORD=xxxxx
+            - MYSQL_PORT=3306
 ```
