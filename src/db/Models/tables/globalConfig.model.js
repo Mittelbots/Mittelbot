@@ -29,7 +29,7 @@ GlobalConfig.create({
     id: 1,
     ignoreMode: false,
     disabledCommands: [],
-});
+}).catch((err) => {});
 
 const globalConfig = GlobalConfig;
 module.exports = globalConfig;

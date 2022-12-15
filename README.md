@@ -29,16 +29,18 @@ Or open issue if you want :)
 
 FROM node:18.8
 
-WORKDIR /usr/src/app
-VOLUME [ "/usr/src/app" ]
-COPY . .
 
-RUN npm install -g npm@9.1.3
+WORKDIR /app
+
+COPY package.json ./
+
 RUN npm install --omit=dev
+
+COPY . .
 
 EXPOSE 5000
 
-CMD [ "npm", "start" ]
+CMD [ "node", "shard.js" ]
 
 ```
 
@@ -50,4 +52,12 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.prod
+
+    mysql:
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=mittelbot
+            - MYSQL_USER=xxxx
+            - MYSQL_PASSWORD=xxxxx
+            - MYSQL_PORT=3306
 ```

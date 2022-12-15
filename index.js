@@ -41,16 +41,6 @@ bot.owner = config.Bot_Owner;
 
 bot.config = config;
 
-if (!JSON.parse(process.env.DEBUG)) {
-    setTimeout(() => {
-        db_backup();
-    }, 60000);
-
-    setTimeout(() => {
-        db_backup();
-    }, 86400000); // 24h
-}
-
 bot.once('ready', async () => {
     await startBot(bot)
         .then(() => {

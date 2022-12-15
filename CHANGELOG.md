@@ -15,6 +15,22 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.50.4**
+
+### Added things:
+
+    - /pride command
+
+### Bug fixes & other changes:
+
+    - core fixes
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.50.3**
 
 ### Added things:
