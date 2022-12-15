@@ -31,10 +31,11 @@ services:
         volumes:
             - mysql:/var/lib/mysql
         ports:
-            - "3307:3306"
+            - '3307:3306'
         restart: unless-stopped
         stdin_open: true
-        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+        command:
+            ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
         healthcheck:
             test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
             timeout: 5s
