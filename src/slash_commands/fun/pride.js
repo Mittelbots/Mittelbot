@@ -1,42 +1,95 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
+const genders = require('../../../utils/data/pride/gender/')
+const sexualities = require('../../../utils/data/pride/sexualities/')
+
 module.exports.run = async ({ main_interaction, bot }) => {
-    const options = main_interaction.options.getString('options');
 
-    const newEmbed = new EmbedBuilder()
-        .setColor('#0099ff')
+    const type = main_interaction.options.getString('type');
+    const newEmbed = new EmbedBuilder();
 
-        .setImage(json.url)
-        .setTimestamp();
+    if(type === 'gender') {
+        const getRandomGender = () => {
+            return genders[Math.floor(Math.random() * genders.length)];
+        }
 
-    const API_URL = 'https://pride-api.herokuapp.com/api/';
+        const newGender = getRandomGender();
 
-    const response = await fetch(API_URL + options);
-    const json = await response.json();
+        newEmbed.setTitle(`Gender: ${newGender.name}`);
+        newEmbed.setDescription(newGender.description);
+        newEmbed.addFields({
+            name: 'Different From', 
+            value: newGender.differentFrom.join(', ')
+        });
 
-    console.log(json);
+        newEmbed.addFields({
+            name: 'Try again by clicking',
+            value: `</pride:${main_interaction.commandId}>`
+        });
+        newEmbed.setImage(newGender.flag);
+    }
+    else if(type === 'sexuality') {
 
-    if (!json) return main_interaction.reply({ content: 'Something went wrong!', ephemeral: true });
+        const getRandomSexuality = () => {
+            return sexualities[Math.floor(Math.random() * sexualities.length)];
+        }
 
-    switch (options) {
-        case 'gender':
+        const newSexuality = getRandomSexuality();
+
+        newEmbed.setTitle(`Sexuality: ${newSexuality.name}`);
+        newEmbed.setDescription(newSexuality.description);
+        newEmbed.addFields(
+            {
+                name: 'Genders:', 
+                value: newSexuality.gender.join(', ')
+            },
+            {
+                name: 'Attracted to:', 
+                value: newSexuality.attractedTo.join(', ')
+            },
+            {
+                name: 'Attraction Type:', 
+                value: newSexuality.attractionType
+            },
+            {
+                name: 'Different From:',
+                value: newSexuality.differentFrom.join(', ')
+            },
+            {
+                name: 'Try again by clicking',
+                value: `</pride:${main_interaction.commandId}>`
+            }
+        );
+        newEmbed.setImage(newSexuality.flag);
     }
 
+    
     return main_interaction.reply({
         embeds: [newEmbed],
-    });
+    }).catch(err => {
+        return main_interaction.reply({
+            content: 'Something went wrong!',
+            ephemeral: true,
+        }).catch(err => {})
+    })
 };
 
 module.exports.data = new SlashCommandBuilder()
     .setName('pride')
-    .setDescription('Get informations about the super cool pride family')
-    .addStringOption((option) =>
+    .setDescription('Get information about a random gender')
+    .addStringOption(option =>
         option
-            .setName('options')
-            .setDescription('Select an option to get more information')
+            .setName('type')
+            .setDescription('Select a type.')
             .setRequired(true)
             .addChoices({
-                name: 'Get all genders',
-                value: 'gender',
+                name: 'Genders',
+                value: 'gender'
+            })
+            .addChoices({
+                name: 'Sexualities',
+                value: 'sexuality'
             })
     );
+                
+            

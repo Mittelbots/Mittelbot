@@ -7,6 +7,7 @@ const { manageScam } = require('../utils/functions/data/scam');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Afk } = require('../utils/functions/data/Afk');
 const { GlobalConfig } = require('../utils/functions/data/GlobalConfig');
+const pride = require('../src/slash_commands/fun/pride');
 
 const defaultCooldown = new Set();
 
@@ -65,6 +66,14 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                 manageNewWelcomeSetting({
                     main_interaction,
                 });
+                break;
+            case 'pride_forward':
+                await main_interaction.deferUpdate();
+                pride.functions.manageButtons(main_interaction);
+                break;
+            case 'pride_backward':
+                await main_interaction.deferUpdate();
+                pride.functions.manageButtons(main_interaction);
                 break;
         }
 
