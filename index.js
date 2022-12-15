@@ -37,6 +37,9 @@ bot.setMaxListeners(10);
 bot.commands = new Collection();
 
 bot.version = version;
+bot.owner = config.Bot_Owner;
+
+bot.config = config;
 
 if (!JSON.parse(process.env.DEBUG)) {
     setTimeout(() => {
@@ -60,7 +63,6 @@ bot.once('ready', async () => {
                 fatal: true,
             });
             await delay(10000);
-            //await restartBot();
         });
 
     setInterval(() => {
