@@ -15,7 +15,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'purge',
         'warn',
     ];
-    const fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny', 'pride'];
+    const fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny', 'pride', 'stromberg'];
     const admin = [
         'modules',
         'scam',
