@@ -31,7 +31,7 @@
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "discord-bettermarkdown": "^1.2.0",
-        "discord.js": "^14.6.0",
+        "discord.js": "^14.7.1",
         "dotenv": "^16.0.3",
         "ejs": "^3.1.8",
         "express": "^4.18.2",
