@@ -23,7 +23,7 @@
         {
             "text": "with {memberCount} members",
             "showMemberCount": true
-        }     
+        }
     ],
     "type": "Playing",
     "showLinesOfCode": false,

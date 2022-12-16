@@ -12,31 +12,36 @@ module.exports.setActivity = (bot, restart = false) => {
         });
     }
 
-    const settings = fs.readFileSync(`src/assets/json/_config/activity_${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}.json`, 'utf8');
+    const settings = fs.readFileSync(
+        `src/assets/json/_config/activity_${
+            process.env.NODE_ENV === 'production' ? 'prod' : 'dev'
+        }.json`,
+        'utf8'
+    );
     const texts = JSON.parse(settings).texts;
     const activity = texts[Math.floor(Math.random() * texts.length)];
 
-
-    if(activity.showGuildCount) {
+    if (activity.showGuildCount) {
         const guildCount = bot.guilds.cache.size;
         activity.text = activity.text.replace('{guildCount}', guildCount);
     }
 
-    if(activity.showMemberCount) {
-        const memberCount = bot.guilds.cache.map((guild) => guild.memberCount).reduce((a, b) => a + b, 0);
+    if (activity.showMemberCount) {
+        const memberCount = bot.guilds.cache
+            .map((guild) => guild.memberCount)
+            .reduce((a, b) => a + b, 0);
         activity.text = activity.text.replace('{memberCount}', memberCount);
     }
 
-    if(activity.showLinesOfCode) {
+    if (activity.showLinesOfCode) {
         const loc = getLinesOfCode(async (cb) => {
-            return await cb || 0;
+            return (await cb) || 0;
         });
         activity.text = activity.text.replace('{loc}', loc);
     }
 
     bot.user.setActivity({
         name: activity.text,
-        type: (activity.type) ? ActivityType[activity.type] : ActivityType.Playing,
+        type: activity.type ? ActivityType[activity.type] : ActivityType.Playing,
     });
-
 };
