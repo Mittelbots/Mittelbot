@@ -2,7 +2,7 @@ const axios = require('axios');
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 
-const url = 'https://stromberg-api.de/api/'
+const url = 'https://stromberg-api.de/api/';
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getString('type');
@@ -10,7 +10,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const newEmbed = new EmbedBuilder();
 
     if (type === 'quotes') {
-        const response = await axios.get(url+'quotes/random', {
+        const response = await axios.get(url + 'quotes/random', {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -73,7 +73,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             });
         }
     } else if (type === 'characters') {
-        const response = await axios.get(url+'characters/random');
+        const response = await axios.get(url + 'characters/random');
         const character = response.data;
 
         if (!character.name) {
