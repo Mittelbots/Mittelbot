@@ -19,7 +19,7 @@
     "author": "BlackDayz",
     "license": "GLP-3.0",
     "dependencies": {
-        "@discordjs/rest": "^1.2.0",
+        "@discordjs/rest": "^1.5.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
         "@napi-rs/canvas": "^0.1.30",
         "@twurple/api": "^5.2.7",
