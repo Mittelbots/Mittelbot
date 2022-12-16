@@ -1,4 +1,31 @@
 {
-    "name": "",
-    "type": "PLAYING"
+    "texts": [
+        {
+            "text": "Struggeling with Beta stuff"
+        },
+        {
+            "text": "with new command /pride on {guildCount} servers",
+            "showGuildCount": true
+        },
+        {
+            "text": "Have a beautiful christmas {memberCount} members!!!",
+            "showMemberCount": true
+        },
+        {
+            "text": "with {loc} lines of code",
+            "showLinesOfCode": true
+        },
+        {
+            "text": "with {guildCount} guilds",
+            "showGuildCount": true
+        },
+        {
+            "text": "with {memberCount} members",
+            "showMemberCount": true
+        }
+    ],
+    "type": "Playing",
+    "showLinesOfCode": false,
+    "showMemberCount": false,
+    "showGuildCount": false
 }
