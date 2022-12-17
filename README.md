@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=auto height=200px src="https://blackdayz.de/img/logo" alt="Project logo"></a>
+ <img width=250px src="./.github/logo.png" alt="Project logo"></a>
 </p>
 
 <h1 align="center">Mittelbot</h1>
@@ -55,7 +55,7 @@ services:
 
     mysql:
         environment:
-            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD=xxxx
             - MYSQL_DATABASE=mittelbot
             - MYSQL_USER=xxxx
             - MYSQL_PASSWORD=xxxxx
