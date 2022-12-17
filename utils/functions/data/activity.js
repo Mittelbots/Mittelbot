@@ -2,9 +2,8 @@ const { getLinesOfCode } = require('../getLinesOfCode/getLinesOfCode');
 const { ActivityType } = require('discord.js');
 
 const fs = require('fs');
-const { errorhandler } = require('../errorhandler/errorhandler');
 
-module.exports.setActivity = (bot, restart = false) => {
+module.exports.setActivity = async (bot, restart = false) => {
     if (restart) {
         return bot.user.setActivity({
             name: 'files to load...',
@@ -34,9 +33,7 @@ module.exports.setActivity = (bot, restart = false) => {
     }
 
     if (activity.showLinesOfCode) {
-        const loc = getLinesOfCode(async (cb) => {
-            return (await cb) || 0;
-        });
+        const loc = await getLinesOfCode();
         activity.text = activity.text.replace('{loc}', loc);
     }
 
