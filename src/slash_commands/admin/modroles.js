@@ -19,7 +19,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const roles = main_interaction.options.getRole('roles');
 
     const guildConfig = await GuildConfig.get(main_interaction.guild.id);
-    const modroles = JSON.parse(guildConfig.modroles);
+    const modroles = guildConfig.modroles
 
     const dbEntity = modroles.find((x) => x.role === roles.id) || {};
     const serverRole = await main_interaction.guild.roles.fetch(roles.id);
