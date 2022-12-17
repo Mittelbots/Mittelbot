@@ -55,7 +55,7 @@ services:
 
     mysql:
         environment:
-            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD=xxxx
             - MYSQL_DATABASE=mittelbot
             - MYSQL_USER=xxxx
             - MYSQL_PASSWORD=xxxxx
