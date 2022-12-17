@@ -15,6 +15,24 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.52.0**
+
+### Added things:
+
+    - Timer feature
+    - - /timer start
+    - - /timer stop
+
+### Bug fixes & other changes:
+
+    - core fixes
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.51.0**
 
 ### Added things:
