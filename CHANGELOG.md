@@ -15,6 +15,24 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.51.0**
+
+### Added things:
+
+    - Reddit notifier
+    - - /reddit_notifier
+
+### Bug fixes & other changes:
+
+    - core fixes
+    - Fixed a spelling mistake in the /pride command
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.50.4**
 
 ### Added things:
