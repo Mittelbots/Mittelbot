@@ -31,7 +31,7 @@ module.exports.setActivity = async (bot, restart = false) => {
             .reduce((a, b) => a + b, 0);
         activity.text = activity.text.replace('{memberCount}', memberCount);
     }
-    
+
     if (activity.showLinesOfCode) {
         const loc = await getLinesOfCode();
         activity.text = activity.text.replace('{loc}', loc);
