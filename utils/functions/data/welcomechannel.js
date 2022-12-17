@@ -34,7 +34,7 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value }) =>
 module.exports.getWelcomechannel = async ({ guild_id }) => {
     const guildConfig = await GuildConfig.get(guild_id);
     return guildConfig && guildConfig.welcome_channel
-        ? JSON.parse(guildConfig.welcome_channel)
+        ? guildConfig.welcome_channel
         : defaultWelcomeMessage;
 };
 
