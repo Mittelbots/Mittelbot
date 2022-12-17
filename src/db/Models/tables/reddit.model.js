@@ -24,10 +24,10 @@ Reddit.init(
         pingrole: {
             type: DataTypes.BIGINT,
         },
-        allowNSFW: {
+        allow_nsfw: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-        }
+        },
     },
     {
         sequelize: database,

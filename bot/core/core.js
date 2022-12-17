@@ -21,6 +21,7 @@ const database = require('../../src/db/db');
 const { rateLimit } = require('../rateLimit');
 const { Guilds } = require('../../utils/functions/data/Guilds');
 const { loadScam } = require('../../utils/checkForScam/checkForScam');
+const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
 
 module.exports.restartBot = async () => {
     await delay(5000);
@@ -58,6 +59,7 @@ module.exports.startBot = async (bot) => {
             twitch_notifier({
                 bot,
             });
+            reddit_notifier(bot);
             checkInfractions(bot);
             checkTemproles(bot);
             setActivity(bot);
