@@ -17,7 +17,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         newEmbed.setTitle(`Gender: ${newGender.name}`);
         newEmbed.setDescription(newGender.description);
         newEmbed.addFields({
-            name: 'Similar to',
+            name: 'Similar to: ',
             value: newGender.differentFrom.join(', '),
         });
 
@@ -49,7 +49,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 value: newSexuality.attractionType,
             },
             {
-                name: 'Different From:',
+                name: 'Similar to: ',
                 value: newSexuality.differentFrom.join(', '),
             },
             {
