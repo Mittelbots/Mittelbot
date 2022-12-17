@@ -6,7 +6,7 @@ class Logs {
     get(guild_id) {
         return new Promise(async (resolve) => {
             const guildConfig = await GuildConfig.get(guild_id);
-            return resolve(JSON.parse(guildConfig.logs));
+            return resolve(guildConfig.logs);
         });
     }
 

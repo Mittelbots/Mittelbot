@@ -15,7 +15,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'purge',
         'warn',
     ];
-    const fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny', 'pride'];
+    const fun = ['avatar', 'ship', 'guessnumber', 'cats', 'dogs', 'bunny', 'pride', 'stromberg'];
     const admin = [
         'modules',
         'scam',
@@ -26,7 +26,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'modroles',
     ];
     const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
-    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme'];
+    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'reddit_notifier'];
     const help = ['help', 'tutorial'];
 
     //=========================================================
