@@ -41,7 +41,7 @@ module.exports.timer = async (bot) => {
             const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
 
             let timeLeftString;
-            if (minutes <= 0 || hours <= 0 || days <= 0) {
+            if (minutes <= 0 && hours <= 0 && days <= 0) {
                 timeLeftString = `**Time left:** Only a few seconds!`;
             } else {
                 timeLeftString = `**Time left:** ${days}Day(s) ${hours}Hour(s) ${minutes}Minute(s)`;
