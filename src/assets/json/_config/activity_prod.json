@@ -8,6 +8,10 @@
             "showGuildCount": true
         },
         {
+            "text": "with new Reddit notifier /reddit_notifier on {guildCount} servers",
+            "showGuildCount": true
+        },
+        {
             "text": "Have a beautiful christmas {memberCount} members!!!",
             "showMemberCount": true
         },

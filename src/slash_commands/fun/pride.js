@@ -17,7 +17,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         newEmbed.setTitle(`Gender: ${newGender.name}`);
         newEmbed.setDescription(newGender.description);
         newEmbed.addFields({
-            name: 'Different From',
+            name: 'Similar to',
             value: newGender.differentFrom.join(', '),
         });
 

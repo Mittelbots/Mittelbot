@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.50.4",
+    "version": "0.51.0",
     "description": "A Discord Bot written in Node.js",
     "main": "shard.js",
     "private": true,
@@ -64,7 +64,7 @@
     "devDependencies": {
         "chalk": "^4.1.0",
         "nodemon": "^2.0.20",
-        "string-width": "4.2.3",
-        "prettier": "^2.8.0"
+        "prettier": "^2.8.0",
+        "string-width": "4.2.3"
     }
 }
