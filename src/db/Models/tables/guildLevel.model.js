@@ -7,7 +7,6 @@ GuildLevel.init(
     {
         guild_id: {
             type: DataTypes.BIGINT,
-            unique: 'guild_id',
         },
         xp: {
             type: DataTypes.FLOAT,

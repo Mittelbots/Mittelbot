@@ -155,10 +155,15 @@ class Levelsystem {
     add({ guild_id, user_id }) {
         return new Promise(async (resolve) => {
             await guildLevel
-                .create({
-                    guild_id,
-                    user_id,
-                })
+                .create(
+                    {
+                        guild_id,
+                        user_id,
+                    },
+                    {
+                        ignoreDuplicates: true,
+                    }
+                )
                 .then((result) => {
                     return resolve(result);
                 })
