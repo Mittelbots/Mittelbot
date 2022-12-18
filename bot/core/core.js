@@ -3,7 +3,7 @@ const { checkInfractions } = require('../../src/events/checkInfraction');
 const { checkTemproles } = require('../../src/events/checkTemproles');
 const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier');
 const { handleUploads } = require('../../src/events/notfifier/yt_notifier');
-const { auditLog } = require('../../utils/auditlog/auditlog');
+const { auditLog } = require('../../utils/auditlog/auditlog-old');
 const {
     createSlashCommands,
 } = require('../../utils/functions/createSlashCommands/createSlashCommands');
@@ -23,6 +23,7 @@ const { Guilds } = require('../../utils/functions/data/Guilds');
 const { loadScam } = require('../../utils/checkForScam/checkForScam');
 const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
 const { timer } = require('../../src/events/timer/timer');
+const { messageDelete } = require('../messageDelete');
 
 module.exports.restartBot = async () => {
     await delay(5000);
@@ -134,6 +135,10 @@ module.exports.acceptBotInteraction = (bot) => {
         if (err.substr(6, 3) === '429') {
             rateLimit({ rateLimitData: err });
         }
+    });
+
+    bot.on('messageDelete', async (message) => {
+        messageDelete(bot, message);
     });
 };
 

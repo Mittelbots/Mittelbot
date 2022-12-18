@@ -9,7 +9,7 @@ var c = config.auditTypes;
 var gid = '';
 
 function auditLog(bot) {
-    bot.on(c.messagedelete, (message) => sendToAudit(bot, c.messagedelete, message));
+    //bot.on(c.messagedelete, (message) => sendToAudit(bot, c.messagedelete, message));
 
     bot.on(c.channelcreate, (channel) => sendToAudit(bot, c.channelcreate, channel));
 
