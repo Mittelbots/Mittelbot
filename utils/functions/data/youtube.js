@@ -25,7 +25,7 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
         await guild.members.fetch();
         try {
             var hasChannelPerms = guild.members.me
-                .permissionsIn(dcchannel.id)
+                .permissionsIn(dcchannel)
                 .has([
                     PermissionFlagsBits.ViewChannel,
                     PermissionFlagsBits.SendMessages,
