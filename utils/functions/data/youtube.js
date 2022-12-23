@@ -22,7 +22,9 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
             });
         if (!channelid) return;
 
-        await guild.members.fetch();
+        if(!guild.members.me) {
+            await guild.members.fetch();
+        }
         try {
             var hasChannelPerms = dcchannel.permissionsFor(guild.members.me).has([
                 PermissionFlagsBits.ViewChannel,
@@ -31,7 +33,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
                 PermissionFlagsBits.AttachFiles,
                 PermissionFlagsBits.MentionEveryone,
             ]);
-            console.info(hasChannelPerms); //! DO NOT REMOVE THIS LINE
         } catch (err) {
             errorhandler({
                 err,
