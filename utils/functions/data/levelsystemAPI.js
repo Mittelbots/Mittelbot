@@ -38,7 +38,7 @@ class Levelsystem {
     updateMessageCount({ user_id, guild_id }) {
         return new Promise(async (resolve) => {
             const userXp = await this.get({ user_id, guild_id });
-            if (userXp.length == 0) {
+            if (!userXp) {
                 return await this.add({ user_id, guild_id });
             }
 
