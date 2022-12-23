@@ -26,7 +26,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'modroles',
     ];
     const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
-    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'reddit_notifier', 'timer'];
+    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'reddit_notifier', 'timer', 'youtube'];
     const help = ['help', 'tutorial'];
 
     //=========================================================

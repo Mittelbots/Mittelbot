@@ -70,7 +70,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'disable_command':
             const command = main_interaction.options.getString('command');
             const global_config = await GlobalConfig.get();
-            const disabled_commands = JSON.parse(global_config.disabledCommands);
+            const disabled_commands = global_config.disabledCommands
             let gotDisabled = false;
             try {
                 if (disabled_commands.includes(command)) {

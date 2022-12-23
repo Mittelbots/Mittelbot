@@ -16,7 +16,7 @@ class Translate {
         return new Promise(async (resolve, reject) => {
             let translateConfig = await GuildConfig.get(guild_id);
             try {
-                translateConfig = JSON.parse(translateConfig.translate);
+                translateConfig = translateConfig.translate
             } catch (err) {
                 if (translateConfig !== typeof object) {
                     translateConfig = this.defaultTranslateConfig;

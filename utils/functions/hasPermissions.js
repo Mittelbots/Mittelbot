@@ -19,7 +19,7 @@ module.exports.hasPermission = async ({
 
     const guildConfig = await GuildConfig.get(guild_id);
 
-    const modroles = JSON.parse(guildConfig.modroles);
+    const modroles = guildConfig.modroles
 
     var role_id;
     var isadmin;

@@ -7,14 +7,14 @@ class Joinroles {
     get({ guild_id }) {
         return new Promise(async (resolve) => {
             const guild = await GuildConfig.get(guild_id);
-            return resolve(JSON.parse(guild.joinroles));
+            return resolve(guild.joinroles)
         });
     }
 
     update({ guild_id, roles }) {
         return new Promise(async (resolve) => {
             const guild = await GuildConfig.get(guild_id);
-            const joinroles = JSON.parse(guild.joinroles);
+            const joinroles = guild.joinroles
 
             const rolesAlreadyExists = _.intersection(joinroles, roles);
 

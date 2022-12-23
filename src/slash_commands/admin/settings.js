@@ -7,7 +7,6 @@ const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Joinroles } = require('../../../utils/functions/data/Joinroles');
 const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
-const { changeYtNotifier, delChannelFromList } = require('../../../utils/functions/data/youtube');
 const {
     changeTwitchNotifier,
     delTwChannelFromList,
@@ -291,61 +290,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 });
             break;
-
-        case 'youtube':
-            const ytchannel = main_interaction.options.getString('ytchannel');
-            const dcchannel = main_interaction.options.getChannel('dcchannel');
-            const pingrole = main_interaction.options.getRole('ytping');
-
-            changeYtNotifier({
-                ytchannel,
-                dcchannel,
-                pingrole,
-                guild: await bot.guilds.cache.get(main_interaction.guild.id),
-            })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            content: res,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
-        case 'delyoutube':
-            const delytchannel = main_interaction.options.getString('ytchannel');
-
-            delChannelFromList({
-                guild_id: main_interaction.guild.id,
-                delytchannel,
-            })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            content: res,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
+            
         case 'twitch':
             const twitchchannel = main_interaction.options.getString('twitchchannel');
             const twdcchannel = main_interaction.options.getChannel('dcchannel');
@@ -587,48 +532,6 @@ module.exports.data = new SlashCommandBuilder()
                     .setName('warnroles')
                     .setDescription('Add roles. Split multiple roles with a space.')
                     .setRequired(false)
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('youtube')
-            .setDescription(
-                'Add up to 3 youtube channels to get a notification when a new video is uploaded.'
-            )
-            .addStringOption((ytchannel) =>
-                ytchannel
-                    .setName('ytchannel')
-                    .setDescription(
-                        'Add the youtube channel link [https://youtube.com/channel/XXXX]'
-                    )
-                    .setRequired(true)
-            )
-            .addChannelOption((dcchannel) =>
-                dcchannel
-                    .setName('dcchannel')
-                    .setDescription('Select a text channel where the new videos will be post in.')
-                    .setRequired(true)
-            )
-            .addRoleOption((warnrole) =>
-                warnrole
-                    .setName('ytping')
-                    .setDescription(
-                        'Add a ping role to be pinged each time a new Video is uploaded.'
-                    )
-                    .setRequired(false)
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('delyoutube')
-            .setDescription('Delete a channel from the notification list')
-            .addStringOption((ytchannel) =>
-                ytchannel
-                    .setName('ytchannel')
-                    .setDescription(
-                        'Add the youtube channel link [https://youtube.com/channel/XXXX]'
-                    )
-                    .setRequired(true)
             )
     )
     .addSubcommand((command) =>

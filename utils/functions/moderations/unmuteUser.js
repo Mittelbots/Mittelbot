@@ -1,14 +1,37 @@
-const { setNewModLogMessage } = require('../../modlog/modlog');
-const { privateModResponse } = require('../../privatResponses/privateModResponses');
-const { publicModResponses } = require('../../publicResponses/publicModResponses');
-const { errorhandler } = require('../errorhandler/errorhandler');
-const { getMutedRole } = require('../roles/getMutedRole');
-const { giveAllRoles } = require('../roles/giveAllRoles');
+const {
+    setNewModLogMessage
+} = require('../../modlog/modlog');
+const {
+    privateModResponse
+} = require('../../privatResponses/privateModResponses');
+const {
+    publicModResponses
+} = require('../../publicResponses/publicModResponses');
+const {
+    errorhandler
+} = require('../errorhandler/errorhandler');
+const {
+    getMutedRole
+} = require('../roles/getMutedRole');
+const {
+    giveAllRoles
+} = require('../roles/giveAllRoles');
 const config = require('../../../src/assets/json/_config/config.json');
 const database = require('../../../src/db/db');
-const { Infractions } = require('../data/Infractions');
+const {
+    Infractions
+} = require('../data/Infractions');
+const {
+    where
+} = require('sequelize');
 
-async function unmuteUser({ user, bot, mod, reason, guild }) {
+async function unmuteUser({
+    user,
+    bot,
+    mod,
+    reason,
+    guild
+}) {
     const userGuild = await bot.guilds.cache.get(guild.id);
     var MutedRole = await getMutedRole(userGuild);
 
@@ -28,7 +51,9 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
             pass = true;
         })
         .catch((err) => {
-            errorhandler({ err });
+            errorhandler({
+                err
+            });
             return {
                 error: true,
                 message: config.errormessages.nopermissions.manageRoles,
@@ -36,10 +61,12 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
         });
 
     const roles = await database
-        .query('SELECT user_roles FROM open_infractions WHERE user_id = ? AND mute = ?', [
-            user.id,
-            1,
-        ])
+        .findOne({
+            where: {
+                user_id: user.id,
+                mute: 1
+            }
+        })
         .then((res) => {
             if (res.length > 0) {
                 return {
@@ -54,7 +81,10 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
             }
         })
         .catch((err) => {
-            errorhandler({ err, fatal: true });
+            errorhandler({
+                err,
+                fatal: true
+            });
             return {
                 error: true,
                 message: config.errormessages.general,
@@ -62,7 +92,7 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
         });
 
     if (!roles.error) {
-        giveAllRoles(user.id, userGuild, JSON.parse(roles.roles));
+        giveAllRoles(user.id, userGuild, roles.roles);
     }
 
     if (pass) {
@@ -92,11 +122,17 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
             bot
         );
 
-        database
-            .query(`SELECT * FROM open_infractions WHERE user_id = ? ORDER BY id DESC`, [user.id])
+        database.findOne({
+                where: {
+                    user_id: user.id
+                },
+                order: [
+                    ['id', 'DESC']
+                ]
+            })
             .then(async (res) => {
                 if (res.length > 0) {
-                    let user_roles = await JSON.parse(await res[0].user_roles);
+                    let user_roles = await await res[0].user_roles
                     for (let x in user_roles) {
                         let r = await userGuild.roles.cache.find(
                             (role) => role.id == user_roles[x]
@@ -125,11 +161,16 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
                 }
             })
             .catch((err) => {
-                errorhandler({ err, fatal: true });
+                errorhandler({
+                    err,
+                    fatal: true
+                });
             });
 
         return p_response;
     }
 }
 
-module.exports = { unmuteUser };
+module.exports = {
+    unmuteUser
+};

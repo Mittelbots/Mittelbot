@@ -5,6 +5,7 @@ volumes:
 
 services:
     bot:
+        container_name: mittelbot
         build:
             context: .
             dockerfile: Dockerfile
