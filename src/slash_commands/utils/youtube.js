@@ -16,7 +16,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ytchannel,
             dcchannel,
             pingrole,
-            guild: await bot.guilds.cache.get(main_interaction.guild.id),
+            guild: main_interaction.guild,
         })
             .then((res) => {
                 main_interaction.followUp({

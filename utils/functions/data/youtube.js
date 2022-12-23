@@ -24,16 +24,19 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
 
         await guild.members.fetch();
         try {
-            var hasChannelPerms = guild.members.me
-                .permissionsIn(dcchannel)
-                .has([
-                    PermissionFlagsBits.ViewChannel,
-                    PermissionFlagsBits.SendMessages,
-                    PermissionFlagsBits.EmbedLinks,
-                    PermissionFlagsBits.AttachFiles,
-                    PermissionFlagsBits.MentionEveryone,
-                ]);
+            var hasChannelPerms = dcchannel.permissionsFor(guild.members.me).has([
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.EmbedLinks,
+                PermissionFlagsBits.AttachFiles,
+                PermissionFlagsBits.MentionEveryone,
+            ]);
+            console.info(hasChannelPerms); //! DO NOT REMOVE THIS LINE
         } catch (err) {
+            errorhandler({
+                err,
+                fatal: true,
+            });
             reject(`❌ Something went wrong while checking the permissions. Please try again.`);
             return false;
         }
