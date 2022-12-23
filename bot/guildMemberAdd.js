@@ -60,7 +60,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
     }
 
     if (!memberInfo) return;
-    const user_roles = JSON.parse(memberInfo.member_roles);
+    const user_roles = memberInfo.member_roles;
 
     if (user_roles.length > 0) {
         const indexOfMuteRole = user_roles.indexOf(

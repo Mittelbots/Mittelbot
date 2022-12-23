@@ -7,7 +7,7 @@ class Modroles {
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
             const guildConfig = await GuildConfig.get(guild_id);
-            resolve(JSON.parse(guildConfig.modroles));
+            resolve(guildConfig.modroles);
         });
     }
 

@@ -5,7 +5,7 @@
     "main": "shard.js",
     "private": true,
     "scripts": {
-        "start": "docker compose up -d && docker ps",
+        "start": "docker compose up -d && docker logs -f mittelbot",
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
         "format": "prettier --write .",
