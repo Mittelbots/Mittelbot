@@ -1,21 +1,10 @@
-const {
-    channelId
-} = require('@gonetone/get-youtube-id-by-url');
-const {
-    PermissionFlagsBits
-} = require('discord.js');
+const { channelId } = require('@gonetone/get-youtube-id-by-url');
+const { PermissionFlagsBits } = require('discord.js');
 const guildUploads = require('../../../src/db/Models/tables/guildUploads.model');
-const {
-    errorhandler
-} = require('../errorhandler/errorhandler');
-const request = new(require('rss-parser'))();
+const { errorhandler } = require('../errorhandler/errorhandler');
+const request = new (require('rss-parser'))();
 
-module.exports.changeYtNotifier = async ({
-    ytchannel,
-    dcchannel,
-    pingrole,
-    guild
-}) => {
+module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild }) => {
     return new Promise(async (resolve, reject) => {
         const url = new URL('https://www.youtube.com' + '/@' + ytchannel);
 
@@ -43,11 +32,9 @@ module.exports.changeYtNotifier = async ({
                     PermissionFlagsBits.EmbedLinks,
                     PermissionFlagsBits.AttachFiles,
                     PermissionFlagsBits.MentionEveryone,
-                ])
+                ]);
         } catch (err) {
-            reject(
-                `❌ Something went wrong while checking the permissions. Please try again.`
-            );
+            reject(`❌ Something went wrong while checking the permissions. Please try again.`);
             return false;
         }
 
@@ -57,7 +44,8 @@ module.exports.changeYtNotifier = async ({
             );
         }
 
-        const allChannelsFromGuild = await guildUploads.findOne({
+        const allChannelsFromGuild = await guildUploads
+            .findOne({
                 where: {
                     guild_id: guild.id,
                 },
@@ -89,7 +77,8 @@ module.exports.changeYtNotifier = async ({
             .parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelid}`)
             .then(async (feed) => {
                 const latestVideo = JSON.stringify([feed.items[0].link]);
-                guildUploads.create({
+                guildUploads
+                    .create({
                         guild_id: guild.id,
                         channel_id: channelid,
                         info_channel_id: dcchannel.id,
@@ -123,11 +112,10 @@ module.exports.changeYtNotifier = async ({
     });
 };
 
-module.exports.delYTChannelFromList = async ({
-    guild_id
-}) => {
+module.exports.delYTChannelFromList = async ({ guild_id }) => {
     return new Promise(async (resolve, reject) => {
-        guildUploads.destroy({
+        guildUploads
+            .destroy({
                 where: {
                     guild_id,
                 },

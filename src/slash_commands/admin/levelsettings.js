@@ -22,7 +22,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const guildConfig = await GuildConfig.get(main_interaction.guild.id);
-    let levelsettings = guildConfig.levelsettings
+    let levelsettings = guildConfig.levelsettings;
 
     switch (main_interaction.options.getSubcommand()) {
         case 'mode':

@@ -290,7 +290,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 });
             break;
-            
+
         case 'twitch':
             const twitchchannel = main_interaction.options.getString('twitchchannel');
             const twdcchannel = main_interaction.options.getChannel('dcchannel');

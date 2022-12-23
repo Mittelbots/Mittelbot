@@ -20,7 +20,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const status = main_interaction.options.getString('status');
 
     const guildConfig = await GuildConfig.get(main_interaction.guild.id);
-    disabled_modules = guildConfig.disabled_modules
+    disabled_modules = guildConfig.disabled_modules;
 
     if (disabled_modules.indexOf(module) > -1 && status !== 'activate') {
         return main_interaction

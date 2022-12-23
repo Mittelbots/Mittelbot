@@ -1,37 +1,15 @@
-const {
-    setNewModLogMessage
-} = require('../../modlog/modlog');
-const {
-    privateModResponse
-} = require('../../privatResponses/privateModResponses');
-const {
-    publicModResponses
-} = require('../../publicResponses/publicModResponses');
-const {
-    errorhandler
-} = require('../errorhandler/errorhandler');
-const {
-    getMutedRole
-} = require('../roles/getMutedRole');
-const {
-    giveAllRoles
-} = require('../roles/giveAllRoles');
+const { setNewModLogMessage } = require('../../modlog/modlog');
+const { privateModResponse } = require('../../privatResponses/privateModResponses');
+const { publicModResponses } = require('../../publicResponses/publicModResponses');
+const { errorhandler } = require('../errorhandler/errorhandler');
+const { getMutedRole } = require('../roles/getMutedRole');
+const { giveAllRoles } = require('../roles/giveAllRoles');
 const config = require('../../../src/assets/json/_config/config.json');
 const database = require('../../../src/db/db');
-const {
-    Infractions
-} = require('../data/Infractions');
-const {
-    where
-} = require('sequelize');
+const { Infractions } = require('../data/Infractions');
+const { where } = require('sequelize');
 
-async function unmuteUser({
-    user,
-    bot,
-    mod,
-    reason,
-    guild
-}) {
+async function unmuteUser({ user, bot, mod, reason, guild }) {
     const userGuild = await bot.guilds.cache.get(guild.id);
     var MutedRole = await getMutedRole(userGuild);
 
@@ -52,7 +30,7 @@ async function unmuteUser({
         })
         .catch((err) => {
             errorhandler({
-                err
+                err,
             });
             return {
                 error: true,
@@ -64,8 +42,8 @@ async function unmuteUser({
         .findOne({
             where: {
                 user_id: user.id,
-                mute: 1
-            }
+                mute: 1,
+            },
         })
         .then((res) => {
             if (res.length > 0) {
@@ -83,7 +61,7 @@ async function unmuteUser({
         .catch((err) => {
             errorhandler({
                 err,
-                fatal: true
+                fatal: true,
             });
             return {
                 error: true,
@@ -122,17 +100,16 @@ async function unmuteUser({
             bot
         );
 
-        database.findOne({
+        database
+            .findOne({
                 where: {
-                    user_id: user.id
+                    user_id: user.id,
                 },
-                order: [
-                    ['id', 'DESC']
-                ]
+                order: [['id', 'DESC']],
             })
             .then(async (res) => {
                 if (res.length > 0) {
-                    let user_roles = await await res[0].user_roles
+                    let user_roles = await await res[0].user_roles;
                     for (let x in user_roles) {
                         let r = await userGuild.roles.cache.find(
                             (role) => role.id == user_roles[x]
@@ -163,7 +140,7 @@ async function unmuteUser({
             .catch((err) => {
                 errorhandler({
                     err,
-                    fatal: true
+                    fatal: true,
                 });
             });
 
@@ -172,5 +149,5 @@ async function unmuteUser({
 }
 
 module.exports = {
-    unmuteUser
+    unmuteUser,
 };
