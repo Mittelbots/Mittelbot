@@ -35,6 +35,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'reddit_notifier',
         'timer',
         'youtube',
+        'poll',
     ];
     const help = ['help', 'tutorial'];
 
