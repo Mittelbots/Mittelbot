@@ -17,20 +17,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
             await main_interaction.reply({
                 content: 'There was an error while creating the poll',
                 ephemeral: true,
-            });
+            }).catch(err => {})
         });
 
     await msg.react('👍').catch(async () => {
         await main_interaction.reply({
             content: 'There was an error while reacting to the poll',
             ephemeral: true,
-        });
+        }).catch(err => {})
     });
     await msg.react('👎').catch(async () => {
         await main_interaction.reply({
             content: 'There was an error while reacting to the poll',
             ephemeral: true,
-        });
+        }).catch(err => {})
     });
 };
 
