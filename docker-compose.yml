@@ -42,10 +42,10 @@ services:
             test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
             timeout: 5s
             retries: 10
-    
+
     mysql-backup:
         image: ubuntu:latest
-        build: 
+        build:
             context: .
             dockerfile: Dockerfile.mysqlbackup
         working_dir: /app
