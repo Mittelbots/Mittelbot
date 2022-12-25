@@ -38,7 +38,7 @@ class Levelsystem {
     updateMessageCount({ user_id, guild_id }) {
         return new Promise(async (resolve) => {
             const userXp = await this.get({ user_id, guild_id });
-            if (userXp.length == 0) {
+            if (!userXp) {
                 return await this.add({ user_id, guild_id });
             }
 
@@ -433,7 +433,7 @@ class Levelsystem {
     changeLevelUp({ type, guild, channel }) {
         return new Promise(async (resolve, reject) => {
             const guildConfig = await GuildConfig.get(guild.id);
-            const levelsettings = JSON.parse(guildConfig.levelsettings);
+            const levelsettings = guildConfig.levelsettings;
 
             if (type === 'dm' || type === 'disable') {
                 levelsettings.levelup_channel = type === 'dm' ? 'dm' : 'disable';
@@ -507,7 +507,7 @@ module.exports.Levelsystem = new Levelsystem();
 module.exports.sendNewLevelMessage = async function (newLevel, message, currentxp, nextlevel) {
     const guildConfig = await GuildConfig.get(message.guild.id);
 
-    const levelsettings = JSON.parse(guildConfig.levelsettings);
+    const levelsettings = guildConfig.levelsettings;
 
     const newLevelMessage = new EmbedBuilder()
         .setTitle('🎉 You reached a new Level!')

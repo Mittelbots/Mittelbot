@@ -3,8 +3,7 @@ const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    let setting = await Automod.get(main_interaction.guild.id);
-    setting = JSON.parse(setting);
+    const setting = await Automod.get(main_interaction.guild.id);
 
     switch (main_interaction.options.getSubcommand()) {
         case 'whitelistroles':

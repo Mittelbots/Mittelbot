@@ -441,7 +441,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                         for (let i in res) {
                             try {
                                 if (res[1][i].request_link === request.request_link) {
-                                    let message = JSON.parse(res[1][i].request_message);
+                                    let message = res[1][i].request_message;
                                     main_interaction.channel.messages
                                         .fetch(message.message)
                                         .then((msg) => {
@@ -496,7 +496,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                 )
                 .then((res) => {
                     for (let i in res) {
-                        const message = JSON.parse(res[1][i].request_message);
+                        const message = res[1][i].request_message;
                         main_interaction.channel.messages.fetch(message.message).then((msg) => {
                             msg.edit({
                                 content: `❌ This Guild has been added to the blacklist by ${main_interaction.user}. The request got canceled!`,
