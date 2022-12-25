@@ -78,7 +78,6 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                 break;
             case 'tutorial':
                 new Tutorial(main_interaction, bot);
-                
         }
 
         if (main_interaction.customId.indexOf('scam') === 0) {

@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = class Tutorial {
     constructor(main_interaction, bot) {
@@ -38,7 +38,8 @@ module.exports = class Tutorial {
                     .reply({
                         content: '**WTF! This topic does not even exists!?**',
                         ephemeral: true,
-                    }).catch(err => {})
+                    })
+                    .catch((err) => {});
         }
     }
 
@@ -56,7 +57,9 @@ module.exports = class Tutorial {
             .setDescription(
                 `Slash Commands are the main way to interact with the Bot.\nYou can use them by typing \`/\` in any channel.\nYou can also use them in DMs.\nYou can request more slash commands in the official discord support server https://mittelbot.blackdayz.de/support`
             )
-            .setImage(`https://raw.githubusercontent.com/RileyAbr/rat-facts-Discord-Bot/main/assets/rat%20facts%20clip.gif`);
+            .setImage(
+                `https://raw.githubusercontent.com/RileyAbr/rat-facts-Discord-Bot/main/assets/rat%20facts%20clip.gif`
+            );
 
         this.send();
     }
@@ -76,30 +79,28 @@ module.exports = class Tutorial {
             .addFields([
                 {
                     name: 'Admin Permissions',
-                    value: `Does have the permission to use the \`/settings\` command.`
+                    value: `Does have the permission to use the \`/settings\` command.`,
                 },
                 {
                     name: 'Moderator Permissions',
-                    value: `Does have the permission to use the \`/ban\` command.`
+                    value: `Does have the permission to use the \`/ban\` command.`,
                 },
                 {
                     name: 'Helper Permissions',
-                    value: `Does have the permission to use the \`/warn\` command.`
-                }
-            ])
+                    value: `Does have the permission to use the \`/warn\` command.`,
+                },
+            ]);
 
         this.send();
     }
 
     notifications() {
-        this.embeds
-            .setTitle('Notifications (YouTube, Twitch, and Reddit)')
-            .setDescription(
-                `
+        this.embeds.setTitle('Notifications (YouTube, Twitch, and Reddit)').setDescription(
+            `
                     You can setup notifications for YouTube, Twitch and Reddit.\n
                     To setup the notifications you can use the \`/youtube\`, \`/twitch\` and \`/reddit\` command.
                 `
-            )
+        );
         this.send();
     }
 
@@ -118,56 +119,50 @@ module.exports = class Tutorial {
             .addFields([
                 {
                     name: 'Easy',
-                    value: `The levels are easier to reach.`
+                    value: `The levels are easier to reach.`,
                 },
                 {
                     name: 'Normal',
-                    value: `Everything is balanced. It's not too easy and not too hard.`
+                    value: `Everything is balanced. It's not too easy and not too hard.`,
                 },
                 {
                     name: 'Hard',
-                    value: `The levels are harder to reach.`
-                }
-            ])
+                    value: `The levels are harder to reach.`,
+                },
+            ]);
         this.send();
     }
 
     moderation() {
-        this.embeds
-            .setTitle('Moderation')
-            .setDescription(
-                `
+        this.embeds.setTitle('Moderation').setDescription(
+            `
                     You can use commands like \`/ban\`, \`/kick\`, \`/mute\`, \`/unmute\`, \`/warn\` command.\n
                     All infrations will be saved in the database and you can view them with the \`/infractions\` command.\n 
                 `
-            )
+        );
         this.send();
     }
 
     automod() {
-        this.embeds
-            .setTitle('Automod')
-            .setDescription(
-                `
+        this.embeds.setTitle('Automod').setDescription(
+            `
                     The bot has a built-in automod system.\n
                     It will automatically delete messages that contain bad words or links and sent too fast messages.\n
                     To activate it you can use the \`/automod\` command.\n
                 `
-            )
+        );
         this.send();
     }
 
     scam() {
-        this.embeds
-            .setTitle('Scam Protection')
-            .setDescription(
-                `
+        this.embeds.setTitle('Scam Protection').setDescription(
+            `
                     The bot has a built-in scam protection system.\n
                     It will automatically delete messages that contain scam links.\n
                     You can always submit a scam link to the official community database with the \`/scam\` command.\n
                     Or you can use the same command to submit a whitelist request.\n
                 `
-            )
+        );
         this.send();
     }
-}
+};
