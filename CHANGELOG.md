@@ -15,6 +15,22 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.53.1**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix /help command
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.53.0**
 
 ### Added things:
