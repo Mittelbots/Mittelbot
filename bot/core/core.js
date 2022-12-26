@@ -2,7 +2,6 @@ const { checkInfractions } = require('../../src/events/checkInfraction');
 const { checkTemproles } = require('../../src/events/checkTemproles');
 const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier');
 const { handleUploads } = require('../../src/events/notfifier/yt_notifier');
-const { auditLog } = require('../../utils/auditlog/auditlog-old');
 const {
     createSlashCommands,
 } = require('../../utils/functions/createSlashCommands/createSlashCommands');
@@ -47,7 +46,6 @@ module.exports.startBot = async (bot) => {
             await createSlashCommands();
             await Promise.resolve(this.fetchCache(bot));
             await loadScam();
-            auditLog(bot);
             handleUploads({
                 bot,
             });
