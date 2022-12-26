@@ -1,4 +1,3 @@
-const { spawn } = require('child_process');
 const { checkInfractions } = require('../../src/events/checkInfraction');
 const { checkTemproles } = require('../../src/events/checkTemproles');
 const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier');
@@ -23,26 +22,6 @@ const { Guilds } = require('../../utils/functions/data/Guilds');
 const { loadScam } = require('../../utils/checkForScam/checkForScam');
 const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
 const { timer } = require('../../src/events/timer/timer');
-
-module.exports.restartBot = async () => {
-    await delay(5000);
-
-    await database.close();
-    spawn(process.argv[1], process.argv.slice(2), {
-        detached: true,
-        stdio: ['ignore', null, null],
-    }).unref();
-    process.exit();
-};
-
-module.exports.stopBot = async () => {
-    await database.close();
-    errorhandler({
-        message: 'Bot stopped due function call',
-        fatal: false,
-    });
-    process.exit();
-};
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {

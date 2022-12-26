@@ -11,10 +11,16 @@ const { Afk } = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const Translate = require('../utils/functions/data/translate');
+const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 
 const defaultCooldown = new Set();
 
 async function messageCreate(message, bot) {
+    if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
+        return checkOwnerCommand(message);
+    }
+    if (message.author.bot || message.channel.type == '1' || message.author.system) return;
+
     const isOnBlacklist = await Guilds.isBlacklist(message.guild.id);
     if (isOnBlacklist) {
         const guild = bot.guilds.cache.get(message.guild.id);
@@ -33,8 +39,6 @@ async function messageCreate(message, bot) {
 
         return guild.leave().catch((err) => {});
     }
-
-    if (message.author.bot || message.channel.type === 'dm' || message.author.system) return;
 
     const isSpam = await antiSpam(message, bot);
     if (isSpam) {
