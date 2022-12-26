@@ -1,9 +1,8 @@
-const { spawn } = require('child_process');
 const { checkInfractions } = require('../../src/events/checkInfraction');
 const { checkTemproles } = require('../../src/events/checkTemproles');
 const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier');
 const { handleUploads } = require('../../src/events/notfifier/yt_notifier');
-const { auditLog } = require('../../utils/auditlog/auditlog');
+const { auditLog } = require('../../utils/auditlog/auditlog-old');
 const {
     createSlashCommands,
 } = require('../../utils/functions/createSlashCommands/createSlashCommands');
@@ -23,26 +22,21 @@ const { Guilds } = require('../../utils/functions/data/Guilds');
 const { loadScam } = require('../../utils/checkForScam/checkForScam');
 const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
 const { timer } = require('../../src/events/timer/timer');
-
-module.exports.restartBot = async () => {
-    await delay(5000);
-
-    await database.close();
-    spawn(process.argv[1], process.argv.slice(2), {
-        detached: true,
-        stdio: ['ignore', null, null],
-    }).unref();
-    process.exit();
-};
-
-module.exports.stopBot = async () => {
-    await database.close();
-    errorhandler({
-        message: 'Bot stopped due function call',
-        fatal: false,
-    });
-    process.exit();
-};
+const { messageDelete } = require('../messageDelete');
+const { channelCreate } = require('../channelCreate');
+const { channelDelete } = require('../channelDelete');
+const { channelUpdate } = require('../channelUpdate');
+const { botDebug } = require('../botDebug');
+const { guildUpdate } = require('../guildUpdate');
+const { messageDeleteBulk } = require('../messageDeleteBulk');
+const { messageUpdate } = require('../messageUpdate');
+const { roleCreate } = require('../roleCreate');
+const { roleDelete } = require('../roleDelete');
+const { roleUpdate } = require('../roleUpdate');
+const { guildBanAdd } = require('../guildBanAdd');
+const { botError } = require('../botError');
+const { botDisconnect } = require('../botDisconnect');
+const { botWarn } = require('../botWarn');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -130,10 +124,77 @@ module.exports.acceptBotInteraction = (bot) => {
         rateLimit({ rateLimitData });
     });
 
-    bot.on('debug', (err) => {
-        if (err.substr(6, 3) === '429') {
-            rateLimit({ rateLimitData: err });
+    bot.on('debug', (info) => {
+        if (info.substr(6, 3) === '429') {
+            rateLimit({ rateLimitData: info });
         }
+        if (info.includes('401')) {
+            errorhandler({
+                message: info,
+                fatal: true,
+            });
+        }
+        botDebug(bot, info);
+    });
+
+    bot.on('messageDelete', (message) => {
+        messageDelete(bot, message);
+    });
+
+    bot.on('messageDeleteBulk', (messages) => {
+        messageDeleteBulk(bot, messages);
+    });
+
+    bot.on('messageUpdate', (messageBefore, messageAfter) => {
+        messageUpdate(bot, messageBefore, messageAfter);
+    });
+
+    bot.on('channelCreate', (channel) => {
+        channelCreate(bot, channel);
+    });
+
+    bot.on('channelDelete', (channel) => {
+        channelDelete(bot, channel);
+    });
+
+    bot.on('channelUpdate', (channelBefore, channelAfter) => {
+        channelUpdate(bot, channelBefore, channelAfter);
+    });
+
+    bot.on('disconnect', (event) => {
+        botDisconnect(bot, event);
+    });
+
+    bot.on('error', (error) => {
+        botError(bot, error);
+    });
+
+    bot.on('warn', (warn) => {
+        botWarn(bot, warn);
+    });
+
+    bot.on('guildUpdate', (guildBefore, guildAfter) => {
+        guildUpdate(bot, guildBefore, guildAfter);
+    });
+
+    bot.on('roleCreate', (role) => {
+        roleCreate(bot, role);
+    });
+
+    bot.on('roleDelete', (role) => {
+        roleDelete(bot, role);
+    });
+
+    bot.on('roleUpdate', (roleBefore, roleAfter) => {
+        roleUpdate(bot, roleBefore, roleAfter);
+    });
+
+    bot.on('guildBanAdd', (guild, user) => {
+        guildBanAdd(bot, guild, user);
+    });
+
+    bot.on('guildBanRemove', (guild, user) => {
+        guildBanRemove(bot, guild, user);
     });
 };
 

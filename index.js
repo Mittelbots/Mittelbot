@@ -6,10 +6,9 @@ const config = require('./src/assets/json/_config/config.json');
 const version = require('./package.json').version;
 
 const { errorhandler } = require('./utils/functions/errorhandler/errorhandler');
-const { db_backup } = require('./src/db/db_backup');
 const { setActivity } = require('./utils/functions/data/activity');
 const { processErrorHandler } = require('./utils/functions/errorhandler/processErrorHandler');
-const { startBot, restartBot, acceptBotInteraction } = require('./bot/core/core');
+const { startBot, acceptBotInteraction } = require('./bot/core/core');
 const { delay } = require('./utils/functions/delay/delay');
 
 processErrorHandler();
@@ -23,6 +22,8 @@ const bot = new Client({
         GatewayIntentBits.GuildBans,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.DirectMessageReactions,
     ],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction],
     makeCache: Options.cacheWithLimits({

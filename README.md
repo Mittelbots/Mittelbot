@@ -53,6 +53,9 @@ services:
             context: .
             dockerfile: Dockerfile.prod
 
+        environment:
+            - NODE_ENV=production
+
     mysql:
         environment:
             - MYSQL_ROOT_PASSWORD=xxxx

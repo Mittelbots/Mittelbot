@@ -1,0 +1,8 @@
+FROM ubuntu:latest
+
+WORKDIR /app
+
+COPY . .
+
+RUN apt-get update && apt-get install -y mysql-server
+CMD [ "while true; do sleep 86400; sh backup-mysql.sh; done" ] 

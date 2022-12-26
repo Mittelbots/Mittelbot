@@ -15,6 +15,24 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.53.0**
+
+### Added things:
+
+    - Add /poll command
+    - Add /tutorial command
+
+### Bug fixes & other changes:
+
+    - Reworked audit log
+    - switched owner slash commands to dm message commands
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.52.1**
 
 ### Added things:

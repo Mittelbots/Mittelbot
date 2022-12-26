@@ -18,3 +18,5 @@ _debug/*
 
 Dockerfile.prod
 docker-compose.override.yml
+
+backups/mysql/*
