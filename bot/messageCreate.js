@@ -16,7 +16,7 @@ const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const defaultCooldown = new Set();
 
 async function messageCreate(message, bot) {
-    if(message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
+    if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
         return checkOwnerCommand(message);
     }
     if (message.author.bot || message.channel.type == '1' || message.author.system) return;

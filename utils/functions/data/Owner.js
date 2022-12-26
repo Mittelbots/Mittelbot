@@ -1,34 +1,33 @@
-const { delay } = require("../delay/delay");
-const { GlobalConfig } = require("./GlobalConfig");
-const { Levelsystem } = require("./levelsystemAPI");
+const { delay } = require('../delay/delay');
+const { GlobalConfig } = require('./GlobalConfig');
+const { Levelsystem } = require('./levelsystemAPI');
 const { spawn } = require('child_process');
-const { errorhandler } = require("../errorhandler/errorhandler");
+const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports.checkOwnerCommand = async (message) => {
-    const args = message.content.split(" ");
+    const args = message.content.split(' ');
     const command = args[0];
 
     switch (command) {
-        case "restart":
+        case 'restart':
             this.restart(message);
             break;
-        case "stop":
+        case 'stop':
             this.shutdown(message);
             break;
-        case "generatelevel":
+        case 'generatelevel':
             this.generatelevel(message, args);
             break;
-        case "ignoremode":
+        case 'ignoremode':
             this.ignoremode(message, args);
             break;
-        case "disablecommand":
+        case 'disablecommand':
             this.disable_command(message, args);
             break;
         default:
             break;
     }
 };
-
 
 module.exports.restart = async (message) => {
     await message
@@ -62,7 +61,7 @@ module.exports.shutdown = async (message = null) => {
         fatal: false,
     });
     process.exit();
-}
+};
 
 module.exports.generatelevel = async (message, args) => {
     await Levelsystem.generate({
@@ -77,7 +76,7 @@ module.exports.generatelevel = async (message, args) => {
             })
             .catch((err) => {});
     });
-}
+};
 
 module.exports.ignoremode = async (message, args) => {
     const mode = JSON.parse(args[1]);
@@ -91,7 +90,7 @@ module.exports.ignoremode = async (message, args) => {
             ephemeral: true,
         })
         .catch((err) => {});
-}
+};
 
 module.exports.disable_command = async (message, args) => {
     const command = args[1];
@@ -130,7 +129,7 @@ module.exports.disable_command = async (message, args) => {
             })
             .catch((err) => {});
     }
-}
+};
 
 module.exports.export_logs = async (message, args) => {
     const type = JSON.parse(args[1]) ? '_logs/roll' : '_debug/roll';
@@ -154,4 +153,4 @@ module.exports.export_logs = async (message, args) => {
                 })
                 .catch((err) => {});
         });
-}
+};
