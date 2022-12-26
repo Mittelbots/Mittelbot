@@ -1,6 +1,6 @@
 const { GlobalConfig } = require('../utils/functions/data/GlobalConfig');
+const { shutdown } = require('../utils/functions/data/Owner');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
-const { stopBot } = require('./core/core');
 
 module.exports.rateLimit = async ({ rateLimitData }) => {
     errorhandler({
@@ -18,5 +18,5 @@ module.exports.rateLimit = async ({ rateLimitData }) => {
         });
     });
 
-    return stopBot();
+    return shutdown();
 };
