@@ -155,7 +155,7 @@ module.exports.acceptBotInteraction = (bot) => {
                 fatal: true,
             });
         }
-        botDebug(bot, info)
+        botDebug(bot, info);
     });
 
     bot.on('messageDelete', (message) => {
@@ -183,7 +183,7 @@ module.exports.acceptBotInteraction = (bot) => {
     });
 
     bot.on('disconnect', (event) => {
-        botDisconnect(bot, event)
+        botDisconnect(bot, event);
     });
 
     bot.on('error', (error) => {

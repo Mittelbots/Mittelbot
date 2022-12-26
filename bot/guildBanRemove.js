@@ -1,4 +1,4 @@
-const { setNewModLogMessage } = require("../utils/modlog/modlog");
+const { setNewModLogMessage } = require('../utils/modlog/modlog');
 
 module.exports.guildBanAdd = async (bot, guild, user) => {
     const fetchedLogs = await guild.fetchAuditLogs({
@@ -20,4 +20,4 @@ module.exports.guildBanAdd = async (bot, guild, user) => {
         null,
         guild.id
     );
-}
+};

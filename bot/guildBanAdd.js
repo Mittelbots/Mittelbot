@@ -1,5 +1,5 @@
-const { isOnBanList } = require("../utils/functions/moderations/checkOpenInfractions");
-const { setNewModLogMessage } = require("../utils/modlog/modlog");
+const { isOnBanList } = require('../utils/functions/moderations/checkOpenInfractions');
+const { setNewModLogMessage } = require('../utils/modlog/modlog');
 
 module.exports.guildBanAdd = async (bot, guild, user) => {
     const banlist = await isOnBanList({
@@ -15,4 +15,4 @@ module.exports.guildBanAdd = async (bot, guild, user) => {
         null,
         user.guild.id
     );
-}
+};

@@ -22,17 +22,19 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
             });
         if (!channelid) return;
 
-        if(!guild.members.me) {
+        if (!guild.members.me) {
             await guild.members.fetch();
         }
         try {
-            var hasChannelPerms = dcchannel.permissionsFor(guild.members.me).has([
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.EmbedLinks,
-                PermissionFlagsBits.AttachFiles,
-                PermissionFlagsBits.MentionEveryone,
-            ]);
+            var hasChannelPerms = dcchannel
+                .permissionsFor(guild.members.me)
+                .has([
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.EmbedLinks,
+                    PermissionFlagsBits.AttachFiles,
+                    PermissionFlagsBits.MentionEveryone,
+                ]);
         } catch (err) {
             errorhandler({
                 err,

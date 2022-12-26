@@ -1,10 +1,6 @@
-const {
-    EmbedBuilder
-} = require("discord.js");
-const { errorhandler } = require("../errorhandler/errorhandler");
-const {
-    Logs
-} = require("./Logs");
+const { EmbedBuilder } = require('discord.js');
+const { errorhandler } = require('../errorhandler/errorhandler');
+const { Logs } = require('./Logs');
 
 class Auditlog {
     bot;
@@ -12,7 +8,7 @@ class Auditlog {
     embed;
     #checkWhitelistUser = false;
     #ignoreBots = true;
-    
+
     constructor() {
         return this;
     }
@@ -40,7 +36,9 @@ class Auditlog {
                         break;
                 }
 
-                this.logs = this.bot.guilds.cache.get(process.env.DEVELOPER_DISCORD_GUILD_ID).channels.cache.get(this.logs)
+                this.logs = this.bot.guilds.cache
+                    .get(process.env.DEVELOPER_DISCORD_GUILD_ID)
+                    .channels.cache.get(this.logs);
             }
             return resolve(this);
         });
@@ -59,15 +57,16 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.logs
                 .send({
-                    embeds: [this.embed]
-                }).then(() => {
-                    resolve(true)
+                    embeds: [this.embed],
+                })
+                .then(() => {
+                    resolve(true);
                 })
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true
-                    })
+                        fatal: true,
+                    });
                     resolve(false);
                 });
         });
@@ -76,18 +75,18 @@ class Auditlog {
     #getLogs(guild_id) {
         return new Promise(async (resolve) => {
             this.logs = (await Logs.get(guild_id)).auditlog;
-            this.logs = this.bot.guilds.cache.get(guild_id).channels.cache.get(this.logs)
-            resolve(true)
+            this.logs = this.bot.guilds.cache.get(guild_id).channels.cache.get(this.logs);
+            resolve(true);
         });
     }
 
     #generateAuditlogEmbed(message) {
         return new Promise(async (resolve) => {
-            if(message.author) {
+            if (message.author) {
                 this.embed
                     .setAuthor({
                         name: message.author.tag,
-                        iconURL: message.author.displayAvatarURL()
+                        iconURL: message.author.displayAvatarURL(),
                     })
                     .setThumbnail(
                         message.author.avatarURL({
@@ -97,17 +96,17 @@ class Auditlog {
                     .setFooter({
                         text: `Author: ${message.author.id} | MessageID: ${message.id}`,
                     });
-            }else {
+            } else {
                 this.embed
                     .setAuthor({
                         name: message.guild.name,
-                        iconURL: message.guild.iconURL()
+                        iconURL: message.guild.iconURL(),
                     })
                     .setFooter({
                         text: `Author: Server`,
                     });
             }
-            resolve(this.embed)
+            resolve(this.embed);
         });
     }
 
@@ -115,17 +114,18 @@ class Auditlog {
         return new Promise(async (resolve) => {
             if (!this.#checkWhitelistUser) return resolve(false);
 
-            if ((this.#ignoreBots && message.author.bot) || !message.guild || message.system) return resolve(true)
+            if ((this.#ignoreBots && message.author.bot) || !message.guild || message.system)
+                return resolve(true);
             if (!this.logs.whitelist) return resolve(false);
 
             const roles = message.member.roles.cache.map((role) => role.id);
             const channels = message.channel;
 
-            if (this.logs.whitelist.includes(roles) || this.logs.whitelist.includes(channels)) return resolve(true);
+            if (this.logs.whitelist.includes(roles) || this.logs.whitelist.includes(channels))
+                return resolve(true);
             return resolve(false);
         });
     }
-
 
     /* 
         ===============================================
@@ -138,11 +138,11 @@ class Auditlog {
             this.#checkWhitelistUser = true;
             const attachment = message.attachments.first();
             this.embed.setDescription(
-                `**Message sent by <@${message.author.id}> deleted in <#${
-                    message.channelId
-                }>** \n${attachment !== undefined ? '' : message}`
+                `**Message sent by <@${message.author.id}> deleted in <#${message.channelId}>** \n${
+                    attachment !== undefined ? '' : message
+                }`
             );
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -152,7 +152,7 @@ class Auditlog {
             this.embed.setDescription(
                 `**${messages.size} messages deleted in <#${messages.first().channelId}>**`
             );
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -163,9 +163,11 @@ class Auditlog {
             this.embed.setDescription(
                 `**Message sent by <@${messageUpdate.author.id}> edited in <#${
                     messageUpdate.channelId
-                }>**\n**Before**\n${attachment !== undefined ? '' : messageBefore}\n**After**\n${attachment !== undefined ? '' : messageUpdate}`
+                }>**\n**Before**\n${attachment !== undefined ? '' : messageBefore}\n**After**\n${
+                    attachment !== undefined ? '' : messageUpdate
+                }`
             );
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -173,7 +175,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#36d30a');
             this.embed.setDescription(`**Channel created: <#${channel.id}>**`);
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -181,15 +183,17 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#a80f2b');
             this.embed.setDescription(`**Channel deleted: ${channel.name}**`);
-            resolve(true)
+            resolve(true);
         });
     }
 
     channelUpdate(channelBefore, channelUpdate) {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
-            this.embed.setDescription(`**Channel updated: <#${channelBefore.id}>** \n ${channelBefore} ---> ${channelUpdate}`);
-            resolve(true)
+            this.embed.setDescription(
+                `**Channel updated: <#${channelBefore.id}>** \n ${channelBefore} ---> ${channelUpdate}`
+            );
+            resolve(true);
         });
     }
 
@@ -197,7 +201,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
             this.embed.setDescription(`**Debug info** \n ${info}`);
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -205,7 +209,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#a80f2b');
             this.embed.setDescription(`**WebSocket Disconnected** \n ${event}`);
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -213,15 +217,15 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
             this.embed.setDescription(`**WebSocket Reconnecting**`);
-            resolve(true)
+            resolve(true);
         });
     }
-    
+
     error(error) {
         return new Promise(async (resolve) => {
             this.embed.setColor('#a80f2b');
             this.embed.setDescription(`**Error** \n ${error}`);
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -229,7 +233,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#a80f2b');
             this.embed.setDescription(`**Warning** \n ${warning}`);
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -237,7 +241,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
             this.embed.setDescription(`**Guild updated** \n ${guildBefore} ---> ${guildUpdate}`);
-            resolve(true)
+            resolve(true);
         });
     }
 
@@ -245,15 +249,17 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#36d30a');
             this.embed.setDescription(`**Role created: ${role.name}**`);
-            resolve(true)
+            resolve(true);
         });
     }
 
     roleUpdate(roleBefore, roleUpdate) {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
-            this.embed.setDescription(`**Role updated: ${roleBefore.name}** \n ${roleBefore.name} ---> ${roleUpdate.name}`);
-            resolve(true)
+            this.embed.setDescription(
+                `**Role updated: ${roleBefore.name}** \n ${roleBefore.name} ---> ${roleUpdate.name}`
+            );
+            resolve(true);
         });
     }
 
@@ -261,10 +267,9 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#a80f2b');
             this.embed.setDescription(`**Role deleted: ${role.name}**`);
-            resolve(true)
+            resolve(true);
         });
     }
-
 }
 
 module.exports = Auditlog;
