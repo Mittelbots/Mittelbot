@@ -8,6 +8,14 @@
             "showGuildCount": true
         },
         {
+            "text": "with new command /tutorial with {memberCount} servers",
+            "showMemberCount": true
+        },
+        {
+            "text": "with new command /poll with {memberCount} servers",
+            "showMemberCount": true
+        },
+        {
             "text": "with new Reddit notifier /reddit_notifier on {guildCount} servers",
             "showGuildCount": true
         },
