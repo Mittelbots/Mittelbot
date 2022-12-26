@@ -9,45 +9,7 @@ var c = config.auditTypes;
 var gid = '';
 
 function auditLog(bot) {
-    //bot.on(c.messagedelete, (message) => sendToAudit(bot, c.messagedelete, message));
 
-    bot.on(c.channelcreate, (channel) => sendToAudit(bot, c.channelcreate, channel));
-
-    bot.on(c.channeldelete, (channel) => sendToAudit(bot, c.channeldelete, channel));
-
-    bot.on(c.channelupdate, (oldchannel, newchannel) =>
-        sendToAudit(bot, c.channelupdate, oldchannel, newchannel)
-    );
-
-    bot.on(c.debug, (info) => sendToAudit(bot, c.debug, info));
-
-    bot.on(c.disconnect, (event) => sendToAudit(bot, c.debug, event));
-
-    bot.on(c.reconnecting, (event) => sendToAudit(bot, c.reconnecting, event));
-
-    bot.on(c.error, (err) => sendToAudit(bot, c.error, err));
-
-    bot.on(c.warn, (warn) => sendToAudit(bot, c.warn, warn));
-
-    bot.on(c.guildupdate, (oldguild, newguild) =>
-        sendToAudit(bot, c.guildupdate, oldguild, newguild)
-    );
-
-    bot.on(c.messagedeletebulk, (messages) => sendToAudit(bot, c.messagedeletebulk, messages));
-
-    bot.on(c.messageupdate, (oldmessage, newmessage) =>
-        sendToAudit(bot, c.messageupdate, oldmessage, newmessage)
-    );
-
-    bot.on(c.rolecreate, (role) => sendToAudit(bot, c.rolecreate, role));
-
-    //bot.on(c.roleupdate, (oldrole, newrole) => sendToAudit(bot, c.roleupdate, oldrole, newrole));
-
-    bot.on(c.roledelete, (role) => sendToAudit(bot, c.roledelete, role));
-
-    bot.on(c.guildBanAdd, (guild, user) => sendToAudit(bot, c.guildBanAdd, guild, user));
-
-    bot.on(c.guildBanRemove, (guild, user) => sendToAudit(bot, c.guildBanRemove, guild, user));
 }
 
 async function sendToAudit(bot, type, content1, content2) {
