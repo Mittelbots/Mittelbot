@@ -1,100 +1,109 @@
 {
     "admin": {
+        "_name": "admin",
         "_desc": "Manage everything which is related to the server.",
         "_icon": "⚒️",
         "levelsettings": {
             "name": "levelsettings",
             "description": "View, change, add or delete your ranksettings",
-            "usage": "!levelsettings",
+            "usage": "/levelsettings <setting> <value>",
             "icon": "🏆"
         },
         "mods": {
             "name": "mods",
             "description": "Manage Moderationsettings",
-            "usage": "!mods <setting> <value>",
+            "usage": "/modroles roles <@role>",
             "icon": "🛡️"
         },
         "scam": {
             "name": "scam",
             "description": "Add new Scam Links to the community Database",
-            "usage": "!scam add/remove/view <link>",
+            "usage": "/scam add/remove/view <link>",
             "icon": "💀"
         },
         "settings": {
             "name": "settings",
             "description": "View and change all Settings releated to the server",
-            "usage": "!settings <setting> <value>",
+            "usage": "/settings <setting> <value>",
             "icon": "⚙️"
         }
     },
     "moderation": {
+        "_name": "moderation",
         "_desc": "Every important Command for all Moderators on your server.",
         "_icon": "🛡️",
         "ban": {
             "name": "ban",
-            "description": "Ban an User",
-            "usage": "!ban <Mention User> <Reason>",
+            "description": "Ban an User from the server for a specific time or permanent",
+            "usage": "/ban <@user> <time> <reason>",
             "icon": "🔒"
         },
         "infraction": {
             "name": "infraction",
             "description": "View specific infraction from user",
-            "usage": "!infraction <infraction id>",
+            "usage": "/infraction <infraction id>",
             "icon": "📕"
         },
         "infractions": {
             "name": "infractions",
             "description": "View infractions from user",
-            "usage": "!infraction <mention/ID>",
+            "usage": "/infraction <@user/user id>",
             "icon": "📚",
             "aliases": ["inf"]
         },
         "kick": {
             "name": "kick",
-            "description": "Kick an user",
-            "usage": "!kick <mention/ID> <reason>",
+            "description": "Kick an user from the server",
+            "usage": "/kick <@user/user id> <reason>",
             "icon": "🚪"
         },
         "mute": {
             "name": "mute",
-            "description": "Mute a user",
-            "usage": "!mute <mention/ID> <Reason>",
+            "description": "Mute a user for a specific time or permanent",
+            "usage": "/mute <@user/user id> <time> <reason>",
             "icon": "🔇"
         },
         "purge": {
             "name": "purge",
             "description": "Purge an amount of messages",
-            "usage": "!purge <number>",
+            "usage": "/purge <number of message>",
             "icon": "❌"
         },
         "unban": {
             "name": "unban",
-            "description": "Unban an user",
-            "usage": "!unban <mention/ID> <Reason>",
+            "description": "Unban an user from the server",
+            "usage": "/unban <@user/user id> <reason>",
             "icon": "🔓"
         },
         "unmute": {
             "name": "unmute",
             "description": "Unmute an user",
-            "usage": "!unmute <mention/ID> <Reason>",
+            "usage": "/unmute <@user/user id> <reason>",
             "icon": "🔈"
         },
         "warn": {
             "name": "warn",
             "description": "Warn an user",
-            "usage": "!warn <mention/ID> <Reason>",
+            "usage": "/warn <@user/user id> <reason>",
             "icon": "⚠️"
         },
         "isbanned": {
             "name": "isbanned",
             "description": "Check if a user banned or not",
-            "usage": "!isbanned <mention/ID>",
+            "usage": "/isbanned <@user/user id>",
             "icon": "⚠️"
         }
     },
     "utility": {
+        "_name": "utility",
         "_desc": "Utility Commands for everyone on the server.",
         "_icon": "📝",
+        "tutorial": {
+            "name": "tutorial",
+            "description": "Get important information and tips about the bot",
+            "usage": "/tutorial",
+            "icon": "❓"
+        },
         "ping": {
             "name": "ping",
             "description": "Ping the bot",
@@ -104,7 +113,7 @@
         "info": {
             "name": "info",
             "description": "Get infos about the server or one user.",
-            "usage": "/info <mention/ID> <anonymus>",
+            "usage": "/info <@user/user id>",
             "icon": "📶"
         },
         "help": {
@@ -112,9 +121,46 @@
             "description": "View all commands of the Bot",
             "usage": "/help",
             "icon": "❓"
+        },
+        "checkguild": {
+            "name": "checkguild",
+            "description": "Get informations about another guild. (I need to be in the guild)",
+            "usage": "/checkguild <guild id>",
+            "icon": "📊"
+        },
+        "kickme": {
+            "name": "kickme",
+            "description": "Kick yourself from the server.",
+            "usage": "/kickme",
+            "icon": "🏌️‍♀️"
+        },
+        "poll": {
+            "name": "poll",
+            "description": "Create a quick poll.",
+            "usage": "/poll <questions>",
+            "icon": "🗳"
+        },
+        "reddit_notifier": {
+            "name": "Reddit Notifications",
+            "description": "Get notified when a new post is posted on a subreddit.",
+            "usage": "/reddit_notifier <add/remove> <subreddit> <settings>",
+            "icon": "📣"
+        },
+        "timer": {
+            "name": "Timer",
+            "description": "Create a timer for a specific time and get notified when the time is over.",
+            "usage": "/timer <start/stop> <options>",
+            "icon": "🕐"
+        },
+        "youtube": {
+            "name": "Youtube Notifications",
+            "description": "Get notified when a new video is posted on a youtube.",
+            "usage": "/youtube <add/remove> <subreddit> <settings>",
+            "icon": "📣"
         }
     },
     "levelsystem": {
+        "_name": "levelsystem",
         "_desc": "Get information about your current rank or the leaderboard of the server.",
         "_icon": "🏆",
         "rank": {
@@ -128,9 +174,22 @@
             "description": "View the leaderboard of your current server.",
             "usage": "/leaderboard",
             "icon": "🏆"
+        },
+        "givexp": {
+            "name": "Give xp",
+            "description": "Give xp to a user",
+            "usage": "/givexp <@user/user id> <amount>",
+            "icon": "🎁"
+        },
+        "removexp": {
+            "name": "Remove xp",
+            "description": "Remove xp from a user",
+            "usage": "/removexp <@user/user id> <amount>",
+            "icon": "📉"
         }
     },
     "fun": {
+        "_name": "fun",
         "_desc": "Commands that have no real added value, but are funny",
         "_icon": "😆",
         "cats": {
@@ -162,6 +221,18 @@
             "description": "See how much percent are you compatible with someone else",
             "usage": "/ship <Mention User>",
             "icon": "💕"
+        },
+        "bunny": {
+            "name": "bunny",
+            "description": "View random images from bunnies",
+            "usage": "/bunny",
+            "icon": "🐰"
+        },
+        "stromber": {
+            "name": "stromberg",
+            "description": "Get random stromberg quotes or characters (German Only)",
+            "usage": "/stromberg <type>",
+            "icon": "😂"
         }
     }
 }
