@@ -10,6 +10,8 @@ services:
             context: .
             dockerfile: Dockerfile
         restart: unless-stopped
+        environment:
+            - NODE_ENV=development
         links:
             - mysql
         env_file:
@@ -41,3 +43,19 @@ services:
             test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
             timeout: 5s
             retries: 10
+
+    mysql-backup:
+        image: ubuntu:latest
+        build:
+            context: .
+            dockerfile: Dockerfile.mysqlbackup
+        working_dir: /app
+        volumes:
+            - mysql:/var/lib/mysql
+            - ./backup:/backup
+        env_file:
+            - .env
+        restart: unless-stopped
+        depends_on:
+            - bot
+            - mysql
