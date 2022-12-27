@@ -240,7 +240,9 @@ class Auditlog {
     guildUpdate(guildBefore, guildUpdate) {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
-            this.embed.setDescription(`**Guild updated**\n**Before**\n${guildBefore}\n**After**\n${guildUpdate}`);
+            this.embed.setDescription(
+                `**Guild updated**\n**Before**\n${guildBefore}\n**After**\n${guildUpdate}`
+            );
             resolve(true);
         });
     }
