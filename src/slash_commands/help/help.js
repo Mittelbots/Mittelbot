@@ -94,9 +94,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     components: [row],
                     fetchReply: true,
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
+                .catch((err) => {});
             return;
         }
 
@@ -156,9 +154,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     components: [],
                 });
             }
-        } catch (err) {
-            console.log(err);
-        }
+        } catch (err) {}
     });
 };
 
