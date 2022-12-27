@@ -191,7 +191,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
             this.embed.setDescription(
-                `**Channel updated: <#${channelBefore.id}>** \n ${channelBefore} ---> ${channelUpdate}`
+                `**Channel updated: <#${channelBefore.id}>**\n**Before**\n${channelBefore.name}\n**After**\n${channelUpdate.name}`
             );
             resolve(true);
         });
@@ -240,7 +240,9 @@ class Auditlog {
     guildUpdate(guildBefore, guildUpdate) {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
-            this.embed.setDescription(`**Guild updated** \n ${guildBefore} ---> ${guildUpdate}`);
+            this.embed.setDescription(
+                `**Guild updated**\n**Before**\n${guildBefore}\n**After**\n${guildUpdate}`
+            );
             resolve(true);
         });
     }
@@ -257,7 +259,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
             this.embed.setDescription(
-                `**Role updated: ${roleBefore.name}** \n ${roleBefore.name} ---> ${roleUpdate.name}`
+                `**Role updated: ${roleBefore.name}** \n**Before**\n${roleBefore.name}\n**After**\n${roleUpdate.name}`
             );
             resolve(true);
         });
