@@ -23,7 +23,7 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
         if (!channelid) return;
 
         if (!guild.members.me) {
-            await guild.members.fetch();
+            await guild.members.fetch(process.env.DISCORD_APPLICATION_ID);
         }
         try {
             var hasChannelPerms = dcchannel
