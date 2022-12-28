@@ -2,14 +2,14 @@ require('dotenv').config();
 
 const { Client, Options, GatewayIntentBits, Collection, Partials } = require('discord.js');
 
-const config = require('./src/assets/json/_config/config.json');
-const version = require('./package.json').version;
+const config = require('../../src/assets/json/_config/config.json');
+const version = require('../../package.json').version;
 
-const { errorhandler } = require('./utils/functions/errorhandler/errorhandler');
-const { setActivity } = require('./utils/functions/data/activity');
-const { processErrorHandler } = require('./utils/functions/errorhandler/processErrorHandler');
-const { startBot, acceptBotInteraction } = require('./bot/core/core');
-const { delay } = require('./utils/functions/delay/delay');
+const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
+const { setActivity } = require('../../utils/functions/data/activity');
+const { processErrorHandler } = require('../../utils/functions/errorhandler/processErrorHandler');
+const { startBot, acceptBotInteraction } = require('./core');
+const { delay } = require('../../utils/functions/delay/delay');
 
 processErrorHandler();
 

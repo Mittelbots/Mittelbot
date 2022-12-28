@@ -2,7 +2,7 @@
     "name": "mittelbot",
     "version": "0.53.2",
     "description": "A Discord Bot written in Node.js",
-    "main": "shard.js",
+    "main": "bot/core/shard.js",
     "private": true,
     "scripts": {
         "start": "docker compose up -d && docker logs -f mittelbot",

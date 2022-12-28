@@ -1,12 +1,15 @@
 const fs = require('fs');
-const { log } = require('../../../logs');
+const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports.deployCommands = async (bot) => {
     const modules = fs.readdirSync('./src/commands/');
     modules.forEach((module) => {
         fs.readdir(`./src/commands/${module}`, (err, files) => {
             if (err) {
-                log.warn('Missing folder!', err);
+                errorhandler({
+                    err: err,
+                    fatal: false,
+                });
                 if (JSON.parse(process.env.DEBUG)) console.log(`Mission Folder!!`, err);
             }
             files.forEach((file) => {
