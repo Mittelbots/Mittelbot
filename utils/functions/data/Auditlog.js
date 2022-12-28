@@ -44,9 +44,9 @@ class Auditlog {
         });
     }
 
-    sendToAuditLog(contentBefore) {
+    sendToAuditLog(contentBefore, type = 'auditlog') {
         return new Promise(async (resolve) => {
-            await this.#getLogs(contentBefore.guild.id);
+            await this.#getLogs(contentBefore.guild.id, type);
             if (await this.#checkWhitelist(contentBefore)) return resolve(false);
             this.embed = await this.#generateAuditlogEmbed(contentBefore);
             this.send();
@@ -72,9 +72,10 @@ class Auditlog {
         });
     }
 
-    #getLogs(guild_id) {
+    #getLogs(guild_id, type) {
         return new Promise(async (resolve) => {
-            this.logs = (await Logs.get(guild_id)).auditlog;
+            const settings = await Logs.get(guild_id);
+            this.logs = settings[type];
             this.logs = this.bot.guilds.cache.get(guild_id).channels.cache.get(this.logs);
             resolve(true);
         });
@@ -191,7 +192,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
             this.embed.setDescription(
-                `**Channel updated: <#${channelBefore.id}>** \n ${channelBefore} ---> ${channelUpdate}`
+                `**Channel updated: <#${channelBefore.id}>**\n**Before**\n${channelBefore.name}\n**After**\n${channelUpdate.name}`
             );
             resolve(true);
         });
@@ -240,7 +241,9 @@ class Auditlog {
     guildUpdate(guildBefore, guildUpdate) {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
-            this.embed.setDescription(`**Guild updated** \n ${guildBefore} ---> ${guildUpdate}`);
+            this.embed.setDescription(
+                `**Guild updated**\n**Before**\n${guildBefore}\n**After**\n${guildUpdate}`
+            );
             resolve(true);
         });
     }
@@ -257,7 +260,7 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#021982');
             this.embed.setDescription(
-                `**Role updated: ${roleBefore.name}** \n ${roleBefore.name} ---> ${roleUpdate.name}`
+                `**Role updated: ${roleBefore.name}** \n**Before**\n${roleBefore.name}\n**After**\n${roleUpdate.name}`
             );
             resolve(true);
         });
