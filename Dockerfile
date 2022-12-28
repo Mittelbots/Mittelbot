@@ -11,4 +11,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD [ "nodemon", "index.js" ]
+CMD [ "nodemon", "bot/core/index.js" ]

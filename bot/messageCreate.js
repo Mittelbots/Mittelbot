@@ -1,7 +1,6 @@
 const config = require('../src/assets/json/_config/config.json');
 const { checkActiveCommand } = require('../utils/functions/checkActiveCommand/checkActiveCommand');
 const { checkForScam } = require('../utils/checkForScam/checkForScam');
-const { log } = require('../logs');
 const { delay } = require('../utils/functions/delay/delay');
 const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
@@ -63,8 +62,8 @@ async function messageCreate(message, bot) {
     disabled_modules = guildConfig.disabled_modules;
 
     if (disabled_modules.indexOf('scamdetection') === -1) {
-        const isScam = await checkForScam(message, bot, config, log);
-        if (isScam) return;
+        //const isScam = await checkForScam(message, bot, config, log);
+        //if (isScam) return;
     }
 
     let messageArray = message.content.split(' ');
