@@ -1,8 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { log } = require('../../../logs');
 const { version } = require('../../../package.json');
-const config = require('../../../src/assets/json/_config/config.json');
 const { MemberInfo } = require('../../../utils/functions/data/MemberInfo');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -140,15 +137,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [serverInfoEmbed],
                 ephemeral: true,
             })
-            .catch((err) => {
-                return errorhandler(
-                    err,
-                    config.errormessages.nopermissions.sendEmbedMessages,
-                    main_interaction.channel,
-                    log,
-                    config
-                );
-            });
+            .catch((err) => {});
     }
 
     const axios = require('axios');
@@ -167,15 +156,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             embeds: [memberInfoEmbed],
             ephemeral: isAnonym ? true : false,
         })
-        .catch((err) => {
-            return errorhandler(
-                err,
-                config.errormessages.nopermissions.sendEmbedMessages,
-                main_interaction.channel,
-                log,
-                config
-            );
-        });
+        .catch((err) => {});
 };
 
 module.exports.data = new SlashCommandBuilder()

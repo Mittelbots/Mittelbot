@@ -40,7 +40,7 @@ COPY . .
 
 EXPOSE 5000
 
-CMD [ "node", "shard.js" ]
+CMD [ "node", "bot/core/shard.js" ]
 
 ```
 

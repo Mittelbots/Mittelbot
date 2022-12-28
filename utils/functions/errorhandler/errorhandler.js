@@ -1,4 +1,4 @@
-const { log, debug_log } = require('../../../logs');
+const { log, debug_log } = require('./logs');
 const config = require('../../../src/assets/json/_config/config.json');
 const callerId = require('caller-id');
 
