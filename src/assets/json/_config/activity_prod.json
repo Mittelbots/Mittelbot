@@ -20,10 +20,6 @@
             "showGuildCount": true
         },
         {
-            "text": "Have a beautiful christmas {memberCount} members!!!",
-            "showMemberCount": true
-        },
-        {
             "text": "with {loc} lines of code",
             "showLinesOfCode": true
         },
