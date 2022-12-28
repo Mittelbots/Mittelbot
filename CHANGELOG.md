@@ -15,6 +15,24 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.53.2**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix channel & role update is not showing in logs
+    - fix message logs went to the wrong channel
+    - fix delete on older messages
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.53.1**
 
 ### Added things:
