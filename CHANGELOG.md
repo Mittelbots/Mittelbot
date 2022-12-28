@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.53.3**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - removed christmas status
+    - core fixes & improvements
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.53.2**
 
 ### Added things:
