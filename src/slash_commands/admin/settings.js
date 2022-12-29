@@ -214,53 +214,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
             break;
 
-        case 'log':
-            const auditlog = main_interaction.options.getChannel('auditlog');
-            const messagelog = main_interaction.options.getChannel('messagelog');
-            const modlog = main_interaction.options.getChannel('modlog');
-            const whitelistrole = main_interaction.options.getRole('whitelist');
-            const whitelistchannel = main_interaction.options.getChannel('whitelistchannel');
-            const clear = main_interaction.options.getString('clear');
-
-            if (!auditlog && !messagelog && !modlog && !whitelistrole && !whitelistchannel) {
-                return main_interaction
-                    .followUp({
-                        content: `❌ You must specify at least one log channel! Or add a role/channel to the whitelist!`,
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
-            }
-
-            await Logs.update({
-                guild_id: main_interaction.guild.id,
-                channel: {
-                    auditlog: auditlog,
-                    messagelog: messagelog,
-                    modlog: modlog,
-                },
-                whitelistrole,
-                whitelistchannel,
-                clear,
-            })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            content: res,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-
-            break;
-
         case 'warnroles':
             let warnroles = main_interaction.options.getString('warnroles');
             warnroles = removeMention(warnroles);
@@ -466,61 +419,6 @@ module.exports.data = new SlashCommandBuilder()
                         'Add roles to the list of join roles. Split multiple roles with a space.'
                     )
                     .setRequired(true)
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('log')
-            .setDescription('Choose your log channel.')
-            .addChannelOption((auditlog) =>
-                auditlog
-                    .setName('auditlog')
-                    .setDescription(
-                        'Add a channel to see delted messages or changes from the server.'
-                    )
-                    .setRequired(false)
-            )
-            .addChannelOption((messagelog) =>
-                messagelog
-                    .setName('messagelog')
-                    .setDescription('Add a channel to see edited messages.')
-                    .setRequired(false)
-            )
-            .addChannelOption((modlog) =>
-                modlog
-                    .setName('modlog')
-                    .setDescription(
-                        'Add a channel to see moderation logs for example if a user gets muted.'
-                    )
-                    .setRequired(false)
-            )
-            .addRoleOption((whitelist) =>
-                whitelist
-                    .setName('whitelist')
-                    .setDescription(
-                        "Add a role which won't be logged. [Only available for audit- and messagelog]"
-                    )
-                    .setRequired(false)
-            )
-            .addChannelOption((whitelist) =>
-                whitelist
-                    .setName('whitelistchannel')
-                    .setDescription(
-                        "Add a channel which won't be logged. [Only available for audit- and messagelog]"
-                    )
-                    .setRequired(false)
-            )
-            .addStringOption((clear) =>
-                clear
-                    .setName('clear')
-                    .setDescription(
-                        'Select true if you want to clear the log channels and/or whitelist roles/channels you have selected.'
-                    )
-                    .setRequired(false)
-                    .addChoices({
-                        name: 'Yes',
-                        value: 'true',
-                    })
             )
     )
     .addSubcommand((command) =>
