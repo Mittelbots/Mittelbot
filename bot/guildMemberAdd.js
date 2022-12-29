@@ -32,7 +32,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
         await MemberInfo.add({
             guild_id: member.guild.id,
             user_id: member.user.id,
-            user_joined: new Date().getTime(),
+            user_joined: new Date(),
             member_roles: [],
         });
     } else {
@@ -40,7 +40,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
             await MemberInfo.update({
                 guild_id: member.guild.id,
                 user_id: member.user.id,
-                user_joined: new Date().getTime(),
+                user_joined: new Date(),
             });
         }
     }
