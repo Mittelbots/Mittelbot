@@ -190,11 +190,81 @@ class Auditlog {
 
     channelUpdate(channelBefore, channelUpdate) {
         return new Promise(async (resolve) => {
+            let changedOptions = [];
+            let changedBefore = [];
+            for (let option in channelBefore) {
+                if (channelBefore[option] !== channelUpdate[option]) {
+                    changedBefore.push(channelBefore[option]);
+                    changedOptions.push(option);
+                }
+            }
+            let description = '';
+
+            if (changedOptions.includes('name')) {
+                description += `**Channel name changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('name')]
+                }\n**After**\n${channelUpdate.name}\n\n`;
+            }
+            if (changedOptions.includes('nsfw')) {
+                description += `**Channel nsfw changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('nsfw')]
+                }\n**After**\n${channelUpdate.nsfw}\n\n`;
+            }
+            if (changedOptions.includes('parentId')) {
+                description += `**Channel parent changed**\n**Before**\n<#${
+                    changedBefore[changedOptions.indexOf('parentId')]
+                }>\n**After**\n${channelUpdate.parent}\n\n`;
+            }
+            if (changedOptions.includes('rateLimitPerUser')) {
+                description += `**Channel rateLimitPerUser changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('rateLimitPerUser')]
+                }s\n**After**\n${channelUpdate.rateLimitPerUser || 0}s\n\n`;
+            }
+            if (changedOptions.includes('topic')) {
+                description += `**Channel topic changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('topic')]
+                }\n**After**\n${channelUpdate.topic}\n\n`;
+            }
+            if (changedOptions.includes('type')) {
+                const getRealTypeName = (type) => {
+                    switch (type) {
+                        case 0:
+                            return 'Text';
+                        case 2:
+                            return 'Voice';
+                        case 4:
+                            return 'Category';
+                        case 5:
+                            return 'Announcement Channel';
+                        case 6:
+                            return 'Store';
+                        default:
+                            return 'Unknown';
+                    }
+                };
+                description = `**Channel type changed**\n**Before**\n${getRealTypeName(
+                    changedBefore[changedOptions.indexOf('type')]
+                )}\n**After**\n${getRealTypeName(channelUpdate.type)}\n\n`;
+            }
+            if (changedOptions.includes('userLimit')) {
+                description += `**Channel userLimit changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('userLimit')]
+                }\n**After**\n${channelUpdate.userLimit}\n\n`;
+            }
+            if (changedOptions.includes('bitrate')) {
+                description += `**Channel bitrate changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('bitrate')]
+                }\n**After**\n${channelUpdate.bitrate}\n\n`;
+            }
+            //TODO add permission overwrites
+
             this.embed.setColor('#021982');
-            this.embed.setDescription(
-                `**Channel updated: <#${channelBefore.id}>**\n**Before**\n${channelBefore.name}\n**After**\n${channelUpdate.name}`
-            );
-            resolve(true);
+            try {
+                this.embed.setDescription(description);
+                resolve(true);
+            } catch (e) {
+                resolve(false);
+            }
         });
     }
 
@@ -258,11 +328,46 @@ class Auditlog {
 
     roleUpdate(roleBefore, roleUpdate) {
         return new Promise(async (resolve) => {
-            this.embed.setColor('#021982');
-            this.embed.setDescription(
-                `**Role updated: ${roleBefore.name}** \n**Before**\n${roleBefore.name}\n**After**\n${roleUpdate.name}`
-            );
-            resolve(true);
+            let changedOptions = [];
+            let changedBefore = [];
+            for (let option in roleBefore) {
+                if (roleBefore[option] !== roleUpdate[option]) {
+                    changedBefore.push(roleBefore[option]);
+                    changedOptions.push(option);
+                }
+            }
+
+            let description = '';
+
+            if (changedOptions.includes('name')) {
+                description += `**Role name changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('name')]
+                }\n**After**\n${roleUpdate.name}\n\n`;
+            }
+            if (changedOptions.includes('color')) {
+                description += `**Role color changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('color')]
+                }\n**After**\n${roleUpdate.color}\n\n`;
+            }
+            if (changedOptions.includes('hoist')) {
+                description += `**Role hoist changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('hoist')]
+                }\n**After**\n${roleUpdate.hoist}\n\n`;
+            }
+            if (changedOptions.includes('mentionable')) {
+                description += `**Role mentionable changed**\n**Before**\n${
+                    changedBefore[changedOptions.indexOf('mentionable')]
+                }\n**After**\n${roleUpdate.mentionable}\n\n`;
+            }
+            //TODO add permissions
+
+            try {
+                this.embed.setColor('#021982');
+                this.embed.setDescription(description);
+                resolve(true);
+            } catch (e) {
+                resolve(false);
+            }
         });
     }
 
