@@ -8,7 +8,7 @@ module.exports.saveAllRoles = async (roles, member, guild) => {
             guild_id: guild.id,
             user_id: member.id,
             member_roles: roles,
-            user_joined: new Intl.DateTimeFormat('de-DE').format(member.joinedAt),
+            user_joined: new Date(member.joinedAt),
         });
     } else {
         return await MemberInfo.update({
