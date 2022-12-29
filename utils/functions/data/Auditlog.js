@@ -258,8 +258,8 @@ class Auditlog {
             }
             //TODO add permission overwrites
 
-            this.embed.setColor('#021982');
             try {
+                this.embed.setColor('#021982');
                 this.embed.setDescription(description);
                 resolve(true);
             } catch (e) {
