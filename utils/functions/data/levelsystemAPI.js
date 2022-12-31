@@ -497,57 +497,57 @@ class Levelsystem {
 
     sendNewLevelMessage(newLevel, message, currentxp, nextlevel) {
         return new Promise(async (resolve) => {
-        const guildConfig = await GuildConfig.get(message.guild.id);
+            const guildConfig = await GuildConfig.get(message.guild.id);
 
-    const levelsettings = guildConfig.levelsettings;
+            const levelsettings = guildConfig.levelsettings;
 
-    const newLevelMessage = new EmbedBuilder()
-        .setTitle('🎉 You reached a new Level!')
-        .addFields([
-            {
-                name: `You reached Level: `,
-                value: `**${newLevel}**`,
-            },
-            {
-                name: `Your XP: `,
-                value: `**${currentxp}**`,
-            },
-            {
-                name: `Next Level: `,
-                value: `**${nextlevel.level}**, required: **${nextlevel.xp} xp**`,
-            },
-        ])
-        .setTimestamp();
+            const newLevelMessage = new EmbedBuilder()
+                .setTitle('🎉 You reached a new Level!')
+                .addFields([
+                    {
+                        name: `You reached Level: `,
+                        value: `**${newLevel}**`,
+                    },
+                    {
+                        name: `Your XP: `,
+                        value: `**${currentxp}**`,
+                    },
+                    {
+                        name: `Next Level: `,
+                        value: `**${nextlevel.level}**, required: **${nextlevel.xp} xp**`,
+                    },
+                ])
+                .setTimestamp();
 
-    try {
-        if (levelsettings.level_up_channel !== 'dm') {
-            if (level_up_channel === 'disable') return;
+            try {
+                if (levelsettings.level_up_channel !== 'dm') {
+                    if (level_up_channel === 'disable') return;
 
-            const channel = await message.guild.channels.cache.get(levelsettings.level_up_channel);
-            channel
-                .send({
-                    content: `${message.author}`,
-                    embeds: [newLevelMessage],
-                })
-                .catch((err) => {
-                    return;
-                });
-        } else {
-            message.author
-                .send({
-                    embeds: [newLevelMessage],
-                })
-                .catch((err) => {
-                    return;
-                });
-        }
-        resolve(true)
-    } catch (err) {
-        return resolve(false);
+                    const channel = await message.guild.channels.cache.get(
+                        levelsettings.level_up_channel
+                    );
+                    channel
+                        .send({
+                            content: `${message.author}`,
+                            embeds: [newLevelMessage],
+                        })
+                        .catch((err) => {
+                            return;
+                        });
+                } else {
+                    message.author
+                        .send({
+                            embeds: [newLevelMessage],
+                        })
+                        .catch((err) => {
+                            return;
+                        });
+                }
+                resolve(true);
+            } catch (err) {
+                return resolve(false);
+            }
+        });
     }
-});
-
-}
-
 }
 module.exports.Levelsystem = new Levelsystem();
