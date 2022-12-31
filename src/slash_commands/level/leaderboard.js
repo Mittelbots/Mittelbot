@@ -52,9 +52,21 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     if (!isInTopTen) {
-        lb_embed.addFields([
-            { name: `Your current rank: ${userRank}`, value: `XP: ${userXP}  Level: ${userLevel}` },
-        ]);
+        if (userRank && userXP && userLevel) {
+            lb_embed.addFields([
+                {
+                    name: `Your current rank: ${userRank}`,
+                    value: `XP: ${userXP}  Level: ${userLevel}`,
+                },
+            ]);
+        } else {
+            lb_embed.addFields([
+                {
+                    name: `You don't have a rank yet.`,
+                    value: `Write your first messages to gain xp.`,
+                },
+            ]);
+        }
     }
 
     return main_interaction
