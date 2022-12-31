@@ -15,10 +15,8 @@ module.exports.antiInvite = async (message, bot) => {
         user_roles: message.member.roles.cache,
     });
     if (isWhitelist) return false;
-
-    const antiinvitesetting = antiInviteSetting.antiinvite;
-    if (!antiinvitesetting) return false;
-    if (!antiinvitesetting.enabled) return false;
+    if (!antiInviteSetting) return false;
+    if (!antiInviteSetting.enabled) return false;
 
     let inviteRegex =
         /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-zA-Z0-9]/;
@@ -26,8 +24,8 @@ module.exports.antiInvite = async (message, bot) => {
     const isInvite = message.content.match(inviteRegex) ? true : false;
 
     if (isInvite) {
-        if (antiinvitesetting.action) {
-            switch (antiinvitesetting.action) {
+        if (antiInviteSetting.action) {
+            switch (antiInviteSetting.action) {
                 case 'kick':
                     kickUser({
                         user: message.author,

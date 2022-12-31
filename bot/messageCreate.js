@@ -10,6 +10,7 @@ const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
+const { anitLinks } = require('../utils/automoderation/antiLinks');
 
 const defaultCooldown = new Set();
 
@@ -42,7 +43,7 @@ async function messageCreate(message, bot) {
     if (isSpam) {
         errorhandler({
             fatal: false,
-            message: `${main_interaction.user.id} has spammed in ${main_interaction.guild.id}.`,
+            message: `${message.user.id} has spammed in ${message.guild.id}.`,
         });
         return;
     }
@@ -51,7 +52,16 @@ async function messageCreate(message, bot) {
     if (isInvite) {
         errorhandler({
             fatal: false,
-            message: `${main_interaction.user.id} has sent an invite in ${main_interaction.guild.id}.`,
+            message: `${message.user.id} has sent an invite in ${message.guild.id}.`,
+        });
+        return;
+    }
+
+    const isLink = await anitLinks(message, bot);
+    if (isLink) {
+        errorhandler({
+            fatal: false,
+            message: `${message.user.id} has sent a link in ${message.guild.id}.`,
         });
         return;
     }

@@ -4,7 +4,7 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const setting = await Automod.get(main_interaction.guild.id);
-
+    
     switch (main_interaction.options.getSubcommand()) {
         case 'whitelistroles':
             if (!setting.whitelistrole) {
@@ -150,6 +150,51 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 });
             break;
+
+            case 'antilinks':
+            const antiLinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
+            const antiLinksAction = main_interaction.options.getString('action');
+
+            switch (true) {
+                case !setting.antilinks:
+                    setting.antilinks = {
+                        enabled: antiLinksEnabled,
+                        action: antiLinksAction,
+                    };
+                    break;
+            }
+
+            setting.antilinks.enabled = antiLinksEnabled;
+            setting.antilinks.action = antiLinksAction;
+
+            Automod.update({
+                guild_id: main_interaction.guild.id,
+                value: setting,
+                type: setting.antilinks.action,
+            })
+                .then((res) => {
+                    errorhandler({
+                        fatal: false,
+                        message: `${main_interaction.guild.id} has been updated the antilinks config.`,
+                    });
+                    main_interaction
+                        .reply({
+                            content: setting.antilinks.enabled
+                                ? res
+                                : '✅ Successfully disabled Anti-Links.',
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    main_interaction
+                        .reply({
+                            content: err,
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
+            break;
     }
 };
 
@@ -226,6 +271,51 @@ module.exports.data = new SlashCommandBuilder()
         command
             .setName('antiinvite')
             .setDescription('Prevent user from sending discord invite links.')
+            .addStringOption((option) =>
+                option
+                    .setName('enabled')
+                    .setDescription('Enable/disable anti-invite.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'true',
+                        value: 'true',
+                    })
+                    .addChoices({
+                        name: 'false',
+                        value: 'false',
+                    })
+            )
+            .addStringOption((option) =>
+                option
+                    .setName('action')
+                    .setDescription('Select an action to take.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'ban',
+                        value: 'ban',
+                    })
+                    .addChoices({
+                        name: 'kick',
+                        value: 'kick',
+                    })
+                    .addChoices({
+                        name: 'mute',
+                        value: 'mute',
+                    })
+                    .addChoices({
+                        name: 'delete',
+                        value: 'delete',
+                    })
+                    .addChoices({
+                        name: 'warn',
+                        value: 'warn',
+                    })
+            )
+    )
+    .addSubcommand((command) =>
+        command
+            .setName('antilinks')
+            .setDescription('Prevent user from sending all kind of links.')
             .addStringOption((option) =>
                 option
                     .setName('enabled')
