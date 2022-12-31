@@ -5,7 +5,6 @@ const { kickUser } = require('../functions/moderations/kickUser');
 const { muteUser } = require('../functions/moderations/muteUser');
 const { warnUser } = require('../functions/moderations/warnUser');
 
-
 module.exports.antiInvite = async (message, bot) => {
     const settings = await Automod.get(message.guild.id);
     const antiInviteSetting = settings.antiinvite;

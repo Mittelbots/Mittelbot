@@ -5,9 +5,8 @@ const { kickUser } = require('../functions/moderations/kickUser');
 const { muteUser } = require('../functions/moderations/muteUser');
 const { warnUser } = require('../functions/moderations/warnUser');
 
-
 module.exports.anitLinks = async (message, bot) => {
-    return new Promise(async (resolve, reject) => { 
+    return new Promise(async (resolve, reject) => {
         const setting = await Automod.get(message.guild.id);
         const antiLinksSetting = setting.antilinks;
         if (!antiLinksSetting || antiLinksSetting.length === 0) return resolve(false);
@@ -40,7 +39,7 @@ module.exports.anitLinks = async (message, bot) => {
                     user: message.author,
                     mod: message.guild.me,
                     guild: message.guild,
-                    reason: '[AUTO MOD] Sent a link', 
+                    reason: '[AUTO MOD] Sent a link',
                     bot,
                     isAuto: true,
                     time: '5d',
@@ -62,9 +61,10 @@ module.exports.anitLinks = async (message, bot) => {
                 message
                     .delete({
                         reason: '[AUTO MOD] Sent a link',
-                    }).catch(err => {});
+                    })
+                    .catch((err) => {});
                 break;
-            
+
             case 'warn':
                 warnUser({
                     user: message.author,
@@ -80,4 +80,4 @@ module.exports.anitLinks = async (message, bot) => {
 
         return resolve(true);
     });
-}
+};

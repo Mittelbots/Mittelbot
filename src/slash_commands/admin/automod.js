@@ -4,7 +4,7 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const setting = await Automod.get(main_interaction.guild.id);
-    
+
     switch (main_interaction.options.getSubcommand()) {
         case 'whitelistroles':
             if (!setting.whitelistrole) {
@@ -151,7 +151,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
             break;
 
-            case 'antilinks':
+        case 'antilinks':
             const antiLinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
             const antiLinksAction = main_interaction.options.getString('action');
 
