@@ -1,11 +1,10 @@
 const config = require('../src/assets/json/_config/config.json');
 const { checkActiveCommand } = require('../utils/functions/checkActiveCommand/checkActiveCommand');
-const { checkForScam } = require('../utils/checkForScam/checkForScam');
 const { delay } = require('../utils/functions/delay/delay');
-const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
+const { antiSpam } = require('../utils/automoderation/antiSpam');
+const { antiInvite } = require('../utils/automoderation/antiInvite');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
-const { Automod } = require('../utils/functions/data/Automod');
 const { Afk } = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../utils/functions/data/Config');
