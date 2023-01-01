@@ -130,7 +130,7 @@ class Auditlog {
 
     checkEnabledEvents(guild_id, eventName) {
         return new Promise(async (resolve) => {
-            const isEnabled = await Logs.isEventEnabled({ guild_id, event: eventName });
+            const isEnabled = await Logs.isEventEnabled({guild_id, event: eventName});
             resolve(isEnabled);
         });
     }
