@@ -196,7 +196,7 @@ module.exports.data = new SlashCommandBuilder()
                 option
                     .setName('channel')
                     .setDescription(
-                        'Add a chennel if you want to send levelup messages to a text channel'
+                        'Add a channel if you want to send levelup messages to a text channel'
                     )
                     .setRequired(false)
             )
