@@ -167,11 +167,13 @@ class Infractions {
     getClosed({ user_id, guild_id }) {
         return new Promise(async (resolve) => {
             const guild = await Guilds.get(guild_id);
-            return guild.getClosedInfractions({
-                where: {
-                    user_id,
-                },
-            });
+            return resolve(
+                guild.getClosedInfractions({
+                    where: {
+                        user_id,
+                    },
+                })
+            );
         });
     }
 
