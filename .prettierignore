@@ -6,3 +6,5 @@ mittelblot-db-backup/
 *bootstrap*
 *bootstrap*
 *vendor*
+
+utils/functions/data/Auditlog.js
