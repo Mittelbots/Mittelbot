@@ -80,21 +80,16 @@ class Levelsystem {
     check(guildid, currentxp, message) {
         return new Promise(async (resolve) => {
             const levelSettings = await this.getSetting(guildid);
+            let level;
+            let nextlevel;
 
-            var level;
-            var nextlevel;
-
-            const setting = levelConfig[levelSettings];
-
+            const setting = levelConfig[levelSettings.mode];
             if (!setting) return resolve(false);
 
             for (let i in setting) {
                 if (setting[i].xp <= currentxp) {
-                    newRoleDB = setting[i];
                     level = setting[i].level;
-
                     nextlevel = setting[Number(i) + 1];
-
                     continue;
                 } else if (setting[i].xp > currentxp) {
                     continue;
@@ -103,11 +98,11 @@ class Levelsystem {
 
             const level_announce = await this.getLevelAnnounce(guildid, message.author.id);
 
-            if (level_announce && Number(level_announce) < Number(level)) {
+            if (Number(level_announce) < Number(level)) {
                 this.update({
                     guild_id: guildid,
                     user_id: message.author.id,
-                    val: level,
+                    value: level,
                     valueName: 'level_announce',
                 });
                 return resolve([level, nextlevel]);
@@ -244,7 +239,7 @@ class Levelsystem {
         });
     }
 
-    generate({ lvl_count = 1, mode = '0' }) {
+    generate({ lvl_count = 1, mode = 'normal' }) {
         return new Promise((resolve, rejects) => {
             var xp = 10;
             var config = {
@@ -324,9 +319,9 @@ class Levelsystem {
                 });
                 prev = obj.xp;
             }
-            fs.writeFileSync('./utils/functions/levelsystem/levelconfig.json', '', 'utf8');
+            fs.writeFileSync('./src/assets/json/levelsystem/levelconfig.json', '', 'utf8');
             fs.writeFileSync(
-                './utils/functions/levelsystem/levelconfig.json',
+                './src/assets/json/levelsystem/levelconfig.json',
                 JSON.stringify(config),
                 'utf8'
             );
@@ -365,9 +360,9 @@ class Levelsystem {
     runLevelSystem(message) {
         return new Promise(async (resolve) => {
             if (message.author.bot || message.author.system) {
-                return {
+                return resolve({
                     error: 'bot',
-                };
+                });
             }
 
             const isBlacklistChannel = await this.checkBlacklist({
@@ -375,9 +370,9 @@ class Levelsystem {
             });
 
             if (isBlacklistChannel)
-                return {
+                return resolve({
                     error: 'blacklist',
-                };
+                });
 
             const currentxp = await this.gain({
                 guild_id: message.guild.id,
@@ -385,9 +380,9 @@ class Levelsystem {
             });
 
             if (!currentxp)
-                return {
+                return resolve({
                     error: 'noxp',
-                };
+                });
 
             const newxp = this.generateNewXp(currentxp);
 
@@ -398,9 +393,9 @@ class Levelsystem {
                 valueName: 'xp',
             });
             if (!updateXP) {
-                return {
+                return resolve({
                     error: 'updatexp',
-                };
+                });
             }
 
             await this.updateMessageCount({
@@ -409,18 +404,17 @@ class Levelsystem {
             });
 
             const checkXP = await this.check(message.guild.id, newxp, message);
-            if (!checkXP)
-                return {
+            if (!checkXP) {
+                return resolve({
                     error: 'checkxp',
-                };
+                });
+            }
 
             await this.sendNewLevelMessage(checkXP[0], message, newxp, checkXP[1]);
 
-            currentxp, newxp, updateXP, (checkXP = null);
-
-            return {
+            return resolve({
                 error: 'none',
-            };
+            });
         });
     }
 
@@ -500,56 +494,60 @@ class Levelsystem {
                 : resolve(false);
         });
     }
-}
 
-module.exports.Levelsystem = new Levelsystem();
+    sendNewLevelMessage(newLevel, message, currentxp, nextlevel) {
+        return new Promise(async (resolve) => {
+            const guildConfig = await GuildConfig.get(message.guild.id);
 
-module.exports.sendNewLevelMessage = async function (newLevel, message, currentxp, nextlevel) {
-    const guildConfig = await GuildConfig.get(message.guild.id);
+            const levelsettings = guildConfig.levelsettings;
 
-    const levelsettings = guildConfig.levelsettings;
+            const newLevelMessage = new EmbedBuilder()
+                .setTitle('🎉 You reached a new Level!')
+                .addFields([
+                    {
+                        name: `You reached Level: `,
+                        value: `**${newLevel}**`,
+                    },
+                    {
+                        name: `Your XP: `,
+                        value: `**${currentxp}**`,
+                    },
+                    {
+                        name: `Next Level: `,
+                        value: `**${nextlevel.level}**, required: **${nextlevel.xp} xp**`,
+                    },
+                ])
+                .setTimestamp();
 
-    const newLevelMessage = new EmbedBuilder()
-        .setTitle('🎉 You reached a new Level!')
-        .addFields([
-            {
-                name: `You reached Level: `,
-                value: `**${newLevel}**`,
-            },
-            {
-                name: `Your XP: `,
-                value: `**${currentxp}**`,
-            },
-            {
-                name: `Next Level: `,
-                value: `**${nextlevel.level}**, required: **${nextlevel.xp} xp**`,
-            },
-        ])
-        .setTimestamp();
+            try {
+                if (levelsettings.level_up_channel !== 'dm') {
+                    if (level_up_channel === 'disable') return;
 
-    try {
-        if (levelsettings.level_up_channel !== 'dm') {
-            if (level_up_channel === 'disable') return;
-
-            const channel = await message.guild.channels.cache.get(levelsettings.level_up_channel);
-            channel
-                .send({
-                    content: `${message.author}`,
-                    embeds: [newLevelMessage],
-                })
-                .catch((err) => {
-                    return;
-                });
-        } else {
-            message.author
-                .send({
-                    embeds: [newLevelMessage],
-                })
-                .catch((err) => {
-                    return;
-                });
-        }
-    } catch (err) {
-        return;
+                    const channel = await message.guild.channels.cache.get(
+                        levelsettings.level_up_channel
+                    );
+                    channel
+                        .send({
+                            content: `${message.author}`,
+                            embeds: [newLevelMessage],
+                        })
+                        .catch((err) => {
+                            return;
+                        });
+                } else {
+                    message.author
+                        .send({
+                            embeds: [newLevelMessage],
+                        })
+                        .catch((err) => {
+                            return;
+                        });
+                }
+                resolve(true);
+            } catch (err) {
+                return resolve(false);
+            }
+        });
     }
-};
+}
+module.exports.Levelsystem = new Levelsystem();

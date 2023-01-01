@@ -150,6 +150,103 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 });
             break;
+
+        case 'antilinks':
+            const antiLinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
+            const antiLinksAction = main_interaction.options.getString('action');
+
+            switch (true) {
+                case !setting.antilinks:
+                    setting.antilinks = {
+                        enabled: antiLinksEnabled,
+                        action: antiLinksAction,
+                    };
+                    break;
+            }
+
+            setting.antilinks.enabled = antiLinksEnabled;
+            setting.antilinks.action = antiLinksAction;
+
+            Automod.update({
+                guild_id: main_interaction.guild.id,
+                value: setting,
+                type: setting.antilinks.action,
+            })
+                .then((res) => {
+                    errorhandler({
+                        fatal: false,
+                        message: `${main_interaction.guild.id} has been updated the antilinks config.`,
+                    });
+                    main_interaction
+                        .reply({
+                            content: setting.antilinks.enabled
+                                ? res
+                                : '✅ Successfully disabled Anti-Links.',
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    main_interaction
+                        .reply({
+                            content: err,
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
+            break;
+
+        case 'antiinsults':
+            const antiInsultsEnabled = JSON.parse(main_interaction.options.getString('enabled'));
+            const antiInsultsAction = main_interaction.options.getString('action');
+            const words = main_interaction.options.getString('words');
+            const removeWords = main_interaction.options.getString('remove');
+
+            switch (true) {
+                case !setting.antiinsults:
+                    setting.antiinsults = {
+                        enabled: antiInsultsEnabled,
+                        action: antiInsultsAction,
+                    };
+                    break;
+            }
+
+            setting.antiinsults.enabled = antiInsultsEnabled;
+            setting.antiinsults.action = antiInsultsAction;
+            if (setting.antiinsults.words === undefined)
+                setting.antiinsults.words = [words.join(',')];
+            setting.antiinsults.words = removeWords
+                ? setting.antiinsults.words.filter((word) => word !== words)
+                : [...setting.antiinsults.words, words.join(',')];
+
+            Automod.update({
+                guild_id: main_interaction.guild.id,
+                value: setting,
+                type: setting.antiinsults.action,
+            })
+                .then((res) => {
+                    errorhandler({
+                        fatal: false,
+                        message: `${main_interaction.guild.id} has been updated the anti Insults config.`,
+                    });
+                    main_interaction
+                        .reply({
+                            content: setting.antiinsults.enabled
+                                ? res
+                                : '✅ Successfully disabled Anti-Links.',
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    main_interaction
+                        .reply({
+                            content: err,
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
+            break;
     }
 };
 
@@ -264,6 +361,69 @@ module.exports.data = new SlashCommandBuilder()
                     .addChoices({
                         name: 'warn',
                         value: 'warn',
+                    })
+            )
+    )
+    .addSubcommand((command) =>
+        command
+            .setName('antiinsults')
+            .setDescription('Prevent user from sending all kind of links.')
+            .addStringOption((option) =>
+                option
+                    .setName('enabled')
+                    .setDescription('Enable/disable anti-invite.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'true',
+                        value: 'true',
+                    })
+                    .addChoices({
+                        name: 'false',
+                        value: 'false',
+                    })
+            )
+            .addStringOption((option) =>
+                option
+                    .setName('action')
+                    .setDescription('Select an action to take.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'ban',
+                        value: 'ban',
+                    })
+                    .addChoices({
+                        name: 'kick',
+                        value: 'kick',
+                    })
+                    .addChoices({
+                        name: 'mute',
+                        value: 'mute',
+                    })
+                    .addChoices({
+                        name: 'delete',
+                        value: 'delete',
+                    })
+                    .addChoices({
+                        name: 'warn',
+                        value: 'warn',
+                    })
+            )
+            .addStringOption((option) =>
+                option
+                    .setName('words')
+                    .setDescription(
+                        'Add words to the insult list separated by comma. Example: "Insult,Insult2,Insult3"'
+                    )
+                    .setRequired(false)
+            )
+            .addStringOption((option) =>
+                option
+                    .setName('remove')
+                    .setDescription('Select if you want to remove the given words from the list.')
+                    .setRequired(false)
+                    .addChoices({
+                        name: 'True',
+                        value: 'remove',
                     })
             )
     );

@@ -48,9 +48,11 @@ class Logs {
             } else {
                 if (channel.auditlog) {
                     logs.auditlog = clear ? null : channel.auditlog.id;
-                } else if (channel.messagelog) {
+                }
+                if (channel.messagelog) {
                     logs.messagelog = clear ? null : channel.messagelog.id;
-                } else if (channel.modlog) {
+                }
+                if (channel.modlog) {
                     logs.modlog = clear ? null : channel.modlog.id;
                 }
             }

@@ -3,6 +3,7 @@ const { GlobalConfig } = require('./GlobalConfig');
 const { Levelsystem } = require('./levelsystemAPI');
 const { spawn } = require('child_process');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { AttachmentBuilder } = require('discord.js');
 
 module.exports.checkOwnerCommand = async (message) => {
     const args = message.content.split(' ');
@@ -23,6 +24,9 @@ module.exports.checkOwnerCommand = async (message) => {
             break;
         case 'disablecommand':
             this.disable_command(message, args);
+            break;
+        case 'exportlogs':
+            this.export_logs(message, args);
             break;
         default:
             break;
