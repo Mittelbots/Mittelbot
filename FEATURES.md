@@ -26,6 +26,7 @@
 ## Administration
 
 ---
+
     - automod whitelistroles [role]
     - automod antispam [enabled] [action]
     - automod antiinvite [enabled] [action]
@@ -52,7 +53,7 @@
 
     - levelsettings [mode (easy/normal/hard)]
     - levelsettings blacklistchannels
-    - levelup [type (dm, channel, disable)] 
+    - levelup [type (dm, channel, disable)]
 
     - modules [module] [Activate/Deactivate]
 
