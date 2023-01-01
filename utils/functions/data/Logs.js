@@ -76,6 +76,49 @@ class Logs {
                 });
         });
     }
+
+    updateEvents({ guild_id, events, disable = false }) {
+        return new Promise(async (resolve, reject) => {
+            const logs = await this.get(guild_id);
+
+            if (!logs.events) {
+                logs.events = [];
+            }
+
+            if (disable) {
+                logs.events = [...logs.events, events];
+            } else {
+                logs.events = logs.events.filter((event) => !events.includes(event));
+            }
+
+            await GuildConfig.update({
+                guild_id,
+                value: logs,
+                valueName: 'logs',
+            })
+                .then(() => {
+                    return resolve(true);
+                })
+                .catch(() => {
+                    return reject(false);
+                });
+        });
+    }
+
+    getEvents({ guild_id }) {
+        return new Promise(async (resolve) => {
+            const logs = await this.get(guild_id);
+            return resolve(logs.events);
+        });
+    }
+
+    isEventEnabled({ guild_id, event }) {
+        return new Promise(async (resolve) => {
+            const events = await this.getEvents({ guild_id });
+            const isDisabled = events.includes(event);
+            return resolve(!isDisabled);
+        });
+    }
 }
 
 module.exports.Logs = new Logs();

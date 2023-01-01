@@ -128,6 +128,13 @@ class Auditlog {
         });
     }
 
+    checkEnabledEvents(guild_id, eventName) {
+        return new Promise(async (resolve) => {
+            const isEnabled = await Logs.isEventEnabled({ guild_id, event: eventName });
+            resolve(isEnabled);
+        });
+    }
+
     /* 
         ===============================================
         =============  GUILD EVENTS  ==================
@@ -222,7 +229,7 @@ class Auditlog {
             }
             if (changedOptions.includes('topic')) {
                 description += `**Channel topic changed**\n**Before**\n${
-                    changedBefore[changedOptions.indexOf('topic')]
+                    changedBefore[changedOptions.indexOf('topic')] || 'None'
                 }\n**After**\n${channelUpdate.topic}\n\n`;
             }
             if (changedOptions.includes('type')) {
@@ -248,7 +255,7 @@ class Auditlog {
             }
             if (changedOptions.includes('userLimit')) {
                 description += `**Channel userLimit changed**\n**Before**\n${
-                    changedBefore[changedOptions.indexOf('userLimit')]
+                    changedBefore[changedOptions.indexOf('userLimit')] || 'None'
                 }\n**After**\n${channelUpdate.userLimit}\n\n`;
             }
             if (changedOptions.includes('bitrate')) {
