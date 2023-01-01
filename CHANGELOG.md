@@ -15,6 +15,26 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.0**
+
+### Added things:
+
+    - added anitlink feature for automoderation
+    - added antiinsult feature for automoderation
+
+### Bug fixes & other changes:
+
+    - switched log setting to own command /log
+    - fixed the level system
+    - fixed undefined in own statistics when using /leaderboard
+    - core fixes & improvements
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.53.4**
 
 ### Added things:
