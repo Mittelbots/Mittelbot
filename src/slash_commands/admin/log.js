@@ -82,6 +82,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .catch((err) => {
                     sendResponse(err);
                 });
+            break;
+
+        case 'events':
+            const event = main_interaction.options.getString('event');
+            const status = main_interaction.options.getString('status');
+
+            await Logs.updateEvents({
+                guild_id: main_interaction.guild.id,
+                events: event,
+                disable: status === 'disable' ? true : false,
+            });
+
+            sendResponse(`✅ Event ${event} has been ${status}d`);
     }
 
     function sendResponse(res) {
@@ -176,5 +189,78 @@ module.exports.data = new SlashCommandBuilder()
                     .setName('channel')
                     .setDescription('Select a channel to remove from the whitelist.')
                     .setRequired(true)
+            )
+    )
+    .addSubcommand((subcommand) =>
+        subcommand
+            .setName('events')
+            .setDescription('Disable or enable specific auditlog events.')
+            .addStringOption((string) =>
+                string
+                    .setName('event')
+                    .setDescription('Select an event to disable or enable.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'Message Delete',
+                        value: 'message_delete',
+                    })
+                    .addChoices({
+                        name: 'Message Bulk Delete',
+                        value: 'message_bulk_delete',
+                    })
+                    .addChoices({
+                        name: 'Message Update',
+                        value: 'message_update',
+                    })
+                    .addChoices({
+                        name: 'Member Ban',
+                        value: 'member_ban_add',
+                    })
+                    .addChoices({
+                        name: 'Member Unban',
+                        value: 'member_ban_remove',
+                    })
+                    .addChoices({
+                        name: 'Channel Create',
+                        value: 'channel_create',
+                    })
+                    .addChoices({
+                        name: 'Channel Delete',
+                        value: 'channel_delete',
+                    })
+                    .addChoices({
+                        name: 'Channel Update',
+                        value: 'channel_update',
+                    })
+                    .addChoices({
+                        name: 'Channel Update',
+                        value: 'channel_update',
+                    })
+                    .addChoices({
+                        name: 'Role Create',
+                        value: 'role_create',
+                    })
+                    .addChoices({
+                        name: 'Role Delete',
+                        value: 'role_delete',
+                    })
+                    .addChoices({
+                        name: 'Role Update',
+                        value: 'role_update',
+                    })
+            )
+            .addStringOption((string) =>
+                string
+                    .setName('status')
+                    .setDescription('Disable or enable the event.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'Disable',
+                        value: 'disable',
+                    })
+                    .addChoices({
+                        name: 'Enable',
+                        value: 'enable',
+                    })
             )
     );

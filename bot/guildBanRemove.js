@@ -1,6 +1,10 @@
+const Auditlog = require('../utils/functions/data/Auditlog');
 const { setNewModLogMessage } = require('../utils/modlog/modlog');
 
 module.exports.guildBanAdd = async (bot, guild, user) => {
+    const auditLog = new Auditlog();
+    const isEnabled = await auditLog.checkEnabledEvents(guild.id, 'member_ban_remove');
+    if (!isEnabled) return;
     const fetchedLogs = await guild.fetchAuditLogs({
         limit: 1,
         type: 'MEMBER_BAN_REMOVED',
