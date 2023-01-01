@@ -26,6 +26,12 @@
 ## Administration
 
 ---
+    - automod whitelistroles [role]
+    - automod antispam [enabled] [action]
+    - automod antiinvite [enabled] [action]
+    - automod antilink [enabled] [action]
+
+    - autotranslate [target channel] [log channel] [language]
 
     - settings [setting] [value] ( ...[more values] )
     - - settings welcomechannel [#channel]
@@ -34,9 +40,6 @@
     - - settings dmcau [boolean]
     - - settings dcau [boolean]
     - - settings joinroles [roles, ...]
-    - - settings auditlog [#channel]
-    - - settings messagelog [#channel]
-    - - settings modlog [#channel]
     - - settings warnroles [role, ...]
 
     - mods [setting] [value] ( ...[more values] )
@@ -47,10 +50,14 @@
     - - scam delete [link]
     - - scam view ([link])
 
-    - levelsettings [setting]
-    - -  levelsettings rank
+    - levelsettings [mode (easy/normal/hard)]
+    - levelsettings blacklistchannels
+    - levelup [type (dm, channel, disable)] 
 
     - modules [module] [Activate/Deactivate]
+
+    - log set auditlog/messagelog/modlog [#channel]
+    - log remove [#channel]
 
 <br>
 
@@ -63,10 +70,13 @@
     - dogs
     - guessnumber
     - ship [mention/userid]
+    - bunny
+    - pride [type (genders, sexualities)]
+    - stromberg [type (quotes, characters)]
 
 <br>
 
-## Information
+## Utilities
 
 ---
 
@@ -74,3 +84,33 @@
     - ping
     - rank (mention)
     - help
+    - afk [reason]
+    - checkguild [guildid]
+    - kickme
+    - poll [question]
+    - reddit_notifier add [subreddit] [channel] [pingrole] [allow_nsfw]
+    - reddit_notifier remove [subreddit]
+    - timer start [days] [hours] [minutes] [seconds] [end message] [channel]
+    - timer stop
+    - youtube add [ytchannel] [dcchannel] [pingrole]
+    - youtube remove
+
+<br>
+
+## Level
+
+---
+
+    - leaderboard
+    - rank [mention/userid]
+    - givexp [mention/userid] [amount]
+    - removexp [mention/userid] [amount]
+
+<br>
+
+## Help
+
+---
+
+    - help
+    - tutorial
