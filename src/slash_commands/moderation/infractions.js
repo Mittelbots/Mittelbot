@@ -25,13 +25,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     }
-
+    
     switch (main_interaction.options.getSubcommand()) {
         case 'all':
             const user = main_interaction.options.getUser('user');
-
-            var closed = [];
-            var open = [];
 
             const closed_infractions = await Infractions.getClosed({
                 user_id: user.id,
@@ -46,16 +43,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
             if (!closed_infractions || !open_infractions) {
                 return main_interaction
                     .followUp({
-                        content: config.errormessages.databasequeryerror,
+                        content: 'Something went wrong!',
                         ephemeral: true,
                     })
                     .catch((err) => {});
-            } else {
-                closed = closed_infractions;
-                open = open_infractions;
             }
+ 
 
-            if (closed.length <= 0 && open.length <= 0) {
+            if (closed_infractions.length <= 0 && open_infractions.length <= 0) {
                 return main_interaction
                     .followUp({
                         content: `${user} dont have any infractions!`,
@@ -67,8 +62,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             await publicInfractionResponse({
                 member: user.id,
-                closed: closed,
-                open: open,
+                closed: closed_infractions,
+                open: open_infractions,
                 main_interaction,
             });
             break;
