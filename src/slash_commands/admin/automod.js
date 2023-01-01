@@ -366,6 +366,51 @@ module.exports.data = new SlashCommandBuilder()
     )
     .addSubcommand((command) =>
         command
+            .setName('antilinks')
+            .setDescription('Prevent user from sending links.')
+            .addStringOption((option) =>
+                option
+                    .setName('enabled')
+                    .setDescription('Enable/disable links.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'true',
+                        value: 'true',
+                    })
+                    .addChoices({
+                        name: 'false',
+                        value: 'false',
+                    })
+            )
+            .addStringOption((option) =>
+                option
+                    .setName('action')
+                    .setDescription('Select an action to take.')
+                    .setRequired(true)
+                    .addChoices({
+                        name: 'ban',
+                        value: 'ban',
+                    })
+                    .addChoices({
+                        name: 'kick',
+                        value: 'kick',
+                    })
+                    .addChoices({
+                        name: 'mute',
+                        value: 'mute',
+                    })
+                    .addChoices({
+                        name: 'delete',
+                        value: 'delete',
+                    })
+                    .addChoices({
+                        name: 'warn',
+                        value: 'warn',
+                    })
+            )
+    )
+    .addSubcommand((command) =>
+        command
             .setName('antiinsults')
             .setDescription('Prevent user from sending all kind of links.')
             .addStringOption((option) =>
