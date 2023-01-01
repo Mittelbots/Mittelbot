@@ -24,6 +24,9 @@ module.exports.checkOwnerCommand = async (message) => {
         case 'disablecommand':
             this.disable_command(message, args);
             break;
+        case 'exportlogs':
+            this.export_logs(message, args);
+            break;
         default:
             break;
     }
