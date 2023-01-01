@@ -25,7 +25,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     }
-    
+
     switch (main_interaction.options.getSubcommand()) {
         case 'all':
             const user = main_interaction.options.getUser('user');
@@ -48,7 +48,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {});
             }
- 
 
             if (closed_infractions.length <= 0 && open_infractions.length <= 0) {
                 return main_interaction
