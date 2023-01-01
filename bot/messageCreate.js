@@ -1,16 +1,16 @@
 const config = require('../src/assets/json/_config/config.json');
 const { checkActiveCommand } = require('../utils/functions/checkActiveCommand/checkActiveCommand');
-const { checkForScam } = require('../utils/checkForScam/checkForScam');
 const { delay } = require('../utils/functions/delay/delay');
-const { antiSpam, antiInvite } = require('../utils/automoderation/automoderation');
+const { antiSpam } = require('../utils/automoderation/antiSpam');
+const { antiInvite } = require('../utils/automoderation/antiInvite');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
-const { Automod } = require('../utils/functions/data/Automod');
 const { Afk } = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
+const { anitLinks } = require('../utils/automoderation/antiLinks');
 
 const defaultCooldown = new Set();
 
@@ -43,7 +43,7 @@ async function messageCreate(message, bot) {
     if (isSpam) {
         errorhandler({
             fatal: false,
-            message: `${main_interaction.user.id} has spammed in ${main_interaction.guild.id}.`,
+            message: `${message.user.id} has spammed in ${message.guild.id}.`,
         });
         return;
     }
@@ -52,7 +52,16 @@ async function messageCreate(message, bot) {
     if (isInvite) {
         errorhandler({
             fatal: false,
-            message: `${main_interaction.user.id} has sent an invite in ${main_interaction.guild.id}.`,
+            message: `${message.user.id} has sent an invite in ${message.guild.id}.`,
+        });
+        return;
+    }
+
+    const isLink = await anitLinks(message, bot);
+    if (isLink) {
+        errorhandler({
+            fatal: false,
+            message: `${message.user.id} has sent a link in ${message.guild.id}.`,
         });
         return;
     }
