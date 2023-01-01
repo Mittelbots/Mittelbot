@@ -233,10 +233,6 @@ module.exports.data = new SlashCommandBuilder()
                         value: 'channel_update',
                     })
                     .addChoices({
-                        name: 'Channel Update',
-                        value: 'channel_update',
-                    })
-                    .addChoices({
                         name: 'Role Create',
                         value: 'role_create',
                     })
