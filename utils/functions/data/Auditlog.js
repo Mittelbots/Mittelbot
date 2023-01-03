@@ -63,10 +63,6 @@ class Auditlog {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
                     resolve(false);
                 });
         });
