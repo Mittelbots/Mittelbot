@@ -5,7 +5,7 @@ const { Guilds } = require('./Guilds');
 class MemberInfo {
     constructor() {}
 
-    add({ guild_id, user_id, member_roles, user_joined = 'null' }) {
+    add({ guild_id, user_id, member_roles, user_joined = new Date() }) {
         return new Promise(async (resolve, reject) => {
             memberInfo
                 .create({

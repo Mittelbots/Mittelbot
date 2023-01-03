@@ -29,6 +29,7 @@ class Guilds {
 
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
+            if(!guild_id) return reject(false);
             allGuildId
                 .findOne({
                     where: {
