@@ -30,6 +30,10 @@ class GuildConfig {
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
             const guild = await Guilds.get(guild_id).catch((err) => {});
+            if (!guild)
+                errorhandler({
+                    err: 'Guild not found!!' + guild_id + ' ' + new Date().toLocaleString(),
+                });
             return resolve(await guild.getConfig());
         });
     }
