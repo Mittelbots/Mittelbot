@@ -33,6 +33,7 @@ const { roleCreate } = require('../roleCreate');
 const { roleDelete } = require('../roleDelete');
 const { roleUpdate } = require('../roleUpdate');
 const { guildBanAdd } = require('../guildBanAdd');
+const { guildBanRemove } = require('../guildBanRemove');
 const { botError } = require('../botError');
 const { botDisconnect } = require('../botDisconnect');
 const { botWarn } = require('../botWarn');
