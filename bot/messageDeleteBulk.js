@@ -3,7 +3,7 @@ const Auditlog = require('../utils/functions/data/Auditlog');
 module.exports.messageDeleteBulk = async (bot, messages) => {
     const auditLog = new Auditlog();
     const isEnabled = await auditLog.checkEnabledEvents(
-        message.first().guild.id,
+        messages.first().guild.id,
         'message_bulk_delete'
     );
     if (!isEnabled) return;
