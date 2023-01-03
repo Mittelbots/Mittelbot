@@ -12,9 +12,11 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
             },
             {
                 name: `${type.charAt(0).toUpperCase() + type.slice(1)} Member`,
-                value: `${member ? `${`Username: **${member.username || member.user.username}**\n` || ''}` : ''}Tag:<@${
-                    member.id || member
-                }>\nUser ID: **(${member.id || member})**`,
+                value: `${
+                    member
+                        ? `${`Username: **${member.username || member.user.username}**\n` || ''}`
+                        : ''
+                }Tag:<@${member.id || member}>\nUser ID: **(${member.id || member})**`,
             },
             { name: `Reason`, value: `${reason || 'No Reason Provided!'}` },
         ])
