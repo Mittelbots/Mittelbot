@@ -115,10 +115,14 @@ class Auditlog {
         return new Promise(async (resolve) => {
             if (!this.#checkWhitelistUser) return resolve(false);
 
-            if ((this.#ignoreBots && message.author.bot) || !message.guild || message.system)
+            if ((this.#ignoreBots && message.author.bot) || !message.guild || message.system) {
                 return resolve(true);
-            if (!this.logs.whitelist) return resolve(false);
+            }
 
+            if (!this.logs || !this.logs.whitelist) {
+                return resolve(false);
+            }
+            
             const roles = message.member.roles.cache.map((role) => role.id);
             const channels = message.channel;
 
