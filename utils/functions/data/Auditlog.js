@@ -115,7 +115,13 @@ class Auditlog {
         return new Promise(async (resolve) => {
             if (!this.#checkWhitelistUser) return resolve(false);
 
-            if ((this.#ignoreBots && message.author.bot) || !message.guild || message.system) {
+            try {
+                if(this.#ignoreBots && message.author.bot) return resolve(true);
+            }catch(e) {
+                // ignore err because it's probably a channel change
+            }
+
+            if (!message.guild || message.system) {
                 return resolve(true);
             }
 
