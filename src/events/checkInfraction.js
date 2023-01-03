@@ -31,35 +31,28 @@ module.exports.checkInfractions = (bot) => {
                         .then((members) => {
                             return members;
                         })
-                        .catch((err) => {});
+                        .catch((err) => {
+                            return bot.users.cache.get(results[i].user_id);
+                        });
                     try {
                         await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
 
-                        await giveAllRoles(
-                            results[i].user_id,
-                            bot.guilds.cache.get(results[i].guild_id),
-                            results[i].user_roles,
-                            bot
-                        );
+                        await giveAllRoles(results[i].user_id, guild, results[i].user_roles, bot);
 
-                        await saveAllRoles(
-                            results[i].user_roles || null,
-                            bot.users.cache.get(results[i].user_id),
-                            bot.guilds.cache.get(results[i].guild_id)
-                        );
+                        await saveAllRoles(results[i].user_roles || null, user, guild);
 
                         await setNewModLogMessage(
                             bot,
                             config.defaultModTypes.unmute,
                             bot.user.id,
-                            user || results[i].user_id,
+                            user,
                             'Auto',
                             null,
                             results[i].guild_id
                         );
 
                         await privateModResponse(
-                            user || bot.users.cache.get(results[i].user_id),
+                            user,
                             config.defaultModTypes.unmute,
                             'Auto',
                             null,
