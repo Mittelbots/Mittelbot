@@ -8,3 +8,4 @@ mittelblot-db-backup/
 *vendor*
 
 utils/functions/data/Auditlog.js
+*.md

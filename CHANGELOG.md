@@ -15,6 +15,25 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.2**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix error in auditlog
+    - fix error where the bot wasn't able to remove the infraction from the table
+    - fix error where the unban event throws an error
+    - small improvements
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.1**
 
 ### Added things:

@@ -63,10 +63,6 @@ class Auditlog {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
                     resolve(false);
                 });
         });
@@ -115,10 +111,20 @@ class Auditlog {
         return new Promise(async (resolve) => {
             if (!this.#checkWhitelistUser) return resolve(false);
 
-            if ((this.#ignoreBots && message.author.bot) || !message.guild || message.system)
-                return resolve(true);
-            if (!this.logs.whitelist) return resolve(false);
+            try {
+                if(this.#ignoreBots && message.author.bot) return resolve(true);
+            }catch(e) {
+                // ignore err because it's probably a channel change
+            }
 
+            if (!message.guild || message.system) {
+                return resolve(true);
+            }
+
+            if (!this.logs || !this.logs.whitelist) {
+                return resolve(false);
+            }
+            
             const roles = message.member.roles.cache.map((role) => role.id);
             const channels = message.channel;
 
