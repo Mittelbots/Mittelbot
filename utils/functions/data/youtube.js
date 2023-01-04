@@ -82,7 +82,7 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
         await request
             .parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelid}`)
             .then(async (feed) => {
-                const latestVideo = JSON.stringify([feed.items[0].link]);
+                const latestVideo = [feed.items[0].link];
                 guildUploads
                     .create({
                         guild_id: guild.id,
