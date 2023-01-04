@@ -55,6 +55,7 @@ class Auditlog {
 
     send() {
         return new Promise(async (resolve) => {
+            if(!this.logs) return resolve(false);
             this.logs
                 .send({
                     embeds: [this.embed],
