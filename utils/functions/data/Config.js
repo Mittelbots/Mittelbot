@@ -36,7 +36,7 @@ class GuildConfig {
                 });
             try {
                 return resolve(await guild.getConfig());
-            }catch(err){
+            } catch (err) {
                 errorhandler({ err });
                 return resolve([]);
             }
