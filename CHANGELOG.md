@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.3**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fixed youtube notifier
+    - fix small errros
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.2**
 
 ### Added things:

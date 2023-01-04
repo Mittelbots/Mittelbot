@@ -115,6 +115,7 @@ class Logs {
     isEventEnabled({ guild_id, event }) {
         return new Promise(async (resolve) => {
             const events = await this.getEvents({ guild_id });
+            if (!events || events.length == 0) return resolve(true);
             const isDisabled = events.includes(event);
             return resolve(!isDisabled);
         });

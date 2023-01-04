@@ -34,7 +34,12 @@ class GuildConfig {
                 errorhandler({
                     err: 'Guild not found!!' + guild_id + ' ' + new Date().toLocaleString(),
                 });
-            return resolve(await guild.getConfig());
+            try {
+                return resolve(await guild.getConfig());
+            } catch (err) {
+                errorhandler({ err });
+                return resolve([]);
+            }
         });
     }
 
