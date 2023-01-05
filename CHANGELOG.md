@@ -15,6 +15,22 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.4**
+
+### Added things:
+
+    - Added "jump to message" to message-log
+
+### Bug fixes & other changes:
+
+    - Fixed null in message-log
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.3**
 
 ### Added things:

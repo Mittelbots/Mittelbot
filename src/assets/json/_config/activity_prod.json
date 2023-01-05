@@ -8,11 +8,11 @@
             "showGuildCount": true
         },
         {
-            "text": "with new command /tutorial with {memberCount} servers",
+            "text": "with new command /tutorial with {memberCount} members",
             "showMemberCount": true
         },
         {
-            "text": "with new command /poll with {memberCount} servers",
+            "text": "with new command /poll with {memberCount} members",
             "showMemberCount": true
         },
         {

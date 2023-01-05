@@ -14,30 +14,17 @@ module.exports.hasPermission = async ({
     let guildUser = await guild.members.fetch(user.id || user);
 
     let hasAdminPerms = guildUser.permissions.has(PermissionFlagsBits.Administrator);
-
     if (hasAdminPerms) return true;
 
-    const guildConfig = await GuildConfig.get(guild_id);
+    const { modroles } = await GuildConfig.get(guild_id);
 
-    const modroles = guildConfig.modroles;
-
-    var role_id;
-    var isadmin;
-    var ismod;
-    var ishelper;
-
-    var hasPermission = false;
+    let hasPermission = false;
     for (let i in modroles) {
-        role_id = modroles[i].role;
-        isadmin = modroles[i].isadmin;
-        ismod = modroles[i].ismod;
-        ishelper = modroles[i].ishelper;
-
         hasPermission = this.checkPerms({
-            role_id,
-            isadmin,
-            ismod,
-            ishelper,
+            role_id: modroles[i].role,
+            roleIsAdmin: modroles[i].isAdmin,
+            roleIsMod: modroles[i].isMod,
+            roleIsHelper: modroles[i].isHelper,
             user: guildUser,
             isDashboard,
             modOnly,
@@ -59,15 +46,15 @@ module.exports.hasPermission = async ({
 
 module.exports.checkPerms = ({
     role_id,
-    isadmin,
-    ismod,
-    ishelper,
+    roleIsAdmin,
+    roleIsMod,
+    roleIsHelper,
     user,
     isDashboard,
     adminOnly,
     modOnly,
 }) => {
-    var userHasRole;
+    let userHasRole;
 
     if (user.roles.cache.size === 1) {
         return false;
@@ -86,16 +73,18 @@ module.exports.checkPerms = ({
         return false;
     }
 
-    if (userHasRole) {
-        if (adminOnly && userHasRole && (ismod == 1 || ishelper == 1)) return false;
-        if (modOnly && userHasRole && ishelper == 1) {
-            return false;
-        }
-        if (!isadmin && !ismod && !ishelper) return false;
-        if (userHasRole) {
-            return true;
-        }
-    } else {
+    if (!userHasRole) {
         return false;
     }
+    if (adminOnly && userHasRole && (ismod == 1 || ishelper == 1)) {
+        return false;
+    }
+    if (modOnly && userHasRole && ishelper == 1) {
+        return false;
+    }
+    if (!roleIsAdmin && !roleIsMod && !roleIsHelper) {
+        return false;
+    }
+
+    return true;
 };
