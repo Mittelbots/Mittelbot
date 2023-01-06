@@ -73,7 +73,8 @@ async function isOnBanList({ user, guild }) {
         });
 }
 
-async function isBanned(member, guild) {
+function isBanned(member, guild) {
+    return new Promise(async (resolve) => {
     let banList = await guild.bans.fetch();
 
     const open_infractions = await Infractions.getOpen({
@@ -81,7 +82,7 @@ async function isBanned(member, guild) {
         guild_id: guild.id,
     });
 
-    const banned = open_infractions.filter((inf) => inf.ban === 1);
+    const banned = open_infractions.filter((inf) => inf.ban);
 
     if (banned.length > 0) {
         const isUserOnBanList = banList.get(member.id);
@@ -90,23 +91,24 @@ async function isBanned(member, guild) {
             const currentdate = new Date().getTime();
             const till_date = inf.till_date.getTime();
             if (currentdate - till_date <= 0 || isUserOnBanList !== undefined) {
-                return {
+                return resolve({
                     error: false,
                     isBanned: true,
-                };
+                });
             } else {
-                return {
+                return resolve({
                     error: false,
                     isBanned: false,
-                };
+                });
             }
         });
     } else {
-        return {
+        return resolve({
             error: false,
             isBanned: false,
-        };
+        });
     }
+});
 }
 
 module.exports = {

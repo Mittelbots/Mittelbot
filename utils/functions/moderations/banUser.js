@@ -12,9 +12,8 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
 
     let pass = false;
 
-    if (user) {
-        privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name);
-        await guild.members
+    privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name);
+    await guild.members
             .ban(user, {
                 deleteMessageDays: 7,
                 reason: reason,
@@ -27,10 +26,10 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
                     message: config.errormessages.nopermissions.ban,
                 };
             });
-    }
+
     if (pass) {
         Infractions.insertOpen({
-            uid: user.id,
+            uid: user.id || user,
             modid: mod.id,
             ban: 1,
             mute: 0,

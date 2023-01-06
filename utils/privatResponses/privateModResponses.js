@@ -10,6 +10,9 @@ async function privateModResponse(member, type, reason, time, bot, guildname) {
         privateModMessage.addFields([{ name: `Time`, value: `**${time}** ` }]);
     }
 
+    if(typeof member !== 'object') member = await bot.users.fetch(member).catch((err) => {});
+    if (!member) return false;
+
     return member
         .send({ embeds: [privateModMessage] })
         .catch((err) => {
@@ -17,7 +20,6 @@ async function privateModResponse(member, type, reason, time, bot, guildname) {
             return false;
         })
         .catch((err) => {});
-    return false;
 }
 
 module.exports = { privateModResponse };
