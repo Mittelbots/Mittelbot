@@ -75,40 +75,40 @@ async function isOnBanList({ user, guild }) {
 
 function isBanned(member, guild) {
     return new Promise(async (resolve) => {
-    let banList = await guild.bans.fetch();
+        let banList = await guild.bans.fetch();
 
-    const open_infractions = await Infractions.getOpen({
-        user_id: member.id,
-        guild_id: guild.id,
+        const open_infractions = await Infractions.getOpen({
+            user_id: member.id,
+            guild_id: guild.id,
+        });
+
+        const banned = open_infractions.filter((inf) => inf.ban);
+
+        if (banned.length > 0) {
+            const isUserOnBanList = banList.get(member.id);
+
+            banned.forEach((inf) => {
+                const currentdate = new Date().getTime();
+                const till_date = inf.till_date.getTime();
+                if (currentdate - till_date <= 0 || isUserOnBanList !== undefined) {
+                    return resolve({
+                        error: false,
+                        isBanned: true,
+                    });
+                } else {
+                    return resolve({
+                        error: false,
+                        isBanned: false,
+                    });
+                }
+            });
+        } else {
+            return resolve({
+                error: false,
+                isBanned: false,
+            });
+        }
     });
-
-    const banned = open_infractions.filter((inf) => inf.ban);
-
-    if (banned.length > 0) {
-        const isUserOnBanList = banList.get(member.id);
-
-        banned.forEach((inf) => {
-            const currentdate = new Date().getTime();
-            const till_date = inf.till_date.getTime();
-            if (currentdate - till_date <= 0 || isUserOnBanList !== undefined) {
-                return resolve({
-                    error: false,
-                    isBanned: true,
-                });
-            } else {
-                return resolve({
-                    error: false,
-                    isBanned: false,
-                });
-            }
-        });
-    } else {
-        return resolve({
-            error: false,
-            isBanned: false,
-        });
-    }
-});
 }
 
 module.exports = {

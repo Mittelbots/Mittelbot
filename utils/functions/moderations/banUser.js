@@ -14,18 +14,18 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
 
     privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name);
     await guild.members
-            .ban(user, {
-                deleteMessageDays: 7,
-                reason: reason,
-            })
-            .then(() => (pass = true))
-            .catch((err) => {
-                errorhandler({ err, fatal: false, message: `User-ID: ${user.id}` });
-                return {
-                    error: true,
-                    message: config.errormessages.nopermissions.ban,
-                };
-            });
+        .ban(user, {
+            deleteMessageDays: 7,
+            reason: reason,
+        })
+        .then(() => (pass = true))
+        .catch((err) => {
+            errorhandler({ err, fatal: false, message: `User-ID: ${user.id}` });
+            return {
+                error: true,
+                message: config.errormessages.nopermissions.ban,
+            };
+        });
 
     if (pass) {
         Infractions.insertOpen({

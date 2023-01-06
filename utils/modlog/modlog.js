@@ -4,10 +4,10 @@ const { Logs } = require('../functions/data/Logs');
 
 async function setNewModLogMessage(bot, type, moderator, member, reason, time, gid) {
     const username = () => {
-        if(member.user) return member.user.username
-        if (member.username) return member.username
+        if (member.user) return member.user.username;
+        if (member.username) return member.username;
         return '/';
-    }
+    };
     const modLogMessage = new EmbedBuilder()
         .setTitle(`${await generateModEmote({ bot, type })} **Member ${type}!**`)
         .addFields([
@@ -17,11 +17,9 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
             },
             {
                 name: `${type.charAt(0).toUpperCase() + type.slice(1)} Member`,
-                value: `${
-                    member
-                        ? `${`Username: **${username()}**\n` || ''}`
-                        : ''
-                }Tag:<@${member.id || member}>\nUser ID: **(${member.id || member})**`,
+                value: `${member ? `${`Username: **${username()}**\n` || ''}` : ''}Tag:<@${
+                    member.id || member
+                }>\nUser ID: **(${member.id || member})**`,
             },
             { name: `Reason`, value: `${reason || 'No Reason Provided!'}` },
         ])
