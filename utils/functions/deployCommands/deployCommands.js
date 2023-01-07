@@ -10,7 +10,7 @@ module.exports.deployCommands = async (bot) => {
                     err: err,
                     fatal: false,
                 });
-                if (JSON.parse(process.env.DEBUG)) console.log(`Mission Folder!!`, err);
+                if (JSON.parse(process.env.DEBUG)) console.log(`Missing Folder!!`, err);
             }
             files.forEach((file) => {
                 if (!file.endsWith('.js') || file.startsWith('.')) return;

@@ -1,12 +1,12 @@
 const { GuildConfig } = require('./data/Config');
 
 module.exports.isMod = async ({ member, guild }) => {
-    if (!member) return false;
+    if (!member || typeof member !== 'object') return false;
 
     const guildConfig = await GuildConfig.get(guild.id);
     const modroles = guildConfig.modroles;
 
-    var isTeam = false;
+    let isTeam = false;
     for (let i in await modroles) {
         if (member.roles.cache.find((r) => r.id === modroles[i].role) !== undefined) {
             isTeam = true;

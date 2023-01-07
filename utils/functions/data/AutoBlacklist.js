@@ -1,4 +1,4 @@
-const guildAutoBlacklist = require('../../../src/db/Models/tables/guildAutoBlacklist');
+const guildAutoBlacklist = require('../../../src/db/Models/tables/guildAutoBlacklist.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getModTime } = require('../getModTime');
 const { isMod } = require('../isMod');
@@ -98,13 +98,14 @@ module.exports = class AutoBlacklist {
 
                 for (let i in users) {
                     const guild = await bot.guilds.cache.get(message.guild.id);
-                    const member = await guild.members.cache.find(
+                    let member = await guild.members.cache.find(
                         (member) => member.id === users[i]
                     );
 
+                    if(!member) member = users[i];
                     if (await isMod({ member, guild: message.guild })) return;
 
-                    const isUserBanned = await isBanned(member, main_interaction.guild);
+                    const isUserBanned = await isBanned(member, message.guild);
                     if (isUserBanned.isBanned) return;
 
                     await banUser({
