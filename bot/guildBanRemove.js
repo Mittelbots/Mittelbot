@@ -1,27 +1,26 @@
 const Auditlog = require('../utils/functions/data/Auditlog');
 const { setNewModLogMessage } = require('../utils/modlog/modlog');
+const config = require('../src/assets/json/_config/config.json');
 
-module.exports.guildBanAdd = async (bot, guild, user) => {
+module.exports.guildBanRemove = async (bot, guildBan) => {
     const auditLog = new Auditlog();
-    const isEnabled = await auditLog.checkEnabledEvents(guild.id, 'member_ban_remove');
+    const isEnabled = await auditLog.checkEnabledEvents(guildBan.guild.id, 'member_ban_remove');
     if (!isEnabled) return;
-    const fetchedLogs = await guild.fetchAuditLogs({
+    const fetchedLogs = await guildBan.guild.fetchAuditLogs({
         limit: 1,
-        type: 'MEMBER_BAN_REMOVED',
+        type: 22,
     });
 
     const banLog = fetchedLogs.entries.first();
-    if (banLog) {
-        var { executor, target } = banLog;
-    }
+    if (!banLog) return;
 
     setNewModLogMessage(
         bot,
         config.defaultModTypes.unban,
-        target.id === user.id ? executor.id : null,
-        user.user,
+        banLog.executor.id,
+        banLog.target,
         null,
         null,
-        guild.id
+        guildBan.guild.id
     );
 };

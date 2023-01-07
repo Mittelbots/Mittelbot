@@ -73,40 +73,55 @@ async function isOnBanList({ user, guild }) {
         });
 }
 
-async function isBanned(member, guild) {
-    let banList = await guild.bans.fetch();
+function isBanned(member, guild) {
+    return new Promise(async (resolve) => {
+        let banList = await guild.bans.fetch();
 
-    const open_infractions = await Infractions.getOpen({
-        user_id: member.id,
-        guild_id: guild.id,
-    });
-
-    const banned = open_infractions.filter((inf) => inf.ban === 1);
-
-    if (banned.length > 0) {
-        const isUserOnBanList = banList.get(member.id);
-
-        banned.forEach((inf) => {
-            const currentdate = new Date().getTime();
-            const till_date = inf.till_date.getTime();
-            if (currentdate - till_date <= 0 || isUserOnBanList !== undefined) {
-                return {
-                    error: false,
-                    isBanned: true,
-                };
-            } else {
-                return {
-                    error: false,
-                    isBanned: false,
-                };
-            }
+        const open_infractions = await Infractions.getOpen({
+            user_id: member.id || member,
+            guild_id: guild.id,
         });
-    } else {
-        return {
-            error: false,
-            isBanned: false,
-        };
-    }
+
+        const banned = open_infractions.filter((inf) => inf.ban);
+
+        if (banned.length > 0) {
+            const isUserOnBanList = banList.get(member.id || member);
+            banned.forEach(async (inf) => {
+                const currentdate = new Date().getTime();
+                const till_date = inf.till_date.getTime();
+                if (currentdate - till_date <= 0 && isUserOnBanList !== undefined) {
+                    return resolve({
+                        error: false,
+                        isBanned: true,
+                    });
+                } else {
+                    if (currentdate - till_date >= 0 || isUserOnBanList === undefined) {
+                        await Infractions.deleteOpen(inf.infraction_id);
+                        await Infractions.insertClosed({
+                            uid: inf.user_id,
+                            mod_id: inf.mod_id,
+                            mute: inf.mute,
+                            ban: inf.ban,
+                            till_date: inf.till_date,
+                            reason: inf.reason,
+                            infraction_id: inf.infraction_id,
+                            start_date: inf.start_date,
+                            guild_id: inf.guild_id,
+                        });
+                    }
+                    return resolve({
+                        error: false,
+                        isBanned: false,
+                    });
+                }
+            });
+        } else {
+            return resolve({
+                error: false,
+                isBanned: false,
+            });
+        }
+    });
 }
 
 module.exports = {

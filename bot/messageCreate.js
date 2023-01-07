@@ -11,6 +11,7 @@ const { GuildConfig } = require('../utils/functions/data/Config');
 const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const { anitLinks } = require('../utils/automoderation/antiLinks');
+const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 
 const defaultCooldown = new Set();
 
@@ -38,6 +39,9 @@ async function messageCreate(message, bot) {
 
         return guild.leave().catch((err) => {});
     }
+
+    const isAutoBlacklist = await new AutoBlacklist().check(message, bot);
+    if (isAutoBlacklist) return;
 
     const isSpam = await antiSpam(message, bot);
     if (isSpam) {

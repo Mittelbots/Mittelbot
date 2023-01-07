@@ -48,7 +48,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
 
     const isUserBanned = await isBanned(user, main_interaction.guild);
-
     if (isUserBanned.error) {
         return main_interaction
             .followUp({
