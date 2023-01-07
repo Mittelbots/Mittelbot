@@ -12,7 +12,7 @@ module.exports.guildBanRemove = async (bot, guildBan) => {
     });
 
     const banLog = fetchedLogs.entries.first();
-    if(!banLog) return;
+    if (!banLog) return;
 
     setNewModLogMessage(
         bot,

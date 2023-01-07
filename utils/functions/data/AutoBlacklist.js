@@ -98,11 +98,9 @@ module.exports = class AutoBlacklist {
 
                 for (let i in users) {
                     const guild = await bot.guilds.cache.get(message.guild.id);
-                    let member = await guild.members.cache.find(
-                        (member) => member.id === users[i]
-                    );
+                    let member = await guild.members.cache.find((member) => member.id === users[i]);
 
-                    if(!member) member = users[i];
+                    if (!member) member = users[i];
                     if (await isMod({ member, guild: message.guild })) return;
 
                     const isUserBanned = await isBanned(member, message.guild);
@@ -117,13 +115,15 @@ module.exports = class AutoBlacklist {
                         dbtime: getModTime('99999d'),
                         time: 'Permanent',
                         isAuto: true,
-                    }).then(() => {
-                        message.channel.send(`${users[i]} has been banned.`).catch((err) => {
-                            message.react('✅').catch((err) => {});
-                        });
-                    }).catch(() => {
-                        message.react('❌').catch((err) => {});
                     })
+                        .then(() => {
+                            message.channel.send(`${users[i]} has been banned.`).catch((err) => {
+                                message.react('✅').catch((err) => {});
+                            });
+                        })
+                        .catch(() => {
+                            message.react('❌').catch((err) => {});
+                        });
                     resolve(true);
                 }
             });

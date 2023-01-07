@@ -30,8 +30,7 @@ class GuildConfig {
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
             const guild = await Guilds.get(guild_id).catch((err) => {});
-            if (!guild) 
-            return resolve(false);
+            if (!guild) return resolve(false);
             try {
                 return resolve(await guild.getConfig());
             } catch (err) {
