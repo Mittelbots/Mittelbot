@@ -188,12 +188,12 @@ module.exports.acceptBotInteraction = (bot) => {
         roleUpdate(bot, roleBefore, roleAfter);
     });
 
-    bot.on('guildBanAdd', (guild, user) => {
-        guildBanAdd(bot, guild, user);
+    bot.on('guildBanAdd', (guildBan) => {
+        guildBanAdd(bot, guildBan);
     });
 
-    bot.on('guildBanRemove', (guild, user) => {
-        guildBanRemove(bot, guild, user);
+    bot.on('guildBanRemove', (guildBan) => {
+        guildBanRemove(bot, guildBan);
     });
 };
 

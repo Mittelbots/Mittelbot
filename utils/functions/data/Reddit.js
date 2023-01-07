@@ -165,7 +165,6 @@ class Reddit {
             try {
                 const url = new URL(subreddit);
                 subreddit = url.pathname.split('/')[2];
-                console.log(subreddit);
                 if (!subreddit) return resolve(false);
                 return resolve(subreddit);
             } catch (err) {
