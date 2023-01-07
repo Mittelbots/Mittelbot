@@ -117,10 +117,13 @@ module.exports = class AutoBlacklist {
                         dbtime: getModTime('99999d'),
                         time: 'Permanent',
                         isAuto: true,
-                    });
-                    message.channel.send(`${users[i]} has been banned.`).catch((err) => {
-                        message.react('✅').catch((err) => {});
-                    });
+                    }).then(() => {
+                        message.channel.send(`${users[i]} has been banned.`).catch((err) => {
+                            message.react('✅').catch((err) => {});
+                        });
+                    }).catch(() => {
+                        message.react('❌').catch((err) => {});
+                    })
                     resolve(true);
                 }
             });

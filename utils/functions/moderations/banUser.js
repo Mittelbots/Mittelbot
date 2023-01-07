@@ -8,61 +8,63 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../data/Infractions');
 
 async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) {
-    if (isAuto) mod = bot.user;
+    return new Promise(async (resolve, reject) => {
+        if (isAuto) mod = bot.user;
 
-    let pass = false;
+        let pass = false;
 
-    privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name);
-    await guild.members
-        .ban(user, {
-            deleteMessageSeconds: 60 * 60 * 24 * 7,
-            reason: reason,
-        })
-        .then(() => (pass = true))
-        .catch((err) => {
-            errorhandler({ err, fatal: false, message: `User-ID: ${user.id}` });
-            return {
-                error: true,
-                message: config.errormessages.nopermissions.ban,
-            };
-        });
+        privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name);
+        await guild.members
+            .ban(user, {
+                deleteMessageSeconds: 60 * 60 * 24 * 7,
+                reason: reason,
+            })
+            .then(() => (pass = true))
+            .catch((err) => {
+                errorhandler({ err, fatal: false, message: `User-ID: ${user.id}` });
+                return reject({
+                    error: true,
+                    message: config.errormessages.nopermissions.ban,
+                });
+            });
 
-    if (pass) {
-        Infractions.insertOpen({
-            uid: user.id || user,
-            modid: mod.id,
-            ban: 1,
-            mute: 0,
-            till_date: getFutureDate(dbtime),
-            reason,
-            infraction_id: await createInfractionId(guild.id),
-            gid: guild.id,
-        });
-        setNewModLogMessage(
-            bot,
-            config.defaultModTypes.ban,
-            mod.id,
-            user.user || user,
-            reason,
-            time,
-            guild.id
-        );
-        const p_response = await publicModResponses(
-            config.defaultModTypes.ban,
-            mod,
-            user.id || user,
-            reason,
-            time,
-            bot
-        );
+        if (pass) {
+            Infractions.insertOpen({
+                uid: user.id || user,
+                modid: mod.id,
+                ban: 1,
+                mute: 0,
+                till_date: getFutureDate(dbtime),
+                reason,
+                infraction_id: await createInfractionId(guild.id),
+                gid: guild.id,
+            });
+            setNewModLogMessage(
+                bot,
+                config.defaultModTypes.ban,
+                mod.id,
+                user.user || user,
+                reason,
+                time,
+                guild.id
+            );
+            const p_response = await publicModResponses(
+                config.defaultModTypes.ban,
+                mod,
+                user.id || user,
+                reason,
+                time,
+                bot
+            );
 
-        errorhandler({
-            fatal: false,
-            message: `${mod.id} has triggered the ban command in ${guild.id}`,
-        });
+            errorhandler({
+                fatal: false,
+                message: `${mod.id} has triggered the ban command in ${guild.id}`,
+            });
 
-        return p_response;
-    }
+            return resolve(p_response);
+        }
+    });
 }
 
 module.exports = {
