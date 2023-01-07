@@ -29,9 +29,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         value: '**Due a bug in Discord.js, every message will be detected. Not only the ones send through the webhook.**',
                     }
                 )
-                .setImage(
-                    'https://i.ibb.co/grCfwRw/autoblackllist-example.gif'
-                )
+                .setImage('https://i.ibb.co/grCfwRw/autoblackllist-example.gif')
                 .setTimestamp();
             main_interaction.reply({
                 embeds: [embed],
