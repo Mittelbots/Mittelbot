@@ -23,10 +23,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     {
                         name: 'How to delete Auto-Blacklist?',
                         value: 'To delete Auto-Blacklist, you need to use the command `/autoblacklist delete`',
+                    },
+                    {
+                        name: '**IMPORTANT**',
+                        value: '**Due a bug in Discord.js, every message will be detected. Not only the ones send through the webhook.**',
                     }
                 )
                 .setImage(
-                    'https://github.com/Mittelbots/blacklist-bot/blob/b22064db2f694edfad9aae0a0ac0237b74fd31c0/git/img/example.png?raw=true'
+                    'https://i.ibb.co/grCfwRw/autoblackllist-example.gif'
                 )
                 .setTimestamp();
             main_interaction.reply({
