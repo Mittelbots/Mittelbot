@@ -1,6 +1,7 @@
 const request = new (require('rss-parser'))();
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const guildUploads = require('../../db/Models/tables/guildUploads.model');
+const yt = require('ytdl-core');
 
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
@@ -16,9 +17,7 @@ module.exports.handleUploads = async ({ bot }) => {
                 });
                 return false;
             });
-
         if (uploads.length === 0) return false;
-
         for (let i in uploads) {
             if (uploads[i].channel_id) {
                 request
@@ -27,9 +26,35 @@ module.exports.handleUploads = async ({ bot }) => {
                     )
                     .then(async (feed) => {
                         const uploadedVideos = uploads[i].uploads || [];
-
+                        
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
+
+
+                        const isALiveVideoOrPremiere = await yt.getInfo('https://www.youtube.com/watch?v=5G7lwdGKkuA')
+                            .then(async (info) => {
+                                return info.videoDetails.liveBroadcastDetails
+                            }).catch((err) => {
+                                errorhandler({
+                                    err,
+                                    fatal: true,
+                                });
+                                return false;
+                            });
+                        
+                        let premiereStartsIn;
+                        if (isALiveVideoOrPremiere) {
+                            const isLiveNow = isALiveVideoOrPremiere.isLiveNow;
+                            if(!isLiveNow) return;
+
+                            const year = isALiveVideoOrPremiere.startTimestamp.substring(0, 4);
+                            const month = isALiveVideoOrPremiere.startTimestamp.substring(5, 7) - 1;
+                            const day = isALiveVideoOrPremiere.startTimestamp.substring(8, 10);
+                            const hour = isALiveVideoOrPremiere.startTimestamp.substring(11, 13) - 1;
+                            const date = new Date(year, month, day, hour);
+                            premiereStartsIn = date.getTime()/1000;
+                        }
+                            
 
                         uploadedVideos.push(feed.items[0].link);
 
@@ -76,7 +101,7 @@ module.exports.handleUploads = async ({ bot }) => {
                                             : `<@&${uploads[i].pingrole}> `
                                         : '') +
                                     feed.items[0].title +
-                                    ` ${feed.items[0].link}`,
+                                    ` ${feed.items[0].link} ${isALiveVideoOrPremiere ? `Premiere starts in <t:${premiereStartsIn}:R>` : ''}`,
                             })
                             .catch((err) => {});
 
