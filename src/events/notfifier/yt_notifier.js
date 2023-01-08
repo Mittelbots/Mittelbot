@@ -104,7 +104,7 @@ module.exports.handleUploads = async ({ bot }) => {
                                     feed.items[0].title +
                                     ` ${feed.items[0].link} ${
                                         isALiveVideoOrPremiere
-                                            ? `Premiere starts in <t:${premiereStartsIn}:R>`
+                                            ? `\n**Premiere starts in <t:${premiereStartsIn}:R>**`
                                             : ''
                                     }`,
                             })
