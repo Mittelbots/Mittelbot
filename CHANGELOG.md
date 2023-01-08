@@ -15,6 +15,22 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.6**
+
+### Added things:
+
+    - add premiere feature to youtube
+
+### Bug fixes & other changes:
+
+    - fix message log get triggered by bot messages
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.5**
 
 ### Added things:
