@@ -119,6 +119,7 @@ module.exports.handleUploads = async ({ bot }) => {
                         errorhandler({
                             message: 'Youtube request run into Timeout.',
                             fatal: err.errno === 'ECONNREFUSED' ? false : true,
+                            err,
                         });
                         return false;
                     });
