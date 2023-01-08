@@ -8,6 +8,7 @@
         "start": "docker compose up -d && docker logs -f mittelbot",
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
+        "log": "docker logs -f mittelbot",
         "format": "prettier --write .",
         "check": "prettier --check ."
     },
@@ -59,7 +60,7 @@
         "undici": "^5.13.0",
         "uuid": "^9.0.0",
         "validator": "^13.7.0",
-        "ytdl-core": "4.10.1"
+        "ytdl-core": "^4.11.2"
     },
     "devDependencies": {
         "chalk": "^4.1.0",
