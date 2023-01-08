@@ -26,35 +26,36 @@ module.exports.handleUploads = async ({ bot }) => {
                     )
                     .then(async (feed) => {
                         const uploadedVideos = uploads[i].uploads || [];
-                        
+
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
 
-
-                        const isALiveVideoOrPremiere = await yt.getInfo(feed.items[0].link)
+                        const isALiveVideoOrPremiere = await yt
+                            .getInfo(feed.items[0].link)
                             .then(async (info) => {
-                                return info.videoDetails.liveBroadcastDetails
-                            }).catch((err) => {
+                                return info.videoDetails.liveBroadcastDetails;
+                            })
+                            .catch((err) => {
                                 errorhandler({
                                     err,
                                     fatal: true,
                                 });
                                 return false;
                             });
-                        
+
                         let premiereStartsIn;
                         if (isALiveVideoOrPremiere) {
                             const isLiveNow = isALiveVideoOrPremiere.isLiveNow;
-                            if(!isLiveNow) return;
+                            if (!isLiveNow) return;
 
                             const year = isALiveVideoOrPremiere.startTimestamp.substring(0, 4);
                             const month = isALiveVideoOrPremiere.startTimestamp.substring(5, 7) - 1;
                             const day = isALiveVideoOrPremiere.startTimestamp.substring(8, 10);
-                            const hour = isALiveVideoOrPremiere.startTimestamp.substring(11, 13) - 1;
+                            const hour =
+                                isALiveVideoOrPremiere.startTimestamp.substring(11, 13) - 1;
                             const date = new Date(year, month, day, hour);
-                            premiereStartsIn = date.getTime()/1000;
+                            premiereStartsIn = date.getTime() / 1000;
                         }
-                            
 
                         uploadedVideos.push(feed.items[0].link);
 
@@ -101,7 +102,11 @@ module.exports.handleUploads = async ({ bot }) => {
                                             : `<@&${uploads[i].pingrole}> `
                                         : '') +
                                     feed.items[0].title +
-                                    ` ${feed.items[0].link} ${isALiveVideoOrPremiere ? `Premiere starts in <t:${premiereStartsIn}:R>` : ''}`,
+                                    ` ${feed.items[0].link} ${
+                                        isALiveVideoOrPremiere
+                                            ? `Premiere starts in <t:${premiereStartsIn}:R>`
+                                            : ''
+                                    }`,
                             })
                             .catch((err) => {});
 
