@@ -31,7 +31,7 @@ module.exports.handleUploads = async ({ bot }) => {
                         if (videoAlreadyExists) return;
 
 
-                        const isALiveVideoOrPremiere = await yt.getInfo('https://www.youtube.com/watch?v=5G7lwdGKkuA')
+                        const isALiveVideoOrPremiere = await yt.getInfo(feed.items[0].link)
                             .then(async (info) => {
                                 return info.videoDetails.liveBroadcastDetails
                             }).catch((err) => {
