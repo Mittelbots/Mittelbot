@@ -112,7 +112,7 @@ class Auditlog {
             if (!this.#checkWhitelistUser) return resolve(false);
 
             try {
-                if(this.#ignoreBots && message.author.bot && message.author.system) return resolve(true);
+                if(this.#ignoreBots && message.author.bot || message.author.system) return resolve(true);
             }catch(e) {
                 // ignore err because it's probably a channel change
             }
