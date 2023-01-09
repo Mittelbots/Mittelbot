@@ -26,6 +26,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'modroles',
         'log',
         'autoblacklist',
+        'joinroles',
     ];
     const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
     const utils = [
