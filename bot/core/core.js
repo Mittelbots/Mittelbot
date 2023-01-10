@@ -200,7 +200,8 @@ module.exports.acceptBotInteraction = (bot) => {
 module.exports.fetchCache = async (bot) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.time('Fetching guilds in:');
+            console.log(`Starting to fetch ${bot.guilds.cache.size} guilds...`)
+            console.time(`Fetching guilds in:`);
             const guilds = await bot.guilds.fetch();
             console.timeEnd('Fetching guilds in:');
 
