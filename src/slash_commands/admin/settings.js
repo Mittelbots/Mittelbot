@@ -184,36 +184,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .catch((err) => {});
             break;
 
-        case 'joinroles':
-            const roles = main_interaction.options.getString('joinroles');
-            var joinroles = removeMention(roles);
-            joinroles = joinroles.split(' ');
-
-            Joinroles.update({
-                guild: main_interaction.guild,
-                roles: joinroles,
-                user: bot.guilds.cache
-                    .get(main_interaction.guild.id)
-                    .members.cache.get(main_interaction.user.id),
-            })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            content: `✅ ${res}`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: `❌ ${err}`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
         case 'warnroles':
             let warnroles = main_interaction.options.getString('warnroles');
             warnroles = removeMention(warnroles);
@@ -402,21 +372,6 @@ module.exports.data = new SlashCommandBuilder()
                     .setName('dcau')
                     .setDescription(
                         'True if you want to delete the command after usage. False if you want to keep it.'
-                    )
-                    .setRequired(true)
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('joinroles')
-            .setDescription(
-                'Add up joinroles to your server. Note: If you mention a existing role, it will be removed'
-            )
-            .addStringOption((joinrole) =>
-                joinrole
-                    .setName('joinroles')
-                    .setDescription(
-                        'Add roles to the list of join roles. Split multiple roles with a space.'
                     )
                     .setRequired(true)
             )

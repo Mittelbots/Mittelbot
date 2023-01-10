@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.54.6",
+    "version": "0.54.7",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -8,6 +8,7 @@
         "start": "docker compose up -d && docker logs -f mittelbot",
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
+        "log": "docker logs -f mittelbot",
         "format": "prettier --write .",
         "check": "prettier --check ."
     },
@@ -21,7 +22,7 @@
     "dependencies": {
         "@discordjs/rest": "^1.5.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
-        "@napi-rs/canvas": "^0.1.31",
+        "@napi-rs/canvas": "^0.1.33",
         "@twurple/api": "^5.3.1",
         "@twurple/auth": "^5.2.7",
         "axios": "^1.2.2",
@@ -59,12 +60,12 @@
         "undici": "^5.13.0",
         "uuid": "^9.0.0",
         "validator": "^13.7.0",
-        "ytdl-core": "4.10.1"
+        "ytdl-core": "^4.11.2"
     },
     "devDependencies": {
         "chalk": "^4.1.0",
         "nodemon": "^2.0.20",
-        "prettier": "^2.8.1",
+        "prettier": "^2.8.2",
         "string-width": "4.2.3"
     }
 }

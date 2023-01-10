@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.7**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - Move /joinroles to own command
+    - core fixes & improvements
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.6**
 
 ### Added things:
