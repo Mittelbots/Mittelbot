@@ -82,7 +82,12 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
         await request
             .parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelid}`)
             .then(async (feed) => {
-                const latestVideo = JSON.stringify([feed.items[0].link]);
+                if (!feed.items[0])
+                    return reject(
+                        "❌ The channel you have entered does not have any videos or doesn't exists. Please try again with another channel."
+                    );
+
+                const latestVideo = [feed.items[0].link];
                 guildUploads
                     .create({
                         guild_id: guild.id,

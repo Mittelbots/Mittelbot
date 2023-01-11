@@ -15,6 +15,88 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.7**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - Move /joinroles to own command
+    - core fixes & improvements
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
+# **BETA VERSION 0.54.6**
+
+### Added things:
+
+    - add premiere feature to youtube
+
+### Bug fixes & other changes:
+
+    - fix message log get triggered by bot messages
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
+# **BETA VERSION 0.54.5**
+
+### Added things:
+
+    - Added Autoblacklist feature
+
+### Bug fixes & other changes:
+
+    - bug fixes
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
+# **BETA VERSION 0.54.4**
+
+### Added things:
+
+    - Added "jump to message" to message-log
+
+### Bug fixes & other changes:
+
+    - Fixed null in message-log
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
+# **BETA VERSION 0.54.3**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fixed youtube notifier
+    - fix small errros
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.2**
 
 ### Added things:

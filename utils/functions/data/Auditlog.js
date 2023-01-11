@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('../errorhandler/errorhandler');
 const { Logs } = require('./Logs');
 
 class Auditlog {
@@ -55,6 +54,7 @@ class Auditlog {
 
     send() {
         return new Promise(async (resolve) => {
+            if(!this.logs) return resolve(false);
             this.logs
                 .send({
                     embeds: [this.embed],
@@ -112,7 +112,7 @@ class Auditlog {
             if (!this.#checkWhitelistUser) return resolve(false);
 
             try {
-                if(this.#ignoreBots && message.author.bot) return resolve(true);
+                if(this.#ignoreBots && message.author.bot || message.author.system) return resolve(true);
             }catch(e) {
                 // ignore err because it's probably a channel change
             }
@@ -177,7 +177,7 @@ class Auditlog {
             this.embed.setDescription(
                 `**Message sent by <@${messageUpdate.author.id}> edited in <#${
                     messageUpdate.channelId
-                }>**\n**Before**\n${attachment !== undefined ? '' : messageBefore}\n**After**\n${
+                }>\n[Jump to Message](https://discord.com/channels/${messageUpdate.guildId}/${messageUpdate.channelId}/${messageUpdate.id})**\n\n**Before**\n${attachment !== undefined ? '' : messageBefore}\n**After**\n${
                     attachment !== undefined ? '' : messageUpdate
                 }`
             );
