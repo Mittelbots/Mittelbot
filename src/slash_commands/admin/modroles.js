@@ -48,44 +48,35 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const row = new ActionRowBuilder();
 
-    switch (true) {
-        case !dbEntity.isAdmin:
-            row.addComponents(buttons.isAdmin);
-        case !dbEntity.isMod:
-            row.addComponents(buttons.isMod);
-        case !dbEntity.isHelper:
-            row.addComponents(buttons.isHelper);
+    if (!dbEntity.isAdmin) {
+        row.addComponents(buttons.isAdmin);
+        modRoleEmbed.addFields([
+            {
+                name: 'Admin Permissions',
+                value: 'This role can use commands like ban, unban, etc.',
+                inline: true,
+            },
+        ]);
     }
-
-    if (dbEntity.isAdmin || dbEntity.isMod || dbEntity.isHelper) {
-        row.addComponents(buttons.isRemove);
+    if (!dbEntity.isMod) {
+        row.addComponents(buttons.isMod);
+        modRoleEmbed.addFields([
+            {
+                name: 'Moderator Permissions',
+                value: 'This role can use commands like mute, kick, etc.',
+                inline: true,
+            },
+        ]);
     }
-
-    switch (true) {
-        case !dbEntity.isAdmin:
-            modRoleEmbed.addFields([
-                {
-                    name: 'Admin Permissions',
-                    value: 'This role can use commands like ban, unban, etc.',
-                    inline: true,
-                },
-            ]);
-        case !dbEntity.isMod:
-            modRoleEmbed.addFields([
-                {
-                    name: 'Moderator Permissions',
-                    value: 'This role can use commands like mute, kick, etc.',
-                    inline: true,
-                },
-            ]);
-        case !dbEntity.isHelper:
-            modRoleEmbed.addFields([
-                {
-                    name: 'Helper Permissions',
-                    value: 'This role can use commands like warn, mute, etc.',
-                    inline: true,
-                },
-            ]);
+    if (!dbEntity.isHelper) {
+        row.addComponents(buttons.isHelper);
+        modRoleEmbed.addFields([
+            {
+                name: 'Helper Permissions',
+                value: 'This role can use commands like warn, mute, etc.',
+                inline: true,
+            },
+        ]);
     }
 
     if (dbEntity.isAdmin || dbEntity.isMod || dbEntity.isHelper) {
@@ -96,6 +87,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 inline: true,
             },
         ]);
+        row.addComponents(buttons.isRemove);
     }
 
     const sentMessage = await main_interaction
@@ -103,18 +95,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .then((msg) => {
             return msg;
         })
-        .catch((err) => {
+        .catch(() => {
             return false;
         });
 
     if (!sentMessage) return;
 
-    const collector = sentMessage.createMessageComponentCollector({ time: 60000, max: 1 });
+    let returnMessage = '';
 
+    const collector = sentMessage.createMessageComponentCollector({ time: 60000, max: 1 });
     collector.on('collect', async (interaction) => {
         switch (interaction.customId) {
             case 'isAdmin':
-                await Modroles.update({
+                returnMessage = await Modroles.update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: true,
@@ -124,7 +117,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isAdmin.setStyle(ButtonStyle.Success);
                 break;
             case 'isMod':
-                await Modroles.update({
+                returnMessage = await Modroles.update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: false,
@@ -134,7 +127,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isMod.setStyle(ButtonStyle.Success);
                 break;
             case 'isHelper':
-                await Modroles.update({
+                returnMessage = await Modroles.update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: false,
@@ -144,12 +137,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isHelper.setStyle(ButtonStyle.Success);
                 break;
             case 'isRemove':
-                await Modroles.remove({
+                returnMessage = await Modroles.remove({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
-                    isAdmin: false,
-                    isMod: false,
-                    isHelper: false,
                 });
                 buttons.isRemove.setStyle(ButtonStyle.Success);
                 break;
@@ -162,8 +152,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
         buttons.isMod.setDisabled(true);
         buttons.isHelper.setDisabled(true);
         buttons.isRemove.setDisabled(true);
-
         interaction.update({
+            content: returnMessage,
             components: [row],
         });
     });

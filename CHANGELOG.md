@@ -15,6 +15,25 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.8**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fixed a bug where the `guildBanAdd` event run into an error and not sent any modlog message
+    - fixed unreadable date format in /infractions command
+    - fixed a bug where the remove button doesn't work in /modroles command
+    - fixed a bug where the current setting is shown as a button in /modroles command 
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.7**
 
 ### Added things:
