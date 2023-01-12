@@ -103,18 +103,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .then((msg) => {
             return msg;
         })
-        .catch((err) => {
+        .catch(() => {
             return false;
         });
 
     if (!sentMessage) return;
 
-    const collector = sentMessage.createMessageComponentCollector({ time: 60000, max: 1 });
+    let returnMessage = '';
 
+    const collector = sentMessage.createMessageComponentCollector({ time: 60000, max: 1 });
     collector.on('collect', async (interaction) => {
         switch (interaction.customId) {
             case 'isAdmin':
-                await Modroles.update({
+                returnMessage = await Modroles.update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: true,
@@ -124,7 +125,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isAdmin.setStyle(ButtonStyle.Success);
                 break;
             case 'isMod':
-                await Modroles.update({
+                returnMessage = await Modroles.update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: false,
@@ -134,7 +135,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isMod.setStyle(ButtonStyle.Success);
                 break;
             case 'isHelper':
-                await Modroles.update({
+                returnMessage = await Modroles.update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: false,
@@ -144,7 +145,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isHelper.setStyle(ButtonStyle.Success);
                 break;
             case 'isRemove':
-                await Modroles.remove({
+                returnMessage = await Modroles.remove({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                 });
@@ -159,8 +160,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
         buttons.isMod.setDisabled(true);
         buttons.isHelper.setDisabled(true);
         buttons.isRemove.setDisabled(true);
-
         interaction.update({
+            content: returnMessage,
             components: [row],
         });
     });
