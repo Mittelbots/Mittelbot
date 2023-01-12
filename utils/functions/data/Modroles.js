@@ -43,7 +43,27 @@ class Modroles {
                     );
                 })
                 .catch((err) => {
-                    reject(`❌ There was an error updating the mod roles.`);
+                    reject(`❌ There was an error updating the Modroles.`);
+                });
+        });
+    }
+
+    remove({ guild_id, role_id }) {
+        return new Promise(async (resolve, reject) => {
+            const modroles = await this.get(guild_id);
+
+            const filteredModroles = modroles.filter((role) => x.role !== role_id);
+
+            return await GuildConfig.update({
+                guild_id,
+                value: filteredModroles,
+                valueName: 'modroles',
+            })
+                .then(async (res) => {
+                    resolve(`✅ ${role_id} has been removed from the Modroles setting.`);
+                })
+                .catch((err) => {
+                    reject(`❌ There was an error updating the Modroles.`);
                 });
         });
     }

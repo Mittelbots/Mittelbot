@@ -147,9 +147,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 await Modroles.remove({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
-                    isAdmin: false,
-                    isMod: false,
-                    isHelper: false,
                 });
                 buttons.isRemove.setStyle(ButtonStyle.Success);
                 break;
