@@ -5,6 +5,8 @@
 
 <h1 align="center">Mittelbot</h1>
 
+[![wakatime](https://wakatime.com/badge/github/Mittelbots/Mittelbot.svg)](https://wakatime.com/badge/github/Mittelbots/Mittelbot)
+
 It's a multipurpose Discord Bot with moderation, utilities and a levelsystem.
 
 ## <b>Development Status</b>
