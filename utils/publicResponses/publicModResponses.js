@@ -53,7 +53,7 @@ module.exports.publicInfractionResponse = async ({
                 break;
         }
         //let user = await guild.members.fetch(infraction.user_id);
-        var publicOneInfractionMessage = new EmbedBuilder()
+        const publicOneInfractionMessage = new EmbedBuilder()
             //.setAuthor(`${user.user.username}${user.user.discriminator}`)
             .addFields([
                 {
@@ -106,9 +106,15 @@ module.exports.publicInfractionResponse = async ({
                         }`,
                         value: `Reason: ${inf.reason} ${
                             inf.warn == 0
-                                ? `\nFrom **${inf.start_date || `404 start date :(`}** -> to **${
+                                ? `\nFrom **${
+                                      new Date(inf.start_date).toLocaleString('de-DE', {
+                                          timeZone: 'UTC',
+                                      }) || `404 start date :(`
+                                  }** -> to **${
                                       inf.till_date
-                                          ? inf.till_date
+                                          ? new Date(inf.till_date).toLocaleString('de-DE', {
+                                                timeZone: 'UTC',
+                                            })
                                           : inf.mute == 1
                                           ? 'Permanent'
                                           : inf.ban == 1
