@@ -5,7 +5,7 @@ class Modroles {
     constructor() {}
 
     get(guild_id) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             const guildConfig = await GuildConfig.get(guild_id);
             resolve(guildConfig.modroles);
         });
@@ -35,15 +35,35 @@ class Modroles {
                 value: modroles,
                 valueName: 'modroles',
             })
-                .then(async (res) => {
+                .then(async () => {
                     resolve(
-                        `✅ ${role_id} has been updated to ${
+                        `✅ <@&${role_id}> has been updated to ${
                             isAdmin ? 'Admin' : isMod ? 'Moderator' : 'Helper'
                         }.`
                     );
                 })
-                .catch((err) => {
-                    reject(`❌ There was an error updating the mod roles.`);
+                .catch(() => {
+                    reject(`❌ There was an error updating the Modroles.`);
+                });
+        });
+    }
+
+    remove({ guild_id, role_id }) {
+        return new Promise(async (resolve, reject) => {
+            const modroles = await this.get(guild_id);
+
+            const filteredModroles = modroles.filter((role) => role.role !== role_id);
+
+            return await GuildConfig.update({
+                guild_id,
+                value: filteredModroles,
+                valueName: 'modroles',
+            })
+                .then(async () => {
+                    resolve(`✅ <@&${role_id}> has been removed from the Modroles setting.`);
+                })
+                .catch(() => {
+                    reject(`❌ There was an error updating the Modroles.`);
                 });
         });
     }
