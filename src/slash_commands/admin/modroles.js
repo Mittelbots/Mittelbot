@@ -48,44 +48,35 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const row = new ActionRowBuilder();
 
-    switch (true) {
-        case !dbEntity.isAdmin:
-            row.addComponents(buttons.isAdmin);
-        case !dbEntity.isMod:
-            row.addComponents(buttons.isMod);
-        case !dbEntity.isHelper:
-            row.addComponents(buttons.isHelper);
+    if (!dbEntity.isAdmin) {
+        row.addComponents(buttons.isAdmin);
+        modRoleEmbed.addFields([
+            {
+                name: 'Admin Permissions',
+                value: 'This role can use commands like ban, unban, etc.',
+                inline: true,
+            },
+        ]);
     }
-
-    if (dbEntity.isAdmin || dbEntity.isMod || dbEntity.isHelper) {
-        row.addComponents(buttons.isRemove);
+    if (!dbEntity.isMod) {
+        row.addComponents(buttons.isMod);
+        modRoleEmbed.addFields([
+            {
+                name: 'Moderator Permissions',
+                value: 'This role can use commands like mute, kick, etc.',
+                inline: true,
+            },
+        ]);
     }
-
-    switch (true) {
-        case !dbEntity.isAdmin:
-            modRoleEmbed.addFields([
-                {
-                    name: 'Admin Permissions',
-                    value: 'This role can use commands like ban, unban, etc.',
-                    inline: true,
-                },
-            ]);
-        case !dbEntity.isMod:
-            modRoleEmbed.addFields([
-                {
-                    name: 'Moderator Permissions',
-                    value: 'This role can use commands like mute, kick, etc.',
-                    inline: true,
-                },
-            ]);
-        case !dbEntity.isHelper:
-            modRoleEmbed.addFields([
-                {
-                    name: 'Helper Permissions',
-                    value: 'This role can use commands like warn, mute, etc.',
-                    inline: true,
-                },
-            ]);
+    if (!dbEntity.isHelper) {
+        row.addComponents(buttons.isHelper);
+        modRoleEmbed.addFields([
+            {
+                name: 'Helper Permissions',
+                value: 'This role can use commands like warn, mute, etc.',
+                inline: true,
+            },
+        ]);
     }
 
     if (dbEntity.isAdmin || dbEntity.isMod || dbEntity.isHelper) {
@@ -96,6 +87,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 inline: true,
             },
         ]);
+        row.addComponents(buttons.isRemove);
     }
 
     const sentMessage = await main_interaction
