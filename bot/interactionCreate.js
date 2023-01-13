@@ -9,6 +9,7 @@ const { Afk } = require('../utils/functions/data/Afk');
 const { GlobalConfig } = require('../utils/functions/data/GlobalConfig');
 const pride = require('../src/slash_commands/fun/pride');
 const Tutorial = require('../utils/functions/data/Tutorial');
+const SingASong = require('../utils/functions/data/SingASong');
 
 const defaultCooldown = new Set();
 
@@ -78,6 +79,13 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                 break;
             case 'tutorial':
                 new Tutorial(main_interaction, bot);
+                break;
+            case 'singasong_finish':
+                new SingASong(main_interaction, bot).interaction();
+                break;
+            case 'singasong_upvote':
+                new SingASong(main_interaction, bot).interaction();
+                break;
         }
 
         if (main_interaction.customId.indexOf('scam') === 0) {
