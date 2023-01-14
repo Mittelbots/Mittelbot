@@ -27,9 +27,9 @@ module.exports = class SingASong extends SingASongLogic {
     }
 
     initCheck() {
-        if (!this.voicechannel) return 'You must be in a voice channel to use this command!';
-        if (this.voicechannel.members.size < 2)
-            return 'You must be in a voice channel with at least 1 other person to use this command!';
+        // if (!this.voicechannel) return 'You must be in a voice channel to use this command!';
+        // if (this.voicechannel.members.size < 2)
+        //     return 'You must be in a voice channel with at least 1 other person to use this command!';
 
         return true;
     }
@@ -97,7 +97,7 @@ module.exports = class SingASong extends SingASongLogic {
             .setColor('#00FF00')
             .setTimestamp()
             .setFooter({
-                text: `Requested by ${this.author.username}`,
+                text: `Event by ${this.author.username}`,
                 iconURL: this.author.displayAvatarURL(),
             });
     }
@@ -116,7 +116,7 @@ module.exports = class SingASong extends SingASongLogic {
                 .setColor('#00FF00')
                 .setTimestamp()
                 .setFooter({
-                    text: `Requested by ${this.author.username}`,
+                    text: `Event by ${this.author.username}`,
                     iconURL: this.author.displayAvatarURL(),
                 });
             resolve(true);
@@ -127,7 +127,7 @@ module.exports = class SingASong extends SingASongLogic {
         this.#finishButton
             .setStyle(ButtonStyle.Success)
             .setLabel('Finished!')
-            .setCustomId('singasong_finish');
+            .setCustomId('singasong_finish_' + this.main_interaction.user.id);
 
         this.#row.addComponents(this.#finishButton);
     }
@@ -136,7 +136,7 @@ module.exports = class SingASong extends SingASongLogic {
         this.#upVoteButton
             .setStyle(ButtonStyle.Success)
             .setLabel('Upvote')
-            .setCustomId('singasong_upvote');
+            .setCustomId('singasong_upvote_' + this.main_interaction.user.id);
 
         this.#row.addComponents(this.#upVoteButton);
     }
@@ -169,8 +169,14 @@ module.exports = class SingASong extends SingASongLogic {
 
     interaction() {
         return new Promise(async (resolve, reject) => {
-            if (this.main_interaction.customId === 'singasong_finish') {
-                if (this.main_interaction.user.id !== this.author.id) {
+            const author = this.main_interaction.customId.split('_')[2];
+            if (this.main_interaction.customId.search('singasong_finish') !== -1) {
+                console.log(
+                    this.main_interaction.user.id !== this.author.id,
+                    this.main_interaction.user.id,
+                    this.author.id
+                );
+                if (this.main_interaction.user.id !== author) {
                     return this.main_interaction.reply({
                         content: 'You are not the one who started the game!',
                         ephemeral: true,
@@ -184,15 +190,15 @@ module.exports = class SingASong extends SingASongLogic {
                     });
 
                 this.#finish();
-            } else if (this.main_interaction.customId === 'singasong_upvote') {
-                if (this.main_interaction.user.id === this.author.id) {
+            } else if (this.main_interaction.customId.search('singasong_upvote') !== -1) {
+                if (this.main_interaction.user.id === author) {
                     return this.main_interaction.reply({
                         content: 'You cannot upvote your own song!',
                         ephemeral: true,
                     });
                 }
 
-                this.#upvote()
+                this.#upvote(author)
                     .then(() => {
                         this.main_interaction.reply({
                             content: 'You upvoted the song!',
@@ -255,11 +261,11 @@ module.exports = class SingASong extends SingASongLogic {
         });
     }
 
-    #upvote() {
+    #upvote(author) {
         return new Promise(async (resolve, reject) => {
-            if (!this.voicechannel.members.has(this.author.id)) {
-                return reject(`You are not in the same voice channel as the Singer!`);
-            }
+            // if (!this.voicechannel.members.has(author)) {
+            //     return reject(`You are not in the same voice channel as the Singer!`);
+            // }
 
             const allUpVotes = await this.#getAllUpvotes();
             if (!allUpVotes) return reject(false);
@@ -278,7 +284,7 @@ module.exports = class SingASong extends SingASongLogic {
                     },
                     {
                         where: {
-                            user_id: this.author.id,
+                            user_id: author,
                         },
                     }
                 )
@@ -306,7 +312,7 @@ module.exports = class SingASong extends SingASongLogic {
                 .setColor('#00FF00')
                 .setTimestamp()
                 .setFooter({
-                    text: `Requested by ${this.author.username}`,
+                    text: `Event by ${this.author.username}`,
                     iconURL: this.author.displayAvatarURL(),
                 });
 

@@ -7,6 +7,7 @@ module.exports = class SingASongLogic {
     constructor() {}
 
     checkUser(user) {
+        console.log(user.banned);
         if (user.banned.includes(this.main_interaction.guild.id))
             return 'You have been banned from using this command!';
         if (user.isCurrentlyPlaying) return 'You are already playing a game!';
@@ -92,7 +93,7 @@ module.exports = class SingASongLogic {
         });
     }
 
-    updateUser({ points = 0, used_sentences = [], isCurrentlyPlaying = false, banned = false }) {
+    updateUser({ points = 0, used_sentences = [], isCurrentlyPlaying = false }) {
         return new Promise(async (resolve, reject) => {
             await singasong
                 .update(
@@ -100,7 +101,6 @@ module.exports = class SingASongLogic {
                         points,
                         used_sentences,
                         isCurrentlyPlaying,
-                        banned,
                     },
                     {
                         where: {

@@ -80,12 +80,6 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
             case 'tutorial':
                 new Tutorial(main_interaction, bot);
                 break;
-            case 'singasong_finish':
-                new SingASong(main_interaction, bot).interaction();
-                break;
-            case 'singasong_upvote':
-                new SingASong(main_interaction, bot).interaction();
-                break;
         }
 
         if (main_interaction.customId.indexOf('scam') === 0) {
@@ -108,6 +102,13 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                         })
                         .catch((err) => {});
                 });
+        }
+
+        if (main_interaction.customId.indexOf('singasong_finish') === 0) {
+            new SingASong(main_interaction, bot).interaction();
+        }
+        if (main_interaction.customId.indexOf('singasong_upvote') === 0) {
+            new SingASong(main_interaction, bot).interaction();
         }
     }
 };
