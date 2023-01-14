@@ -18,7 +18,6 @@ module.exports = class SingASong extends SingASongLogic {
 
     constructor(main_interaction, bot) {
         super();
-
         this.author = main_interaction.user;
         this.bot = bot;
         this.voicechannel = main_interaction.member.voice.channel;
@@ -28,8 +27,7 @@ module.exports = class SingASong extends SingASongLogic {
     }
 
     initCheck() {
-        if (!this.voicechannel || !this.voicechannel.members.has(this.author.id))
-            return 'You must be in a voice channel to use this command!';
+        if (!this.voicechannel) return 'You must be in a voice channel to use this command!';
         //if(this.voicechannel.members.size < 2) return 'You must be in a voice channel with at least 1 other person to use this command!';
 
         return true;

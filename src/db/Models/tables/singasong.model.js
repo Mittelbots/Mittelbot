@@ -26,8 +26,8 @@ SingASong.init(
             defaultValue: false,
         },
         banned: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
+            type: DataTypes.JSON,
+            defaultValue: [],
         },
         upvotes: {
             type: DataTypes.JSON,

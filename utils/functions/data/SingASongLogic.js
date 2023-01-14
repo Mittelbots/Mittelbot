@@ -7,12 +7,13 @@ module.exports = class SingASongLogic {
     constructor() {}
 
     checkUser(user) {
-        if (user.banned) return 'You have been banned from using this command!';
+        if (user.banned.includes(this.main_interaction.guild.id))
+            return 'You have been banned from using this command!';
         if (user.isCurrentlyPlaying) return 'You are already playing a game!';
     }
 
     getUser() {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             await singasong
                 .findOne({
                     where: {
@@ -200,6 +201,77 @@ module.exports = class SingASongLogic {
                     });
                     return reject(false);
                 });
+        });
+    }
+
+    getPointsFromUser(user_id) {
+        return new Promise(async (resolve, reject) => {
+            await singasong
+                .findOne({
+                    where: {
+                        user_id,
+                    },
+                })
+                .then((user) => {
+                    if (user) return resolve(user.points);
+                    return resolve(false);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    return reject(false);
+                });
+        });
+    }
+
+    banUser(user_id, guild_id) {
+        return new Promise(async (resolve, reject) => {
+            const user = await singasong
+                .findOne({
+                    where: {
+                        user_id,
+                    },
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    return reject(false);
+                });
+
+            if (user) {
+                user.banned.push(guild_id);
+                await user.save().catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    return reject(false);
+                });
+            } else {
+                await singasong
+                    .create({
+                        user_id,
+                        banned: [guild_id],
+                    })
+                    .catch((err) => {
+                        errorhandler({
+                            err,
+                        });
+                        return reject(false);
+                    });
+            }
+            return resolve(true);
+        });
+    }
+
+    isUserBanned() {
+        return new Promise(async (resolve) => {
+            const user = await this.getUser();
+            if (user) {
+                if (user.banned.includes(this.main_interaction.guild.id)) return resolve(true);
+            }
+            return resolve(false);
         });
     }
 };
