@@ -46,9 +46,18 @@ async function isMuted({ user, guild, bot }) {
 }
 
 async function isOnBanList({ user, guild }) {
-    const fetchedLogs = await guild.fetchAuditLogs({
-        type: 22,
-    });
+    let fetchedLogs;
+    try {
+        fetchedLogs = await guild.fetchAuditLogs({
+            type: 22,
+        });
+    }catch(err) {
+        errorhandler({
+            fatal: false,
+            err,
+        });
+        return // NO PERMISSIONS
+    }
     let banLog = await fetchedLogs.entries.filter((entry) => entry.target.id === user.id);
 
     if (banLog) {
