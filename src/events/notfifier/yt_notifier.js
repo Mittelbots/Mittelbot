@@ -37,6 +37,7 @@ module.exports.handleUploads = async ({ bot }) => {
                             })
                             .catch((err) => {
                                 errorhandler({
+                                    message: feed.items[0].link,
                                     err,
                                     fatal: true,
                                 });

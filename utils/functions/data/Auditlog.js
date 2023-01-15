@@ -71,8 +71,11 @@ class Auditlog {
     #getLogs(guild_id, type) {
         return new Promise(async (resolve) => {
             const settings = await Logs.get(guild_id);
-            this.logs = settings[type];
-            this.logs = this.bot.guilds.cache.get(guild_id).channels.cache.get(this.logs);
+            try {
+                this.logs = this.bot.guilds.cache.get(guild_id).channels.cache.get(settings[type]);
+            }catch(e) {
+                resolve(false);
+            }
             resolve(true);
         });
     }
