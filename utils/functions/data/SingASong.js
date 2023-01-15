@@ -336,6 +336,7 @@ module.exports = class SingASong extends SingASongLogic {
                     {
                         isCurrentlyPlaying: false,
                         guild_id: null,
+                        upvotes: [],
                     },
                     {
                         where: {
