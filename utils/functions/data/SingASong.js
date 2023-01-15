@@ -171,11 +171,6 @@ module.exports = class SingASong extends SingASongLogic {
         return new Promise(async (resolve, reject) => {
             const author = this.main_interaction.customId.split('_')[2];
             if (this.main_interaction.customId.search('singasong_finish') !== -1) {
-                console.log(
-                    this.main_interaction.user.id !== this.author.id,
-                    this.main_interaction.user.id,
-                    this.author.id
-                );
                 if (this.main_interaction.user.id !== author) {
                     return this.main_interaction.reply({
                         content: 'You are not the one who started the game!',
@@ -263,9 +258,9 @@ module.exports = class SingASong extends SingASongLogic {
 
     #upvote(author) {
         return new Promise(async (resolve, reject) => {
-            // if (!this.voicechannel.members.has(author)) {
-            //     return reject(`You are not in the same voice channel as the Singer!`);
-            // }
+            if (!this.voicechannel.members.has(author)) {
+                return reject(`You are not in the same voice channel as the Singer!`);
+            }
 
             const allUpVotes = await this.#getAllUpvotes();
             if (!allUpVotes) return reject(false);
@@ -362,10 +357,6 @@ module.exports = class SingASong extends SingASongLogic {
             await this.givePoints();
             await this.#resetEvent();
         }, 60000);
-    }
-
-    viewMyPoints() {
-        return new Promise(async (resolve, reject) => {});
     }
 
     view(type = 'all', user = null) {
