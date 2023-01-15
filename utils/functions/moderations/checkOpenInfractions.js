@@ -51,12 +51,12 @@ async function isOnBanList({ user, guild }) {
         fetchedLogs = await guild.fetchAuditLogs({
             type: 22,
         });
-    }catch(err) {
+    } catch (err) {
         errorhandler({
             fatal: false,
             err,
         });
-        return // NO PERMISSIONS
+        return; // NO PERMISSIONS
     }
     let banLog = await fetchedLogs.entries.filter((entry) => entry.target.id === user.id);
 
