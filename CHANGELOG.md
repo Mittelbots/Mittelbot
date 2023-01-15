@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.9**
+
+### Added things:
+
+    - Add SingASong feature
+
+### Bug fixes & other changes:
+
+    - Multiple fixes
+    - Core fixes & improvements
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.8**
 
 ### Added things:
