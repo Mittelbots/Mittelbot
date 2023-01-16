@@ -1,7 +1,7 @@
 const { PermissionFlagsBits } = require('discord.js');
-const database = require('../../../src/db/db');
 const { twitchApiClient } = require('../../../src/events/notfifier/twitch_notifier');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const twitchStreams = require('../../../src/db/Models/tables/twitchStreams.model');
 
 module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpingrole, guild }) => {
     return new Promise(async (resolve, reject) => {
@@ -13,16 +13,28 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
         if (!twitch_user) {
             return reject(`❌ I couldn't find the channel you have entered.`);
         }
-        await guild.members.fetch();
-        const hasChannelPerms = guild.members.me
-            .permissionsIn(twdcchannel)
-            .has([
-                PermissionFlagsBits.ViewChannel,
-                PermissionFlagsBits.SendMessages,
-                PermissionFlagsBits.EmbedLinks,
-                PermissionFlagsBits.AttachFiles,
-                PermissionFlagsBits.MentionEveryone,
-            ]);
+
+        if (!guild.members.me) {
+            await guild.members.fetch(process.env.DISCORD_APPLICATION_ID);
+        }
+        try {
+            var hasChannelPerms = twdcchannel
+                .permissionsFor(guild.members.me)
+                .has([
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.EmbedLinks,
+                    PermissionFlagsBits.AttachFiles,
+                    PermissionFlagsBits.MentionEveryone,
+                ]);
+        } catch (err) {
+            errorhandler({
+                err,
+                fatal: true,
+            });
+            reject(`❌ Something went wrong while checking the permissions. Please try again.`);
+            return false;
+        }
 
         if (!hasChannelPerms) {
             reject(
@@ -31,13 +43,14 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
             return;
         }
 
-        var allChannelsFromGuild = await database
-            .query(`SELECT * FROM twitch_streams WHERE guild_id = ?`, [guild.id])
+        const allChannelsFromGuild = await twitchStreams
+            .findAll({
+                where: {
+                    guild_id: guild.id,
+                },
+            })
             .then((res) => {
-                return {
-                    error: false,
-                    data: res,
-                };
+                return res;
             })
             .catch((err) => {
                 errorhandler({
@@ -47,22 +60,17 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
                 reject(
                     `❌ Something went wrong while selecting all youtube channels. Please contact the Bot support.`
                 );
-                return {
-                    error: true,
-                };
+                return false
             });
 
-        if (allChannelsFromGuild.error) return;
+        if (!allChannelsFromGuild) return;
 
-        allChannelsFromGuild = allChannelsFromGuild.data;
-
+        let twChannelExists;
         if (allChannelsFromGuild.length > 0) {
-            var twChannelExists = allChannelsFromGuild.filter(
+            twChannelExists = allChannelsFromGuild.filter(
                 (channel) => channel.channel_id === twitch_user.id
             )[0];
-        }
 
-        if (allChannelsFromGuild) {
             if (allChannelsFromGuild.length >= 3 && !twChannelExists) {
                 return reject(`You already have 3 twitch channels. You have to delete one first.`);
             }
@@ -78,11 +86,18 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
                 return;
             }
 
-            database
-                .query(
-                    `UPDATE twitch_streams SET info_channel_id = ?, pingrole = ? WHERE guild_id = ? AND channel_id = ?`,
-                    [twdcchannel.id, twpingrole ? twpingrole.id : null, guild.id, twitch_user.id]
-                )
+            twitchStreams
+                .update(
+                    {
+                        info_channel_id: twdcchannel.id,
+                        pingrole: twpingrole ? twpingrole.id : null,
+                    },
+                    {
+                        where: {
+                            guild_id: guild.id,
+                            channel_id: twitch_user.id,
+                        },
+                    })
                 .then(() => {
                     resolve(
                         `✅ Successfully updated the twitch channel settings for ${twChannelExists.channel_name}.`
@@ -98,17 +113,14 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
                     );
                 });
         } else {
-            database
-                .query(
-                    `INSERT INTO twitch_streams (guild_id, channel_id, info_channel_id, pingrole, channel_name) VALUES (?, ?, ?, ?, ?)`,
-                    [
-                        guild.id,
-                        twitch_user.id,
-                        twdcchannel.id,
-                        twpingrole ? twpingrole.id : null,
-                        twitchchannel,
-                    ]
-                )
+            twitchStreams
+                .create({
+                    guild_id: guild.id,
+                    channel_id: twitch_user.id,
+                    info_channel_id: twdcchannel.id,
+                    pingrole: twpingrole ? twpingrole.id : null,
+                    channel_name: twitchchannel,
+                })
                 .then(() => {
                     resolve(`✅ Successfully added ${twitchchannel} to the notification list.`);
                 })
@@ -132,11 +144,13 @@ module.exports.delTwChannelFromList = async ({ guild_id, deltwchannel }) => {
             return reject(`❌ I couldn't find the channel you have entered.`);
         }
 
-        database
-            .query(`DELETE FROM twitch_streams WHERE guild_id = ? AND channel_id = ?`, [
-                guild_id,
-                twitch_user.id,
-            ])
+        twitchStreams
+            .destroy({
+                where: {
+                    guild_id,
+                    channel_id: twitch_user.id,
+                },
+            })
             .then(() => {
                 resolve('✅ Successfully removed the twitch channel to the notification list.');
             })

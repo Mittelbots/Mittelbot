@@ -52,6 +52,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'poll',
     ];
     const help = ['help', 'tutorial'];
+    const notifications = ['twitch', 'youtube', 'reddit'];
 
     //=========================================================
 
@@ -116,6 +117,11 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     if (help.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('help') > -1) return disabled('help');
         return requireModule('help');
+    }
+
+    if (notifications.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('notifications') > -1) return disabled('notifications');
+        return requireModule('notifications');
     }
 
     return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
