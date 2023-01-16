@@ -2,11 +2,11 @@ const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const fs = require('fs');
 const levelConfig = require('../../../src/assets/json/levelsystem/levelconfig.json');
-const lvlconfig = require('../../../src/assets/json/levelsystem/levelsystem.json');
 const { GuildConfig } = require('./Config');
 const guildLevel = require('../../../src/db/Models/tables/guildLevel.model');
+const config = require('../../../src/assets/json/_config/config.json');
 
-var levelCooldownArray = [];
+let levelCooldownArray = [];
 
 class Levelsystem {
     constructor() {}
@@ -352,7 +352,7 @@ class Levelsystem {
                     levelCooldownArray = levelCooldownArray.filter(
                         (u) => u.user !== message.author.id && u.guild !== message.guild.id
                     );
-                }, lvlconfig.timeout);
+                }, config.levelsystem.timeout);
             }
         });
     }

@@ -30,6 +30,9 @@
             "sendFiles": "I don't have permissions to send files. Please check my Permissions and try again."
         }
     },
+    "levelsystem": {
+        "timeout": "60000"
+    },
     "successmessages": {
         "banned": " was banned from the server.",
         "kicked": " was kicked from the server.",
