@@ -185,33 +185,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
 
         case 'warnroles':
-            let warnroles = main_interaction.options.getString('warnroles');
-            warnroles = removeMention(warnroles);
-            warnroles = warnroles.split(' ');
-
-            Warnroles.update({
-                guild: main_interaction.guild,
-                roles: warnroles,
-                user: bot.guilds.cache
-                    .get(main_interaction.guild.id)
-                    .members.cache.get(main_interaction.user.id),
-            })
-                .then(() => {
-                    main_interaction
-                        .followUp({
-                            content: `✅ Warn Roles updated!`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: `❌ ${err}`,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
             break;
 
         case 'twitch':
