@@ -60,7 +60,7 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
                 reject(
                     `❌ Something went wrong while selecting all youtube channels. Please contact the Bot support.`
                 );
-                return false
+                return false;
             });
 
         if (!allChannelsFromGuild) return;
@@ -97,7 +97,8 @@ module.exports.changeTwitchNotifier = async ({ twitchchannel, twdcchannel, twpin
                             guild_id: guild.id,
                             channel_id: twitch_user.id,
                         },
-                    })
+                    }
+                )
                 .then(() => {
                     resolve(
                         `✅ Successfully updated the twitch channel settings for ${twChannelExists.channel_name}.`

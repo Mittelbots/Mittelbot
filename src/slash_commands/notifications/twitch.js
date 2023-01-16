@@ -1,5 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { delTwChannelFromList, changeTwitchNotifier } = require('../../../utils/functions/data/twitch');
+const {
+    delTwChannelFromList,
+    changeTwitchNotifier,
+} = require('../../../utils/functions/data/twitch');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getSubcommand();
@@ -60,7 +63,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
             break;
     }
-    
 };
 
 module.exports.data = new SlashCommandBuilder()
@@ -72,37 +74,37 @@ module.exports.data = new SlashCommandBuilder()
         subcommand
             .setName('add')
             .setDescription('Add a twitch channel to the list.')
-        .addStringOption((ytchannel) =>
-            ytchannel
-                .setName('twitchchannel')
-                .setDescription('Add the twitch channel name.')
-                .setRequired(true)
-        )
-        .addChannelOption((dcchannel) =>
-            dcchannel
-                .setName('dcchannel')
-                .setDescription(
-                    'Select a text channel where the notification will be send it when the streamer is live.'
-                )
-                .setRequired(true)
-        )
-        .addRoleOption((warnrole) =>
-            warnrole
-                .setName('twitchping')
-                .setDescription(
-                    'Add a ping role to be pinged each time a the streamer is live.'
-                )
-                .setRequired(false)
-        )
+            .addStringOption((ytchannel) =>
+                ytchannel
+                    .setName('twitchchannel')
+                    .setDescription('Add the twitch channel name.')
+                    .setRequired(true)
+            )
+            .addChannelOption((dcchannel) =>
+                dcchannel
+                    .setName('dcchannel')
+                    .setDescription(
+                        'Select a text channel where the notification will be send it when the streamer is live.'
+                    )
+                    .setRequired(true)
+            )
+            .addRoleOption((warnrole) =>
+                warnrole
+                    .setName('twitchping')
+                    .setDescription(
+                        'Add a ping role to be pinged each time a the streamer is live.'
+                    )
+                    .setRequired(false)
+            )
     )
     .addSubcommand((subcommand) =>
         subcommand
             .setName('remove')
             .setDescription('Remove a twitch channel from the list.')
-        .addStringOption((ytchannel) =>
-            ytchannel
-                .setName('twitchchannel')
-                .setDescription('Add the twitch channel name.')
-                .setRequired(true)
-        )
+            .addStringOption((ytchannel) =>
+                ytchannel
+                    .setName('twitchchannel')
+                    .setDescription('Add the twitch channel name.')
+                    .setRequired(true)
+            )
     );

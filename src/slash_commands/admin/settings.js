@@ -174,41 +174,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .catch((err) => {});
             break;
-
-        case 'reactionroles':
-            const message_id = main_interaction.options.getString('message_id');
-            const reactionroles = main_interaction.options.getString('roles');
-            const emojis = main_interaction.options.getString('emojis');
-
-            main_interaction.deferfollowUp({
-                ephemeral: true,
-            });
-
-            updateReactionRoles({
-                guild_id: main_interaction.guild.id,
-                message_id,
-                roles: reactionroles,
-                emojis,
-                main_interaction,
-            })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            content: res,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-
-            break;
     }
 
     async function saveSetting({ value, valueName }) {
@@ -279,48 +244,6 @@ module.exports.data = new SlashCommandBuilder()
                     .setName('dcau')
                     .setDescription(
                         'True if you want to delete the command after usage. False if you want to keep it.'
-                    )
-                    .setRequired(true)
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('warnroles')
-            .setDescription('Add warnroles in the order they will be given to the user.')
-            .addStringOption((warnrole) =>
-                warnrole
-                    .setName('warnroles')
-                    .setDescription('Add roles. Split multiple roles with a space.')
-                    .setRequired(false)
-            )
-    )
-
-    .addSubcommand((command) =>
-        command
-            .setName('reactionroles')
-            .setDescription('Add a reaction role to a message.')
-            .addStringOption((messagelink) =>
-                messagelink
-                    .setName('message_id')
-                    .setDescription(
-                        'Add the message id [Right-Click/Hold on the message -> Copy ID]'
-                    )
-                    .setRequired(true)
-            )
-            .addStringOption((roles) =>
-                roles
-                    .setName('roles')
-                    .setDescription(
-                        'Add the roles you want to add to the message. [Role1 Role2 Role3]'
-                    )
-                    .setRequired(true)
-            )
-
-            .addStringOption((emoji) =>
-                emoji
-                    .setName('emojis')
-                    .setDescription(
-                        'Add the emoji you want to add to the message. [:emoji1: :emoji2: :emoji3:]'
                     )
                     .setRequired(true)
             )

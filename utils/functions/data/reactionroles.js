@@ -127,6 +127,52 @@ module.exports.updateReactionRoles = async ({
     });
 };
 
+module.exports.removeReactionRoles = async ({ guild_id, message_id, main_interaction }) => {
+    return new Promise(async (resolve, reject) => {
+        const messageId = message_id;
+
+        if (!channel || !messageId) {
+            return reject('❌ The message link is not valid');
+        }
+
+        const message = await main_interaction.bot.guilds.cache
+            .get(guild_id)
+            .channels.cache.get(channel)
+            .messages.fetch(messageId);
+
+        if (!message) {
+            return reject('❌ The message does not exist');
+        }
+
+        const guildConfig = await GuildConfig.get(guild_id);
+        const reactionroles = guildConfig.reactionroles;
+
+        if (reactionroles.length > 0) {
+            for (let i in reactionroles) {
+                if (reactionroles[i].messageId == messageId) {
+                    reactionroles.splice(i, 1);
+                }
+            }
+        }
+
+        return await GuildConfig.update({
+            guild_id,
+            value: reactionroles,
+            valueName: 'reactionroles',
+        })
+            .then(async (res) => {
+                await message.reactions.removeAll().catch(() => {
+                    return reject(
+                        `❌ I dont have permissions to remove the reactions from the message.`
+                    );
+                });
+            })
+            .catch((err) => {
+                reject(`❌ There was an error updating the reaction roles.`);
+            });
+    });
+};
+
 module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) => {
     if (user.bot || user.system) return;
     if (reaction.partial) {
