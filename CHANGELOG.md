@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.11**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - /singasong command missing intent which don't allowed the bot to see voicestate changes
+    - core fixes & improvements
+
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.10**
 
 ### Added things:
