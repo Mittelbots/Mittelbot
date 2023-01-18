@@ -15,5 +15,5 @@ jobs:
         steps:
             - uses: andrefcdias/add-to-milestone
               with:
-                repo-token: "${{ secrets.ADD_TO_MILESTONE }}"
-                milestone: "Public Beta"
+                  repo-token: '${{ secrets.ADD_TO_MILESTONE }}'
+                  milestone: 'Public Beta'
