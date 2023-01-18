@@ -22,6 +22,7 @@ services:
             - 5000:5000
 
     mysql:
+        container_name: mittelbot-mysql
         image: mysql:5.7
         environment:
             - MYSQL_ROOT_PASSWORD=root
@@ -45,17 +46,20 @@ services:
             retries: 10
 
     mysql-backup:
-        image: ubuntu:latest
-        build:
-            context: .
-            dockerfile: Dockerfile.mysqlbackup
-        working_dir: /app
-        volumes:
-            - mysql:/var/lib/mysql
-            - ./backup:/backup
+        container_name: mittelbot-mysql-backup
+        image: mysql:5.7
+        restart: unless-stopped
         env_file:
             - .env
-        restart: unless-stopped
-        depends_on:
-            - bot
+        links:
             - mysql
+        depends_on:
+            - mysql
+        volumes:
+            - .:/backup
+            - mysql:/var/lib/mysql
+        command: bash -c "cd backup && sh backup-mysql.sh"
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            timeout: 5s
+            retries: 10

@@ -1,6 +1,5 @@
 blacklist.json
 src/db/last_backup.json
-mittelbot-db-backup
 
 node_modules/
 
@@ -18,4 +17,4 @@ _debug/*
 Dockerfile.prod
 docker-compose.override.yml
 
-backups/mysql/*
+backups/*
