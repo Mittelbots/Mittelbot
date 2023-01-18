@@ -24,6 +24,7 @@
 ### Bug fixes & other changes:
 
     - /singasong command missing intent which don't allowed the bot to see voicestate changes
+    - core fixes & improvements
 
 ### Dashboard:
 
