@@ -37,6 +37,13 @@ module.exports.setActivity = async (bot, restart = false) => {
         activity.text = activity.text.replace('{loc}', loc);
     }
 
+    if (activity.showVersion) {
+        activity.text = activity.text.replace(
+            '{version}',
+            require('../../../package.json').version
+        );
+    }
+
     bot.user.setActivity({
         name: activity.text,
         type: activity.type ? ActivityType[activity.type] : ActivityType.Playing,
