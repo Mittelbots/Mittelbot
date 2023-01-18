@@ -1,5 +1,5 @@
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes } = require('discord.js');
 const fs = require('node:fs');
 
 module.exports.createSlashCommands = async () => {
