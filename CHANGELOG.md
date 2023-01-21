@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.12**
+
+### Added things:
+
+    - add new activity status
+
+### Bug fixes & other changes:
+
+    - fix a bug where the bot sends "null" in the message log
+    - fix a bug where no images are not shown in the audit log
+    - core fixes & improvements
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.11**
 
 ### Added things:
