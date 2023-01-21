@@ -11,6 +11,7 @@ module.exports = class SingASong extends SingASongLogic {
     #embed = new EmbedBuilder();
     quote = '';
     #finishButton = new ButtonBuilder();
+    #cancelButton = new ButtonBuilder();
     #upVoteButton = new ButtonBuilder();
     #row = new ActionRowBuilder();
     lastSentence = '';
@@ -28,8 +29,8 @@ module.exports = class SingASong extends SingASongLogic {
 
     initCheck() {
         if (!this.voicechannel) return 'You must be in a voice channel to use this command!';
-        if (this.voicechannel.members.size < 2)
-            return 'You must be in a voice channel with at least 1 other person to use this command!';
+        //if (this.voicechannel.members.size < 2)
+            //return 'You must be in a voice channel with at least 1 other person to use this command!';
 
         return true;
     }
@@ -44,6 +45,7 @@ module.exports = class SingASong extends SingASongLogic {
 
             this.#generateSingEmbed();
             this.#generateFinishButton();
+            this.#generateCancelButton();
 
             const user = await this.getUser();
             if (!user) {
@@ -132,6 +134,15 @@ module.exports = class SingASong extends SingASongLogic {
         this.#row.addComponents(this.#finishButton);
     }
 
+    #generateCancelButton() {
+        this.#cancelButton
+            .setStyle(ButtonStyle.Danger)
+            .setLabel('Cancel')
+            .setCustomId('singasong_cancel_' + this.main_interaction.user.id);
+
+        this.#row.addComponents(this.#cancelButton);
+    }
+
     #generateUpVoteButton() {
         this.#upVoteButton
             .setStyle(ButtonStyle.Success)
@@ -209,6 +220,27 @@ module.exports = class SingASong extends SingASongLogic {
                             ephemeral: true,
                         });
                     });
+            } else if (this.main_interaction.customId.search('singasong_cancel') !== -1) {
+                if (this.main_interaction.user.id !== author) {
+                    return this.main_interaction.reply({
+                        content: 'You are not the one who started the game!',
+                        ephemeral: true,
+                    });
+                }
+
+                if (!(await this.isUserPlaying()))
+                    return this.main_interaction.reply({
+                        content: 'You are not playing an event!',
+                        ephemeral: true,
+                    });
+
+                await this.#resetEvent(author);
+                this.main_interaction.message.delete().catch((err) => {
+                    errorhandler({
+                        err,
+                        fatal: false,
+                    });
+                });
             }
         });
     }
@@ -324,7 +356,7 @@ module.exports = class SingASong extends SingASongLogic {
         });
     }
 
-    #resetEvent() {
+    #resetEvent(author) {
         return new Promise(async (resolve, reject) => {
             await singasong
                 .update(
@@ -335,7 +367,7 @@ module.exports = class SingASong extends SingASongLogic {
                     },
                     {
                         where: {
-                            user_id: this.author.id,
+                            user_id: author,
                         },
                     }
                 )
@@ -355,7 +387,7 @@ module.exports = class SingASong extends SingASongLogic {
         setTimeout(async () => {
             await this.#showResults(this.main_interaction);
             await this.givePoints();
-            await this.#resetEvent();
+            await this.#resetEvent(this.author.id);
         }, 60000);
     }
 
