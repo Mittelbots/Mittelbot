@@ -20,8 +20,9 @@
             "showGuildCount": true
         },
         {
-            "text": "with {loc} lines of code",
-            "showLinesOfCode": true
+            "text": "with {loc} lines of code on v{version}",
+            "showLinesOfCode": true,
+            "showVersion": true
         },
         {
             "text": "with {guildCount} guilds",

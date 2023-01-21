@@ -2,7 +2,13 @@ const Auditlog = require('../utils/functions/data/Auditlog');
 
 module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
     if (messageBefore.content === messageAfter.content) return;
-    if (messageBefore == null || messageAfter == null) return;
+    if (
+        messageBefore == null ||
+        messageAfter == null ||
+        messageBefore.content == null ||
+        messageAfter.content == null
+    )
+        return;
     const auditLog = new Auditlog();
     const isEnabled = await auditLog.checkEnabledEvents(messageBefore.guild.id, 'message_update');
     if (!isEnabled) return;

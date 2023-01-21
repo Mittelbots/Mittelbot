@@ -159,6 +159,9 @@ class Auditlog {
                     attachment !== undefined ? '' : message
                 }`
             );
+            if (attachment !== undefined) {
+                this.embed.setImage(attachment.url);
+            }
             resolve(true);
         });
     }

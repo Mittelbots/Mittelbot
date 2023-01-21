@@ -1,0 +1,19 @@
+name: Add bugs and prs to default Milestone
+
+on:
+    issues:
+        types:
+            - opened
+    pull_request:
+        types:
+            - opened
+
+jobs:
+    add-to-project:
+        name: Add issue or pr to Milestone
+        runs-on: ubuntu-latest
+        steps:
+            - uses: andrefcdias/add-to-milestone
+              with:
+                  repo-token: '${{ secrets.ADD_TO_MILESTONE }}'
+                  milestone: 'Public Beta'
