@@ -15,6 +15,21 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.14**
+
+### Added things:
+
+    - add automatic database backup
+
+### Bug fixes & other changes:
+
+    - /
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.13**
 
 ### Added things:
