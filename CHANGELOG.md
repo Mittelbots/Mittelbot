@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.13**
+
+### Added things:
+
+    - add a cancel button to /singasong command
+
+### Bug fixes & other changes:
+
+    - moved /warnroles to own command
+    - moved /twitch to own command
+    - add more space between after and before in message log embed
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.12**
 
 ### Added things:
