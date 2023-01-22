@@ -22,6 +22,7 @@ services:
             - 5000:5000
 
     mysql:
+        container_name: mittelbot-mysql
         image: mysql:5.7
         environment:
             - MYSQL_ROOT_PASSWORD=root
@@ -44,18 +45,20 @@ services:
             timeout: 5s
             retries: 10
 
-    mysql-backup:
-        image: ubuntu:latest
-        build:
-            context: .
-            dockerfile: Dockerfile.mysqlbackup
-        working_dir: /app
-        volumes:
-            - mysql:/var/lib/mysql
-            - ./backup:/backup
-        env_file:
-            - .env
-        restart: unless-stopped
+    dbBackup:
+        image: fradelg/mysql-cron-backup
         depends_on:
-            - bot
             - mysql
+        restart: always
+        volumes:
+            - ./backups:/backup
+        environment:
+            - MYSQL_USER=mittelbot
+            - MYSQL_PASS=root
+            - MYSQL_DB=mittelbot
+            - CRON_TIME=0 0 * * *
+            - MYSQL_HOST=mysql
+            - MYSQL_PORT=3306
+            - TIMEOUT=10s
+            - INIT_BACKUP=1
+            - MAX_BACKUPS=7
