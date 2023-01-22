@@ -183,7 +183,7 @@ class Auditlog {
             this.embed.setDescription(
                 `**Message sent by <@${messageUpdate.author.id}> edited in <#${
                     messageUpdate.channelId
-                }>\n[Jump to Message](https://discord.com/channels/${messageUpdate.guildId}/${messageUpdate.channelId}/${messageUpdate.id})**\n\n**Before**\n${attachment !== undefined ? '' : messageBefore}\n**After**\n${
+                }>\n[Jump to Message](https://discord.com/channels/${messageUpdate.guildId}/${messageUpdate.channelId}/${messageUpdate.id})**\n\n**Before**\n${attachment !== undefined ? '' : messageBefore}\n\n**After**\n${
                     attachment !== undefined ? '' : messageUpdate
                 }`
             );
