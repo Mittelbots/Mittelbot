@@ -110,5 +110,8 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
         if (main_interaction.customId.indexOf('singasong_upvote') === 0) {
             new SingASong(main_interaction, bot).interaction();
         }
+        if (main_interaction.customId.indexOf('singasong_cancel') === 0) {
+            new SingASong(main_interaction, bot).interaction();
+        }
     }
 };

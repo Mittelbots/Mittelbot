@@ -65,13 +65,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const antiSpamAction = main_interaction.options.getString('action');
 
             setting.antispam.action = main_interaction.options.getString('action');
-            switch (true) {
-                case !setting.antispam:
-                    setting.antispam = {
-                        enabled: antiSpamEnabled,
-                        action: antiSpamAction,
-                    };
-                    break;
+
+            if (!setting.antispam) {
+                setting.antispam = {
+                    enabled: antiSpamEnabled,
+                    action: antiSpamAction,
+                };
             }
 
             setting.antispam.enabled = antiSpamEnabled;
@@ -110,13 +109,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const antiInviteEnabled = JSON.parse(main_interaction.options.getString('enabled'));
             const antiInviteAction = main_interaction.options.getString('action');
 
-            switch (true) {
-                case !setting.antiinvite:
-                    setting.antiinvite = {
-                        enabled: antiInviteEnabled,
-                        action: antiInviteAction,
-                    };
-                    break;
+            if (!setting.antiinvite) {
+                setting.antiinvite = {
+                    enabled: antiInviteEnabled,
+                    action: antiInviteAction,
+                };
             }
 
             setting.antiinvite.enabled = antiInviteEnabled;
@@ -155,13 +152,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const antiLinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
             const antiLinksAction = main_interaction.options.getString('action');
 
-            switch (true) {
-                case !setting.antilinks:
-                    setting.antilinks = {
-                        enabled: antiLinksEnabled,
-                        action: antiLinksAction,
-                    };
-                    break;
+            if (!setting.antilinks) {
+                setting.antilinks = {
+                    enabled: antiLinksEnabled,
+                    action: antiLinksAction,
+                };
+                break;
             }
 
             setting.antilinks.enabled = antiLinksEnabled;
@@ -202,13 +198,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const words = main_interaction.options.getString('words');
             const removeWords = main_interaction.options.getString('remove');
 
-            switch (true) {
-                case !setting.antiinsults:
-                    setting.antiinsults = {
-                        enabled: antiInsultsEnabled,
-                        action: antiInsultsAction,
-                    };
-                    break;
+            if (!setting.antiinsults) {
+                setting.antiinsults = {
+                    enabled: antiInsultsEnabled,
+                    action: antiInsultsAction,
+                };
+                break;
             }
 
             setting.antiinsults.enabled = antiInsultsEnabled;
