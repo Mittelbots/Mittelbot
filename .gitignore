@@ -1,6 +1,5 @@
 blacklist.json
 src/db/last_backup.json
-mittelbot-db-backup
 
 node_modules/
 
