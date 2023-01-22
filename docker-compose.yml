@@ -45,21 +45,20 @@ services:
             timeout: 5s
             retries: 10
 
-    mysql-backup:
-        container_name: mittelbot-mysql-backup
-        image: mysql:5.7
-        restart: unless-stopped
-        env_file:
-            - .env
-        links:
-            - mysql
+    dbBackup:
+        image: fradelg/mysql-cron-backup
         depends_on:
             - mysql
+        restart: always
         volumes:
-            - .:/backup
-            - mysql:/var/lib/mysql
-        command: bash -c "cd backup && sh backup-mysql.sh"
-        healthcheck:
-            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
-            timeout: 5s
-            retries: 10
+            - ./backups:/backup
+        environment:
+            - MYSQL_USER=mittelbot
+            - MYSQL_PASS=root
+            - MYSQL_DB=mittelbot
+            - CRON_TIME=0 0 * * *
+            - MYSQL_HOST=mysql
+            - MYSQL_PORT=3306
+            - TIMEOUT=10s
+            - INIT_BACKUP=1
+            - MAX_BACKUPS=7
