@@ -49,7 +49,7 @@ module.exports = class SingASong extends SingASongLogic {
 
             const user = await this.getUser();
             if (!user) {
-                await this.createUser().catch((err) => {
+                await this.createUser(this.quote).catch((err) => {
                     return reject(err);
                 });
             } else {
@@ -268,12 +268,12 @@ module.exports = class SingASong extends SingASongLogic {
         });
     }
 
-    #getAllUpvotes() {
+    #getAllUpvotes(author) {
         return new Promise(async (resolve, reject) => {
             await singasong
                 .findOne({
                     where: {
-                        user_id: this.author.id,
+                        user_id: author,
                     },
                 })
                 .then((data) => {
@@ -294,7 +294,7 @@ module.exports = class SingASong extends SingASongLogic {
                 return reject(`You are not in the same voice channel as the Singer!`);
             }
 
-            const allUpVotes = await this.#getAllUpvotes();
+            const allUpVotes = await this.#getAllUpvotes(author);
             if (!allUpVotes) return reject(false);
 
             const userHasVoted = allUpVotes.includes(this.main_interaction.user.id);
@@ -329,7 +329,7 @@ module.exports = class SingASong extends SingASongLogic {
 
     #showResults(interaction) {
         return new Promise(async (resolve, reject) => {
-            const allUpVotes = await this.#getAllUpvotes();
+            const allUpVotes = await this.#getAllUpvotes(this.author.id);
             if (!allUpVotes) return reject(false);
 
             this.points = allUpVotes.length;
