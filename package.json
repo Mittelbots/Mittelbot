@@ -37,7 +37,7 @@
         "express": "^4.18.2",
         "express-flash": "^0.0.2",
         "express-session": "^1.17.3",
-        "express-validator": "^6.14.2",
+        "express-validator": "^6.14.3",
         "extract-urls": "^1.3.2",
         "jsonwebtoken": "^9.0.0",
         "memorystore": "^1.6.6",
