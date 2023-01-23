@@ -242,12 +242,23 @@ module.exports = class SingASongLogic {
 
             if (user) {
                 user.banned.push(guild_id);
-                await user.save().catch((err) => {
-                    errorhandler({
-                        err,
+                await singasong
+                    .update(
+                        {
+                            banned: user.banned,
+                        },
+                        {
+                            where: {
+                                user_id,
+                            },
+                        }
+                    )
+                    .catch((err) => {
+                        errorhandler({
+                            err,
+                        });
+                        return reject(false);
                     });
-                    return reject(false);
-                });
             } else {
                 await singasong
                     .create({
