@@ -55,12 +55,14 @@ module.exports = class SingASongLogic {
         });
     }
 
-    createUser() {
+    createUser(sentence) {
         return new Promise(async (resolve, reject) => {
             await singasong
                 .create({
                     user_id: this.author.id,
                     guild_id: this.main_interaction.guild.id,
+                    isCurrentlyPlaying: true,
+                    used_sentences: [sentence],
                 })
                 .then(() => {
                     return resolve(true);
