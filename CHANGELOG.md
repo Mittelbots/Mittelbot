@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.15**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix a bug where /joinroles command doesn't work
+    - core fixes & improvements
+### Dashboard:
+
+    - /
+
+<br><br>
+
+
 # **BETA VERSION 0.54.14**
 
 ### Added things:
