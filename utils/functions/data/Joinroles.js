@@ -92,11 +92,13 @@ class Joinroles {
                 guild_id,
                 value: joinroles,
                 valueName: 'joinroles',
-            }).then(() => {
-                resolve(`Successfully removed all joinroles`);
-            }).catch(() => {
-                reject(`Something went wrong while removing the joinroles.`);
-            });
+            })
+                .then(() => {
+                    resolve(`Successfully removed all joinroles`);
+                })
+                .catch(() => {
+                    reject(`Something went wrong while removing the joinroles.`);
+                });
         });
     }
 }
