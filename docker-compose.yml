@@ -45,7 +45,7 @@ services:
             timeout: 5s
             retries: 10
 
-    dbBackup:
+    mysql-backup:
         image: fradelg/mysql-cron-backup
         depends_on:
             - mysql
