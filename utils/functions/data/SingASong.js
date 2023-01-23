@@ -49,7 +49,7 @@ module.exports = class SingASong extends SingASongLogic {
 
             const user = await this.getUser();
             if (!user) {
-                await this.createUser().catch((err) => {
+                await this.createUser(this.quote).catch((err) => {
                     return reject(err);
                 });
             } else {
