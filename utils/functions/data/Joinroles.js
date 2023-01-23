@@ -11,17 +11,18 @@ class Joinroles {
         });
     }
 
-    update({ guild_id, roles }) {
-        return new Promise(async (resolve) => {
-            const guild = await GuildConfig.get(guild_id);
-            const joinroles = guild.joinroles;
+    update({ guild, roles, user }) {
+        return new Promise(async (resolve, reject) => {
+            const guildConfig = await GuildConfig.get(guild.id);
+            let joinroles = guildConfig.joinroles;
 
             const rolesAlreadyExists = _.intersection(joinroles, roles);
-
             if (rolesAlreadyExists.length > 0) {
                 await this.remove({
                     guild_id: guild.id,
                     roles: rolesAlreadyExists,
+                }).catch((err) => {
+                    return reject(err);
                 });
 
                 for (let i in rolesAlreadyExists) {
@@ -33,7 +34,6 @@ class Joinroles {
                     return resolve(`Successfully removed all joinroles`);
                 }
             }
-
             var passedRoles = [];
             for (let i in roles) {
                 try {
@@ -59,12 +59,12 @@ class Joinroles {
             }
 
             return await GuildConfig.update({
-                guild_id,
+                guild_id: guild.id,
                 value: [...passedRoles, ...joinroles],
                 valueName: 'joinroles',
             })
                 .then(() => {
-                    if (joinroles.length == 0) {
+                    if (joinroles.length == 0 && passedRoles.length == 0) {
                         resolve(`Joinroles successfully cleared.`);
                     } else {
                         resolve(`Successfully updated all joinroles`);
@@ -79,7 +79,7 @@ class Joinroles {
     }
 
     remove({ guild_id, roles }) {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             let joinroles = await this.get({
                 guild_id,
             });
@@ -90,8 +90,12 @@ class Joinroles {
 
             await GuildConfig.update({
                 guild_id,
-                value: JSON.stringify(joinroles),
+                value: joinroles,
                 valueName: 'joinroles',
+            }).then(() => {
+                resolve(`Successfully removed all joinroles`);
+            }).catch(() => {
+                reject(`Something went wrong while removing the joinroles.`);
             });
         });
     }
