@@ -3,9 +3,10 @@ const { Joinroles } = require('../../../utils/functions/data/Joinroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 
 module.exports.run = async ({ main_interaction, bot }) => {
+    await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
+
     const roles = main_interaction.options.getString('joinroles');
     const newJoinRoles = removeMention(roles).split(' ');
-
     Joinroles.update({
         guild: main_interaction.guild,
         roles: newJoinRoles,
