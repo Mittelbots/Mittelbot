@@ -1,5 +1,4 @@
 const config = require('../src/assets/json/_config/config.json');
-const { checkActiveCommand } = require('../utils/functions/checkActiveCommand/checkActiveCommand');
 const { delay } = require('../utils/functions/delay/delay');
 const { antiSpam } = require('../utils/automoderation/antiSpam');
 const { antiInvite } = require('../utils/automoderation/antiInvite');
@@ -12,8 +11,6 @@ const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
-
-const defaultCooldown = new Set();
 
 async function messageCreate(message, bot) {
     if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
@@ -70,74 +67,33 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    const guildConfig = await GuildConfig.get(message.guild.id);
-
-    disabled_modules = guildConfig.disabled_modules;
+    const { disabled_modules } = await GuildConfig.get(message.guild.id);
 
     if (disabled_modules.indexOf('scamdetection') === -1) {
         //const isScam = await checkForScam(message, bot, config, log);
         //if (isScam) return;
     }
 
-    let messageArray = message.content.split(' ');
-    let cmd = messageArray[0];
-    let args = messageArray.slice(1);
+    if (disabled_modules.indexOf('autotranslate') === -1) {
+        new Translate().translate(message);
+    }
 
-    const prefix = guildConfig.prefix;
-    const cooldown = guildConfig.cooldown;
+    if (disabled_modules.indexOf('level') === -1) {
+        Levelsystem.run({ message, bot });
+    }
 
-    if (cmd.startsWith(prefix)) {
-        let commandfile = bot.commands.get(cmd.slice(prefix.length));
-        if (commandfile) {
-            //&& blacklist(0, message)
-            const isActive = await checkActiveCommand(commandfile.help.name, message.guild.id);
-
-            if (isActive.global_disabled)
-                return message.reply(
-                    'This command is currently disabled in all Servers. Join the offical support discord For more informations.'
-                );
-            if (!isActive.enabled) return message.reply('This command is disabled in your Guild.');
-
-            if (defaultCooldown.has(message.author.id)) {
-                return message.channel
-                    .send(
-                        `You have to wait ${
-                            cooldown / 1000 + 's' || config.defaultCooldown.text
-                        } after each Command.`
-                    )
-                    .catch((err) => {});
-            } else {
-                defaultCooldown.add(message.author.id);
-                setTimeout(async () => {
-                    defaultCooldown.delete(message.author.id);
-                }, cooldown || config.defaultCooldown.format);
-                return commandfile.run(bot, message, args);
-            }
-        } else return;
-    } else {
-        //? NO COMMAND
-
-        if (disabled_modules.indexOf('autotranslate') === -1) {
-            new Translate().translate(message);
-        }
-
-        if (disabled_modules.indexOf('level') === -1) {
-            Levelsystem.run({ message, bot });
-        }
-
-        if (disabled_modules.indexOf('utils') === -1) {
-            const isAFK = Afk.check({ message });
-            if (isAFK) {
-                return message
-                    .reply(
-                        `The user is currently afk.\`Reason: ${isAFK.reason}\` Since: <t:${isAFK.time}:R>`
-                    )
-                    .then(async (msg) => {
-                        await delay(8000);
-                        msg.delete().catch((err) => {});
-                    })
-                    .catch((err) => {});
-            }
+    if (disabled_modules.indexOf('utils') === -1) {
+        const isAFK = Afk.check({ message });
+        if (isAFK) {
+            return message
+                .reply(
+                    `The user is currently afk.\`Reason: ${isAFK.reason}\` Since: <t:${isAFK.time}:R>`
+                )
+                .then(async (msg) => {
+                    await delay(8000);
+                    msg.delete().catch((err) => {});
+                })
+                .catch((err) => {});
         }
     }
 }
