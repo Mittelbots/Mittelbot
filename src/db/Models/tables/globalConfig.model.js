@@ -13,7 +13,7 @@ GlobalConfig.init(
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
-        disabledCommands: {
+        disabled_commands: {
             type: DataTypes.JSON,
             defaultValue: [],
         },
@@ -28,7 +28,7 @@ GlobalConfig.init(
 GlobalConfig.create({
     id: 1,
     ignoreMode: false,
-    disabledCommands: [],
+    disabled_commands: [],
 }).catch((err) => {});
 
 const globalConfig = GlobalConfig;
