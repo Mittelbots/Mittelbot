@@ -99,20 +99,20 @@ module.exports.ignoremode = async (message, args) => {
 module.exports.disable_command = async (message, args) => {
     const command = args[1];
     const global_config = await GlobalConfig.get();
-    const disabled_commands = global_config.disabledCommands;
+    const disabled_commands = global_config.disabled_commands;
     let gotDisabled = false;
     try {
         if (disabled_commands.includes(command)) {
             GlobalConfig.update({
                 value: disabled_commands.filter((c) => c !== command),
-                valueName: 'disabledCommands',
+                valueName: 'disabled_commands',
             });
         } else {
             gotDisabled = true;
             disabled_commands.push(command);
             GlobalConfig.update({
                 value: disabled_commands,
-                valueName: 'disabledCommands',
+                valueName: 'disabled_commands',
             });
         }
 
