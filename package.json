@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.54.15",
+    "version": "0.54.16",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,

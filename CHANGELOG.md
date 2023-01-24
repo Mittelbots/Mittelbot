@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.16**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix a bug where the user can't interacte with the /singasong buttons when they use it for the first time
+    - fix a bug where users can't vote in /singasong command
+    - fix a bug where users can use /singasong ban command without having the permission
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.15**
 
 ### Added things:
