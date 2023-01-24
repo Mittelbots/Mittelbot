@@ -55,12 +55,14 @@ module.exports = class SingASongLogic {
         });
     }
 
-    createUser() {
+    createUser(sentence) {
         return new Promise(async (resolve, reject) => {
             await singasong
                 .create({
                     user_id: this.author.id,
                     guild_id: this.main_interaction.guild.id,
+                    isCurrentlyPlaying: true,
+                    used_sentences: [sentence],
                 })
                 .then(() => {
                     return resolve(true);
@@ -242,12 +244,23 @@ module.exports = class SingASongLogic {
 
             if (user) {
                 user.banned.push(guild_id);
-                await user.save().catch((err) => {
-                    errorhandler({
-                        err,
+                await singasong
+                    .update(
+                        {
+                            banned: user.banned,
+                        },
+                        {
+                            where: {
+                                user_id,
+                            },
+                        }
+                    )
+                    .catch((err) => {
+                        errorhandler({
+                            err,
+                        });
+                        return reject(false);
                     });
-                    return reject(false);
-                });
             } else {
                 await singasong
                     .create({
