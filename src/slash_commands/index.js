@@ -60,7 +60,6 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     //=========================================================
-
     const isActive = await checkActiveCommand(
         main_interaction.commandName,
         main_interaction.guild.id

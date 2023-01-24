@@ -15,6 +15,22 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.54.17**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - removed all message based commands
+    - fix a bug where global disabled commands are still available for everyone
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.16**
 
 ### Added things:
