@@ -43,7 +43,7 @@ body:
       validations:
           required: true
     - type: textarea
-      id: unresolved_question / todos
+      id: unresolved_question_or_todos
       attributes:
           label: 'Unresolved questions'
           description: What questions still remain unresolved ?
