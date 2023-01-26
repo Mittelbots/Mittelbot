@@ -88,14 +88,14 @@ module.exports = class ScamDetection {
                         //     user: await message.guild.members.fetch(message.author),
                         //     mod: bot.user,
                         //     guild: message.guild,
-                        //     reason: `User tried to sent a Scam Link : ${scamLinksExt[i]}`,
+                        //     reason: `User tried to sent a Scam Link : ${scamLinksExt[index]}`,
                         //     bot,
                         //     dbtime: getModTime('99999d'),
                         //     time: 'Permanent',
                         //     isAuto: true
                         // });
                         errorhandler({
-                            err: `User tried to sent a Scam Link : ${scamLinksExt[i]}`,
+                            err: `User tried to sent a Scam Link : ${scamLinksExt[index]}`,
                         });
                         await message.delete().catch((err) => {
                             return;
