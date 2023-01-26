@@ -6,11 +6,6 @@ module.exports.processErrorHandler = () => {
             err,
             fatal: true,
         });
-
-        errorhandler({
-            err: `---- BOT RESTARTED DUE ERROR..., ${new Date()}`,
-            fatal: true,
-        });
     });
 
     process.on('uncaughtException', async (err) => {
