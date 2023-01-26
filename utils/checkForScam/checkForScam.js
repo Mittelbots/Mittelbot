@@ -23,7 +23,7 @@ module.exports = class ScamDetection {
         });
     }
 
-    check(message, bot, config, log) {
+    check(message, bot) {
         return new Promise(async (resolve) => {
             const member = await message.guild.members.fetch(message.author);
 
@@ -84,17 +84,16 @@ module.exports = class ScamDetection {
                     }
 
                     if (match >= 85) {
-                        // await banUser(
-                        //     await message.guild.members.fetch(message.author),
-                        //     message,
-                        //     `User tried to sent a Scam Link : ${scamLinksExt[i]}`,
+                        // await banUser({
+                        //     user: await message.guild.members.fetch(message.author),
+                        //     mod: bot.user,
+                        //     guild: message.guild,
+                        //     reason: `User tried to sent a Scam Link : ${scamLinksExt[i]}`,
                         //     bot,
-                        //     config,
-                        //     log,
-                        //     getModTime('99999d'),
-                        //     'Permanent',
-                        //     true
-                        // );
+                        //     dbtime: getModTime('99999d'),
+                        //     time: 'Permanent',
+                        //     isAuto: true
+                        // });
                         errorhandler({
                             err: `User tried to sent a Scam Link : ${scamLinksExt[i]}`,
                         });
@@ -109,5 +108,3 @@ module.exports = class ScamDetection {
         });
     }
 };
-
-module.exports.checkForScam = async (message, bot, config, log) => {};
