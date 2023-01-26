@@ -1,0 +1,52 @@
+name: '🧮 Release'
+description: Create a new ticket for a new change release
+title: '🧮 [Release] - <type> VERSION <version>'
+body:
+    - type: input
+      id: released_date
+      attributes:
+          label: 'Released Date'
+          description: Date of the release
+          placeholder: 'day/month/year'
+      validations:
+          required: false
+    - type: textarea
+      id: implementation_pr
+      attributes:
+          label: 'Angehörige Pull Request(s)'
+          description: Pull request used for the release
+          placeholder: '#Pull Request ID'
+      validations:
+          required: false
+    - type: textarea
+      id: reference_issues
+      attributes:
+          label: 'Angehörige Issue(s)'
+          description: Common issues related to the release
+          placeholder: '#Issues IDs'
+      validations:
+          required: false
+    - type: textarea
+      id: summary
+      attributes:
+          label: 'Summary'
+          description: Provide a brief explanation of the release
+          placeholder: Describe in a few lines the release
+      validations:
+          required: false
+    - type: textarea
+      id: drawbacks
+      attributes:
+          label: 'Drawbacks'
+          description: What are the drawbacks/impacts of this release?
+          placeholder: Identify the drawbacks and impacts while being neutral on the release
+      validations:
+          required: true
+    - type: textarea
+      id: unresolved_question / todos
+      attributes:
+          label: 'Unresolved questions'
+          description: What questions still remain unresolved ?
+          placeholder: Identify any unresolved issues.
+      validations:
+          required: false
