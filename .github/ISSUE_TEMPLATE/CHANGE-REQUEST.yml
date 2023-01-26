@@ -1,0 +1,36 @@
+name: '📝 Change Request'
+description: Create a new ticket for a new change request of an existing feature
+title: '📝 [CHANGE-REQUEST] - <title>'
+body:
+    - type: textarea
+      id: summary
+      attributes:
+          label: 'Summary'
+          description: Provide a brief explanation of the change request
+          placeholder: Describe in a few lines your change request
+      validations:
+          required: true
+    - type: textarea
+      id: basic_example
+      attributes:
+          label: 'Basic Example'
+          description: Indicate here some basic examples of your change.
+          placeholder: A few specific words about your change request.
+      validations:
+          required: true
+    - type: textarea
+      id: drawbacks
+      attributes:
+          label: 'Drawbacks'
+          description: What are the drawbacks/impacts of your change request ?
+          placeholder: Identify the drawbacks and impacts while being neutral on your change request
+      validations:
+          required: true
+    - type: textarea
+      id: unresolved_question
+      attributes:
+          label: 'Unresolved questions'
+          description: What questions still remain unresolved ?
+          placeholder: Identify any unresolved issues.
+      validations:
+          required: false

@@ -8,110 +8,118 @@
 
 ## Moderation
 
----
-
-    - ban [mention/userid] [time] [reason]
-    - unban [userid] [reason]
-    - infraction [id]
-    - infractions [mention/userid]
-    - kick [mention/userid] [reason]
-    - mute [mention/userid] [time] [reason]
-    - unmute [mention/userid] [reason]
-    - warn [mention/userid] [reason]
-    - purge [number of messages]
-    - isbanned [mention/userid]
+- **ban**
+- **unban**
+- **infractions**
+> see all infraction of a user
+- **kick**
+- **mute**
+- **unmute**
+- **warn**
+- **purge**
+- **isbanned**
+> check whether a user is banned or not
 
 <br>
 
 ## Administration
 
----
+- **automod**
+- - **global whitelistroles**
+- - **anti spam**
+- - **anti invite**
+- - **anti link**
+- **autotranslate**
+> Translate each message from a channel
+- **welcomemessage**
+- **joinroles**
+- **warn roles**
+> Give a role to a user which got warned
+- **mod roles**
+> Give roles custom permissions on what command they can use and which not
 
-    - automod whitelistroles [role]
-    - automod antispam [enabled] [action]
-    - automod antiinvite [enabled] [action]
-    - automod antilink [enabled] [action]
+- **scam detection**
+> A community database + A list of 10k+ scam links, which will be detected by the anit scam link system
 
-    - autotranslate [target channel] [log channel] [language]
+- **levelsystem**
+- - **mode** 
+> Switch between easy, normal and hard
+- - **global blacklist channels**
+- - **level up type**
+> DM, Channel, disabled
 
-    - settings [setting] [value] ( ...[more values] )
-    - - settings welcomechannel [#channel]
-    - - settings prefix [prefix]
-    - - settings cmdcooldown [time]
-    - - settings dmcau [boolean]
-    - - settings dcau [boolean]
-    - - settings joinroles [roles, ...]
-    - - settings warnroles [role, ...]
-
-    - mods [setting] [value] ( ...[more values] )
-    - - mods mr|modroles [role]
-
-    - scam [setting] [value]
-    - - scam add [link]
-    - - scam delete [link]
-    - - scam view ([link])
-
-    - levelsettings [mode (easy/normal/hard)]
-    - levelsettings blacklistchannels
-    - levelup [type (dm, channel, disable)]
-
-    - modules [module] [Activate/Deactivate]
-
-    - log set auditlog/messagelog/modlog [#channel]
-    - log remove [#channel]
+- **Disable modules**
+- **Logs**
+- - **Audit-Log**
+> All changes of channels, server and deleted messages
+- - **Message-Log**
+> Difference between an edited message
+- - **Mod-Log**
+> Moderation Actions (ban, kick, mute, ...)
 
 <br>
 
 ## Fun
 
----
-
-    - avatar [mention/userid]
-    - cats
-    - dogs
-    - guessnumber
-    - ship [mention/userid]
-    - bunny
-    - pride [type (genders, sexualities)]
-    - stromberg [type (quotes, characters)]
+- **avatar**
+> See someone's avatar in big
+- **cats**
+> Watch some cuteness
+- **dogs**
+> Watch some cuteness
+- **bunny**
+> Watch some cuteness
+- **guessnumber**
+- **ship**
+> Ship your friends and see how much % they have
+- **pride**
+> Get some cool facts about genders and sexualities
+- **stromberg**
+> Get some funny quotes about the series "Stromberg" [DE Only]
 
 <br>
 
 ## Utilities
 
----
-
-    - info (mention)
-    - ping
-    - rank (mention)
-    - help
-    - afk [reason]
-    - checkguild [guildid]
-    - kickme
-    - poll [question]
-    - reddit_notifier add [subreddit] [channel] [pingrole] [allow_nsfw]
-    - reddit_notifier remove [subreddit]
-    - timer start [days] [hours] [minutes] [seconds] [end message] [channel]
-    - timer stop
-    - youtube add [ytchannel] [dcchannel] [pingrole]
-    - youtube remove
+- **info** 
+> Get informations about a user or the guild/bot
+- **ping** 
+> Get the ping of the bot... It should be under 200ms, else someone broke the host
+- **afk**
+> Set you afk with a status
+- **checkguild**
+> Get informations about another guild [Use with Caution: FBI IS WATCHING!!!]
+- **kickme**
+> Well, if your dream is to kick yourself, your dream come true
+- **poll**
+> Make a quick poll to see which cat is cuter. Spoiler: MINE!!!
+- **reddit notifications**
+> Get a notification if someone posts something in your Sub-Reddit
+- **Youtube Notification**
+> Get a notification if a new video is posted
+- **Twitch Notification**
+> Get a notification if the streamer is online POGGERS!!
+- **timer**
+> Create a timer which will send a message after the time has ended
 
 <br>
 
 ## Level
 
----
-
-    - leaderboard
-    - rank [mention/userid]
-    - givexp [mention/userid] [amount]
-    - removexp [mention/userid] [amount]
+- **leaderboard**
+> Get the top 10 users withe the highes rank of the server
+- **rank** 
+> Check your or someone else level rank
+- **Givexp**
+> Give someone an amoun of xp (CHEATER!!!)
+- **Removexp**
+> Remove xp from an user
 
 <br>
 
 ## Help
 
----
-
-    - help
-    - tutorial
+- help
+> (Stop it) Get some help.
+- tutorial
+> You don't know what you are doing? Check out this command!
