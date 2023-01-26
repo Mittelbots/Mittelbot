@@ -11,6 +11,7 @@ const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
+const ScamDetection = require('../utils/checkForScam/checkForScam');
 
 async function messageCreate(message, bot) {
     if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
@@ -70,8 +71,9 @@ async function messageCreate(message, bot) {
     const { disabled_modules } = await GuildConfig.get(message.guild.id);
 
     if (disabled_modules.indexOf('scamdetection') === -1) {
-        //const isScam = await checkForScam(message, bot, config, log);
-        //if (isScam) return;
+        if (new ScamDetection().check(message, bot, config, log)) {
+            return;
+        }
     }
 
     if (disabled_modules.indexOf('autotranslate') === -1) {
