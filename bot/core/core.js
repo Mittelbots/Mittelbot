@@ -46,7 +46,7 @@ module.exports.startBot = async (bot) => {
             await deployCommands(bot);
             await createSlashCommands();
             await Promise.resolve(this.fetchCache(bot));
-            new ScamDetection.loadScam();
+            new ScamDetection().loadScam();
             handleUploads({
                 bot,
             });
