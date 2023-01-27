@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { version } = require('../../../package.json');
 const { MemberInfo } = require('../../../utils/functions/data/MemberInfo');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -83,10 +84,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ])
         .setTimestamp();
     if (tag) {
-        var { user_joined } = await MemberInfo.get({
+        const memberInfo = await MemberInfo.get({
             guild_id: main_interaction.guild.id,
             user_id: user.id,
         });
+
+        var user_joined = memberInfo ? memberInfo.joined_at : null;
     }
     var dc_joinedAt;
     try {
@@ -108,6 +111,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 : new Intl.DateTimeFormat('de-DE').format(new Date(user_joined.slice(0, 9)))
         } ${user_joined ? ` \n<t:${Math.floor(new Date(user_joined.slice(0, 9)) / 1000)}:R>` : ''}`;
     } catch (err) {
+        errorhandler({ err });
         first_joined_at = 'Not saved in Database ||Error||';
     }
 
