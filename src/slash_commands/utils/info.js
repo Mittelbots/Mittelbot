@@ -167,10 +167,4 @@ module.exports.data = new SlashCommandBuilder()
             .setName('user')
             .setDescription('The user to get information about')
             .setRequired(false)
-    )
-    .addBooleanOption((option) =>
-        option
-            .setName('anonymous')
-            .setDescription('Set this to true if you want to hide the response from the user')
-            .setRequired(false)
     );
