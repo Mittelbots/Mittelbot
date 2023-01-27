@@ -18,7 +18,6 @@ const { messageCreate } = require('../messageCreate');
 const database = require('../../src/db/db');
 const { rateLimit } = require('../rateLimit');
 const { Guilds } = require('../../utils/functions/data/Guilds');
-const { loadScam } = require('../../utils/checkForScam/checkForScam');
 const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
 const { timer } = require('../../src/events/timer/timer');
 const { messageDelete } = require('../messageDelete');
@@ -37,6 +36,7 @@ const { guildBanRemove } = require('../guildBanRemove');
 const { botError } = require('../botError');
 const { botDisconnect } = require('../botDisconnect');
 const { botWarn } = require('../botWarn');
+const ScamDetection = require('../../utils/checkForScam/checkForScam');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -46,7 +46,7 @@ module.exports.startBot = async (bot) => {
             await deployCommands(bot);
             await createSlashCommands();
             await Promise.resolve(this.fetchCache(bot));
-            await loadScam();
+            new ScamDetection().loadScam();
             handleUploads({
                 bot,
             });

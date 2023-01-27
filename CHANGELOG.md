@@ -15,6 +15,23 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.55.0**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix a bug where the /info command doesn't work when the user wasn't in the database
+    - removed all anonymous command options
+    - fix autoblacklist feature
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.54.18**
 
 ### Added things:

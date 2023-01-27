@@ -74,10 +74,4 @@ module.exports.data = new SlashCommandBuilder()
     .setDescription("Get your or another user's rank.")
     .addUserOption((option) =>
         option.setName('user').setDescription('The user to get the rank of.').setRequired(false)
-    )
-    .addBooleanOption((option) =>
-        option
-            .setName('anonymous')
-            .setDescription('Set this to true if you want to hide the response from the user')
-            .setRequired(false)
     );

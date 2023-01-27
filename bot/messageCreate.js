@@ -11,12 +11,17 @@ const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
+const ScamDetection = require('../utils/checkForScam/checkForScam');
 
 async function messageCreate(message, bot) {
     if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
         return checkOwnerCommand(message);
     }
-    if (message.author.bot || message.channel.type == '1' || message.author.system) return;
+    if (message.author.bot && message.channel.id !== process.env.DC_DEBUG) {
+        return await new AutoBlacklist().check(message, bot);
+    }
+
+    if (message.channel.type == '1' || message.author.system) return;
 
     const isOnBlacklist = await Guilds.isBlacklist(message.guild.id);
     if (isOnBlacklist) {
@@ -36,9 +41,6 @@ async function messageCreate(message, bot) {
 
         return guild.leave().catch((err) => {});
     }
-
-    const isAutoBlacklist = await new AutoBlacklist().check(message, bot);
-    if (isAutoBlacklist) return;
 
     const isSpam = await antiSpam(message, bot);
     if (isSpam) {
@@ -70,8 +72,9 @@ async function messageCreate(message, bot) {
     const { disabled_modules } = await GuildConfig.get(message.guild.id);
 
     if (disabled_modules.indexOf('scamdetection') === -1) {
-        //const isScam = await checkForScam(message, bot, config, log);
-        //if (isScam) return;
+        if (new ScamDetection().check(message, bot)) {
+            return;
+        }
     }
 
     if (disabled_modules.indexOf('autotranslate') === -1) {
