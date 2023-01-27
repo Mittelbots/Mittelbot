@@ -183,7 +183,7 @@ module.exports = class TwitchNotifier {
 
     #createTwitchChannel({ twitchchannelId, twitchchannelName, twdcchannel, twpingrole, guild }) {
         return new Promise(async (resolve, reject) => {
-            twitchStreams
+            await twitchStreams
                 .create({
                     guild_id: guild.id,
                     channel_id: twitchchannelId,
@@ -212,7 +212,7 @@ module.exports.delTwChannelFromList = async ({ guild_id, deltwchannel }) => {
             return reject(`❌ I couldn't find the channel you have entered.`);
         }
 
-        twitchStreams
+        await twitchStreams
             .destroy({
                 where: {
                     guild_id,
