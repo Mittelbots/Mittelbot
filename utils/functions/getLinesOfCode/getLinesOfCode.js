@@ -17,6 +17,7 @@ async function getLinesOfCode() {
                 'README.md',
                 '.git',
                 '.github',
+                'scamLinks.json',
             ], // A list of directories to ignore. Supports glob patterns.
             ignoreDefault: true, // Whether to ignore the default file extensions or not
         };
