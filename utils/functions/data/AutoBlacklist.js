@@ -74,6 +74,7 @@ module.exports = class AutoBlacklist {
 
             await this.get(message.guild.id).then(async (settings) => {
                 if (!settings) return resolve(false);
+
                 const channel = settings.channel;
                 if (!channel || channel !== message.channel.id) return resolve(false);
 
