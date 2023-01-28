@@ -26,7 +26,7 @@ module.exports.twitch_notifier = async ({ bot }) => {
     console.info('🔎 Twitch streams handler started');
 
     setInterval(async () => {
-        const allTwitchAccounts = twitchStreams
+        const allTwitchAccounts = await twitchStreams
             .findAll()
             .then((res) => {
                 return res;
@@ -42,37 +42,35 @@ module.exports.twitch_notifier = async ({ bot }) => {
         if (!allTwitchAccounts || allTwitchAccounts.length === 0) return;
 
         for (let i in allTwitchAccounts) {
-            if (allTwitchAccounts[i].channel_id) {
-                const isLive = await isStreamLive(allTwitchAccounts[i].channel_id);
-
-                if (isLive !== !!+allTwitchAccounts[i].isStreaming) {
-                    await twitchStreams
-                        .update(
-                            {
-                                isStreaming: isLive,
+            if (!allTwitchAccounts[i].channel_id) continue;
+            const isLive = await isStreamLive(allTwitchAccounts[i].channel_id);
+            if (isLive !== !!+allTwitchAccounts[i].isStreaming) {
+                await twitchStreams
+                    .update(
+                        {
+                            isStreaming: isLive,
+                        },
+                        {
+                            where: {
+                                guild_id: allTwitchAccounts[i].guild_id,
+                                channel_id: allTwitchAccounts[i].channel_id,
                             },
-                            {
-                                where: {
-                                    guild_id: allTwitchAccounts[i].guild_id,
-                                    channel_id: allTwitchAccounts[i].channel_id,
-                                },
+                        }
+                    )
+                    .then(() => {
+                        if (isLive) {
+                            const guild = bot.guilds.cache.get(allTwitchAccounts[i].guild_id);
+                            const channel = guild.channels.cache.get(
+                                allTwitchAccounts[i].info_channel_id
+                            );
+
+                            const pingrole = guild.roles.cache.get(allTwitchAccounts[i].pingrole);
+                            if (pingrole) {
+                                var isEveryone = pingrole.name === '@everyone';
                             }
-                        )
-                        .then(() => {
-                            if (isLive) {
-                                const guild = bot.guilds.cache.get(allTwitchAccounts[i].guild_id);
-                                const channel = guild.channels.cache.get(
-                                    allTwitchAccounts[i].info_channel_id
-                                );
 
-                                const pingrole = guild.roles.cache.get(
-                                    allTwitchAccounts[i].pingrole
-                                );
-                                if (pingrole) {
-                                    var isEveryone = pingrole.name === '@everyone';
-                                }
-
-                                channel.send({
+                            channel
+                                .send({
                                     content:
                                         (pingrole
                                             ? isEveryone
@@ -80,18 +78,29 @@ module.exports.twitch_notifier = async ({ bot }) => {
                                                 : `<@&${allTwitchAccounts[i].pingrole}> `
                                             : '') +
                                         `${allTwitchAccounts[i].channel_name} just went live! Go check it out https://twitch.tv/${allTwitchAccounts[i].channel_name}`,
+                                })
+                                .then(() => {
+                                    errorhandler({
+                                        err: `🔎 Twitch stream notification sent! Twitch Streamer: ${allTwitchAccounts[i].channel_name}`,
+                                        fatal: false,
+                                    });
+                                })
+                                .catch((err) => {
+                                    errorhandler({
+                                        err,
+                                        fatal: false,
+                                    });
                                 });
-                            }
-                        })
-                        .catch((err) => {
-                            errorhandler({
-                                err,
-                                fatal: true,
-                            });
+                        }
+                    })
+                    .catch((err) => {
+                        errorhandler({
+                            err,
+                            fatal: true,
                         });
-                }
+                    });
             }
-            await delay(3000);
+            await delay(1500);
         }
-    }, 600000); //? 10 minutes
+    }, 7000); //? 10 minutes 600000
 };
