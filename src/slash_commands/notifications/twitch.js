@@ -1,8 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const {
-    delTwChannelFromList,
-    changeTwitchNotifier,
-} = require('../../../utils/functions/data/twitch');
+const TwitchNotifier = require('../../../utils/functions/data/twitch');
+const { delTwChannelFromList } = require('../../../utils/functions/data/twitch');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getSubcommand();
@@ -15,12 +13,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const twdcchannel = main_interaction.options.getChannel('dcchannel');
             const twpingrole = main_interaction.options.getRole('twitchping');
 
-            changeTwitchNotifier({
-                twitchchannel,
-                twdcchannel,
-                twpingrole,
-                guild: main_interaction.guild,
-            })
+            new TwitchNotifier()
+                .change({
+                    twitchchannel,
+                    twdcchannel,
+                    twpingrole,
+                    guild: main_interaction.guild,
+                })
                 .then((res) => {
                     main_interaction
                         .followUp({

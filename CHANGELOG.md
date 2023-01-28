@@ -15,6 +15,21 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.55.1**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix twitch notfier
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.55.0**
 
 ### Added things:
