@@ -2,73 +2,80 @@
 
 ### In the following list i'll show all currently avaiable features. This means, you don't have to request or ask for those features anymore!
 
----
 
 <br>
 
-## Moderation
+# Moderation
 
-- **ban**
-- **unban**
-- **infractions**
-> see all infraction of a user
-- **kick**
-- **mute**
-- **unmute**
-- **warn**
-- **purge**
-- **isbanned**
+### - **ban**
+### - **unban**
+### - **infractions**
+> see all infraction of a user (warns, mutes, kicks, bans)
+### - **kick**
+### - **mute**
+### - **unmute**
+### - **warn**
+### - **purge**
+### - **isbanned**
 > check whether a user is banned or not
 
 <br>
 
-## Administration
+# Administration
 
-- **automod**
-- - **global whitelistroles**
-- - **anti spam**
-- - **anti invite**
-- - **anti link**
+### - **automod**
+- **global whitelistroles**
+- **anti spam**
+- **anti invite**
+- **anti link**
 - **autotranslate**
 > Translate each message from a channel
-- **welcomemessage**
-- **joinroles**
-- **warn roles**
+
+<br>
+
+### - **warn roles**
 > Give a role to a user which got warned
-- **mod roles**
+
+<br>
+
+### - **mod roles**
 > Give roles custom permissions on what command they can use and which not
 
-- **scam detection**
+<br>
+
+### - **scam detection**
 > A community database + A list of 10k+ scam links, which will be detected by the anit scam link system
 
-- **levelsystem**
-- - **mode** 
+<br>
+
+### - **levelsystem**
+- **mode** 
 > Switch between easy, normal and hard
-- - **global blacklist channels**
-- - **level up type**
+- **global blacklist channels**
+- **level up type**
 > DM, Channel, disabled
 
-- **Disable modules**
-- **Logs**
-- - **Audit-Log**
+### - **Disable modules**
+
+<br>
+
+### - **Logs**
+- **Audit-Log**
 > All changes of channels, server and deleted messages
-- - **Message-Log**
+### - **Message-Log**
 > Difference between an edited message
-- - **Mod-Log**
+### - **Mod-Log**
 > Moderation Actions (ban, kick, mute, ...)
 
 <br>
 
-## Fun
+# Fun
 
 - **avatar**
-> See someone's avatar in big
+> See someone's avatar in big size
 - **cats**
-> Watch some cuteness
 - **dogs**
-> Watch some cuteness
 - **bunny**
-> Watch some cuteness
 - **guessnumber**
 - **ship**
 > Ship your friends and see how much % they have
@@ -79,7 +86,7 @@
 
 <br>
 
-## Utilities
+# Utilities
 
 - **info** 
 > Get informations about a user or the guild/bot
@@ -104,7 +111,17 @@
 
 <br>
 
-## Level
+### - **welcomemessage**
+
+<br>
+
+### - **joinroles**
+
+<br>
+
+<br>
+
+# Level
 
 - **leaderboard**
 > Get the top 10 users withe the highes rank of the server
@@ -117,9 +134,9 @@
 
 <br>
 
-## Help
+# Help
 
-- help
+- **help**
 > (Stop it) Get some help.
-- tutorial
+- **tutorial**
 > You don't know what you are doing? Check out this command!
