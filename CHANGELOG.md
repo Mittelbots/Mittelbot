@@ -15,6 +15,21 @@
 
 # **MITTELBOT CHANGELOG**
 
+# **BETA VERSION 0.55.2**
+
+### Added things:
+
+    - /
+
+### Bug fixes & other changes:
+
+    - fix a bug where autoblacklist triggers too often
+### Dashboard:
+
+    - /
+
+<br><br>
+
 # **BETA VERSION 0.55.1**
 
 ### Added things:
