@@ -82,21 +82,21 @@ module.exports = class AutoBlacklist {
                 let users = [];
 
                 for (let i in messageArray) {
-                    if (!isNaN(messageArray[i])) {
-                        pushUserId(messageArray[i]);
-                    }
-                }
+                    if (isNaN(messageArray[i])) continue;
 
-                function pushUserId(id) {
                     try {
-                        var user_id = id.match(/\d/g);
+                        var user_id = messageArray[i].match(/\d/g);
                     } catch (e) {}
                     try {
                         users.push(user_id.join(''));
                     } catch (err) {}
                 }
 
+                let isBanned = [];
+
                 for (let i in users) {
+                    if (isBanned.includes(users[i])) continue;
+
                     const guild = await bot.guilds.cache.get(message.guild.id);
                     let member = await guild.members.cache.find((member) => member.id === users[i]);
 
@@ -124,6 +124,7 @@ module.exports = class AutoBlacklist {
                         .catch(() => {
                             message.react('❌').catch((err) => {});
                         });
+                    isBanned.push(member ? member : users[i]);
                     resolve(true);
                 }
             });
