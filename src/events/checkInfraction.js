@@ -31,13 +31,18 @@ module.exports.checkInfractions = (bot) => {
                         .then((members) => {
                             return members;
                         })
-                        .catch((err) => {
-                            return bot.users.cache.get(results[i].user_id);
+                        .catch(async () => {
+                            return await bot.users.cache.get(results[i].user_id);
                         });
                     try {
                         await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
 
                         await giveAllRoles(results[i].user_id, guild, results[i].user_roles, bot);
+
+                        errorhandler({
+                            err: `Mute for ${user.tag} (${user.id}) in ${guild.name} (${guild.id}) was removed`,
+                            fatal: false,
+                        });
 
                         await saveAllRoles(results[i].user_roles || null, user, guild);
 
