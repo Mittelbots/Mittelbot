@@ -40,7 +40,7 @@ module.exports.checkInfractions = (bot) => {
                         await giveAllRoles(results[i].user_id, guild, results[i].user_roles, bot);
 
                         errorhandler({
-                            err: `Mute for ${user.tag} (${user.id}) in ${guild.name} (${guild.id}) was removed`,
+                            err: `${user}`,
                             fatal: false,
                         });
 
