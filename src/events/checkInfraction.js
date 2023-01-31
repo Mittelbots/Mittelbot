@@ -35,14 +35,14 @@ module.exports.checkInfractions = (bot) => {
                             return await bot.users.cache.get(results[i].user_id);
                         });
                     try {
-                        await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
-
-                        await giveAllRoles(results[i].user_id, guild, results[i].user_roles, bot);
-
                         errorhandler({
                             err: `${user}`,
                             fatal: false,
                         });
+
+                        await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
+
+                        await giveAllRoles(results[i].user_id, guild, results[i].user_roles, bot);
 
                         await saveAllRoles(results[i].user_roles || null, user, guild);
 
