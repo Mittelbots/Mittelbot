@@ -35,11 +35,6 @@ module.exports.checkInfractions = (bot) => {
                             return await bot.users.cache.get(results[i].user_id);
                         });
                     try {
-                        errorhandler({
-                            err: `${user}`,
-                            fatal: false,
-                        });
-
                         await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
 
                         if (user) {
@@ -49,8 +44,9 @@ module.exports.checkInfractions = (bot) => {
                                 results[i].user_roles,
                                 bot
                             );
-                            await saveAllRoles(results[i].user_roles || null, user, guild);
                         }
+
+                        await saveAllRoles(results[i].user_roles || null, user, guild);
 
                         await setNewModLogMessage(
                             bot,
