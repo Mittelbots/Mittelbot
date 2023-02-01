@@ -1,8 +1,8 @@
 const { MemberInfo } = require('../data/MemberInfo');
 
 module.exports.saveAllRoles = async (roles, member, guild) => {
-    const guild_id = guild.id || guild;
-    const user_id = member.id || member;
+    const guild_id = typeof guild === 'string' ? guild : guild.id;
+    const user_id = typeof member === 'string' ? member : member.id;
 
     const memberInfo = await MemberInfo.get({ guild_id, user_id });
     if (!memberInfo) {

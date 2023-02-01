@@ -49,8 +49,9 @@ module.exports.checkInfractions = (bot) => {
                                 results[i].user_roles,
                                 bot
                             );
-                            await saveAllRoles(results[i].user_roles || null, user, guild);
                         }
+
+                        await saveAllRoles(results[i].user_roles || null, user, guild);
 
                         await setNewModLogMessage(
                             bot,
