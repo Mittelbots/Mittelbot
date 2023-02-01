@@ -70,6 +70,8 @@ module.exports = class AutoBlacklist {
 
     check(message, bot) {
         return new Promise(async (resolve) => {
+            if (!message) return resolve(false);
+            if (!message.guild) return resolve(false);
             await this.get(message.guild.id).then(async (settings) => {
                 if (!settings) return resolve(false);
 
