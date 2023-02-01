@@ -42,22 +42,28 @@ module.exports.checkInfractions = (bot) => {
 
                         await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
 
-                        await giveAllRoles(results[i].user_id, guild, results[i].user_roles, bot);
-
-                        await saveAllRoles(results[i].user_roles || null, user, guild);
+                        if (user) {
+                            await giveAllRoles(
+                                results[i].user_id,
+                                guild,
+                                results[i].user_roles,
+                                bot
+                            );
+                            await saveAllRoles(results[i].user_roles || null, user, guild);
+                        }
 
                         await setNewModLogMessage(
                             bot,
                             config.defaultModTypes.unmute,
                             bot.user.id,
-                            user,
+                            user ? user.id : results[i].user_id,
                             'Auto',
                             null,
                             results[i].guild_id
                         );
 
                         await privateModResponse(
-                            user,
+                            user ? user.id : results[i].user_id,
                             config.defaultModTypes.unmute,
                             'Auto',
                             null,
