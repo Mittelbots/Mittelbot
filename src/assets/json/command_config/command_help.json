@@ -9,8 +9,8 @@
             "usage": "/levelsettings <setting> <value>",
             "icon": "🏆"
         },
-        "mods": {
-            "name": "mods",
+        "modroles": {
+            "name": "modroles",
             "description": "Manage Moderationsettings",
             "usage": "/modroles roles <@role>",
             "icon": "🛡️"
@@ -26,6 +26,66 @@
             "description": "View and change all Settings releated to the server",
             "usage": "/settings <setting> <value>",
             "icon": "⚙️"
+        },
+        "autoblacklist": {
+            "name": "autoblacklist",
+            "description": "Let the bot blacklist users that were sent into a specific channel and automatically ban them.",
+            "usage": "/autoblacklist",
+            "icon": "📋"
+        },
+        "automod": {
+            "name": "automod",
+            "description": "Manage the automod settings.",
+            "usage": "/automod",
+            "icon": "🧹"
+        },
+        "autotranslate": {
+            "name": "autotranslate",
+            "description": "Add a channel where every message will be translated to a specific language to a specific channel.",
+            "usage": "/automod",
+            "icon": "🌐"
+        },
+        "log": {
+            "name": "log",
+            "description": "Setup channels where the bot will send logs into.",
+            "usage": "/log",
+            "icon": "📇"
+        },
+        "modules": {
+            "name": "modules",
+            "description": "De-/Activate Modules.",
+            "usage": "/modules",
+            "icon": "🔑"
+        },
+        "reactionroles": {
+            "name": "reactionroles",
+            "description": "Setup reaction roles.",
+            "usage": "/reactionroles",
+            "icon": "🗳"
+        },
+        "warnroles": {
+            "name": "reactionroles",
+            "description": "Setup warn roles that will apply when a user gets warned.",
+            "usage": "/reactionroles",
+            "icon": "🗳"
+        },
+        "reddit_notifier": {
+            "name": "Reddit Notifications",
+            "description": "Get notified when a new post is posted on a subreddit.",
+            "usage": "/reddit_notifier",
+            "icon": "📣"
+        },
+        "youtube": {
+            "name": "Youtube Notifications",
+            "description": "Get notified when a new video is posted on a youtube.",
+            "usage": "/youtube",
+            "icon": "📣"
+        },
+        "twitch": {
+            "name": "Twitch Notifications",
+            "description": "Get notified when a streamer goes live.",
+            "usage": "/twitch",
+            "icon": "📣"
         }
     },
     "moderation": {
@@ -140,23 +200,11 @@
             "usage": "/poll <questions>",
             "icon": "🗳"
         },
-        "reddit_notifier": {
-            "name": "Reddit Notifications",
-            "description": "Get notified when a new post is posted on a subreddit.",
-            "usage": "/reddit_notifier <add/remove> <subreddit> <settings>",
-            "icon": "📣"
-        },
         "timer": {
             "name": "Timer",
             "description": "Create a timer for a specific time and get notified when the time is over.",
-            "usage": "/timer <start/stop> <options>",
+            "usage": "/timer",
             "icon": "🕐"
-        },
-        "youtube": {
-            "name": "Youtube Notifications",
-            "description": "Get notified when a new video is posted on a youtube.",
-            "usage": "/youtube <add/remove> <subreddit> <settings>",
-            "icon": "📣"
         }
     },
     "levelsystem": {
@@ -233,6 +281,18 @@
             "description": "Get random stromberg quotes or characters (German Only)",
             "usage": "/stromberg <type>",
             "icon": "😂"
+        },
+        "pride": {
+            "name": "pride",
+            "description": "Get some cool facts about pride related topics.",
+            "usage": "/pride",
+            "icon": "🏳️‍🌈"
+        },
+        "singasong": {
+            "name": "singasong",
+            "description": "Start a voice chat event where you sing a song and gain points.",
+            "usage": "/singasong",
+            "icon": "🎤"
         }
     }
 }
