@@ -58,7 +58,7 @@
         "underscore": "^1.13.6",
         "undici": "^5.16.0",
         "uuid": "^9.0.0",
-        "validator": "^13.7.0",
+        "validator": "^13.9.0",
         "ytdl-core": "^4.11.2"
     },
     "devDependencies": {
