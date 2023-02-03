@@ -9,8 +9,8 @@
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
         "log": "docker logs -f mittelbot",
-        "format": "prettier --write .",
-        "check": "prettier --check ."
+        "format": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --write .\"",
+        "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\""
     },
     "nodemonConfig": {
         "ignore": [
@@ -18,7 +18,7 @@
         ]
     },
     "author": "BlackDayz",
-    "license": "GLP-3.0",
+    "license": "GPL-3.0",
     "dependencies": {
         "@discordjs/rest": "^1.5.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",

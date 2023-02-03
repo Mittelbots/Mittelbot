@@ -4,7 +4,7 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const warnroles = removeMention(main_interaction.options.getString('warnroles')).split(' ');
-    Warnroles.update({
+    await Warnroles.update({
         guild: main_interaction.guild,
         roles: warnroles,
         user: bot.guilds.cache
