@@ -5,8 +5,8 @@ const { kickUser } = require('../functions/moderations/kickUser');
 const { muteUser } = require('../functions/moderations/muteUser');
 const { warnUser } = require('../functions/moderations/warnUser');
 
-var spamCheck = [];
-var userAction = [];
+let spamCheck = [];
+let userAction = [];
 
 module.exports.antiSpam = async (message, bot) => {
     const setting = await Automod.get(message.guild.id);

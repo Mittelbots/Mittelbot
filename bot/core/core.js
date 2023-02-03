@@ -62,12 +62,6 @@ module.exports.startBot = async (bot) => {
             console.info(
                 `****Ready! Logged in as ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`
             );
-            errorhandler({
-                message:
-                    'BOT SUCCESSFULLY STARTED' +
-                    `${new Date().getDay()}/${new Date().getMonth()}/${new Date().getFullYear()} ${new Date().getHours()}:${new Date().getMinutes()}`,
-                fatal: false,
-            });
 
             return resolve(true);
         } catch (err) {
@@ -226,7 +220,7 @@ module.exports.fetchUsers = async (bot, guilds) => {
         let i = 0;
         let length = guilds.size;
 
-        return await guilds.map(async (guild) => {
+        await guilds.map(async (guild) => {
             await bot.guilds.cache
                 .get(guild.id)
                 .members.fetch()
@@ -242,9 +236,9 @@ module.exports.fetchUsers = async (bot, guilds) => {
 };
 
 module.exports.checkGuildsInDatabase = async (guilds) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
         await guilds.map(async (guild) => {
-            Guilds.create(guild.id).catch((err) => {});
+            Guilds.create(guild.id).catch(() => {});
         });
         resolve(true);
     });

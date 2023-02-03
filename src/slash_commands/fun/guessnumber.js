@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { delay } = require('../../../utils/functions/delay/delay');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const maxNumber = Math.floor(Math.random() * 30) + 1;

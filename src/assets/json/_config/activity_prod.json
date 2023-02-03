@@ -1,35 +1,30 @@
 {
     "texts": [
         {
-            "text": "Struggeling with Beta stuff"
+            "text": "/help - Thank you for using me!"
         },
         {
-            "text": "with new command /pride on {guildCount} servers",
+            "text": "/help - with new command /pride on {guildCount} servers",
             "showGuildCount": true
         },
         {
-            "text": "with new command /tutorial with {memberCount} members",
+            "text": "/help - with new command /tutorial with {memberCount} members",
             "showMemberCount": true
         },
         {
-            "text": "with new command /poll with {memberCount} members",
+            "text": "/help - with new command /poll with {memberCount} members",
             "showMemberCount": true
         },
         {
-            "text": "with new Reddit notifier /reddit_notifier on {guildCount} servers",
+            "text": "/help - with new Reddit notifier /reddit_notifier on {guildCount} servers",
             "showGuildCount": true
         },
         {
-            "text": "with {loc} lines of code on v{version}",
-            "showLinesOfCode": true,
-            "showVersion": true
-        },
-        {
-            "text": "with {guildCount} guilds",
+            "text": "/help - with {guildCount} guilds",
             "showGuildCount": true
         },
         {
-            "text": "with {memberCount} members",
+            "text": "/help - with {memberCount} members",
             "showMemberCount": true
         }
     ],
