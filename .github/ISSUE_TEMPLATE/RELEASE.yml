@@ -15,7 +15,7 @@ body:
       attributes:
           label: 'Angehörige Pull Request(s)'
           description: Pull request used for the release
-          placeholder: '#Pull Request ID'
+          placeholder: '- #Pull Request ID'
       validations:
           required: false
     - type: textarea
@@ -23,7 +23,7 @@ body:
       attributes:
           label: 'Angehörige Issue(s)'
           description: Common issues related to the release
-          placeholder: '#Issues IDs'
+          placeholder: '- #Issues IDs'
       validations:
           required: false
     - type: textarea
