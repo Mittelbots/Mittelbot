@@ -2,7 +2,7 @@ const axios = require('axios');
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 
-const url = 'https://stromberg-api.de/api/';
+const url = 'https://www.stromberg-api.de/api/';
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getString('type');
