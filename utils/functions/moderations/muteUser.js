@@ -13,8 +13,8 @@ const { Infractions } = require('../data/Infractions');
 async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
     const guild_user = guild.members.cache.get(user.id);
 
-    var user_roles = await getAllRoles(guild_user);
-    var MutedRole = await getMutedRole(guild);
+    const user_roles = await getAllRoles(guild_user);
+    const MutedRole = await getMutedRole(guild);
     if (!MutedRole) {
         errorhandler({ err, fatal: false, message: `${MutedRole} is not a valid Muted Role.` });
         return {
@@ -41,7 +41,7 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
         try {
             Infractions.insertOpen({
                 uid: user.id,
-                modid: mod.id,
+                modid: mod.id || mod,
                 mute: 1,
                 ban: 0,
                 till_date: getFutureDate(dbtime),
@@ -54,7 +54,7 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
             setNewModLogMessage(
                 bot,
                 config.defaultModTypes.mute,
-                mod.id,
+                mod.id || mod,
                 user,
                 reason,
                 time,

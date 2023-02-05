@@ -44,7 +44,7 @@ module.exports.timer = async (bot) => {
             if (minutes <= 0 && hours <= 0 && days <= 0) {
                 timeLeftString = `**Time left:** Only a few seconds!`;
             } else {
-                timeLeftString = `**Time left:** ${days}Day(s) ${hours}Hour(s) ${minutes}Minute(s)`;
+                timeLeftString = `**Time left:** ${days}ㅤDay(s) ${hours}ㅤHour(s) ${minutes}ㅤMinute(s)`;
             }
 
             if (timeLeftString == message.content) return;
@@ -52,6 +52,11 @@ module.exports.timer = async (bot) => {
             await message
                 .edit({
                     content: `${timeLeftString}`,
+                })
+                .then(() => {
+                    if (message.reactions.cache.size > 0 && message.reactions.cache.get('❌')) {
+                        message.reactions.cache.get('❌').users.remove(bot.user.id);
+                    }
                 })
                 .catch((err) => {
                     message.react('❌');
