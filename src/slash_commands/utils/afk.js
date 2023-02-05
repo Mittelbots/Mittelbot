@@ -29,13 +29,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     } else {
-        if (isUserAfk)
+        if (isUserAfk) {
             return main_interaction
                 .reply({
                     content: `❌ You are already afk. \`Reason: ${isUserAfk.reason}\` To remove your afk state add the remove option.`,
                     ephemeral: true,
                 })
                 .catch((err) => {});
+        }
 
         const modal = new ModalBuilder()
             .setTitle('Reason for your afk state.')
@@ -52,7 +53,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         await main_interaction.showModal(modal);
 
-        return main_interaction.reply({ content: `` });
+        return main_interaction.reply({ content: `` }).catch((err) => {});
     }
 };
 module.exports.data = new SlashCommandBuilder()

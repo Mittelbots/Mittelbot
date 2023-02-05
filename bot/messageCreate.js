@@ -21,7 +21,7 @@ async function messageCreate(message, bot) {
         return await new AutoBlacklist().check(message, bot);
     }
 
-    if (message.channel.type == '1' || message.author.system) return;
+    if (message.channel.type == '1' || message.author.system || !message.user) return;
 
     const isOnBlacklist = await Guilds.isBlacklist(message.guild.id);
     if (isOnBlacklist) {
