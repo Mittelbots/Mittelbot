@@ -43,7 +43,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
     const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'timer', 'poll'];
     const help = ['help', 'tutorial'];
-    const notifications = ['twitch', 'youtube', 'reddit'];
+    const notifications = ['twitch', 'youtube', 'reddit_notifier'];
 
     //=========================================================
 
