@@ -44,7 +44,7 @@ module.exports.timer = async (bot) => {
             if (minutes <= 0 && hours <= 0 && days <= 0) {
                 timeLeftString = `**Time left:** Only a few seconds!`;
             } else {
-                timeLeftString = `**Time left:** ${days}Day(s) ${hours}Hour(s) ${minutes}Minute(s)`;
+                timeLeftString = `**Time left:** ${days} Day(s) ${hours} Hour(s) ${minutes} Minute(s)`;
             }
 
             if (timeLeftString == message.content) return;
