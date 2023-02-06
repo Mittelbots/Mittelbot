@@ -220,27 +220,27 @@ class Auditlog {
             let description = '';
 
             if (changedOptions.includes('name')) {
-                description += `**Channel name changed**\n**Before**\n${
+                description += `**Channel name changed**\n\n**Before**\n${
                     changedBefore[changedOptions.indexOf('name')]
                 }\n**After**\n${channelUpdate.name}\n\n`;
             }
             if (changedOptions.includes('nsfw')) {
-                description += `**Channel nsfw changed**\n**Before**\n${
+                description += `**<#${channelUpdate.id}> nsfw changed**\n\n**Before**\n${
                     changedBefore[changedOptions.indexOf('nsfw')]
                 }\n**After**\n${channelUpdate.nsfw}\n\n`;
             }
             if (changedOptions.includes('parentId')) {
-                description += `**Channel parent changed**\n**Before**\n<#${
+                description += `**<#${channelUpdate.id}> parent changed**\n\n**Before**\n<#${
                     changedBefore[changedOptions.indexOf('parentId')]
                 }>\n**After**\n${channelUpdate.parent}\n\n`;
             }
             if (changedOptions.includes('rateLimitPerUser')) {
-                description += `**Channel rateLimitPerUser changed**\n**Before**\n${
+                description += `**<#${channelUpdate.id}> rateLimitPerUser changed**\n\n**Before**\n${
                     changedBefore[changedOptions.indexOf('rateLimitPerUser')]
                 }s\n**After**\n${channelUpdate.rateLimitPerUser || 0}s\n\n`;
             }
             if (changedOptions.includes('topic')) {
-                description += `**Channel topic changed**\n**Before**\n${
+                description += `**<#${channelUpdate.id}> topic changed**\n\n**Before**\n${
                     changedBefore[changedOptions.indexOf('topic')] || 'None'
                 }\n**After**\n${channelUpdate.topic}\n\n`;
             }
@@ -261,17 +261,17 @@ class Auditlog {
                             return 'Unknown';
                     }
                 };
-                description = `**Channel type changed**\n**Before**\n${getRealTypeName(
+                description = `**<#${channelUpdate.id}> type changed**\n\n**Before**\n${getRealTypeName(
                     changedBefore[changedOptions.indexOf('type')]
                 )}\n**After**\n${getRealTypeName(channelUpdate.type)}\n\n`;
             }
             if (changedOptions.includes('userLimit')) {
-                description += `**Channel userLimit changed**\n**Before**\n${
+                description += `**<#${channelUpdate.id}> userLimit changed**\n\n**Before**\n${
                     changedBefore[changedOptions.indexOf('userLimit')] || 'None'
                 }\n**After**\n${channelUpdate.userLimit}\n\n`;
             }
             if (changedOptions.includes('bitrate')) {
-                description += `**Channel bitrate changed**\n**Before**\n${
+                description += `**<#${channelUpdate.id}> bitrate changed**\n\n**Before**\n${
                     changedBefore[changedOptions.indexOf('bitrate')]
                 }\n**After**\n${channelUpdate.bitrate}\n\n`;
             }
