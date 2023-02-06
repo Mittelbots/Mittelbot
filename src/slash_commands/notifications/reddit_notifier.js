@@ -86,7 +86,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 guild_id,
                 channel_id: channel.id,
                 subreddit: subredditName,
-                pingrole_id: pingrole.id,
+                pingrole_id: pingrole ? pingrole.id : null,
                 allow_nsfw,
                 override,
             })
@@ -124,17 +124,17 @@ module.exports.data = new SlashCommandBuilder()
                     .setDescription('The channel you want to post the reddit posts in')
                     .setRequired(true)
             )
-            .addRoleOption((option) =>
-                option
-                    .setName('pingrole')
-                    .setDescription('The role you want to ping when a new post is uploaded')
-                    .setRequired(true)
-            )
             .addBooleanOption((option) =>
                 option
                     .setName('allow_nsfw')
                     .setDescription('Allow nsfw posts to be posted in this channel')
                     .setRequired(true)
+            )
+            .addRoleOption((option) =>
+                option
+                    .setName('pingrole')
+                    .setDescription('The role you want to ping when a new post is uploaded')
+                    .setRequired(false)
             )
     )
     .addSubcommand((subcommand) =>
