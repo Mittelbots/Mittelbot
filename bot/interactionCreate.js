@@ -14,10 +14,17 @@ const SingASong = require('../utils/functions/data/SingASong');
 const defaultCooldown = new Set();
 
 module.exports.interactionCreate = async ({ main_interaction, bot }) => {
+    if (bot.user.id === '921779661795639336' && main_interaction.user.id !== bot.ownerId) {
+        return main_interaction.reply({
+            content: 'Sorry, but this bot is in development and only the owner can use it.',
+            ephemeral: true,
+        });
+    }
+
     if (main_interaction.user.bot || main_interaction.user.system) return;
     const { ignoreMode } = (await GlobalConfig.get()) || 0;
     if (ignoreMode) {
-        if (main_interaction.user.id !== config.Bot_Owner_ID) {
+        if (main_interaction.user.id !== bot.owner) {
             return main_interaction.react('🕒').catch((err) => {});
         }
         return main_interaction
