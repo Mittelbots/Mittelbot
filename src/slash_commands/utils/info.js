@@ -1,4 +1,10 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const {
+    SlashCommandBuilder,
+    EmbedBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    ActionRowBuilder,
+} = require('discord.js');
 const { version } = require('../../../package.json');
 const { MemberInfo } = require('../../../utils/functions/data/MemberInfo');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
@@ -8,19 +14,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ephemeral: true,
     });
 
-    let server = main_interaction.guild;
+    const server = main_interaction.guild;
 
     const userOption = main_interaction.options.getUser('user');
     const isAnonym = main_interaction.options.getBoolean('anonymous');
 
     const tag = userOption ? true : false;
 
-    var user = userOption || main_interaction.user;
+    const user = userOption || main_interaction.user;
 
-    var userRole = '';
+    let userRole = '';
 
     server.roles.cache.forEach((role) => {
-        let searchedRole = server.roles.cache
+        const searchedRole = server.roles.cache
             .get(role.id)
             .members.map((m) => m.user.id)
             .filter((m) => m === user.id);
@@ -39,31 +45,28 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (userRole == '') userRole = 'No Roles';
 
-    function convertDateToDiscordTimestamp(date) {
-        let converteDate = new Intl.DateTimeFormat('de-DE').format(date);
-        converteDate = converteDate.split('.');
-        converteDate = new Date(converteDate[2], converteDate[1] - 1, converteDate[0]);
+    function convertDateToDiscordTimestamp(dateImport) {
+        const date = new Intl.DateTimeFormat('de-DE').format(dateImport).split('.');
+        const converteDate = new Date(date[2], date[1] - 1, date[0]);
 
         return Math.floor(converteDate / 1000);
     }
 
-    function format(seconds) {
+    function format(sec) {
         function pad(s) {
             return (s < 10 ? '0' : '') + s;
         }
-        var hours = Math.floor(seconds / (60 * 60));
-        var minutes = Math.floor((seconds % (60 * 60)) / 60);
-        var seconds = Math.floor(seconds % 60);
+        const hours = Math.floor(sec / (60 * 60));
+        const minutes = Math.floor((sec % (60 * 60)) / 60);
+        const seconds = Math.floor(sec % 60);
 
         return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
     }
 
-    var uptime = process.uptime();
-
     const serverInfoEmbed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle(`**Serverinfos - ${server.name}**`)
-        .setURL('https://discord.gg/chilledsad/')
+        .setURL('https://heeeeeeeey.com/')
         .setThumbnail(server.iconURL())
         .setDescription(`${server.id}`)
         .addFields([
@@ -72,26 +75,45 @@ module.exports.run = async ({ main_interaction, bot }) => {
             { name: `Members`, value: `${server.members.cache.size}`, inline: true },
             { name: `Roles`, value: `${server.roles.cache.size}`, inline: true },
             {
-                name: `Created`,
+                name: `Server created`,
                 value: `${new Intl.DateTimeFormat('de-DE').format(
                     server.createdAt
                 )} \n<t:${convertDateToDiscordTimestamp(server.createdAt)}:R>`,
                 inline: true,
             },
-            { name: `Uptime`, value: `${format(uptime)}`, inline: true },
-            { name: `Version`, value: `${version}`, inline: true },
+            { name: `Bot Uptime`, value: `${format(process.uptime())}`, inline: true },
+            { name: `Bot Version`, value: `${version}`, inline: true },
+            { name: `Bot created`, value: `<t:1639142014:R>`, inline: true },
             { name: '\u200B', value: '\u200B' },
         ])
         .setTimestamp();
-    if (tag) {
-        const memberInfo = await MemberInfo.get({
-            guild_id: main_interaction.guild.id,
-            user_id: user.id,
-        });
 
-        var user_joined = memberInfo ? memberInfo.joined_at : null;
+    if (!tag) {
+        return main_interaction
+            .followUp({
+                embeds: [serverInfoEmbed],
+                components: [
+                    new ActionRowBuilder().addComponents(
+                        new ButtonBuilder()
+                            .setStyle(ButtonStyle.Link)
+                            .setLabel('Add the bot to your server')
+                            .setURL(`https://mittelbot.blackdayz.de/invite`)
+                    ),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {
+                errorhandler({ err });
+            });
     }
-    var dc_joinedAt;
+    const memberInfo = await MemberInfo.get({
+        guild_id: main_interaction.guild.id,
+        user_id: user.id,
+    });
+
+    const user_joined = memberInfo ? memberInfo.joined_at : null;
+
+    let dc_joinedAt;
     try {
         dc_joinedAt =
             new Intl.DateTimeFormat('de-DE').format(
@@ -103,7 +125,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
     } catch (err) {
         dc_joinedAt = 'Not in this server';
     }
-    var first_joined_at;
+
+    let first_joined_at;
     try {
         first_joined_at = `${
             !user_joined
@@ -135,22 +158,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .setTimestamp();
 
     if (JSON.parse(process.env.DEBUG)) console.info('info command passed!');
-    if (!tag) {
-        return main_interaction
-            .followUp({
-                embeds: [serverInfoEmbed],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
 
     const axios = require('axios');
-    let pfp = axios
+    const pfp = axios
         .get(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=4096`)
         .then(() => {
+            // GIF
             return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=4096`;
         })
         .catch(() => {
+            // PNG
             return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=4096`;
         });
 
