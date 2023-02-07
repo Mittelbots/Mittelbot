@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.56.2",
+    "version": "0.56.3",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -56,7 +56,7 @@
         "simple-youtube-api": "^5.2.1",
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
-        "undici": "^5.17.1",
+        "undici": "^5.18.0",
         "uuid": "^9.0.0",
         "validator": "^13.9.0",
         "ytdl-core": "^4.11.2"
