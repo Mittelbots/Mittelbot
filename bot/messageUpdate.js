@@ -20,8 +20,8 @@ module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
         }>\n[Jump to Message](https://discord.com/channels/${messageAfter.guildId}/${
             messageAfter.channelId
         }/${messageAfter.id})**\n\n**Before**\n${
-            attachment !== undefined ? '' : messageBefore
-        }\n\n**After**\n${attachment !== undefined ? '' : messageAfter}`,
+            messageBefore.attachments.first() !== undefined ? '' : messageBefore
+        }\n\n**After**\n${messageAfter.attachments.first() !== undefined ? '' : messageAfter}`,
     });
     await auditLog.sendToAuditLog({
         guildId: messageBefore.guild.id,
