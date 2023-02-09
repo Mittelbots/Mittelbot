@@ -68,7 +68,17 @@ GuildConfig.init(
         },
         logs: {
             type: DataTypes.JSON,
-            defaultValue: {},
+            defaultValue: {
+                events: [
+                    'guildMemberNicknameUpdate',
+                    'guildMemberOffline',
+                    'guildMemberOnline',
+                    'guildMemberRoleAdd',
+                    'guildMemberRoleRemove',
+                    'userAvatarUpdate',
+                    'userUsernameUpdate',
+                ],
+            },
         },
         warnroles: {
             type: DataTypes.JSON,

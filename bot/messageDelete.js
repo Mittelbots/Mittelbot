@@ -5,7 +5,17 @@ module.exports.messageDelete = async (bot, message) => {
     const auditLog = new Auditlog();
     const isEnabled = await auditLog.checkEnabledEvents(message.guild.id, 'message_delete');
     if (!isEnabled) return;
-    await auditLog.init(bot, message.guild.id);
-    await auditLog.messageDelete(message);
-    await auditLog.sendToAuditLog(message);
+    await auditLog.init(bot, message.guild.id, true);
+    await auditLog.setEmbed({
+        color: '#a80f2b',
+        text: `**Message sent by <@${message.author.id}> deleted in <#${message.channelId}>** \n${
+            attachment !== undefined ? '' : message
+        }`,
+        imageUrl: attachment !== undefined ? attachment : null,
+    });
+
+    await auditLog.sendToAuditLog({
+        guildId: message.guild.id,
+        target: message,
+    });
 };

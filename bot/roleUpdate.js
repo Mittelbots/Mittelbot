@@ -7,5 +7,8 @@ module.exports.roleUpdate = async (bot, roleBefore, roleAfter) => {
     await auditLog.init(bot, roleBefore.guild.id);
     const succeed = await auditLog.roleUpdate(roleBefore, roleAfter);
     if (!succeed) return;
-    await auditLog.sendToAuditLog(roleBefore);
+    await auditLog.sendToAuditLog({
+        guildId: roleBefore.guild.id,
+        target: roleBefore.guild,
+    });
 };

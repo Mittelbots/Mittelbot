@@ -7,5 +7,8 @@ module.exports.channelUpdate = async (bot, channelBefore, channelAfter) => {
     await auditLog.init(bot, channelBefore.guild.id);
     const succeed = await auditLog.channelUpdate(channelBefore, channelAfter);
     if (!succeed) return;
-    await auditLog.sendToAuditLog(channelBefore);
+    await auditLog.sendToAuditLog({
+        guildId: channelBefore.guild.id,
+        target: channelBefore.guild,
+    });
 };
