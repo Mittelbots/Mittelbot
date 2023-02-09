@@ -18,10 +18,6 @@ GuildConfig.init(
             type: DataTypes.JSON,
             defaultValue: {},
         },
-        start: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
         levelup_channel: {
             type: DataTypes.BIGINT,
         },
@@ -36,10 +32,6 @@ GuildConfig.init(
         modroles: {
             type: DataTypes.JSON,
             defaultValue: [],
-        },
-        prefix: {
-            type: DataTypes.STRING,
-            defaultValue: '!',
         },
         cooldown: {
             type: DataTypes.INTEGER,
@@ -57,14 +49,6 @@ GuildConfig.init(
         disabled_modules: {
             type: DataTypes.JSON,
             defaultValue: [],
-        },
-        deleteModeCommandAfterUsage: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        },
-        deleteCommandAfterUsage: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
         },
         logs: {
             type: DataTypes.JSON,
