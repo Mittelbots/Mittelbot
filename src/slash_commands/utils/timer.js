@@ -44,7 +44,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     await channel
         .send({
-            content: `**Time left:** ${days}Day(s) ${hours}Hour(s) ${minutes} Minute(s)`,
+            content: `**Time left:** ${days}\xA0Day(s) ${hours}\xA0Hour(s) ${minutes}\xA0Minute(s)`,
         })
         .then((msg) => {
             const timer = new Timer();
