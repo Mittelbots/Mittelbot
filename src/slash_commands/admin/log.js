@@ -201,48 +201,76 @@ module.exports.data = new SlashCommandBuilder()
                     .setDescription('Select an event to disable or enable.')
                     .setRequired(true)
                     .addChoices({
-                        name: 'Message Delete',
+                        name: 'Message delete',
                         value: 'message_delete',
                     })
                     .addChoices({
-                        name: 'Message Bulk Delete',
+                        name: 'Message bulk-delete',
                         value: 'message_bulk_delete',
                     })
                     .addChoices({
-                        name: 'Message Update',
+                        name: 'Message update',
                         value: 'message_update',
                     })
                     .addChoices({
-                        name: 'Member Ban',
+                        name: 'Member ban',
                         value: 'member_ban_add',
                     })
                     .addChoices({
-                        name: 'Member Unban',
+                        name: 'Member unban',
                         value: 'member_ban_remove',
                     })
                     .addChoices({
-                        name: 'Channel Create',
+                        name: 'Channel create',
                         value: 'channel_create',
                     })
                     .addChoices({
-                        name: 'Channel Delete',
+                        name: 'Channel delete',
                         value: 'channel_delete',
                     })
                     .addChoices({
-                        name: 'Channel Update',
+                        name: 'Channel update',
                         value: 'channel_update',
                     })
                     .addChoices({
-                        name: 'Role Create',
+                        name: 'Role create',
                         value: 'role_create',
                     })
                     .addChoices({
-                        name: 'Role Delete',
+                        name: 'Role delete',
                         value: 'role_delete',
                     })
                     .addChoices({
-                        name: 'Role Update',
+                        name: 'Role update',
                         value: 'role_update',
+                    })
+                    .addChoices({
+                        name: 'Nickname update',
+                        value: 'guildMemberNicknameUpdate',
+                    })
+                    .addChoices({
+                        name: 'Member offline',
+                        value: 'guildMemberOffline',
+                    })
+                    .addChoices({
+                        name: 'Member online',
+                        value: 'guildMemberOnline',
+                    })
+                    .addChoices({
+                        name: 'Member role add',
+                        value: 'guildMemberRoleAdd',
+                    })
+                    .addChoices({
+                        name: 'Member role remove',
+                        value: 'guildMemberRoleRemove',
+                    })
+                    .addChoices({
+                        name: 'Member avatar update',
+                        value: 'userAvatarUpdate',
+                    })
+                    .addChoices({
+                        name: 'Username update',
+                        value: 'userUsernameUpdate',
                     })
             )
             .addStringOption((string) =>
