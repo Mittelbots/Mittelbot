@@ -12,10 +12,11 @@ class Auditlog {
         return this;
     }
 
-    init(bot, guild_id = null) {
+    init(bot, guild_id = null, checkWhiteList = false) {
         return new Promise(async (resolve) => {
             this.bot = bot;
             this.embed = new EmbedBuilder();
+            this.#checkWhitelistUser = checkWhiteList;
             if (!Number(guild_id)) {
                 switch (guild_id) {
                     case 'reco':
@@ -148,68 +149,20 @@ class Auditlog {
         });
     }
 
+    setEmbed({color = '#021982', text, imageUrl = null}) {
+        return new Promise(async (resolve) => {
+            this.embed.setColor(color);
+            this.embed.setDescription(text);
+            if (imageUrl) this.embed.setImage(imageUrl);
+            resolve(true);
+        });
+    }
+
     /* 
         ===============================================
         =============  GUILD EVENTS  ==================
         ===============================================
     */
-
-    messageDelete(message) {
-        return new Promise(async (resolve) => {
-            this.#checkWhitelistUser = true;
-            const attachment = message.attachments.first();
-            this.embed.setDescription(
-                `**Message sent by <@${message.author.id}> deleted in <#${message.channelId}>** \n${
-                    attachment !== undefined ? '' : message
-                }`
-            );
-            if (attachment !== undefined) {
-                this.embed.setImage(attachment.url);
-            }
-            resolve(true);
-        });
-    }
-
-    messageDeleteBulk(messages) {
-        return new Promise(async (resolve) => {
-            this.#checkWhitelistUser = true;
-            this.embed.setDescription(
-                `**${messages.size} messages deleted in <#${messages.first().channelId}>**`
-            );
-            resolve(true);
-        });
-    }
-
-    messageUpdate(messageBefore, messageUpdate) {
-        return new Promise(async (resolve) => {
-            this.#checkWhitelistUser = true;
-            const attachment = messageUpdate.attachments.first();
-            this.embed.setDescription(
-                `**Message sent by <@${messageUpdate.author.id}> edited in <#${
-                    messageUpdate.channelId
-                }>\n[Jump to Message](https://discord.com/channels/${messageUpdate.guildId}/${messageUpdate.channelId}/${messageUpdate.id})**\n\n**Before**\n${attachment !== undefined ? '' : messageBefore}\n\n**After**\n${
-                    attachment !== undefined ? '' : messageUpdate
-                }`
-            );
-            resolve(true);
-        });
-    }
-
-    channelCreate(channel) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#36d30a');
-            this.embed.setDescription(`**Channel created: <#${channel.id}>**`);
-            resolve(true);
-        });
-    }
-
-    channelDelete(channel) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#a80f2b');
-            this.embed.setDescription(`**Channel deleted: ${channel.name}**`);
-            resolve(true);
-        });
-    }
 
     channelUpdate(channelBefore, channelUpdate) {
         return new Promise(async (resolve) => {
@@ -291,64 +244,6 @@ class Auditlog {
         });
     }
 
-    debug(info) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#021982');
-            this.embed.setDescription(`**Debug info** \n ${info}`);
-            resolve(true);
-        });
-    }
-
-    disconnect(event) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#a80f2b');
-            this.embed.setDescription(`**WebSocket Disconnected** \n ${event}`);
-            resolve(true);
-        });
-    }
-
-    reconnecting() {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#021982');
-            this.embed.setDescription(`**WebSocket Reconnecting**`);
-            resolve(true);
-        });
-    }
-
-    error(error) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#a80f2b');
-            this.embed.setDescription(`**Error** \n ${error}`);
-            resolve(true);
-        });
-    }
-
-    warn(warning) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#a80f2b');
-            this.embed.setDescription(`**Warning** \n ${warning}`);
-            resolve(true);
-        });
-    }
-
-    guildUpdate(guildBefore, guildUpdate) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#021982');
-            this.embed.setDescription(
-                `**Guild updated**\n**Before**\n${guildBefore}\n**After**\n${guildUpdate}`
-            );
-            resolve(true);
-        });
-    }
-
-    roleCreate(role) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#36d30a');
-            this.embed.setDescription(`**Role created: ${role.name}**`);
-            resolve(true);
-        });
-    }
-
     roleUpdate(roleBefore, roleUpdate) {
         return new Promise(async (resolve) => {
             let changedOptions = [];
@@ -391,23 +286,6 @@ class Auditlog {
             } catch (e) {
                 resolve(false);
             }
-        });
-    }
-
-    roleDelete(role) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor('#a80f2b');
-            this.embed.setDescription(`**Role deleted: ${role.name}**`);
-            resolve(true);
-        });
-    }
-
-    setEmbed({color = '#021982', text, imageUrl = null}) {
-        return new Promise(async (resolve) => {
-            this.embed.setColor(color);
-            this.embed.setDescription(text);
-            if (imageUrl) this.embed.setImage(imageUrl);
-            resolve(true);
         });
     }
 }

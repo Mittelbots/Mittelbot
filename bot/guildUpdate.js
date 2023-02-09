@@ -5,7 +5,10 @@ module.exports.guildUpdate = async (bot, guildBefore, guildAfter) => {
     guildBefore.guild = {};
     guildBefore.guild.id = guildBefore.guildId;
     await auditLog.init(bot, guildBefore.guildId);
-    await auditLog.guildUpdate(guildBefore, guildAfter);
+    await auditLog.setEmbed({
+        color: '#021982',
+        text: `**Guild updated**\n**Before**\n${guildBefore}\n**After**\n${guildUpdate}`,
+    });
     await auditLog.sendToAuditLog({
         guildId: guildBefore.guildId,
         target: guildBefore,

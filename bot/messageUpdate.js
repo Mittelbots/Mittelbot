@@ -12,8 +12,17 @@ module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
     const auditLog = new Auditlog();
     const isEnabled = await auditLog.checkEnabledEvents(messageBefore.guild.id, 'message_update');
     if (!isEnabled) return;
-    await auditLog.init(bot, messageBefore.guild.id);
-    await auditLog.messageUpdate(messageBefore, messageAfter);
+    await auditLog.init(bot, messageBefore.guild.id, true);
+    await auditLog.setEmbed({
+        color: '#36d30a',
+        text: `**Message sent by <@${messageAfter.author.id}> edited in <#${
+            messageAfter.channelId
+        }>\n[Jump to Message](https://discord.com/channels/${messageAfter.guildId}/${
+            messageAfter.channelId
+        }/${messageAfter.id})**\n\n**Before**\n${
+            attachment !== undefined ? '' : messageBefore
+        }\n\n**After**\n${attachment !== undefined ? '' : messageAfter}`,
+    });
     await auditLog.sendToAuditLog({
         guildId: messageBefore.guild.id,
         target: messageBefore,

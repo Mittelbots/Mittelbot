@@ -7,7 +7,10 @@ module.exports.messageDeleteBulk = async (bot, messages) => {
         'message_bulk_delete'
     );
     if (!isEnabled) return;
-    await auditLog.init(bot, messages.first().guild.id);
-    await auditLog.messageDeleteBulk(messages);
+    await auditLog.init(bot, messages.first().guild.id, true);
+    await auditLog.setEmbed({
+        color: '#a80f2b',
+        text: `**${messages.size} messages deleted in <#${messages.first().channelId}>**`,
+    });
     await auditLog.send();
 };

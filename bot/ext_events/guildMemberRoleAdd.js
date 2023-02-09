@@ -7,14 +7,12 @@ module.exports.guildMemberRoleAdd = async (bot, member, role) => {
         'guildMemberNicknameUpdate'
     );
     if (!isEnabled) return;
-    await auditLog.init(bot, member.guild.id);
+    await auditLog.init(bot, member.guild.id, true);
     await auditLog.setEmbed({
         text: `**Role added to ${member}**\n**Role**\n${role}`,
-        checkWhiteList: true,
     });
     await auditLog.sendToAuditLog({
         guildId: member.guild.id,
         target: member,
-        checkWhiteList: true,
     });
 };

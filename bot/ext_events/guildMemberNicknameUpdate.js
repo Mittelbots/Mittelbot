@@ -7,13 +7,12 @@ module.exports.guildMemberNicknameUpdate = async (bot, member, oldNickname, newN
         'guildMemberNicknameUpdate'
     );
     if (!isEnabled) return;
-    await auditLog.init(bot, member.guild.id);
+    await auditLog.init(bot, member.guild.id, true);
     await auditLog.setEmbed({
         text: `**Nickname updated from ${member} **\n**Before**\n${oldNickname}\n**After**\n${newNickname}`,
     });
     await auditLog.sendToAuditLog({
         guildId: member.guild.id,
         target: member,
-        checkWhiteList: true,
     });
 };

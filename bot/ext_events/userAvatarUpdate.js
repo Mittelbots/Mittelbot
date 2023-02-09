@@ -4,7 +4,7 @@ module.exports.userAvatarUpdate = async (bot, member, oldAvatarURL, newAvatarURL
     const auditLog = new Auditlog();
     const isEnabled = await auditLog.checkEnabledEvents(member.guild.id, 'userAvatarUpdate');
     if (!isEnabled) return;
-    await auditLog.init(bot, member.guild.id);
+    await auditLog.init(bot, member.guild.id, true);
     await auditLog.setEmbed({
         text: `**${member} has updated their avatar**\n**Old avatar**\n${oldAvatarURL}`,
         imageUrl: newAvatarURL,
@@ -12,6 +12,5 @@ module.exports.userAvatarUpdate = async (bot, member, oldAvatarURL, newAvatarURL
     await auditLog.sendToAuditLog({
         guildId: member.guild.id,
         target: member,
-        checkWhiteList: true,
     });
 };
