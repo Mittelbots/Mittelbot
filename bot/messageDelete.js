@@ -7,5 +7,8 @@ module.exports.messageDelete = async (bot, message) => {
     if (!isEnabled) return;
     await auditLog.init(bot, message.guild.id);
     await auditLog.messageDelete(message);
-    await auditLog.sendToAuditLog(message);
+    await auditLog.sendToAuditLog({
+        guildId: message.guild.id,
+        target: message,
+    });
 };

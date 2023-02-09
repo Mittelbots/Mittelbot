@@ -43,11 +43,12 @@ class Auditlog {
         });
     }
 
-    sendToAuditLog(contentBefore, type = 'auditlog') {
+    sendToAuditLog({guildId, target = null, type = 'auditlog', checkWhiteList = false}) {
         return new Promise(async (resolve) => {
-            await this.#getLogs(contentBefore.guild.id, type);
-            if (await this.#checkWhitelist(contentBefore)) return resolve(false);
-            this.embed = await this.#generateAuditlogEmbed(contentBefore);
+            this.#checkWhitelistUser = checkWhiteList;
+            await this.#getLogs(guildId, type);
+            if (await this.#checkWhitelist(target)) return resolve(false);
+            this.embed = await this.#generateAuditlogEmbed(target);
             this.send();
         });
     }
@@ -80,27 +81,30 @@ class Auditlog {
         });
     }
 
-    #generateAuditlogEmbed(message) {
+    #generateAuditlogEmbed(target) {
         return new Promise(async (resolve) => {
-            if (message.author) {
+            if (target.author) {
                 this.embed
                     .setAuthor({
-                        name: message.author.tag,
-                        iconURL: message.author.displayAvatarURL(),
+                        name: target.author.tag,
+                        iconURL: target.author.displayAvatarURL(),
                     })
                     .setThumbnail(
-                        message.author.avatarURL({
+                        target.author.avatarURL({
                             format: 'jpg',
                         })
                     )
                     .setFooter({
-                        text: `Author: ${message.author.id} | MessageID: ${message.id}`,
+                        text: `Author: ${target.author.id} | MessageID: ${target.id}`,
                     });
             } else {
+
+                if(target.user) target = target.guild;
+                
                 this.embed
                     .setAuthor({
-                        name: message.guild.name,
-                        iconURL: message.guild.iconURL(),
+                        name: target.name,
+                        iconURL: target.iconURL(),
                     })
                     .setFooter({
                         text: `Author: Server`,
@@ -110,9 +114,9 @@ class Auditlog {
         });
     }
 
-    #checkWhitelist(message) {
+    #checkWhitelist(message = null) {
         return new Promise(async (resolve) => {
-            if (!this.#checkWhitelistUser) return resolve(false);
+            if (!this.#checkWhitelistUser || !message) return resolve(false);
 
             try {
                 if(this.#ignoreBots && message.author.bot || message.author.system) return resolve(true);
@@ -394,6 +398,15 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor('#a80f2b');
             this.embed.setDescription(`**Role deleted: ${role.name}**`);
+            resolve(true);
+        });
+    }
+
+    setEmbed({color = '#021982', text, imageUrl = null}) {
+        return new Promise(async (resolve) => {
+            this.embed.setColor(color);
+            this.embed.setDescription(text);
+            if (imageUrl) this.embed.setImage(imageUrl);
             resolve(true);
         });
     }

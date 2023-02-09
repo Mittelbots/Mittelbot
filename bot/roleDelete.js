@@ -6,5 +6,8 @@ module.exports.roleDelete = async (bot, role) => {
     if (!isEnabled) return;
     await auditLog.init(bot, role);
     await auditLog.roleDelete(role);
-    await auditLog.sendToAuditLog(role);
+    await auditLog.sendToAuditLog({
+        guildId: role.guild.id,
+        target: role,
+    });
 };

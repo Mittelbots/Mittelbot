@@ -6,41 +6,18 @@ const {
     createSlashCommands,
 } = require('../../utils/functions/createSlashCommands/createSlashCommands');
 const { setActivity } = require('../../utils/functions/data/activity');
-const { handleAddedReactions } = require('../../utils/functions/data/reactionroles');
-const { delay } = require('../../utils/functions/delay/delay');
-const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
 const { deployCommands } = require('../../utils/functions/deployCommands/deployCommands');
-const { guildCreate } = require('../guildCreate');
-const { guildMemberAdd } = require('../guildMemberAdd');
-const { guildMemberRemove } = require('../guildMemberRemove');
-const { interactionCreate } = require('../interactionCreate');
-const { messageCreate } = require('../messageCreate');
 const database = require('../../src/db/db');
-const { rateLimit } = require('../rateLimit');
 const { Guilds } = require('../../utils/functions/data/Guilds');
 const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
 const { timer } = require('../../src/events/timer/timer');
-const { messageDelete } = require('../messageDelete');
-const { channelCreate } = require('../channelCreate');
-const { channelDelete } = require('../channelDelete');
-const { channelUpdate } = require('../channelUpdate');
-const { botDebug } = require('../botDebug');
-const { guildUpdate } = require('../guildUpdate');
-const { messageDeleteBulk } = require('../messageDeleteBulk');
-const { messageUpdate } = require('../messageUpdate');
-const { roleCreate } = require('../roleCreate');
-const { roleDelete } = require('../roleDelete');
-const { roleUpdate } = require('../roleUpdate');
-const { guildBanAdd } = require('../guildBanAdd');
-const { guildBanRemove } = require('../guildBanRemove');
-const { botError } = require('../botError');
-const { botDisconnect } = require('../botDisconnect');
-const { botWarn } = require('../botWarn');
 const ScamDetection = require('../../utils/checkForScam/checkForScam');
+const logs = require('discord-logs');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
         try {
+            logs(bot);
             await database.init();
             await setActivity(bot, true);
             await deployCommands(bot);
@@ -67,127 +44,6 @@ module.exports.startBot = async (bot) => {
         } catch (err) {
             return reject(err);
         }
-    });
-};
-
-module.exports.acceptBotInteraction = (bot) => {
-    bot.on('guildCreate', async (guild) => {
-        guildCreate(guild, bot);
-    });
-
-    bot.on('guildMemberAdd', (member) => {
-        guildMemberAdd(member, bot);
-    });
-
-    bot.on('guildMemberRemove', (member) => {
-        guildMemberRemove({
-            member,
-        });
-    });
-
-    bot.on('messageCreate', (message) => {
-        messageCreate(message, bot);
-    });
-
-    bot.on('messageReactionAdd', (reaction, user) => {
-        handleAddedReactions({
-            reaction,
-            user,
-            bot,
-        });
-    });
-
-    bot.on('messageReactionRemove', (reaction, user) => {
-        handleAddedReactions({
-            reaction,
-            user,
-            bot,
-            remove: true,
-        });
-    });
-
-    bot.on('interactionCreate', (main_interaction) => {
-        interactionCreate({
-            main_interaction,
-            bot,
-        });
-    });
-
-    bot.on('rateLimit', (rateLimitData) => {
-        rateLimit({ rateLimitData });
-    });
-
-    bot.on('debug', (info) => {
-        if (info.substr(6, 3) === '429') {
-            rateLimit({ rateLimitData: info });
-        }
-        if (info.includes('401')) {
-            errorhandler({
-                message: info,
-                fatal: true,
-            });
-        }
-        botDebug(bot, info);
-    });
-
-    bot.on('messageDelete', (message) => {
-        messageDelete(bot, message);
-    });
-
-    bot.on('messageDeleteBulk', (messages) => {
-        messageDeleteBulk(bot, messages);
-    });
-
-    bot.on('messageUpdate', (messageBefore, messageAfter) => {
-        messageUpdate(bot, messageBefore, messageAfter);
-    });
-
-    bot.on('channelCreate', (channel) => {
-        channelCreate(bot, channel);
-    });
-
-    bot.on('channelDelete', (channel) => {
-        channelDelete(bot, channel);
-    });
-
-    bot.on('channelUpdate', (channelBefore, channelAfter) => {
-        channelUpdate(bot, channelBefore, channelAfter);
-    });
-
-    bot.on('disconnect', (event) => {
-        botDisconnect(bot, event);
-    });
-
-    bot.on('error', (error) => {
-        botError(bot, error);
-    });
-
-    bot.on('warn', (warn) => {
-        botWarn(bot, warn);
-    });
-
-    bot.on('guildUpdate', (guildBefore, guildAfter) => {
-        guildUpdate(bot, guildBefore, guildAfter);
-    });
-
-    bot.on('roleCreate', (role) => {
-        roleCreate(bot, role);
-    });
-
-    bot.on('roleDelete', (role) => {
-        roleDelete(bot, role);
-    });
-
-    bot.on('roleUpdate', (roleBefore, roleAfter) => {
-        roleUpdate(bot, roleBefore, roleAfter);
-    });
-
-    bot.on('guildBanAdd', (guildBan) => {
-        guildBanAdd(bot, guildBan);
-    });
-
-    bot.on('guildBanRemove', (guildBan) => {
-        guildBanRemove(bot, guildBan);
     });
 };
 

@@ -14,5 +14,9 @@ module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
     if (!isEnabled) return;
     await auditLog.init(bot, messageBefore.guild.id);
     await auditLog.messageUpdate(messageBefore, messageAfter);
-    await auditLog.sendToAuditLog(messageBefore, 'messagelog');
+    await auditLog.sendToAuditLog({
+        guildId: messageBefore.guild.id,
+        target: messageBefore,
+        type: 'messagelog',
+    });
 };

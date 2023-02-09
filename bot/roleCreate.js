@@ -6,5 +6,8 @@ module.exports.roleCreate = async (bot, role) => {
     if (!isEnabled) return;
     await auditLog.init(bot, role);
     await auditLog.roleCreate(role);
-    await auditLog.sendToAuditLog(role);
+    await auditLog.sendToAuditLog({
+        guildId: role.guild.id,
+        target: role.guild,
+    });
 };

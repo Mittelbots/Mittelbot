@@ -8,8 +8,9 @@ const version = require('../../package.json').version;
 const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
 const { setActivity } = require('../../utils/functions/data/activity');
 const { processErrorHandler } = require('../../utils/functions/errorhandler/processErrorHandler');
-const { startBot, acceptBotInteraction } = require('./core');
+const { startBot } = require('./core');
 const { delay } = require('../../utils/functions/delay/delay');
+const { acceptBotInteraction } = require('./botEvents');
 
 processErrorHandler();
 
@@ -25,6 +26,7 @@ const bot = new Client({
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.DirectMessageReactions,
         GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildPresences,
     ],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction],
     makeCache: Options.cacheWithLimits({

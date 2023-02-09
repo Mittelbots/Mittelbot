@@ -6,5 +6,8 @@ module.exports.channelDelete = async (bot, channel) => {
     if (!isEnabled) return;
     await auditLog.init(bot, channel.guild.id);
     await auditLog.channelDelete(channel);
-    await auditLog.sendToAuditLog(channel);
+    await auditLog.sendToAuditLog({
+        guildId: channel.guild.id,
+        target: channel.guild,
+    });
 };

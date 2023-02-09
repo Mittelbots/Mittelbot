@@ -6,5 +6,8 @@ module.exports.guildUpdate = async (bot, guildBefore, guildAfter) => {
     guildBefore.guild.id = guildBefore.guildId;
     await auditLog.init(bot, guildBefore.guildId);
     await auditLog.guildUpdate(guildBefore, guildAfter);
-    await auditLog.sendToAuditLog(guildBefore);
+    await auditLog.sendToAuditLog({
+        guildId: guildBefore.guildId,
+        target: guildBefore,
+    });
 };
