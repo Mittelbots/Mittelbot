@@ -44,9 +44,8 @@ class Auditlog {
         });
     }
 
-    sendToAuditLog({guildId, target = null, type = 'auditlog', checkWhiteList = false}) {
+    sendToAuditLog({guildId, target = null, type = 'auditlog'}) {
         return new Promise(async (resolve) => {
-            this.#checkWhitelistUser = checkWhiteList;
             await this.#getLogs(guildId, type);
             if (await this.#checkWhitelist(target)) return resolve(false);
             this.embed = await this.#generateAuditlogEmbed(target);
@@ -118,7 +117,6 @@ class Auditlog {
     #checkWhitelist(message = null) {
         return new Promise(async (resolve) => {
             if (!this.#checkWhitelistUser || !message) return resolve(false);
-
             try {
                 if(this.#ignoreBots && message.author.bot || message.author.system) return resolve(true);
             }catch(e) {
