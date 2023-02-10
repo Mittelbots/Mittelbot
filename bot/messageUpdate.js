@@ -7,8 +7,9 @@ module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
         messageAfter == null ||
         messageBefore.content == null ||
         messageAfter.content == null
-    )
+    ) {
         return;
+    }
     const auditLog = new Auditlog();
     const isEnabled = await auditLog.checkEnabledEvents(messageBefore.guild.id, 'message_update');
     if (!isEnabled) return;
