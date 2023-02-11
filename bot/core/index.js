@@ -11,6 +11,8 @@ const { processErrorHandler } = require('../../utils/functions/errorhandler/proc
 const { startBot } = require('./core');
 const { delay } = require('../../utils/functions/delay/delay');
 const { acceptBotInteraction } = require('./botEvents');
+const { Player } = require('discord-player');
+require("discord-player/smoothVolume");
 
 processErrorHandler();
 
@@ -20,7 +22,7 @@ const bot = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildModeration,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.DirectMessages,
@@ -43,6 +45,17 @@ bot.commands = new Collection();
 bot.version = version;
 bot.owner = config.Bot_Owner;
 bot.ownerId = config.Bot_Owner_ID;
+
+bot.player = new Player(bot, {
+    ytdlOptions: {
+        quality: 'highestaudio',
+        smoothVolume: true,
+        lagMonitor: 30000,
+        connectionTimeout: 10000,
+    },
+    
+});
+    
 
 bot.config = config;
 

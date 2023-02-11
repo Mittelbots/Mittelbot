@@ -44,6 +44,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'timer', 'poll'];
     const help = ['help', 'tutorial'];
     const notifications = ['twitch', 'youtube', 'reddit_notifier'];
+    const music = ['play', 'stop', 'skip', 'queue', 'nowplaying', 'remove', 'pause', 'resume', 'disconnect']
 
     //=========================================================
 
@@ -112,6 +113,11 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     if (notifications.indexOf(main_interaction.commandName) !== -1) {
         if (disabled_modules.indexOf('notifications') > -1) return disabled('notifications');
         return requireModule('notifications');
+    }
+
+    if (music.indexOf(main_interaction.commandName) !== -1) {
+        if (disabled_modules.indexOf('music') > -1) return disabled('music');
+        return requireModule('music');
     }
 
     return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
