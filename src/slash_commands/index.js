@@ -44,7 +44,17 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'timer', 'poll'];
     const help = ['help', 'tutorial'];
     const notifications = ['twitch', 'youtube', 'reddit_notifier'];
-    const music = ['play', 'stop', 'skip', 'queue', 'nowplaying', 'remove', 'pause', 'resume', 'disconnect']
+    const music = [
+        'play',
+        'stop',
+        'skip',
+        'queue',
+        'nowplaying',
+        'remove',
+        'pause',
+        'resume',
+        'disconnect',
+    ];
 
     //=========================================================
 
