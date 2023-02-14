@@ -11,8 +11,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const queue = await musicApi.getQueue();
 
-    console.log(queue, queue.playing);
-
     if (!queue || !queue.playing)
         return main_interaction.followUp({
             embeds: [
