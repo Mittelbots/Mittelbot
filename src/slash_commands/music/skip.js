@@ -31,7 +31,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ephemeral: true,
         });
 
-    await queue.skip();
+    if(queue.tracks.length>0) await queue.play()
+    else await queue.skip()
 
     return await main_interaction.followUp({
         embeds: [
