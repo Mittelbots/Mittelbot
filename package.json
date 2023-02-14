@@ -50,7 +50,6 @@
         "mysql2": "^3.1.2",
         "nconf": "^0.12.0",
         "node-notifier": "^10.0.1",
-        "node-opus": "^0.3.3",
         "node-sloc": "^0.2.1",
         "nodemailer": "^6.9.1",
         "os-utils": "^0.0.14",
