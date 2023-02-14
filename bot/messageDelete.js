@@ -9,9 +9,9 @@ module.exports.messageDelete = async (bot, message) => {
     await auditLog.setEmbed({
         color: '#a80f2b',
         text: `**Message sent by <@${message.author.id}> deleted in <#${message.channelId}>** \n${
-            attachment !== undefined ? '' : message
+            message.attachments.first() !== undefined ? '' : message
         }`,
-        imageUrl: attachment !== undefined ? attachment : null,
+        imageUrl: message.attachments.first() !== undefined ? attachment : null,
     });
 
     await auditLog.sendToAuditLog({
