@@ -10,7 +10,7 @@ module.exports.saveAllRoles = async (roles, member, guild) => {
         return false;
     }
 
-    if(!guild_id || !user_id) return false;
+    if (!guild_id || !user_id) return false;
 
     const memberInfo = await MemberInfo.get({ guild_id, user_id });
     if (!memberInfo) {
