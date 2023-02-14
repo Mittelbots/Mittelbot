@@ -17,9 +17,19 @@ module.exports = class Music {
         });
     }
 
+    isBotWithUserInChannel() {
+        return new Promise(async (resolve) => {
+            const me = await this.main_interaction.guild.members.fetchMe();
+            return resolve(
+                me.voice.channel &&
+                    me.voice.channel.id === this.main_interaction.member.voice.channel.id
+            );
+        });
+    }
+
     pause() {
         return new Promise(async (resolve) => {
-            const queue = this.bot.player.getQueue(this.main_interaction.guild);
+            const queue = await this.getQueue();
             await queue.setPaused(true);
             return resolve();
         });
@@ -27,7 +37,7 @@ module.exports = class Music {
 
     resume() {
         return new Promise(async (resolve) => {
-            const queue = this.bot.player.getQueue(this.main_interaction.guild);
+            const queue = await this.getQueue();
             await queue.setPaused(false);
             return resolve();
         });
@@ -35,7 +45,7 @@ module.exports = class Music {
 
     destroy() {
         return new Promise(async (resolve) => {
-            const queue = this.bot.player.getQueue(this.main_interaction.guild);
+            const queue = await this.getQueue();
             await queue.destroy();
             return resolve();
         });

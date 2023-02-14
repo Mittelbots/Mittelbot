@@ -9,16 +9,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ephemeral: true,
     });
 
-    if (!(await musicApi.isUserInChannel()))
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('You must be in a voice channel to use this command!'),
-            ],
-            ephemeral: true,
-        });
-
     const queue = await musicApi.getQueue();
 
     console.log(queue, queue.playing);
