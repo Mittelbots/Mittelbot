@@ -9,7 +9,7 @@ module.exports.saveAllRoles = async (roles, member, guild) => {
     } catch (err) {
         return false;
     }
-    
+
     if (!guild_id || !user_id) return false;
 
     const memberInfo = await MemberInfo.get({ guild_id, user_id });
