@@ -4,7 +4,7 @@
             "text": "/help - Thank you for using me!"
         },
         {
-            "text": "/help - with new command /pride on {guildCount} servers",
+            "text": "/help - Listen to music with /play",
             "showGuildCount": true
         },
         {
