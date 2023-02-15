@@ -7,7 +7,14 @@ module.exports = class Music {
     }
 
     isYoutubeLink(target) {
-        return resolve(target.include('youtube.com') || target.include('youtu.be'));
+        return new Promise(async (resolve) => {
+            try {
+                const url = new URL(target);
+                return resolve(url.hostname === 'www.youtube.com' || url.hostname === 'youtu.be');
+            } catch (e) {
+                return resolve(false);
+            }
+        });
     }
 
     isBotMuted() {

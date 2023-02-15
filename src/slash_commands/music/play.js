@@ -64,13 +64,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const embed = new EmbedBuilder();
 
-    let result;
+    const url = new URL(target);
 
+    let result;
     switch (true) {
-        case target.includes('spotify.com'):
+        case url.host === 'open.spotify.com' ||
+            url.host === 'spotify.com' ||
+            url.host === 'www.spotify.com' ||
+            url.host === 'play.spotify.com':
             result = await musicApi.spotifySearch(target);
             break;
-        case target.includes('soundcloud.com'):
+        case url.host === 'soundcloud.com' ||
+            url.host === 'www.soundcloud.com' ||
+            url.host === 'm.soundcloud.com':
             result = await musicApi.soundcloudSearch(target);
             break;
         default:
