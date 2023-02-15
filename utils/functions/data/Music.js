@@ -1,7 +1,13 @@
+const { QueryType } = require('discord-player');
+
 module.exports = class Music {
     constructor(main_interaction, bot) {
         this.main_interaction = main_interaction;
         this.bot = bot;
+    }
+
+    isYoutubeLink(target) {
+        return resolve(target.include('youtube.com') || target.include('youtu.be'));
     }
 
     isBotMuted() {
@@ -80,6 +86,34 @@ module.exports = class Music {
             } finally {
                 return resolve();
             }
+        });
+    }
+
+    spotifySearch(target) {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await this.bot.player.search(target, {
+                    requestedBy: this.main_interaction.user,
+                    searchEngine: QueryType.SPOTIFY,
+                })
+            );
+        });
+    }
+
+    soundcloudSearch(target) {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await this.bot.player.search(target, {
+                    requestedBy: this.main_interaction.user,
+                    searchEngine: QueryType.SOUNDCLOUD,
+                })
+            );
+        });
+    }
+
+    defaultSearch(target) {
+        return new Promise(async (resolve) => {
+            return resolve(await this.spotifySearch(target));
         });
     }
 };

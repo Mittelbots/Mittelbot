@@ -11,6 +11,32 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ephemeral: true,
     });
 
+    const target = main_interaction.options.getString('target');
+
+    if (target.length < 3) {
+        return main_interaction.followUp({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor('#ff0000')
+                    .setDescription('Please send a valid link or song name.'),
+            ],
+            ephemeral: true,
+        });
+    }
+
+    if (musicApi.isYoutubeLink(target)) {
+        return main_interaction.followUp({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor('#ff0000')
+                    .setDescription(
+                        'I do not support any YouTube links due some legal issues. Please provide a spotify or soundcloud link.'
+                    ),
+            ],
+            ephemeral: true,
+        });
+    }
+
     if (!(await musicApi.isUserInChannel()) && (await musicApi.isBotWithUserInChannel()))
         return main_interaction.followUp({
             embeds: [
@@ -38,12 +64,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const embed = new EmbedBuilder();
 
-    const target = main_interaction.options.getString('target');
+    let result;
 
-    const result = await bot.player.search(target, {
-        requestedBy: main_interaction.user,
-        searchEngine: QueryType.AUTO,
-    });
+    switch (true) {
+        case target.includes('spotify.com'):
+            result = await musicApi.spotifySearch(target);
+            break;
+        case target.includes('soundcloud.com'):
+            result = await musicApi.soundcloudSearch(target);
+            break;
+        default:
+            result = await musicApi.defaultSearch(target);
+            break;
+    }
 
     if (result.tracks.length === 0)
         return main_interaction.followUp({
