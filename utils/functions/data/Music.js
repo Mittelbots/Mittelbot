@@ -65,9 +65,13 @@ module.exports = class Music {
                     channel: this.main_interaction.channel,
                 },
             });
-
-            if (!queue.connection) await queue.connect(this.main_interaction.member.voice.channel);
-            return resolve(queue);
+            try {
+                if (!queue.connection)
+                    await queue.connect(this.main_interaction.member.voice.channel);
+                return resolve(queue);
+            } catch (e) {
+                return resolve(false);
+            }
         });
     }
 
