@@ -11,7 +11,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ephemeral: true,
     });
 
-    if (!(await musicApi.isUserInChannel()) && (await musicApi.isBotWithUserInChannel()))
+    if (!(await musicApi.isUserInChannel()) || !(await musicApi.isBotWithUserInChannel()))
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
