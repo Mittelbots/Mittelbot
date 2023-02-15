@@ -6,7 +6,6 @@ const {
     createSlashCommands,
 } = require('../../utils/functions/createSlashCommands/createSlashCommands');
 const { setActivity } = require('../../utils/functions/data/activity');
-const { deployCommands } = require('../../utils/functions/deployCommands/deployCommands');
 const database = require('../../src/db/db');
 const { Guilds } = require('../../utils/functions/data/Guilds');
 const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
@@ -20,7 +19,6 @@ module.exports.startBot = async (bot) => {
             logs(bot);
             await database.init();
             await setActivity(bot, true);
-            await deployCommands(bot);
             await createSlashCommands();
             await Promise.resolve(this.fetchCache(bot));
             new ScamDetection().loadScam();
