@@ -5,8 +5,6 @@ const {
 } = require('../../../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
-const { viewAllSettings } = require('../../../utils/functions/settings/viewAllSettings');
-const { updateReactionRoles } = require('../../../utils/functions/data/reactionroles');
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
@@ -32,45 +30,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ephemeral: true,
                 })
                 .catch((err) => {});
-
-            const currentsettings = await database
-                .query(`SELECT * FROM ${main_interaction.guild.id}_config LIMIT 1`)
-                .then(async (res) => {
-                    return await res[0];
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
-                    return main_interaction
-                        .followUp({
-                            content: `${config.errormessages.databasequeryerror}`,
-                        })
-                        .catch((err) => {});
-                });
-
-            await viewAllSettings({
-                currentsettings,
-                guild: main_interaction.guild,
-                bot,
-            })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            embeds: [res],
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
             break;
 
         case 'welcomemessage':
