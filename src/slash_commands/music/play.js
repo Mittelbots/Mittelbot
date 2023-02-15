@@ -23,6 +23,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const queue = await musicApi.createQueue();
 
+    if (!queue)
+        return main_interaction.followUp({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor('#ff0000')
+                    .setDescription('There was an error while creating the queue.'),
+            ],
+            ephemeral: true,
+        });
+
     if (await musicApi.isBotMuted()) {
         await main_interaction.followUp({
             embeds: [

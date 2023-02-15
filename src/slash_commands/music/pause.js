@@ -4,7 +4,7 @@ const Music = require('../../../utils/functions/data/Music');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const musicApi = new Music(main_interaction, bot);
-    
+
     await main_interaction.deferReply({
         ephemeral: true,
     });
