@@ -205,6 +205,48 @@
             "description": "Create a timer for a specific time and get notified when the time is over.",
             "usage": "/timer",
             "icon": "🕐"
+        },
+        "play": {
+            "name": "play",
+            "description": "Play a song from youtube.",
+            "usage": "/play <song name>",
+            "icon": "🎵"
+        },
+        "skip": {
+            "name": "skip",
+            "description": "Skip the current song.",
+            "usage": "/skip",
+            "icon": "⏭"
+        },
+        "stop": {
+            "name": "stop",
+            "description": "Stop the music.",
+            "usage": "/stop",
+            "icon": "⏹"
+        },
+        "queue": {
+            "name": "queue",
+            "description": "View the current queue.",
+            "usage": "/queue",
+            "icon": "📋"
+        },
+        "nowplaying": {
+            "name": "nowplaying",
+            "description": "View the current song.",
+            "usage": "/nowplaying",
+            "icon": "🎶"
+        },
+        "pause": {
+            "name": "pause",
+            "description": "Pause the music.",
+            "usage": "/pause",
+            "icon": "⏸"
+        },
+        "resume": {
+            "name": "resume",
+            "description": "Resume the music.",
+            "usage": "/resume",
+            "icon": "▶️"
         }
     },
     "levelsystem": {
