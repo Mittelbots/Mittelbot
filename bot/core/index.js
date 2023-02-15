@@ -12,6 +12,7 @@ const { startBot } = require('./core');
 const { delay } = require('../../utils/functions/delay/delay');
 const { acceptBotInteraction } = require('./botEvents');
 const { Player } = require('discord-player');
+const { registerPlayerEvents } = require('../../src/events/player/player-events');
 require('discord-player/smoothVolume');
 
 processErrorHandler();
@@ -54,6 +55,8 @@ bot.player = new Player(bot, {
         connectionTimeout: 10000,
     },
 });
+
+registerPlayerEvents(bot.player);
 
 bot.config = config;
 
