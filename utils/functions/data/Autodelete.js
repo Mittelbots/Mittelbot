@@ -1,7 +1,7 @@
-const excludeChannelModel = require('../../../src/db/Models/tables/excludeChannel.model.js');
+const autodeleteModel = require('../../../src/db/Models/tables/autodelete.model.js');
 const { errorhandler } = require('../errorhandler/errorhandler.js');
 
-module.exports = class ExcludeChannel {
+module.exports = class Autodelete {
     #defaultTypes = ['isOnlyMedia', 'isOnlyText', 'isOnlyEmotes', 'isOnlyStickers'];
 
     constructor(bot) {
@@ -12,35 +12,9 @@ module.exports = class ExcludeChannel {
         return this.#defaultTypes.includes(type);
     }
 
-    getOne(channel, type) {
-        return new Promise(async (resolve, reject) => {
-            if (!this.checkType(type)) {
-                return reject('Please provide a valid type');
-            }
-
-            return await excludeChannelModel
-                .findOne({
-                    where: {
-                        guild_id: channel.guild.id,
-                        channel_id: channel.id,
-                        [type]: true,
-                    },
-                })
-                .then((result) => {
-                    return resolve(result);
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
-                    return reject(`An error occured while getting the channel from the database`);
-                });
-        });
-    }
-
     get(channel) {
         return new Promise(async (resolve, reject) => {
-            return await excludeChannelModel
+            return await autodeleteModel
                 .findOne({
                     where: {
                         guild_id: channel.guild.id,
@@ -54,7 +28,7 @@ module.exports = class ExcludeChannel {
                     errorhandler({
                         err,
                     });
-                    return reject(`An error occured while getting the channel from the database`);
+                    return reject(`An error occured while fetching the settings.`);
                 });
         });
     }
@@ -66,7 +40,7 @@ module.exports = class ExcludeChannel {
             }
 
             if (await this.get(channel)) {
-                await excludeChannelModel
+                await autodeleteModel
                     .update(
                         {
                             isOnlyMedia: false,
@@ -85,10 +59,10 @@ module.exports = class ExcludeChannel {
                         errorhandler({
                             err,
                         });
-                        return reject(`An error occured while setting the channel in the database`);
+                        return reject(`An error occured while saving the settings.`);
                     });
             } else {
-                await excludeChannelModel
+                await autodeleteModel
                     .create({
                         guild_id: channel.guild.id,
                         channel_id: channel.id,
@@ -97,11 +71,11 @@ module.exports = class ExcludeChannel {
                         errorhandler({
                             err,
                         });
-                        return reject(`An error occured while setting the channel in the database`);
+                        return reject(`An error occured while saving the settings.`);
                     });
             }
 
-            await excludeChannelModel
+            await autodeleteModel
                 .update(
                     {
                         [type]: value,
@@ -128,6 +102,8 @@ module.exports = class ExcludeChannel {
     check(channel, message) {
         return new Promise(async (resolve, reject) => {
             const settings = await this.get(channel);
+            if (!settings) return resolve(false);
+
             switch (true) {
                 case settings.isOnlyMedia:
                     if (!message.attachments.size) {

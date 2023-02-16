@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 const config = require('../../assets/json/_config/config.json');
-const ExcludeChannel = require('../../../utils/functions/data/ExcludeChannel');
+const Autodelete = require('../../../utils/functions/data/Autodelete');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { EmbedBuilder } = require('discord.js');
 
@@ -36,23 +36,26 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const subCommand = main_interaction.options.getSubcommand();
-    const excludeChannel = new ExcludeChannel(main_interaction, bot);
+    const autodelete = new Autodelete(main_interaction, bot);
 
     const channel = main_interaction.options.getChannel('channel');
-    const type = main_interaction.options.getString('type');
 
     if (subCommand === 'get') {
-        excludeChannel
-            .get(channel, type)
+        autodelete
+            .get(channel)
             .then((result) => {
+                const filtered = Object.keys(result.dataValues).filter(
+                    (key) => result.dataValues[key] === true
+                );
+
                 return main_interaction
                     .followUp({
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
-                                    `✅ The channel is ${result ? '' : 'not'} excluded from ${
-                                        typeTranslations[type]
-                                    }`
+                                    `⚠️ Users ${
+                                        result ? 'have to' : "don't have to"
+                                    } send messages of type ${typeTranslations[filtered[0]]}`
                                 )
                                 .setColor('#00FF00'),
                         ],
@@ -82,18 +85,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
             });
     } else {
         const value = main_interaction.options.getBoolean('value');
+        const type = main_interaction.options.getString('type');
 
-        excludeChannel
+        autodelete
             .set(channel, type, value)
-            .then((result) => {
+            .then(() => {
                 return main_interaction
                     .followUp({
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
-                                    `✅ The channel is now ${
-                                        value ? '' : 'not'
-                                    } excluded from ${type}`
+                                    `✅ Users ${
+                                        value ? 'have to' : "don't have to"
+                                    } send messages of type ${typeTranslations[type]}`
                                 )
                                 .setColor('#00FF00'),
                         ],
@@ -125,58 +129,34 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = new SlashCommandBuilder()
-    .setName('excludechannel')
-    .setDescription('Exclude channels which are only allowed to use with the given type')
+    .setName('autodelete')
+    .setDescription('Auto delete messages in a channel when they are not allowed')
     .addSubcommand((subcommand) =>
         subcommand
             .setName('get')
-            .setDescription('Get the current exclude channel settings')
+            .setDescription('Get the current channel settings')
             .addChannelOption((option) =>
                 option
                     .setName('channel')
-                    .setDescription('The channel to get the exclude channel settings')
+                    .setDescription('The channel to get the settings from')
                     .setRequired(true)
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('type')
-                    .setDescription('The type of the exclude channel')
-                    .setRequired(true)
-                    .addChoices(
-                        {
-                            name: 'isOnlyMedia',
-                            value: 'isOnlyMedia',
-                        },
-                        {
-                            name: 'isOnlyText',
-                            value: 'isOnlyText',
-                        },
-                        {
-                            name: 'isOnlyEmotes',
-                            value: 'isOnlyEmotes',
-                        },
-                        {
-                            name: 'isOnlyStickers',
-                            value: 'isOnlyStickers',
-                        }
-                    )
             )
     )
 
     .addSubcommand((subcommand) =>
         subcommand
             .setName('set')
-            .setDescription('Set the exclude channel settings')
+            .setDescription('Set the autodelete settings')
             .addChannelOption((option) =>
                 option
                     .setName('channel')
-                    .setDescription('The channel to set the exclude channel settings')
+                    .setDescription('The channel to set the channel settings')
                     .setRequired(true)
             )
             .addStringOption((option) =>
                 option
                     .setName('type')
-                    .setDescription('The type of the exclude channel')
+                    .setDescription('The type of the autodelete settings')
                     .setRequired(true)
                     .addChoices(
                         {
@@ -200,7 +180,7 @@ module.exports.data = new SlashCommandBuilder()
             .addBooleanOption((option) =>
                 option
                     .setName('value')
-                    .setDescription('The value of the exclude channel')
+                    .setDescription('True = active, False = inactive')
                     .setRequired(true)
             )
     );

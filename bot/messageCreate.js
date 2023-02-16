@@ -12,7 +12,7 @@ const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 const ScamDetection = require('../utils/checkForScam/checkForScam');
-const ExcludeChannel = require('../utils/functions/data/ExcludeChannel');
+const Autodelete = require('../utils/functions/data/Autodelete');
 const { EmbedBuilder } = require('discord.js');
 
 async function messageCreate(message, bot) {
@@ -83,21 +83,21 @@ async function messageCreate(message, bot) {
             return;
         }
     }
-    if (disabled_modules.indexOf('excludechannel') === -1) {
-        if (await new ExcludeChannel(bot).check(message.channel, message)) {
+    if (disabled_modules.indexOf('autodelete') === -1) {
+        if (await new Autodelete(bot).check(message.channel, message)) {
             message.channel
                 .send({
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle('This channel is excluded!')
+                            .setTitle('Wrong message Type!')
                             .setDescription(
-                                'This channel is excluded from what you have sent. Please send the right message type or use another channel.'
+                                'This channel is not accessable with the message type you have sent. Please send the right message type or use another channel. (only Text, only Emotes, only Media or only Stickers)'
                             )
                             .setColor('#FF0000'),
                     ],
                 })
                 .then(async (msg) => {
-                    await delay(4000);
+                    await delay(6000);
                     msg.delete().catch((err) => {});
                 })
                 .catch((err) => {});

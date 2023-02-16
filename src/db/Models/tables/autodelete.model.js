@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const database = require('../../db');
 
-class ExcludeChannel extends Model {}
+class AutoDelete extends Model {}
 
-ExcludeChannel.init(
+AutoDelete.init(
     {
         guild_id: {
             type: DataTypes.STRING,
@@ -32,10 +32,10 @@ ExcludeChannel.init(
     },
     {
         sequelize: database,
-        tableName: 'exclude_channel',
+        tableName: 'autodelete',
         timestamps: false,
     }
 );
 
-const excludeChannelModel = ExcludeChannel;
-module.exports = excludeChannelModel;
+const autodeleteModel = AutoDelete;
+module.exports = autodeleteModel;
