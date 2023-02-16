@@ -11,7 +11,7 @@ module.exports.messageDelete = async (bot, message) => {
         text: `**Message sent by <@${message.author.id}> deleted in <#${message.channelId}>** \n${
             message.attachments.first() !== undefined ? '' : message
         }`,
-        imageUrl: message.attachments.first() !== undefined ? attachment : null,
+        imageUrl: message.attachments.first() !== undefined ? message.attachments.first() : null,
     });
 
     await auditLog.sendToAuditLog({
