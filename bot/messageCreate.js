@@ -12,6 +12,8 @@ const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 const ScamDetection = require('../utils/checkForScam/checkForScam');
+const ExcludeChannel = require('../utils/functions/data/ExcludeChannel');
+const { EmbedBuilder } = require('discord.js');
 
 async function messageCreate(message, bot) {
     if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
@@ -20,11 +22,10 @@ async function messageCreate(message, bot) {
     if (message.author.bot && message.channel.id !== process.env.DC_DEBUG) {
         return await new AutoBlacklist().check(message, bot);
     }
-
     if (
         message.channel.type == '1' ||
         message.author.system ||
-        !message.user ||
+        !message.author ||
         (bot.user.id === '921779661795639336' && message.author.id !== bot.ownerId)
     )
         return;
@@ -67,6 +68,7 @@ async function messageCreate(message, bot) {
     }
 
     const isLink = await anitLinks(message, bot);
+
     if (isLink) {
         errorhandler({
             fatal: false,
@@ -76,10 +78,31 @@ async function messageCreate(message, bot) {
     }
 
     const { disabled_modules } = await GuildConfig.get(message.guild.id);
-
     if (disabled_modules.indexOf('scamdetection') === -1) {
-        if (new ScamDetection().check(message, bot)) {
+        if (await new ScamDetection().check(message, bot)) {
             return;
+        }
+    }
+    if (disabled_modules.indexOf('excludechannel') === -1) {
+        if (await new ExcludeChannel(bot).check(message.channel, message)) {
+            message.channel
+                .send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setTitle('This channel is excluded!')
+                            .setDescription(
+                                'This channel is excluded from what you have sent. Please send the right message type or use another channel.'
+                            )
+                            .setColor('#FF0000'),
+                    ],
+                })
+                .then(async (msg) => {
+                    await delay(4000);
+                    msg.delete().catch((err) => {});
+                })
+                .catch((err) => {});
+
+            return message.delete().catch((err) => {});
         }
     }
 

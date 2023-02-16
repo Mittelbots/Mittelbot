@@ -63,7 +63,6 @@ module.exports = class ScamDetection {
                 if (!messageArray[i]) continue;
 
                 const isInList = scamLinksExt.includes(messageArray[i]);
-
                 if (isInList) {
                     const index = scamLinksExt.indexOf(messageArray[i]);
 
@@ -95,16 +94,17 @@ module.exports = class ScamDetection {
                         //     isAuto: true
                         // });
                         errorhandler({
-                            err: `User tried to sent a Scam Link : ${scamLinksExt[index]}`,
+                            err: `User tried to sent a Scam Link : ${scamLinksExt[index]}, Users Input: ${messageArray[i]}`,
                         });
-                        await message.delete().catch((err) => {
-                            return;
-                        });
+                        await message.delete().catch((err) => {});
                         i = 0;
                         return resolve(true);
                     }
                 }
+                return resolve(false);
             }
+
+            return resolve(false);
         });
     }
 };
