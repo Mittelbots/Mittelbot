@@ -12,8 +12,8 @@
             "showMemberCount": true
         },
         {
-            "text": "/help - with new command /poll with {memberCount} members",
-            "showMemberCount": true
+            "text": "/help - with new command /autodelete on {guildCount} servers",
+            "showGuildCount": true
         },
         {
             "text": "/help - with new Reddit notifier /reddit_notifier on {guildCount} servers",

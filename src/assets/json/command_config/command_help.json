@@ -86,6 +86,12 @@
             "description": "Get notified when a streamer goes live.",
             "usage": "/twitch",
             "icon": "📣"
+        },
+        "autodelete": {
+            "name": "Auto Delete",
+            "description": "Delete messages that are sent in a specific channel and only allow a certain type of messages.",
+            "usage": "/autodelete",
+            "icon": "🗑"
         }
     },
     "moderation": {
