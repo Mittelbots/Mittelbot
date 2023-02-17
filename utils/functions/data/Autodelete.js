@@ -109,17 +109,17 @@ module.exports = class Autodelete {
             let user;
             try {
                 user = await channel.guild.members.fetch(message.author.id);
-            } catch(err) {
+            } catch (err) {
                 return resolve(false);
             }
-            
+
             const hasModPermissions = await hasPermission({
                 guild_id: channel.guild.id,
                 adminOnly: false,
                 modOnly: false,
                 user: user,
-                bot: this.bot
-            })
+                bot: this.bot,
+            });
             if (hasModPermissions) return resolve(false);
 
             switch (true) {
