@@ -1,5 +1,6 @@
 const autodeleteModel = require('../../../src/db/Models/tables/autodelete.model.js');
 const { errorhandler } = require('../errorhandler/errorhandler.js');
+const { hasPermission } = require('../hasPermissions.js');
 const { isMod } = require('../isMod.js');
 
 module.exports = class Autodelete {
@@ -102,21 +103,24 @@ module.exports = class Autodelete {
 
     check(channel, message) {
         return new Promise(async (resolve, reject) => {
+            const settings = await this.get(channel);
+            if (!settings) return resolve(false);
+
             let user;
             try {
-                user = await this.bot.users.fetch(message.author.id);
+                user = await channel.guild.members.fetch(message.author.id);
             } catch(err) {
                 return resolve(false);
             }
-            if (
-                user.permission.has('administrator') ||
-                (await isMod({ member: user, guild: channel.guild }))
-            ) {
-                return resolve(false);
-            }
-
-            const settings = await this.get(channel);
-            if (!settings) return resolve(false);
+            
+            const hasModPermissions = await hasPermission({
+                guild_id: channel.guild.id,
+                adminOnly: false,
+                modOnly: false,
+                user: user,
+                bot: this.bot
+            })
+            if (hasModPermissions) return resolve(false);
 
             switch (true) {
                 case settings.isOnlyMedia:
