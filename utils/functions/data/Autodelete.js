@@ -102,7 +102,12 @@ module.exports = class Autodelete {
 
     check(channel, message) {
         return new Promise(async (resolve, reject) => {
-            const user = await this.bot.users.fetch(message.user.id);
+            let user;
+            try {
+                user = await this.bot.users.fetch(message.author.id);
+            } catch(err) {
+                return resolve(false);
+            }
             if (
                 user.permission.has('administrator') ||
                 (await isMod({ member: user, guild: channel.guild }))
