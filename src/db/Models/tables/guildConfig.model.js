@@ -72,6 +72,10 @@ GuildConfig.init(
             type: DataTypes.JSON,
             defaultValue: [],
         },
+        reactionroles: {
+            type: DataTypes.JSON,
+            defaultValue: [],
+        },
     },
     {
         sequelize: database,
