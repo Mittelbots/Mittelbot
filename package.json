@@ -24,7 +24,7 @@
         "@discordjs/rest": "^1.5.0",
         "@discordjs/voice": "^0.14.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
-        "@napi-rs/canvas": "^0.1.34",
+        "@napi-rs/canvas": "^0.1.36",
         "@twurple/api": "^6.0.2",
         "@twurple/auth": "^6.0.2",
         "axios": "^1.3.3",
