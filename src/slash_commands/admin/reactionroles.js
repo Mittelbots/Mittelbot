@@ -5,62 +5,60 @@ const {
 } = require('../../../utils/functions/data/reactionroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    switch (main_interaction.options.getSubcommand()) {
-        case 'add':
-            const message_id = main_interaction.options.getString('message_id');
-            const reactionroles = main_interaction.options.getString('roles');
-            const emojis = main_interaction.options.getString('emojis');
+    await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
 
-            await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
+    if (main_interaction.options.getSubcommand() === 'add') {
+        const message_link = main_interaction.options.getString('message_link');
+        const reactionroles = main_interaction.options.getString('roles');
+        const emojis = main_interaction.options.getString('emojis');
 
-            updateReactionRoles({
-                guild_id: main_interaction.guild.id,
-                message_id,
-                roles: reactionroles,
-                emojis,
-                main_interaction,
+        updateReactionRoles({
+            guild_id: main_interaction.guild.id,
+            message_link,
+            roles: reactionroles,
+            emojis,
+            main_interaction,
+        })
+            .then((res) => {
+                main_interaction
+                    .followUp({
+                        content: res,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            content: res,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-        case 'remove':
-            const messagid = main_interaction.options.getString('message_id');
-            removeReactionRoles({
-                guild_id: main_interaction.guild.id,
-                message_id: messagid,
-                main_interaction,
+            .catch((err) => {
+                main_interaction
+                    .followUp({
+                        content: err,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+            });
+    } else if (main_interaction.options.getSubcommand() === 'remove') {
+        const message_link = main_interaction.options.getString('message_link');
+        removeReactionRoles({
+            guild_id: main_interaction.guild.id,
+            message_link,
+            main_interaction,
+        })
+            .then((res) => {
+                main_interaction
+                    .followUp({
+                        content: res,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             })
-                .then((res) => {
-                    main_interaction
-                        .followUp({
-                            content: res,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
+            .catch((err) => {
+                main_interaction
+                    .followUp({
+                        content: err,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+            });
+    } else {
     }
 };
 
@@ -73,9 +71,9 @@ module.exports.data = new SlashCommandBuilder()
             .setDescription('Add a reaction role')
             .addStringOption((messagelink) =>
                 messagelink
-                    .setName('message_id')
+                    .setName('message_link')
                     .setDescription(
-                        'Add the message id [Right-Click/Hold on the message -> Copy ID]'
+                        'Add the message Link [Right-Click/Hold on the message -> Copy Message Link]'
                     )
                     .setRequired(true)
             )
@@ -103,9 +101,9 @@ module.exports.data = new SlashCommandBuilder()
             .setDescription('Remove a reaction role')
             .addStringOption((messagelink) =>
                 messagelink
-                    .setName('message_id')
+                    .setName('message_link')
                     .setDescription(
-                        'Add the message id [Right-Click/Hold on the message -> Copy ID]'
+                        'Add the message Link [Right-Click/Hold on the message -> Copy Message Link]'
                     )
                     .setRequired(true)
             )

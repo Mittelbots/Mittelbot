@@ -19,7 +19,21 @@ const twitchApiClient = new ApiClient({
 });
 
 async function isStreamLive(channel_id) {
-    return (await twitchApiClient.streams.getStreamByUserId(channel_id)) !== null;
+    try {
+        const streamer = await twitchApiClient.streams.getStreamByUserId(channel_id);
+        return streamer !== null;
+    } catch (err) {
+        //ignore errors with reason self-signed certificate
+        if (err.message.includes('self-signed certificate')) {
+            return false;
+        }
+
+        errorhandler({
+            err,
+            fatal: false,
+        });
+        return false;
+    }
 }
 
 module.exports.twitch_notifier = async ({ bot }) => {

@@ -3,7 +3,7 @@ const { GuildConfig } = require('./Config');
 
 module.exports.updateReactionRoles = async ({
     guild_id,
-    message_id,
+    message_link,
     roles,
     emojis,
     main_interaction,
@@ -22,9 +22,11 @@ module.exports.updateReactionRoles = async ({
             return reject('❌ The number of roles and emojis must be equal');
         }
 
-        const messageId = message_id;
+        const messageLink = message_link.split('/');
+        const channel = messageLink[messageLink.length - 2];
+        const messageId = messageLink[messageLink.length - 1];
 
-        if (!channel || !messageId) {
+        if (!messageLink || !channel || !messageId) {
             return reject('❌ The message link is not valid');
         }
 
@@ -34,7 +36,7 @@ module.exports.updateReactionRoles = async ({
             .messages.fetch(messageId);
 
         if (!message) {
-            return reject('❌ The message does not exist');
+            return reject('❌ The message does not exist. Please check the link.');
         }
 
         for (let i in roles) {
@@ -50,7 +52,7 @@ module.exports.updateReactionRoles = async ({
             let role = await main_interaction.bot.guilds.cache
                 .get(guild_id)
                 .roles.fetch(roles[i])
-                .catch((err) => {
+                .catch(() => {
                     return reject(`❌ The role ${roles[i]} does not exist.`);
                 });
             if (!role) {
@@ -62,7 +64,9 @@ module.exports.updateReactionRoles = async ({
                     .get(guild_id)
                     .emojis.fetch(emojis[i])
                     .catch((err) => {
-                        return reject(`❌ The emoji ${emojis[i]} does not exist.`);
+                        return reject(
+                            `❌ The emoji <:emote:${emojis[i]}> does not exist in this Server.`
+                        );
                     });
 
                 if (!emoji) {
@@ -103,7 +107,7 @@ module.exports.updateReactionRoles = async ({
 
         return await GuildConfig.update({
             guild_id,
-            value: JSON.stringify(reactionroles),
+            value: reactionroles,
             valueName: 'reactionroles',
         })
             .then(async (res) => {
@@ -127,11 +131,13 @@ module.exports.updateReactionRoles = async ({
     });
 };
 
-module.exports.removeReactionRoles = async ({ guild_id, message_id, main_interaction }) => {
+module.exports.removeReactionRoles = async ({ guild_id, message_link, main_interaction }) => {
     return new Promise(async (resolve, reject) => {
-        const messageId = message_id;
+        const messageLink = message_link.split('/');
+        const channel = messageLink[messageLink.length - 2];
+        const messageId = messageLink[messageLink.length - 1];
 
-        if (!channel || !messageId) {
+        if (!messageLink || !channel || !messageId) {
             return reject('❌ The message link is not valid');
         }
 
@@ -161,11 +167,16 @@ module.exports.removeReactionRoles = async ({ guild_id, message_id, main_interac
             valueName: 'reactionroles',
         })
             .then(async (res) => {
-                await message.reactions.removeAll().catch(() => {
-                    return reject(
-                        `❌ I dont have permissions to remove the reactions from the message.`
-                    );
-                });
+                await message.reactions
+                    .removeAll()
+                    .then(() => {
+                        resolve(`✅ The reaction roles have been removed.`);
+                    })
+                    .catch(() => {
+                        return reject(
+                            `❌ I dont have permissions to remove the reactions from the message. ✅ But the reaction roles have been removed from the database.`
+                        );
+                    });
             })
             .catch((err) => {
                 reject(`❌ There was an error updating the reaction roles.`);
