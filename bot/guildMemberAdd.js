@@ -63,9 +63,14 @@ module.exports.guildMemberAdd = async (member, bot) => {
     const user_roles = memberInfo.member_roles;
 
     if (user_roles.length > 0) {
-        const indexOfMuteRole = user_roles.indexOf(
-            member.guild.roles.cache.find((r) => r.name === 'Muted').id
-        );
+        let indexOfMuteRole = -1;
+        try {
+            indexOfMuteRole = user_roles.indexOf(
+                member.guild.roles.cache.find((r) => r.name === 'Muted').id
+            );
+        } catch (err) {
+            // no mute role found
+        }
 
         const newUserRoles = user_roles;
         if (user_roles && indexOfMuteRole !== -1) {
