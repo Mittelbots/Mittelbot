@@ -62,6 +62,7 @@ async function isOnBanList({ user, guild }) {
 
     if (banLog) {
         banLog = banLog.first();
+        if (!banLog) return [false];
         var executor = banLog.executor;
         var target = banLog.target;
         var reason = banLog.reason;
