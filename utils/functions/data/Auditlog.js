@@ -151,7 +151,20 @@ class Auditlog {
         return new Promise(async (resolve) => {
             this.embed.setColor(color);
             this.embed.setDescription(text);
-            if (imageUrl) this.embed.setImage(imageUrl);
+
+
+            if(imageUrl) {
+
+                const isObject = typeof imageUrl === 'object';
+                const isUrl = imageUrl.url;
+                const isVideo = imageUrl.url.includes('mp4');
+
+                if(isObject && isUrl && isVideo) this.embed.setDescription(imageUrl.url);
+
+                if(isObject && isUrl && !isVideo) this.embed.setImage(imageUrl.url);
+                if(!isObject) this.embed.setImage(imageUrl);
+
+        }
             resolve(true);
         });
     }
