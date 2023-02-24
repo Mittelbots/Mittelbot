@@ -11,9 +11,9 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../data/Infractions');
 
 async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
-    const guild_user = guild.members.cache.get(user.id);
+    const guild_user = guild.members.cache.get(user.id) || (await guild.members.fetch(user.id));
 
-    const user_roles = await getAllRoles(guild_user);
+    const user_roles = getAllRoles(guild_user);
     const MutedRole = await getMutedRole(guild);
     if (!MutedRole) {
         errorhandler({ err, fatal: false, message: `${MutedRole} is not a valid Muted Role.` });
@@ -48,7 +48,7 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                 reason,
                 infraction_id: await createInfractionId(guild.id),
                 gid: guild.id,
-                roles: JSON.stringify(user_roles),
+                roles: user_roles,
             });
 
             setNewModLogMessage(
