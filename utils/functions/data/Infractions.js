@@ -56,7 +56,7 @@ class Infractions {
         reason,
         infraction_id,
         gid,
-        roles = null,
+        roles = [],
     }) {
         return new Promise(async (resolve) => {
             openInfractions
@@ -69,7 +69,7 @@ class Infractions {
                     reason,
                     infraction_id,
                     start_date: new Date(),
-                    roles,
+                    user_roles: roles,
                     guild_id: gid,
                 })
                 .then(() => {
