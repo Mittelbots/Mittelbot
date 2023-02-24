@@ -5,21 +5,14 @@ const { errorhandler } = require('../errorhandler/errorhandler');
 const { getMutedRole } = require('../roles/getMutedRole');
 const { giveAllRoles } = require('../roles/giveAllRoles');
 const config = require('../../../src/assets/json/_config/config.json');
-const database = require('../../../src/db/db');
 const { Infractions } = require('../data/Infractions');
-const { where } = require('sequelize');
+const openInfractions = require('../../../src/db/Models/tables/open_infractions.model');
 
 async function unmuteUser({ user, bot, mod, reason, guild }) {
     const userGuild = await bot.guilds.cache.get(guild.id);
-    var MutedRole = await getMutedRole(userGuild);
+    const MutedRole = await getMutedRole(userGuild);
 
     const guild_user = userGuild.members.cache.get(user.id);
-
-    if (!guild_user.roles.cache.has(MutedRole))
-        return {
-            error: true,
-            message: `<@${user.id}> is not muted!`,
-        };
 
     let pass = false;
 
@@ -32,13 +25,9 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
             errorhandler({
                 err,
             });
-            return {
-                error: true,
-                message: config.errormessages.nopermissions.manageRoles,
-            };
         });
 
-    const roles = await database
+    const roles = await openInfractions
         .findOne({
             where: {
                 user_id: user.id,
@@ -100,7 +89,7 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
             bot
         );
 
-        database
+        openInfractions
             .findOne({
                 where: {
                     user_id: user.id,
@@ -108,8 +97,8 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
                 order: [['id', 'DESC']],
             })
             .then(async (res) => {
-                if (res.length > 0) {
-                    let user_roles = await await res[0].user_roles;
+                if (res.id) {
+                    let user_roles = await await res.user_roles;
                     for (let x in user_roles) {
                         let r = await userGuild.roles.cache.find(
                             (role) => role.id == user_roles[x]
@@ -117,19 +106,19 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
                         await guild_user.roles.add(r);
                     }
                     await Infractions.insertClosed({
-                        uid: res[0].user_id,
-                        mod_id: res[0].mod_id,
-                        mute: res[0].mute,
-                        ban: res[0].ban,
+                        uid: res.user_id,
+                        mod_id: res.mod_id,
+                        mute: res.mute,
+                        ban: res.ban,
                         warm: 0,
                         kick: 0,
-                        till_date: res[0].till_date,
-                        reason: res[0].reason,
-                        infraction_id: res[0].infraction_id,
-                        start_date: res[0].start_date,
+                        till_date: res.till_date,
+                        reason: res.reason,
+                        infraction_id: res.infraction_id,
+                        start_date: res.start_date,
                         guild_id: guild.id,
                     });
-                    await Infractions.deleteOpen(res[0].infraction_id);
+                    await Infractions.deleteOpen(res.infraction_id);
 
                     errorhandler({
                         fatal: false,

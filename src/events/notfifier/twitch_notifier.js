@@ -1,5 +1,5 @@
 const { ApiClient } = require('@twurple/api');
-const { ClientCredentialsAuthProvider } = require('@twurple/auth');
+const { AppTokenAuthProvider } = require('@twurple/auth');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
@@ -8,7 +8,7 @@ const twitchStreams = require('../../db/Models/tables/twitchStreams.model');
 const clientId = process.env.TT_CLIENT_ID;
 const clientSecret = process.env.TT_SECRET;
 
-const authProvider = new ClientCredentialsAuthProvider(clientId, clientSecret);
+const authProvider = new AppTokenAuthProvider(clientId, clientSecret);
 
 module.exports.twitchApiClient = new ApiClient({
     authProvider,
@@ -116,5 +116,5 @@ module.exports.twitch_notifier = async ({ bot }) => {
             }
             await delay(1500);
         }
-    }, 7000); //? 10 minutes 600000
+    }, 600000);
 };
