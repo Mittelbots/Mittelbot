@@ -12,10 +12,16 @@ module.exports.antiSpam = async (message, bot) => {
     const setting = await Automod.get(message.guild.id);
     const antiSpamSetting = setting.antispam;
 
+    const member = await bot.guilds.cache
+        .get(message.guild.id)
+        .members.cache.get(message.author.id);
+    const memberRoles = member.roles.cache;
+
     const isWhitelist = Automod.checkWhitelist({
         setting: antiSpamSetting,
-        user_roles: message.member.roles.cache,
+        user_roles: memberRoles,
     });
+
     if (isWhitelist) return false;
 
     if (!antiSpamSetting) return false;
