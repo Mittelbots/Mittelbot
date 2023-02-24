@@ -14,8 +14,18 @@ const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 const ScamDetection = require('../utils/checkForScam/checkForScam');
 const Autodelete = require('../utils/functions/data/Autodelete');
 const { EmbedBuilder } = require('discord.js');
+const Banappeal = require('../utils/functions/data/Banappeal');
 
 async function messageCreate(message, bot) {
+    if (message.channel.type == '1' && !message.author.bot && !message.author.system) {
+        const banappeal = new Banappeal(bot);
+        const guild_id = await banappeal.getBanAppealMessage(message);
+        const cleanedMessage = banappeal.cleanUserInput(message.content);
+        banappeal.updateBanappeal(guild_id, message.author.id, cleanedMessage, 'appeal_msg');
+        banappeal.sendAppealToAdmins(guild_id, message.author.id);
+        return;
+    }
+
     if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
         return checkOwnerCommand(message);
     }
