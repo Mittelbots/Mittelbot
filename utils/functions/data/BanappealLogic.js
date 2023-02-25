@@ -1,3 +1,6 @@
+const { ButtonBuilder } = require('discord.js');
+const { ActionRowBuilder } = require('discord.js');
+const { ButtonStyle } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
@@ -99,6 +102,7 @@ module.exports = class BanappealLogic {
         });
     }
 
+    //TODO banappeal is undefined!
     sendAppealToAdmins(guild_id, user_id) {
         return new Promise(async (resolve, reject) => {
             const settings = await this.getSettings(guild_id);
@@ -136,10 +140,21 @@ module.exports = class BanappealLogic {
                 value: `${answers}`,
             });
 
+            const acceptbtn = new ButtonBuilder()
+                .setStyle(ButtonStyle.Success)
+                .setLabel('Accept')
+                .setCustomId(`banappeal_accept_${banappeal.id}`);
+
+            const denybtn = new ButtonBuilder()
+                .setStyle(ButtonStyle.Success)
+                .setLabel('Deny')
+                .setCustomId(`banappeal_deny_${banappeal.id}`);
+
             const channel = await this.bot.channels.fetch(settings.channel_id);
             await channel
                 .send({
                     embeds: [embed],
+                    components: [new ActionRowBuilder().addComponents([acceptbtn, denybtn])],
                 })
                 .catch((err) => {
                     // The channel is not available or the bot does not have permissions to send messages
@@ -152,5 +167,93 @@ module.exports = class BanappealLogic {
     cleanUserInput(message) {
         // remove all suspicious characters from the message to prevent SQL injections
         return message.replace(/[^a-zA-Z0-9 ]/g, '');
+    }
+
+    manageBanappeal(main_interaction) {
+        return new Promise(async (resolve, reject) => {
+            const banappealid = main_interaction.customId.split('_')[2];
+            const isAccepted = main_interaction.customId.split('_')[1] === 'accept' ? true : false;
+
+            const banappeal = await this.getBanappeal(null, null, banappealid);
+            if (!banappeal) {
+                return reject(false);
+            }
+
+            if (banappeal.isAccepted !== null && banappeal.isAccepted !== undefined) {
+                return main_interaction
+                    .reply({
+                        content: `This Banappeal was already ${
+                            banappeal.isAccepted ? 'accepted' : 'denied'
+                        }`,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+            }
+
+            const guild = await this.bot.guilds.fetch(banappeal.guild_id);
+            if (!guild) {
+                return reject(false);
+            }
+
+            console.log(banappeal);
+            guild.members
+                .unban(banappeal.user_id)
+                .then(async () => {
+                    // The user is unbanned
+                    const user = await this.bot.users.fetch(banappeal.user_id);
+                    user.send({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setTitle(
+                                    `Your Banappeal was ${isAccepted ? 'accepted' : 'denied'}`
+                                )
+                                .setDescription(
+                                    `Your Banappeal was ${
+                                        isAccepted ? 'accepted' : 'denied'
+                                    } by the Admins. ${
+                                        isAccepted
+                                            ? `You are now unbanned from the ${guild.name}`
+                                            : ''
+                                    }.`
+                                )
+                                .setColor('#00ff00'),
+                        ],
+                    }).catch((err) => {});
+                })
+                .catch((err) => {
+                    // The user is not banned or the bot does not have permissions to unban the user
+                });
+
+            await this.updateBanappeal(guild.id, banappeal.user_id, isAccepted, 'isAccepted')
+                .then(() => {
+                    const oldMainInteraction = main_interaction;
+
+                    main_interaction
+                        .reply({
+                            content: `The ban appeal was ${
+                                isAccepted ? 'accepted' : 'denied'
+                            } successfully.`,
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    main_interaction
+                        .reply({
+                            content: `An error occured: ${err}`,
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
+
+            //disable the buttons after the user clicked on one of them
+            oldMainInteraction
+                .update({
+                    components: [],
+                })
+                .catch((err) => {});
+
+            resolve(true);
+        });
     }
 };

@@ -18,14 +18,19 @@ module.exports = class Banappeal extends BanappealLogic {
         });
     }
 
-    getBanappeal(guild_id, user_id) {
+    getBanappeal(guild_id = null, user_id = null, appealId = null) {
         return new Promise(async (resolve, reject) => {
             await banappealModel
                 .findOne({
                     where: {
-                        guild_id: guild_id,
-                        user_id: user_id,
+                        id: appealId,
                     },
+                    $or: [
+                        {
+                            guild_id: guild_id,
+                            user_id: user_id,
+                        },
+                    ],
                 })
                 .then((result) => {
                     if (result) {
@@ -61,8 +66,24 @@ module.exports = class Banappeal extends BanappealLogic {
 
     createBanappeal(guild_id, user_id) {
         return new Promise(async (resolve, reject) => {
+            const banappealExists = await banappealModel
+                .findOne({
+                    where: {
+                        guild_id: guild_id,
+                        user_id: user_id,
+                    },
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    reject(true);
+                });
+
+            if (banappealExists) return reject(true);
+
             await banappealModel
-                .findOrCreate({
+                .create({
                     guild_id: guild_id,
                     user_id: user_id,
                 })

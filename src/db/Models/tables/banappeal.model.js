@@ -21,7 +21,6 @@ Banappeal.init(
         isAccepted: {
             type: DataTypes.BOOLEAN,
             allowNull: true,
-            defaultValue: false,
         },
     },
     {
