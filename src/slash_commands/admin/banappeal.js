@@ -1,49 +1,41 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const Banappeal = require('../../../utils/functions/data/Banappeal');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true });
 
-    const banappeal = new Banappeal(bot);
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.user,
+        bot,
+    });
 
-    const guild_id = main_interaction.guild.id;
-    const user_id = main_interaction.user.id;
-
-    const command = main_interaction.options.getSubcommand();
-
-    if (command === 'test') {
-        await banappeal.createBanappeal(guild_id, user_id);
-        await banappeal
-            .sendBanappealToUser(guild_id, user_id)
-            .then(() => {
-                main_interaction.editReply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setDescription('The ban appeal has been sent to you via DMs.')
-                            .setColor('#00FF00'),
-                    ],
-                    ephemeral: true,
-                });
+    if (!hasPermissions) {
+        main_interaction
+            .editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription('You do not have permission to use this command.')
+                        .setColor('#FF0000'),
+                ],
+                ephemeral: true,
             })
-            .catch(() => {
-                main_interaction.editReply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setDescription(
-                                'An error occured while sending the ban appeal to you via DMs. Please make sure you have DMs enabled.'
-                            )
-                            .setColor('#FF0000'),
-                    ],
-                    ephemeral: true,
-                });
-            });
+            .catch(() => {});
         return;
     }
 
+    const banappeal = new Banappeal(bot);
+
+    const guild_id = main_interaction.guild.id;
+    const command = main_interaction.options.getSubcommand();
+
     if (command === 'remove') {
         return banappeal
-            .removeBanappeal(guild_id, user_id)
+            .updateBanappealSettings(guild_id, null)
             .then(() => {
                 main_interaction.editReply({
                     embeds: [
@@ -187,7 +179,4 @@ module.exports.data = new SlashCommandBuilder()
     )
     .addSubcommand((subcommand) =>
         subcommand.setName('remove').setDescription('Remove the ban appeal from your server.')
-    )
-    .addSubcommand((subcommand) =>
-        subcommand.setName('test').setDescription('Test the ban appeal for your server.')
     );

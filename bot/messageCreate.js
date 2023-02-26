@@ -82,9 +82,7 @@ async function messageCreate(message, bot) {
             .catch((err) => {
                 message
                     .reply({
-                        content:
-                            'An error occurred while sending your appeal. Please try again later. ' +
-                            err,
+                        content: `An error occurred while sending your appeal. Please try again later. Error: **${err}**`,
                     })
                     .catch((err) => {});
             });

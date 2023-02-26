@@ -98,7 +98,7 @@ module.exports = class BanappealLogic {
     sendAppealToAdmins(guild_id, user_id) {
         return new Promise(async (resolve, reject) => {
             const settings = await this.getSettings(guild_id);
-            if (!settings) {
+            if (!settings || !settings.length === 0) {
                 return reject('No settings found for this Guild');
             }
 
