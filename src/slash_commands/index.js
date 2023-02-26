@@ -4,6 +4,22 @@ const {
 const { GuildConfig } = require('../../utils/functions/data/Config');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
+    const admin = [
+        'modules',
+        'scam',
+        'autotranslate',
+        'settings',
+        'levelsettings',
+        'automod',
+        'modroles',
+        'log',
+        'autoblacklist',
+        'joinroles',
+        'warnroles',
+        'reactionroles',
+        'autodelete',
+        'banappeal',
+    ];
     const moderation = [
         'ban',
         'infractions',
@@ -25,21 +41,6 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'pride',
         'stromberg',
         'singasong',
-    ];
-    const admin = [
-        'modules',
-        'scam',
-        'autotranslate',
-        'settings',
-        'levelsettings',
-        'automod',
-        'modroles',
-        'log',
-        'autoblacklist',
-        'joinroles',
-        'warnroles',
-        'reactionroles',
-        'autodelete',
     ];
     const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
     const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'timer', 'poll'];

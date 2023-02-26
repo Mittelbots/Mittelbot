@@ -13,17 +13,90 @@ const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 const ScamDetection = require('../utils/checkForScam/checkForScam');
 const Autodelete = require('../utils/functions/data/Autodelete');
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ChannelType } = require('discord.js');
+const Banappeal = require('../utils/functions/data/Banappeal');
 
 async function messageCreate(message, bot) {
-    if (message.channel.type == '1' && message.author.id === config.Bot_Owner_ID) {
+    if (
+        message.channel.type === ChannelType.DM &&
+        !message.author.bot &&
+        !message.author.system &&
+        message.reference
+    ) {
+        const banappeal = new Banappeal(bot);
+        const guild_id = await banappeal.getBanAppealMessage(message);
+        const userBanAppeal = await banappeal.getBanappeal(guild_id, message.author.id);
+        if (!userBanAppeal) return;
+
+        const isOverCooldown = await banappeal.isOverCooldown(userBanAppeal.id);
+        if (!isOverCooldown) {
+            return message
+                .reply({
+                    content: `You can not send a new appeal yet.`,
+                })
+                .catch((err) => {});
+        }
+
+        if (userBanAppeal.appeal_msg && userBanAppeal.isAccepted === undefined) {
+            return message
+                .reply({
+                    content: 'You already sent an appeal. Please wait for an answer.',
+                })
+                .catch((err) => {});
+        } else if (userBanAppeal.isAccepted == true || userBanAppeal.isAccepted == false) {
+            message
+                .reply({
+                    content: `Your appeal was ${
+                        userBanAppeal.isAccepted ? 'accepted' : 'denied'
+                    }. You can not send a new appeal.`,
+                })
+                .catch((err) => {});
+            return;
+        }
+
+        const cleanedMessage = banappeal.cleanUserInput(message.content);
+        if (cleanedMessage.length < 10) {
+            return message
+                .reply({
+                    content: 'Your appeal is too short. Please write a longer appeal.',
+                })
+                .catch((err) => {});
+        } else if (cleanedMessage.length > 19000) {
+            return message
+                .reply({
+                    content: 'Your appeal is too long. Please write a shorter appeal.',
+                })
+                .catch((err) => {});
+        }
+
+        banappeal.updateBanappeal(guild_id, message.author.id, cleanedMessage, 'appeal_msg');
+        banappeal
+            .sendAppealToAdmins(guild_id, message.author.id)
+            .then(() => {
+                message
+                    .reply({
+                        content: 'Your appeal was sent to the admins. Please wait for an answer.',
+                    })
+                    .catch((err) => {});
+            })
+            .catch((err) => {
+                message
+                    .reply({
+                        content: `An error occurred while sending your appeal. Please try again later. Error: **${err}**`,
+                    })
+                    .catch((err) => {});
+            });
+        return;
+    }
+
+    if (message.channel.type === ChannelType.DM && message.author.id === config.Bot_Owner_ID) {
         return checkOwnerCommand(message);
     }
     if (message.author.bot && message.channel.id !== process.env.DC_DEBUG) {
         return await new AutoBlacklist().check(message, bot);
     }
     if (
-        message.channel.type == '1' ||
+        message.channel.type === ChannelType.DM ||
         message.author.system ||
         !message.author ||
         (bot.user.id === '921779661795639336' && message.author.id !== bot.ownerId)
