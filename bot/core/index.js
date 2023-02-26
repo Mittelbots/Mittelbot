@@ -25,7 +25,6 @@ const bot = new Client({
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.GuildModeration,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.DirectMessageReactions,
         GatewayIntentBits.GuildVoiceStates,

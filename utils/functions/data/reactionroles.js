@@ -76,7 +76,7 @@ module.exports.updateReactionRoles = async ({
         }
 
         const guildConfig = await GuildConfig.get(guild_id);
-        const reactionroles = guildConfig.reactionroles;
+        const reactionroles = guildConfig.reactionroles || [];
 
         if (reactionroles.length >= 5) {
             return reject('❌ You can only have up to 5 reaction roles.');
@@ -99,7 +99,7 @@ module.exports.updateReactionRoles = async ({
         for (let i in roles) {
             newReactionRoles.roles.push({
                 role: roles[i],
-                emoji: isNaN(emojis[i]) ? emojis[i].codePointAt(0) : emojis[i],
+                emoji: emojis[i],
             });
         }
 
@@ -196,20 +196,13 @@ module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) =>
     }
 
     const guild = bot.guilds.cache.get(reaction.message.guildId);
-
     const guildConfig = await GuildConfig.get(guild.id);
-
     const reactionroles = guildConfig.reactionroles;
 
     for (let i in reactionroles) {
         if (reactionroles[i].messageId === reaction.message.id) {
             for (let e in reactionroles[i].roles) {
-                var emoji;
-                try {
-                    emoji = String.fromCodePoint(reactionroles[i].roles[e].emoji);
-                } catch (err) {
-                    emoji = reactionroles[i].roles[e].emoji;
-                }
+                let emoji = reactionroles[i].roles[e].emoji;
 
                 if (emoji === reaction.emoji.id || emoji === reaction.emoji.name) {
                     if (
