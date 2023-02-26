@@ -10,6 +10,7 @@ const { GlobalConfig } = require('../utils/functions/data/GlobalConfig');
 const pride = require('../src/slash_commands/fun/pride');
 const Tutorial = require('../utils/functions/data/Tutorial');
 const SingASong = require('../utils/functions/data/SingASong');
+const Banappeal = require('../utils/functions/data/Banappeal');
 
 const defaultCooldown = new Set();
 
@@ -119,6 +120,10 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
         }
         if (main_interaction.customId.indexOf('singasong_cancel') === 0) {
             new SingASong(main_interaction, bot).interaction();
+        }
+
+        if (main_interaction.customId.indexOf('banappeal') === 0) {
+            new Banappeal(bot).manageBanappeal(main_interaction);
         }
     }
 };

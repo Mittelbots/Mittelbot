@@ -6,14 +6,24 @@ const { errorhandler } = require('../errorhandler/errorhandler');
 const { getFutureDate } = require('../getFutureDate');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../data/Infractions');
+const Banappeal = require('../data/Banappeal');
 
 async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) {
     return new Promise(async (resolve, reject) => {
         if (isAuto) mod = bot.user;
 
+        const banappeal = new Banappeal();
+        await banappeal
+            .createBanappeal(guild.id, user.id)
+            .then(async () => {
+                await banappeal.sendBanappealToUser(guild.id, user.id);
+            })
+            .catch(() => {});
+
         let pass = false;
 
         privateModResponse(user, config.defaultModTypes.ban, reason, time, bot, guild.name);
+
         await guild.members
             .ban(user, {
                 deleteMessageSeconds: 60 * 60 * 24 * 7,
