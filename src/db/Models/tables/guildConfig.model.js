@@ -76,6 +76,14 @@ GuildConfig.init(
             type: DataTypes.JSON,
             defaultValue: [],
         },
+        banappeal: {
+            type: DataTypes.JSON,
+            defaultValue: {
+                title: 'Ban Appeal for {user}',
+                description: 'Please answer the following questions to appeal your ban.',
+                questions: ['Why should we unban you?', 'Why did you break the rules?'],
+            },
+        },
     },
     {
         sequelize: database,
