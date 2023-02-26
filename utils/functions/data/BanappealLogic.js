@@ -99,17 +99,17 @@ module.exports = class BanappealLogic {
         return new Promise(async (resolve, reject) => {
             const settings = await this.getSettings(guild_id);
             if (!settings) {
-                return reject(false);
+                return reject('No settings found for this Guild');
             }
 
             const guild = await this.bot.guilds.fetch(guild_id);
             if (!guild) {
-                return reject(false);
+                return reject('No Guild found for this ID');
             }
 
             const banappeal = await this.getBanappeal(guild_id, user_id);
             if (!banappeal) {
-                return reject(false);
+                return reject('No Banappeal found for this User');
             }
 
             const user = await this.bot.users.fetch(user_id);

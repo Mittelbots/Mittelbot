@@ -43,7 +43,7 @@ async function messageCreate(message, bot) {
                     content: 'You already sent an appeal. Please wait for an answer.',
                 })
                 .catch((err) => {});
-        } else if (userBanAppeal.isAccepted == true || !userBanAppeal.isAccepted == false) {
+        } else if (userBanAppeal.isAccepted == true || userBanAppeal.isAccepted == false) {
             message
                 .reply({
                     content: `Your appeal was ${
@@ -79,11 +79,12 @@ async function messageCreate(message, bot) {
                     })
                     .catch((err) => {});
             })
-            .catch(() => {
+            .catch((err) => {
                 message
                     .reply({
                         content:
-                            'An error occurred while sending your appeal. Please try again later.',
+                            'An error occurred while sending your appeal. Please try again later. ' +
+                            err,
                     })
                     .catch((err) => {});
             });

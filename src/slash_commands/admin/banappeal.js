@@ -73,7 +73,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const questions = main_interaction.options.getString('questions');
     const channel = main_interaction.options.getChannel('channel');
     const cooldown = main_interaction.options.getNumber('cooldown');
-    console.log(cooldown);
+
     const questions_array = questions.split(',');
 
     const settings = {
