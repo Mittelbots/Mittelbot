@@ -20,18 +20,23 @@ module.exports = class Banappeal extends BanappealLogic {
 
     getBanappeal(guild_id = null, user_id = null, appealId = null) {
         return new Promise(async (resolve, reject) => {
+            const searchQuery = {
+                where: {},
+            };
+
+            if (guild_id && user_id) {
+                searchQuery.where = {
+                    guild_id: guild_id,
+                    user_id: user_id,
+                };
+            } else {
+                searchQuery.where = {
+                    id: appealId,
+                };
+            }
+
             await banappealModel
-                .findOne({
-                    where: {
-                        id: appealId,
-                    },
-                    $or: [
-                        {
-                            guild_id: guild_id,
-                            user_id: user_id,
-                        },
-                    ],
-                })
+                .findOne(searchQuery)
                 .then((result) => {
                     if (result) {
                         resolve(result);
@@ -66,26 +71,23 @@ module.exports = class Banappeal extends BanappealLogic {
 
     createBanappeal(guild_id, user_id) {
         return new Promise(async (resolve, reject) => {
-            const banappealExists = await banappealModel
-                .findOne({
-                    where: {
-                        guild_id: guild_id,
-                        user_id: user_id,
-                    },
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
-                    reject(true);
-                });
+            const settings = await this.getSettings(guild_id).catch((err) => {
+                reject(false);
+            });
 
-            if (banappealExists) return reject(true);
+            if (!settings) {
+                return reject(false);
+            }
+
+            const date = new Date();
+            date.setDate(date.getDate() + 1 + settings.cooldown);
+            date.setHours(date.getHours() + 1);
 
             await banappealModel
                 .create({
                     guild_id: guild_id,
                     user_id: user_id,
+                    cooldown: date,
                 })
                 .then((result) => {
                     resolve(result);

@@ -22,6 +22,10 @@ Banappeal.init(
             type: DataTypes.BOOLEAN,
             allowNull: true,
         },
+        cooldown: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
     },
     {
         sequelize: database,

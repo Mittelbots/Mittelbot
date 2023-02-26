@@ -2,7 +2,6 @@ const { ButtonBuilder } = require('discord.js');
 const { ActionRowBuilder } = require('discord.js');
 const { ButtonStyle } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports = class BanappealLogic {
     constructor() {}
@@ -74,16 +73,10 @@ module.exports = class BanappealLogic {
 
     getBanAppealMessage(message) {
         return new Promise(async (resolve, reject) => {
-            const repliedMessage = message.reference ? message.reference : null;
-
-            if (!repliedMessage) {
-                return reject(false);
-            }
-
             const fetchedMessage = await this.bot.channels
-                .fetch(repliedMessage.channelId)
+                .fetch(message.reference.channelId)
                 .then((channel) => {
-                    return channel.messages.fetch(repliedMessage.messageId);
+                    return channel.messages.fetch(message.reference.messageId);
                 })
                 .catch((err) => {
                     return false;
@@ -102,7 +95,6 @@ module.exports = class BanappealLogic {
         });
     }
 
-    //TODO banappeal is undefined!
     sendAppealToAdmins(guild_id, user_id) {
         return new Promise(async (resolve, reject) => {
             const settings = await this.getSettings(guild_id);
@@ -195,7 +187,6 @@ module.exports = class BanappealLogic {
                 return reject(false);
             }
 
-            console.log(banappeal);
             guild.members
                 .unban(banappeal.user_id)
                 .then(async () => {
@@ -221,18 +212,28 @@ module.exports = class BanappealLogic {
                     }).catch((err) => {});
                 })
                 .catch((err) => {
-                    // The user is not banned or the bot does not have permissions to unban the user
+                    return main_interaction
+                        .reply({
+                            content: `${
+                                err.code === 10026
+                                    ? 'The user is not banned.'
+                                    : err.code === 50013
+                                    ? 'The bot does not have permissions to unban the user.'
+                                    : 'There was an error while trying to unban the user.'
+                            }`,
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
                 });
 
             await this.updateBanappeal(guild.id, banappeal.user_id, isAccepted, 'isAccepted')
                 .then(() => {
-                    const oldMainInteraction = main_interaction;
-
                     main_interaction
-                        .reply({
+                        .update({
                             content: `The ban appeal was ${
                                 isAccepted ? 'accepted' : 'denied'
                             } successfully.`,
+                            components: [],
                             ephemeral: true,
                         })
                         .catch((err) => {});
@@ -245,15 +246,25 @@ module.exports = class BanappealLogic {
                         })
                         .catch((err) => {});
                 });
-
-            //disable the buttons after the user clicked on one of them
-            oldMainInteraction
-                .update({
-                    components: [],
-                })
-                .catch((err) => {});
-
             resolve(true);
+        });
+    }
+
+    isOverCooldown(banappealid) {
+        return new Promise(async (resolve, reject) => {
+            const banappeal = await this.getBanappeal(null, null, banappealid);
+            if (!banappeal) {
+                return reject(false);
+            }
+
+            const cooldown = banappeal.cooldown;
+            const now = new Date();
+
+            if (cooldown === null || cooldown === undefined) {
+                return resolve(false);
+            }
+
+            resolve(now.getTime() <= cooldown.getTime());
         });
     }
 };

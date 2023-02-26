@@ -72,7 +72,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const description = main_interaction.options.getString('description');
     const questions = main_interaction.options.getString('questions');
     const channel = main_interaction.options.getChannel('channel');
-
+    const cooldown = main_interaction.options.getNumber('cooldown');
+    console.log(cooldown);
     const questions_array = questions.split(',');
 
     const settings = {
@@ -80,6 +81,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         description,
         questions: questions_array,
         channel_id: channel.id,
+        cooldown: cooldown,
     };
 
     banappeal
@@ -173,6 +175,14 @@ module.exports.data = new SlashCommandBuilder()
                     .setName('channel')
                     .setDescription('The channel where the ban appeal will be sent to.')
                     .setRequired(true)
+            )
+            .addNumberOption((option) =>
+                option
+                    .setName('cooldown')
+                    .setDescription(
+                        'The cooldown in days for the ban appeal. Default is 0 (no cooldown).'
+                    )
+                    .setRequired(false)
             )
     )
     .addSubcommand((subcommand) =>

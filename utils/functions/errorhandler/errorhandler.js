@@ -1,5 +1,4 @@
 const { log, debug_log } = require('./logs');
-const config = require('../../../src/assets/json/_config/config.json');
 const callerId = require('caller-id');
 
 module.exports.errorhandler = ({
@@ -16,7 +15,7 @@ module.exports.errorhandler = ({
         '------------': '------------',
     };
 
-    if (JSON.parse(process.env.DEBUG)) console.log(err, '\n', message);
+    if (JSON.parse(process.env.DEBUG)) console.log(err, '\n', message, '\n', caller.filePath);
     else if (fatal && log) log.fatal(err, '\n', JSON.stringify(errObj, null, 4));
     else if (!fatal) debug_log.info(err, '\n', JSON.stringify(errObj, null, 4));
 
