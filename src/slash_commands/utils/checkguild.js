@@ -172,7 +172,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         );
 
     if (info.banner) {
-        embed.setImage(info.banner);
+        embed.setImage(info.banner.url);
     }
 
     return main_interaction

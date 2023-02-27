@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('discord.js');
 const { removeMention, removeEmojiTags } = require('../removeCharacters');
 const { GuildConfig } = require('./Config');
 
@@ -224,4 +225,38 @@ module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) =>
             }
         }
     }
+};
+
+module.exports.viewAllReactionRoles = (guild_id) => {
+    return new Promise(async (resolve, reject) => {
+        const guildConfig = await GuildConfig.get(guild_id);
+        const reactionroles = guildConfig.reactionroles;
+
+        if (reactionroles.length === 0) {
+            return reject('❌ There are no reaction roles in this server.');
+        }
+
+        let embed = new EmbedBuilder()
+            .setColor('#0099ff')
+            .setTitle('Reaction Roles')
+            .setTimestamp();
+
+        for (let i in reactionroles) {
+            let roles = '';
+            for (let e in reactionroles[i].roles) {
+                roles += `<@&${reactionroles[i].roles[e].role}> `;
+            }
+
+            embed.addFields({
+                name: `Message: ${reactionroles[i].messageId}`,
+                value: `Channel: <#${reactionroles[i].channel}>
+
+                Emotes: ${reactionroles[i].roles.map((r) => r.emoji).join(' ')}
+                Roles: ${roles}`,
+                inline: false,
+            });
+        }
+
+        resolve(embed);
+    });
 };
