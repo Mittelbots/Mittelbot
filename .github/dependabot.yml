@@ -12,3 +12,7 @@ updates:
       target-branch: 'dev'
       labels:
           - 'npm dependencies'
+      commit-message:
+          prefix: 'core/'
+          include: 'scope'
+      milestone: 4
