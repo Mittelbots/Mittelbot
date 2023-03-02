@@ -8,7 +8,7 @@ class Temproles {
             await temproles
                 .findAll()
                 .then((data) => {
-                    return data;
+                    return resolve(data);
                 })
                 .catch((err) => {
                     return reject(err);

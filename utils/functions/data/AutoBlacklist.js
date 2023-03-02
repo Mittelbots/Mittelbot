@@ -94,10 +94,10 @@ module.exports = class AutoBlacklist {
                     } catch (err) {}
                 }
 
-                let isBanned = [];
+                let isUserBannedArray = [];
 
                 for (let i in users) {
-                    if (isBanned.includes(users[i])) continue;
+                    if (isUserBannedArray.includes(users[i])) continue;
 
                     const guild = await bot.guilds.cache.get(message.guild.id);
                     let member = await guild.members.cache.find((member) => member.id === users[i]);
@@ -126,7 +126,7 @@ module.exports = class AutoBlacklist {
                         .catch(() => {
                             message.react('❌').catch((err) => {});
                         });
-                    isBanned.push(member ? member : users[i]);
+                    isUserBannedArray.push(member ? member : users[i]);
                     resolve(true);
                 }
             });
