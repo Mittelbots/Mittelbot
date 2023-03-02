@@ -48,7 +48,7 @@ module.exports.reddit_notifier = async (bot) => {
                 pingrole ? '<@&' + pingrole + '> || ' : ''
             }The subreddit \`${subreddit}\` has a new post!\n\n https://www.reddit.com${permalink}`;
             const newEmbed = new EmbedBuilder()
-                .setTitle(title)
+                .setTitle(title.substring(0, 256))
                 .setURL(`https://www.reddit.com${permalink}`)
                 .setAuthor({
                     name: author,
