@@ -48,7 +48,7 @@ module.exports.reddit_notifier = async (bot) => {
                 pingrole ? '<@&' + pingrole + '> || ' : ''
             }The subreddit \`${subreddit}\` has a new post!\n\n https://www.reddit.com${permalink}`;
             const newEmbed = new EmbedBuilder()
-                .setTitle(title)
+                .setTitle(title.substring(0, 256))
                 .setURL(`https://www.reddit.com${permalink}`)
                 .setAuthor({
                     name: author,
@@ -61,8 +61,10 @@ module.exports.reddit_notifier = async (bot) => {
                 });
 
             if (selftext) {
-                if (selftext.length > 1024) selftext = selftext.substring(0, 1024) + '...';
-                newEmbed.setDescription(selftext);
+                let newSelftext;
+
+                if (selftext.length > 1024) newSelftext = selftext.substring(0, 1024) + '...';
+                newEmbed.setDescription(newSelftext);
             }
 
             if (over_18 && !allowNSFW && !channel.nsfw) {
