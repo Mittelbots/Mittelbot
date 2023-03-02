@@ -17,7 +17,7 @@ Temproles.init(
             type: DataTypes.DATE,
         },
         infraction_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         guild_id: {
