@@ -61,8 +61,10 @@ module.exports.reddit_notifier = async (bot) => {
                 });
 
             if (selftext) {
-                if (selftext.length > 1024) selftext = selftext.substring(0, 1024) + '...';
-                newEmbed.setDescription(selftext);
+                let newSelftext;
+
+                if (selftext.length > 1024) newSelftext = selftext.substring(0, 1024) + '...';
+                newEmbed.setDescription(newSelftext);
             }
 
             if (over_18 && !allowNSFW && !channel.nsfw) {
