@@ -4,7 +4,7 @@ const { antiSpam } = require('../utils/automoderation/antiSpam');
 const { antiInvite } = require('../utils/automoderation/antiInvite');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
-const { Afk } = require('../utils/functions/data/Afk');
+const Afk = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../utils/functions/data/Config');
 const Translate = require('../utils/functions/data/translate');
@@ -188,7 +188,7 @@ async function messageCreate(message, bot) {
     }
 
     if (disabled_modules.indexOf('utils') === -1) {
-        const isAFK = Afk.check({ message });
+        const isAFK = await new Afk().check({ message });
         if (isAFK) {
             return message
                 .reply(

@@ -5,7 +5,7 @@ const { GuildConfig } = require('../utils/functions/data/Config');
 const { InteractionType } = require('discord.js');
 const { manageScam } = require('../utils/functions/data/scam');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
-const { Afk } = require('../utils/functions/data/Afk');
+const Afk = require('../utils/functions/data/Afk');
 const { GlobalConfig } = require('../utils/functions/data/GlobalConfig');
 const pride = require('../src/slash_commands/fun/pride');
 const Tutorial = require('../utils/functions/data/Tutorial');
@@ -67,7 +67,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
         }
     } else if (main_interaction.type === InteractionType.ModalSubmit) {
         if (main_interaction.customId == 'afk_modal') {
-            Afk.handle(main_interaction);
+            new Afk().handle(main_interaction);
         }
     } else {
         switch (main_interaction.customId) {
