@@ -6,13 +6,15 @@ const {
     TextInputStyle,
 } = require('discord.js');
 const { userAFK } = require('../../../utils/functions/data/variables');
+const Afk = require('../../../utils/functions/data/Afk');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const isRemove = main_interaction.options.getBoolean('remove');
-    const isUserAfk = userAFK.find(
-        (u) => u.user_id === main_interaction.user.id && u.guild_id === main_interaction.guild.id
-    );
-    if (isRemove) {
+    const subcommand = main_interaction.options.getSubcommand();
+
+    const afk = new Afk();
+    const isUserAfk = await afk.isAfk(main_interaction.user.id, main_interaction.guild.id);
+
+    if (subcommand === 'remove') {
         if (!isUserAfk) {
             return main_interaction.reply({
                 content: `❌ You are not afk.`,
@@ -20,7 +22,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             });
         }
 
-        userAFKuserAFK = userAFK.splice(userAFK.indexOf(isUserAfk), 1);
+        await afk.remove(main_interaction.user.id, main_interaction.guild.id);
 
         return main_interaction
             .reply({
@@ -59,6 +61,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 module.exports.data = new SlashCommandBuilder()
     .setName('afk')
     .setDescription('Set you to afk.')
-    .addBooleanOption((option) =>
-        option.setName('remove').setDescription('Remove the afk status.').setRequired(false)
+    .addSubcommand((subcommand) => subcommand.setName('set').setDescription('Set your afk state.'))
+    .addSubcommand((subcommand) =>
+        subcommand.setName('remove').setDescription('Remove your afk state.')
     );
