@@ -31,7 +31,7 @@ module.exports = class Afk {
         return new Promise(async (resolve, reject) => {
             const member = await MemberInfo.get({ guild_id, user_id });
 
-            const isAfk = member.afk;
+            const isAfk = member.afk || {};
             if (Object.keys(isAfk).length === 0 && isAfk.constructor === Object) {
                 return resolve(false);
             }
