@@ -68,7 +68,7 @@
     },
     "devDependencies": {
         "chalk": "^4.1.0",
-        "nodemon": "^2.0.20",
+        "nodemon": "^2.0.21",
         "prettier": "^2.8.4",
         "string-width": "4.2.3"
     }
