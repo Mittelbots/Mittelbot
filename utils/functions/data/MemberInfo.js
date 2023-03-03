@@ -5,7 +5,7 @@ const { Guilds } = require('./Guilds');
 class MemberInfo {
     constructor() {}
 
-    add({ guild_id, user_id, member_roles, user_joined = new Date() }) {
+    add({ guild_id, user_id, member_roles, user_joined = new Date(), afk = null }) {
         return new Promise(async (resolve, reject) => {
             memberInfo
                 .create({
@@ -13,9 +13,10 @@ class MemberInfo {
                     user_id,
                     member_roles,
                     user_joined,
+                    afk,
                 })
-                .then(() => {
-                    resolve(true);
+                .then((data) => {
+                    resolve(data);
                 })
                 .catch((err) => {
                     errorhandler({
@@ -34,6 +35,12 @@ class MemberInfo {
                     user_id,
                 },
             });
+
+            if (memberInfo.length === 0) {
+                return resolve(
+                    await this.add({ guild_id, user_id, member_roles: [], user_joined: null })
+                );
+            }
             return resolve(memberInfo[0]);
         });
     }
@@ -60,6 +67,32 @@ class MemberInfo {
                         guild_id,
                     },
                 })
+                .then(() => {
+                    resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    return reject(false);
+                });
+        });
+    }
+
+    updateAfk({ guild_id, user_id, afk }) {
+        return new Promise(async (resolve, reject) => {
+            memberInfo
+                .update(
+                    {
+                        afk,
+                    },
+                    {
+                        where: {
+                            user_id,
+                            guild_id,
+                        },
+                    }
+                )
                 .then(() => {
                     resolve(true);
                 })

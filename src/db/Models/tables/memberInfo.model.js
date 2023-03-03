@@ -20,6 +20,10 @@ MemberInfo.init(
         user_joined: {
             type: DataTypes.DATE,
         },
+        afk: {
+            type: DataTypes.JSON,
+            defaultValue: {},
+        },
     },
     {
         sequelize: database,
