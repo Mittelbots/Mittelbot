@@ -435,14 +435,16 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }) => {
             )
             .setTimestamp();
 
+        const cleanedMessage = validateCustomStrings({
+            string: welcomeChannel.message,
+            joined_user,
+        });
+
         return await bot.guilds.cache
             .get(guild_id)
             .channels.cache.get(welcomeChannel.id)
             .send({
-                content: validateCustomStrings({
-                    string: welcomeChannel.message,
-                    joined_user,
-                }),
+                content: cleanedMessage,
                 embeds: [welcomeMessage],
             })
             .then(() => {
@@ -456,7 +458,7 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }) => {
                     .get(guild_id)
                     .channels.cache.get(welcomeChannel.id)
                     .send({
-                        content: welcomeChannel.message,
+                        content: cleanedMessage,
                     })
                     .then(() => {
                         errorhandler({

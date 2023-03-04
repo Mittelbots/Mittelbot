@@ -64,6 +64,7 @@ module.exports.reddit_notifier = async (bot) => {
                 let newSelftext;
 
                 if (selftext.length > 1024) newSelftext = selftext.substring(0, 1024) + '...';
+                else newSelftext = selftext;
                 newEmbed.setDescription(newSelftext);
             }
 
