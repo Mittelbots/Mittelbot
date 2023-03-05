@@ -84,6 +84,10 @@ GuildConfig.init(
                 questions: ['Why should we unban you?', 'Why did you break the rules?'],
             },
         },
+        tickets: {
+            type: DataTypes.JSON,
+            defaultValue: {},
+        },
     },
     {
         sequelize: database,
