@@ -126,7 +126,7 @@ async function messageCreate(message, bot) {
     if (isSpam) {
         errorhandler({
             fatal: false,
-            message: `${message.user.id} has spammed in ${message.guild.id}.`,
+            message: `${message.author.id} has spammed in ${message.guild.id}.`,
         });
         return;
     }
