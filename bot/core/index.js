@@ -13,7 +13,6 @@ const { delay } = require('../../utils/functions/delay/delay');
 const { acceptBotInteraction } = require('./botEvents');
 const { Player } = require('discord-player');
 const { registerPlayerEvents } = require('../../src/events/player/player-events');
-require('discord-player/smoothVolume');
 
 processErrorHandler();
 
@@ -47,11 +46,11 @@ bot.owner = config.Bot_Owner;
 bot.ownerId = config.Bot_Owner_ID;
 
 bot.player = new Player(bot, {
+    connectionTimeout: 60000,
+    smoothVolume: true,
     ytdlOptions: {
+        highWaterMark: 1 << 25,
         quality: 'highestaudio',
-        smoothVolume: true,
-        lagMonitor: 30000,
-        connectionTimeout: 10000,
     },
 });
 

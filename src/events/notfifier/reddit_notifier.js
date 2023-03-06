@@ -75,7 +75,13 @@ module.exports.reddit_notifier = async (bot) => {
                     value: 'This post is marked as NSFW. Please be careful when viewing it.',
                 });
             } else {
-                newEmbed.setColor(15105570).setImage(url);
+                newEmbed.setColor(15105570);
+
+                try {
+                    newEmbed.setImage(url);
+                } catch (e) {
+                    // do nothing
+                }
             }
 
             await channel
