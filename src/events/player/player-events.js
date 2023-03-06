@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 
 module.exports.registerPlayerEvents = (player) => {
-    player.on('error', (queue, error) => {
+    player.events.on('error', (queue, error) => {
         errorhandler({
             err: error,
             message: `Error emitted from the queue ${queue.guild.name} | ${error.message}`,
@@ -20,7 +20,7 @@ module.exports.registerPlayerEvents = (player) => {
         });
     });
 
-    player.on('connectionError', (queue, error) => {
+    player.events.on('playerError', (queue, error) => {
         errorhandler({
             err: error,
             message: `Error emitted from the connection ${queue.guild.name} | ${error.message}`,
@@ -38,11 +38,10 @@ module.exports.registerPlayerEvents = (player) => {
         });
     });
 
-    player.on('trackStart', (queue, track) => {
+    player.events.on('playerStart', (queue, track) => {
         queue.metadata.channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('Now playing')
                     .setDescription(`Now playing ${track.title}...`)
                     .setColor('#38ff46')
                     .setImage(track.thumbnail.url)
@@ -51,11 +50,10 @@ module.exports.registerPlayerEvents = (player) => {
         });
     });
 
-    player.on('trackAdd', (queue, track) => {
+    player.events.on('audioTrackAdd', (queue, track) => {
         queue.metadata.channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('Now playing')
                     .setDescription(`Track ${track.title} added to the queue!`)
                     .setColor('#38ff46')
                     .setImage(track.thumbnail.url)
@@ -64,11 +62,10 @@ module.exports.registerPlayerEvents = (player) => {
         });
     });
 
-    player.on('botDisconnect', (queue) => {
+    player.events.on('disconnect', (queue) => {
         queue.metadata.channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('Now playing')
                     .setDescription(
                         `I was manually disconnected from the voice channel, clearing queue!`
                     )
@@ -78,11 +75,10 @@ module.exports.registerPlayerEvents = (player) => {
         });
     });
 
-    player.on('channelEmpty', (queue) => {
+    player.events.on('emptyChannel', (queue) => {
         queue.metadata.channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('Now playing')
                     .setDescription(`Nobody is in the voice channel, leaving the channel!`)
                     .setColor('#ff6e12')
                     .setTimestamp(),
@@ -90,11 +86,10 @@ module.exports.registerPlayerEvents = (player) => {
         });
     });
 
-    player.on('queueEnd', (queue) => {
+    player.events.on('emptyQueue', (queue) => {
         queue.metadata.channel.send({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle('Now playing')
                     .setDescription(`Queue has ended!`)
                     .setColor('#ff6e12')
                     .setTimestamp(),
