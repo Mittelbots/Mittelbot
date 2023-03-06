@@ -9,19 +9,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ephemeral: true,
     });
 
-    if (!(await musicApi.isUserInChannel()) || !(await musicApi.isBotWithUserInChannel()))
+    const check = await musicApi.checkAvailibility();
+    if (check) {
         return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('You must be in a voice channel to use this command!'),
-            ],
+            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(check)],
             ephemeral: true,
         });
+    }
 
-    const queue = bot.player.getQueue(main_interaction.guild);
-
-    if (!queue || !queue.playing)
+    if (!(await musicApi.isPlaying()))
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
@@ -31,7 +27,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ephemeral: true,
         });
 
-    await queue.setPaused(true);
+    await musicApi.pause();
 
     return main_interaction.followUp({
         embeds: [

@@ -11,7 +11,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const queue = await musicApi.getQueue();
 
-    if (!queue || !queue.playing)
+    if (await !musicApi.isPlaying())
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
@@ -26,8 +26,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
             new EmbedBuilder()
                 .setColor('#00ff00')
                 .setDescription(
-                    `Now playing: ${queue.previousTracks[queue.previousTracks.length - 1].title}`
-                ),
+                    `Now playing: ${queue.currentTrack.title} \nRequested by: ${queue.currentTrack.requestedBy} \nDuration: ${queue.currentTrack.duration} \nURL: ${queue.currentTrack.url}`
+                )
+                .setThumbnail(queue.currentTrack.thumbnail),
         ],
         ephemeral: true,
     });

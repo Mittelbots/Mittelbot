@@ -1,4 +1,3 @@
-const { QueryType } = require('discord-player');
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
@@ -24,7 +23,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
     }
 
-    if (musicApi.isYoutubeLink(target)) {
+    if (await musicApi.isYoutubeLink(target)) {
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
@@ -37,15 +36,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
     }
 
-    if (!(await musicApi.isUserInChannel()) || !(await musicApi.isBotWithUserInChannel()))
+    const check = await musicApi.checkAvailibility(true);
+    if (check) {
         return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('You must be in a voice channel to use this command!'),
-            ],
+            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(check)],
             ephemeral: true,
         });
+    }
 
     const queue = await musicApi.createQueue();
 
@@ -74,8 +71,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const embed = new EmbedBuilder();
 
-    const url = new URL(target);
+    let url;
 
+    try {
+        url = new URL(target);
+    } catch (error) {
+        url = {
+            host: '',
+        };
+    }
     let result;
     switch (true) {
         case url.host === 'open.spotify.com' ||
@@ -104,7 +108,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 
     if (result.playlist) {
-        await queue.addTracks(result.tracks);
+        await queue.addTrack(result.tracks);
         embed
             .setDescription(
                 `**${result.playlist.title}** with ${result.playlist.tracks.length} Songs has been added to the Queue`
@@ -113,7 +117,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .setThumbnail(result.playlist.thumbnail.url)
             .setColor('#00ff00')
             .setFooter({
-                text: `Songs in Queue: ${queue.tracks.length}`,
+                text: `Songs in Queue: ${queue.tracks.size}`,
             });
     } else {
         await queue.addTrack(result.tracks[0]);
@@ -123,12 +127,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             )
             .setThumbnail(result.tracks[0].thumbnail)
             .setFooter({
-                text: `Duration: ${result.tracks[0].duration}\nSongs in Queue: ${queue.tracks.length}`,
+                text: `Duration: ${result.tracks[0].duration}\nSongs in Queue: ${queue.tracks.size}`,
             });
     }
 
     if (!queue.playing) {
-        await queue
+        await musicApi
             .play()
             .then(async () => {
                 await main_interaction.followUp({
