@@ -37,7 +37,7 @@ const bot = new Client({
     }),
     shards: 'auto',
 });
-bot.setMaxListeners(10);
+bot.setMaxListeners(0);
 
 bot.commands = new Collection();
 
