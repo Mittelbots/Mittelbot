@@ -3,9 +3,8 @@ const Timer = require('../../../utils/functions/data/Timer');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getSubcommand();
-    const days = main_interaction.options.getInteger('days') || 0;
-    const hours = main_interaction.options.getInteger('hours') || 0;
-    const minutes = main_interaction.options.getInteger('minutes') || 0;
+    const date = main_interaction.options.getString('date');
+    const time = main_interaction.options.getString('time');
     const endMessage = main_interaction.options.getString('end_message');
     const channel = main_interaction.options.getChannel('channel');
 
@@ -23,24 +22,40 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
     }
 
-    if (days < 0 || hours < 0 || minutes < 0) {
+    const dateObject = new Date(date);
+
+    if (dateObject.toString() === 'Invalid Date') {
         return main_interaction.reply({
-            content: 'Please enter a positive number!',
+            content: 'Please enter a valid date! (DD.MM.YYYY)',
             ephemeral: true,
         });
     }
 
-    if (days === 0 && hours === 0 && minutes === 0) {
+    if (time.includes(':') === false || time.split(':').length !== 2) {
         return main_interaction.reply({
-            content: 'The timer has to be longer then or equal 1 Minute!',
+            content: 'Please enter a valid time! (HH:MM)',
             ephemeral: true,
         });
     }
 
-    const time = new Date();
-    if (days > 0) time.setDate(time.getDate() + days);
-    if (hours > 0) time.setHours(time.getHours() + hours);
-    if (minutes > 0) time.setMinutes(time.getMinutes() + minutes);
+    const dateArray = date.split('.');
+    const day = dateArray[0];
+    const month = dateArray[1];
+    const year = dateArray[2];
+
+    const fullTimeObject = new Date(`${year}-${month}-${day}T${time}`);
+
+    if (fullTimeObject.getTime() < new Date().getTime()) {
+        return main_interaction.reply({
+            content: 'The timer cannot end in the past!',
+            ephemeral: true,
+        });
+    }
+
+    const timeDifference = fullTimeObject.getTime() - new Date().getTime();
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
 
     await channel
         .send({
@@ -53,7 +68,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     guild_id: main_interaction.guild.id,
                     channel_id: channel.id,
                     started_at: new Date().getTime(),
-                    ends_at: time.getTime(),
+                    ends_at: fullTimeObject.getTime(),
                     endMessage: endMessage,
                     message_id: msg.id,
                 })
@@ -78,26 +93,19 @@ module.exports.data = new SlashCommandBuilder()
             .setName('start')
             .setDescription('Start a timer')
 
-            .addIntegerOption((option) =>
+            .addStringOption((option) =>
                 option
-                    .setName('days')
-                    .setDescription('How many days should the timer run? Set to 0 for zero days')
+                    .setName('date')
+                    .setDescription('When should the timer end? (DD.MM.YYYY)')
                     .setRequired(true)
             )
-            .addIntegerOption((option) =>
+            .addStringOption((option) =>
                 option
-                    .setName('hours')
-                    .setDescription('How many hours should the timer run? Set to 0 for zreo hours')
+                    .setName('time')
+                    .setDescription('When should the timer end? (HH:MM)')
                     .setRequired(true)
             )
-            .addIntegerOption((option) =>
-                option
-                    .setName('minutes')
-                    .setDescription(
-                        'How many minutes should the timer run? Set to 0 for zero minutes'
-                    )
-                    .setRequired(true)
-            )
+
             .addStringOption((option) =>
                 option
                     .setName('end_message')
