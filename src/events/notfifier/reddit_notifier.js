@@ -64,6 +64,7 @@ module.exports.reddit_notifier = async (bot) => {
                 let newSelftext;
 
                 if (selftext.length > 1024) newSelftext = selftext.substring(0, 1024) + '...';
+                else newSelftext = selftext;
                 newEmbed.setDescription(newSelftext);
             }
 
@@ -74,7 +75,13 @@ module.exports.reddit_notifier = async (bot) => {
                     value: 'This post is marked as NSFW. Please be careful when viewing it.',
                 });
             } else {
-                newEmbed.setColor(15105570).setImage(url);
+                newEmbed.setColor(15105570);
+
+                try {
+                    newEmbed.setImage(url);
+                } catch (e) {
+                    // do nothing
+                }
             }
 
             await channel

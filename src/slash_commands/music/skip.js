@@ -9,19 +9,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ephemeral: true,
     });
 
-    if (!(await musicApi.isUserInChannel()) || !(await musicApi.isBotWithUserInChannel()))
+    const check = await musicApi.checkAvailibility();
+    if (check) {
         return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('You must be in a voice channel to use this command!'),
-            ],
+            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(check)],
             ephemeral: true,
         });
+    }
 
     const queue = await musicApi.getQueue();
 
-    if (!queue || !queue.playing)
+    if (!musicApi.isPlaying())
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
@@ -31,18 +29,49 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ephemeral: true,
         });
 
-    if (queue.tracks.length > 0) await queue.play();
-    else await queue.skip();
+    if (!queue) {
+        return main_interaction.followUp({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor('#ff0000')
+                    .setDescription('There is no song playing right now!'),
+            ],
+            ephemeral: true,
+        });
+    }
+
+    const previousTrack = queue.currentTrack;
+
+    if (queue.tracks.length > 0) await musicApi.play();
+    else await queue.node.skip();
+
+    let nextSong;
+
+    try {
+        nextSong = previousTrack.playlist.tracks[1];
+    } catch (error) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor('#ff0000')
+                        .setDescription('Queue ended. Silence...'),
+                ],
+                ephemeral: true,
+            })
+            .catch((e) => {});
+    }
 
     return await main_interaction.followUp({
         embeds: [
-            new EmbedBuilder()
-                .setColor('#00ff00')
-                .setDescription(
-                    `${
-                        queue.previousTracks[queue.previousTracks.length - 1].title
-                    } has been skipped.`
-                ),
+            new EmbedBuilder().setColor('#00ff00').setDescription(
+                `**${previousTrack.title}** has been skipped. 
+                    \n----------------------------------------\n
+                    Now playing: ${nextSong.title} 
+                    Requested by: ${nextSong.requestedBy} 
+                    Duration: ${nextSong.duration} 
+                    URL: ${nextSong.url}`
+            ),
         ],
         ephemeral: true,
     });

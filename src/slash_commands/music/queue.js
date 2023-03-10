@@ -9,15 +9,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ephemeral: true,
     });
 
-    if (!(await musicApi.isUserInChannel()) || !(await musicApi.isBotWithUserInChannel()))
+    const check = await musicApi.checkAvailibility();
+    if (check) {
         return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('You must be in a voice channel to use this command!'),
-            ],
+            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(check)],
             ephemeral: true,
         });
+    }
 
     const queue = await musicApi.getQueue();
 
@@ -29,18 +27,30 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ephemeral: true,
         });
 
-    const currentTrack = queue.current;
-    const tracks = queue.tracks;
+    const currentTrack = queue.currentTrack;
+
+    let tracks;
+    try {
+        tracks = currentTrack.playlist.tracks;
+    } catch (e) {
+        tracks = null;
+    }
 
     const embed = new EmbedBuilder()
         .setColor('#00ff00')
         .setTitle('Queue')
         .setDescription(`Now playing: ${currentTrack.title} (${currentTrack.duration})`);
 
-    for (let i = 0; i < 11; i++) {
-        if (i === 10) {
+    if (!tracks)
+        return main_interaction.followUp({
+            embeds: [embed],
+            ephemeral: true,
+        });
+
+    for (let i = 1; i < 12; i++) {
+        if (i === 12) {
             embed.addFields({
-                name: `Songs ${i + 1} - ${tracks.length}`,
+                name: `Songs ${i + 1} - ${tracks.size}`,
                 value: `...`,
             });
             break;
