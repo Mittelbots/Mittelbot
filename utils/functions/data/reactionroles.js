@@ -210,15 +210,17 @@ module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) =>
                         guild.roles.cache.find((role) => role.id === reactionroles[i].roles[e].role)
                     ) {
                         if (remove) {
-                            return guild.members.cache
-                                .get(user.id)
-                                .roles.remove(reactionroles[i].roles[e].role)
-                                .catch((err) => {});
+                            try {
+                                return guild.members.cache
+                                    .get(user.id)
+                                    .roles.remove(reactionroles[i].roles[e].role);
+                            } catch (err) {}
                         } else {
-                            return guild.members.cache
-                                .get(user.id)
-                                .roles.add(reactionroles[i].roles[e].role)
-                                .catch((err) => {});
+                            try {
+                                return guild.members.cache
+                                    .get(user.id)
+                                    .roles.add(reactionroles[i].roles[e].role);
+                            } catch (err) {}
                         }
                     }
                 }
