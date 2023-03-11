@@ -15,6 +15,10 @@ Tickets.init(
             allowNull: false,
             unique: 'channel_id',
         },
+        message_link: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         ticket_owner: {
             type: DataTypes.BIGINT,
             allowNull: false,

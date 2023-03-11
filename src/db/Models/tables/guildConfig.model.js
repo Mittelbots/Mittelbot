@@ -86,7 +86,7 @@ GuildConfig.init(
         },
         tickets: {
             type: DataTypes.JSON,
-            defaultValue: {},
+            defaultValue: [],
         },
     },
     {
