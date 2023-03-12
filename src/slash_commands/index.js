@@ -19,6 +19,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'reactionroles',
         'autodelete',
         'banappeal',
+        'tickets',
     ];
     const moderation = [
         'ban',
