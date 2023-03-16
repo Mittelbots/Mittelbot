@@ -70,7 +70,6 @@ module.exports = class Music {
                 await this.queue.node.play();
                 return resolve();
             } catch (e) {
-                console.log(e);
                 errorhandler({
                     err: e,
                 });
@@ -140,7 +139,9 @@ module.exports = class Music {
 
                 return resolve(this.queue);
             } catch (e) {
-                console.log(e);
+                errorhandler({
+                    err: e,
+                });
                 return resolve(false);
             }
         });
@@ -194,8 +195,6 @@ module.exports = class Music {
                 return resolve(
                     'I am already in another voice channel! Please join that channel or wait until i left!'
                 );
-            if (await this.isBotMuted())
-                return resolve('I cannot play any Music here! I am leaving the channel now!');
             if (!(await this.isBotInAVoiceChannel()) && !play)
                 return resolve(
                     'I am not in a voice channel! Please let me join you channel first by using the play command!'
