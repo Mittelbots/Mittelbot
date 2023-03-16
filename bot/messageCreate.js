@@ -135,7 +135,7 @@ async function messageCreate(message, bot) {
     if (isInvite) {
         errorhandler({
             fatal: false,
-            message: `${message.user.id} has sent an invite in ${message.guild.id}.`,
+            message: `${message.author.id} has sent an invite in ${message.guild.id}.`,
         });
         return;
     }
@@ -145,7 +145,7 @@ async function messageCreate(message, bot) {
     if (isLink) {
         errorhandler({
             fatal: false,
-            message: `${message.user.id} has sent a link in ${message.guild.id}.`,
+            message: `${message.author.id} has sent a link in ${message.guild.id}.`,
         });
         return;
     }

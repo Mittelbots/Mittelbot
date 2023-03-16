@@ -14,7 +14,12 @@ module.exports.reddit_notifier = async (bot) => {
             const { data } = await axios
                 .get(`${reddit.baseUrl()}/${subreddit}/new.json?sort=new`)
                 .catch((err) => {
-                    errorhandler({ message: 'Error getting reddit post', err: err });
+                    const isFatal = err.response.status !== 777;
+                    errorhandler({
+                        message: 'Error getting reddit post',
+                        err: isFatal ? err : null,
+                        isFatal: isFatal,
+                    });
                     return false;
                 });
             if (!data) return;
@@ -88,6 +93,7 @@ module.exports.reddit_notifier = async (bot) => {
                 .send({
                     content: message,
                     embeds: [newEmbed],
+                    files: is_video ? [url] : [],
                 })
                 .then(() => {
                     if (uploads.length > 30) uploads.shift();
