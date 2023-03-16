@@ -25,7 +25,7 @@
         "@discord-player/utils": "^0.2.0",
         "@discordjs/opus": "github:discordjs/opus",
         "@discordjs/rest": "^1.5.0",
-        "@discordjs/voice": "^0.14.0",
+        "@discordjs/voice": "^0.15.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
         "@napi-rs/canvas": "^0.1.37",
         "@twurple/api": "^6.0.9",
