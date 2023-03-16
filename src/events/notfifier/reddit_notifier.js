@@ -17,7 +17,7 @@ module.exports.reddit_notifier = async (bot) => {
                     const isFatal = err.response.status !== 777;
                     errorhandler({
                         message: 'Error getting reddit post',
-                        err: err,
+                        err: isFatal ? err : null,
                         isFatal: isFatal,
                     });
                     return false;

@@ -11,7 +11,7 @@ module.exports.antiInvite = async (message, bot) => {
     if (!antiInviteSetting || antiInviteSetting.length === 0) return false;
     const isWhitelist = Automod.checkWhitelist({
         setting: antiInviteSetting,
-        user_roles: message.member.roles.cache,
+        user_roles: message.member.roles.cache.map((r) => r.id),
     });
     if (isWhitelist) return false;
     if (!antiInviteSetting) return false;

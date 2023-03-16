@@ -14,6 +14,8 @@ module.exports.guildBanAdd = async (bot, guildBan) => {
             guild: guildBan.guild,
         });
 
+        if (!banlist || banlist[0]) return;
+
         setNewModLogMessage(
             bot,
             config.defaultModTypes.ban,
