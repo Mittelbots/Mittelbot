@@ -21,7 +21,7 @@
     "license": "GPL-3.0",
     "dependencies": {
         "@discord-player/equalizer": "^0.2.0",
-        "@discord-player/extractor": "^4.1.0",
+        "@discord-player/extractor": "^4.1.2",
         "@discord-player/utils": "^0.2.0",
         "@discordjs/opus": "github:discordjs/opus",
         "@discordjs/rest": "^1.5.0",
