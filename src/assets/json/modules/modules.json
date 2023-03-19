@@ -1,0 +1,102 @@
+{
+    "moderation": {
+        "autoDisable": false,
+        "listed": true,
+        "name": "Moderation"
+    },
+    "level": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Level"
+    },
+    "scamdetection": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Scam Detection"
+    },
+    "welcomeUtils": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Welcome Utils"
+    },
+    "autotranslate": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Auto Translate"
+    },
+    "autodelete": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Auto Delete"
+    },
+    "blacklist": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Blacklist"
+    },
+    "banappeal": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Ban Appeal"
+    },
+    "joinroles": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Join Roles"
+    },
+    "music": {
+        "autoDisable": false,
+        "listed": true,
+        "name": "Music"
+    },
+    "reddit": {
+        "autoDisable": false,
+        "listed": true,
+        "name": "Reddit"
+    },
+    "twitch": {
+        "autoDisable": false,
+        "listed": true,
+        "name": "Twitch"
+    },
+    "youtube": {
+        "autoDisable": false,
+        "listed": true,
+        "name": "YouTube"
+    },
+    "singasong": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Sing-a-Song"
+    },
+    "Timer": {
+        "autoDisable": false,
+        "listed": true,
+        "name": "Timer"
+    },
+    "warnroles": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Warn Roles"
+    },
+    "antiSpam": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Anti Spam"
+    },
+    "anitInvite": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Anti Invite"
+    },
+    "antiLinks": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Anti Links"
+    },
+    "utils": {
+        "autoDisable": false,
+        "listed": true,
+        "name": "Utils"
+    }
+}
