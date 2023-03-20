@@ -19,7 +19,7 @@ module.exports.startBot = async (bot) => {
             logs(bot);
             await database.init();
             await setActivity(bot, true);
-            await createSlashCommands();
+            await createSlashCommands(bot);
             await Promise.resolve(this.fetchCache(bot));
             new ScamDetection().loadScam();
             handleUploads({

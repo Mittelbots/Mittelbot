@@ -6,7 +6,6 @@ const { errorhandler } = require('../utils/functions/errorhandler/errorhandler')
 const { Guilds } = require('../utils/functions/data/Guilds');
 const Afk = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
-const { GuildConfig } = require('../utils/functions/data/Config');
 const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
 const { anitLinks } = require('../utils/automoderation/antiLinks');
@@ -14,7 +13,8 @@ const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 const ScamDetection = require('../utils/checkForScam/checkForScam');
 const Autodelete = require('../utils/functions/data/Autodelete');
 const { EmbedBuilder, ChannelType } = require('discord.js');
-const Banappeal = require('../utils/functions/data/Banappeal');
+const { banAppealModule } = require('../utils/modules/banAppeal');
+const Modules = require('../utils/functions/data/Modules');
 
 async function messageCreate(message, bot) {
     if (
@@ -23,70 +23,7 @@ async function messageCreate(message, bot) {
         !message.author.system &&
         message.reference
     ) {
-        const banappeal = new Banappeal(bot);
-        const guild_id = await banappeal.getBanAppealMessage(message);
-        const userBanAppeal = await banappeal.getBanappeal(guild_id, message.author.id);
-        if (!userBanAppeal) return;
-
-        const isOverCooldown = await banappeal.isOverCooldown(userBanAppeal.id);
-        if (!isOverCooldown) {
-            return message
-                .reply({
-                    content: `You can not send a new appeal yet.`,
-                })
-                .catch((err) => {});
-        }
-
-        if (userBanAppeal.appeal_msg && userBanAppeal.isAccepted === undefined) {
-            return message
-                .reply({
-                    content: 'You already sent an appeal. Please wait for an answer.',
-                })
-                .catch((err) => {});
-        } else if (userBanAppeal.isAccepted == true || userBanAppeal.isAccepted == false) {
-            message
-                .reply({
-                    content: `Your appeal was ${
-                        userBanAppeal.isAccepted ? 'accepted' : 'denied'
-                    }. You can not send a new appeal.`,
-                })
-                .catch((err) => {});
-            return;
-        }
-
-        const cleanedMessage = banappeal.cleanUserInput(message.content);
-        if (cleanedMessage.length < 10) {
-            return message
-                .reply({
-                    content: 'Your appeal is too short. Please write a longer appeal.',
-                })
-                .catch((err) => {});
-        } else if (cleanedMessage.length > 19000) {
-            return message
-                .reply({
-                    content: 'Your appeal is too long. Please write a shorter appeal.',
-                })
-                .catch((err) => {});
-        }
-
-        banappeal.updateBanappeal(guild_id, message.author.id, cleanedMessage, 'appeal_msg');
-        banappeal
-            .sendAppealToAdmins(guild_id, message.author.id)
-            .then(() => {
-                message
-                    .reply({
-                        content: 'Your appeal was sent to the admins. Please wait for an answer.',
-                    })
-                    .catch((err) => {});
-            })
-            .catch((err) => {
-                message
-                    .reply({
-                        content: `An error occurred while sending your appeal. Please try again later. Error: **${err}**`,
-                    })
-                    .catch((err) => {});
-            });
-        return;
+        return await banAppealModule(message, bot);
     }
 
     if (message.channel.type === ChannelType.DM && message.author.id === config.Bot_Owner_ID) {
@@ -103,7 +40,16 @@ async function messageCreate(message, bot) {
     )
         return;
 
-    const isOnBlacklist = await Guilds.isBlacklist(message.guild.id);
+    /** ======================================================= */
+
+    const moduleApi = new Modules(message.guild.id, bot);
+    const defaultModuleSettings = moduleApi.getDefaultSettings();
+
+    /** ======================================================= */
+
+    const isOnBlacklist = (await moduleApi.checkEnabled(defaultModuleSettings.blacklist))
+        ? await Guilds.isBlacklist(message.guild.id)
+        : false;
     if (isOnBlacklist) {
         const guild = bot.guilds.cache.get(message.guild.id);
 
@@ -122,7 +68,11 @@ async function messageCreate(message, bot) {
         return guild.leave().catch((err) => {});
     }
 
-    const isSpam = await antiSpam(message, bot);
+    /** ======================================================= */
+
+    const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam))
+        ? await antiSpam(message, bot)
+        : false;
     if (isSpam) {
         errorhandler({
             fatal: false,
@@ -131,7 +81,11 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    const isInvite = await antiInvite(message, bot);
+    /** ======================================================= */
+
+    const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite))
+        ? await antiInvite(message, bot)
+        : false;
     if (isInvite) {
         errorhandler({
             fatal: false,
@@ -140,8 +94,11 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    const isLink = await anitLinks(message, bot);
+    /** ======================================================= */
 
+    const isLink = (await moduleApi.checkEnabled(defaultModuleSettings.antiLinks))
+        ? await anitLinks(message, bot)
+        : false;
     if (isLink) {
         errorhandler({
             fatal: false,
@@ -150,44 +107,56 @@ async function messageCreate(message, bot) {
         return;
     }
 
-    const { disabled_modules } = await GuildConfig.get(message.guild.id);
-    if (disabled_modules.indexOf('scamdetection') === -1) {
-        if (await new ScamDetection().check(message, bot)) {
-            return;
-        }
-    }
-    if (disabled_modules.indexOf('autodelete') === -1) {
-        if (await new Autodelete(bot).check(message.channel, message)) {
-            message.channel
-                .send({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setTitle('Wrong message Type!')
-                            .setDescription(
-                                'This channel is not accessable with the message type you have sent. Please send the right message type or use another channel. (only Text, only Emotes, only Media or only Stickers)'
-                            )
-                            .setColor('#FF0000'),
-                    ],
-                })
-                .then(async (msg) => {
-                    await delay(6000);
-                    msg.delete().catch((err) => {});
-                })
-                .catch((err) => {});
+    /** ======================================================= */
 
-            return message.delete().catch((err) => {});
-        }
+    const isScam = (await moduleApi.checkEnabled(defaultModuleSettings.scamdetection))
+        ? await new ScamDetection().check(message, bot)
+        : false;
+    if (isScam) {
+        return;
     }
 
-    if (disabled_modules.indexOf('autotranslate') === -1) {
+    /** ======================================================= */
+
+    const isAutodelete = (await moduleApi.checkEnabled(defaultModuleSettings.autodelete))
+        ? await new Autodelete(bot).check(message.channel, message)
+        : false;
+    if (isAutodelete) {
+        message.channel
+            .send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('Wrong message Type!')
+                        .setDescription(
+                            'This channel is not accessable with the message type you have sent. Please send the right message type or use another channel. (only Text, only Emotes, only Media or only Stickers)'
+                        )
+                        .setColor('#FF0000'),
+                ],
+            })
+            .then(async (msg) => {
+                await delay(6000);
+                msg.delete().catch((err) => {});
+            })
+            .catch((err) => {});
+
+        return message.delete().catch((err) => {});
+    }
+
+    /** ======================================================= */
+
+    if (await moduleApi.checkEnabled(defaultModuleSettings.autotranslate)) {
         new Translate().translate(message);
     }
 
-    if (disabled_modules.indexOf('level') === -1) {
+    /** ======================================================= */
+
+    if (await moduleApi.checkEnabled(defaultModuleSettings.level)) {
         Levelsystem.run({ message, bot });
     }
 
-    if (disabled_modules.indexOf('utils') === -1) {
+    /** ======================================================= */
+
+    if (await moduleApi.checkEnabled(defaultModuleSettings.utils)) {
         const isAFK = await new Afk().check({ message });
         if (isAFK) {
             return message
@@ -201,6 +170,10 @@ async function messageCreate(message, bot) {
                 .catch((err) => {});
         }
     }
+
+    /** ======================================================= */
+
+    return false;
 }
 
 module.exports = {
