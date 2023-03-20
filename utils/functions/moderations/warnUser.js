@@ -6,13 +6,16 @@ const { addWarnRoles } = require('../roles/addWarnRoles');
 const config = require('../../../src/assets/json/_config/config.json');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { Infractions } = require('../data/Infractions');
+const Modules = require('../data/Modules');
 
 async function warnUser({ bot, user, mod, guild, reason }) {
     const inf_id = await createInfractionId(guild.id);
-    const pass = await addWarnRoles({ user, inf_id, guild });
-    if (pass.error) return pass;
 
-    if (pass.error) return;
+    const moduleApi = new Modules();
+    if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().warnroles)) {
+        const pass = await addWarnRoles({ user, inf_id, guild });
+        if (pass.error) return pass;
+    }
 
     setNewModLogMessage(bot, config.defaultModTypes.warn, mod.id, user, reason, null, guild.id);
     const p_response = await publicModResponses(

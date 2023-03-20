@@ -46,9 +46,12 @@ GuildConfig.init(
                 translate_target: '',
             },
         },
-        disabled_modules: {
+        modules: {
             type: DataTypes.JSON,
-            defaultValue: [],
+            defaultValue: {
+                enabled: [],
+                disabled: [],
+            },
         },
         logs: {
             type: DataTypes.JSON,
