@@ -40,7 +40,7 @@
         "discord-player": "^6.1.1",
         "discord.js": "^14.8.0",
         "dotenv": "^16.0.3",
-        "ejs": "^3.1.8",
+        "ejs": "^3.1.9",
         "express": "^4.18.2",
         "express-flash": "^0.0.2",
         "express-session": "^1.17.3",
