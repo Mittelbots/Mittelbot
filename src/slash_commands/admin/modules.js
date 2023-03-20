@@ -3,28 +3,8 @@ const config = require('../../../src/assets/json/_config/config.json');
 const Modules = require('../../../utils/functions/data/Modules');
 const { EmbedBuilder } = require('discord.js');
 
-const choices = [
-    'Moderation',
-    'Level',
-    'Scam Detection',
-    'Welcome Utils',
-    'Auto Translate',
-    'Auto Delete',
-    'Blacklist',
-    'Ban Appeal',
-    'Join Roles',
-    'Music',
-    'Reddit',
-    'Twitch',
-    'YouTube',
-    'Sing-a-Song',
-    'Timer',
-    'Warn Roles',
-    'Anti Spam',
-    'Anti Invite',
-    'Anti Links',
-    'Utils',
-];
+const modules = new Modules().getDefaultSettings();
+const choices = Object.values(modules).map((el) => el.name);
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});

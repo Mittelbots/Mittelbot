@@ -142,7 +142,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         return requireModule('music');
     }
 
-    if(!(await isEnabled(main_interaction.commandName))) return;
+    if (!(await isEnabled(main_interaction.commandName))) return;
     return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
         main_interaction: main_interaction,
         bot: bot,
