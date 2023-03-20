@@ -60,9 +60,11 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
 
     //=========================================================
 
+    const moduleApi = new Modules(main_interaction.guild.id, bot);
+    const defaultSettings = moduleApi.getDefaultSettings();
+
     function isEnabled(requestedModule) {
         return new Promise(async (resolve) => {
-            const moduleApi = new Modules(main_interaction.guild.id, bot);
             const enabled = await moduleApi.checkEnabled(requestedModule).catch(() => {
                 return false;
             });
@@ -102,12 +104,12 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     //=========================================================
 
     if (moderation.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled('moderation'))) return;
+        if (!(await isEnabled(defaultSettings.moderation.name))) return;
         return requireModule('moderation');
     }
 
     if (fun.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled('fun'))) return;
+        if (!(await isEnabled(defaultSettings.fun.name))) return;
         return requireModule('fun');
     }
 
@@ -117,17 +119,16 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     if (level.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled('level'))) return;
+        if (!(await isEnabled(defaultSettings.level.name))) return;
         return requireModule('level');
     }
 
     if (utils.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled('utils'))) return;
+        if (!(await isEnabled(defaultSettings.utils.name))) return;
         return requireModule('utils');
     }
 
     if (help.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled('help'))) return;
         return requireModule('help');
     }
 
@@ -137,10 +138,11 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     if (music.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled('music'))) return;
+        if (!(await isEnabled(defaultSettings.music.name))) return;
         return requireModule('music');
     }
 
+    if(!(await isEnabled(main_interaction.commandName))) return;
     return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
         main_interaction: main_interaction,
         bot: bot,
