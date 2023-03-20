@@ -17,6 +17,11 @@ const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
 
 async function messageCreate(message, bot) {
+    const moduleApi = new Modules(message.guild.id, bot);
+    const defaultModuleSettings = moduleApi.getDefaultSettings();
+
+    /** ======================================================= */
+
     if (
         message.channel.type === ChannelType.DM &&
         !message.author.bot &&
@@ -29,7 +34,11 @@ async function messageCreate(message, bot) {
     if (message.channel.type === ChannelType.DM && message.author.id === config.Bot_Owner_ID) {
         return checkOwnerCommand(message);
     }
-    if (message.author.bot && message.channel.id !== process.env.DC_DEBUG) {
+    if (
+        message.author.bot &&
+        message.channel.id !== process.env.DC_DEBUG &&
+        moduleApi.checkEnabled(defaultModuleSettings.autodelete)
+    ) {
         return await new AutoBlacklist().check(message, bot);
     }
     if (
@@ -39,11 +48,6 @@ async function messageCreate(message, bot) {
         (bot.user.id === '921779661795639336' && message.author.id !== bot.ownerId)
     )
         return;
-
-    /** ======================================================= */
-
-    const moduleApi = new Modules(message.guild.id, bot);
-    const defaultModuleSettings = moduleApi.getDefaultSettings();
 
     /** ======================================================= */
 

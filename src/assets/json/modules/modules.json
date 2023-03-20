@@ -39,11 +39,6 @@
         "listed": true,
         "name": "Ban Appeal"
     },
-    "joinroles": {
-        "autoDisable": true,
-        "listed": true,
-        "name": "Join Roles"
-    },
     "music": {
         "autoDisable": false,
         "listed": true,
