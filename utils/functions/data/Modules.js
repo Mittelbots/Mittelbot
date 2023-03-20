@@ -22,13 +22,21 @@ module.exports = class Modules {
 
     checkEnabled(requestedModule) {
         return new Promise(async (resolve) => {
-            let isAutoDisabled = false;
-            try {
-                isAutoDisabled = this.getDefaultSettings()[requestedModule].autoDisable;
-            } catch (e) {}
+            if (typeof requestedModule !== 'object') {
+                try {
+                    requestedModule = this.getDefaultSettings().find(
+                        (m) => m.name === requestedModule
+                    );
+                } catch (e) {
+                    return resolve(true);
+                }
+            }
+
+            const isAutoDisabled = requestedModule.autoDisable;
             const isDisabled = await this.get().catch(() => {});
 
-            if (isAutoDisabled) return resolve(false);
+            if (isAutoDisabled && !isDisabled.enabled.includes(requestedModule))
+                return resolve(false);
             if (isDisabled.disabled.includes(requestedModule)) return resolve(false);
 
             return resolve(true);
@@ -43,11 +51,17 @@ module.exports = class Modules {
             const modules = config.modules;
 
             if (disable) {
+                if (modules.enabled.includes(requestedModule))
+                    modules.enabled.splice(modules.enabled.indexOf(requestedModule), 1);
+
                 if (!modules.disabled.includes(requestedModule))
                     modules.disabled.push(requestedModule);
             } else {
                 if (modules.disabled.includes(requestedModule))
                     modules.disabled.splice(modules.disabled.indexOf(requestedModule), 1);
+
+                if (!modules.enabled.includes(requestedModule))
+                    modules.enabled.push(requestedModule);
             }
 
             await GuildConfig.update({
