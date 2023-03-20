@@ -5,8 +5,6 @@ const { AttachmentBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const levels = require('../../../src/assets/json/levelsystem/levelconfig.json');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
-const Modules = require('../../../utils/functions/data/Modules');
-const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
