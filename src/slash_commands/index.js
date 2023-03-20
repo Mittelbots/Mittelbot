@@ -104,12 +104,12 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     //=========================================================
 
     if (moderation.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled(defaultSettings.moderation.name))) return;
+        if (!(await isEnabled(defaultSettings.moderation))) return;
         return requireModule('moderation');
     }
 
     if (fun.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled(defaultSettings.fun.name))) return;
+        if (!(await isEnabled(defaultSettings.fun))) return;
         return requireModule('fun');
     }
 
@@ -119,12 +119,12 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     if (level.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled(defaultSettings.level.name))) return;
+        if (!(await isEnabled(defaultSettings.level))) return;
         return requireModule('level');
     }
 
     if (utils.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled(defaultSettings.utils.name))) return;
+        if (!(await isEnabled(defaultSettings.utils))) return;
         return requireModule('utils');
     }
 
@@ -138,7 +138,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     if (music.indexOf(main_interaction.commandName) !== -1) {
-        if (!(await isEnabled(defaultSettings.music.name))) return;
+        if (!(await isEnabled(defaultSettings.music))) return;
         return requireModule('music');
     }
 
