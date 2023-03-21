@@ -71,6 +71,10 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
         if (main_interaction.customId == 'afk_modal') {
             new Afk().handle(main_interaction);
         }
+    } else if (main_interaction.type === InteractionType.ApplicationCommandAutocomplete) {
+        return await bot.commands
+            .find((cmd) => cmd.data.name === main_interaction.commandName)
+            .autocomplete(main_interaction);
     } else {
         switch (main_interaction.customId) {
             case 'welcomemessage':

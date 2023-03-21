@@ -45,7 +45,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const queue = await musicApi.createQueue();
-
     if (!queue)
         return main_interaction.followUp({
             embeds: [
@@ -55,19 +54,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ],
             ephemeral: true,
         });
-
-    if (await musicApi.isBotMuted()) {
-        await main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription("I'm muted, please unmute me to use this command."),
-            ],
-            ephemeral: true,
-        });
-        musicApi.pause();
-        return;
-    }
 
     const embed = new EmbedBuilder();
 
@@ -138,6 +124,22 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 await main_interaction.followUp({
                     embeds: [embed],
                 });
+            })
+            .then(async () => {
+                if (await musicApi.isBotMuted()) {
+                    await main_interaction
+                        .reply({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setColor('#ff0000')
+                                    .setDescription(
+                                        "I'm muted, please unmute me to use this command."
+                                    ),
+                            ],
+                        })
+                        .catch((err) => {});
+                    musicApi.pause();
+                }
             })
             .catch((err) => {
                 errorhandler({

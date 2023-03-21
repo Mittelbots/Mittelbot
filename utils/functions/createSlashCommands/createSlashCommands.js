@@ -2,8 +2,9 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord.js');
 const fs = require('node:fs');
 
-module.exports.createSlashCommands = async () => {
+module.exports.createSlashCommands = async (bot) => {
     const commands = [];
+    const cmd = [];
     const modules = fs.readdirSync('./src/slash_commands').filter((file) => file !== 'index.js');
 
     const clientId = process.env.DISCORD_APPLICATION_ID;
@@ -17,8 +18,11 @@ module.exports.createSlashCommands = async () => {
             console.info(`${command_file} Command has been loaded!`);
             const command = require(`../../../src/slash_commands/${cmd_folder}/${command_file}`);
             commands.push(command.data.toJSON());
+            cmd.push(command);
         }
     }
+
+    bot.commands = cmd;
 
     const rest = new REST({
         version: '10',
