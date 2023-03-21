@@ -1,14 +1,9 @@
 {
     "Bot_Owner": "https://github.com/Mittelblut9",
     "Bot_Owner_ID": "395923095472570368",
-    "defaultprefix": "!",
     "defaultCooldown": {
         "format": "2000",
         "text": "2 seconds"
-    },
-    "defaultSettingsCooldown": {
-        "format": "00000",
-        "text": "0 seconds"
     },
     "bulkDeleteLimit": "100",
     "defaultCheckInfractionTimer": "60000",
@@ -33,11 +28,6 @@
     "levelsystem": {
         "timeout": "60000"
     },
-    "successmessages": {
-        "banned": " was banned from the server.",
-        "kicked": " was kicked from the server.",
-        "database": "****Database successfully connected!****"
-    },
     "defaultModTypes": {
         "warn": "warned",
         "mute": "muted",
@@ -46,25 +36,6 @@
         "unmute": "unmuted",
         "unban": "unbanned"
     },
-    "auditTypes": {
-        "messagedelete": "messageDelete",
-        "channelcreate": "channelCreate",
-        "channeldelete": "channelDelete",
-        "channelupdate": "channelUpdate",
-        "debug": "debug",
-        "disconnect": "disconnect",
-        "error": "error",
-        "guildupdate": "guildUpdate",
-        "messagedeletebulk": "messageDeleteBulk",
-        "messageupdate": "messageUpdate",
-        "reconnecting": "reconnecting",
-        "rolecreate": "roleCreate",
-        "roledelete": "roleDelete",
-        "roleupdate": "roleUpdate",
-        "warn": "warn",
-        "guildBanAdd": "guildBanAdd",
-        "guildBanRemove": "guildBanRemove"
-    },
     "icons": {
         "ban": "🔒",
         "kick": "🚪",
@@ -72,130 +43,5 @@
         "unmute": "📢",
         "unban": "🔓",
         "warn": "960276994367586344"
-    },
-    "settings": {
-        "wc": {
-            "name": "Welcome Channel",
-            "alias": "welcomechannel",
-            "desc": "Setup a welcome channel to say welcome to everyone who join.",
-            "icon": "960276994396925982",
-            "colname": "welcome_channel",
-            "val": "string",
-            "exp": "[#channel]"
-        },
-        "prefix": {
-            "name": "Prefix",
-            "alias": "prefix",
-            "desc": "Set an own prefix",
-            "icon": "960276994489212959",
-            "colname": "prefix",
-            "val": "string",
-            "required": [
-                "!",
-                "?",
-                "$",
-                "§",
-                "%",
-                "/",
-                "(",
-                ")",
-                "=",
-                "?",
-                "{",
-                "[",
-                "]",
-                "}",
-                "@",
-                "€",
-                ";",
-                ".",
-                ":",
-                "-",
-                "_",
-                "#",
-                "*",
-                "+",
-                "~",
-                "<",
-                ">",
-                "|",
-                "^",
-                "°"
-            ],
-            "exp": "[prefix]"
-        },
-        "cooldown": {
-            "name": "Command Cooldown",
-            "alias": "cmdcooldown",
-            "desc": "Setup a cooldown to reduce spam in your command channels.",
-            "icon": "960276994543742976",
-            "colname": "cooldown",
-            "val": "time",
-            "exp": "[1m] or [0s]"
-        },
-        "dmcau": {
-            "name": "Delete Mod Command after usage.",
-            "alias": "dmcau",
-            "desc": "Delete Modcommand (!ban, etc) after usage",
-            "icon": "960276994443071569",
-            "colname": "deleteModCommandAfterUsage",
-            "val": "boolean",
-            "exp": "[True/False]"
-        },
-        "dcau": {
-            "name": "Delete Command after usage",
-            "alias": "dcau",
-            "desc": "Delete Command after usage.",
-            "icon": "960276994443071569",
-            "colname": "deleteCommandAfterUsage",
-            "val": "boolean",
-            "exp": "[True/False]"
-        },
-        "joinroles": {
-            "name": "Joinroles",
-            "alias": "joinroles",
-            "desc": "Setup a Joiningrole when a user joins the server",
-            "icon": "960276994317250711",
-            "colname": "joinroles",
-            "val": "mention",
-            "exp": "[@role1] [@role2] [@role3] [@role4] [@role5]"
-        },
-        "auditlog": {
-            "name": "Audit-Log",
-            "alias": "auditlog",
-            "desc": "Logs action like delted Messages, channel update, guild update and much more.",
-            "icon": "960276994472415332",
-            "colname": "auditlog",
-            "val": "string",
-            "exp": "[#channel]"
-        },
-        "messagelog": {
-            "name": "Message-Log",
-            "alias": "messagelog",
-            "desc": "Logs updated messages (before and after).",
-            "icon": "960276994472415332",
-            "colname": "messagelog",
-            "val": "string",
-            "exp": "[#channel]"
-        },
-        "modlog": {
-            "name": "Mod-Log",
-            "alias": "modlog",
-            "desc": "Logs moderation action like warn, mute, and much more.",
-            "icon": "960276994472415332",
-            "colname": "modlog",
-            "val": "string",
-            "exp": "[#channel]"
-        },
-        "warnroles": {
-            "name": "Warn roles",
-            "alias": "warnroles",
-            "desc": "The bot adds one by one role after warning a user.",
-            "icon": "960276994367586344",
-            "colname": "role_id",
-            "val": "mention",
-            "exp": "[@warn1 [@warn2] [@warn3] [@warn4] [@warn5]"
-        }
-    },
-    "tutorial": {}
+    }
 }

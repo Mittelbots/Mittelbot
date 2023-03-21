@@ -5,21 +5,17 @@ const { sendWelcomeMessage } = require('../utils/functions/data/welcomechannel')
 const { GuildConfig } = require('../utils/functions/data/Config');
 const { Infractions } = require('../utils/functions/data/Infractions');
 const { Joinroles } = require('../utils/functions/data/Joinroles');
+const Modules = require('../utils/functions/data/Modules');
 
 module.exports.guildMemberAdd = async (member, bot) => {
-    const config = await GuildConfig.get(member.guild.id);
-
-    try {
-        disabled_modules = config.disabled_modules;
-
-        if (disabled_modules.indexOf('welcomemessage') === -1) {
-            sendWelcomeMessage({
-                guild_id: member.guild.id,
-                bot,
-                joined_user: member,
-            });
-        }
-    } catch (err) {}
+    const modulesApi = new Modules();
+    if (await modulesApi.checkEnabled(modulesApi.getDefaultSettings().welcomeUtils)) {
+        sendWelcomeMessage({
+            guild_id: member.guild.id,
+            bot,
+            joined_user: member,
+        });
+    }
 
     if (member.user.bot) return;
 

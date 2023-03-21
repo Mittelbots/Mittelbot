@@ -29,7 +29,7 @@ const { guildBoostLevelUp } = require('../ext_events/guildBoostLevelUp');
 const { guildBoostLevelDown } = require('../ext_events/guildBoostLevelDown');
 const { guildBannerAdd } = require('../ext_events/guildBannerAdd');
 const { guildVanityURLAdd } = require('../ext_events/guildVanityURLAdd');
-const { guildVanityURLRemove, guildAfkChannelAdd } = require('../ext_events/guildAfkChannelAdd');
+const { guildAfkChannelAdd } = require('../ext_events/guildAfkChannelAdd');
 const { guildVanityURLUpdate } = require('../ext_events/guildVanityURLUpdate');
 const { guildOwnerUpdate } = require('../ext_events/guildOwnerUpdate');
 const { guildPartnerAdd } = require('../ext_events/guildPartnerAdd');
@@ -40,6 +40,7 @@ const { guildMemberOffline } = require('../ext_events/guildMemberOffline');
 const { guildMemberOnline } = require('../ext_events/guildMemberOnline');
 const { userAvatarUpdate } = require('../ext_events/userAvatarUpdate');
 const { userUsernameUpdate } = require('../ext_events/userUsernameUpdate');
+const { guildVanityURLRemove } = require('../ext_events/guildVanityURLRemove');
 
 module.exports.acceptBotInteraction = (bot) => {
     bot.on('guildCreate', async (guild) => {

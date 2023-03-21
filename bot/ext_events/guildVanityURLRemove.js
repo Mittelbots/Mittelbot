@@ -1,6 +1,6 @@
 const Auditlog = require('../../utils/functions/data/Auditlog');
 
-module.exports.guildVanityURLAdd = async (bot, guild, vanityURL) => {
+module.exports.guildVanityURLRemove = async (bot, guild, vanityURL) => {
     const auditLog = new Auditlog();
     await auditLog.init(bot, guild.id);
     await auditLog.setEmbed({

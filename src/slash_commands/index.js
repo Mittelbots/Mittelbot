@@ -1,7 +1,7 @@
 const {
     checkActiveCommand,
 } = require('../../utils/functions/checkActiveCommand/checkActiveCommand');
-const { GuildConfig } = require('../../utils/functions/data/Config');
+const Modules = require('../../utils/functions/data/Modules');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const admin = [
@@ -61,16 +61,27 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
 
     //=========================================================
 
-    const guildConfig = await GuildConfig.get(main_interaction.guild.id);
-    disabled_modules = guildConfig.disabled_modules;
+    const moduleApi = new Modules(main_interaction.guild.id, bot);
+    const defaultSettings = moduleApi.getDefaultSettings();
 
-    function disabled(module) {
-        return main_interaction
-            .reply({
-                content: `❌ This Module (${module}) is disabled.`,
-                ephemeral: true,
-            })
-            .catch((err) => {});
+    function isEnabled(requestedModule) {
+        return new Promise(async (resolve) => {
+            const enabled = await moduleApi.checkEnabled(requestedModule).catch(() => {
+                return false;
+            });
+
+            if (!enabled) {
+                main_interaction
+                    .reply({
+                        content: `❌ This Module (${requestedModule}) is disabled.`,
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+                resolve(false);
+            }
+
+            resolve(true);
+        });
     }
 
     //=========================================================
@@ -94,52 +105,52 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     //=========================================================
 
     if (moderation.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
+        if (!(await isEnabled(defaultSettings.moderation))) return;
         return requireModule('moderation');
     }
 
     if (fun.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('fun') > -1) return disabled('fun');
+        if (!(await isEnabled(defaultSettings.fun))) return;
         return requireModule('fun');
     }
 
     if (admin.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('moderation') > -1) return disabled('moderation');
+        if (!(await isEnabled(main_interaction.commandName))) return;
         return requireModule('admin');
     }
 
     if (level.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('level') > -1) return disabled('level');
+        if (!(await isEnabled(defaultSettings.level))) return;
         return requireModule('level');
     }
 
     if (utils.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('utils') > -1) return disabled('utils');
+        if (!(await isEnabled(defaultSettings.utils))) return;
         return requireModule('utils');
     }
 
     if (help.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('help') > -1) return disabled('help');
         return requireModule('help');
     }
 
     if (notifications.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('notifications') > -1) return disabled('notifications');
+        if (!(await isEnabled(main_interaction.commandName))) return;
         return requireModule('notifications');
     }
 
     if (music.indexOf(main_interaction.commandName) !== -1) {
-        if (disabled_modules.indexOf('music') > -1) return disabled('music');
+        if (!(await isEnabled(defaultSettings.music))) return;
         return requireModule('music');
     }
 
+    if (!(await isEnabled(main_interaction.commandName))) return;
     return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
         main_interaction: main_interaction,
         bot: bot,
     });
 
-    function requireModule(module) {
-        return require(`./${module}/${main_interaction.commandName}`).run({
+    function requireModule(requestedModule) {
+        return require(`./${requestedModule}/${main_interaction.commandName}`).run({
             main_interaction: main_interaction,
             bot: bot,
         });

@@ -14,7 +14,18 @@ module.exports.reddit_notifier = async (bot) => {
             const { data } = await axios
                 .get(`${reddit.baseUrl()}/${subreddit}/new.json?sort=new`)
                 .catch((err) => {
-                    const isFatal = err.response.status !== 777;
+                    try {
+                        errorhandler({
+                            message: err.toJSON(),
+                            isFatal: false,
+                        });
+                    } catch (err) {
+                        errorhandler({
+                            message: 'DEBUG FAILED',
+                            isFatal: false,
+                        });
+                    }
+                    const isFatal = true;
                     errorhandler({
                         message: 'Error getting reddit post',
                         err: isFatal ? err : null,
