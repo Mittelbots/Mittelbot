@@ -35,9 +35,11 @@ module.exports = class Modules {
             const isAutoDisabled = requestedModule.autoDisable;
             const isDisabled = await this.get().catch(() => {});
 
-            if (isAutoDisabled && !isDisabled.enabled.includes(requestedModule))
-                return resolve(false);
-            if (isDisabled.disabled.includes(requestedModule)) return resolve(false);
+            try {
+                if (isAutoDisabled && !isDisabled.enabled.includes(requestedModule))
+                    return resolve(false);
+                if (isDisabled.disabled.includes(requestedModule)) return resolve(false);
+            } catch (e) {}
 
             return resolve(true);
         });
