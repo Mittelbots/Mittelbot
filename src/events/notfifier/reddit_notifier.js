@@ -17,13 +17,13 @@ module.exports.reddit_notifier = async (bot) => {
                     try {
                         errorhandler({
                             message: err.toJSON(),
-                            isFatal: false
-                        })
-                    }catch(err) {
+                            isFatal: false,
+                        });
+                    } catch (err) {
                         errorhandler({
                             message: 'DEBUG FAILED',
-                            isFatal: false
-                        })
+                            isFatal: false,
+                        });
                     }
                     const isFatal = true;
                     errorhandler({
