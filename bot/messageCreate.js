@@ -17,11 +17,6 @@ const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
 
 async function messageCreate(message, bot) {
-    const moduleApi = new Modules(message.guild.id, bot);
-    const defaultModuleSettings = moduleApi.getDefaultSettings();
-
-    /** ======================================================= */
-
     if (
         message.channel.type === ChannelType.DM &&
         !message.author.bot &&
@@ -34,6 +29,21 @@ async function messageCreate(message, bot) {
     if (message.channel.type === ChannelType.DM && message.author.id === config.Bot_Owner_ID) {
         return checkOwnerCommand(message);
     }
+
+    /** ======================================================= */
+
+    let moduleApi;
+    let defaultModuleSettings;
+    try {
+        moduleApi = new Modules(message.guild.id, bot);
+        defaultModuleSettings = moduleApi.getDefaultSettings();
+    } catch (e) {
+        // dm message
+        return;
+    }
+
+    /** ======================================================= */
+
     if (
         message.author.bot &&
         message.channel.id !== process.env.DC_DEBUG &&

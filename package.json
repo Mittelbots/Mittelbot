@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.59.9",
+    "version": "0.59.10",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -20,9 +20,9 @@
     "author": "BlackDayz",
     "license": "GPL-3.0",
     "dependencies": {
-        "@discord-player/equalizer": "^0.2.0",
+        "@discord-player/equalizer": "^0.2.1",
         "@discord-player/extractor": "^4.1.2",
-        "@discord-player/utils": "^0.2.0",
+        "@discord-player/utils": "^0.2.1",
         "@discordjs/opus": "github:discordjs/opus",
         "@discordjs/rest": "^1.5.0",
         "@discordjs/voice": "^0.15.0",
@@ -71,8 +71,8 @@
     },
     "devDependencies": {
         "chalk": "^4.1.0",
-        "nodemon": "^2.0.21",
-        "prettier": "^2.8.4",
+        "nodemon": "^2.0.22",
+        "prettier": "^2.8.6",
         "string-width": "4.2.3"
     }
 }
