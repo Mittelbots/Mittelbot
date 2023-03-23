@@ -72,7 +72,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
             if (!enabled) {
                 main_interaction
                     .reply({
-                        content: `❌ This Module (${requestedModule}) is disabled.`,
+                        content: `❌ This Module (${requestedModule.name}) is disabled.`,
                         ephemeral: true,
                     })
                     .catch((err) => {});
