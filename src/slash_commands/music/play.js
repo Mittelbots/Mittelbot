@@ -111,6 +111,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .setDescription(
                 `**[${result.tracks[0].title}](${result.tracks[0].url})** has been added to the Queue`
             )
+            .addFields({
+                name: 'Requested by',
+                value: result.tracks[0].requestedBy.username,
+            })
             .setThumbnail(result.tracks[0].thumbnail)
             .setFooter({
                 text: `Duration: ${result.tracks[0].duration}\nSongs in Queue: ${queue.tracks.size}`,
