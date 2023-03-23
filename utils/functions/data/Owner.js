@@ -4,10 +4,12 @@ const { Levelsystem } = require('./levelsystemAPI');
 const { spawn } = require('child_process');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { AttachmentBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.checkOwnerCommand = async (message) => {
     const args = message.content.split(' ');
     const command = args[0];
+    args.shift();
 
     switch (command) {
         case 'restart':
@@ -28,6 +30,8 @@ module.exports.checkOwnerCommand = async (message) => {
         case 'exportlogs':
             this.export_logs(message, args);
             break;
+        case 'sendRestartNotice':
+            this.sendRestartNotice(message, args);
         default:
             break;
     }
@@ -69,8 +73,8 @@ module.exports.shutdown = async (message = null) => {
 
 module.exports.generatelevel = async (message, args) => {
     await Levelsystem.generate({
-        lvl_count: args[1],
-        mode: args[2],
+        lvl_count: args,
+        mode: args[1],
     }).then(async () => {
         await delay(2000);
         message
@@ -83,7 +87,7 @@ module.exports.generatelevel = async (message, args) => {
 };
 
 module.exports.ignoremode = async (message, args) => {
-    const mode = JSON.parse(args[1]);
+    const mode = JSON.parse(args);
     await GlobalConfig.update({
         valueName: 'ignoreMode',
         value: mode,
@@ -97,7 +101,7 @@ module.exports.ignoremode = async (message, args) => {
 };
 
 module.exports.disable_command = async (message, args) => {
-    const command = args[1];
+    const command = args;
     const global_config = await GlobalConfig.get();
     const disabled_commands = global_config.disabled_commands;
     let gotDisabled = false;
@@ -136,7 +140,7 @@ module.exports.disable_command = async (message, args) => {
 };
 
 module.exports.export_logs = async (message, args) => {
-    const type = JSON.parse(args[1]) ? '_logs/roll' : '_debug/roll';
+    const type = JSON.parse(args) ? '_logs/roll' : '_debug/roll';
 
     const date = new Date();
 
@@ -157,4 +161,36 @@ module.exports.export_logs = async (message, args) => {
                 })
                 .catch((err) => {});
         });
+};
+
+module.exports.sendRestartNotice = async (message, args) => {
+    return new Promise(async (resolve) => {
+        const discordPlayer = message.bot.player;
+        const currentPlayers = discordPlayer.players; //! WIP -> Not working
+
+        const noticeMessage = '⚠️ The bot is about to restart! Your music will be stopped. ⚠️';
+
+        for (const player of currentPlayers) {
+            const guild = player.guild;
+            const channel = player.textChannel;
+
+            await channel
+                .send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(noticeMessage)
+                            .setColor('#ff0000')
+                            .setTimestamp(),
+                    ],
+                })
+                .catch(async () => {
+                    await channel
+                        .send({
+                            content: noticeMessage,
+                        })
+                        .catch(() => {});
+                });
+        }
+        resolve();
+    });
 };

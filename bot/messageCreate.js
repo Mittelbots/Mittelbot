@@ -17,6 +17,8 @@ const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
 
 async function messageCreate(message, bot) {
+    message.bot = bot;
+
     if (
         message.channel.type === ChannelType.DM &&
         !message.author.bot &&
