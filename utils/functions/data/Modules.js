@@ -20,26 +20,30 @@ module.exports = class Modules {
         });
     }
 
-    checkEnabled(requestedModule) {
+    getDefault(name) {
         return new Promise(async (resolve) => {
-            if (typeof requestedModule !== 'object') {
-                try {
-                    requestedModule = this.getDefaultSettings().find(
-                        (m) => m.name === requestedModule
-                    );
-                } catch (e) {
-                    return resolve(true);
+            for (let i in defaultModuleSettings) {
+                if (defaultModuleSettings[i].name == name) {
+                    return resolve(defaultModuleSettings[i]);
                 }
             }
 
-            const isAutoDisabled = requestedModule.autoDisable;
+            return resolve(false);
+        });
+    }
+
+    checkEnabled(requestedModule) {
+        return new Promise(async (resolve) => {
+            const defaultModule = await this.getDefault(requestedModule.name || requestedModule);
+            if (!defaultModule) return resolve(true);
+
+            const isAutoDisabled = defaultModule.autoDisable;
             const isDisabled = await this.get().catch(() => {});
 
-            try {
-                if (isAutoDisabled && !isDisabled.enabled.includes(requestedModule))
-                    return resolve(false);
-                if (isDisabled.disabled.includes(requestedModule)) return resolve(false);
-            } catch (e) {}
+            if (isAutoDisabled && !isDisabled.enabled.includes(defaultModule.name))
+                return resolve(false);
+
+            if (isDisabled.disabled.includes(defaultModule.name)) return resolve(false);
 
             return resolve(true);
         });
