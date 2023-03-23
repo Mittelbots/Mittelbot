@@ -39,8 +39,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const moduleApi = new Modules(main_interaction.guild.id, bot);
-    const filteredModule = await moduleApi.getDefault(requestedModule);
-    const isEnabled = await moduleApi.checkEnabled(filteredModule).catch(() => {
+    const isEnabled = await moduleApi.checkEnabled(requestedModule).catch(() => {
         return false;
     });
 

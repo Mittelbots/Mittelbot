@@ -34,7 +34,7 @@ module.exports = class Modules {
 
     checkEnabled(requestedModule) {
         return new Promise(async (resolve) => {
-            const defaultModule = await this.getDefault(requestedModule.name);
+            const defaultModule = await this.getDefault(requestedModule.name || requestedModule);
             if (!defaultModule) return resolve(true);
 
             const isAutoDisabled = defaultModule.autoDisable;
