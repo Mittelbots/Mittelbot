@@ -5,9 +5,7 @@ const Music = require('../../../utils/functions/data/Music');
 module.exports.run = async ({ main_interaction, bot }) => {
     const musicApi = new Music(main_interaction, bot);
 
-    await main_interaction.deferReply({
-        ephemeral: true,
-    });
+    await main_interaction.deferReply();
 
     const check = await musicApi.checkAvailibility();
     if (check) {
@@ -33,7 +31,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .setColor('#00ff00')
                 .setDescription('The song has stopped and the queue is cleared. See you 👋'),
         ],
-        ephemeral: true,
+        ephemeral: false,
     });
 
     return musicApi.destroy();
