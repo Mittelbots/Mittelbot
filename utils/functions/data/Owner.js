@@ -166,30 +166,29 @@ module.exports.export_logs = async (message, args) => {
 module.exports.sendRestartNotice = async (message, args) => {
     return new Promise(async (resolve) => {
         const discordPlayer = message.bot.player;
-        const currentPlayers = discordPlayer.players; //! WIP -> Not working
+        const currentPlayers = discordPlayer.nodes.cache;
 
         const noticeMessage = '⚠️ The bot is about to restart! Your music will be stopped. ⚠️';
 
         for (const player of currentPlayers) {
-            const guild = player.guild;
-            const channel = player.textChannel;
-
-            await channel
-                .send({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setDescription(noticeMessage)
-                            .setColor('#ff0000')
-                            .setTimestamp(),
-                    ],
-                })
-                .catch(async () => {
-                    await channel
-                        .send({
-                            content: noticeMessage,
-                        })
-                        .catch(() => {});
-                });
+            for (let i = 0; i < 3; i++) {
+                await player[1].metadata.channel
+                    .send({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(noticeMessage)
+                                .setColor('#ff0000')
+                                .setTimestamp(),
+                        ],
+                    })
+                    .catch(async () => {
+                        await channel
+                            .send({
+                                content: noticeMessage,
+                            })
+                            .catch(() => {});
+                    });
+            }
         }
         resolve();
     });
