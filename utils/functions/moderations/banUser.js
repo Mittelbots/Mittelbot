@@ -13,7 +13,7 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
     return new Promise(async (resolve, reject) => {
         if (isAuto) mod = bot.user;
 
-        const moduleApi = new Modules();
+        const moduleApi = new Modules(guild.id, bot);
         if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().banappeal)) {
             const banappeal = new Banappeal();
             await banappeal
