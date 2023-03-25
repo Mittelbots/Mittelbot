@@ -35,7 +35,6 @@ module.exports = class ScamDetection {
                     return res;
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return [];
                 });
             const scamLinksExt = publicScamList;

@@ -20,7 +20,6 @@ class GuildConfig {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(false);
                 });
         });
@@ -33,7 +32,6 @@ class GuildConfig {
             try {
                 return resolve(await guild.getConfig());
             } catch (err) {
-                errorhandler({ err });
                 return resolve([]);
             }
         });
@@ -56,7 +54,6 @@ class GuildConfig {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(err);
                 });
         });

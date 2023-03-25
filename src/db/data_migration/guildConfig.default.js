@@ -1,26 +1,40 @@
-const guildConfig = require("../Models/tables/guildConfig.model")
+const { GuildConfig } = require('../../../utils/functions/data/Config');
+const guilds = require('../Models/tables/guilds.model');
 
 (async () => {
-    await guildConfig
-        .findAll()
-        .then(async (guilds) => {
-            guilds.forEach(async (guild) => {
-                const { modules } = guild
+    const allGuilds = await guilds.findAll();
 
-                if (!modules) {
-                    const newModules = {
-                        enabled: [],
-                        disabled: [],
-                    }
-                    await guildConfig.update({
-                        modules: newModules,
-                    }, {
-                        where: {
-                            guild_id: guild.guild_id,
-                        },
-                    })
-                }
-            })
-        })
-        .catch((err) => {})
+    for (let i in allGuilds) {
+        const config = await GuildConfig.get(allGuilds[i].guild_id);
+
+        if (
+            !config.modules ||
+            !config.modules.enabled ||
+            !config.modules.disabled ||
+            config.modules == '{}'
+        ) {
+            const newModules = {
+                enabled: [],
+                disabled: [],
+            };
+
+            await GuildConfig.update({
+                guild_id: allGuilds[i].guild_id,
+                value: newModules,
+                valueName: 'modules',
+            });
+
+            console.log(`Updated guild ${allGuilds[i].guild_id} modules`);
+        }
+
+        if (config.tickets == null) {
+            await GuildConfig.update({
+                guild_id: allGuilds[i].guild_id,
+                value: [],
+                valueName: 'tickets',
+            });
+
+            console.log(`Updated guild ${allGuilds[i].guild_id} tickets`);
+        }
+    }
 })();

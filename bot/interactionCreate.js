@@ -11,8 +11,7 @@ const pride = require('../src/slash_commands/fun/pride');
 const Tutorial = require('../utils/functions/data/Tutorial');
 const SingASong = require('../utils/functions/data/SingASong');
 const Banappeal = require('../utils/functions/data/Banappeal');
-const Tickets = require('../utils/functions/data/Tickets');
-const { EmbedBuilder } = require('discord.js');
+const Tickets = require('../utils/functions/data/Tickets/Tickets');
 
 const defaultCooldown = new Set();
 
@@ -127,7 +126,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
         if (main_interaction.customId.indexOf('singasong_cancel') === 0) {
             new SingASong(main_interaction, bot).interaction();
         }
-        if (main_interaction.customId.indexOf('ticket') === 0) {
+        if (main_interaction.customId.indexOf('ticket') !== -1) {
             new Tickets(bot, main_interaction).interacte();
         }
         if (main_interaction.customId.indexOf('banappeal') === 0) {

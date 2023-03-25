@@ -1,5 +1,4 @@
 const guildAutoBlacklist = require('../../../src/db/Models/tables/guildAutoBlacklist.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 const { getModTime } = require('../getModTime');
 const { isMod } = require('../isMod');
 const { banUser } = require('../moderations/banUser');
@@ -20,9 +19,6 @@ module.exports = class AutoBlacklist {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     reject(false);
                 });
         });
@@ -40,9 +36,6 @@ module.exports = class AutoBlacklist {
                     resolve(settings);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     reject(false);
                 });
         });
@@ -60,9 +53,6 @@ module.exports = class AutoBlacklist {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     reject(false);
                 });
         });

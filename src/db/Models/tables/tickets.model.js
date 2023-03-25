@@ -15,21 +15,21 @@ Tickets.init(
             allowNull: false,
             unique: 'channel_id',
         },
-        message_link: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        ticket_owner: {
+        owner: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        ticket_messages: {
+        messages: {
             type: DataTypes.JSON,
             defaultValue: [],
         },
-        ticket_status: {
+        isOpen: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+        },
+        source_message_link: {
             type: DataTypes.STRING,
-            defaultValue: 'open',
+            allowNull: false,
         },
     },
     {

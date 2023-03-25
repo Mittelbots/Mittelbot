@@ -163,10 +163,6 @@ class Levelsystem {
                     return resolve(result);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
                     return resolve(false);
                 });
         });

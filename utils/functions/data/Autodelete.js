@@ -1,7 +1,5 @@
 const autodeleteModel = require('../../../src/db/Models/tables/autodelete.model.js');
-const { errorhandler } = require('../errorhandler/errorhandler.js');
 const { hasPermission } = require('../hasPermissions.js');
-const { isMod } = require('../isMod.js');
 
 module.exports = class Autodelete {
     #defaultTypes = ['isOnlyMedia', 'isOnlyText', 'isOnlyEmotes', 'isOnlyStickers'];
@@ -27,9 +25,6 @@ module.exports = class Autodelete {
                     return resolve(result);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(`An error occured while fetching the settings.`);
                 });
         });
@@ -58,9 +53,6 @@ module.exports = class Autodelete {
                         }
                     )
                     .catch((err) => {
-                        errorhandler({
-                            err,
-                        });
                         return reject(`An error occured while saving the settings.`);
                     });
             } else {
@@ -70,9 +62,6 @@ module.exports = class Autodelete {
                         channel_id: channel.id,
                     })
                     .catch((err) => {
-                        errorhandler({
-                            err,
-                        });
                         return reject(`An error occured while saving the settings.`);
                     });
             }
@@ -93,9 +82,6 @@ module.exports = class Autodelete {
                     return resolve();
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(`An error occured while setting the channel in the database`);
                 });
         });

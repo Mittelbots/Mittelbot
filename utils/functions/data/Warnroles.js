@@ -1,4 +1,3 @@
-const { errorhandler } = require('../errorhandler/errorhandler');
 const { checkRole } = require('../roles/checkRole');
 const { GuildConfig } = require('./Config');
 
@@ -27,9 +26,6 @@ class Warnroles {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -49,9 +45,6 @@ class Warnroles {
                     return true;
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return false;
                 });
         });

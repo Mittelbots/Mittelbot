@@ -28,6 +28,8 @@ module.exports.checkOwnerCommand = async (message) => {
         case 'exportlogs':
             this.export_logs(message, args);
             break;
+        case 'deploycommands':
+            this.deploy_commands(message.bot);
         default:
             break;
     }
@@ -157,4 +159,8 @@ module.exports.export_logs = async (message, args) => {
                 })
                 .catch((err) => {});
         });
+};
+
+module.exports.deploy_commands = async (bot) => {
+    await createSlashCommands(bot);
 };

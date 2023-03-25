@@ -15,6 +15,7 @@ const Autodelete = require('../utils/functions/data/Autodelete');
 const { EmbedBuilder, ChannelType } = require('discord.js');
 const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
+const Tickets = require('../utils/functions/data/Tickets/Tickets');
 
 async function messageCreate(message, bot) {
     const moduleApi = new Modules(message.guild.id, bot);
@@ -48,6 +49,14 @@ async function messageCreate(message, bot) {
         (bot.user.id === '921779661795639336' && message.author.id !== bot.ownerId)
     )
         return;
+
+    /** ======================================================= */
+
+    const ticketApi = new Tickets();
+    const isWritingInTicket = ticketApi.isUserWritingInTicket(message.message.id);
+    if (isWritingInTicket) {
+        return ticketApi.saveMessage(message);
+    }
 
     /** ======================================================= */
 

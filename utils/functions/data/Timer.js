@@ -1,5 +1,4 @@
 const timer = require('../../../src/db/Models/tables/timer.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 
 class Timer {
     defaultTick = 15000; // 15 seconds
@@ -14,7 +13,6 @@ class Timer {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return resolve([]);
                 });
         });
@@ -28,7 +26,6 @@ class Timer {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return resolve([]);
                 });
         });
@@ -49,7 +46,6 @@ class Timer {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(false);
                 });
         });
@@ -63,7 +59,6 @@ class Timer {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(false);
                 });
         });

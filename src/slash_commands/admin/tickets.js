@@ -1,5 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const Tickets = require('../../../utils/functions/data/Tickets');
+const { EmbedBuilder } = require('discord.js');
+const Tickets = require('../../../utils/functions/data/Tickets/Tickets');
+const { ticketConfig } = require('../_config/admin/tickets');
+const ticketModel = require('../../db/Models/tables/tickets.model');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
@@ -15,7 +17,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const message_link = main_interaction.options.getString('message_link');
 
     const tickets = new Tickets(bot, main_interaction);
-    tickets.init({
+    tickets.initNewSettings({
         channel,
         description,
         category,
@@ -123,93 +125,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('tickets')
-    .setDescription('Create a ticket system for your server.')
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('create')
-            .setDescription('Create a ticket system for your server.')
-            .addChannelOption((option) =>
-                option
-                    .setName('channel')
-                    .setDescription('The channel to create the ticket system in.')
-                    .setRequired(true)
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('description')
-                    .setDescription('Set the description for the ticket embed.')
-            )
-            .addChannelOption((option) =>
-                option
-                    .setName('category')
-                    .setDescription('Set the category for the ticket channels.')
-            )
-            .addChannelOption((option) =>
-                option
-                    .setName('close_category')
-                    .setDescription('Set the category for all closed ticket channels.')
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('moderator')
-                    .setDescription(
-                        'Set all the roles that can moderate tickets. If not set, the default moderator role will be used.'
-                    )
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('ticket_description')
-                    .setDescription('Set the description for embed inside the ticket.')
-            )
-    )
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('update')
-            .setDescription('Edit your ticket settings.')
-            .addStringOption((option) =>
-                option
-                    .setName('message_link')
-                    .setDescription('The message link to the ticket embed.')
-                    .setRequired(true)
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('description')
-                    .setDescription('Set the description for the ticket embed.')
-            )
-            .addChannelOption((option) =>
-                option
-                    .setName('category')
-                    .setDescription('Set the category for the ticket channels.')
-            )
-            .addChannelOption((option) =>
-                option
-                    .setName('close_category')
-                    .setDescription('Set the category for all closed ticket channels.')
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('moderator')
-                    .setDescription(
-                        'Set all the roles that can moderate tickets. If not set, the default moderator role will be used.'
-                    )
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('ticket_description')
-                    .setDescription('Set the description for embed inside the ticket.')
-            )
-    )
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('delete')
-            .setDescription('Delete your ticket settings.')
-            .addStringOption((option) =>
-                option
-                    .setName('message_link')
-                    .setDescription('The message link to the ticket embed.')
-                    .setRequired(true)
-            )
-    );
+module.exports.data = ticketConfig;

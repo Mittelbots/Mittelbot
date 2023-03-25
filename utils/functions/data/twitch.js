@@ -118,10 +118,6 @@ module.exports = class TwitchNotifier {
                     return res;
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
                     reject(
                         `❌ Something went wrong while selecting all youtube channels. Please contact the Bot support.`
                     );
@@ -172,10 +168,6 @@ module.exports = class TwitchNotifier {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
                     reject(false);
                 });
         });
@@ -195,10 +187,6 @@ module.exports = class TwitchNotifier {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: true,
-                    });
                     reject(false);
                 });
         });
@@ -223,10 +211,6 @@ module.exports.delTwChannelFromList = async ({ guild_id, deltwchannel }) => {
                 resolve('✅ Successfully removed the twitch channel to the notification list.');
             })
             .catch((err) => {
-                errorhandler({
-                    err,
-                    fatal: true,
-                });
                 reject(
                     '❌ Something went wrong while removing the channel from the database. Please contact the Bot support.'
                 );

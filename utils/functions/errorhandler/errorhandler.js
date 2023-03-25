@@ -1,4 +1,4 @@
-const { log, debug_log } = require('./logs');
+const { log, debug_log, database_log } = require('./logs');
 const callerId = require('caller-id');
 
 module.exports.errorhandler = ({
@@ -6,6 +6,7 @@ module.exports.errorhandler = ({
     message = 'No message passed! ',
     channel = null,
     fatal = true,
+    databaseError = false,
 }) => {
     const caller = callerId.getData();
     let errObj = {
@@ -16,6 +17,7 @@ module.exports.errorhandler = ({
     };
 
     if (JSON.parse(process.env.DEBUG)) console.log(err, '\n', message, '\n', caller.filePath);
+    else if (databaseError) database_log.error(err, '\n', JSON.stringify(errObj, null, 4));
     else if (fatal && log) log.fatal(err, '\n', JSON.stringify(errObj, null, 4));
     else if (!fatal) debug_log.info(err, '\n', JSON.stringify(errObj, null, 4));
 
