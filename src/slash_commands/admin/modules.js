@@ -80,13 +80,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .followUp({
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle('Module')
                             .setDescription(
                                 `✅ ${
                                     requestedModule[0].toUpperCase() + requestedModule.slice(1)
                                 } ${status === 'activate' ? 'activated' : 'disabled'}`
                             )
-                            .setColor('DarkGreen'),
+                            .setColor('#00FF00'),
                     ],
                     ephemeral: true,
                 })

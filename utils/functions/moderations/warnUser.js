@@ -11,7 +11,7 @@ const Modules = require('../data/Modules');
 async function warnUser({ bot, user, mod, guild, reason }) {
     const inf_id = await createInfractionId(guild.id);
 
-    const moduleApi = new Modules();
+    const moduleApi = new Modules(guild.id, bot);
     if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().warnroles)) {
         const pass = await addWarnRoles({ user, inf_id, guild });
         if (pass.error) return pass;
