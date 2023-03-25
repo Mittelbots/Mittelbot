@@ -5,6 +5,7 @@ node_modules/
 
 _logs/*
 _debug/*
+_database/*
 ./core
 
 .env
