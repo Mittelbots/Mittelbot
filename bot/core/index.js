@@ -13,6 +13,7 @@ const { delay } = require('../../utils/functions/delay/delay');
 const { acceptBotInteraction } = require('./botEvents');
 const { Player } = require('discord-player');
 const { registerPlayerEvents } = require('../../src/events/player/player-events');
+const Translations = require('../../utils/functions/Translations/Translations');
 
 processErrorHandler();
 
@@ -53,6 +54,8 @@ bot.player = new Player(bot, {
         quality: 'highestaudio',
     },
 });
+
+global.t = new Translations();
 
 registerPlayerEvents(bot.player);
 

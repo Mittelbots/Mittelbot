@@ -18,11 +18,7 @@ const Modules = require('../utils/functions/data/Modules');
 const Tickets = require('../utils/functions/data/Tickets/Tickets');
 
 async function messageCreate(message, bot) {
-    const moduleApi = new Modules(message.guild.id, bot);
-    const defaultModuleSettings = moduleApi.getDefaultSettings();
-
-    /** ======================================================= */
-
+    message.bot = bot;
     if (
         message.channel.type === ChannelType.DM &&
         !message.author.bot &&
@@ -35,6 +31,14 @@ async function messageCreate(message, bot) {
     if (message.channel.type === ChannelType.DM && message.author.id === config.Bot_Owner_ID) {
         return checkOwnerCommand(message);
     }
+
+    try {
+        var moduleApi = new Modules(message.guild.id, bot);
+        var defaultModuleSettings = moduleApi.getDefaultSettings();
+    } catch (e) {}
+
+    /** ======================================================= */
+
     if (
         message.author.bot &&
         message.channel.id !== process.env.DC_DEBUG &&
@@ -53,7 +57,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const ticketApi = new Tickets();
-    const isWritingInTicket = ticketApi.isUserWritingInTicket(message.message.id);
+    const isWritingInTicket = ticketApi.isUserWritingInTicket(message.channel.id);
     if (isWritingInTicket) {
         return ticketApi.saveMessage(message);
     }

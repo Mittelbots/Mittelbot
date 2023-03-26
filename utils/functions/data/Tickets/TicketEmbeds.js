@@ -12,24 +12,28 @@ module.exports = class TicketEmbeds {
             'Please describe your issue in as much detail as possible. The staff team will be with you shortly.',
     };
 
-    sendEmbed() {
-        return new Promise(async (resolve, reject) => {
+    sendTicketEmbed(newSettings) {
+        return new Promise(async (resolve) => {
             const embed = new EmbedBuilder()
-                .setColor(this.defaultEmbedOptions.color)
                 .setTitle(this.defaultEmbedOptions.title)
-                .setDescription(this.settings.description);
+                .setDescription(
+                    newSettings.ticket_description || this.defaultEmbedOptions.ticket_description
+                )
+                .setColor(this.defaultEmbedOptions.color);
 
-            await this.settings.channel
+            const btn = await this.generateCreateButton();
+
+            await this.main_interaction.guild.channels.cache
+                .get(newSettings.channel)
                 .send({
                     embeds: [embed],
-                    components: [new ActionRowBuilder().addComponents(await this.generateButton())],
+                    components: [new ActionRowBuilder().addComponents(btn)],
                 })
-                .then(async (message) => {
+                .then((message) => {
                     return resolve(message.url);
                 })
-                .catch((err) => {
-                    errorhandler({ err });
-                    return reject(false);
+                .catch(() => {
+                    return resolve(false);
                 });
         });
     }
@@ -79,7 +83,7 @@ module.exports = class TicketEmbeds {
         });
     }
 
-    generateButton() {
+    generateCreateButton() {
         return new Promise(async (resolve) => {
             const button = new ButtonBuilder()
                 .setStyle(ButtonStyle.Success)
@@ -87,35 +91,6 @@ module.exports = class TicketEmbeds {
                 .setCustomId('create_ticket');
 
             return resolve(button);
-        });
-    }
-
-    sendTicketEmbed(channel) {
-        return new Promise(async (resolve, reject) => {
-            await channel
-                .send({
-                    content: `<@${this.main_interaction.user.id}>`,
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(this.defaultEmbedOptions.color)
-                            .setTitle(this.defaultEmbedOptions.title)
-                            .setDescription(this.defaultEmbedOptions.ticket_description)
-                            .setFooter({
-                                text: `Ticket Owner: ${this.main_interaction.user.username}`,
-                                iconURL: this.main_interaction.user.avatarURL(),
-                            }),
-                    ],
-                    components: [
-                        new ActionRowBuilder().addComponents(await this.generateCloseButton()),
-                    ],
-                })
-                .then(async (message) => {
-                    return resolve(message);
-                })
-                .catch((err) => {
-                    errorhandler({ err });
-                    return reject(false);
-                });
         });
     }
 

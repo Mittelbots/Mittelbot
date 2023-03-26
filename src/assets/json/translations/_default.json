@@ -1,0 +1,31 @@
+{
+    "general": {
+        "tryAgainLater": "Please try again later.",
+        "colors": {
+            "success": "#00ff00",
+            "info": "#0000ff",
+            "warning": "#ffff00",
+            "error": "#ff0000"
+        }
+    },
+    "success": {
+        "emote": "✅",
+        "ticket": {
+            "setting": {
+                "set": "{success.emote} Successfully add your Ticket Setting."
+            }
+        }
+    },
+    "info": {},
+    "warning": {},
+    "error": {
+        "emote": "❌",
+        "general": "{error.emote} There was an error processing your request. {general.tryAgainLater}",
+        "embed": {
+            "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
+        },
+        "ticket": {
+            "MAX_SETTINGS": "{error.emote} You have reached the maximum number of tickets (%c)"
+        }
+    }
+}
