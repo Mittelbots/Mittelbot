@@ -57,4 +57,83 @@ module.exports = class Tickets extends (
                 });
         });
     }
+
+    getTicket(search) {
+        return new Promise(async (resolve, reject) => {
+            await ticketModel
+                .findOne({
+                    where: search,
+                })
+                .then((data) => {
+                    if (data) {
+                        return resolve(data);
+                    }
+                    return resolve(false);
+                })
+                .catch((err) => {
+                    return reject(err.message);
+                });
+        });
+    }
+
+    isWritingInTicketChannel(user_id, channel_id) {
+        return new Promise(async (resolve, reject) => {
+            await this.getTicket({
+                owner: user_id,
+                channel_id,
+            })
+                .then((data) => {
+                    if (data) {
+                        return resolve(true);
+                    }
+                    return resolve(false);
+                })
+                .catch((err) => {
+                    return resolve(false);
+                });
+        });
+    }
+
+    saveMessage(message) {
+        return new Promise(async (resolve, reject) => {
+            const ticket = await this.getTicket({
+                channel_id: message.channel.id,
+            })
+                .then((data) => {
+                    return data;
+                })
+                .catch((err) => {
+                    return reject(err);
+                });
+
+            const newMessageObj = {
+                message_id: message.id,
+                message_content: message.content,
+                message_author: message.author.id,
+                message_author_tag: message.author.tag,
+                message_author_avatar: message.author.displayAvatarURL(),
+                message_timestamp: message.createdTimestamp,
+            };
+
+            ticket.messages.push(newMessageObj);
+
+            await ticketModel
+                .update(
+                    {
+                        messages: ticket.messages,
+                    },
+                    {
+                        where: {
+                            id: ticket.id,
+                        },
+                    }
+                )
+                .then(() => {
+                    return resolve(true);
+                })
+                .catch((err) => {
+                    return reject(err.message);
+                });
+        });
+    }
 };

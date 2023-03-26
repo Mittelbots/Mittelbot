@@ -57,7 +57,10 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const ticketApi = new Tickets();
-    const isWritingInTicket = ticketApi.isUserWritingInTicket(message.channel.id);
+    const isWritingInTicket = await ticketApi.isWritingInTicketChannel(
+        message.author.id,
+        message.channel.id
+    );
     if (isWritingInTicket) {
         return ticketApi.saveMessage(message);
     }
