@@ -12,6 +12,7 @@ const Tutorial = require('../utils/functions/data/Tutorial');
 const SingASong = require('../utils/functions/data/SingASong');
 const Banappeal = require('../utils/functions/data/Banappeal');
 const Tickets = require('../utils/functions/data/Tickets/Tickets');
+const { EmbedBuilder } = require('discord.js');
 
 const defaultCooldown = new Set();
 
@@ -129,7 +130,32 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
             new SingASong(main_interaction, bot).interaction();
         }
         if (main_interaction.customId.indexOf('ticket') !== -1) {
-            new Tickets(bot, main_interaction).interacte();
+            new Tickets(bot, main_interaction)
+                .interacte()
+                .then((res) => {
+                    main_interaction
+                        .reply({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(res)
+                                    .setColor(global.t.trans(['general.colors.success'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    main_interaction
+                        .reply({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(err)
+                                    .setColor(global.t.trans(['general.colors.error'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
         }
         if (main_interaction.customId.indexOf('banappeal') === 0) {
             new Banappeal(bot).manageBanappeal(main_interaction);

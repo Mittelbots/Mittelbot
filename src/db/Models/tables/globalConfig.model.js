@@ -25,11 +25,5 @@ GlobalConfig.init(
     }
 );
 
-GlobalConfig.create({
-    id: 1,
-    ignoreMode: false,
-    disabled_commands: [],
-}).catch((err) => {});
-
 const globalConfig = GlobalConfig;
 module.exports = globalConfig;

@@ -53,17 +53,21 @@ module.exports = class Translations {
         return string;
     }
 
-    processCustomValues(string, searchValue) {
+    processCustomValues(string, values) {
         if (!string) return null;
         const stringArray = string.split(' ');
-        stringArray.forEach((word, index) => {
-            const regex = /%([a-zA-Z])/g;
-            const matches = word.match(regex);
-            if (!matches) return;
 
-            word.replace(matches[0], searchValue);
-            stringArray[index] = word;
-        });
+        let valueIndex = 0;
+        console.log(stringArray);
+
+        for (let i in stringArray) {
+            if (stringArray[i].includes('%')) {
+                stringArray[i] = stringArray[i].replace(stringArray[i], values[valueIndex]);
+                console.log(stringArray[i]);
+                valueIndex++;
+            }
+        }
+
         string = stringArray.join(' ');
         return string;
     }
@@ -74,9 +78,13 @@ module.exports = class Translations {
         const keyArray = key.split('.');
         let translation = this.#translationFile;
 
-        keyArray.forEach((key) => {
-            translation = translation[key];
-        });
+        try {
+            keyArray.forEach((key) => {
+                translation = translation[key];
+            });
+        } catch (e) {
+            return 'Translation not found';
+        }
 
         return translation;
     }

@@ -19,6 +19,17 @@ module.exports = class TicketSettings {
         });
     }
 
+    getSettingsOfMessage(message_link) {
+        return new Promise(async (resolve) => {
+            await this.getSettings();
+            return resolve(
+                (this.settings = this.settings.find(
+                    (setting) => setting.message_link === message_link
+                ))
+            );
+        });
+    }
+
     isMaxSettingsReached() {
         return new Promise(async (resolve) => {
             return resolve(this.settings.length >= this.MAX_SETTINGS);

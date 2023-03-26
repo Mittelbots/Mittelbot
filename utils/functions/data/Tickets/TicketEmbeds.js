@@ -38,46 +38,24 @@ module.exports = class TicketEmbeds {
         });
     }
 
-    updateEmbed() {
+    sendTicketChannelEmbed(channel) {
         return new Promise(async (resolve, reject) => {
-            const message_link = this.settings.message_link;
-            const channel = message_link.split('/')[5];
-            const message = message_link.split('/')[6];
+            const embed = new EmbedBuilder()
+                .setTitle(this.defaultEmbedOptions.title)
+                .setDescription(
+                    this.settings.ticket_description || this.defaultEmbedOptions.ticket_description
+                )
+                .setColor(this.defaultEmbedOptions.color);
 
-            await this.main_interaction.guild.channels.cache
-                .get(channel)
-                .messages.fetch(message)
-                .then(async (message) => {
-                    const embed = new EmbedBuilder()
-                        .setColor(this.defaultEmbedOptions.color)
-                        .setTitle(this.defaultEmbedOptions.title)
-                        .setDescription(this.settings.description);
-
-                    await message.edit({ embeds: [embed] });
+            await channel
+                .send({
+                    content: `<@${this.main_interaction.user.id}>`,
+                    embeds: [embed],
+                })
+                .then(() => {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
-                    return reject(false);
-                });
-        });
-    }
-
-    deleteEmbed() {
-        return new Promise(async (resolve, reject) => {
-            const message_link = this.settings.message_link;
-            const channel = message_link.split('/')[5];
-            const message = message_link.split('/')[6];
-
-            await this.main_interaction.guild.channels.cache
-                .get(channel)
-                .messages.fetch(message)
-                .then(async (message) => {
-                    await message.delete();
-                    return resolve(true);
-                })
-                .catch((err) => {
-                    errorhandler({ err });
                     return reject(false);
                 });
         });

@@ -13,6 +13,10 @@
         "ticket": {
             "setting": {
                 "set": "{success.emote} Successfully add your Ticket Setting."
+            },
+            "interacte": {
+                "create": "{success.emote} Successfully created your ticket. %c",
+                "close": "{success.emote} Successfully closed your ticket."
             }
         }
     },
@@ -25,7 +29,14 @@
             "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
         },
         "ticket": {
-            "MAX_SETTINGS": "{error.emote} You have reached the maximum number of tickets (%c)"
+            "MAX_SETTINGS": "{error.emote} You have reached the maximum number of tickets (%c)",
+            "interacte": {
+                "create": "{error.emote} There was an error creating your ticket. {general.tryAgainLater}",
+                "close": "{error.emote} There was an error closing your ticket. {general.tryAgainLater}"
+            }
+        },
+        "permissions": {
+            "write": "{error.emote} I don't have permission to write in %c."
         }
     }
 }
