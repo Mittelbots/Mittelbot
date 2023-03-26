@@ -13,6 +13,16 @@ module.exports = class TicketInteraction {
             const command = this.main_interaction.customId;
 
             if (command === 'create_ticket') {
+                const userhasTicket = await this.hasUserAlreadyTicket(
+                    this.main_interaction.message.url
+                ).catch((err) => {
+                    return reject(err);
+                });
+
+                if (userhasTicket) {
+                    return reject(global.t.trans(['error.ticket.interacte.hasTicketAlready']));
+                }
+
                 const channel = await this.generateTicketChannel()
                     .then((channel) => {
                         return channel;
@@ -21,14 +31,17 @@ module.exports = class TicketInteraction {
                         return resolve(global.t.trans(['error.ticket.interacte.create']));
                     });
 
-                await this.sendTicketChannelEmbed(channel)
+                Promise.all([
+                    await this.sendTicketChannelEmbed(channel),
+                    await this.saveTicket(channel),
+                ])
                     .then(() => {
                         return resolve(
                             global.t.trans(['success.ticket.interacte.create', channel])
                         );
                     })
                     .catch((err) => {
-                        return reject(global.t.trans(['error.permissions.write', channel]));
+                        return reject(global.t.trans(['error.generalWithMessage', err]));
                     });
 
                 return;

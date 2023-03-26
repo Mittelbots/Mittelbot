@@ -39,7 +39,7 @@ module.exports = class TicketChannel {
                     resolve(channel);
                 })
                 .catch((err) => {
-                    reject(false);
+                    reject(err.message);
                 });
         });
     }

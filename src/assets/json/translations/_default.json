@@ -25,6 +25,7 @@
     "error": {
         "emote": "❌",
         "general": "{error.emote} There was an error processing your request. {general.tryAgainLater}",
+        "generalWithMessage": "{error.general} %c",
         "embed": {
             "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
         },
@@ -32,11 +33,12 @@
             "MAX_SETTINGS": "{error.emote} You have reached the maximum number of tickets (%c)",
             "interacte": {
                 "create": "{error.emote} There was an error creating your ticket. {general.tryAgainLater}",
-                "close": "{error.emote} There was an error closing your ticket. {general.tryAgainLater}"
+                "close": "{error.emote} There was an error closing your ticket. {general.tryAgainLater}",
+                "hasTicketAlready": "{error.emote} You already have a ticket open."
             }
         },
         "permissions": {
-            "write": "{error.emote} I don't have permission to write in %c."
+            "write": "{error.emote} I don't have permission to write in."
         }
     }
 }
