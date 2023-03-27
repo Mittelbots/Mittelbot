@@ -136,7 +136,6 @@ module.exports = class TicketInteraction {
                             );
                         })
                         .catch((err) => {
-                            console.error(err);
                             reject(
                                 global.t.trans(
                                     ['error.ticket.interacte.close'],
@@ -146,7 +145,6 @@ module.exports = class TicketInteraction {
                         });
                 })
                 .catch((err) => {
-                    console.error(err);
                     reject(
                         global.t.trans(
                             ['error.ticket.interacte.close'],
@@ -220,7 +218,6 @@ module.exports = class TicketInteraction {
                     resolve();
                 })
                 .catch((err) => {
-                    console.log(err);
                     reject(global.t.trans(['error.general'], this.main_interaction.guild.id));
                 });
         });
