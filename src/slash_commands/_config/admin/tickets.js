@@ -40,4 +40,15 @@ module.exports.ticketConfig = new SlashCommandBuilder()
                     .setName('ticket_description')
                     .setDescription('Set the description for embed inside the ticket.')
             )
+    )
+    .addSubcommand((subcommand) =>
+        subcommand
+            .setName('remove')
+            .setDescription('Remove the ticket system from your server.')
+            .addStringOption((option) =>
+                option
+                    .setName('message_link')
+                    .setDescription('The message link of the ticket system you want to remove.')
+                    .setRequired(true)
+            )
     );

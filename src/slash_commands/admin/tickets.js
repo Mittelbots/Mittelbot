@@ -54,59 +54,37 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ephemeral: true,
                 });
             });
-    } else if (subcommand === 'update') {
-        const updated = await tickets.update().catch((err) => {
-            main_interaction.followUp({
-                embeds: [
-                    new EmbedBuilder()
-                        .setTitle('Ticket System')
-                        .setDescription('An error occured while updating the ticket system.')
-                        .setColor('#FF0000')
-                        .setTimestamp(),
-                ],
-                ephemeral: true,
-            });
-            return false;
-        });
-        if (!updated) return;
-
-        await main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle('Ticket System')
-                    .setDescription('The ticket system has been updated successfully.')
-                    .setColor('#00FF00')
-                    .setTimestamp(),
-            ],
-            ephemeral: true,
-        });
     } else {
-        const deleted = await tickets.delete().catch((err) => {
-            main_interaction.followUp({
-                embeds: [
-                    new EmbedBuilder()
-                        .setTitle('Ticket System')
-                        .setDescription('An error occured while deleting the ticket system.')
-                        .setColor('#FF0000')
-                        .setTimestamp(),
-                ],
-                ephemeral: true,
+        await ticketApi
+            .deleteSettings(message_link)
+            .then((res) => {
+                main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder().setDescription(
+                                global.t.trans(
+                                    ['success.ticket.setting.delete'],
+                                    main_interaction.guild.id
+                                )
+                            ),
+                        ],
+                    })
+                    .catch(() => {});
+            })
+            .catch((err) => {
+                main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder().setDescription(
+                                global.t.trans(
+                                    ['error.ticket.setting.delete'],
+                                    main_interaction.guild.id
+                                )
+                            ),
+                        ],
+                    })
+                    .catch(() => {});
             });
-            return false;
-        });
-
-        if (!deleted) return;
-
-        await main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle('Ticket System')
-                    .setDescription('The ticket system has been deleted successfully.')
-                    .setColor('#00FF00')
-                    .setTimestamp(),
-            ],
-            ephemeral: true,
-        });
     }
 };
 

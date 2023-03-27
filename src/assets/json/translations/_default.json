@@ -12,7 +12,8 @@
         "emote": "✅",
         "ticket": {
             "setting": {
-                "set": "{success.emote} Successfully add your Ticket Setting."
+                "set": "{success.emote} Successfully add your Ticket Setting.",
+                "delete": "{success.emote} Successfully deleted your Ticket Setting."
             },
             "interacte": {
                 "create": "{success.emote} Successfully created your ticket. %c",
@@ -36,6 +37,9 @@
             "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
         },
         "ticket": {
+            "setting": {
+                "delete": "{error.emote} There was an error deleting your Ticket Setting. {general.tryAgainLater}"
+            },
             "MAX_SETTINGS": "{error.emote} You have reached the maximum number of tickets (%c)",
             "interacte": {
                 "create": "{error.emote} There was an error creating your ticket. {general.tryAgainLater}",

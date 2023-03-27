@@ -111,4 +111,26 @@ module.exports = class TicketSettings {
                 });
         });
     }
+
+    deleteSettings(message_link) {
+        return new Promise(async (resolve, reject) => {
+            await this.getSettings();
+
+            const newSettings = this.settings.filter(
+                (setting) => setting.message_link !== message_link
+            );
+
+            await GuildConfig.update({
+                guild_id: this.main_interaction.guild.id,
+                value: newSettings,
+                valueName: 'tickets',
+            })
+                .then(() => {
+                    resolve();
+                })
+                .catch(() => {
+                    reject();
+                });
+        });
+    }
 };
