@@ -67,4 +67,18 @@ module.exports = class TicketChannel {
                 });
         });
     }
+
+    moveChannelToClosedCategory() {
+        return new Promise(async (resolve, reject) => {
+            await this.getSettingsWithChannel(this.main_interaction.channel.id);
+            await this.main_interaction.channel
+                .setParent(this.settings.close_category)
+                .then(() => {
+                    resolve();
+                })
+                .catch((err) => {
+                    reject(err.message);
+                });
+        });
+    }
 };

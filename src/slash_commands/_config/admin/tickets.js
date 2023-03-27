@@ -32,7 +32,7 @@ module.exports.ticketConfig = new SlashCommandBuilder()
                 option
                     .setName('moderator')
                     .setDescription(
-                        'Set all the roles that can moderate tickets. If not set, the default moderator role will be used.'
+                        'Set all the roles that can moderate tickets. If not set, the default moderator roles will be used.'
                     )
             )
             .addStringOption((option) =>

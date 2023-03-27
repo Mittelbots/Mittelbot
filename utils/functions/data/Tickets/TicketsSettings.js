@@ -41,8 +41,7 @@ module.exports = class TicketSettings {
                 .catch(() => {
                     return reject();
                 });
-
-            await this.getSettingsOfMessage(ticket.message_link)
+            await this.getSettingsOfMessage(ticket.source_message_link)
                 .then((settings) => {
                     return resolve((this.settings = settings));
                 })

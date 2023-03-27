@@ -121,6 +121,7 @@ module.exports = class TicketInteraction {
                 .then(() => {
                     Promise.all([
                         this.setOwnerPermissionsToFalse(),
+                        this.moveChannelToClosedCategory(),
                         this.clearBtns(),
                         this.generateDeleteButton(),
                         this.generateTranscriptButton(),
