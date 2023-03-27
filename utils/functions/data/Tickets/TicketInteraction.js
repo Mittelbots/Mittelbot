@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { hasPermission } = require('../../hasPermissions');
 
 module.exports = class TicketInteraction {
     constructor(bot, main_interaction) {
@@ -8,8 +9,19 @@ module.exports = class TicketInteraction {
 
     interacte() {
         return new Promise(async (resolve, reject) => {
-            const interaction = this.main_interaction.customId;
+            const isModerator = await this.isTicketModerator().catch(async () => {
+                const hasPermissions = await hasPermission({
+                    guild_id: this.main_interaction.guild.id,
+                    adminOnly: false,
+                    modOnly: false,
+                    user: this.main_interaction.user,
+                    bot: this.bot,
+                });
 
+                return hasPermissions;
+            });
+
+            const interaction = this.main_interaction.customId;
             if (interaction === 'create_ticket') {
                 await this.getSettingsOfMessage(this.main_interaction.message.url);
 

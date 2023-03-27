@@ -122,4 +122,17 @@ module.exports = class Tickets extends (
                 });
         });
     }
+
+    isTicketModerator() {
+        return new Promise(async (resolve, reject) => {
+            await this.getSettingsWithChannel(this.main_interaction.guild.id);
+
+            if (!this.settings) return reject(false);
+
+            if (this.settings.moderator) {
+                return resolve(this.settings.moderator.includes(this.main_interaction.user.id));
+            }
+            return resolve(false);
+        });
+    }
 };
