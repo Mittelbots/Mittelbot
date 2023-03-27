@@ -45,11 +45,17 @@ module.exports = class TicketChannel {
 
     setOwnerPermissionsToFalse() {
         return new Promise(async (resolve, reject) => {
-            console.log(this.settings);
+            const ticket = await this.getTicket({
+                channel_id: this.main_interaction.channel.id,
+            });
             await this.main_interaction.channel.permissionOverwrites
                 .set([
                     {
-                        id: this.settings.owner,
+                        id: ticket.owner,
+                        deny: [PermissionsBitField.Flags.ViewChannel],
+                    },
+                    {
+                        id: this.main_interaction.guild.id,
                         deny: [PermissionsBitField.Flags.ViewChannel],
                     },
                 ])

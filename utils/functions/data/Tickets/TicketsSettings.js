@@ -33,7 +33,7 @@ module.exports = class TicketSettings {
     getSettingsWithChannel(channel_id) {
         return new Promise(async (resolve) => {
             const ticket = await this.getTicket({
-                channel_id: message.channel.id,
+                channel_id,
             })
                 .then((ticket) => {
                     return ticket;
@@ -44,7 +44,7 @@ module.exports = class TicketSettings {
 
             await this.getSettingsOfMessage(ticket.message_link)
                 .then((settings) => {
-                    return resolve(settings);
+                    return resolve((this.settings = settings));
                 })
                 .catch(() => {
                     return reject();

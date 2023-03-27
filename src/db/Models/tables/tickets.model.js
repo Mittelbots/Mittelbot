@@ -8,7 +8,6 @@ Tickets.init(
         guild_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
-            unique: 'guild_id',
         },
         channel_id: {
             type: DataTypes.BIGINT,

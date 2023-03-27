@@ -36,6 +36,14 @@ module.exports = class TicketInteraction {
                     .catch((err) => {
                         reject(err);
                     });
+            } else if (interaction === 'delete_ticket') {
+                await this.delete()
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
             }
 
             resolve();
@@ -115,6 +123,7 @@ module.exports = class TicketInteraction {
                             );
                         })
                         .catch((err) => {
+                            console.error(err);
                             reject(
                                 global.t.trans(
                                     ['error.ticket.interacte.close'],
@@ -124,6 +133,7 @@ module.exports = class TicketInteraction {
                         });
                 })
                 .catch((err) => {
+                    console.error(err);
                     reject(
                         global.t.trans(
                             ['error.ticket.interacte.close'],
@@ -165,6 +175,41 @@ module.exports = class TicketInteraction {
                         });
                 })
                 .catch(() => {});
+        });
+    }
+
+    delete() {
+        return new Promise(async (resolve, reject) => {
+            Promise.all([await this.clearBtns(), await this.appendButtons()])
+                .then(async () => {
+                    await this.main_interaction.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['info.ticket.deletedTicket'],
+                                        this.main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.info'])),
+                        ],
+                    });
+                    setTimeout(async () => {
+                        this.main_interaction.channel.delete().catch(() => {
+                            reject(
+                                gloval.t.trans(
+                                    ['error.permissions.channelDelete'],
+                                    this.main_interaction.guild.id
+                                )
+                            );
+                        });
+                    }, 5100); // 5 seconds + 100ms Delay
+                    resolve();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    reject(global.t.trans(['error.general'], this.main_interaction.guild.id));
+                });
         });
     }
 };

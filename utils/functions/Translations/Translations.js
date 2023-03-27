@@ -62,7 +62,6 @@ module.exports = class Translations {
         for (let i in stringArray) {
             if (stringArray[i].includes('%')) {
                 stringArray[i] = stringArray[i].replace(stringArray[i], values[valueIndex]);
-                console.log(stringArray[i]);
                 valueIndex++;
             }
         }

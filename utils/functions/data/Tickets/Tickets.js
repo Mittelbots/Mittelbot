@@ -45,6 +45,8 @@ module.exports = class Tickets extends (
                     where: {
                         owner: this.main_interaction.user.id,
                         source_message_link,
+                        isOpen: true,
+                        isDeleted: false,
                     },
                 })
                 .then((data) => {
@@ -83,6 +85,28 @@ module.exports = class Tickets extends (
                 .update(
                     {
                         isOpen: false,
+                    },
+                    {
+                        where: {
+                            channel_id: this.main_interaction.channel.id,
+                        },
+                    }
+                )
+                .then(() => {
+                    return resolve(true);
+                })
+                .catch((err) => {
+                    return reject(err.message);
+                });
+        });
+    }
+
+    deleteTicket(channel_id) {
+        return new Promise(async (resolve, reject) => {
+            await ticketModel
+                .update(
+                    {
+                        isDeleted: true,
                     },
                     {
                         where: {

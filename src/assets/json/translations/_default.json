@@ -21,7 +21,12 @@
             }
         }
     },
-    "info": {},
+    "info": {
+        "emote": "💭",
+        "ticket": {
+            "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds..."
+        }
+    },
     "warning": {},
     "error": {
         "emote": "❌",
@@ -39,7 +44,8 @@
             }
         },
         "permissions": {
-            "write": "{error.emote} I don't have permission to write in."
+            "write": "{error.emote} I don't have permission to write in.",
+            "channelDelete": "{error.emote} I don't have permission to delete channels."
         }
     }
 }

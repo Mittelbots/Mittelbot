@@ -117,9 +117,16 @@ module.exports = class TicketEmbeds {
 
     appendButtons() {
         return new Promise(async (resolve) => {
-            this.main_interaction.message.edit({
-                components: [new ActionRowBuilder().addComponents(this.buttons)],
-            });
+            const btns = new ActionRowBuilder().addComponents(this.buttons);
+            if (btns.components.length > 0) {
+                this.main_interaction.message.edit({
+                    components: [new ActionRowBuilder().addComponents(this.buttons)],
+                });
+            } else {
+                this.main_interaction.message.edit({
+                    components: [],
+                });
+            }
             return resolve(true);
         });
     }
