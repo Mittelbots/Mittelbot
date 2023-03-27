@@ -8,52 +8,163 @@ module.exports = class TicketInteraction {
 
     interacte() {
         return new Promise(async (resolve, reject) => {
-            await this.getSettingsOfMessage(this.main_interaction.message.url);
+            const interaction = this.main_interaction.customId;
 
-            const command = this.main_interaction.customId;
+            if (interaction === 'create_ticket') {
+                await this.getSettingsOfMessage(this.main_interaction.message.url);
 
-            if (command === 'create_ticket') {
-                const userhasTicket = await this.hasUserAlreadyTicket(
-                    this.main_interaction.message.url
-                ).catch((err) => {
-                    return reject(err);
-                });
-
-                if (userhasTicket) {
-                    return reject(global.t.trans(['error.ticket.interacte.hasTicketAlready']));
-                }
-
-                const channel = await this.generateTicketChannel()
-                    .then((channel) => {
-                        return channel;
+                await this.create()
+                    .then((message) => {
+                        resolve(message);
                     })
                     .catch((err) => {
-                        return resolve(global.t.trans(['error.ticket.interacte.create']));
+                        reject(err);
                     });
-
-                Promise.all([
-                    await this.sendTicketChannelEmbed(channel),
-                    await this.saveTicket(channel),
-                ])
+            } else if (interaction === 'close_ticket') {
+                await this.close()
+                    .then((message) => {
+                        resolve(message);
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            } else if (interaction === 'save_ticket') {
+                await this.saveTranscript()
                     .then(() => {
-                        return resolve(
-                            global.t.trans(['success.ticket.interacte.create', channel])
-                        );
+                        resolve();
                     })
                     .catch((err) => {
-                        return reject(global.t.trans(['error.generalWithMessage', err]));
+                        reject(err);
                     });
-
-                return;
             }
+
+            resolve();
         });
     }
 
-    isUserWritingInTicket(channel_id) {
-        return new Promise(async (resolve, reject) => {});
+    create() {
+        return new Promise(async (resolve, reject) => {
+            const userhasTicket = await this.hasUserAlreadyTicket(
+                this.main_interaction.message.url
+            ).catch((err) => {
+                return reject(
+                    global.t.trans(
+                        ['error.generalWithMessage', err],
+                        this.main_interaction.guild.id
+                    )
+                );
+            });
+
+            if (userhasTicket) {
+                return reject(global.t.trans(['error.ticket.interacte.hasTicketAlready']));
+            }
+
+            const channel = await this.generateTicketChannel()
+                .then((channel) => {
+                    return channel;
+                })
+                .catch((err) => {
+                    return resolve(
+                        global.t.trans(
+                            ['error.ticket.interacte.create'],
+                            this.main_interaction.guild.id
+                        )
+                    );
+                });
+
+            Promise.all([
+                await this.sendTicketChannelEmbed(channel),
+                await this.saveTicket(channel),
+            ])
+                .then(() => {
+                    return resolve(
+                        global.t.trans(
+                            ['success.ticket.interacte.create', channel],
+                            this.main_interaction.guild.id
+                        )
+                    );
+                })
+                .catch((err) => {
+                    return reject(
+                        global.t.trans(
+                            ['error.generalWithMessage', err],
+                            this.main_interaction.guild.id
+                        )
+                    );
+                });
+        });
     }
 
-    saveUserMessage(message) {
-        return new Promise(async (resolve, reject) => {});
+    close() {
+        return new Promise(async (resolve, reject) => {
+            await this.closeTicket()
+                .then(() => {
+                    Promise.all([
+                        this.setOwnerPermissionsToFalse(),
+                        this.clearBtns(),
+                        this.generateDeleteButton(),
+                        this.generateTranscriptButton(),
+                        this.appendButtons(),
+                    ])
+                        .then(() => {
+                            resolve(
+                                global.t.trans(
+                                    ['success.ticket.interacte.close'],
+                                    this.main_interaction.guild.id
+                                )
+                            );
+                        })
+                        .catch((err) => {
+                            reject(
+                                global.t.trans(
+                                    ['error.ticket.interacte.close'],
+                                    this.main_interaction.guild.id
+                                )
+                            );
+                        });
+                })
+                .catch((err) => {
+                    reject(
+                        global.t.trans(
+                            ['error.ticket.interacte.close'],
+                            this.main_interaction.guild.id
+                        )
+                    );
+                });
+        });
+    }
+
+    saveTranscript() {
+        return new Promise(async (resolve, reject) => {
+            const channel = this.main_interaction.bot.channels.cache.get(
+                this.main_interaction.channel.id
+            );
+            const transcript = await this.generateTranscript(channel);
+
+            this.main_interaction
+                .reply({
+                    content: global.t.trans(
+                        ['success.ticket.interacte.saveTranscript'],
+                        this.main_interaction.guild.id
+                    ),
+                    files: [transcript],
+                })
+                .then(async () => {
+                    Promise.all([
+                        await this.clearBtns(),
+                        await this.generateDeleteButton(),
+                        await this.appendButtons(),
+                    ])
+                        .then(() => {
+                            resolve();
+                        })
+                        .catch((err) => {
+                            reject(
+                                global.t.trans(['error.general'], this.main_interaction.guild.id)
+                            );
+                        });
+                })
+                .catch(() => {});
+        });
     }
 };

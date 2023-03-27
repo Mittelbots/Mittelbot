@@ -7,9 +7,10 @@ const TicketSettings = require('./TicketsSettings');
 const TicketInteraction = require('./TicketInteraction');
 const TicketEmbeds = require('./TicketEmbeds');
 const TicketChannel = require('./TicketChannel');
+const TicketTransscript = require('./TicketTransscript');
 
 module.exports = class Tickets extends (
-    classes(TicketSettings, TicketInteraction, TicketEmbeds, TicketChannel)
+    classes(TicketSettings, TicketInteraction, TicketEmbeds, TicketChannel, TicketTransscript)
 ) {
     buttons = [];
 
@@ -76,55 +77,16 @@ module.exports = class Tickets extends (
         });
     }
 
-    isWritingInTicketChannel(user_id, channel_id) {
+    closeTicket(channel_id) {
         return new Promise(async (resolve, reject) => {
-            await this.getTicket({
-                owner: user_id,
-                channel_id,
-            })
-                .then((data) => {
-                    if (data) {
-                        return resolve(true);
-                    }
-                    return resolve(false);
-                })
-                .catch((err) => {
-                    return resolve(false);
-                });
-        });
-    }
-
-    saveMessage(message) {
-        return new Promise(async (resolve, reject) => {
-            const ticket = await this.getTicket({
-                channel_id: message.channel.id,
-            })
-                .then((data) => {
-                    return data;
-                })
-                .catch((err) => {
-                    return reject(err);
-                });
-
-            const newMessageObj = {
-                message_id: message.id,
-                message_content: message.content,
-                message_author: message.author.id,
-                message_author_tag: message.author.tag,
-                message_author_avatar: message.author.displayAvatarURL(),
-                message_timestamp: message.createdTimestamp,
-            };
-
-            ticket.messages.push(newMessageObj);
-
             await ticketModel
                 .update(
                     {
-                        messages: ticket.messages,
+                        isOpen: false,
                     },
                     {
                         where: {
-                            id: ticket.id,
+                            channel_id: this.main_interaction.channel.id,
                         },
                     }
                 )

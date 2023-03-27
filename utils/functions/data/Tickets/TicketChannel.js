@@ -5,7 +5,6 @@ module.exports = class TicketChannel {
 
     generateTicketChannel() {
         return new Promise(async (resolve, reject) => {
-            console.log(this.settings);
             const channel_name = `ticket-${this.main_interaction.user.username}`;
             const channel = await this.main_interaction.guild.channels
                 .create({
@@ -37,6 +36,25 @@ module.exports = class TicketChannel {
                     }
 
                     resolve(channel);
+                })
+                .catch((err) => {
+                    reject(err.message);
+                });
+        });
+    }
+
+    setOwnerPermissionsToFalse() {
+        return new Promise(async (resolve, reject) => {
+            console.log(this.settings);
+            await this.main_interaction.channel.permissionOverwrites
+                .set([
+                    {
+                        id: this.settings.owner,
+                        deny: [PermissionsBitField.Flags.ViewChannel],
+                    },
+                ])
+                .then(() => {
+                    resolve();
                 })
                 .catch((err) => {
                     reject(err.message);

@@ -47,10 +47,13 @@ module.exports = class TicketEmbeds {
                 )
                 .setColor(this.defaultEmbedOptions.color);
 
+            this.generateCloseButton();
+
             await channel
                 .send({
                     content: `<@${this.main_interaction.user.id}>`,
                     embeds: [embed],
+                    components: [new ActionRowBuilder().addComponents(this.buttons)],
                 })
                 .then(() => {
                     return resolve(true);
@@ -59,6 +62,10 @@ module.exports = class TicketEmbeds {
                     return reject(false);
                 });
         });
+    }
+
+    clearBtns() {
+        this.buttons = [];
     }
 
     generateCreateButton() {

@@ -58,7 +58,6 @@ module.exports = class Translations {
         const stringArray = string.split(' ');
 
         let valueIndex = 0;
-        console.log(stringArray);
 
         for (let i in stringArray) {
             if (stringArray[i].includes('%')) {

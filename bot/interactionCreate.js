@@ -133,6 +133,8 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
             new Tickets(bot, main_interaction)
                 .interacte()
                 .then((res) => {
+                    if (!res) return;
+
                     main_interaction
                         .reply({
                             embeds: [

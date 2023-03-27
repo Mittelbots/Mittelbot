@@ -30,6 +30,28 @@ module.exports = class TicketSettings {
         });
     }
 
+    getSettingsWithChannel(channel_id) {
+        return new Promise(async (resolve) => {
+            const ticket = await this.getTicket({
+                channel_id: message.channel.id,
+            })
+                .then((ticket) => {
+                    return ticket;
+                })
+                .catch(() => {
+                    return reject();
+                });
+
+            await this.getSettingsOfMessage(ticket.message_link)
+                .then((settings) => {
+                    return resolve(settings);
+                })
+                .catch(() => {
+                    return reject();
+                });
+        });
+    }
+
     isMaxSettingsReached() {
         return new Promise(async (resolve) => {
             return resolve(this.settings.length >= this.MAX_SETTINGS);

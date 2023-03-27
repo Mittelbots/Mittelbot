@@ -19,9 +19,9 @@ Tickets.init(
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        messages: {
-            type: DataTypes.JSON,
-            defaultValue: [],
+        isDeleted: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         },
         isOpen: {
             type: DataTypes.BOOLEAN,

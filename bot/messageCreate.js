@@ -56,17 +56,6 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const ticketApi = new Tickets();
-    const isWritingInTicket = await ticketApi.isWritingInTicketChannel(
-        message.author.id,
-        message.channel.id
-    );
-    if (isWritingInTicket) {
-        return ticketApi.saveMessage(message);
-    }
-
-    /** ======================================================= */
-
     const isOnBlacklist = (await moduleApi.checkEnabled(defaultModuleSettings.blacklist))
         ? await Guilds.isBlacklist(message.guild.id)
         : false;

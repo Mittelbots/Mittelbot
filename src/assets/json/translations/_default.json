@@ -16,7 +16,8 @@
             },
             "interacte": {
                 "create": "{success.emote} Successfully created your ticket. %c",
-                "close": "{success.emote} Successfully closed your ticket."
+                "close": "{success.emote} Successfully closed your ticket.",
+                "saveTranscript": "{success.emote} Successfully saved your transcript. You can download it now. (Web-hosted is not currently supported)"
             }
         }
     },
