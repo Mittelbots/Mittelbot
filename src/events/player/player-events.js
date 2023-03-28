@@ -43,6 +43,10 @@ module.exports.registerPlayerEvents = (player) => {
             embeds: [
                 new EmbedBuilder()
                     .setDescription(`Now playing ${track.title}...`)
+                    .addFields({
+                        name: 'Requested by',
+                        value: track.requestedBy.username,
+                    })
                     .setColor('#38ff46')
                     .setImage(track.thumbnail.url)
                     .setTimestamp(),
@@ -55,6 +59,10 @@ module.exports.registerPlayerEvents = (player) => {
             embeds: [
                 new EmbedBuilder()
                     .setDescription(`Track ${track.title} added to the queue!`)
+                    .addFields({
+                        name: 'Requested by',
+                        value: track.requestedBy.username,
+                    })
                     .setColor('#38ff46')
                     .setImage(track.thumbnail.url)
                     .setTimestamp(),

@@ -32,10 +32,17 @@ async function messageCreate(message, bot) {
         return checkOwnerCommand(message);
     }
 
+    /** ======================================================= */
+
+    let moduleApi;
+    let defaultModuleSettings;
     try {
-        var moduleApi = new Modules(message.guild.id, bot);
-        var defaultModuleSettings = moduleApi.getDefaultSettings();
-    } catch (e) {}
+        moduleApi = new Modules(message.guild.id, bot);
+        defaultModuleSettings = moduleApi.getDefaultSettings();
+    } catch (e) {
+        // dm message
+        return;
+    }
 
     /** ======================================================= */
 

@@ -8,7 +8,7 @@ const { Joinroles } = require('../utils/functions/data/Joinroles');
 const Modules = require('../utils/functions/data/Modules');
 
 module.exports.guildMemberAdd = async (member, bot) => {
-    const modulesApi = new Modules();
+    const modulesApi = new Modules(member.guild.id, bot);
     if (await modulesApi.checkEnabled(modulesApi.getDefaultSettings().welcomeUtils)) {
         sendWelcomeMessage({
             guild_id: member.guild.id,
