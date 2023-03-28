@@ -45,6 +45,7 @@ bot.commands = new Collection();
 bot.version = version;
 bot.owner = config.Bot_Owner;
 bot.ownerId = config.Bot_Owner_ID;
+bot.testAcc = config.Test_Account;
 
 bot.player = new Player(bot, {
     connectionTimeout: 60000,
