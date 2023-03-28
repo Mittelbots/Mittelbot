@@ -9,18 +9,6 @@ module.exports = class TicketInteraction {
 
     interacte() {
         return new Promise(async (resolve, reject) => {
-            const isModerator = await this.isTicketModerator().catch(async () => {
-                const hasPermissions = await hasPermission({
-                    guild_id: this.main_interaction.guild.id,
-                    adminOnly: false,
-                    modOnly: false,
-                    user: this.main_interaction.user,
-                    bot: this.bot,
-                });
-
-                return hasPermissions;
-            });
-
             const interaction = this.main_interaction.customId;
             if (interaction === 'create_ticket') {
                 await this.getSettingsOfMessage(this.main_interaction.message.url);
@@ -32,7 +20,7 @@ module.exports = class TicketInteraction {
                     .catch((err) => {
                         reject(err);
                     });
-            } else if (interaction === 'close_ticket') {
+            } else if (interaction === 'close_ticket' && await this.isModerator()) {
                 await this.close()
                     .then((message) => {
                         resolve(message);
@@ -40,7 +28,7 @@ module.exports = class TicketInteraction {
                     .catch((err) => {
                         reject(err);
                     });
-            } else if (interaction === 'save_ticket') {
+            } else if (interaction === 'save_ticket' && await this.isModerator()) {
                 await this.saveTranscript()
                     .then(() => {
                         resolve();
@@ -48,7 +36,7 @@ module.exports = class TicketInteraction {
                     .catch((err) => {
                         reject(err);
                     });
-            } else if (interaction === 'delete_ticket') {
+            } else if (interaction === 'delete_ticket' && await this.isModerator()) {
                 await this.delete()
                     .then(() => {
                         resolve();
@@ -220,6 +208,22 @@ module.exports = class TicketInteraction {
                 .catch((err) => {
                     reject(global.t.trans(['error.general'], this.main_interaction.guild.id));
                 });
+        });
+    }
+
+    isModerator() {
+        return new Promise(async (resolve) => {
+            await this.isTicketModerator().catch(async () => {
+                const hasPermissions = await hasPermission({
+                    guild_id: this.main_interaction.guild.id,
+                    adminOnly: false,
+                    modOnly: false,
+                    user: this.main_interaction.user,
+                    bot: this.bot,
+                });
+
+                resolve(hasPermissions)
+            });
         });
     }
 };
