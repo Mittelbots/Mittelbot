@@ -55,36 +55,41 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
             });
     } else {
-        await ticketApi
-            .deleteSettings(message_link)
-            .then((res) => {
-                main_interaction
-                    .followUp({
-                        embeds: [
-                            new EmbedBuilder().setDescription(
-                                global.t.trans(
-                                    ['success.ticket.setting.delete'],
-                                    main_interaction.guild.id
-                                )
-                            ),
-                        ],
-                    })
-                    .catch(() => {});
-            })
-            .catch((err) => {
-                main_interaction
-                    .followUp({
-                        embeds: [
-                            new EmbedBuilder().setDescription(
-                                global.t.trans(
-                                    ['error.ticket.setting.delete'],
-                                    main_interaction.guild.id
-                                )
-                            ),
-                        ],
-                    })
-                    .catch(() => {});
-            });
+        Promise.all([
+            ticketApi.deleteTicket(message_link),
+            ticketApi.deleteEmbed(message_link),
+        ]).then(async (res) => {
+            await ticketApi
+                .deleteSettings(message_link)
+                .then((res) => {
+                    main_interaction
+                        .followUp({
+                            embeds: [
+                                new EmbedBuilder().setDescription(
+                                    global.t.trans(
+                                        ['success.ticket.setting.delete'],
+                                        main_interaction.guild.id
+                                    )
+                                ),
+                            ],
+                        })
+                        .catch(() => {});
+                })
+                .catch((err) => {
+                    main_interaction
+                        .followUp({
+                            embeds: [
+                                new EmbedBuilder().setDescription(
+                                    global.t.trans(
+                                        ['error.ticket.setting.delete'],
+                                        main_interaction.guild.id
+                                    )
+                                ),
+                            ],
+                        })
+                        .catch(() => {});
+                });
+        });
     }
 };
 

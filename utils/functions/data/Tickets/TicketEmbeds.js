@@ -130,4 +130,21 @@ module.exports = class TicketEmbeds {
             return resolve(true);
         });
     }
+
+    deleteEmbed(message_link) {
+        return new Promise(async (resolve) => {
+            const channelId = message_link.split('/').slice(-2)[0];
+            const messageId = message_link.split('/').pop();
+
+            const message = await this.main_interaction.guild.channels.cache
+                .get(channelId)
+                .messages.fetch(messageId);
+
+            if (message) {
+                message.delete().catch((err) => {});
+            }
+
+            return resolve(true);
+        });
+    }
 };

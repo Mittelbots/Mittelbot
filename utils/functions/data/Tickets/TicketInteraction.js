@@ -11,7 +11,11 @@ module.exports = class TicketInteraction {
         return new Promise(async (resolve, reject) => {
             const interaction = this.main_interaction.customId;
             if (interaction === 'create_ticket') {
-                await this.getSettingsOfMessage(this.main_interaction.message.url);
+                const settingsExists = await this.getSettingsOfMessage(
+                    this.main_interaction.message.url
+                );
+
+                if (!settingsExists) return resolve();
 
                 await this.create()
                     .then((message) => {
@@ -20,7 +24,7 @@ module.exports = class TicketInteraction {
                     .catch((err) => {
                         reject(err);
                     });
-            } else if (interaction === 'close_ticket' && await this.isModerator()) {
+            } else if (interaction === 'close_ticket' && (await this.isModerator())) {
                 await this.close()
                     .then((message) => {
                         resolve(message);
@@ -28,7 +32,7 @@ module.exports = class TicketInteraction {
                     .catch((err) => {
                         reject(err);
                     });
-            } else if (interaction === 'save_ticket' && await this.isModerator()) {
+            } else if (interaction === 'save_ticket' && (await this.isModerator())) {
                 await this.saveTranscript()
                     .then(() => {
                         resolve();
@@ -36,7 +40,7 @@ module.exports = class TicketInteraction {
                     .catch((err) => {
                         reject(err);
                     });
-            } else if (interaction === 'delete_ticket' && await this.isModerator()) {
+            } else if (interaction === 'delete_ticket' && (await this.isModerator())) {
                 await this.delete()
                     .then(() => {
                         resolve();
@@ -222,7 +226,7 @@ module.exports = class TicketInteraction {
                     bot: this.bot,
                 });
 
-                resolve(hasPermissions)
+                resolve(hasPermissions);
             });
         });
     }

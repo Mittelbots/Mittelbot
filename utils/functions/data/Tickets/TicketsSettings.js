@@ -78,8 +78,8 @@ module.exports = class TicketSettings {
             const newSettings = {
                 channel,
                 description,
-                category,
-                close_category,
+                category: category.id || null,
+                close_category: close_category.id || null,
                 moderator,
                 ticket_description,
             };

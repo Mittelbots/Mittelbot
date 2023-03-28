@@ -6,7 +6,7 @@ module.exports = class TicketChannel {
     generateTicketChannel() {
         return new Promise(async (resolve, reject) => {
             const channel_name = `ticket-${this.main_interaction.user.username}`;
-            const channel = await this.main_interaction.guild.channels
+            await this.main_interaction.guild.channels
                 .create({
                     name: channel_name,
                     type: ChannelType.GuildText,
@@ -30,6 +30,10 @@ module.exports = class TicketChannel {
                                 {
                                     id: this.settings.moderator[i],
                                     allow: [PermissionsBitField.Flags.ViewChannel],
+                                },
+                                {
+                                    id: this.main_interaction.guild.id,
+                                    deny: [PermissionsBitField.Flags.ViewChannel],
                                 },
                             ]);
                         }

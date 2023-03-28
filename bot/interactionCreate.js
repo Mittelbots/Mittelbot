@@ -19,7 +19,11 @@ const defaultCooldown = new Set();
 module.exports.interactionCreate = async ({ main_interaction, bot }) => {
     main_interaction.bot = bot;
 
-    if (bot.user.id === '921779661795639336' && (main_interaction.user.id !== bot.ownerId && main_interaction.user.id !== bot.testAcc)) {
+    if (
+        bot.user.id === '921779661795639336' &&
+        main_interaction.user.id !== bot.ownerId &&
+        main_interaction.user.id !== bot.testAcc
+    ) {
         return main_interaction.reply({
             content: 'Sorry, but this bot is in development and only the owner can use it.',
             ephemeral: true,
