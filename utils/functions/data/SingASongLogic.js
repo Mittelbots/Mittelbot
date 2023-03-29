@@ -1,7 +1,6 @@
 const { default: axios } = require('axios');
 const { sequelize } = require('../../../src/db/Models/tables/singasong.model');
 const singasong = require('../../../src/db/Models/tables/singasong.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports = class SingASongLogic {
     constructor() {}
@@ -25,9 +24,6 @@ module.exports = class SingASongLogic {
                     return resolve(false);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return resolve(true);
                 });
         });
@@ -47,9 +43,6 @@ module.exports = class SingASongLogic {
                     return resolve(false);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(true);
                 });
         });
@@ -68,9 +61,6 @@ module.exports = class SingASongLogic {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(`An error occured while i created some data!`);
                 });
         });
@@ -85,9 +75,6 @@ module.exports = class SingASongLogic {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     this.quote = false;
                     reject(true);
                 });
@@ -114,9 +101,6 @@ module.exports = class SingASongLogic {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -149,9 +133,6 @@ module.exports = class SingASongLogic {
                     return resolve(false);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -173,9 +154,6 @@ module.exports = class SingASongLogic {
                     return resolve(false);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -198,9 +176,6 @@ module.exports = class SingASongLogic {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -219,9 +194,6 @@ module.exports = class SingASongLogic {
                     return resolve(false);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -236,9 +208,6 @@ module.exports = class SingASongLogic {
                     },
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
 
@@ -256,9 +225,6 @@ module.exports = class SingASongLogic {
                         }
                     )
                     .catch((err) => {
-                        errorhandler({
-                            err,
-                        });
                         return reject(false);
                     });
             } else {
@@ -268,9 +234,6 @@ module.exports = class SingASongLogic {
                         banned: [guild_id],
                     })
                     .catch((err) => {
-                        errorhandler({
-                            err,
-                        });
                         return reject(false);
                     });
             }

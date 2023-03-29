@@ -1,5 +1,4 @@
 const globalConfig = require('../../../src/db/Models/tables/globalConfig.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 
 class GlobalConfig {
     constructor() {}
@@ -12,7 +11,6 @@ class GlobalConfig {
                     return resolve(data[0]);
                 })
                 .catch((err) => {
-                    errorhandler({ err, fatal: true });
                     return reject(false);
                 });
         });
@@ -35,7 +33,6 @@ class GlobalConfig {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err, fatal: true });
                     return reject(false);
                 });
         });

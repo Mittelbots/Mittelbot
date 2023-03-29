@@ -1,5 +1,4 @@
 const database = require('../../../src/db/db');
-const { errorhandler } = require('../errorhandler/errorhandler');
 const dns = require('dns');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { removeHttp } = require('../removeCharacters');
@@ -16,9 +15,6 @@ class Scam {
                     resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -51,11 +47,7 @@ class Scam {
                     }
                 })
                 .catch((err) => {
-                    reject(`❌ Error while checking something in the database!`);
-                    return errorhandler({
-                        err,
-                        fatal: true,
-                    });
+                    return reject(`❌ Error while checking something in the database!`);
                 });
 
             if (!pass) return;
@@ -227,12 +219,7 @@ class Scam {
                             });
                         });
                     })
-                    .catch((err) => {
-                        return errorhandler({
-                            err,
-                            fatal: true,
-                        });
-                    });
+                    .catch((err) => {});
             } else {
                 value = removeHttp(value);
                 advancedScamList
@@ -248,12 +235,7 @@ class Scam {
 
                         return resolve('✅ **Matching link found!**');
                     })
-                    .catch((err) => {
-                        return errorhandler({
-                            err,
-                            fatal: true,
-                        });
-                    });
+                    .catch((err) => {});
             }
         });
     }
@@ -356,11 +338,9 @@ function sendScamEmbed({ bot, link, guild_id, guild_name, author, type }) {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    reject('❌ Error while inserting into database! The request was not sent!');
-                    return errorhandler({
-                        err,
-                        fatal: true,
-                    });
+                    return reject(
+                        '❌ Error while inserting into database! The request was not sent!'
+                    );
                 });
         }
     });
@@ -381,11 +361,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                 return res;
             })
             .catch((err) => {
-                reject('❌ Error while getting data from the database!');
-                return errorhandler({
-                    err,
-                    fatal: true,
-                });
+                return reject('❌ Error while getting data from the database!');
             });
 
         if (!request || !request.length === 0) {
@@ -410,11 +386,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                         },
                     })
                     .catch((err) => {
-                        reject(`❌ Error while deleting the link from the list`);
-                        return errorhandler({
-                            err,
-                            fatal: true,
-                        });
+                        return reject(`❌ Error while deleting the link from the list`);
                     });
             } else {
                 await advancedScamList
@@ -429,11 +401,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                                 },
                             })
                             .catch((err) => {
-                                reject(`❌ Error while deleting the link from the list`);
-                                return errorhandler({
-                                    err,
-                                    fatal: true,
-                                });
+                                return reject(`❌ Error while deleting the link from the list`);
                             });
                         return res;
                     })
@@ -472,11 +440,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                         }
                     })
                     .catch((err) => {
-                        reject(`❌ Error while adding the link to the list`);
-                        return errorhandler({
-                            err,
-                            fatal: true,
-                        });
+                        return reject(`❌ Error while adding the link to the list`);
                     });
             }
             await user
@@ -506,11 +470,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                     }
                 })
                 .catch((err) => {
-                    reject(`❌ Error while adding the server to the blacklist`);
-                    return errorhandler({
-                        err,
-                        fatal: true,
-                    });
+                    return reject(`❌ Error while adding the server to the blacklist`);
                 });
             await user
                 .send(
@@ -528,10 +488,5 @@ module.exports.getScamList = async () => {
         .then((res) => {
             return res;
         })
-        .catch((err) => {
-            return errorhandler({
-                err,
-                fatal: true,
-            });
-        });
+        .catch((err) => {});
 };

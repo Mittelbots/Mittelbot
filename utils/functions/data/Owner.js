@@ -4,7 +4,7 @@ const { Levelsystem } = require('./levelsystemAPI');
 const { spawn } = require('child_process');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { AttachmentBuilder } = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
+const { createSlashCommands } = require('../createSlashCommands/createSlashCommands');
 
 module.exports.checkOwnerCommand = async (message) => {
     const args = message.content.split(' ');
@@ -30,8 +30,12 @@ module.exports.checkOwnerCommand = async (message) => {
         case 'exportlogs':
             this.export_logs(message, args);
             break;
+        case 'deploycommands':
+            this.deploy_commands(message.bot);
+            break;
         case 'sendRestartNotice':
             this.sendRestartNotice(message, args);
+            break;
         default:
             break;
     }
@@ -161,6 +165,10 @@ module.exports.export_logs = async (message, args) => {
                 })
                 .catch((err) => {});
         });
+};
+
+module.exports.deploy_commands = async (bot) => {
+    await createSlashCommands(bot);
 };
 
 module.exports.sendRestartNotice = async (message, args) => {

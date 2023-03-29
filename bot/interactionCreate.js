@@ -11,11 +11,19 @@ const pride = require('../src/slash_commands/fun/pride');
 const Tutorial = require('../utils/functions/data/Tutorial');
 const SingASong = require('../utils/functions/data/SingASong');
 const Banappeal = require('../utils/functions/data/Banappeal');
+const Tickets = require('../utils/functions/data/Tickets/Tickets');
+const { EmbedBuilder } = require('discord.js');
 
 const defaultCooldown = new Set();
 
 module.exports.interactionCreate = async ({ main_interaction, bot }) => {
-    if (bot.user.id === '921779661795639336' && main_interaction.user.id !== bot.ownerId) {
+    main_interaction.bot = bot;
+
+    if (
+        bot.user.id === '921779661795639336' &&
+        main_interaction.user.id !== bot.ownerId &&
+        main_interaction.user.id !== bot.testAcc
+    ) {
         return main_interaction.reply({
             content: 'Sorry, but this bot is in development and only the owner can use it.',
             ephemeral: true,
@@ -125,7 +133,36 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
         if (main_interaction.customId.indexOf('singasong_cancel') === 0) {
             new SingASong(main_interaction, bot).interaction();
         }
+        if (main_interaction.customId.indexOf('ticket') !== -1) {
+            new Tickets(bot, main_interaction)
+                .interacte()
+                .then((res) => {
+                    if (!res) return;
 
+                    main_interaction
+                        .reply({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(res)
+                                    .setColor(global.t.trans(['general.colors.success'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    main_interaction
+                        .reply({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(err)
+                                    .setColor(global.t.trans(['general.colors.error'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
+        }
         if (main_interaction.customId.indexOf('banappeal') === 0) {
             new Banappeal(bot).manageBanappeal(main_interaction);
         }

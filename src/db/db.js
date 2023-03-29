@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
+const SequelizeModel = require('sequelize/lib/model');
 require('dotenv').config();
 
 const database = new Sequelize(
@@ -11,14 +12,7 @@ const database = new Sequelize(
     {
         host: process.env.DB_HOST,
         dialect: 'mysql',
-        logging: (...msg) => {
-            if (msg[1].showWarnings) {
-                errorhandler({
-                    message: msg,
-                    fatal: true,
-                });
-            }
-        },
+        logging: false,
         pool: {
             max: 5,
             min: 0,
@@ -26,7 +20,7 @@ const database = new Sequelize(
             idle: 10000,
         },
         retry: {
-            max: 3,
+            max: 7,
         },
         define: {
             freezeTableName: true,
@@ -34,6 +28,49 @@ const database = new Sequelize(
         },
     }
 );
+
+const orgFindAll = SequelizeModel.findAll;
+SequelizeModel.findAll = function () {
+    return orgFindAll.apply(this, arguments).catch((err) => {
+        errorhandler({ err, databaseError: true });
+        throw err;
+    });
+};
+const orgFindOne = SequelizeModel.findOne;
+SequelizeModel.findOne = function () {
+    return orgFindOne.apply(this, arguments).catch((err) => {
+        errorhandler({ err, databaseError: true });
+        throw err;
+    });
+};
+const orgFindOrCreate = SequelizeModel.findOrCreate;
+SequelizeModel.findOrCreate = function () {
+    return orgFindOrCreate.apply(this, arguments).catch((err) => {
+        errorhandler({ err, databaseError: true });
+        throw err;
+    });
+};
+const orgCreate = SequelizeModel.create;
+SequelizeModel.create = function () {
+    return orgCreate.apply(this, arguments).catch((err) => {
+        errorhandler({ err, databaseError: true });
+        throw err;
+    });
+};
+const orgUpdate = SequelizeModel.update;
+SequelizeModel.update = function () {
+    return orgUpdate.apply(this, arguments).catch((err) => {
+        errorhandler({ err, databaseError: true });
+        throw err;
+    });
+};
+const orgDestroy = SequelizeModel.destroy;
+SequelizeModel.destroy = function () {
+    return orgDestroy.apply(this, arguments).catch((err) => {
+        errorhandler({ err, databaseError: true });
+        throw err;
+    });
+};
 
 database.init = () => {
     return new Promise(async (resolve, reject) => {
@@ -71,11 +108,55 @@ database.afterSync((connection) => {
     console.log(`Successfully synced ${connection.name.plural}.`);
 });
 
-database.afterDestroy((error) => {
-    errorhandler({
-        message: 'Database connection error! ' + error.toString(),
-        fatal: true,
-    });
+function errorHandler(err) {
+    errorhandler({ err });
+}
+
+database.afterFind((result, options) => {
+    //check if a error occured
+
+    if (result instanceof Error) {
+        console.log('Error occured in afterFind hook');
+        errorHandler(result);
+    }
+});
+
+database.afterQuery((result, options) => {
+    //check if a error occured
+    if (result instanceof Error) {
+        console.log('Error occured in afterQuery hook');
+        errorHandler(result);
+    }
+});
+
+// afterCreate
+database.afterCreate((result, options) => {
+    // Aktionen ausführen
+});
+
+// afterUpdate
+database.afterUpdate((result, options) => {
+    // Aktionen ausführen
+});
+
+// afterDestroy
+database.afterDestroy((result, options) => {
+    // Aktionen ausführen
+});
+
+// afterBulkCreate
+database.afterBulkCreate((result, options) => {
+    // Aktionen ausführen
+});
+
+// afterBulkUpdate
+database.afterBulkUpdate((result, options) => {
+    // Aktionen ausführen
+});
+
+// afterBulkDestroy
+database.afterBulkDestroy((result, options) => {
+    // Aktionen ausführen
 });
 
 module.exports = database;

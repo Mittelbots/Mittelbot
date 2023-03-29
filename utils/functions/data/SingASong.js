@@ -258,12 +258,7 @@ module.exports = class SingASong extends SingASongLogic {
                     embeds: [this.#embed],
                     components: [this.#row],
                 })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: false,
-                    });
-                });
+                .catch((err) => {});
 
             this.#startTimer();
         });
@@ -281,9 +276,6 @@ module.exports = class SingASong extends SingASongLogic {
                     return resolve(data.upvotes);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -320,9 +312,6 @@ module.exports = class SingASong extends SingASongLogic {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -376,9 +365,6 @@ module.exports = class SingASong extends SingASongLogic {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });

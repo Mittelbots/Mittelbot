@@ -15,6 +15,7 @@ const Autodelete = require('../utils/functions/data/Autodelete');
 const { EmbedBuilder, ChannelType } = require('discord.js');
 const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
+const Tickets = require('../utils/functions/data/Tickets/Tickets');
 
 async function messageCreate(message, bot) {
     message.bot = bot;

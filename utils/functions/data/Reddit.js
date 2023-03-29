@@ -1,6 +1,5 @@
 const { default: axios } = require('axios');
 const reddit = require('../../../src/db/Models/tables/reddit.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 
 class Reddit {
     constructor() {}
@@ -17,9 +16,6 @@ class Reddit {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -46,9 +42,6 @@ class Reddit {
                         return resolve(data);
                     })
                     .catch((err) => {
-                        errorhandler({
-                            err,
-                        });
                         return reject(false);
                     });
             } else {
@@ -65,10 +58,6 @@ class Reddit {
                         return resolve(data);
                     })
                     .catch((err) => {
-                        errorhandler({
-                            err,
-                        });
-
                         return reject(false);
                     });
             }
@@ -86,9 +75,6 @@ class Reddit {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -102,9 +88,6 @@ class Reddit {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -131,9 +114,6 @@ class Reddit {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -152,9 +132,6 @@ class Reddit {
                     return resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });

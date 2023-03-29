@@ -11,7 +11,7 @@ module.exports.createSlashCommands = async (bot) => {
     const guildId = process.env.DEVELOPER_DISCORD_GUILD_ID;
 
     for (const cmd_folder of modules) {
-        if (cmd_folder.startsWith('._')) continue;
+        if (cmd_folder.startsWith('._') || cmd_folder.startsWith('_')) continue;
         const files = fs.readdirSync(`./src/slash_commands/${cmd_folder}/`);
         for (const command_file of files) {
             if (command_file.startsWith('._')) continue;

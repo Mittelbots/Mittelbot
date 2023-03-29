@@ -1,6 +1,5 @@
 const closedInfractions = require('../../../src/db/Models/tables/closedInfractions.model');
 const openInfractions = require('../../../src/db/Models/tables/open_infractions.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 const { Guilds } = require('./Guilds');
 
 class Infractions {
@@ -76,7 +75,6 @@ class Infractions {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err, fatal: true });
                     return resolve(false);
                 });
         });
@@ -94,7 +92,6 @@ class Infractions {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err, fatal: true });
                     return resolve(false);
                 });
         });
@@ -112,7 +109,6 @@ class Infractions {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err, fatal: true });
                     return resolve(false);
                 });
         });
@@ -158,7 +154,6 @@ class Infractions {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err, fatal: true });
                     return resolve(false);
                 });
         });

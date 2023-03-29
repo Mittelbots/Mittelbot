@@ -63,10 +63,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
                 };
             })
             .catch((err) => {
-                errorhandler({
-                    err,
-                    fatal: true,
-                });
                 reject(
                     `❌ Something went wrong while selecting all youtube channels. Please contact the Bot support.`
                 );
@@ -135,10 +131,6 @@ module.exports.delYTChannelFromList = async ({ guild_id }) => {
                 resolve(true);
             })
             .catch((err) => {
-                errorhandler({
-                    err,
-                    fatal: true,
-                });
                 reject(false);
             });
     });
