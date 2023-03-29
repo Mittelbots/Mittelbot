@@ -17,7 +17,7 @@ module.exports = class TicketEmbeds {
             const embed = new EmbedBuilder()
                 .setTitle(this.defaultEmbedOptions.title)
                 .setDescription(
-                    newSettings.ticket_description || this.defaultEmbedOptions.ticket_description
+                    newSettings.description || this.defaultEmbedOptions.description
                 )
                 .setColor(this.defaultEmbedOptions.color);
 
