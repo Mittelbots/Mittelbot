@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { hasPermission } = require('../../hasPermissions');
 
 module.exports = class TicketInteraction {
     constructor(bot, main_interaction) {
@@ -71,18 +70,14 @@ module.exports = class TicketInteraction {
                 return reject(global.t.trans(['error.ticket.interacte.hasTicketAlready']));
             }
 
-            const channel = await this.generateTicketChannel()
-                .then((channel) => {
-                    return channel;
-                })
-                .catch((err) => {
-                    return resolve(
-                        global.t.trans(
-                            ['error.ticket.interacte.create'],
-                            this.main_interaction.guild.id
-                        )
-                    );
-                });
+            const channel = await this.generateTicketChannel().catch((err) => {
+                return resolve(
+                    global.t.trans(
+                        ['error.ticket.interacte.create'],
+                        this.main_interaction.guild.id
+                    )
+                );
+            });
 
             Promise.all([
                 await this.sendTicketChannelEmbed(channel),
@@ -217,17 +212,13 @@ module.exports = class TicketInteraction {
 
     isModerator() {
         return new Promise(async (resolve) => {
-            await this.isTicketModerator().catch(async () => {
-                const hasPermissions = await hasPermission({
-                    guild_id: this.main_interaction.guild.id,
-                    adminOnly: false,
-                    modOnly: false,
-                    user: this.main_interaction.user,
-                    bot: this.bot,
+            await this.isTicketModerator()
+                .then((isTicketModerator) => {
+                    resolve(isTicketModerator);
+                })
+                .catch(async () => {
+                    resolve(false);
                 });
-
-                resolve(hasPermissions);
-            });
         });
     }
 };

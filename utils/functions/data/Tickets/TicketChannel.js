@@ -15,28 +15,22 @@ module.exports = class TicketChannel {
                         {
                             id: this.main_interaction.guild.id,
                             deny: [PermissionsBitField.Flags.ViewChannel],
-                            allow: [PermissionsBitField.Flags.SendMessages],
                         },
                         {
                             id: this.main_interaction.user.id,
-                            allow: [PermissionsBitField.Flags.ViewChannel],
+                            allow: [
+                                PermissionsBitField.Flags.ViewChannel,
+                                PermissionsBitField.Flags.SendMessages,
+                                PermissionsBitField.Flags.ReadMessageHistory,
+                                PermissionsBitField.Flags.AttachFiles,
+                                PermissionsBitField.Flags.EmbedLinks,
+                            ],
                         },
                     ],
                 })
                 .then((channel) => {
                     if (this.settings.moderator && this.settings.moderator.length > 0) {
-                        for (let i in this.settings.moderator) {
-                            channel.permissionOverwrites.set([
-                                {
-                                    id: this.settings.moderator[i],
-                                    allow: [PermissionsBitField.Flags.ViewChannel],
-                                },
-                                {
-                                    id: this.main_interaction.guild.id,
-                                    deny: [PermissionsBitField.Flags.ViewChannel],
-                                },
-                            ]);
-                        }
+                        this.setModeratorPermissionsToChannel(channel);
                     }
 
                     resolve(channel);
@@ -47,22 +41,33 @@ module.exports = class TicketChannel {
         });
     }
 
+    setModeratorPermissionsToChannel(channel) {
+        return new Promise(async (resolve) => {
+            for (let i in this.settings.moderator) {
+                channel.permissionOverwrites.edit(this.settings.moderator[i], {
+                    ViewChannel: true,
+                    ManageMessages: true,
+                    EmbedLinks: true,
+                    AttachFiles: true,
+                    ReadMessageHistory: true,
+                    SendMessages: true,
+                    AddReactions: true,
+                });
+            }
+
+            resolve();
+        });
+    }
+
     setOwnerPermissionsToFalse() {
         return new Promise(async (resolve, reject) => {
             const ticket = await this.getTicket({
                 channel_id: this.main_interaction.channel.id,
             });
             await this.main_interaction.channel.permissionOverwrites
-                .set([
-                    {
-                        id: ticket.owner,
-                        deny: [PermissionsBitField.Flags.ViewChannel],
-                    },
-                    {
-                        id: this.main_interaction.guild.id,
-                        deny: [PermissionsBitField.Flags.ViewChannel],
-                    },
-                ])
+                .edit(ticket.owner, {
+                    ViewChannel: false,
+                })
                 .then(() => {
                     resolve();
                 })

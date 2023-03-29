@@ -8,6 +8,7 @@ const TicketInteraction = require('./TicketInteraction');
 const TicketEmbeds = require('./TicketEmbeds');
 const TicketChannel = require('./TicketChannel');
 const TicketTransscript = require('./TicketTransscript');
+const { hasPermission } = require('../../hasPermissions');
 
 module.exports = class Tickets extends (
     classes(TicketSettings, TicketInteraction, TicketEmbeds, TicketChannel, TicketTransscript)
@@ -125,14 +126,29 @@ module.exports = class Tickets extends (
 
     isTicketModerator() {
         return new Promise(async (resolve, reject) => {
-            await this.getSettingsWithChannel(this.main_interaction.guild.id);
-
+            await this.getSettingsWithChannel(this.main_interaction.channel.id);
             if (!this.settings) return reject(false);
 
+            let isTicketModerator = false;
+
             if (this.settings.moderator) {
-                return resolve(this.settings.moderator.includes(this.main_interaction.user.id));
+                const userRoles = this.main_interaction.member.roles.cache.map((r) => r.id);
+                const moderatorRoles = this.settings.moderator;
+                const hasTicketModRole = userRoles.some((r) => moderatorRoles.includes(r));
+                isTicketModerator = hasTicketModRole;
             }
-            return resolve(false);
+
+            if (!isTicketModerator) {
+                isTicketModerator = await hasPermission({
+                    guild_id: this.main_interaction.guild.id,
+                    adminOnly: false,
+                    modOnly: false,
+                    user: this.main_interaction.user,
+                    bot: this.bot,
+                });
+            }
+
+            return resolve(isTicketModerator);
         });
     }
 };
