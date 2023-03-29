@@ -16,9 +16,7 @@ module.exports = class TicketEmbeds {
         return new Promise(async (resolve) => {
             const embed = new EmbedBuilder()
                 .setTitle(this.defaultEmbedOptions.title)
-                .setDescription(
-                    newSettings.description || this.defaultEmbedOptions.description
-                )
+                .setDescription(newSettings.description || this.defaultEmbedOptions.description)
                 .setColor(this.defaultEmbedOptions.color);
 
             const btn = await this.generateCreateButton();
