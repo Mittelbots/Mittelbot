@@ -16,7 +16,7 @@
             "showGuildCount": true
         },
         {
-            "text": "/help - with new Reddit notifier /reddit_notifier on {guildCount} servers",
+            "text": "/help - with new Ticket System /tickets on {guildCount} servers",
             "showGuildCount": true
         },
         {

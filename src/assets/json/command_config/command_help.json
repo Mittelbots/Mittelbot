@@ -92,6 +92,12 @@
             "description": "Delete messages that are sent in a specific channel and only allow a certain type of messages.",
             "usage": "/autodelete",
             "icon": "🗑"
+        },
+        "ticket": {
+            "name": "Tickets",
+            "description": "Setup tickets.",
+            "usage": "/tickets",
+            "icon": "🎫"
         }
     },
     "moderation": {
