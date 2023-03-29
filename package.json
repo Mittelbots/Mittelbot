@@ -61,7 +61,7 @@
         "passport": "^0.6.0",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.12.0",
-        "sequelize": "^6.29.3",
+        "sequelize": "^6.30.0",
         "simple-node-logger": "^21.8.12",
         "simple-youtube-api": "^5.2.1",
         "translatte": "^3.0.1",
@@ -74,7 +74,7 @@
     "devDependencies": {
         "chalk": "^4.1.0",
         "nodemon": "^2.0.22",
-        "prettier": "^2.8.6",
+        "prettier": "^2.8.7",
         "string-width": "4.2.3"
     }
 }

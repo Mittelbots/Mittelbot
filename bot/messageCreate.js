@@ -19,6 +19,7 @@ const Tickets = require('../utils/functions/data/Tickets/Tickets');
 
 async function messageCreate(message, bot) {
     message.bot = bot;
+    
     if (
         message.channel.type === ChannelType.DM &&
         !message.author.bot &&
