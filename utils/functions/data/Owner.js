@@ -167,7 +167,6 @@ module.exports.export_logs = async (message, args) => {
         });
 };
 
-
 module.exports.deploy_commands = async (bot) => {
     await createSlashCommands(bot);
 };
