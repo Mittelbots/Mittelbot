@@ -1,5 +1,4 @@
 const memberInfo = require('../../../src/db/Models/tables/memberInfo.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 const { Guilds } = require('./Guilds');
 
 class MemberInfo {
@@ -19,9 +18,6 @@ class MemberInfo {
                     resolve(data);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -71,9 +67,6 @@ class MemberInfo {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });
@@ -97,9 +90,6 @@ class MemberInfo {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     return reject(false);
                 });
         });

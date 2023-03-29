@@ -8,6 +8,7 @@ const guildUploads = require('./guildUploads.model');
 const memberInfo = require('./memberInfo.model');
 const openInfractions = require('./open_infractions.model');
 const temproles = require('./temproles.model');
+const ticketModel = require('./tickets.model');
 const twitchStreams = require('./twitchStreams.model');
 
 class Guilds extends Model {}
@@ -94,6 +95,14 @@ Guilds.hasMany(twitchStreams, {
     foreignKey: 'guild_id',
     sourceKey: 'guild_id',
     as: 'twitchStreams',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+});
+
+Guilds.hasMany(ticketModel, {
+    foreignKey: 'guild_id',
+    sourceKey: 'guild_id',
+    as: 'tickets',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });

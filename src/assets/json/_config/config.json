@@ -1,6 +1,7 @@
 {
     "Bot_Owner": "https://github.com/Mittelblut9",
     "Bot_Owner_ID": "395923095472570368",
+    "Test_Account": "823900635157233674",
     "defaultCooldown": {
         "format": "2000",
         "text": "2 seconds"

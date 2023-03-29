@@ -1,5 +1,4 @@
 const allGuildId = require('../../../src/db/Models/tables/guilds.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 const blacklist = require('../../../src/assets/json/blacklist/guilds.json');
 
 class Guilds {
@@ -21,7 +20,6 @@ class Guilds {
                     await guild.createAutomod({}, { ignoreDuplicates: true });
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(false);
                 });
         });
@@ -43,7 +41,6 @@ class Guilds {
                     return resolve(guild);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(false);
                 });
         });
@@ -56,7 +53,6 @@ class Guilds {
                 return res.length > 0 ? res : false;
             })
             .catch((err) => {
-                errorhandler({ err: err, fatal: true });
                 return false;
             });
     }

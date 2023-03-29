@@ -1,5 +1,4 @@
 const banappealModel = require('../../../src/db/Models/tables/banappeal.model');
-const { errorhandler } = require('../errorhandler/errorhandler');
 const BanappealLogic = require('./BanappealLogic');
 const { GuildConfig } = require('./Config');
 
@@ -45,9 +44,6 @@ module.exports = class Banappeal extends BanappealLogic {
                     }
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     reject(false);
                 });
         });
@@ -93,9 +89,6 @@ module.exports = class Banappeal extends BanappealLogic {
                     resolve(result);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     reject(false);
                 });
         });
@@ -119,9 +112,6 @@ module.exports = class Banappeal extends BanappealLogic {
                     resolve(result);
                 })
                 .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
                     reject(false);
                 });
         });

@@ -1,5 +1,4 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
-const config_file = require('../../../src/assets/json/_config/config.json');
 const guildConfig = require('../../../src/db/Models/tables/guildConfig.model');
 const { Guilds } = require('./Guilds');
 
@@ -21,7 +20,6 @@ class GuildConfig {
                     resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(false);
                 });
         });
@@ -34,7 +32,6 @@ class GuildConfig {
             try {
                 return resolve(await guild.getConfig());
             } catch (err) {
-                errorhandler({ err });
                 return resolve([]);
             }
         });
@@ -57,21 +54,8 @@ class GuildConfig {
                     return resolve(true);
                 })
                 .catch((err) => {
-                    errorhandler({ err });
                     return reject(err);
                 });
-        });
-    }
-
-    checkPrefix({ value }) {
-        return new Promise(async (resolve, reject) => {
-            let pass = 0;
-            for (let i in config_file.settings.prefix.required) {
-                if (!value.endsWith(config_file.settings.prefix.required[i])) pass++;
-            }
-            if (pass === config_file.settings.prefix.required.length) return resolve(false);
-
-            return resolve(true);
         });
     }
 }

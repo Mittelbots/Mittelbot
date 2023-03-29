@@ -13,6 +13,7 @@ const { delay } = require('../../utils/functions/delay/delay');
 const { acceptBotInteraction } = require('./botEvents');
 const { Player } = require('discord-player');
 const { registerPlayerEvents } = require('../../src/events/player/player-events');
+const Translations = require('../../utils/functions/Translations/Translations');
 
 processErrorHandler();
 
@@ -44,6 +45,7 @@ bot.commands = new Collection();
 bot.version = version;
 bot.owner = config.Bot_Owner;
 bot.ownerId = config.Bot_Owner_ID;
+bot.testAcc = config.Test_Account;
 
 bot.player = new Player(bot, {
     connectionTimeout: 60000,
@@ -53,6 +55,8 @@ bot.player = new Player(bot, {
         quality: 'highestaudio',
     },
 });
+
+global.t = new Translations();
 
 registerPlayerEvents(bot.player);
 

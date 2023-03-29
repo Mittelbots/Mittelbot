@@ -1,0 +1,55 @@
+{
+    "general": {
+        "tryAgainLater": "Please try again later.",
+        "colors": {
+            "success": "#00ff00",
+            "info": "#0000ff",
+            "warning": "#ffff00",
+            "error": "#ff0000"
+        }
+    },
+    "success": {
+        "emote": "✅",
+        "ticket": {
+            "setting": {
+                "set": "{success.emote} Successfully add your Ticket Setting.",
+                "delete": "{success.emote} Successfully deleted your Ticket Setting."
+            },
+            "interacte": {
+                "create": "{success.emote} Successfully created your ticket. %c",
+                "close": "{success.emote} Successfully closed your ticket.",
+                "saveTranscript": "{success.emote} Successfully saved your transcript. You can download it now. (Web-hosted is not currently supported)"
+            }
+        }
+    },
+    "info": {
+        "emote": "💭",
+        "ticket": {
+            "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds..."
+        }
+    },
+    "warning": {},
+    "error": {
+        "emote": "❌",
+        "general": "{error.emote} There was an error processing your request. {general.tryAgainLater}",
+        "generalWithMessage": "{error.general} %c",
+        "embed": {
+            "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
+        },
+        "ticket": {
+            "setting": {
+                "delete": "{error.emote} There was an error deleting your Ticket Setting. {general.tryAgainLater}"
+            },
+            "MAX_SETTINGS": "{error.emote} You have reached the maximum number of tickets (%c)",
+            "interacte": {
+                "create": "{error.emote} There was an error creating your ticket. {general.tryAgainLater}",
+                "close": "{error.emote} There was an error closing your ticket. {general.tryAgainLater}",
+                "hasTicketAlready": "{error.emote} You already have a ticket open."
+            }
+        },
+        "permissions": {
+            "write": "{error.emote} I don't have permission to write in.",
+            "channelDelete": "{error.emote} I don't have permission to delete channels."
+        }
+    }
+}

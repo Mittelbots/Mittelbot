@@ -14,4 +14,12 @@ const debug_opts = {
 };
 const debug_log = require('simple-node-logger').createRollingFileLogger(debug_opts);
 
-module.exports = { log, debug_log };
+const database_opts = {
+    errorEventName: 'info',
+    logDirectory: './_database', // NOTE: folder must exist and be writable...
+    fileNamePattern: 'roll-<DATE>.log',
+    dateFormat: 'YYYY.MM.DD',
+};
+const database_log = require('simple-node-logger').createRollingFileLogger(database_opts);
+
+module.exports = { log, debug_log, database_log };
