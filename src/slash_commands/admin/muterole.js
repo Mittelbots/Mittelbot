@@ -1,0 +1,119 @@
+const { PermissionFlagsBits } = require('discord.js');
+const { muteRoleConfig } = require('../_config/admin/muterole');
+const { GuildConfig } = require('../../../utils/functions/data/Config');
+const { EmbedBuilder } = require('discord.js');
+
+module.exports.run = async ({ main_interaction, bot }) => {
+    await main_interaction.deferReply({ ephemeral: true });
+
+    const hasPermission = await main_interaction.member.permissions.has(
+        PermissionFlagsBits.Administrator
+    );
+    if (!hasPermission) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
+
+    const role = main_interaction.options.getRole('role');
+
+    switch (main_interaction.options.getSubcommand()) {
+        case 'set':
+            await GuildConfig.update({
+                guild_id: main_interaction.guild.id,
+                valueName: 'muterole',
+                value: role.id,
+            })
+                .then(() => {
+                    return main_interaction
+                        .followUp({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(
+                                        global.t.trans(
+                                            ['success.settings.muteRole.set', role],
+                                            main_interaction.guild.id
+                                        )
+                                    )
+                                    .setColor(global.t.trans(['general.colors.success'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    return main_interaction
+                        .followUp({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(
+                                        global.t.trans(
+                                            ['error.settings.muteRole.set'],
+                                            main_interaction.guild.id
+                                        )
+                                    )
+                                    .setColor(global.t.trans(['general.colors.error'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
+            break;
+
+        case 'remove':
+            await GuildConfig.update({
+                guild_id: main_interaction.guild.id,
+                valueName: 'muterole',
+                value: null,
+            })
+                .then(() => {
+                    return main_interaction
+                        .followUp({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(
+                                        global.t.trans(
+                                            ['success.settings.muteRole.remove'],
+                                            main_interaction.guild.id
+                                        )
+                                    )
+                                    .setColor(global.t.trans(['general.colors.success'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                })
+                .catch((err) => {
+                    return main_interaction
+                        .followUp({
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setDescription(
+                                        global.t.trans(
+                                            ['error.settings.muteRole.remove'],
+                                            main_interaction.guild.id
+                                        )
+                                    )
+                                    .setColor(global.t.trans(['general.colors.error'])),
+                            ],
+                            ephemeral: true,
+                        })
+                        .catch((err) => {});
+                });
+            break;
+    }
+};
+
+module.exports.data = muteRoleConfig;

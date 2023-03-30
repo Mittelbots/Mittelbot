@@ -20,6 +20,12 @@
                 "close": "{success.emote} Successfully closed your ticket.",
                 "saveTranscript": "{success.emote} Successfully saved your transcript. You can download it now. (Web-hosted is not currently supported)"
             }
+        },
+        "settings": {
+            "muteRole": {
+                "set": "{success.emote} Successfully set your Mute Role to %c.",
+                "remove": "{success.emote} Successfully removed your Mute Role."
+            }
         }
     },
     "info": {
@@ -47,7 +53,16 @@
                 "hasTicketAlready": "{error.emote} You already have a ticket open."
             }
         },
+        "settings": {
+            "muteRole": {
+                "set": "{error.emote} There was an error setting your Mute Role. {general.tryAgainLater}",
+                "remove": "{error.emote} There was an error removing your Mute Role. {general.tryAgainLater}"
+            }
+        },
         "permissions": {
+            "user": {
+                "useCommand": "{error.emote} You don't have permission to use this command."
+            },
             "write": "{error.emote} I don't have permission to write in.",
             "channelDelete": "{error.emote} I don't have permission to delete channels."
         }
