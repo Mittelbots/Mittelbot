@@ -3,6 +3,15 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const guildUploads = require('../../db/Models/tables/guildUploads.model');
 const yt = require('ytdl-core');
 
+const ignoreErroCodes = [
+    'ECONNRESET',
+    'ETIMEDOUT',
+    'ECONNREFUSED',
+    'EHOSTUNREACH',
+    'EPIPE',
+    'ENOTFOUND',
+];
+
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
 
@@ -11,6 +20,8 @@ module.exports.handleUploads = async ({ bot }) => {
             .findAll()
             .then((res) => res)
             .catch((err) => {
+                if (ignoreErroCodes.includes(err.code)) return false;
+
                 errorhandler({
                     err,
                     fatal: true,
