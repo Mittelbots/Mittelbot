@@ -33,6 +33,10 @@ module.exports.startBot = async (bot) => {
             checkTemproles(bot);
             setActivity(bot);
 
+            if (process.env.NODE_ENV === 'production') {
+                await createSlashCommands(bot);
+            }
+
             console.info(
                 `****Ready! Logged in as ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`
             );

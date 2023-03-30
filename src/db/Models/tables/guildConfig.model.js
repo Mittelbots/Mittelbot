@@ -91,6 +91,9 @@ GuildConfig.init(
             type: DataTypes.JSON,
             defaultValue: [],
         },
+        muterole: {
+            type: DataTypes.BIGINT,
+        },
     },
     {
         sequelize: database,

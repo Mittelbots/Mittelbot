@@ -5,6 +5,7 @@ const {
 } = require('../../../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
+const { EmbedBuilder } = require('discord.js');
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
@@ -16,7 +17,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!hasPermission) {
         return main_interaction
             .followUp({
-                content: config.errormessages.nopermission,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -57,8 +67,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const cooldown = main_interaction.options.getNumber('cooldown');
             if (cooldown < 1) {
                 await saveSetting({
-                    value: 0, //? convert to milliseconds
-                    valueName: config.settings.cooldown.colname,
+                    value: 0,
+                    valueName: 'cooldown',
                 });
                 main_interaction
                     .followUp({
@@ -68,8 +78,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .catch((err) => {});
             } else {
                 await saveSetting({
-                    value: cooldown * 1000, //? convert to milliseconds
-                    valueName: config.settings.cooldown.colname,
+                    value: cooldown * 1000,
+                    valueName: 'cooldown',
                 });
                 main_interaction
                     .followUp({

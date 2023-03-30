@@ -10,6 +10,15 @@ const clientSecret = process.env.TT_SECRET;
 
 const authProvider = new AppTokenAuthProvider(clientId, clientSecret);
 
+const ignoreErroCodes = [
+    'ECONNRESET',
+    'ETIMEDOUT',
+    'ECONNREFUSED',
+    'EHOSTUNREACH',
+    'EPIPE',
+    'ENOTFOUND',
+];
+
 module.exports.twitchApiClient = new ApiClient({
     authProvider,
 });
@@ -23,10 +32,7 @@ async function isStreamLive(channel_id) {
         const streamer = await twitchApiClient.streams.getStreamByUserId(channel_id);
         return streamer !== null;
     } catch (err) {
-        //ignore errors with reason self-signed certificate
-        if (err.message.includes('self-signed certificate')) {
-            return false;
-        }
+        if (err.message.includes('self-signed certificate')) return false;
 
         errorhandler({
             err,

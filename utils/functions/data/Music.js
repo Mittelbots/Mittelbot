@@ -131,6 +131,11 @@ module.exports = class Music {
                         channel: this.main_interaction.channel,
                         requestedBy: this.main_interaction.user,
                     },
+                    leaveOnEnd: false,
+                    leaveOnEndCooldown: 60000 * 5,
+                    leaveOnEmpty: false,
+                    leaveOnEmptyCooldown: 60000 * 5,
+                    leaveOnStop: false,
                 });
 
                 await this.queue.connect(this.main_interaction.member.voice.channel.id, {

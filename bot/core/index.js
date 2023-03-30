@@ -48,7 +48,7 @@ bot.ownerId = config.Bot_Owner_ID;
 bot.testAcc = config.Test_Account;
 
 bot.player = new Player(bot, {
-    connectionTimeout: 60000,
+    connectionTimeout: 60000 * 10,
     smoothVolume: true,
     ytdlOptions: {
         highWaterMark: 1 << 25,

@@ -8,12 +8,46 @@ on:
         types:
             - opened
 
+# assign varaibles
+env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    BUGS_MAINTAINCE_MILESTONE: 'Bugs & Maintaince'
+    FEATURE_MILESTONE: 'Features'
+    SECURITY_MILESTONE: 'Security Issues'
+    DEFAULT_MILESTONE: ${{ env.BUGS_MAINTAINCE_MILESTONE }}
+
 jobs:
     add-to-project:
-        name: Add issue or pr to Milestone
+        name: Add issue or PR to Milestone
         runs-on: ubuntu-latest
         steps:
-            - uses: andrefcdias/add-to-milestone
+            - name: Add to Milestone
+              uses: andrefcdias/add-to-milestone
               with:
-                  repo-token: '${{ secrets.ADD_TO_MILESTONE }}'
-                  milestone: 'Public Beta'
+                  github-token: ${{ env.GITHUB_TOKEN }}
+                  milestone: ${{ env.DEFAULT_MILESTONE }}
+              if: github.event.issue.pull_request == null
+            - name: Add to Milestone for features
+              uses: andrefcdias/add-to-milestone
+              with:
+                  github-token: ${{ env.GITHUB_TOKEN }}
+                  milestone: ${{ env.FEATURE_MILESTONE }}
+              if: github.event.issue.pull_request != null && contains(github.event.issue.title, 'FEATURE')
+            - name: Add to Milestone for changes
+              uses: andrefcdias/add-to-milestone
+              with:
+                  github-token: ${{ env.GITHUB_TOKEN }}
+                  milestone: ${{ env.BUGS_MAINTAINCE_MILESTONE }}
+              if: github.event.issue.pull_request != null && contains(github.event.issue.title, 'CHANGE')
+            - name: Add to Milestone for bugs
+              uses: andrefcdias/add-to-milestone
+              with:
+                  github-token: ${{ env.GITHUB_TOKEN }}
+                  milestone: ${{ env.BUGS_MAINTAINCE_MILESTONE }}
+              if: github.event.issue.pull_request != null && contains(github.event.issue.title, 'BUG')
+            - name: Add to Milestone for security
+              uses: andrefcdias/add-to-milestone
+              with:
+                  github-token: ${{ env.GITHUB_TOKEN }}
+                  milestone: ${{ env.SECURITY_MILESTONE }}
+              if: github.event.issue.pull_request == null && contains(github.event.issue.title, 'SECURITY')

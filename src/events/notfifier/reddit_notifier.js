@@ -3,6 +3,8 @@ const Reddit = require('../../../utils/functions/data/Reddit');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { EmbedBuilder } = require('@discordjs/builders');
 
+const ignoreErroCodes = ['EAI_AGAIN', 'ECONNRESET', 'ECONNREFUSED', 'EHOSTUNREACH', 'EPIPE'];
+
 module.exports.reddit_notifier = async (bot) => {
     setInterval(async () => {
         const reddit = new Reddit();
@@ -14,17 +16,8 @@ module.exports.reddit_notifier = async (bot) => {
             const { data } = await axios
                 .get(`${reddit.baseUrl()}/${subreddit}/new.json?sort=new`)
                 .catch((err) => {
-                    try {
-                        errorhandler({
-                            message: err.toJSON(),
-                            isFatal: false,
-                        });
-                    } catch (err) {
-                        errorhandler({
-                            message: 'DEBUG FAILED',
-                            isFatal: false,
-                        });
-                    }
+                    if (ignoreErroCodes.includes(err.code)) return;
+
                     const isFatal = true;
                     errorhandler({
                         message: 'Error getting reddit post',
