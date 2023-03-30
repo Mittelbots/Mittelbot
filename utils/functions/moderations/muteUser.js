@@ -15,6 +15,7 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
 
     const user_roles = getAllRoles(guild_user);
     const MutedRole = await getMutedRole(guild);
+
     if (!MutedRole) {
         errorhandler({ err, fatal: false, message: `${MutedRole} is not a valid Muted Role.` });
         return {
