@@ -1,4 +1,5 @@
 const { ChannelType, PermissionsBitField } = require('discord.js');
+const { GuildConfig } = require('../Config');
 
 module.exports = class TicketChannel {
     constructor() {}
@@ -29,9 +30,7 @@ module.exports = class TicketChannel {
                     ],
                 })
                 .then((channel) => {
-                    if (this.settings.moderator && this.settings.moderator.length > 0) {
-                        this.setModeratorPermissionsToChannel(channel);
-                    }
+                    this.setModeratorPermissionsToChannel(channel);
 
                     resolve(channel);
                 })
@@ -43,6 +42,16 @@ module.exports = class TicketChannel {
 
     setModeratorPermissionsToChannel(channel) {
         return new Promise(async (resolve) => {
+            if (!this.settings.moderator || this.settings.moderator.length < 1) {
+                const guildConfig = await GuildConfig.get(this.main_interaction.guild.id);
+                const serverModerators = guildConfig.modroles;
+
+                if (!serverModerators || serverModerators.length < 1) {
+                    return resolve();
+                }
+                this.settings.moderator = serverModerators.map((role) => role.role);
+            }
+
             for (let i in this.settings.moderator) {
                 channel.permissionOverwrites.edit(this.settings.moderator[i], {
                     ViewChannel: true,
