@@ -124,6 +124,7 @@ module.exports = class Music {
 
     createQueue() {
         return new Promise(async (resolve) => {
+            if (this.queue) return resolve(this.queue);
             try {
                 this.queue = this.bot.player.nodes.create(this.main_interaction.guild, {
                     metadata: {

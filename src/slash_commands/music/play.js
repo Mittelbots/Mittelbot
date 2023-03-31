@@ -121,7 +121,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             });
     }
 
-    if (!queue.playing) {
+    if (!(await musicApi.isPlaying())) {
         await musicApi
             .play()
             .then(async () => {
