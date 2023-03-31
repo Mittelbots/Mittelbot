@@ -41,15 +41,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const previousTrack = queue.currentTrack;
+    const queuedTracks = (await musicApi.getQueuedTracks()).data;
 
     if (queue.tracks.length > 0) await musicApi.play();
     else await queue.node.skip();
 
-    let nextSong;
+    const nextSong = queuedTracks[0];
 
-    try {
-        nextSong = previousTrack.playlist.tracks[1];
-    } catch (error) {
+    if (!nextSong) {
         return main_interaction
             .followUp({
                 embeds: [
