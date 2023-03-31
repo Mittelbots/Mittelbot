@@ -124,6 +124,7 @@ module.exports = class Music {
 
     createQueue() {
         return new Promise(async (resolve) => {
+            if (this.queue) return resolve(this.queue);
             try {
                 this.queue = this.bot.player.nodes.create(this.main_interaction.guild, {
                     metadata: {
@@ -205,6 +206,12 @@ module.exports = class Music {
                     'I am not in a voice channel! Please let me join you channel first by using the play command!'
                 );
             return resolve(false);
+        });
+    }
+
+    getQueuedTracks() {
+        return new Promise(async (resolve) => {
+            return resolve(this.queue.tracks);
         });
     }
 };

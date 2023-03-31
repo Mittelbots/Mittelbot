@@ -109,7 +109,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         await queue.addTrack(result.tracks[0]);
         embed
             .setDescription(
-                `**[${result.tracks[0].title}](${result.tracks[0].url})** has been added to the Queue`
+                `**[${result.tracks[0]}](${result.tracks[0].url})** has been added to the Queue`
             )
             .addFields({
                 name: 'Requested by',
@@ -121,7 +121,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             });
     }
 
-    if (!queue.playing) {
+    if (!(await musicApi.isPlaying())) {
         await musicApi
             .play()
             .then(async () => {
