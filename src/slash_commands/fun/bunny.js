@@ -14,11 +14,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .catch((err) => {});
         })
-        .catch((error) => {
-            errorhandler({ err, fatal: true });
+        .catch((err) => {
+            errorhandler({
+                err: {
+                    message: err.message,
+                    stack: err.stack,
+                },
+                fatal: true,
+            });
             main_interaction
                 .followUp({
-                    content: 'Something went wrong!',
+                    content: global.t.trans(
+                        ['error.generalWithMessage', err.message],
+                        main_interaction.guild.id
+                    ),
                     ephemeral: true,
                 })
                 .catch((err) => {});
