@@ -65,7 +65,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     return await main_interaction.followUp({
         embeds: [
             new EmbedBuilder().setColor('#00ff00').setDescription(
-                `**${previousTrack.title}** has been skipped. 
+                `**${previousTrack}** has been skipped. 
                     \n----------------------------------------\n
                     Now playing: ${nextSong.title} 
                     Requested by: ${nextSong.requestedBy} 

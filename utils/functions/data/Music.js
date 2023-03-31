@@ -208,4 +208,10 @@ module.exports = class Music {
             return resolve(false);
         });
     }
+
+    getQueuedTracks() {
+        return new Promise(async (resolve) => {
+            return resolve(this.queue.tracks);
+        });
+    }
 };
