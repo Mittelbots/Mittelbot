@@ -170,12 +170,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('modroles')
-    .setDescription('Add Modroles to be able to use the moderation commands')
-    .addRoleOption((option) =>
-        option
-            .setName('roles')
-            .setDescription('Add a role to be able to use the moderation commands')
-            .setRequired(true)
-    );
+module.exports.data = modRolesConfi

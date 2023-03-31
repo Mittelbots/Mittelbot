@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { Joinroles } = require('../../../utils/functions/data/Joinroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { joinrolesConfig } = require('../_config/admin/joinroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
@@ -32,16 +33,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('joinroles')
-    .setDescription(
-        'Add joinroles to your server. Note: If you mention a existing role, it will be removed'
-    )
-    .addStringOption((joinrole) =>
-        joinrole
-            .setName('joinroles')
-            .setDescription(
-                'Add roles to the list of join roles. Split multiple roles with a space.'
-            )
-            .setRequired(true)
-    );
+module.exports.data = joinrolesConfig
