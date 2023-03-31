@@ -28,19 +28,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 
     const currentTrack = queue.currentTrack;
-
-    let tracks;
-    try {
-        tracks = currentTrack.playlist.tracks;
-    } catch (e) {
-        tracks = null;
-    }
-
     const embed = new EmbedBuilder()
         .setColor('#00ff00')
         .setTitle('Queue')
-        .setDescription(`Now playing: ${currentTrack.title} (${currentTrack.duration})`);
+        .setDescription(`Now playing: ${currentTrack} (${currentTrack.duration})`);
 
+    const tracks = (await musicApi.getQueuedTracks()).data;
     if (!tracks)
         return main_interaction.followUp({
             embeds: [embed],
@@ -57,7 +50,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         }
         embed.addFields({
             name: `Song ${i + 1}`,
-            value: `${tracks[i].title} (${tracks[i].duration})`,
+            value: `${tracks[i]} (${tracks[i].duration})\n Requested by: ${tracks[i].requestedBy}`,
         });
     }
 
