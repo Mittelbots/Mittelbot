@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const AutoBlacklist = require('../../../utils/functions/data/AutoBlacklist');
 const { autoBlacklistConfig } = require('../_config/admin/autoblacklist');
 
@@ -99,4 +99,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = autoBlacklistConfig
+module.exports.data = autoBlacklistConfig;

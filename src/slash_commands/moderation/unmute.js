@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser');
+const { unmuteConfig } = require('../_config/moderation/unmute');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -52,12 +53,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('unmute')
-    .setDescription('Unmute an user from the server')
-    .addUserOption((option) =>
-        option.setName('user').setDescription('The user to unmute').setRequired(true)
-    )
-    .addStringOption((option) =>
-        option.setName('reason').setDescription('The reason for the unmute').setRequired(false)
-    );
+module.exports.data = unmuteConfig;

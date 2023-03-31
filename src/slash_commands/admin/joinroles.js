@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { Joinroles } = require('../../../utils/functions/data/Joinroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { joinrolesConfig } = require('../_config/admin/joinroles');
@@ -33,4 +32,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = joinrolesConfig
+module.exports.data = joinrolesConfig;

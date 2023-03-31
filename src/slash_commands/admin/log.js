@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { Logs } = require('../../../utils/functions/data/Logs');
 const { logConfig } = require('../_config/admin/log');
 
@@ -108,4 +107,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = logConfig
+module.exports.data = logConfig;

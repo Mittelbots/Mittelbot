@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
@@ -55,4 +54,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = autoTranslateConfig
+module.exports.data = autoTranslateConfig;

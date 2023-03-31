@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
+const { resumeData } = require('../_config/music/resume');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const musicApi = new Music(main_interaction, bot);
@@ -55,6 +56,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('resume')
-    .setDescription('Resume the last song.');
+module.exports.data = resumeData;

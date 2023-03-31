@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { playConfig } = require('../_config/music/play');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const musicApi = new Music(main_interaction, bot);
@@ -162,12 +163,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('play')
-    .setDescription('Plays a song')
-    .addStringOption((option) =>
-        option
-            .setName('target')
-            .setDescription('The Song or playlist you want to play')
-            .setRequired(true)
-    );
+module.exports.data = playConfig;

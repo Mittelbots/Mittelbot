@@ -5,6 +5,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { ActionRowBuilder } = require('discord.js');
 const { ButtonBuilder } = require('discord.js');
 const { ButtonStyle } = require('discord.js');
+const { helpConfig } = require('../_config/help/help');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -158,6 +159,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('help')
-    .setDescription('Get help for all commands');
+module.exports.data = helpConfig;

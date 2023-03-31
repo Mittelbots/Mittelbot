@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const config = require('../../assets/json/_config/config.json');
+const { removexpConfig } = require('../_config/level/removexp');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -79,15 +80,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('removexp')
-    .setDescription('Remove xp from someone. *Cheating vibes*')
-    .addUserOption((option) =>
-        option
-            .setName('user')
-            .setDescription('The user which will have less xp afterwards.')
-            .setRequired(true)
-    )
-    .addNumberOption((option) =>
-        option.setName('xp').setDescription('How many xp you want to remove?').setRequired(true)
-    );
+module.exports.data = removexpConfig;

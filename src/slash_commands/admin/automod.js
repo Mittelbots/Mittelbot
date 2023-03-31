@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { autoModConfig } = require('../_config/admin/automod');
@@ -246,4 +245,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = autoModConfig
+module.exports.data = autoModConfig;

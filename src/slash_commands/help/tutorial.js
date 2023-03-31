@@ -2,6 +2,7 @@ const { StringSelectMenuBuilder } = require('discord.js');
 const { ActionRowBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
+const { tutorialConfig } = require('../_config/help/tutorial');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const mainEmbed = new EmbedBuilder()
@@ -62,6 +63,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('tutorial')
-    .setDescription('Gives you important information about the Bot and how it works');
+module.exports.data = tutorialConfig;

@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
@@ -125,4 +124,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = levelSettingsConfig
+module.exports.data = levelSettingsConfig;

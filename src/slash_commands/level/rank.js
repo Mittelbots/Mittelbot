@@ -5,6 +5,7 @@ const { AttachmentBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const levels = require('../../../src/assets/json/levelsystem/levelconfig.json');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
+const { rankConfig } = require('../_config/level/rank');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -69,9 +70,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('rank')
-    .setDescription("Get your or another user's rank.")
-    .addUserOption((option) =>
-        option.setName('user').setDescription('The user to get the rank of.').setRequired(false)
-    );
+module.exports.data = rankConfig;

@@ -1,13 +1,8 @@
-const {
-    ActionRowBuilder,
-    EmbedBuilder,
-    PermissionFlagsBits,
-    SlashCommandBuilder,
-    ButtonStyle,
-} = require('discord.js');
+const { ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, ButtonStyle } = require('discord.js');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const { Modroles } = require('../../../utils/functions/data/Modroles');
 const config = require('../../assets/json/_config/config.json');
+const { modRolesConfig } = require('../_config/admin/modroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     if (!main_interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
@@ -170,4 +165,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = modRolesConfi
+module.exports.data = modRolesConfig;

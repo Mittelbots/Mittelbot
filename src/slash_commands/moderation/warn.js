@@ -4,6 +4,7 @@ const { checkMessage } = require('../../../utils/functions/checkMessage/checkMes
 const { warnUser } = require('../../../utils/functions/moderations/warnUser');
 
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { warnConfig } = require('../_config/moderation/warn');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -70,12 +71,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('warn')
-    .setDescription('Warn an user from the server')
-    .addUserOption((option) =>
-        option.setName('user').setDescription('The user to ban').setRequired(true)
-    )
-    .addStringOption((option) =>
-        option.setName('reason').setDescription('The reason for the warn').setRequired(true)
-    );
+module.exports.data = warnConfig;

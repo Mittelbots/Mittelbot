@@ -3,6 +3,7 @@ const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
+const { kickConfig } = require('../_config/moderation/kick');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -66,12 +67,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     return;
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('kick')
-    .setDescription('Kick a user from the server')
-    .addUserOption((option) =>
-        option.setName('user').setDescription('The user to ban').setRequired(true)
-    )
-    .addStringOption((option) =>
-        option.setName('reason').setDescription('The reason for the ban').setRequired(false)
-    );
+module.exports.data = kickConfig;

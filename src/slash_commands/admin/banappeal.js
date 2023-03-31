@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { SlashCommandBuilder } = require('discord.js');
 const Banappeal = require('../../../utils/functions/data/Banappeal');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { banAppealConfig } = require('../_config/admin/banappeal');
@@ -134,4 +133,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = banAppealConfig
+module.exports.data = banAppealConfig;

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
+const { checkguildConfig } = require('../_config/utils/checkguild');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const userInput = main_interaction.options.getString('guildid');
@@ -190,9 +191,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('checkguild')
-    .setDescription('Get informations about another guild. (I must be a member of this guild!')
-    .addStringOption((option) =>
-        option.setName('guildid').setDescription('Enter the guild id.').setRequired(true)
-    );
+module.exports.data = checkguildConfig;

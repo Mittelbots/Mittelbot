@@ -1,4 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 const config = require('../../assets/json/_config/config.json');
@@ -129,4 +128,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = autoDeleteConfig
+module.exports.data = autoDeleteConfig;
