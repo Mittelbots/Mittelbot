@@ -3,6 +3,7 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../../../utils/functions/data/Infractions');
+const { infractionsConfig } = require('../_config/moderation/infractions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -133,39 +134,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('infractions')
-    .setDescription('See infractions of a user')
-    .addSubcommand((command) =>
-        command
-            .setName('all')
-            .setDescription('See all infractions of a user')
-            .addUserOption((option) =>
-                option
-                    .setName('user')
-                    .setRequired(true)
-                    .setDescription('The user to see infractions of')
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('view')
-            .setDescription('View an specific infraction')
-            .addStringOption((option) =>
-                option
-                    .setName('infractionid')
-                    .setRequired(true)
-                    .setDescription('The id of the infraction to view')
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('remove')
-            .setDescription('Remove an specific infraction')
-            .addStringOption((option) =>
-                option
-                    .setName('infractionid')
-                    .setRequired(true)
-                    .setDescription('The id of the infraction to remove')
-            )
-    );
+module.exports.data = infractionsConfig;

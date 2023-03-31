@@ -1,7 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 const genders = require('../../../utils/data/pride/gender/');
 const sexualities = require('../../../utils/data/pride/sexualities/');
+const { prideConfig } = require('../_config/fun/pride');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getString('type');
@@ -74,20 +75,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('pride')
-    .setDescription('Get information about a random gender')
-    .addStringOption((option) =>
-        option
-            .setName('type')
-            .setDescription('Select a type.')
-            .setRequired(true)
-            .addChoices({
-                name: 'Genders',
-                value: 'gender',
-            })
-            .addChoices({
-                name: 'Sexualities',
-                value: 'sexuality',
-            })
-    );
+module.exports.data = prideConfig;

@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { isOnBanList } = require('../../../utils/functions/moderations/checkOpenInfractions');
+const { isbannedConfig } = require('../_config/moderation/isbanned');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -41,9 +42,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('isbanned')
-    .setDescription('See if an user is banned')
-    .addUserOption((option) =>
-        option.setName('user').setRequired(true).setDescription('The user to check')
-    );
+module.exports.data = isbannedConfig;

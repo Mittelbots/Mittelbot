@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const config = require('../../assets/json/_config/config.json');
+const { givexpConfig } = require('../_config/level/givexp');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -76,15 +77,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('givexp')
-    .setDescription('Give someone an amount of xp. *Cheating vibes*')
-    .addUserOption((option) =>
-        option
-            .setName('user')
-            .setDescription('The user which will be get the xp.')
-            .setRequired(true)
-    )
-    .addNumberOption((option) =>
-        option.setName('xp').setDescription('How many xp you want to add?').setRequired(true)
-    );
+module.exports.data = givexpConfig;

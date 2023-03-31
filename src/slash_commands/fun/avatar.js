@@ -1,5 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { avatarConfig } = require('../_config/fun/avatar');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const user = main_interaction.options.getUser('user') || main_interaction.user;
@@ -23,12 +24,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('avatar')
-    .setDescription('Steel the avatar of a mentioned user')
-    .addUserOption((option) =>
-        option
-            .setName('user')
-            .setDescription('The user you want to steel the avatar of')
-            .setRequired(false)
-    );
+module.exports.data = avatarConfig;

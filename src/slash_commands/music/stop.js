@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
+const { stopConfig } = require('../_config/music/stop');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const musicApi = new Music(main_interaction, bot);
@@ -37,6 +38,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     return musicApi.destroy();
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('stop')
-    .setDescription('Stop the current song and clear the queue.');
+module.exports.data = stopConfig;

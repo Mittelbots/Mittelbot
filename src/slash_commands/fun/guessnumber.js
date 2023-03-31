@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { guessnumberConfig } = require('../_config/fun/guessnumber');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const maxNumber = Math.floor(Math.random() * 30) + 1;
@@ -43,6 +43,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('guessnumber')
-    .setDescription('Guess the number between two random numbers!');
+module.exports.data = guessnumberConfig;

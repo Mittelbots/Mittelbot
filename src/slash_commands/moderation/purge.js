@@ -3,6 +3,7 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { purgeConfig } = require('../_config/moderation/purge');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     main_interaction.deferReply();
@@ -55,14 +56,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('purge')
-    .setDescription('Purge a number of messages from a channel')
-    .addNumberOption((option) =>
-        option.setName('number').setRequired(true).setDescription('The number of message to delete')
-    );
-// .addUserOption(option =>
-//     option.setName('user')
-//     .setDescription('The user to purge')
-//     .setRequired(true)
-// )
+module.exports.data = purgeConfig;

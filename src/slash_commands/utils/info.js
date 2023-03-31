@@ -1,13 +1,8 @@
-const {
-    SlashCommandBuilder,
-    EmbedBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    ActionRowBuilder,
-} = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { version } = require('../../../package.json');
 const { MemberInfo } = require('../../../utils/functions/data/MemberInfo');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { infoConfig } = require('../_config/utils/info');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -180,12 +175,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('info')
-    .setDescription('Get information about yourself or another user')
-    .addUserOption((option) =>
-        option
-            .setName('user')
-            .setDescription('The user to get information about')
-            .setRequired(false)
-    );
+module.exports.data = infoConfig;

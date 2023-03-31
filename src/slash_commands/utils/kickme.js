@@ -4,6 +4,7 @@ const { ButtonBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { kickUser } = require('../../../utils/functions/moderations/kickUser');
+const { kickmeConfig } = require('../_config/utils/kickme');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const user = main_interaction.user;
@@ -72,6 +73,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('kickme')
-    .setDescription('WARNING! You will kick yourself!');
+module.exports.data = kickmeConfig;

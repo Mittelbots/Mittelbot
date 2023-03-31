@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 const {
     sendWelcomeSetting,
     updateWelcomeSettings,
@@ -6,6 +6,7 @@ const {
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
 const { EmbedBuilder } = require('discord.js');
+const { settingsConfig } = require('../_config/admin/settings');
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
@@ -100,29 +101,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('settings')
-    .setDescription('All important settings which you can set, edit or remove.')
-    .addSubcommand((command) => command.setName('view').setDescription('View all of your settings'))
-    .addSubcommand((command) =>
-        command
-            .setName('welcomemessage')
-            .setDescription('Set the welcome message and channel.')
-            .addChannelOption((channel) =>
-                channel
-                    .setName('channel')
-                    .setDescription('The channel you want to set as welcome channel.')
-                    .setRequired(true)
-            )
-    )
-    .addSubcommand((command) =>
-        command
-            .setName('cooldown')
-            .setDescription('Set the cooldown for your Guild.')
-            .addNumberOption((cooldown) =>
-                cooldown
-                    .setName('cooldown')
-                    .setDescription('The cooldown you want to set. (in seconds)')
-                    .setRequired(true)
-            )
-    );
+module.exports.data = settingsConfig;

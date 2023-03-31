@@ -1,7 +1,8 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
 const Modules = require('../../../utils/functions/data/Modules');
 const { EmbedBuilder } = require('discord.js');
+const { modulesConfig } = require('../_config/admin/modules');
 
 const choices = Object.values(new Modules().getDefaultSettings()).map((el) => el.name);
 
@@ -93,30 +94,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('modules')
-    .setDescription('Activate or deactivate modules')
-    .addStringOption((option) =>
-        option
-            .setName('module')
-            .setDescription('The module you want to activate or deactivate')
-            .setAutocomplete(true)
-            .setRequired(true)
-    )
-    .addStringOption((option) =>
-        option
-            .setName('status')
-            .setDescription('Activate or deactivate the module')
-            .addChoices({
-                name: 'Activate',
-                value: 'activate',
-            })
-            .addChoices({
-                name: 'Deactivate',
-                value: 'deactivate',
-            })
-            .setRequired(true)
-    );
+module.exports.data = modulesConfig;
 
 module.exports.autocomplete = async (interaction) => {
     const focusedOption = interaction.options.getFocused(true);
