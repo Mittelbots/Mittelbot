@@ -26,7 +26,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             new EmbedBuilder()
                 .setColor('#00ff00')
                 .setDescription(
-                    `Now playing: ${queue.currentTrack.title} \nRequested by: ${queue.currentTrack.requestedBy} \nDuration: ${queue.currentTrack.duration} \nURL: ${queue.currentTrack.url}`
+                    `Now playing: ${queue.currentTrack} \nRequested by: ${queue.currentTrack.requestedBy} \nDuration: ${queue.currentTrack.duration} \nURL: ${queue.currentTrack.url}`
                 )
                 .setThumbnail(queue.currentTrack.thumbnail),
         ],
