@@ -26,15 +26,76 @@
                 "set": "{success.emote} Successfully set your Mute Role to %c.",
                 "remove": "{success.emote} Successfully removed your Mute Role."
             }
+        },
+        "autoblacklist": {
+            "set": "{success.emote} Successfully set up Auto-Blacklist for this server.",
+            "delete": "{success.emote} Successfully deleted Auto-Blacklist for this server."
+        },
+        "autodelete": {
+            "set": "{success.emote} Users %c send messages of type %e"
+        },
+        "automod": {
+            "whitelistroles": {
+                "add": "{success.emote} Successfully added the role %c to the whitelist."
+            },
+            "antispam": {
+                "disabled": "{success.emote} Successfully disabled antispam."
+            },
+            "antiinvite": {
+                "disabled": "{success.emote} Successfully disabled Anti-invite."
+            },
+            "antilink": {
+                "disabled": "{success.emote} Successfully disabled Anti-Links."
+            },
+            "antiinsults": {
+                "disabled": "{success.emote} Successfully disabled Anti-Mass-Mention."
+            }
         }
     },
     "info": {
         "emote": "💭",
         "ticket": {
             "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds..."
+        },
+        "autoblacklist": {
+            "info": {
+                "title": "Auto-Blacklist",
+                "description": "This is a list of all the users that have been auto-blacklisted.",
+                "fields": [
+                    {
+                        "name": "How to set up Auto-Blacklist?",
+                        "value": "To set up Auto-Blacklist, you need to create a announcement channel, add a blacklist webhook and set it up with the command `/autoblacklist set <channel> [ban_message]`"
+                    },
+                    {
+                        "name": "How to use Auto-Blacklist?",
+                        "value": "You don't need to do anything. If a message is send through the webhook, all user ids in the message will be banned."
+                    },
+                    {
+                        "name": "How to remove Auto-Blacklist?",
+                        "value": "To remove Auto-Blacklist, you need to use the command `/autoblacklist delete`"
+                    },
+                    {
+                        "name": "**IMPORTANT**",
+                        "value": "**Due a bug in Discord.js, every message will be detected. Not only the ones send through the webhook.**"
+                    }
+                ]
+            }
+        },
+        "autodelete": {
+            "types": {
+                "onlyMedia": "Media",
+                "onlyText": "Text",
+                "onlyEmotes": "Emotes",
+                "onlyStickers": "Stickers"
+            }
         }
     },
-    "warning": {},
+    "warning": {
+        "emote": "⚠️",
+        "autodelete": {
+            "get": " {warning.emote} Users %c send messages of type %e."
+        }
+    },
     "error": {
         "emote": "❌",
         "general": "{error.emote} There was an error processing your request. {general.tryAgainLater}",
@@ -57,6 +118,19 @@
             "muteRole": {
                 "set": "{error.emote} There was an error setting your Mute Role. {general.tryAgainLater}",
                 "remove": "{error.emote} There was an error removing your Mute Role. {general.tryAgainLater}"
+            }
+        },
+        "autoblacklist": {
+            "set": {
+                "alreadySet": "{error.emote} Auto-Blacklist is already set up for this server! Delete it first."
+            },
+            "delete": {
+                "notSet": "{error.emote} Auto-Blacklist is not set up for this server!"
+            }
+        },
+        "automod": {
+            "whitelistroles": {
+                "alreadyExists": "{error.emote} You already have the role %c on the whitelist. If you want to remove it use the optional argument `remove`."
             }
         },
         "permissions": {

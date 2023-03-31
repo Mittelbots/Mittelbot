@@ -6,17 +6,23 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { EmbedBuilder } = require('discord.js');
 const { autoDeleteConfig } = require('../_config/admin/autodelete');
 
-const typeTranslations = {
-    isOnlyMedia: 'Media',
-    isOnlyText: 'Text',
-    isOnlyEmotes: 'Emotes',
-    isOnlyStickers: 'Stickers',
-};
-
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
+
+    const typeTranslations = {
+        isOnlyMedia: global.t.trans(['info.autodelete.types.onlyMedia'], main_interaction.guild.id),
+        isOnlyText: global.t.trans(['info.autodelete.types.onlyText'], main_interaction.guild.id),
+        isOnlyEmotes: global.t.trans(
+            ['info.autodelete.types.onlyEmotes'],
+            main_interaction.guild.id
+        ),
+        isOnlyStickers: global.t.trans(
+            ['info.autodelete.types.onlyStickers'],
+            main_interaction.guild.id
+        ),
+    };
 
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
@@ -53,9 +59,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
-                                    `⚠️ Users ${
-                                        result ? 'have to' : "don't have to"
-                                    } send messages of type ${typeTranslations[filtered[0]]}`
+                                    global.t.trans(
+                                        [
+                                            'warning.autodelete.get',
+                                            result ? 'have to' : "don't have to",
+                                            typeTranslations[filtered[0]],
+                                        ],
+                                        main_interaction.guild.id
+                                    )
                                 )
                                 .setColor('#00FF00'),
                         ],
@@ -95,9 +106,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
-                                    `✅ Users ${
-                                        value ? 'have to' : "don't have to"
-                                    } send messages of type ${typeTranslations[type]}`
+                                    global.t.trans(
+                                        [
+                                            'success.autodelete.set',
+                                            value ? 'have to' : "don't have to",
+                                            typeTranslations[type],
+                                        ],
+                                        main_interaction.guild.id
+                                    )
                                 )
                                 .setColor('#00FF00'),
                         ],

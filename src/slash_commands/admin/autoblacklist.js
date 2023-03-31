@@ -5,30 +5,22 @@ const { autoBlacklistConfig } = require('../_config/admin/autoblacklist');
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getSubcommand();
 
+    console.log(global.t.trans(['info.autoblacklist.info.fields']));
+
     switch (type) {
         case 'info':
             const embed = new EmbedBuilder()
-                .setTitle('Auto-Blacklist')
+                .setTitle(
+                    global.t.trans(['info.autoblacklist.info.title'], main_interaction.guild.id)
+                )
                 .setDescription(
-                    'Auto-Blacklist is a feature that allows you to automatically ban users that are send to a public blacklist.'
+                    global.t.trans(
+                        ['info.autoblacklist.info.description'],
+                        main_interaction.guild.id
+                    )
                 )
                 .addFields(
-                    {
-                        name: 'How to set up Auto-Blacklist?',
-                        value: 'To set up Auto-Blacklist, you need to create a announcement channel, add a blacklist webhook and set it up with the command `/autoblacklist set <channel> [ban_message]`',
-                    },
-                    {
-                        name: 'How to use Auto-Blacklist?',
-                        value: "You don't need to do anything. If a message is send through the webhook, all user ids in the message will be banned.",
-                    },
-                    {
-                        name: 'How to delete Auto-Blacklist?',
-                        value: 'To delete Auto-Blacklist, you need to use the command `/autoblacklist delete`',
-                    },
-                    {
-                        name: '**IMPORTANT**',
-                        value: '**Due a bug in Discord.js, every message will be detected. Not only the ones send through the webhook.**',
-                    }
+                    global.t.trans(['info.autoblacklist.info.fields'], main_interaction.guild.id)
                 )
                 .setImage('https://i.ibb.co/grCfwRw/autoblackllist-example.gif')
                 .setTimestamp();
@@ -46,7 +38,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const settings = await autoBlacklist.get(main_interaction.guild.id);
             if (settings)
                 return main_interaction.reply({
-                    content: 'Auto-Blacklist is already set up for this server! Delete it first.',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.autoblacklist.set.alreadySet'],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 });
 
@@ -58,14 +59,28 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .then(() => {
                     main_interaction.reply({
-                        content: 'Auto-Blacklist has been set up for this server!',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.autoblacklist.set'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     });
                 })
                 .catch((err) => {
                     main_interaction.reply({
-                        content:
-                            'An error occured while setting up Auto-Blacklist for this server!',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(['error.general'], main_interaction.guild.id)
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
                         ephemeral: true,
                     });
                 });
@@ -77,7 +92,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const settings2 = await autoBlacklist2.get(main_interaction.guild.id);
             if (!settings2)
                 return main_interaction.reply({
-                    content: 'Auto-Blacklist is not set up for this server!',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.autoblacklist.delete.notSet'],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 });
 
@@ -85,13 +109,28 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .delete(main_interaction.guild.id)
                 .then(() => {
                     main_interaction.reply({
-                        content: 'Auto-Blacklist has been deleted for this server!',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.autoblacklist.delete'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(),
+                        ],
                         ephemeral: true,
                     });
                 })
                 .catch((err) => {
                     main_interaction.reply({
-                        content: 'An error occured while deleting Auto-Blacklist for this server!',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(['error.general'], main_interaction.guild.id)
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
                         ephemeral: true,
                     });
                 });

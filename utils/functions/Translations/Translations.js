@@ -39,6 +39,7 @@ module.exports = class Translations {
 
     #processCustomStrings(string, searchValue) {
         if (!string) return null;
+        if (typeof string !== 'string') return string;
 
         const regex = /{([^}]+)}/g;
         const matches = string.match(regex);
@@ -55,6 +56,7 @@ module.exports = class Translations {
 
     processCustomValues(string, values) {
         if (!string) return null;
+        if (typeof string !== 'string') return string;
         const stringArray = string.split(' ');
 
         let valueIndex = 0;
