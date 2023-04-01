@@ -25,6 +25,10 @@
             "muteRole": {
                 "set": "{success.emote} Successfully set your Mute Role to %c.",
                 "remove": "{success.emote} Successfully removed your Mute Role."
+            },
+            "cooldown": {
+                "set": "{success.emote} Command Cooldown successfully changed to %c seconds.",
+                "disabled": "{success.emote} Command Cooldown successfully turned off \n \n**Info: A default Cooldown of 2 Seconds is still enabled to protect the bot from spam!**"
             }
         },
         "autoblacklist": {
@@ -50,8 +54,26 @@
             "antiinsults": {
                 "disabled": "{success.emote} Successfully disabled Anti-Mass-Mention."
             }
+        },
+        "autotranslate": {
+            "update": "{success.emote} Successfully updated your Auto-Translate settings."
+        },
+        "banappeal": {
+            "set": "{success.emote} The ban appeal has been setup for your server. An example of how it will look will be sent to the channel you specified.",
+            "remove": "{success.emote} The ban appeal has been removed from your server."
+        },
+        "levelsettings": {
+            "set": "{success.emote} Successfully saved your level config to %c",
+            "setAlone": "{success.emote} Successfully saved your level config"
+        },
+        "modules": {
+            "update": "{success.emote} Successfully %c %x."
+        },
+        "warnroles": {
+            "update": "{success.emote} Warn Roles updated!"
         }
     },
+
     "info": {
         "emote": "💭",
         "ticket": {
@@ -81,6 +103,38 @@
                 ]
             }
         },
+        "modroles": {
+            "info": {
+                "admin": [
+                    {
+                        "name": "Admin Permissions",
+                        "value": "This role can use commands like ban, unban, etc.",
+                        "inline": true
+                    }
+                ],
+                "mod": [
+                    {
+                        "name": "Mod Permissions",
+                        "value": "This role can use commands like kick, mute, etc.",
+                        "inline": true
+                    }
+                ],
+                "helper": [
+                    {
+                        "name": "Helper Permissions",
+                        "value": "This role can use commands like warn, etc.",
+                        "inline": true
+                    }
+                ],
+                "remove": [
+                    {
+                        "name": "Remove Role",
+                        "value": "This role will be removed from the modroles list.",
+                        "inline": true
+                    }
+                ]
+            }
+        },
         "autodelete": {
             "types": {
                 "onlyMedia": "Media",
@@ -90,12 +144,19 @@
             }
         }
     },
+
     "warning": {
         "emote": "⚠️",
         "autodelete": {
             "get": " {warning.emote} Users %c send messages of type %e."
+        },
+        "modules": {
+            "notavalidmodule": "{warning.emote} %c is not a valid module.",
+            "isAlreadyEnabled": "{warning.emote} %c is already enabled.",
+            "isAlreadyDisabled": "{warning.emote} %c is already disabled."
         }
     },
+
     "error": {
         "emote": "❌",
         "general": "{error.emote} There was an error processing your request. {general.tryAgainLater}",
@@ -103,6 +164,7 @@
         "embed": {
             "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
         },
+        "timelimit": "{error.emote} Time limit reached",
         "ticket": {
             "setting": {
                 "delete": "{error.emote} There was an error deleting your Ticket Setting. {general.tryAgainLater}"
@@ -132,6 +194,16 @@
             "whitelistroles": {
                 "alreadyExists": "{error.emote} You already have the role %c on the whitelist. If you want to remove it use the optional argument `remove`."
             }
+        },
+        "banappeal": {
+            "set": "{error.emote} An error occured while sending the example to the channel you specified. Please make sure I have the correct permissions or the bot is not able to send any Appeals."
+        },
+        "levelsettings": {
+            "set": "{error.emote} Somethings went wrong while changing your level config to %c",
+            "setAlone": "{error.emote} Somethings went wrong while changing your level config"
+        },
+        "modroles": {
+            "doesntExist": "{error.emote} The role %c doesn't exist on this server."
         },
         "permissions": {
             "user": {

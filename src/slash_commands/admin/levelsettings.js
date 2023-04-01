@@ -3,6 +3,7 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const { levelSettingsConfig } = require('../_config/admin/levelsettings');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const hasPermissions = await hasPermission({
@@ -15,7 +16,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!hasPermissions) {
         return main_interaction
             .reply({
-                content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -36,14 +46,31 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
                 .then((res) => {
                     return main_interaction.reply({
-                        content: '✅ Successfully saved your level config to ' + mode,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.levelsettings.set', mode],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     });
                 })
                 .catch((err) => {
                     return main_interaction.reply({
-                        content:
-                            '❌ Somethings went wrong while changing your level config to ' + mode,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.levelsettings.set', mode],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
                         ephemeral: true,
                     });
                 });
@@ -83,13 +110,31 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
                 .then(() => {
                     return main_interaction.reply({
-                        content: '✅ Successfully saved your level config.',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.levelsettings.setAlone'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     });
                 })
                 .catch((err) => {
                     return main_interaction.reply({
-                        content: '❌ Somethings went wrong while saving your level config.',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.levelsettings.setAlone'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     });
                 });

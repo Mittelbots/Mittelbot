@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('discord.js');
 const { Warnroles } = require('../../../utils/functions/data/Warnroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { warnRolesConfig } = require('../_config/admin/warnroles');
@@ -14,7 +15,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .then(() => {
             main_interaction
                 .reply({
-                    content: `✅ Warn Roles updated!`,
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['success.warnroles.update', cooldown],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.success'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});
