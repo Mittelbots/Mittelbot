@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
+const { pollConfig } = require('../_config/utils/poll');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const question = main_interaction.options.getString('question');
@@ -40,9 +41,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('poll')
-    .setDescription('Make a quick poll with one question')
-    .addStringOption((option) =>
-        option.setName('question').setDescription('The question to ask').setRequired(true)
-    );
+module.exports.data = pollConfig;

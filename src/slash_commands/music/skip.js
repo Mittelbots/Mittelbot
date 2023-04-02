@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
+const { skipConfig } = require('../_config/music/skip');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const musicApi = new Music(main_interaction, bot);
@@ -76,6 +77,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('skip')
-    .setDescription('Skip the current song.');
+module.exports.data = skipConfig;

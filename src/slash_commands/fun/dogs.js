@@ -1,6 +1,7 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder } = require('discord.js');
 const animals = require('random-animals-api');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { dogsConfig } = require('../_config/fun/dogs');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply();
@@ -25,6 +26,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('dogs')
-    .setDescription('Get pics of dogs. THE PURE CUTENESS!!!');
+module.exports.data = dogsConfig;

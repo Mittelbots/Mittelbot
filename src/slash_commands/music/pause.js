@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
+const { pauseConfig } = require('../_config/music/pause');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const musicApi = new Music(main_interaction, bot);
@@ -39,6 +39,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('pause')
-    .setDescription('Pause the current song.');
+module.exports.data = pauseConfig;

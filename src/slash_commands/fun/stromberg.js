@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
+const { strombergConfig } = require('../_config/fun/stromberg');
 
 const url = 'https://www.stromberg-api.de/api/';
 
@@ -127,20 +128,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('stromberg')
-    .setDescription('Get a random stromberg quote or a character.')
-    .addStringOption((option) =>
-        option
-            .setName('type')
-            .setDescription('Select a type.')
-            .setRequired(true)
-            .addChoices({
-                name: 'Quotes',
-                value: 'quotes',
-            })
-            .addChoices({
-                name: 'Characters',
-                value: 'characters',
-            })
-    );
+module.exports.data = strombergConfig;
