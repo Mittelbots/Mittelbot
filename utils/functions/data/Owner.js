@@ -3,7 +3,7 @@ const { GlobalConfig } = require('./GlobalConfig');
 const { Levelsystem } = require('./levelsystemAPI');
 const { spawn } = require('child_process');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 const { createSlashCommands } = require('../createSlashCommands/createSlashCommands');
 
 module.exports.checkOwnerCommand = async (message) => {
