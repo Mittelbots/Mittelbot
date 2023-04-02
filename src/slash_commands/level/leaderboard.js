@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
+const { leaderboardConfig } = require('../_config/level/leaderboard');
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
@@ -76,6 +77,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('leaderboard')
-    .setDescription('See the guild Leaderboard.');
+module.exports.data = leaderboardConfig;

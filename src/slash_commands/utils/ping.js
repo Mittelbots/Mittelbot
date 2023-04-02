@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { delay } = require('../../../utils/functions/delay/delay');
+const { pingConfig } = require('../_config/utils/ping');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     main_interaction.reply({
@@ -14,4 +15,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     );
 };
 
-module.exports.data = new SlashCommandBuilder().setName('ping').setDescription('Replies the ping');
+module.exports.data = pingConfig;

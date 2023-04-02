@@ -1,6 +1,7 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder } = require('discord.js');
 
 const axios = require('axios');
+const { catsConfig } = require('../_config/fun/cats');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply();
@@ -16,6 +17,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('cats')
-    .setDescription('Get pics of Cats. THE PURE CUTENESS!!!');
+module.exports.data = catsConfig;

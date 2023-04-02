@@ -7,6 +7,7 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { banUser } = require('../../../utils/functions/moderations/banUser');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
+const { banConfig } = require('../_config/moderation/ban');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -104,15 +105,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('ban')
-    .setDescription('Ban a user from the server')
-    .addUserOption((option) =>
-        option.setName('user').setDescription('The user to ban').setRequired(true)
-    )
-    .addStringOption((option) =>
-        option.setName('time').setDescription('The time to ban the user for').setRequired(false)
-    )
-    .addStringOption((option) =>
-        option.setName('reason').setDescription('The reason for the ban').setRequired(false)
-    );
+module.exports.data = banConfig;

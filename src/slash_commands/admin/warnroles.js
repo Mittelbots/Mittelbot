@@ -1,6 +1,6 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { Warnroles } = require('../../../utils/functions/data/Warnroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { warnRolesConfig } = require('../_config/admin/warnroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const warnroles = removeMention(main_interaction.options.getString('warnroles')).split(' ');
@@ -29,14 +29,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('warnroles')
-    .setDescription('Setup warnroles which will apply when a user is warned')
-    .addStringOption((warnrole) =>
-        warnrole
-            .setName('warnroles')
-            .setDescription(
-                'Add roles. Split multiple roles with a space. To remove a role insert the role.'
-            )
-            .setRequired(true)
-    );
+module.exports.data = warnRolesConfig;

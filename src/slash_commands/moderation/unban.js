@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
+const { unbanConfig } = require('../_config/moderation/unban');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -73,12 +74,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {});
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('unban')
-    .setDescription('Unban an user from the server')
-    .addUserOption((option) =>
-        option.setName('user').setDescription('The user to unban').setRequired(true)
-    )
-    .addStringOption((option) =>
-        option.setName('reason').setDescription('The reason for the unban').setRequired(false)
-    );
+module.exports.data = unbanConfig;

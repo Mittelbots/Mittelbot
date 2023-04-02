@@ -1,12 +1,7 @@
-const {
-    TextInputBuilder,
-    SlashCommandBuilder,
-    ModalBuilder,
-    ActionRowBuilder,
-    TextInputStyle,
-} = require('discord.js');
+const { TextInputBuilder, ModalBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
 const { userAFK } = require('../../../utils/functions/data/variables');
 const Afk = require('../../../utils/functions/data/Afk');
+const { afkConfig } = require('../_config/utils/afk');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const subcommand = main_interaction.options.getSubcommand();
@@ -58,10 +53,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
         return main_interaction.reply({ content: `` }).catch((err) => {});
     }
 };
-module.exports.data = new SlashCommandBuilder()
-    .setName('afk')
-    .setDescription('Set you to afk.')
-    .addSubcommand((subcommand) => subcommand.setName('set').setDescription('Set your afk state.'))
-    .addSubcommand((subcommand) =>
-        subcommand.setName('remove').setDescription('Remove your afk state.')
-    );
+module.exports.data = afkConfig;

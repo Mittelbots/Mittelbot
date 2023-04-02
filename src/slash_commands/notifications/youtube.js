@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { changeYtNotifier, delYTChannelFromList } = require('../../../utils/functions/data/youtube');
+const { youtubeConfig } = require('../_config/notifications/youtube');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -55,36 +56,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('youtube')
-    .setDescription('Setup the youtube notifier')
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('add')
-            .setDescription('Add a youtube channel to follow')
-            .addStringOption((option) =>
-                option
-                    .setName('ytchannel')
-                    .setDescription(
-                        'Insert here your youtube name. Example: Mittelblut9 (without @)'
-                    )
-                    .setRequired(true)
-            )
-            .addChannelOption((option) =>
-                option
-                    .setName('dcchannel')
-                    .setDescription('The discord channel to send the notifications to')
-                    .setRequired(true)
-            )
-            .addRoleOption((option) =>
-                option
-                    .setName('ytping')
-                    .setDescription('The role to ping when a new video is uploaded')
-                    .setRequired(false)
-            )
-    )
-    .addSubcommand((subcommand) =>
-        subcommand
-            .setName('remove')
-            .setDescription('Remove the youtube channel from the notification list.')
-    );
+module.exports.data = youtubeConfig;

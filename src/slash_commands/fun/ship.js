@@ -1,8 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const { readFile } = require('fs/promises');
 const { delay } = require('../../../utils/functions/delay/delay');
 const Canvas = require('@napi-rs/canvas');
 const { request } = require('undici');
+const { shipConfig } = require('../_config/fun/ship');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const user = main_interaction.options.getUser('user');
@@ -114,9 +115,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = new SlashCommandBuilder()
-    .setName('ship')
-    .setDescription('Ship you and a mentioned user and see if they are compatible.')
-    .addUserOption((option) =>
-        option.setName('user').setDescription('The user you want to ship.').setRequired(true)
-    );
+module.exports.data = shipConfig;
