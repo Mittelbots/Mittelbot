@@ -102,10 +102,7 @@ function isBanned(member, guild) {
                 const currentdate = new Date().getTime();
                 const till_date = inf.till_date.getTime();
                 if (currentdate - till_date <= 0 && isUserOnBanList !== undefined) {
-                    return resolve({
-                        error: false,
-                        isBanned: true,
-                    });
+                    return resolve(true);
                 } else {
                     if (currentdate - till_date >= 0 || isUserOnBanList === undefined) {
                         await Infractions.deleteOpen(inf.infraction_id);
@@ -121,17 +118,11 @@ function isBanned(member, guild) {
                             guild_id: inf.guild_id,
                         });
                     }
-                    return resolve({
-                        error: false,
-                        isBanned: false,
-                    });
+                    return resolve(false);
                 }
             });
         } else {
-            return resolve({
-                error: false,
-                isBanned: false,
-            });
+            return resolve(false);
         }
     });
 }

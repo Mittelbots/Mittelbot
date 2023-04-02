@@ -20,37 +20,27 @@ async function unbanUser({ user, mod, guild, reason, bot }) {
         });
 
     if (pass) {
-        const query = await database
-            .query(`SELECT * FROM open_infractions WHERE user_id AND ban = 1`, [user.id])
-            .then(async (res) => {
-                if (res.length > 0) {
-                    await Infractions.insertClosed({
-                        uid: user.id,
-                        mod_id: res[0].mod_id,
-                        ban: res[0].ban,
-                        mute: res[0].mute,
-                        kick: 0,
-                        till_date: res[0].till_date,
-                        reason: res[0].reason,
-                        infraction_id: res[0].infraction_id,
-                        start_date: res[0].start_date,
-                        guild_id: guild.id,
-                    });
-                    await Infractions.deleteOpen(res[0].infraction_id);
-                }
-                return {
-                    error: false,
-                };
-            })
-            .catch((err) => {
-                errorhandler({ err, fatal: true });
-                return {
-                    error: true,
-                    message: config.errormessages.databasequeryerror,
-                };
-            });
+        const infractions = await Infractions.getOpen({
+            user_id: user.id,
+            guild_id: guild.id,
+        });
+        const latestBanInfractions = infractions.filter((infraction) => infraction.ban === 1);
 
-        if (query.error) return query;
+        if (latestBanInfractions.length > 0) {
+            await Infractions.insertClosed({
+                uid: user.id,
+                mod_id: latestBanInfractions[0].mod_id,
+                ban: latestBanInfractions[0].ban,
+                mute: latestBanInfractions[0].mute,
+                kick: 0,
+                till_date: latestBanInfractions[0].till_date,
+                reason: latestBanInfractions[0].reason,
+                infraction_id: latestBanInfractions[0].infraction_id,
+                start_date: latestBanInfractions[0].start_date,
+                guild_id: guild.id,
+            });
+            await Infractions.deleteOpen(res[0].infraction_id);
+        }
 
         setNewModLogMessage(
             bot,
@@ -72,7 +62,7 @@ async function unbanUser({ user, mod, guild, reason, bot }) {
 
         errorhandler({
             fatal: false,
-            message: `${main_interaction.user.id} has triggered the unban command in ${guild.id}`,
+            message: `${user.id} has triggered the unban command in ${guild.id}`,
         });
 
         return p_response;
