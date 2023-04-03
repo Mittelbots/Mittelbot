@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
-const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
+const { checkTarget } = require('../../../utils/functions/checkMessage/checkMessage');
 const { warnUser } = require('../../../utils/functions/moderations/warnUser');
 
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
@@ -22,7 +22,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!hasPermissions) {
         return main_interaction
             .followUp({
-                content: `${config.errormessages.nopermission}`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -31,7 +40,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const user = main_interaction.options.getUser('user');
     const reason = main_interaction.options.getString('reason');
 
-    const check = await checkMessage({
+    const canIWarnTheUser = await checkTarget({
         author: main_interaction.user,
         target: user,
         guild: main_interaction.guild,
@@ -39,10 +48,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
         type: 'warn',
     });
 
-    if (check)
+    if (!canIWarnTheUser)
         return main_interaction
             .followUp({
-                content: check,
+                content: canIWarnTheUser,
                 ephemeral: true,
             })
             .catch((err) => {});

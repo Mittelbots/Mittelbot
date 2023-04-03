@@ -14,10 +14,10 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
     const guild_user = guild.members.cache.get(user.id) || (await guild.members.fetch(user.id));
 
     const user_roles = getAllRoles(guild_user);
-    const MutedRole = await getMutedRole(guild);
+    const mutedRole = await getMutedRole(guild);
 
-    if (!MutedRole) {
-        errorhandler({ err, fatal: false, message: `${MutedRole} is not a valid Muted Role.` });
+    if (!mutedRole) {
+        errorhandler({ err, fatal: false, message: `${mutedRole} is not a valid Muted Role.` });
         return {
             error: true,
             message: 'Could not find/create Muted role.',
@@ -25,14 +25,18 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
     }
 
     const pass = await guild_user.roles
-        .add(MutedRole)
+        .add(mutedRole)
         .then(() => {
             return true;
         })
         .catch((err) => {
             if (err.code === 50013) return false;
 
-            errorhandler({ err, fatal: false, message: `${MutedRole} is not a valid Muted Role.` });
+            errorhandler({
+                err,
+                fatal: false,
+                message: `${mutedRole} is not a valid Muted Role in ${guild.id}`,
+            });
             return false;
         });
 
@@ -62,14 +66,14 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                 guild.id
             );
 
-            await privateModResponse(
-                user,
-                config.defaultModTypes.mute,
+            await privateModResponse({
+                member: user,
+                type: config.defaultModTypes.mute,
                 reason,
                 time,
                 bot,
-                guild.name
-            );
+                guildname: guild.name,
+            });
 
             const p_response = await publicModResponses(
                 config.defaultModTypes.mute,
