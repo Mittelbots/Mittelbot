@@ -49,29 +49,31 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    const unbanned = await unbanUser({
+    await unbanUser({
         user,
-        bot: bot.user,
+        bot,
         mod: main_interaction.user,
         reason,
         guild: main_interaction.guild,
-    });
-
-    if (unbanned.error) {
-        return main_interaction
-            .followUp({
-                content: unbanned.message,
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
-    return main_interaction
-        .followUp({
-            embeds: [unbanned.message],
-            ephemeral: true,
+    })
+        .then((res) => {
+            return main_interaction
+                .followUp({
+                    embeds: [res.message],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         })
-        .catch((err) => {});
+        .catch((err) => {
+            return main_interaction
+                .followUp({
+                    content: err,
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        });
+
+    return;
 };
 
 module.exports.data = unbanConfig;

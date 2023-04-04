@@ -1,25 +1,19 @@
 const { setNewModLogMessage } = require('../../modlog/modlog');
 const { publicModResponses } = require('../../publicResponses/publicModResponses');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const database = require('../../../src/db/db');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../data/Infractions');
 
-async function unbanUser({ user, mod, guild, reason, bot }) {
-    let pass = false;
+function unbanUser({ user, mod, guild, reason, bot }) {
+    return new Promise(async (resolve, reject) => {
+        await guild.members
+            .unban(`${user.id}`, `${reason}`)
+            .then(() => (pass = true))
+            .catch((err) => {
+                errorhandler({ err });
+                return reject(config.errormessages.nopermissions.unban);
+            });
 
-    await guild.members
-        .unban(`${user.id}`, `${reason}`)
-        .then(() => (pass = true))
-        .catch((err) => {
-            errorhandler({ err });
-            return {
-                error: true,
-                message: config.errormessages.nopermissions.unban,
-            };
-        });
-
-    if (pass) {
         const infractions = await Infractions.getOpen({
             user_id: user.id,
             guild_id: guild.id,
@@ -65,8 +59,8 @@ async function unbanUser({ user, mod, guild, reason, bot }) {
             message: `${user.id} has triggered the unban command in ${guild.id}`,
         });
 
-        return p_response;
-    }
+        return resolve(p_response);
+    });
 }
 
 module.exports = { unbanUser };
