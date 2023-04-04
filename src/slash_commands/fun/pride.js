@@ -18,12 +18,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
         newEmbed.setTitle(`Gender: ${newGender.name}`);
         newEmbed.setDescription(newGender.description);
         newEmbed.addFields({
-            name: 'Similar to: ',
+            name: global.t.trans(['info.pride.similarto'], main_interaction.guild.id),
             value: newGender.differentFrom.join(', '),
         });
 
         newEmbed.addFields({
-            name: 'Try again by clicking',
+            name: global.t.trans(
+                ['info.general.tryCommandAgainWithoutArgs'],
+                main_interaction.guild.id
+            ),
             value: `</pride:${main_interaction.commandId}>`,
         });
         newEmbed.setImage(newGender.flag);
@@ -34,27 +37,32 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         const newSexuality = getRandomSexuality();
 
-        newEmbed.setTitle(`Sexuality: ${newSexuality.name}`);
+        newEmbed.setTitle(
+            globla.t.trans(['info.pride.sexuality', newSexuality.name], main_interaction.guild.id)
+        );
         newEmbed.setDescription(newSexuality.description);
         newEmbed.addFields(
             {
-                name: 'Genders:',
+                name: global.t.trans(['info.pride.genderField'], main_interaction.guild.id),
                 value: newSexuality.gender.join(', '),
             },
             {
-                name: 'Attracted to:',
+                name: global.t.trans(['info.pride.attractedto'], main_interaction.guild.id),
                 value: newSexuality.attractedTo.join(', '),
             },
             {
-                name: 'Attraction Type:',
+                name: global.t.trans(['info.pride.attractiontype'], main_interaction.guild.id),
                 value: newSexuality.attractionType,
             },
             {
-                name: 'Similar to: ',
+                name: global.t.trans(['info.pride.similarto'], main_interaction.guild.id),
                 value: newSexuality.differentFrom.join(', '),
             },
             {
-                name: 'Try again by clicking',
+                name: global.t.trans(
+                    ['info.general.tryCommandAgainWithoutArgs'],
+                    main_interaction.guild.id
+                ),
                 value: `</pride:${main_interaction.commandId}>`,
             }
         );
@@ -66,9 +74,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
             embeds: [newEmbed],
         })
         .catch((err) => {
-            return main_interaction
+            main_interaction
                 .reply({
-                    content: 'Something went wrong!',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.generalWithMessage', err.message],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});

@@ -71,11 +71,20 @@
         },
         "warnroles": {
             "update": "{success.emote} Warn Roles updated!"
+        },
+        "ship": {
+            "showResult": "**%c** and **%e** are `%p` compatible!. \n\n/ `%r`"
+        },
+        "singasong": {
+            "userHasBeenBanned": "User has been banned from using the command in this guild!"
         }
     },
 
     "info": {
         "emote": "💭",
+        "general": {
+            "tryCommandAgainWithoutArgs": "Try again by clicking"
+        },
         "ticket": {
             "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds..."
         },
@@ -142,6 +151,51 @@
                 "onlyEmotes": "Emotes",
                 "onlyStickers": "Stickers"
             }
+        },
+        "guessnumber": {
+            "guess": "Guess the number between 1 and %c"
+        },
+        "pride": {
+            "sexuality": "Sexuality: %c",
+            "genderSingle": "Gender: %c",
+            "similarto": "Similar to: ",
+            "genderField": "Genders:",
+            "attractedto": "Attracted to:",
+            "attactiontype": "Attraction Type:"
+        },
+        "ship": {
+            "quotes": [
+                {
+                    "100_70": [
+                        "You two are a perfect match!",
+                        "Damn! You really have to hangout together",
+                        "Wow!",
+                        "Wedding, when?"
+                    ],
+                    "69_40": [
+                        "hm. Maybe with a little more effort it can be something special",
+                        "You two are a good match",
+                        "That's a good start"
+                    ],
+                    "39_10": ["IDK. Maybe you should go out with someone else"],
+                    "9_0": [
+                        "I'm not sure if you can be friends with someone like that",
+                        "This is bad. Really bad.",
+                        "Sorry for that"
+                    ]
+                }
+            ]
+        },
+        "singasong": {
+            "userPoints": "You have %c points."
+        },
+        "stromberg": {
+            "spokenof": "Spoken of:",
+            "age": "Age:",
+            "position": "Position:",
+            "episode": "Episode:",
+            "createdAt": "Created at:",
+            "playedBy": "Played by:"
         }
     },
 
@@ -205,12 +259,24 @@
         "modroles": {
             "doesntExist": "{error.emote} The role %c doesn't exist on this server."
         },
+        "guessnumber": {
+            "tooLowOrHigh": "{error.emote} Your guess is too %c . It was %x.",
+            "haventguessed": "{error.emote} You haven't guessed yet. It was %c."
+        },
+        "ship": {
+            "cannotShip": "You can't ship with %c!"
+        },
+        "singasong": {
+            "nopoints": "You have no points!"
+        },
         "permissions": {
             "user": {
                 "useCommand": "{error.emote} You don't have permission to use this command."
             },
-            "write": "{error.emote} I don't have permission to write in.",
-            "channelDelete": "{error.emote} I don't have permission to delete channels."
+            "bot": {
+                "write": "{error.emote} I don't have permission to write in %c.",
+                "channelDelete": "{error.emote} I don't have permission to delete channels."
+            }
         }
     }
 }

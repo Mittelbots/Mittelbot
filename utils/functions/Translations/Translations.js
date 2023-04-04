@@ -23,7 +23,7 @@ module.exports = class Translations {
         this.#getTranslationFile(this.#selectedLanguage);
 
         const searchKey = key[0];
-        const searchValue = key.splice(1, 1);
+        const searchValue = key.splice(1, key.length - 1);
 
         const translation = this.#getTranslation(searchKey);
         if (!translation) return null;
@@ -63,6 +63,14 @@ module.exports = class Translations {
 
         for (let i in stringArray) {
             if (stringArray[i].includes('%')) {
+                if (
+                    stringArray[i].includes('.') ||
+                    stringArray[i].includes('!') ||
+                    stringArray[i].includes('?') ||
+                    stringArray[i].includes(',')
+                ) {
+                    stringArray[i] = stringArray[i].slice(0, -1);
+                }
                 stringArray[i] = stringArray[i].replace(stringArray[i], values[valueIndex]);
                 valueIndex++;
             }

@@ -15,7 +15,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!hasPermission) {
         return main_interaction
             .followUp({
-                content: config.errormessages.nopermission,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
