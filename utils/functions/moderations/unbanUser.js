@@ -47,8 +47,8 @@ function unbanUser({ user, mod, guild, reason, bot }) {
         );
         const p_response = publicModResponses(
             config.defaultModTypes.unban,
-            mod.id,
-            user,
+            mod,
+            user.id,
             reason,
             null,
             bot
