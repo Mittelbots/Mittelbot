@@ -1,7 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { checkTarget } = require('../../../utils/functions/checkMessage/checkMessage');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const config = require('../../../src/assets/json/_config/config.json');
 const { getModTime } = require('../../../utils/functions/getModTime');
 const { muteUser } = require('../../../utils/functions/moderations/muteUser');
 const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfractions');
@@ -40,15 +38,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const user = main_interaction.options.getUser('user');
 
-    const check = await checkTarget({
+    const canIMuteTheUser = await checkTarget({
         author: main_interaction.user,
         target: user,
         guild: main_interaction.guild,
         bot,
         type: 'mute',
     });
-
-    if (check)
+    if (!canIMuteTheUser)
         return main_interaction
             .followUp({
                 content: check,
@@ -57,7 +54,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
 
     const isUserMuted = await isMuted({ user, guild: main_interaction.guild, bot });
-    if (isUserMuted.isMuted) {
+    if (isUserMuted) {
         return main_interaction
             .followUp({
                 content: 'This user is already muted!',
@@ -77,7 +74,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     let reason = main_interaction.options.getString('reason') || 'No reason provided';
 
-    const muted = await muteUser({
+    await muteUser({
         user,
         mod: main_interaction.user,
         bot,
@@ -85,23 +82,25 @@ module.exports.run = async ({ main_interaction, bot }) => {
         reason,
         time,
         dbtime,
-    });
-
-    if (muted.error) {
-        return main_interaction
-            .followUp({
-                content: muted.message,
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
-    return main_interaction
-        .followUp({
-            embeds: [muted.message],
-            ephemeral: true,
+    })
+        .then((res) => {
+            return main_interaction
+                .followUp({
+                    embeds: [res.message],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         })
-        .catch((err) => {});
+        .catch((err) => {
+            return main_interaction
+                .followUp({
+                    content: err,
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        });
+
+    return;
 };
 
 module.exports.data = muteConfig;

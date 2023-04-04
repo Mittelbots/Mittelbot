@@ -1,46 +1,28 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { Infractions } = require('../data/Infractions');
-const { getMutedRole } = require('../roles/getMutedRole');
 
 async function isMuted({ user, guild, bot }) {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
         let open_infractions = await Infractions.getOpen({
             user_id: user.id,
             guild_id: guild.id,
         });
         open_infractions = open_infractions.filter((inf) => inf.mute);
-        const mutedRole = await getMutedRole(bot.guilds.cache.get(guild.id));
-        if (mutedRole.error) return resolve(mutedRole);
-
         const member = guild.members.cache.get(user.id);
 
-        if (!member)
-            return resolve({
-                error: true,
-                message: 'No member found!',
-            });
-
-        if (open_infractions.length > 0 && (await member.roles.cache.has(mutedRole))) {
+        if (!member) return reject('No member found!');
+        if (open_infractions.length > 0) {
             open_infractions.forEach((inf) => {
                 const currentdate = new Date().getTime();
                 const till_date = inf.till_date.getTime();
-                if (currentdate - till_date <= 0) {
-                    return resolve({
-                        error: false,
-                        isMuted: true,
-                    });
+                if (currentdate - till_date >= 0) {
+                    return resolve(true);
                 } else {
-                    return resolve({
-                        error: false,
-                        isMuted: false,
-                    });
+                    return resolve(false);
                 }
             });
         } else {
-            return resolve({
-                error: false,
-                isMuted: false,
-            });
+            return resolve(false);
         }
     });
 }

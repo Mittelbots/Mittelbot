@@ -58,14 +58,13 @@ module.exports.checkInfractions = (bot) => {
                             results[i].guild_id
                         );
 
-                        await privateModResponse(
-                            user ? user.id : results[i].user_id,
-                            config.defaultModTypes.unmute,
-                            'Auto',
-                            null,
+                        await privateModResponse({
+                            member: user ? user.id : results[i].user_id,
+                            type: config.defaultModTypes.unmute,
+                            reason: 'Auto',
                             bot,
-                            guild.name
-                        );
+                            guildname: guild.name,
+                        });
 
                         await Infractions.moveFromOpenToClosed(results[i]);
                     } catch (err) {

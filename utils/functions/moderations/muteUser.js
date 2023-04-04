@@ -11,36 +11,34 @@ const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../data/Infractions');
 
 async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
-    const guild_user = guild.members.cache.get(user.id) || (await guild.members.fetch(user.id));
+    return new Promise(async (resolve, reject) => {
+        const guild_user = guild.members.cache.get(user.id) || (await guild.members.fetch(user.id));
 
-    const user_roles = getAllRoles(guild_user);
-    const mutedRole = await getMutedRole(guild);
+        const user_roles = getAllRoles(guild_user);
+        const mutedRole = await getMutedRole(guild);
 
-    if (!mutedRole) {
-        errorhandler({ err, fatal: false, message: `${mutedRole} is not a valid Muted Role.` });
-        return {
-            error: true,
-            message: 'Could not find/create Muted role.',
-        };
-    }
+        if (!mutedRole) {
+            errorhandler({ err, fatal: false, message: `${mutedRole} is not a valid Muted Role.` });
+            return reject('Could not find/create Muted role.');
+        }
 
-    const pass = await guild_user.roles
-        .add(mutedRole)
-        .then(() => {
-            return true;
-        })
-        .catch((err) => {
-            if (err.code === 50013) return false;
+        await guild_user.roles
+            .add(mutedRole)
+            .then(() => {
+                return true;
+            })
+            .catch((err) => {
+                if (err.code === 50013) return reject(`I don't have permissions to give the role!`);
 
-            errorhandler({
-                err,
-                fatal: false,
-                message: `${mutedRole} is not a valid Muted Role in ${guild.id}`,
+                errorhandler({
+                    err,
+                    fatal: false,
+                    message: `${mutedRole} is not a valid Muted Role in ${guild.id}`,
+                });
+                return reject(
+                    `${mutedRole} is not a valid Muted Role in ${guild.id}. Error Message: ${err.message}`
+                );
             });
-            return false;
-        });
-
-    if (pass) {
         if (user_roles.length !== 0) await removeAllRoles(guild_user);
 
         try {
@@ -89,20 +87,12 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                 message: `${mod.id} has triggered the mute command in ${guild.id}`,
             });
 
-            return p_response;
+            return resolve(p_response);
         } catch (err) {
             errorhandler({ err, fatal: true });
-            return {
-                error: true,
-                message: config.errormessages.general,
-            };
+            return reject(global.t.trans(['error.general'], guild.id));
         }
-    } else {
-        return {
-            error: true,
-            message: config.errormessages.nopermissions.manageRoles,
-        };
-    }
+    });
 }
 
 module.exports = {

@@ -46,7 +46,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         type: 'kick',
     });
 
-    if (canIKickTheUser)
+    if (!canIKickTheUser)
         return main_interaction
             .followUp({
                 content: canIKickTheUser,
