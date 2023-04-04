@@ -12,9 +12,10 @@ async function warnUser({ bot, user, mod, guild, reason }) {
     const inf_id = await createInfractionId(guild.id);
 
     const moduleApi = new Modules(guild.id, bot);
+    let warnroles;
     if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().warnroles)) {
-        const pass = await addWarnRoles({ user, inf_id, guild });
-        if (pass.error) return pass;
+        warnroles = await addWarnRoles({ user, inf_id, guild });
+        if (warnroles.error) return warnroles;
     }
 
     setNewModLogMessage(bot, config.defaultModTypes.warn, mod.id, user, reason, null, guild.id);
@@ -26,11 +27,17 @@ async function warnUser({ bot, user, mod, guild, reason }) {
         null,
         bot
     );
-    if (pass.hasAllRoles) {
+    if (warnroles && warnroles.hasAllRoles) {
         p_response.message.setDescription(`❗️This user has already all warnroles.❗️`);
     }
 
-    await privateModResponse(user, config.defaultModTypes.warn, reason, null, bot, guild.name);
+    await privateModResponse({
+        member: user,
+        type: config.defaultModTypes.warn,
+        reason,
+        bot,
+        guildname: guild.name,
+    });
 
     await Infractions.insertClosed({
         uid: user.id,

@@ -1,7 +1,7 @@
 const Timer = require('../../../utils/functions/data/Timer');
 
 module.exports.timer = async (bot) => {
-    console.log(`⏱ Timer started`);
+    console.info(`⏱ Timer started`);
     const timer = new Timer();
 
     setInterval(async () => {
@@ -63,6 +63,6 @@ module.exports.timer = async (bot) => {
                 });
         });
 
-        console.log(`⏱ All timer messages updated`);
+        console.info(`⏱ All timer messages updated`);
     }, timer.defaultTick);
 };

@@ -48,7 +48,7 @@ module.exports.registerPlayerEvents = (player) => {
                         value: track.requestedBy.username,
                     })
                     .setColor('#38ff46')
-                    .setImage(track.thumbnail.url)
+                    .setThumbnail(track.thumbnail)
                     .setTimestamp(),
             ],
         });
@@ -64,7 +64,7 @@ module.exports.registerPlayerEvents = (player) => {
                         value: track.requestedBy.username,
                     })
                     .setColor('#38ff46')
-                    .setImage(track.thumbnail)
+                    .setThumbnail(track.thumbnail)
                     .setTimestamp(),
             ],
         });

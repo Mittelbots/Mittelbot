@@ -8,7 +8,7 @@ if (!JSON.parse(process.env.DEBUG)) {
         respawn: true,
     });
     manager.once('shardCreate', (shard) => {
-        console.log(`[SHARDS]: Launched shards ${shard.id}`);
+        console.info(`[SHARDS]: Launched shards ${shard.id}`);
     });
 
     manager.spawn();

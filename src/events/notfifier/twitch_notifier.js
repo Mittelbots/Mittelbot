@@ -122,5 +122,5 @@ module.exports.twitch_notifier = async ({ bot }) => {
             }
             await delay(1500);
         }
-    }, 600000);
+    }, 60 * 1000); // 1 minute
 };

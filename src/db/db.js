@@ -79,7 +79,7 @@ database.init = () => {
             .authenticate()
             .then(() => {
                 fs.readdirSync(dir).forEach((file) => {
-                    console.log('Loading model: ' + file);
+                    console.info('Loading model: ' + file);
                     require(path.join(dir, file));
                 });
             })
@@ -97,7 +97,7 @@ database.init = () => {
         const data_mg_path = path.resolve('src/db/data_migration/');
         fs.readdirSync(data_mg_path).forEach((file) => {
             if (!file.includes('.default')) return;
-            console.log('Loading data migration: ' + file);
+            console.info('Loading data migration: ' + file);
             require(path.join(data_mg_path, file));
         });
         resolve(true);
@@ -105,7 +105,7 @@ database.init = () => {
 };
 
 database.afterSync((connection) => {
-    console.log(`Successfully synced ${connection.name.plural}.`);
+    console.info(`Successfully synced ${connection.name.plural}.`);
 });
 
 module.exports = database;
