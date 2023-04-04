@@ -76,7 +76,13 @@
             "showResult": "**%c** and **%e** are `%p` compatible!. \n\n/ `%r`"
         },
         "singasong": {
-            "userHasBeenBanned": "User has been banned from using the command in this guild!"
+            "userHasBeenBanned": "{success.emote} User has been banned from using the command in this guild!"
+        },
+        "givexp": {
+            "xpGiven": "{success.emote} %c xp has been added to %x"
+        },
+        "removexp": {
+            "xpRemoved": "{success.emote} %c xp has been removed from %x"
         }
     },
 
@@ -196,6 +202,13 @@
             "episode": "Episode:",
             "createdAt": "Created at:",
             "playedBy": "Played by:"
+        },
+        "leaderboard": {
+            "title": "Top 10 members of %c.",
+            "currentRank": "Your current rank: %c",
+            "XP_Level": "XP: %c  Level: %e",
+            "notRanksYet": "You don't have a rank yet.",
+            "writeAMessageFirst": "Write your first messages to gain xp."
         }
     },
 
@@ -219,6 +232,15 @@
             "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
         },
         "timelimit": "{error.emote} Time limit reached",
+        "permissions": {
+            "user": {
+                "useCommand": "{error.emote} You don't have permission to use this command."
+            },
+            "bot": {
+                "write": "{error.emote} I don't have permission to write in %c.",
+                "channelDelete": "{error.emote} I don't have permission to delete channels."
+            }
+        },
         "ticket": {
             "setting": {
                 "delete": "{error.emote} There was an error deleting your Ticket Setting. {general.tryAgainLater}"
@@ -269,14 +291,17 @@
         "singasong": {
             "nopoints": "You have no points!"
         },
-        "permissions": {
-            "user": {
-                "useCommand": "{error.emote} You don't have permission to use this command."
-            },
-            "bot": {
-                "write": "{error.emote} I don't have permission to write in %c.",
-                "channelDelete": "{error.emote} I don't have permission to delete channels."
-            }
+        "givexp": {
+            "cannotGiveToBots": "{error.emote} You can't add xp to a bot or a system account."
+        },
+        "leaderboard": {
+            "noOneRanked": "{error.emote} There's no one who is ranked. Write a messages first."
+        },
+        "rank": {
+            "nothingFound": "{error.emote} I have nothing found for this user. Please gain some xp first."
+        },
+        "removexp": {
+            "cannotRemoveFromBots": "{error.emote} You can't add xp to a bot or a system account."
         }
     }
 }
