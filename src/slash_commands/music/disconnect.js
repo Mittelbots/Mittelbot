@@ -23,8 +23,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
     return await main_interaction.followUp({
         embeds: [
             new EmbedBuilder()
-                .setColor('#00ff00')
-                .setDescription('Disconnected from the voice channel.'),
+                .setDescription(
+                    global.t.trans(['success.music.disconnect'], main_interaction.guild.id)
+                )
+                .setColor(global.t.trans(['general.colors.success'])),
         ],
         ephemeral: true,
     });

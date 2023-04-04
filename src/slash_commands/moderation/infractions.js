@@ -57,13 +57,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
-                                    global.t.trans(
-                                        ['error.general'],
-                                        main_interaction.guild.id
-                                    )
+                                    global.t.trans(['error.general'], main_interaction.guild.id)
                                 )
-                                .setColor(global.t.trans(['general.colors.error']))
-                        ]
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});
@@ -74,13 +71,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .followUp({
                         embeds: [
                             new EmbedBuilder()
-                            .setDescription(
-                                global.t.trans(
-                                    ['error.infractions.dontHaveAny', user],
-                                    main_interaction.guild.id
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.infractions.dontHaveAny', user],
+                                        main_interaction.guild.id
+                                    )
                                 )
-                            )
-                            .setColor(global.t.trans(['general.colors.error'])) 
+                                .setColor(global.t.trans(['general.colors.error'])),
                         ],
                         ephemeral: true,
                     })
@@ -115,7 +112,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                         main_interaction.guild.id
                                     )
                                 )
-                                .setColor(global.t.trans(['general.colors.error']))
+                                .setColor(global.t.trans(['general.colors.error'])),
                         ],
                         ephemeral: true,
                     })
@@ -157,11 +154,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['success.infractions.removed', infraction_id, response ? 'has beend' : 'could not'],
+                                        [
+                                            'success.infractions.removed',
+                                            infraction_id,
+                                            response ? 'has beend' : 'could not',
+                                        ],
                                         main_interaction.guild.id
                                     )
                                 )
-                                .setColor(global.t.trans(['general.colors.success']))
+                                .setColor(global.t.trans(['general.colors.success'])),
                         ],
                         ephemeral: true,
                     })
@@ -177,7 +178,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                         main_interaction.guild.id
                                     )
                                 )
-                                .setColor(global.t.trans(['general.colors.error']))
+                                .setColor(global.t.trans(['general.colors.error'])),
                         ],
                         ephemeral: true,
                     })

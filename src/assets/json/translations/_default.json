@@ -93,6 +93,11 @@
         },
         "purge": {
             "purged": "{success.emote} Successfully pruned %c messages"
+        },
+        "music": {
+            "disconnect": "{success.emote} Disconnected from the voice channel.",
+            "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
+            "pause": "The current song has been paused."
         }
     },
 
@@ -328,6 +333,9 @@
         },
         "unban": {
             "notBanned": "This user isn't banned!"
+        },
+        "music": {
+            "nothingPlays": "There is no song playing right now!"
         }
     }
 }

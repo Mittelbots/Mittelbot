@@ -48,9 +48,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                 main_interaction.guild.id
                             )
                         )
-                        .setColor(global.t.trans(['general.colors.error']))
+                        .setColor(global.t.trans(['general.colors.error'])),
                 ],
-                ephemeral: true
+                ephemeral: true,
             })
             .catch((err) => {});
     }
@@ -67,7 +67,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                     main_interaction.guild.id
                                 )
                             )
-                            .setColor(global.t.trans(['general.colors.success']))
+                            .setColor(global.t.trans(['general.colors.success'])),
                     ],
                 })
                 .then(async (msg) => {
@@ -78,21 +78,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
         })
         .catch((err) => {
             errorhandler({ err });
-                main_interaction
-                    .followUp({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setDescription(
-                                    global.t.trans(
-                                        ['error.general'],
-                                        main_interaction.guild.id
-                                    )
-                                )
-                                .setColor(global.t.trans(['general.colors.error']))
-                        ]
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
+            main_interaction
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(['error.general'], main_interaction.guild.id)
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         });
 };
 

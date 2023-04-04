@@ -23,6 +23,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ephemeral: true,
             })
             .catch((err) => {});
+    }
 
     const link = main_interaction.options.getString('link');
 
