@@ -24,7 +24,7 @@ const guilds = require('../Models/tables/guilds.model');
                 valueName: 'modules',
             });
 
-            console.log(`Updated guild ${allGuilds[i].guild_id} modules`);
+            console.info(`Updated guild ${allGuilds[i].guild_id} modules`);
         }
 
         if (config.tickets == null) {
@@ -34,7 +34,7 @@ const guilds = require('../Models/tables/guilds.model');
                 valueName: 'tickets',
             });
 
-            console.log(`Updated guild ${allGuilds[i].guild_id} tickets`);
+            console.info(`Updated guild ${allGuilds[i].guild_id} tickets`);
         }
     }
 })();
