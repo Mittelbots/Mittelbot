@@ -129,8 +129,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 await main_interaction.followUp({
                     embeds: [embed],
                 });
-            })
-            .then(async () => {
+
                 if (await musicApi.isBotMuted()) {
                     await main_interaction
                         .reply({

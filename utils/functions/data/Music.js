@@ -137,6 +137,7 @@ module.exports = class Music {
                     leaveOnEmpty: false,
                     leaveOnEmptyCooldown: 60000 * 5,
                     leaveOnStop: false,
+                    skipOnNoStream: true,
                 });
 
                 await this.queue.connect(this.main_interaction.member.voice.channel.id, {
