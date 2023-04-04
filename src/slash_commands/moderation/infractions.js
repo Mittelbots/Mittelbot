@@ -4,6 +4,7 @@ const { publicInfractionResponse } = require('../../../utils/publicResponses/pub
 const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../../../utils/functions/data/Infractions');
 const { infractionsConfig } = require('../_config/moderation/infractions');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -53,7 +54,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
             if (!closed_infractions || !open_infractions) {
                 return main_interaction
                     .followUp({
-                        content: 'Something went wrong!',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.general'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error']))
+                        ]
                         ephemeral: true,
                     })
                     .catch((err) => {});
@@ -62,7 +72,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
             if (closed_infractions.length <= 0 && open_infractions.length <= 0) {
                 return main_interaction
                     .followUp({
-                        content: `${user} dont have any infractions!`,
+                        embeds: [
+                            new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.infractions.dontHaveAny', user],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])) 
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});
@@ -88,7 +107,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
             if (!infraction) {
                 return main_interaction
                     .followUp({
-                        content: `There is no infraction with this id \`${inf_id}\` `,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.infractions.notFoundWithId', inf_id],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error']))
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});
@@ -125,16 +153,32 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
                 return main_interaction
                     .followUp({
-                        content: `Infraction with id \`${infraction_id}\` ${
-                            response ? 'has been' : 'could not'
-                        } be removed!`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.infractions.removed', infraction_id, response ? 'has beend' : 'could not'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success']))
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});
             } else {
                 return main_interaction
                     .followUp({
-                        content: `Infraction with id \`${infraction_id}\` does not exist!`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.infractions.notFoundWithId', infraction_id],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error']))
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});

@@ -4,6 +4,7 @@ const { getModTime } = require('../../../utils/functions/getModTime');
 const { muteUser } = require('../../../utils/functions/moderations/muteUser');
 const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { muteConfig } = require('../_config/moderation/mute');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -57,7 +58,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (isUserMuted) {
         return main_interaction
             .followUp({
-                content: 'This user is already muted!',
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.mute.alreadyMuted'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});

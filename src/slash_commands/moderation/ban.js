@@ -65,7 +65,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (isUserAlreadyBanned) {
         return main_interaction
             .followUp({
-                embeds: [new EmbedBuilder().setDescription(`This user is already banned!`)],
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.ban.alreadyBanned'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});

@@ -83,6 +83,16 @@
         },
         "removexp": {
             "xpRemoved": "{success.emote} %c xp has been removed from %x"
+        },
+        "infractions": {
+            "removed": "Infraction with id %c %x be removed!"
+        },
+        "isBanned": {
+            "userIsBanned": "This user is banned! Reason: ` %c ` by %x",
+            "userIsNotBanned": "This user isn't banned!"
+        },
+        "purge": {
+            "purged": "{success.emote} Successfully pruned %c messages"
         }
     },
 
@@ -302,6 +312,22 @@
         },
         "removexp": {
             "cannotRemoveFromBots": "{error.emote} You can't add xp to a bot or a system account."
+        },
+        "ban": {
+            "alreadyBanned": "{error.emote} This user is already banned."
+        },
+        "infractions": {
+            "dontHaveAny": "%c don't have any infractions!",
+            "notFoundWithId": "There is no infraction with this id ` %c `"
+        },
+        "mute": {
+            "alreadyMuted": "{error.emote} This user is already muted!"
+        },
+        "purge": {
+            "notAValidNumber": "{error.emote} You need to input a number between 1 and %c"
+        },
+        "unban": {
+            "notBanned": "This user isn't banned!"
         }
     }
 }
