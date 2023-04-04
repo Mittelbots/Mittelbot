@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
@@ -20,7 +20,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!hasPermissions) {
         return main_interaction
             .followUp({
-                content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -31,16 +40,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const isUserBanned = await isBanned(user, main_interaction.guild);
 
-    if (isUserBanned.error) {
-        return main_interaction
-            .followUp({
-                content: isUserBanned.message,
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
-    if (!isUserBanned.isBanned) {
+    if (!isUserBanned) {
         return main_interaction
             .followUp({
                 content: 'This user isnt banned!',
@@ -49,29 +49,31 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    const unbanned = await unbanUser({
+    await unbanUser({
         user,
-        bot: bot.user,
+        bot,
         mod: main_interaction.user,
         reason,
         guild: main_interaction.guild,
-    });
-
-    if (unbanned.error) {
-        return main_interaction
-            .followUp({
-                content: unbanned.message,
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
-    return main_interaction
-        .followUp({
-            embeds: [unbanned.message],
-            ephemeral: true,
+    })
+        .then((res) => {
+            return main_interaction
+                .followUp({
+                    embeds: [res.message],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         })
-        .catch((err) => {});
+        .catch((err) => {
+            return main_interaction
+                .followUp({
+                    content: err,
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        });
+
+    return;
 };
 
 module.exports.data = unbanConfig;
