@@ -10,7 +10,14 @@ module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
     return new Promise(async (resolve, reject) => {
         let pass = false;
 
-        privateModResponse(user, config.defaultModTypes.kick, reason, null, bot, guild.name);
+        privateModResponse({
+            member: user,
+            type: config.defaultModTypes.kick,
+            reason,
+            bot,
+            guildname: guild.name,
+        });
+
         await guild.members
             .kick(user, {
                 reason: reason,
@@ -52,7 +59,7 @@ module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
                 message: `${mod.id} has triggered the kick command in ${guild.id}`,
             });
 
-            return resolve(p_response);
+            return resolve(p_response.message);
         } else {
             return reject(config.errormessages.nopermissions.kick);
         }

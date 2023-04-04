@@ -16,7 +16,7 @@ module.exports.errorhandler = ({
         '------------': '------------',
     };
 
-    if (JSON.parse(process.env.DEBUG)) console.log(err, '\n', message, '\n', caller.filePath);
+    if (JSON.parse(process.env.DEBUG)) console.error(err, '\n', message, '\n', caller.filePath);
     else if (databaseError) database_log.error(err, '\n', JSON.stringify(errObj, null, 4));
     else if (fatal && log) log.fatal(err, '\n', JSON.stringify(errObj, null, 4));
     else if (!fatal) debug_log.info(err, '\n', JSON.stringify(errObj, null, 4));

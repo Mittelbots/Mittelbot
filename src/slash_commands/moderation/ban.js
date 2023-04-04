@@ -6,8 +6,9 @@ const { getModTime } = require('../../../utils/functions/getModTime');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { banUser } = require('../../../utils/functions/moderations/banUser');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
-const { checkMessage } = require('../../../utils/functions/checkMessage/checkMessage');
+const { checkTarget } = require('../../../utils/functions/checkMessage/checkMessage');
 const { banConfig } = require('../_config/moderation/ban');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -25,7 +26,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!hasPermissions) {
         return main_interaction
             .followUp({
-                content: `<@${main_interaction.user.id}> ${config.errormessages.nopermission}`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -33,52 +43,44 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const user = main_interaction.options.getUser('user');
 
-    const check = await checkMessage({
+    const canIBanTheUser = await checkTarget({
         author: main_interaction.user,
         guild: main_interaction.guild,
         target: user,
-        bot,
         type: 'ban',
+    }).catch((reason) => {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(reason)
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
     });
-    if (check)
-        return main_interaction
-            .followUp({
-                content: check,
-                ephemeral: true,
-            })
-            .catch((err) => {});
 
-    const isUserBanned = await isBanned(user, main_interaction.guild);
-    if (isUserBanned.error) {
+    const isUserAlreadyBanned = await isBanned(user, main_interaction.guild);
+    if (isUserAlreadyBanned) {
         return main_interaction
             .followUp({
-                content: isUserBanned.message,
+                embeds: [new EmbedBuilder().setDescription(`This user is already banned!`)],
                 ephemeral: true,
             })
             .catch((err) => {});
     }
 
-    if (isUserBanned.isBanned) {
-        return main_interaction
-            .followUp({
-                content: 'This user is already banned!',
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
-    var time = main_interaction.options.getString('time');
-
+    let time = main_interaction.options.getString('time');
     let dbtime = getModTime(time);
-
     if (!dbtime) {
         time = 'Permanent';
         dbtime = getModTime('99999d');
     }
 
-    let reason = main_interaction.options.getString('reason') || 'No reason provided';
+    const reason = main_interaction.options.getString('reason') || 'No reason provided';
 
-    const banned = await banUser({
+    await banUser({
         user,
         mod: main_interaction.user,
         guild: main_interaction.guild,
@@ -86,23 +88,23 @@ module.exports.run = async ({ main_interaction, bot }) => {
         bot,
         dbtime,
         time,
-    });
-
-    if (banned.error) {
-        return main_interaction
-            .followUp({
-                content: banned.message,
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
-    return main_interaction
-        .followUp({
-            embeds: [banned.message],
-            ephemeral: true,
+    })
+        .then((msg) => {
+            main_interaction
+                .followUp({
+                    embeds: [msg.message],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         })
-        .catch((err) => {});
+        .catch((err) => {
+            main_interaction
+                .followUp({
+                    content: err,
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        });
 };
 
 module.exports.data = banConfig;
