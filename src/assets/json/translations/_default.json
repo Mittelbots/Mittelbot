@@ -120,6 +120,11 @@
             "youtube": {
                 "removed": "{success.cheerEmote} Successfully removed the youtube notification for %c"
             }
+        },
+        "utils": {
+            "afk": {
+                "noLongerAfk": "{success.emote} You are no longer afk."
+            }
         }
     },
 
@@ -257,6 +262,79 @@
                 "songEmbedName": "Song %c",
                 "songEmbedValue": "%c (%x)\n Requested by: %y"
             }
+        },
+        "utils": {
+            "afk": {
+                "modalTitle": "Reason for your AFK state"
+            },
+            "checkGuild": {
+                "embed": {
+                    "title": "---Get all informations about %c on Shard-Id %x----",
+                    "description": "Disclaimer: This informations are public and accessable for every bot. I don't expose sensetive data!",
+                    "fields": [
+                        {
+                            "name": "Is this server available?"
+                        },
+                        {
+                            "name": "Guild Description"
+                        },
+                        {
+                            "name": "Verification Level:"
+                        },
+                        {
+                            "name": "Rules Channel:"
+                        },
+                        {
+                            "name": "Member Count:"
+                        },
+                        {
+                            "name": "Channel Count:"
+                        },
+                        {
+                            "name:": "Role Count:"
+                        },
+                        {
+                            "name": "Ban Count:"
+                        },
+                        {
+                            "name": "Vanity URL:"
+                        },
+                        {
+                            "name": "Vanity URL uses:"
+                        },
+                        {
+                            "name": "NSFW Level:"
+                        },
+                        {
+                            "name": "Server Boosts:"
+                        },
+                        {
+                            "name": "Server Boost Level:"
+                        },
+                        {
+                            "name": "Is the server a large one?"
+                        },
+                        {
+                            "name": "AFK Timer:"
+                        },
+                        {
+                            "name": "AFK Channel:"
+                        },
+                        {
+                            "name": "Video Channel User Limit:"
+                        },
+                        {
+                            "name": "Prefered Location:"
+                        },
+                        {
+                            "name": "Owner"
+                        },
+                        {
+                            "name": "I joined at:"
+                        }
+                    ]
+                }
+            }
         }
     },
 
@@ -388,6 +466,15 @@
                 "isNsfw": "{error.emote} The subreddit `%c` is marked as NSFW. Please use the `nsfw` argument to enable NSFW content.",
                 "wasNotAddedBefore": "{error.emote} The subreddit `%c` was not added before. Please use the `add` argument to add it.",
                 "isAlreadyAdded": "{error.emote} The subreddit `%c` is already added. Please use the `remove` argument to remove it."
+            }
+        },
+        "utils": {
+            "afk": {
+                "notAfk": "{error.emote} You are not afk!",
+                "alreadyAfk": "{error.emote} You are already afk! `Reason: %c` To remove your afk state add the remove option."
+            },
+            "checkGuild": {
+                "serverNotFound": "This Server doesnt exists or i'm not a member of it. Please invite me to get further informations."
             }
         }
     }
