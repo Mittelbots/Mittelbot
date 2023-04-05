@@ -65,7 +65,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .setDescription(
                         global.t.trans(
                             [
-                                'warning.music.skip.skipped',
+                                'success.music.skip.skipped',
                                 previousTrack,
                                 nextSong.title,
                                 nextSong.requestedBy,

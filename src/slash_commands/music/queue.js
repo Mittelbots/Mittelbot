@@ -44,12 +44,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .setTitle('Queue')
         .setDescription(
             global.t.trans(
-                [
-                    'success.music.nowplaying',
-                    currentTrack,
-                    currentTrack.requestedBy,
-                    currentTrack.url,
-                ],
+                ['info.music.nowplaying', currentTrack, currentTrack.requestedBy, currentTrack.url],
                 main_interaction.guild.id
             )
         );

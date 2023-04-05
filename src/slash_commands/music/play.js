@@ -159,16 +159,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 )
             )
             .addFields({
-                name: global.t.trans(['success.music.requestedby'], main_interaction.guild.id),
+                name: global.t.trans(['info.music.requestedby'], main_interaction.guild.id),
                 value: result.tracks[0].requestedBy.username,
             })
             .setThumbnail(result.tracks[0].thumbnail)
             .setFooter({
                 text: `${global.t.trans(
-                    ['success.music.duration', result.tracks[0].duration],
+                    ['info.music.duration', result.tracks[0].duration],
                     main_interaction.guild.id
                 )}\n${global.t.trans(
-                    ['success.music.songsInQueue', queue.tracks.size],
+                    ['info.music.songsInQueue', queue.tracks.size],
                     main_interaction.guild.id
                 )}`,
             });

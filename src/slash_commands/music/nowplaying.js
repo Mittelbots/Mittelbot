@@ -30,7 +30,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .setDescription(
                     global.t.trans(
                         [
-                            'success.music.nowplaying',
+                            'info.music.nowplaying',
                             queue.currentTrack,
                             queue.currentTrack.requestedBy,
                             queue.currentTrack.duration,
