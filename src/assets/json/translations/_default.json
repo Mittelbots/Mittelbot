@@ -95,9 +95,25 @@
             "purged": "{success.emote} Successfully pruned %c messages"
         },
         "music": {
+            "requestedby": "Requested by",
+            "songsInQueue": "Songs in Queue: %c",
+            "duration": "Duration: %c",
             "disconnect": "{success.emote} Disconnected from the voice channel.",
             "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
-            "pause": "The current song has been paused."
+            "pause": "The current song has been paused.",
+            "play": {
+                "playlistAddedToQueue": "**%c** with **%x** songs has been added to the queue.",
+                "songAddedToQueue": "[%c](%x) has been added to the queue."
+            },
+            "resume": {
+                "resumed": "The current song has been resumed."
+            },
+            "skip": {
+                "skipped": "**%c** has beend skipped.\n ---------------------------------- \nNow playing: %x \nRequested by: %y \nDuration: %v \nURL: %z"
+            },
+            "stop": {
+                "stopped": "The song has stopped and the queue is cleared. See you 👋"
+            }
         }
     },
 
@@ -224,6 +240,13 @@
             "XP_Level": "XP: %c  Level: %e",
             "notRanksYet": "You don't have a rank yet.",
             "writeAMessageFirst": "Write your first messages to gain xp."
+        },
+        "music": {
+            "queue": {
+                "queueLength": "Sopngs %c - %x",
+                "songEmbedName": "Song %c",
+                "songEmbedValue": "%c (%x)\n Requested by: %y"
+            }
         }
     },
 
@@ -236,6 +259,9 @@
             "notavalidmodule": "{warning.emote} %c is not a valid module.",
             "isAlreadyEnabled": "{warning.emote} %c is already enabled.",
             "isAlreadyDisabled": "{warning.emote} %c is already disabled."
+        },
+        "music": {
+            "queueEnded": "{warning.emote} The queue has ended. Silence..."
         }
     },
 
@@ -332,10 +358,19 @@
             "notAValidNumber": "{error.emote} You need to input a number between 1 and %c"
         },
         "unban": {
-            "notBanned": "This user isn't banned!"
+            "notBanned": "{error.emote} This user isn't banned!"
         },
         "music": {
-            "nothingPlays": "There is no song playing right now!"
+            "nothingPlays": "{error.emote} There is no song playing right now!",
+            "nothingInQueue": "{error.emote} There is nothing in the queue right now!",
+            "play": {
+                "notValidInput": "{error.emote} Please send a valid link or song name",
+                "notSupported": "{error.emote} I do not support any YouTube links due some legal issues. Please provide a spotify or soundcloud link.",
+                "queueCreate": "{error.emote} There was an error creating your queue. {general.tryAgainLater}",
+                "noResults": "{error.emote} No results for your search. Be sure to send a valid link.",
+                "botIsMuted": "{error.emote} I am muted in this channel. Your Queue is paused. Please unmute me to play music."
+            },
+            "queue": {}
         }
     }
 }

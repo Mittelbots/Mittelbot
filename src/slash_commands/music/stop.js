@@ -18,22 +18,36 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const queue = await musicApi.getQueue();
 
-    if (!queue)
-        return main_interaction.followUp({
+    if (!queue) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.music.nothingInQueue'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
+
+    await main_interaction
+        .followUp({
             embeds: [
-                new EmbedBuilder().setColor('#ff0000').setDescription('There is no song queued!'),
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(['success.music.stop.stopped'], main_interaction.guild.id)
+                    )
+                    .setColor(global.t.trans(['general.colors.success'])),
             ],
             ephemeral: true,
-        });
-
-    await main_interaction.followUp({
-        embeds: [
-            new EmbedBuilder()
-                .setColor('#00ff00')
-                .setDescription('The song has stopped and the queue is cleared. See you 👋'),
-        ],
-        ephemeral: false,
-    });
+        })
+        .catch((err) => {});
 
     return musicApi.destroy();
 };

@@ -20,19 +20,39 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const queue = await musicApi.getQueue();
 
-    if (!queue)
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder().setColor('#ff0000').setDescription('There is no song queued!'),
-            ],
-            ephemeral: true,
-        });
+    if (!queue) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.music.nothingInQueue'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
 
     const currentTrack = queue.currentTrack;
     const embed = new EmbedBuilder()
         .setColor('#00ff00')
         .setTitle('Queue')
-        .setDescription(`Now playing: ${currentTrack} (${currentTrack.duration})`);
+        .setDescription(
+            global.t.trans(
+                [
+                    'success.music.nowplaying',
+                    currentTrack,
+                    currentTrack.requestedBy,
+                    currentTrack.url,
+                ],
+                main_interaction.guild.id
+            )
+        );
 
     const tracks = (await musicApi.getQueuedTracks()).data;
     if (!tracks)
@@ -44,14 +64,28 @@ module.exports.run = async ({ main_interaction, bot }) => {
     for (let i = 1; i < 12; i++) {
         if (i === 12) {
             embed.addFields({
-                name: `Songs ${i + 1} - ${tracks.size}`,
+                name: global.t.trans(
+                    ['info.music.queue.queueLength', i + 1, tracks.size],
+                    main_interaction.guild.id
+                ),
                 value: `...`,
             });
             break;
         }
         embed.addFields({
-            name: `Song ${i + 1}`,
-            value: `${tracks[i]} (${tracks[i].duration})\n Requested by: ${tracks[i].requestedBy}`,
+            name: global.t.trans(
+                ['info.music.queue.songEmbedName', i + 1],
+                main_interaction.guild.id
+            ),
+            value: global.t.trans(
+                [
+                    'info.music.queue.songEmbedValue',
+                    tracks[i],
+                    tracks[i].duration,
+                    tracks[i].requestedBy,
+                ],
+                main_interaction.guild.id
+            ),
         });
     }
 

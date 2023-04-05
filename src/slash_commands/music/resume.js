@@ -19,38 +19,50 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     if (await musicApi.isBotMuted()) {
-        await main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription(
-                        "I'm muted, please unmute me to use this command. I'll leave the channel to safe resources."
-                    ),
-            ],
-            ephemeral: true,
-        });
+        await main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.music.play.botIsMuted'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
 
         await musicApi.pause();
         return;
     }
 
-    if (!musicApi.isPaused())
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('There is no song paused right now!'),
-            ],
-            ephemeral: true,
-        });
+    if (!musicApi.isPaused()) {
+        return await main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.music.nothingPlays'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
 
     await musicApi.resume();
 
-    return main_interaction.followUp({
+    return await main_interaction.followUp({
         embeds: [
             new EmbedBuilder()
-                .setColor('#00ff00')
-                .setDescription('The current song has been resumed.'),
+                .setDescription(
+                    global.t.trans(['success.music.resume.resumed'], main_interaction.guild.id)
+                )
+                .setColor(global.t.trans(['general.colors.success'])),
         ],
         ephemeral: true,
     });
