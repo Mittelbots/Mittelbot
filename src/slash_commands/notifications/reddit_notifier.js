@@ -92,7 +92,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['error.notifications.reddit.doesNotExistsOrIsPrivate', subredditName],
+                                    [
+                                        'error.notifications.reddit.doesNotExistsOrIsPrivate',
+                                        subredditName,
+                                    ],
                                     main_interaction.guild.id
                                 )
                             )
@@ -105,14 +108,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         reddit
             .remove(guild_id)
-            .then(() => {
+            .then(async () => {
                 return main_interaction
                     .followUp({
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.notifications.reddit.doesNotExistsOrIsPrivate', subredditName],
+                                        [
+                                            'error.notifications.reddit.doesNotExistsOrIsPrivate',
+                                            subredditName,
+                                        ],
                                         main_interaction.guild.id
                                     )
                                 )
@@ -162,20 +168,23 @@ module.exports.run = async ({ main_interaction, bot }) => {
             override = true;
             if (hasGuildAlready.subreddit === subredditName) {
                 return main_interaction
-                .followUp({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setDescription(
-                                global.t.trans(
-                                    ['error.notifications.reddit.isAlreadyAdded', subredditName],
-                                    main_interaction.guild.id
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        [
+                                            'error.notifications.reddit.isAlreadyAdded',
+                                            subredditName,
+                                        ],
+                                        main_interaction.guild.id
+                                    )
                                 )
-                            )
-                            .setColor(global.t.trans(['general.colors.error'])),
-                    ],
-                    ephemeral: true,
-                })
-                .catch((err) => {});
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             }
         }
 
@@ -188,7 +197,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 allow_nsfw,
                 override,
             })
-            .then(() => {
+            .then(async () => {
                 await main_interaction
                     .followUp({
                         embeds: [

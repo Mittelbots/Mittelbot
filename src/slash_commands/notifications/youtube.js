@@ -35,7 +35,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         delYTChannelFromList({
             guild_id: main_interaction.guild.id,
         })
-            .then(() => {
+            .then(async () => {
                 await main_interaction
                     .followUp({
                         embeds: [
