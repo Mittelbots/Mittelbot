@@ -59,6 +59,7 @@
         "nodemailer": "^6.9.1",
         "os-utils": "^0.0.14",
         "passport": "^0.6.0",
+        "play-dl": "^1.9.6",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.12.0",
         "sequelize": "^6.30.0",
@@ -68,8 +69,7 @@
         "underscore": "^1.13.6",
         "undici": "^5.21.0",
         "uuid": "^9.0.0",
-        "validator": "^13.9.0",
-        "ytdl-core": "^4.11.2"
+        "validator": "^13.9.0"
     },
     "devDependencies": {
         "chalk": "^4.1.0",
