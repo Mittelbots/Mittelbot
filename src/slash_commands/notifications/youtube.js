@@ -36,19 +36,35 @@ module.exports.run = async ({ main_interaction, bot }) => {
             guild_id: main_interaction.guild.id,
         })
             .then(() => {
-                main_interaction
+                await main_interaction
                     .followUp({
-                        content:
-                            '✅ Successfully removed the youtube channel from the notification list. Now you can add a new one.',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.notifications.youtube.removed', ytchannel],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});
             })
-            .catch(() => {
-                main_interaction
+            .catch((err) => {
+                return main_interaction
                     .followUp({
-                        content:
-                            '❌ Something went wrong while removing the channel from the database. Please contact the Bot support.',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.generalWithMessage', err.message],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});

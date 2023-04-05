@@ -10,6 +10,7 @@
     },
     "success": {
         "emote": "✅",
+        "cheerEmote": "🎉",
         "ticket": {
             "setting": {
                 "set": "{success.emote} Successfully add your Ticket Setting.",
@@ -95,24 +96,29 @@
             "purged": "{success.emote} Successfully pruned %c messages"
         },
         "music": {
-            "requestedby": "Requested by",
-            "songsInQueue": "Songs in Queue: %c",
-            "duration": "Duration: %c",
             "disconnect": "{success.emote} Disconnected from the voice channel.",
-            "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
-            "pause": "The current song has been paused.",
+            "pause": "{success.emote} The current song has been paused.",
             "play": {
                 "playlistAddedToQueue": "**%c** with **%x** songs has been added to the queue.",
                 "songAddedToQueue": "[%c](%x) has been added to the queue."
             },
             "resume": {
-                "resumed": "The current song has been resumed."
+                "resumed": " {success.emote}The current song has been resumed."
             },
             "skip": {
-                "skipped": "**%c** has beend skipped.\n ---------------------------------- \nNow playing: %x \nRequested by: %y \nDuration: %v \nURL: %z"
+                "skipped": "{success.emote} **%c** has beend skipped.\n ---------------------------------- \nNow playing: %x \nRequested by: %y \nDuration: %v \nURL: %z"
             },
             "stop": {
-                "stopped": "The song has stopped and the queue is cleared. See you 👋"
+                "stopped": "{success.emote} The song has stopped and the queue is cleared. See you 👋"
+            }
+        },
+        "notifications": {
+            "reddit": {
+                "removed": "{success.cheerEmote} Successfully removed the reddit notification for %c",
+                "added": "{success.cheerEmote} Successfully added the reddit notification for %c"
+            },
+            "youtube": {
+                "removed": "{success.cheerEmote} Successfully removed the youtube notification for %c"
             }
         }
     },
@@ -242,6 +248,10 @@
             "writeAMessageFirst": "Write your first messages to gain xp."
         },
         "music": {
+            "requestedby": "Requested by",
+            "songsInQueue": "Songs in Queue: %c",
+            "duration": "Duration: %c",
+            "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
             "queue": {
                 "queueLength": "Sopngs %c - %x",
                 "songEmbedName": "Song %c",
@@ -371,6 +381,14 @@
                 "botIsMuted": "{error.emote} I am muted in this channel. Your Queue is paused. Please unmute me to play music."
             },
             "queue": {}
+        },
+        "notifications": {
+            "reddit": {
+                "doesNotExistsOrIsPrivate": "{error.emote} The subreddit `%c` does not exists or is private.",
+                "isNsfw": "{error.emote} The subreddit `%c` is marked as NSFW. Please use the `nsfw` argument to enable NSFW content.",
+                "wasNotAddedBefore": "{error.emote} The subreddit `%c` was not added before. Please use the `add` argument to add it.",
+                "isAlreadyAdded": "{error.emote} The subreddit `%c` is already added. Please use the `remove` argument to remove it."
+            }
         }
     }
 }
