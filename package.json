@@ -9,7 +9,7 @@
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
         "log": "docker logs -f mittelbot",
-        "format": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --write .\"",
+        "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --write .\"",
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\""
     },
     "nodemonConfig": {
