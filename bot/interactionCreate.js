@@ -87,7 +87,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                 await main_interaction.deferUpdate();
                 manageNewWelcomeSetting({
                     main_interaction,
-                });
+                }).catch((err) => {});
                 break;
             case 'pride_forward':
                 await main_interaction.deferUpdate();
