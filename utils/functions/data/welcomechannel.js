@@ -1,4 +1,4 @@
-const { ActionRowBuilder, EmbedBuilder, SelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { delay } = require('../delay/delay');
 const { validURL } = require('../validate/isValidURL');
 const { isValidHexCode } = require('../validate/isValidHexCode');
@@ -48,34 +48,38 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
         const guild_id = main_interaction.values.split('_')[1];
 
         if (value === 'save') {
-            await this.sendWelcomeMessage(
-                {
-                    guild_id,
-                    bot: main_interaction.bot,
-                    joined_user: main_interaction.member,
-                },
-                true
-            )
-                .then(async (msg) => {
-                    await delay(1000);
-                    msg.delete().catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction.channel.send(err).catch((err) => {});
-                    reject(err);
-                });
+            try {
+                Promise.all([
+                    await this.sendWelcomeMessage(
+                        {
+                            guild_id,
+                            bot: main_interaction.bot,
+                            joined_user: main_interaction.member,
+                        },
+                        true
+                    ),
+                    await this.updateWelcomeSettings({
+                        guild_id,
+                        valueName: 'active',
+                        value: true,
+                    }),
+                ]);
+                await delay(1000);
+                msg.delete().catch((err) => {});
+            } catch (err) {
+                await main_interaction.channel
+                    .send({
+                        embeds: [
+                            new EmbedBuilder().setDescription(
+                                `Something went wrong while saving the welcome settings. Please try again later. Error: \`${err}\``
+                            ),
+                        ],
+                    })
+                    .catch((err) => {});
+                reject(err);
+            }
 
-            return await this.updateWelcomeSettings({
-                guild_id,
-                valueName: 'active',
-                value: true,
-            })
-                .then((res) => {
-                    main_interaction.message.react(`✅`);
-                })
-                .catch((err) => {
-                    main_interaction.channel.send(err).catch((err) => {});
-                });
+            return resolve(true);
         }
 
         const sentMessage = await main_interaction.channel.send(
@@ -306,7 +310,7 @@ module.exports.sendWelcomeSetting = async ({ main_interaction }) => {
 
         //=========================================================//
 
-        const menu = new SelectMenuBuilder()
+        const menu = new StringSelectMenuBuilder()
             .setCustomId('welcomemessage')
             .setPlaceholder('Choose an option.');
 
@@ -458,7 +462,7 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }, isTes
                 joined_user,
             });
 
-            await bot.guilds.cache
+            return await bot.guilds.cache
                 .get(guild_id)
                 .channels.cache.get(welcomeChannel.id)
                 .send({
@@ -492,9 +496,7 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }, isTes
                                 err: err.toString(),
                                 fatal: false,
                             });
-                            reject(
-                                `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`
-                            );
+                            reject(err);
                         });
                 });
         }
