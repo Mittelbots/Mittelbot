@@ -63,9 +63,11 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
                         valueName: 'active',
                         value: true,
                     }),
-                ]);
-                await delay(1000);
-                msg.delete().catch((err) => {});
+                ]).then(async (res) => {
+                    await delay(1000);
+                    res[0].delete().catch((err) => {});
+                    await main_interaction.message.react('✅').catch((err) => {});
+                });
             } catch (err) {
                 await main_interaction.channel
                     .send({
