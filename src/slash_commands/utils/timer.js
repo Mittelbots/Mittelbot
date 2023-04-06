@@ -9,13 +9,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const endMessage = main_interaction.options.getString('end_message');
     const channel = main_interaction.options.getChannel('channel');
 
-    const guildHasTimer = await new Timer().get(main_interaction.guild.id);
+    const userTimezone = main_interaction.options.getString('timezone') || 'Europe/Berlin';
+
+    const timerApi = new Timer();
 
     if (type === 'stop') {
-        new Timer().destroy(main_interaction.guild.id);
+        timerApi.destroy(main_interaction.guild.id);
         return main_interaction.reply({ content: 'Timer stopped!', ephemeral: true });
     }
 
+    const guildHasTimer = await timerApi.get(main_interaction.guild.id);
     if (guildHasTimer) {
         return main_interaction.reply({
             content: 'You already have a timer running! Delete it to add a new one.',
@@ -24,7 +27,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const dateObject = new Date(date);
-
     if (dateObject.toString() === 'Invalid Date') {
         return main_interaction.reply({
             content: 'Please enter a valid date! (DD.MM.YYYY)',
@@ -44,7 +46,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const month = dateArray[1];
     const year = dateArray[2];
 
-    const fullTimeObject = new Date(`${year}-${month}-${day}T${time}`);
+    const newDate = new Date(`${year}-${month}-${day}T${time}`);
+    const fullTimeObject = await timerApi.convertTimeZone(newDate, userTimezone);
 
     if (fullTimeObject.getTime() < new Date().getTime()) {
         return main_interaction.reply({
@@ -87,3 +90,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = timerConfig;
+
+module.exports.autocomplete = async (interaction) => {
+    const focusedOption = interaction.options.getFocused(true);
+    const filtered = new Timer()
+        .getTimezoneList()
+        .filter((choice) => choice.startsWith(focusedOption.value));
+    const slicedFiltered = filtered.slice(0, 25);
+    await interaction.respond(slicedFiltered.map((choice) => ({ name: choice, value: choice })));
+};
