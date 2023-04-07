@@ -23,7 +23,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (!quote.quote) {
             return main_interaction
                 .reply({
-                    content: 'Something went wrong. Please try again later.',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(['error.general'], main_interaction.guild.id)
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});
@@ -36,17 +42,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
         if (quote.character) {
             newEmbed.addFields({
-                name: 'Gesprochen von:',
+                name: global.t.trans(['info.stromberg.spokenof'], main_interaction.guild.id),
                 value: quote.character.name,
                 inline: true,
             });
             newEmbed.addFields({
-                name: 'Alter: ',
+                name: global.t.trans(['info.stromberg.age'], main_interaction.guild.id),
                 value: quote.character.age.toString(),
                 inline: true,
             });
             newEmbed.addFields({
-                name: 'Position: ',
+                name: global.t.trans(['info.stromberg.position'], main_interaction.guild.id),
                 value: quote.character.position,
             });
             newEmbed.addFields({
@@ -69,7 +75,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         }
         if (quote.created_at) {
             newEmbed.addFields({
-                name: 'Erstellt am: ',
+                name: global.t.trans(['info.stromberg.createdAt'], main_interaction.guild.id),
                 value: new Date(quote.created_at).toLocaleDateString('de-DE'),
             });
         }
@@ -80,7 +86,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (!character.name) {
             return main_interaction
                 .reply({
-                    content: 'Something went wrong. Please try again later.',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(['error.general'], main_interaction.guild.id)
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});
@@ -95,16 +107,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         newEmbed.setDescription(character.description);
         newEmbed.addFields(
             {
-                name: 'Alter: ',
+                name: global.t.trans(['info.stromberg.age'], main_interaction.guild.id),
                 value: character.age.toString(),
                 inline: true,
             },
             {
-                name: 'Position: ',
+                name: global.t.trans(['info.stromberg.position'], main_interaction.guild.id),
                 value: character.position,
             },
             {
-                name: 'Gespielt von: ',
+                name: global.t.trans(['info.stromberg.playedBy'], main_interaction.guild.id),
                 value: character.played_by,
             }
         );
@@ -121,7 +133,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch((err) => {
             main_interaction
                 .reply({
-                    content: 'Something went wrong. Please try again later.',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(['error.general'], main_interaction.guild.id)
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});

@@ -2,6 +2,7 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const { autoTranslateConfig } = require('../_config/admin/autotranslate');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const hasPermissions = await hasPermission({
@@ -14,7 +15,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!hasPermissions) {
         return main_interaction
             .reply({
-                content: `${config.errormessages.nopermission}`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -39,7 +49,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .then(() => {
             return main_interaction
                 .reply({
-                    content: 'Successfully updated translate config!',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['success.autotranslate.update'],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.success'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});
@@ -47,7 +66,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .catch(() => {
             return main_interaction
                 .reply({
-                    content: 'Something went wrong while updating translate config!',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(['error.general'], main_interaction.guild.id)
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});

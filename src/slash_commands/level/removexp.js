@@ -3,6 +3,7 @@ const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const config = require('../../assets/json/_config/config.json');
 const { removexpConfig } = require('../_config/level/removexp');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -18,8 +19,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
     if (!hasPermissions) {
         return main_interaction
-            .followUp({
-                content: `${config.errormessages.nopermission}`,
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -31,7 +41,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (user.bot || user.system) {
         return main_interaction
             .followUp({
-                content: "❌ You can't remove xp from a bot or a system account.",
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.removexp.cannotRemoveFromBots'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.success'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -44,9 +63,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (!currentXP) {
         return main_interaction
-            .followUp({
-                content:
-                    '❌ Something went wrong while fetching the xp. Please contact the Bot support.',
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.general'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -66,14 +90,28 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (updated) {
         return main_interaction
             .followUp({
-                content: `✅ ${amount}xp has been removed from ${user}`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['success.removexp.xpRemoved', amount, user],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.success'])),
+                ],
             })
             .catch((err) => {});
     } else {
         return main_interaction
-            .followUp({
-                content:
-                    '❌ Something went wrong while removing the xp. Please contact the Bot support.',
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.general'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});

@@ -66,14 +66,24 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         case 'cooldown':
             const cooldown = main_interaction.options.getNumber('cooldown');
-            if (cooldown < 1) {
+            if (cooldown <= 2) {
                 await saveSetting({
                     value: 0,
                     valueName: 'cooldown',
                 });
                 main_interaction
                     .followUp({
-                        content: `✅ Command Cooldown successfully turned off \n \n**Info: A default Cooldown of 2 Seconds is still enabled to protect the bot from spam!**`,
+                        content: ``,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.settings.cooldown.disabled'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});
@@ -84,7 +94,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
                 main_interaction
                     .followUp({
-                        content: `✅ Command Cooldown successfully changed to ${cooldown} seconds \n \n**Info: Cooldown can be interupted when the bot is offline!**`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.settings.cooldown.set', cooldown],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});

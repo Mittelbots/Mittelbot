@@ -3,14 +3,25 @@ const { SlashCommandBuilder } = require('discord.js');
 const { checkguildConfig } = require('../_config/utils/checkguild');
 
 module.exports.run = async ({ main_interaction, bot }) => {
+    await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
+
     const userInput = main_interaction.options.getString('guildid');
 
     const guild = await bot.guilds.fetch(userInput);
 
     if (!guild) {
         return main_interaction
-            .reply({
-                content: `This Server doesnt exists or i'm not a member of it. Please invite me to get further informations.`,
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.utils.checkGuild.serverNotFound'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -53,138 +64,67 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .setTitle(`---Get all informations about ${info.name} on Shard-Id ${info.shard}----`)
         .setDescription(
             `Disclaimer: This informations are public and accessable for every bot. I don't expose sensetive data!`
-        )
-        .addFields(
-            {
-                name: 'Is this server available?',
-                value: info.isAvailable ? 'Yes' : 'No',
-                inline: true,
-            },
-            {
-                name: 'Guild Description',
-                value: info.description,
-                inline: true,
-            },
-            {
-                name: 'Verification Level:',
-                value: info.verificationLevel + '',
-                inline: true,
-            },
-            {
-                name: 'Rules Channel:',
-                value: `<#${info.rulesChannelId}>`,
-                inline: true,
-            },
-            {
-                name: 'Member Count:',
-                value: info.members + '',
-                inline: true,
-            },
-            {
-                name: 'Channel Count:',
-                value: info.channels + '',
-                inline: true,
-            },
-            {
-                name: 'Roles Count:',
-                value: info.roles + '',
-                inline: true,
-            },
-            {
-                name: 'Ban Count:',
-                value: info.bans + '',
-                inline: true,
-            },
-            {
-                name: 'Vanity URL:',
-                value: info.vanity.URL + '',
-                inline: true,
-            },
-            {
-                name: 'Vanity URL uses:',
-                value: info.vanity.URLUses + '',
-                inline: true,
-            },
-            {
-                name: 'NSFW Level:',
-                value: info.nsfwLevel + '',
-                inline: true,
-            },
-            {
-                name: 'Server Boosts:',
-                value: info.premiumSubscriptionCount + '',
-                inline: true,
-            },
-            {
-                name: 'Server Boost Level:',
-                value: info.premiumTier + '',
-                inline: true,
-            },
-            {
-                name: 'Ban Count:',
-                value: info.bans + '',
-                inline: true,
-            },
-            {
-                name: 'Is the server a large one?',
-                value: info.isLarge ? 'Yes' : 'No',
-                inline: true,
-            },
-            {
-                name: 'User Limit:',
-                value: info.maximumMembers + '',
-                inline: true,
-            },
-            {
-                name: 'Ban Count:',
-                value: info.bans + '',
-                inline: true,
-            },
-            {
-                name: 'AFK Timer:',
-                value: info.afk.timeout + '',
-                inline: true,
-            },
-            {
-                name: 'AFK Channel:',
-                value: `<#${info.afk.channel}>`,
-                inline: true,
-            },
-            {
-                name: 'Video Channel User Limit:',
-                value: info.maxVideoChannelUsers + '',
-                inline: true,
-            },
-            {
-                name: 'Prefered Location:',
-                value: info.preferredLocale,
-                inline: true,
-            },
-            {
-                name: 'Owner',
-                value: `<@${info.owner}>`,
-                inline: true,
-            },
-            {
-                name: 'I joined at:',
-                value: `<t:${info.botJoined}:f>`,
-                inline: true,
-            }
         );
+
+    const embedFieldData = [
+        info.isAvailable ? 'Yes' : 'No',
+        info.description,
+        info.verificationLevel + '',
+        `<#${info.rulesChannelId}>`,
+        info.members + '',
+        info.channels + '',
+        info.roles + '',
+        info.bans + '',
+        info.vanity.URL + '',
+        info.vanity.URLUses + '',
+        info.nsfwLevel + '',
+        info.premiumSubscriptionCount + '',
+        info.premiumTier + '',
+        info.isLarge ? 'Yes' : 'No',
+        info.maximumMembers + '',
+        info.afk.timeout + '',
+        `<#${info.afk.channel}>`,
+        info.maxVideoChannelUsers + '',
+        info.preferredLocale,
+        `<@${info.owner}>`,
+        `<t:${info.botJoined}:f>`,
+    ];
+
+    const translationFields = global.t.trans(
+        ['info.utils.checkGuild.embed.fields'],
+        main_interaction.guild.id
+    );
+
+    for (let i in embedFieldData) {
+        embed.addFields({
+            name: translationFields[i],
+            value: embedFieldData[i],
+            inline: true,
+        });
+    }
 
     if (info.banner) {
         embed.setImage(info.banner.url);
     }
 
     return main_interaction
-        .reply({
+        .followUp({
             embeds: [embed],
             ephemeral: true,
         })
         .catch((err) => {
-            main_interaction
-                .reply({
-                    content: "Something went wrong. I can't send you the message.",
+            return main_interaction
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.generalWithMessage', err.message],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});

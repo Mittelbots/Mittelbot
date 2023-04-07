@@ -3,6 +3,8 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { avatarConfig } = require('../_config/fun/avatar');
 
 module.exports.run = async ({ main_interaction, bot }) => {
+    await main_interaction.deferReply();
+
     const user = main_interaction.options.getUser('user') || main_interaction.user;
 
     const newEmbedBuilder = new EmbedBuilder()
@@ -16,11 +18,21 @@ module.exports.run = async ({ main_interaction, bot }) => {
             embeds: [newEmbedBuilder],
         })
         .catch((err) => {
-            errorhandler({
-                error: err,
-                message: 'Missing Permissions',
-                isFatal: false,
-            });
+            main_interaction
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.generalWithMessage', err.message],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         });
 };
 

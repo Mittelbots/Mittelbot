@@ -1,4 +1,4 @@
-const { AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 const animals = require('random-animals-api');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { dogsConfig } = require('../_config/fun/dogs');
@@ -15,11 +15,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .catch((err) => {});
         })
-        .catch((error) => {
+        .catch((err) => {
             errorhandler({ err, fatal: true });
             main_interaction
                 .followUp({
-                    content: 'Something went wrong!',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.generalWithMessage', err.message],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});

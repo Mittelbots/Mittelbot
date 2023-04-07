@@ -19,8 +19,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .editReply({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription('You do not have permission to use this command.')
-                        .setColor('#FF0000'),
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
                 ],
                 ephemeral: true,
             })
@@ -40,8 +45,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 main_interaction.editReply({
                     embeds: [
                         new EmbedBuilder()
-                            .setDescription('The ban appeal has been removed from your server.')
-                            .setColor('#00FF00'),
+                            .setDescription(
+                                global.t.trans(
+                                    ['success.banappeal.remove'],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.success'])),
                     ],
                     ephemeral: true,
                 });
@@ -51,9 +61,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     embeds: [
                         new EmbedBuilder()
                             .setDescription(
-                                'An error occured while removing the ban appeal from your server.'
+                                global.t.trans(['error.general'], main_interaction.guild.id)
                             )
-                            .setColor('#FF0000'),
+                            .setColor(global.t.trans(['general.colors.error'])),
                     ],
                     ephemeral: true,
                 });
@@ -95,9 +105,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            'The ban appeal has been setup for your server. An example of how it will look will be sent to the channel you specified.'
+                            global.t.trans(['success.banappeal.set'], main_interaction.guild.id)
                         )
-                        .setColor('#00FF00'),
+                        .setColor(global.t.trans(['general.colors.success'])),
                 ],
                 ephemeral: true,
             });
@@ -111,7 +121,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
-                                    'An error occured while sending the example to the channel you specified. Please make sure I have the correct permissions or the bot is not able to send any Appeals.'
+                                    global.t.trans(
+                                        ['error.banappeal.set'],
+                                        main_interaction.guild.id
+                                    )
                                 )
                                 .setColor('#FF0000'),
                         ],
@@ -124,9 +137,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            'An error occured while setting up the ban appeal for your server.'
+                            global.t.trans(['error.general'], main_interaction.guild.id)
                         )
-                        .setColor('#FF0000'),
+                        .setColor(global.t.trans(['general.colors.error'])),
                 ],
                 ephemeral: true,
             });

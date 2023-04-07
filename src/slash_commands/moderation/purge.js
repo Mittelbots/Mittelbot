@@ -4,6 +4,7 @@ const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { purgeConfig } = require('../_config/moderation/purge');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     main_interaction.deferReply();
@@ -39,7 +40,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (amount < 1 || amount >= Number(config.bulkDeleteLimit)) {
         return main_interaction
             .followUp({
-                content: `You need to input a number between 1 and ${config.bulkDeleteLimit}.`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.purge.notAValidNumber', config.bulkDeleteLimit],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
             })
             .catch((err) => {});
     }
@@ -48,7 +59,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .then(() => {
             main_interaction
                 .followUp({
-                    content: `Successfully pruned ${amount} messages`,
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['success.purge.purged', amount],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.success'])),
+                    ],
                 })
                 .then(async (msg) => {
                     await delay(3000);
@@ -60,7 +80,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
             errorhandler({ err });
             main_interaction
                 .followUp({
-                    content: `There was an error trying to prune messages in this channel! (I can only delete messages younger then 14 Days!)`,
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(['error.general'], main_interaction.guild.id)
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
                 })
                 .catch((err) => {});
         });

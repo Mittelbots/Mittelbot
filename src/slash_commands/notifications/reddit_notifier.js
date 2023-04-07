@@ -1,9 +1,13 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const Reddit = require('../../../utils/functions/data/Reddit');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { redditNotifierConfig } = require('../_config/notifications/reddit_notifier');
 
 module.exports.run = async ({ main_interaction, bot }) => {
+    await main_interaction.deferReply({
+        ephemeral: true,
+    });
+
     const hasPerms = await hasPermission({
         guild_id: main_interaction.guild.id,
         adminOnly: true,
@@ -11,10 +15,21 @@ module.exports.run = async ({ main_interaction, bot }) => {
         bot,
     });
     if (!hasPerms) {
-        return main_interaction.reply({
-            content: `⛔️ You do not have permission to use this command`,
-            ephemeral: true,
-        });
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     const type = main_interaction.options.getSubcommand();
@@ -31,16 +46,38 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const subRedditExists = await reddit.getSubreddit(subreddit);
 
     if (!subRedditExists) {
-        return main_interaction.reply({
-            content: `The subreddit \`${subreddit}\` does not exist or is private`,
-            ephemeral: true,
-        });
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.notifications.reddit.doesNotExistsOrIsPrivate', subreddit],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
     if (allow_nsfw && !channel.nsfw) {
-        return main_interaction.reply({
-            content: `⛔️ The channel \`${channel.name}\` is not marked as NSFW`,
-            ephemeral: true,
-        });
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.notifications.reddit.isNsfw', channel.name],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     const subredditName = subRedditExists;
@@ -49,25 +86,80 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (type === 'remove') {
         if (!hasGuildAlready) {
-            return main_interaction.reply({
-                content: `The subreddit \`${subredditName}\` is not added to the reddit notifier`,
-                ephemeral: true,
-            });
+            return main_interaction
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    [
+                                        'error.notifications.reddit.doesNotExistsOrIsPrivate',
+                                        subredditName,
+                                    ],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         }
 
         reddit
             .remove(guild_id)
-            .then(() => {
-                main_interaction.reply({
-                    content: `🎉 Removed the subreddit \`${subredditName}\` from the reddit notifier`,
-                    ephemeral: true,
-                });
+            .then(async () => {
+                return main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        [
+                                            'error.notifications.reddit.doesNotExistsOrIsPrivate',
+                                            subredditName,
+                                        ],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
+
+                await main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.notifications.reddit.removed', subredditName],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             })
-            .catch(() => {
-                main_interaction.reply({
-                    content: `💥 Something went wrong while removing the subreddit \`${subredditName}\` from the reddit notifier`,
-                    ephemeral: true,
-                });
+            .catch((err) => {
+                return main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.generalWithMessage', err.message],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             });
     } else {
         let override = false;
@@ -75,10 +167,24 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (hasGuildAlready) {
             override = true;
             if (hasGuildAlready.subreddit === subredditName) {
-                return main_interaction.reply({
-                    content: `The subreddit \`${subredditName}\` is already added to the reddit notifier`,
-                    ephemeral: true,
-                });
+                return main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        [
+                                            'error.notifications.reddit.isAlreadyAdded',
+                                            subredditName,
+                                        ],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             }
         }
 
@@ -91,17 +197,39 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 allow_nsfw,
                 override,
             })
-            .then(() => {
-                main_interaction.reply({
-                    content: `🎉 Added the subreddit \`${subredditName}\` to the reddit notifier`,
-                    ephemeral: true,
-                });
+            .then(async () => {
+                await main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.notifications.reddit.added', subredditName],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             })
-            .catch(() => {
-                main_interaction.reply({
-                    content: `💥 Something went wrong while adding the subreddit \`${subredditName}\` to the reddit notifier`,
-                    ephemeral: true,
-                });
+            .catch((err) => {
+                return main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.generalWithMessage', err.message],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             });
     }
 };

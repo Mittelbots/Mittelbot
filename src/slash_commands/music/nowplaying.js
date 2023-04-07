@@ -16,8 +16,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('There is no song playing right now!'),
+                    .setDescription(
+                        global.t.trans(['error.music.nothingPlays'], main_interaction.guild.id)
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
             ],
             ephemeral: true,
         });
@@ -25,10 +27,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
     return await main_interaction.followUp({
         embeds: [
             new EmbedBuilder()
-                .setColor('#00ff00')
                 .setDescription(
-                    `Now playing: ${queue.currentTrack} \nRequested by: ${queue.currentTrack.requestedBy} \nDuration: ${queue.currentTrack.duration} \nURL: ${queue.currentTrack.url}`
+                    global.t.trans(
+                        [
+                            'info.music.nowplaying',
+                            queue.currentTrack,
+                            queue.currentTrack.requestedBy,
+                            queue.currentTrack.duration,
+                            queue.currentTrack.url,
+                        ],
+                        main_interaction.guild.id
+                    )
                 )
+                .setColor(global.t.trans(['general.colors.success']))
                 .setThumbnail(queue.currentTrack.thumbnail),
         ],
         ephemeral: true,
