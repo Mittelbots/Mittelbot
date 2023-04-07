@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const config = require('../../assets/json/_config/config.json');
@@ -11,7 +11,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const hasPermissions = await hasPermission({
         guild_id: main_interaction.guild.id,
-        adminOnly: true,
+        adminOnly: false,
         modOnly: false,
         user: main_interaction.member,
         bot,
@@ -19,8 +19,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (!hasPermissions) {
         return main_interaction
-            .followUp({
-                content: `${config.errormessages.nopermission}`,
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -32,7 +41,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (user.bot || user.system) {
         return main_interaction
             .followUp({
-                content: "❌ You can't add xp to a bot or a system account.",
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.givexp.cannotGiveToBots'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -45,9 +63,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (!currentXP) {
         return main_interaction
-            .followUp({
-                content:
-                    '❌ Something went wrong while adding the xp. Please contact the Bot support.',
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.general'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -63,14 +86,26 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (updated) {
         return main_interaction
             .followUp({
-                content: `✅ ${amount}xp has been added to ${user}`,
+                embeds: [
+                    new EmbedBuilder().setDescription(
+                        global.t.trans(
+                            ['success.givexp.xpGiven', amount, user],
+                            main_interaction.guild.id
+                        )
+                    ),
+                ],
             })
             .catch((err) => {});
     } else {
         return main_interaction
-            .followUp({
-                content:
-                    '❌ Something went wrong while adding the xp. Please contact the Bot support.',
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.general'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});

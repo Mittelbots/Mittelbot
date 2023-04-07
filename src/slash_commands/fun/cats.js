@@ -1,4 +1,4 @@
-const { AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 
 const axios = require('axios');
 const { catsConfig } = require('../_config/fun/cats');
@@ -13,7 +13,21 @@ module.exports.run = async ({ main_interaction, bot }) => {
             files: [new AttachmentBuilder(data[0].url, 'cat.png')],
         })
         .catch((err) => {
-            main_interaction.reply('❌ Something went wrong!').catch((err) => {});
+            main_interaction
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.generalWithMessage', err.message],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         });
 };
 

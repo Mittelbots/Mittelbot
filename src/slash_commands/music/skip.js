@@ -20,25 +20,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const queue = await musicApi.getQueue();
 
-    if (!musicApi.isPlaying())
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('There is no song playing right now!'),
-            ],
-            ephemeral: true,
-        });
-
-    if (!queue) {
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('There is no song playing right now!'),
-            ],
-            ephemeral: true,
-        });
+    if (!musicApi.isPlaying() || !queue) {
+        return await main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.music.nothingPlays'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     const previousTrack = queue.currentTrack;
@@ -50,31 +44,42 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const nextSong = queuedTracks[0];
 
     if (!nextSong) {
-        return main_interaction
+        return await main_interaction
             .followUp({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('#ff0000')
-                        .setDescription('Queue ended. Silence...'),
+                        .setDescription(
+                            global.t.trans(['warning.music.queueEnded'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.warning'])),
                 ],
                 ephemeral: true,
             })
-            .catch((e) => {});
+            .catch((err) => {});
     }
 
-    return await main_interaction.followUp({
-        embeds: [
-            new EmbedBuilder().setColor('#00ff00').setDescription(
-                `**${previousTrack}** has been skipped. 
-                    \n----------------------------------------\n
-                    Now playing: ${nextSong.title} 
-                    Requested by: ${nextSong.requestedBy} 
-                    Duration: ${nextSong.duration} 
-                    URL: ${nextSong.url}`
-            ),
-        ],
-        ephemeral: true,
-    });
+    return await main_interaction
+        .followUp({
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(
+                            [
+                                'success.music.skip.skipped',
+                                previousTrack,
+                                nextSong.title,
+                                nextSong.requestedBy,
+                                nextSong.duration,
+                                nextSong.url,
+                            ],
+                            main_interaction.guild.id
+                        )
+                    )
+                    .setColor(global.t.trans(['general.colors.success'])),
+            ],
+            ephemeral: true,
+        })
+        .catch((err) => {});
 };
 
 module.exports.data = skipConfig;

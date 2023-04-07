@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const SingASong = require('../../../utils/functions/data/SingASong');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { singasongConfig } = require('../_config/fun/singasong');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const singasong = new SingASong(main_interaction, bot);
@@ -20,9 +21,27 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
         case 'view_my_points':
             const points = await singasong.getPointsFromUser(main_interaction.user.id);
-            if (!points)
-                return main_interaction.reply({ content: 'You have no points!', ephemeral: true });
-            main_interaction.reply({ content: `You have ${points} points!`, ephemeral: true });
+            if (!points) {
+                return main_interaction.reply({
+                    embeds: [
+                        new EmbedBuilder().setDescription(
+                            global.t.trans(['error.singasong.noPoints'], main_interaction.guild.id)
+                        ),
+                    ],
+                    ephemeral: true,
+                });
+            }
+            main_interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setDescription(
+                        global.t.trans(
+                            ['info.singasong.userPoints', points],
+                            main_interaction.guild.id
+                        )
+                    ),
+                ],
+                ephemeral: true,
+            });
             break;
         case 'view':
             main_interaction.reply({
@@ -39,16 +58,36 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 bot,
             });
             if (!hasPermissions) {
-                return main_interaction.reply({
-                    content: 'You do not have permission to use this command!',
-                    ephemeral: true,
-                });
+                return main_interaction
+                    .reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.permissions.user.useCommand'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             }
             await singasong
                 .banUser(main_interaction.options.getUser('user').id, main_interaction.guild.id)
                 .then(() => {
                     main_interaction.reply({
-                        content: 'User has been banned from using the command in this guild!',
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['success.singasong.userHasBeenBanned'],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.success'])),
+                        ],
                         ephemeral: true,
                     });
                 })

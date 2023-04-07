@@ -131,7 +131,7 @@ module.exports.delYTChannelFromList = async ({ guild_id }) => {
                 resolve(true);
             })
             .catch((err) => {
-                reject(false);
+                reject(err);
             });
     });
 };

@@ -4,6 +4,7 @@ const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier'
 const { handleUploads } = require('../../src/events/notfifier/yt_notifier');
 const {
     createSlashCommands,
+    loadCommandList,
 } = require('../../utils/functions/createSlashCommands/createSlashCommands');
 const { setActivity } = require('../../utils/functions/data/activity');
 const database = require('../../src/db/db');
@@ -21,6 +22,10 @@ module.exports.startBot = async (bot) => {
             await setActivity(bot, true);
             await Promise.resolve(this.fetchCache(bot));
             new ScamDetection().loadScam();
+
+            /**
+                ---- Events & Timer ----
+            */
             handleUploads({
                 bot,
             });
@@ -31,8 +36,13 @@ module.exports.startBot = async (bot) => {
             timer(bot);
             checkInfractions(bot);
             checkTemproles(bot);
-            setActivity(bot);
+            /**
+                ----END ----
+            */
 
+            bot.commands = (await loadCommandList(bot)).cmd;
+
+            setActivity(bot);
             if (process.env.NODE_ENV === 'production') {
                 await createSlashCommands(bot);
             }

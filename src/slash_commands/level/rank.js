@@ -6,6 +6,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const levels = require('../../../src/assets/json/levelsystem/levelconfig.json');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const { rankConfig } = require('../_config/level/rank');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -13,7 +14,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 
     const user = main_interaction.options.getUser('user') || main_interaction.user;
-    const anonymous = main_interaction.options.getBoolean('anonymous');
 
     const playerXP = await Levelsystem.get({
         guild_id: main_interaction.guild.id,
@@ -23,7 +23,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!playerXP) {
         return main_interaction
             .followUp({
-                content: '❌ I have nothing found for this user. Please gain some xp first.',
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.rank.nothingFound'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -59,14 +65,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
         main_interaction
             .followUp({
                 files: [attachment],
-                ephemeral: anonymous ? true : false,
+                ephemeral: true,
             })
-            .catch((err) => {
-                return errorhandler({
-                    err,
-                    fatal: true,
-                });
-            });
+            .catch((err) => {});
     });
 };
 

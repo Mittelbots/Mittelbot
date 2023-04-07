@@ -23,6 +23,14 @@ module.exports.timerConfig = new SlashCommandBuilder()
 
             .addStringOption((option) =>
                 option
+                    .setName('timezone')
+                    .setDescription('What is your preferred timezone?')
+                    .setRequired(true)
+                    .setAutocomplete(true)
+            )
+
+            .addStringOption((option) =>
+                option
                     .setName('end_message')
                     .setDescription('What should the bot send when the timer is over?')
                     .setRequired(true)

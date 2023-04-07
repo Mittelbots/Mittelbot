@@ -21,7 +21,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (!serverRole)
         return main_interaction.reply({
-            content: `❌ The role ${roles} does not exist on this server.`,
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(['error.modroles.doesntExists'], main_interaction.guild.id)
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
+            ],
             ephemeral: true,
         });
 
@@ -45,44 +51,28 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (!dbEntity.isAdmin) {
         row.addComponents(buttons.isAdmin);
-        modRoleEmbed.addFields([
-            {
-                name: 'Admin Permissions',
-                value: 'This role can use commands like ban, unban, etc.',
-                inline: true,
-            },
-        ]);
+        modRoleEmbed.addFields(
+            global.t.trans(['info.modroles.info.admin'], main_interaction.guild.id)
+        );
     }
     if (!dbEntity.isMod) {
         row.addComponents(buttons.isMod);
-        modRoleEmbed.addFields([
-            {
-                name: 'Moderator Permissions',
-                value: 'This role can use commands like mute, kick, etc.',
-                inline: true,
-            },
-        ]);
+        modRoleEmbed.addFields(
+            global.t.trans(['info.modroles.info.mod'], main_interaction.guild.id)
+        );
     }
     if (!dbEntity.isHelper) {
         row.addComponents(buttons.isHelper);
-        modRoleEmbed.addFields([
-            {
-                name: 'Helper Permissions',
-                value: 'This role can use commands like warn, mute, etc.',
-                inline: true,
-            },
-        ]);
+        modRoleEmbed.addFields(
+            global.t.trans(['info.modroles.info.helper'], main_interaction.guild.id)
+        );
     }
 
     if (dbEntity.isAdmin || dbEntity.isMod || dbEntity.isHelper) {
-        modRoleEmbed.addFields([
-            {
-                name: 'Remove Role',
-                value: 'This role will be removed from the modroles list.',
-                inline: true,
-            },
-        ]);
         row.addComponents(buttons.isRemove);
+        modRoleEmbed.addFields(
+            global.t.trans(['info.modroles.info.remove'], main_interaction.guild.id)
+        );
     }
 
     const sentMessage = await main_interaction
@@ -154,14 +144,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 
     collector.on('end', (collected, reason) => {
-        if (reason === 'time') {
-            main_interaction.editReply({
-                content: '**Time limit reached**',
-                embeds: [modRoleEmbed],
-                components: [],
-                ephemeral: true,
-            });
-        }
+        if (reason !== 'time') return;
+
+        main_interaction.editReply({
+            content: `**${global.t.trans(['error.timelimit'], main_interaction.guild.id)}**`,
+            embeds: [modRoleEmbed],
+            components: [],
+            ephemeral: true,
+        });
     });
 };
 

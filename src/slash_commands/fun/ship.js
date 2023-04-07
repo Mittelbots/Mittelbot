@@ -11,14 +11,32 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (user === main_interaction.user) {
         return main_interaction
             .reply({
-                content: `You can't ship with yourself!`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.ship.cannotShip', 'yourself'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
     } else if (user.bot) {
         return main_interaction
             .reply({
-                content: `You can't ship with bots!`,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.ship.cannotShip', 'bots'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -36,23 +54,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const ship = Math.floor(Math.random() * 100);
 
-    const quotes = [
-        {
-            '100_70': ['Damn! You really have to hangout together', 'Wow!', 'Wedding, when?'],
-            '69_40': [
-                'hm. Maybe with a little more effort it can be something special',
-                "That's a good start",
-            ],
-            '39_10': ['IDK. Maybe you should go out with someone else'],
-            '9_0': [
-                "I'm not sure if you can be friends with someone like that",
-                'This is bad. Really bad.',
-                'Sorry for that',
-            ],
-        },
-    ];
+    const quotes = global.t.trans(['info.ship.quotes'], main_interaction.guild.id);
 
-    var quote = '';
+    let quote = '';
     if (ship >= 70) {
         quote = quotes[0]['100_70'][Math.floor(Math.random() * quotes[0]['100_70'].length)];
     } else if (ship >= 40) {
@@ -98,10 +102,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     context.fillText(ship + '%', 420, 190);
 
+    console.log(canvas);
+
     const attachment = new AttachmentBuilder(canvas.toBuffer(), `test.png`);
 
     const newEmbed = new EmbedBuilder().setDescription(
-        `**${user.username}** and **${main_interaction.user.username}** are \`${ship}%\` compatible! \n\n\`${quote}\``
+        globla.t.trans(
+            ['success.ship.showResult', user.username, main_interaction.user.username, ship, quote],
+            main_interaction.guild.id
+        )
     );
 
     await delay(Math.floor(Math.random() * (3000 - 1000) + 3000));

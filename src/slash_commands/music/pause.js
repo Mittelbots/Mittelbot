@@ -21,8 +21,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('There is no song playing right now!'),
+                    .setDescription(
+                        global.t.trans(['error.music.nothingPlays'], main_interaction.guild.id)
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
             ],
             ephemeral: true,
         });
@@ -32,8 +34,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
     return main_interaction.followUp({
         embeds: [
             new EmbedBuilder()
-                .setColor('#00ff00')
-                .setDescription('The current song has been paused.'),
+                .setDescription(global.t.trans(['success.music.pause'], main_interaction.guild.id))
+                .setColor(global.t.trans(['general.colors.success'])),
         ],
         ephemeral: true,
     });

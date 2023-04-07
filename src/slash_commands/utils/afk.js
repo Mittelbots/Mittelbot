@@ -4,6 +4,8 @@ const Afk = require('../../../utils/functions/data/Afk');
 const { afkConfig } = require('../_config/utils/afk');
 
 module.exports.run = async ({ main_interaction, bot }) => {
+    await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
+
     const subcommand = main_interaction.options.getSubcommand();
 
     const afk = new Afk();
@@ -11,32 +13,61 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (subcommand === 'remove') {
         if (!isUserAfk) {
-            return main_interaction.reply({
-                content: `❌ You are not afk.`,
-                ephemeral: true,
-            });
+            return main_interaction
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.utils.afk.notAfk'],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         }
 
         await afk.remove(main_interaction.user.id, main_interaction.guild.id);
 
         return main_interaction
-            .reply({
-                content: `✅ You are no longer afk.`,
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['success.utils.afk.noLongerAfk'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});
     } else {
         if (isUserAfk) {
             return main_interaction
-                .reply({
-                    content: `❌ You are already afk. \`Reason: ${isUserAfk.reason}\` To remove your afk state add the remove option.`,
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.utils.afk.alreadyAfk', isUserAfk.reason],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
                     ephemeral: true,
                 })
                 .catch((err) => {});
         }
 
         const modal = new ModalBuilder()
-            .setTitle('Reason for your afk state.')
+            .setTitle(global.t.trans(['info.utils.afk.modalTitle'], main_interaction.guild.id))
             .setCustomId('afk_modal');
 
         const textInput = new TextInputBuilder()

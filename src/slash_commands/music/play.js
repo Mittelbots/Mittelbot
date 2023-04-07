@@ -14,27 +14,39 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const target = main_interaction.options.getString('target');
 
     if (target.length < 3) {
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('Please send a valid link or song name.'),
-            ],
-            ephemeral: true,
-        });
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.music.play.notValidInput'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     if (await musicApi.isYoutubeLink(target)) {
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription(
-                        'I do not support any YouTube links due some legal issues. Please provide a spotify or soundcloud link.'
-                    ),
-            ],
-            ephemeral: true,
-        });
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.music.play.notSupported'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
     }
 
     const check = await musicApi.checkAvailibility(true);
@@ -46,15 +58,23 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const queue = await musicApi.createQueue();
-    if (!queue)
-        return main_interaction.followUp({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setDescription('There was an error while creating the queue.'),
-            ],
-            ephemeral: true,
-        });
+    if (!queue) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.music.play.queueCreate'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
 
     const embed = new EmbedBuilder();
 
@@ -85,44 +105,76 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
     }
 
-    if (result.tracks.length === 0)
-        return main_interaction.followUp({
-            embeds: [
-                embed
-                    .setColor('#ff0000')
-                    .setDescription('No results for this song. Be sure to send a valid link.'),
-            ],
-        });
+    if (result.tracks.length === 0) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.music.play.noResults'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
 
     if (result.playlist) {
         await queue.addTrack(result.tracks);
         embed
             .setDescription(
-                `**${result.playlist.title}** with ${result.playlist.tracks.length} Songs has been added to the Queue`
+                global.t.trans(
+                    [
+                        'success.music.play.playlistAddedToQueue',
+                        result.playlist.title,
+                        result.playlist.tracks.length,
+                    ],
+                    main_interaction.guild.id
+                )
             )
             .setURL(result.playlist.url)
             .setThumbnail(result.playlist.thumbnail.url)
-            .setColor('#00ff00')
+            .setColor(global.t.trans(['general.colors.success']))
             .setFooter({
-                text: `Songs in Queue: ${queue.tracks.size}`,
+                text: global.t.trans(
+                    ['success.music.songsInQueue', queue.tracks.size],
+                    main_interaction.guild.id
+                ),
             });
     } else {
         await queue.addTrack(result.tracks[0]);
         embed
             .setDescription(
-                `**[${result.tracks[0]}](${result.tracks[0].url})** has been added to the Queue`
+                global.t.trans(
+                    [
+                        'success.music.play.playlistAddedToQueue',
+                        result.tracks[0],
+                        result.tracks[0].url,
+                    ],
+                    main_interaction.guild.id
+                )
             )
             .addFields({
-                name: 'Requested by',
+                name: global.t.trans(['info.music.requestedby'], main_interaction.guild.id),
                 value: result.tracks[0].requestedBy.username,
             })
             .setThumbnail(result.tracks[0].thumbnail)
             .setFooter({
-                text: `Duration: ${result.tracks[0].duration}\nSongs in Queue: ${queue.tracks.size}`,
+                text: `${global.t.trans(
+                    ['info.music.duration', result.tracks[0].duration],
+                    main_interaction.guild.id
+                )}\n${global.t.trans(
+                    ['info.music.songsInQueue', queue.tracks.size],
+                    main_interaction.guild.id
+                )}`,
             });
     }
 
-    if (!(await musicApi.isPlaying())) {
+    if (!(await musicApi.isPlaying()) && !(await musicApi.isPaused())) {
         await musicApi
             .play()
             .then(async () => {
@@ -132,14 +184,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
                 if (await musicApi.isBotMuted()) {
                     await main_interaction
-                        .reply({
+                        .followUp({
                             embeds: [
                                 new EmbedBuilder()
-                                    .setColor('#ff0000')
                                     .setDescription(
-                                        "I'm muted, please unmute me to use this command."
-                                    ),
+                                        global.t.trans(
+                                            ['error.music.play.botIsMuted'],
+                                            main_interaction.guild.id
+                                        )
+                                    )
+                                    .setColor(global.t.trans(['general.colors.error'])),
                             ],
+                            ephemeral: true,
                         })
                         .catch((err) => {});
                     musicApi.pause();
@@ -150,10 +206,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     err,
                 });
 
-                main_interaction.followUp({
-                    content: 'An error occured while playing the song',
-                    ephemeral: true,
-                });
+                main_interaction
+                    .followUp({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(['error.general'], main_interaction.guild.id)
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
+                        ephemeral: true,
+                    })
+                    .catch((err) => {});
             });
     } else {
         main_interaction.followUp({

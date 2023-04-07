@@ -1,4 +1,5 @@
 const timer = require('../../../src/db/Models/tables/timer.model');
+const momentTZ = require('moment-timezone');
 
 class Timer {
     defaultTick = 15000; // 15 seconds
@@ -61,6 +62,22 @@ class Timer {
                 .catch((err) => {
                     return reject(false);
                 });
+        });
+    }
+
+    getTimezoneList() {
+        return momentTZ.tz.names();
+    }
+
+    convertTimeZone(date, timezone) {
+        return new Promise((resolve) => {
+            return resolve(
+                new Date(
+                    (typeof date === 'string' ? new Date(date) : date).toLocaleString('en-US', {
+                        timeZone: timezone,
+                    })
+                )
+            );
         });
     }
 }

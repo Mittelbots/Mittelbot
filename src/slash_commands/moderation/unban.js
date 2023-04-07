@@ -43,7 +43,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!isUserBanned) {
         return main_interaction
             .followUp({
-                content: 'This user isnt banned!',
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.unban.notBanned'], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});

@@ -1,8 +1,36 @@
+const { EmbedBuilder } = require('discord.js');
 const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { autoModConfig } = require('../_config/admin/automod');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.member,
+        bot,
+    });
+
+    if (!hasPermissions) {
+        return main_interaction
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
+
     const setting = await Automod.get(main_interaction.guild.id);
 
     switch (main_interaction.options.getSubcommand()) {
@@ -26,7 +54,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
                 if (alreadyExists)
                     return main_interaction.reply({
-                        content: `You already have the role \`${role.name}\` on the whitelist. If you want to remove it use the optional argument \`remove\`.`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.automod.whitelistroles.alreadyExists', role.name],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
                         ephemeral: true,
                     });
                 setting.whitelistrole.roles.push(role.id);
@@ -90,7 +127,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .reply({
                             content: setting.antispam.enabled
                                 ? res
-                                : '✅ Successfully disabled antispam.',
+                                : global.t.trans(
+                                      ['success.automod.antispam.disabled'],
+                                      main_interaction.guild.id
+                                  ),
                             ephemeral: true,
                         })
                         .catch((err) => {});
@@ -133,7 +173,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .reply({
                             content: setting.antiinvite.enabled
                                 ? res
-                                : '✅ Successfully disabled Anti-invite.',
+                                : global.t.trans(
+                                      ['success.automod.antiinvite.disabled'],
+                                      main_interaction.guild.id
+                                  ),
                             ephemeral: true,
                         })
                         .catch((err) => {});
@@ -177,7 +220,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .reply({
                             content: setting.antilinks.enabled
                                 ? res
-                                : '✅ Successfully disabled Anti-Links.',
+                                : global.t.trans(
+                                      ['success.automod.antilinks.disabled'],
+                                      main_interaction.guild.id
+                                  ),
                             ephemeral: true,
                         })
                         .catch((err) => {});
@@ -228,7 +274,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .reply({
                             content: setting.antiinsults.enabled
                                 ? res
-                                : '✅ Successfully disabled Anti-Links.',
+                                : global.t.trans(
+                                      ['success.automod.anitinsults.disabled'],
+                                      main_interaction.guild.id
+                                  ),
                             ephemeral: true,
                         })
                         .catch((err) => {});

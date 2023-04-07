@@ -78,16 +78,17 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
             new Afk().handle(main_interaction);
         }
     } else if (main_interaction.type === InteractionType.ApplicationCommandAutocomplete) {
-        return await bot.commands
-            .find((cmd) => cmd.data.name === main_interaction.commandName)
-            .autocomplete(main_interaction);
+        const command = await bot.commands.find(
+            (cmd) => cmd.data.name === main_interaction.commandName
+        );
+        return command.autocomplete(main_interaction);
     } else {
         switch (main_interaction.customId) {
             case 'welcomemessage':
                 await main_interaction.deferUpdate();
                 manageNewWelcomeSetting({
                     main_interaction,
-                });
+                }).catch((err) => {});
                 break;
             case 'pride_forward':
                 await main_interaction.deferUpdate();
