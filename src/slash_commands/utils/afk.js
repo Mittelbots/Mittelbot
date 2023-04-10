@@ -1,4 +1,10 @@
-const { TextInputBuilder, ModalBuilder, ActionRowBuilder, TextInputStyle } = require('discord.js');
+const {
+    TextInputBuilder,
+    ModalBuilder,
+    ActionRowBuilder,
+    TextInputStyle,
+    EmbedBuilder,
+} = require('discord.js');
 const { userAFK } = require('../../../utils/functions/data/variables');
 const Afk = require('../../../utils/functions/data/Afk');
 const { afkConfig } = require('../_config/utils/afk');
