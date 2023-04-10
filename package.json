@@ -28,7 +28,7 @@
         "@discordjs/voice": "^0.16.0",
         "@distube/ytdl-core": "^4.11.8",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
-        "@napi-rs/canvas": "^0.1.39",
+        "@napi-rs/canvas": "^0.1.40",
         "@twurple/api": "^6.1.1",
         "@twurple/auth": "^6.0.2",
         "axios": "^1.3.5",
