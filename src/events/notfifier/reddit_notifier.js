@@ -13,7 +13,7 @@ module.exports.reddit_notifier = async (bot) => {
         redditSettings.forEach(async (setting) => {
             const { guild_id, channel_id, uploads, subreddit, pingrole, allowNSFW } = setting;
 
-            const { data } = await axios
+            const response = await axios
                 .get(`${reddit.baseUrl()}/${subreddit}/new.json?sort=new`)
                 .catch((err) => {
                     if (ignoreErroCodes.includes(err.code)) return;
@@ -26,8 +26,9 @@ module.exports.reddit_notifier = async (bot) => {
                     });
                     return false;
                 });
-            if (!data) return;
+            if (!response.data) return;
 
+            const { data } = response;
             const { children } = data.data;
             const { data: post } = children[0];
             const {
