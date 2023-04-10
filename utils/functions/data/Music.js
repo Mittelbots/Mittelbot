@@ -1,5 +1,6 @@
 const { QueryType } = require('discord-player');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 
 module.exports = class Music {
     constructor(main_interaction, bot) {
@@ -213,6 +214,40 @@ module.exports = class Music {
     getQueuedTracks() {
         return new Promise(async (resolve) => {
             return resolve(this.queue.tracks);
+        });
+    }
+
+    searchResults(request) {
+        return new Promise(async (resolve) => {
+            let buttons = [];
+            const embed = new EmbedBuilder().setDescription(
+                global.t.trans(
+                    ['info.music.multipleSearchResultsFound'],
+                    this.main_interaction.guild.id
+                )
+            );
+
+            for (let i = 0; i < 5; i++) {
+                embed.addFields({
+                    name: `${parseInt(i) + 1}. ${request[i].title}`,
+                    value: `URL: ${request[i].url}`,
+                });
+
+                buttons.push(
+                    new ButtonBuilder()
+                        .setStyle(ButtonStyle.Secondary)
+                        .setLabel(`${parseInt(i) + 1}`)
+                        .setCustomId(`searchResult_${request[i].url}`)
+                        .setDisabled(false)
+                );
+            }
+
+            const row = new ActionRowBuilder().addComponents(buttons);
+
+            return resolve({
+                embed: embed,
+                row: row,
+            });
         });
     }
 };

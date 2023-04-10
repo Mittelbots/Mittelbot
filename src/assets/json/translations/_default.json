@@ -261,7 +261,8 @@
                 "queueLength": "Sopngs %c - %x",
                 "songEmbedName": "Song %c",
                 "songEmbedValue": "%c (%x)\n Requested by: %y"
-            }
+            },
+            "multipleSearchResultsFound": "Multiple search results found. Please choose one of the following:"
         },
         "utils": {
             "afk": {

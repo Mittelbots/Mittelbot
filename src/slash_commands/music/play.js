@@ -88,21 +88,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
         };
     }
     let result;
-    switch (true) {
-        case url.host === 'open.spotify.com' ||
-            url.host === 'spotify.com' ||
-            url.host === 'www.spotify.com' ||
-            url.host === 'play.spotify.com':
+    switch (url.host) {
+        case 'open.spotify.com':
+        case 'spotify.com':
+        case 'www.spotify.com':
+        case 'play.spotify.com':
             result = await musicApi.spotifySearch(target);
             break;
-        case url.host === 'soundcloud.com' ||
-            url.host === 'www.soundcloud.com' ||
-            url.host === 'm.soundcloud.com':
+        case 'soundcloud.com':
+        case 'www.soundcloud.com':
+        case 'm.soundcloud.com':
             result = await musicApi.soundcloudSearch(target);
             break;
         default:
             result = await musicApi.defaultSearch(target);
-            break;
     }
 
     if (result.tracks.length === 0) {
@@ -122,6 +121,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     }
+
+    let isAMultipleSearch = false;
 
     if (result.playlist) {
         await queue.addTrack(result.tracks);
@@ -146,26 +147,68 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ),
             });
     } else {
-        await queue.addTrack(result.tracks[0]);
+        const searchLength = result.tracks.length;
+        let playTrack;
+
+        if (searchLength > 1) {
+            isAMultipleSearch = true;
+
+            const response = await musicApi.searchResults(result.tracks);
+            await main_interaction.followUp({
+                embeds: [response.embed],
+                components: [response.row],
+                ephemeral: true,
+            });
+
+            const maxTimeout = 30000;
+
+            const filter = (i) =>
+                i.user.id === main_interaction.user.id && i.customId.startsWith('searchResult_');
+            const collector = main_interaction.channel.createMessageComponentCollector({
+                filter,
+                time: maxTimeout,
+            });
+
+            await collector.on('collect', async (interacion) => {
+                const url = interacion.customId.split('_')[1];
+                playTrack = result.tracks.find((t) => t.url === url);
+
+                await interacion.deferUpdate().catch((err) => {});
+            });
+
+            collector.on('end', async (collected, reason) => {
+                return;
+            });
+
+            while (!playTrack) {
+                await new Promise((r) => setTimeout(r, 500));
+
+                if (playTrack) break;
+
+                setTimeout(() => {
+                    if (!playTrack) playTrack = result.tracks[0];
+                }, maxTimeout);
+            }
+        } else {
+            playTrack = result.tracks[0];
+        }
+
+        await queue.addTrack(playTrack);
         embed
             .setDescription(
                 global.t.trans(
-                    [
-                        'success.music.play.playlistAddedToQueue',
-                        result.tracks[0],
-                        result.tracks[0].url,
-                    ],
+                    ['success.music.play.songAddedToQueue', playTrack, playTrack],
                     main_interaction.guild.id
                 )
             )
             .addFields({
                 name: global.t.trans(['info.music.requestedby'], main_interaction.guild.id),
-                value: result.tracks[0].requestedBy.username,
+                value: playTrack.requestedBy.username,
             })
-            .setThumbnail(result.tracks[0].thumbnail)
+            .setThumbnail(playTrack.thumbnail)
             .setFooter({
                 text: `${global.t.trans(
-                    ['info.music.duration', result.tracks[0].duration],
+                    ['info.music.duration', playTrack.duration],
                     main_interaction.guild.id
                 )}\n${global.t.trans(
                     ['info.music.songsInQueue', queue.tracks.size],
@@ -178,7 +221,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
         await musicApi
             .play()
             .then(async () => {
-                await main_interaction.followUp({
+                if (isAMultipleSearch) {
+                    await main_interaction.editReply({
+                        embeds: [embed],
+                        components: [],
+                    });
+                    return;
+                }
+                main_interaction.followUp({
                     embeds: [embed],
                 });
 
@@ -205,7 +255,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 errorhandler({
                     err,
                 });
-
                 main_interaction
                     .followUp({
                         embeds: [
@@ -220,6 +269,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .catch((err) => {});
             });
     } else {
+        if (isAMultipleSearch) {
+            await main_interaction.editReply({
+                embeds: [embed],
+                components: [],
+            });
+            return;
+        }
         main_interaction.followUp({
             embeds: [embed],
         });
