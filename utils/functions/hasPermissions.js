@@ -1,6 +1,7 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { GuildConfig } = require('./data/Config');
 const { errorhandler } = require('./errorhandler/errorhandler');
+const callerId = require('caller-id');
 
 module.exports.hasPermission = async ({
     guild_id,
@@ -35,9 +36,11 @@ module.exports.hasPermission = async ({
     }
 
     if (!hasPermission) {
+        const caller = callerId.getData();
+        const calledFrom = caller.filePath;
         errorhandler({
             fatal: false,
-            message: `${guildUser.id} has tried a command with no permission in ${guild_id}`,
+            message: `${guildUser.id} has tried ${calledFrom} command with no permission in ${guild_id}`,
         });
     }
 
