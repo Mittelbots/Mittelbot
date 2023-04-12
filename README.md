@@ -29,7 +29,7 @@ Or open issue if you want :)
 
 ```Dockerfile
 
-FROM node:18.8
+FROM node:18.15.0
 
 
 WORKDIR /app
