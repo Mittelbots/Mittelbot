@@ -12,7 +12,6 @@ module.exports.registerPlayerEvents = (player) => {
             .send({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle('Error')
                         .setDescription(
                             `Error emitted from the queue ${queue.guild.name} | ${error.message}`
                         )
@@ -23,6 +22,8 @@ module.exports.registerPlayerEvents = (player) => {
             .catch(() => {
                 // No permissions
             });
+
+        queue.destroy();
     });
 
     player.events.on('playerError', (queue, error) => {
@@ -34,7 +35,6 @@ module.exports.registerPlayerEvents = (player) => {
             .send({
                 embeds: [
                     new EmbedBuilder()
-                        .setTitle('Error')
                         .setDescription(
                             `Error emitted from the connection ${queue.guild.name} | ${error.message}`
                         )

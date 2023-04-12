@@ -267,6 +267,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ephemeral: true,
                     })
                     .catch((err) => {});
+
+                musicApi.pause();
             });
     } else {
         if (isAMultipleSearch) {
