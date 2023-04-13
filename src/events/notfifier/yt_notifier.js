@@ -14,7 +14,7 @@ const ignoreErrorNames = [
 
 const ignoreErrorCodes = ['404'];
 
-const interval = 600000; //? 10 minutes
+const interval = 1000 * 60 * 1; // 10 minutes
 
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
