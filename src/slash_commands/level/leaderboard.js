@@ -66,7 +66,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             lb_embed.addFields([
                 {
                     name: global.t.trans(
-                        ['info.leaderboard.currentRank'],
+                        ['info.leaderboard.currentRank', userRank],
                         main_interaction.guild.id
                     ),
                     value: global.t.trans(
