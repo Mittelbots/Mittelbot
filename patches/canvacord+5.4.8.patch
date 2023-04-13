@@ -1,0 +1,61 @@
+diff --git a/node_modules/canvacord/src/Rank.js b/node_modules/canvacord/src/Rank.js
+index ee33e05..8f23883 100644
+--- a/node_modules/canvacord/src/Rank.js
++++ b/node_modules/canvacord/src/Rank.js
+@@ -82,7 +82,6 @@ class Rank {
+             })
+      */
+     constructor() {
+-
+         /**
+          * Rank card data
+          * @type {CanvacordRankData}
+@@ -156,7 +155,11 @@ class Rank {
+                 name: null,
+                 color: "#FFFFFF"
+             },
+-            renderEmojis: false
++            renderEmojis: false,
++            minXP: {
++                data: 0,
++                color: "#FFFFFF"
++            }
+         };
+ 
+         // Load default fonts
+@@ -291,6 +294,19 @@ class Rank {
+         return this;
+     }
+     
++    /**
++     * Set minimum xp of the current level
++     * @param {number} data Required xp
++     * @param {string} color  Color
++     * @returns {Rank}
++    */
++    setMinXP(data, color = "#FFFFFF") {
++        if (typeof data !== "number") throw new Error(`Min xp data type must be a number, received ${typeof data}!`);
++        this.data.minXP.data = data;
++        this.data.minXP.color = color && typeof color === "string" ? color : "#FFFFFF";
++        return this;
++    }
++
+     /**
+      * Set current xp
+      * @param {number} data Current xp
+@@ -628,6 +644,15 @@ class Rank {
+         if (rx <= 0) return 1;
+         if (cx > rx) return parseInt(this.data.progressBar.width) || 0;
+ 
++        if(this.data.minXP.data > 0) {
++            const mx = this.data.minXP.data;
++            if (cx < mx) return 0;
++
++            const nx = cx - mx;
++            const nr = rx - mx;
++            return (nx * 615) / nr;
++        }
++
+         let width = (cx * 615) / rx;
+         if (width > this.data.progressBar.width) width = this.data.progressBar.width;
+         return parseInt(width) || 0;
