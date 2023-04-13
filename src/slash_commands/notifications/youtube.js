@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { changeYtNotifier, delYTChannelFromList } = require('../../../utils/functions/data/youtube');
 const { youtubeConfig } = require('../_config/notifications/youtube');
 

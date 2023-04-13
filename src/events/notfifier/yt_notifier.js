@@ -14,28 +14,28 @@ const ignoreErrorNames = [
 
 const ignoreErrorCodes = ['404'];
 
-const interval = 1000 * 60 * 1; // 10 minutes
+const interval = 1000 * 60; // 10 minutes
 
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
 
     setInterval(async () => {
         console.info('🔎 Youtube upload handler Interval has started');
-        const uploads = await guildUploads
-            .findAll()
-            .then((res) => res)
-            .catch((err) => {
-                if (ignoreErrorNames.includes(err.errno) || ignoreErrorCodes.includes(err.code))
-                    return false;
-
-                errorhandler({
-                    message: `CODE: ${err.code} ERRNO: ${err.errno}`,
-                    err,
-                    fatal: true,
-                });
-                return false;
+        const uploads = await guildUploads.findAll().catch((err) => {
+            errorhandler({
+                message: `CODE: ${err.code} ERRNO: ${err.errno}`,
+                err,
+                fatal: true,
             });
-        if (uploads.length === 0) return false;
+            return false;
+        });
+
+        if (uploads.length === 0) {
+            console.info(
+                `🔎 Youtube upload handler Interval has ended because there are no uploads to check`
+            );
+            return false;
+        }
         for (let i in uploads) {
             if (uploads[i].channel_id) {
                 request
@@ -76,7 +76,11 @@ module.exports.handleUploads = async ({ bot }) => {
                             premiereStartsIn = date.getTime() / 1000;
                         }
 
-                        uploadedVideos.push(feed.items[0].link);
+                        if (uploadedVideos.length >= 10) {
+                            uploadedVideos = [feed.items[0].link];
+                        } else {
+                            uploadedVideos.push(feed.items[0].link);
+                        }
 
                         const saved = await guildUploads
                             .update(
@@ -140,6 +144,12 @@ module.exports.handleUploads = async ({ bot }) => {
                         });
                     })
                     .catch((err) => {
+                        if (
+                            ignoreErrorNames.includes(err.errno) ||
+                            ignoreErrorCodes.includes(err.code)
+                        )
+                            return false;
+
                         errorhandler({
                             message: 'Youtube request run into Timeout.',
                             fatal: err.errno === 'ECONNREFUSED' ? false : true,
