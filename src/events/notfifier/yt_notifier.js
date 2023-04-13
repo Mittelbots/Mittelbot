@@ -14,10 +14,13 @@ const ignoreErrorNames = [
 
 const ignoreErrorCodes = ['404'];
 
+const interval = 600000; //? 10 minutes
+
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
 
     setInterval(async () => {
+        console.info('🔎 Youtube upload handler Interval has started');
         const uploads = await guildUploads
             .findAll()
             .then((res) => res)
@@ -105,26 +108,31 @@ module.exports.handleUploads = async ({ bot }) => {
                         if (!channel) return;
 
                         const pingrole = guild.roles.cache.get(uploads[i].pingrole);
+                        let isEveryone = false;
                         if (pingrole) {
-                            var isEveryone = pingrole.name === '@everyone';
+                            isEveryone = pingrole.name === '@everyone';
                         }
 
+                        const ping = pingrole ? (isEveryone ? '@everyone ' : `${pingrole}`) : '';
+                        const embedContent =
+                            feed.items[0].title +
+                            ` ${feed.items[0].link} ${
+                                isALiveVideoOrPremiere
+                                    ? `\n**Premiere starts in <t:${premiereStartsIn}:R>**`
+                                    : ''
+                            }`;
                         channel
                             .send({
-                                content:
-                                    (pingrole
-                                        ? isEveryone
-                                            ? '@everyone '
-                                            : `<@&${uploads[i].pingrole}> `
-                                        : '') +
-                                    feed.items[0].title +
-                                    ` ${feed.items[0].link} ${
-                                        isALiveVideoOrPremiere
-                                            ? `\n**Premiere starts in <t:${premiereStartsIn}:R>**`
-                                            : ''
-                                    }`,
+                                content: ping + embedContent,
                             })
-                            .catch((err) => {});
+                            .catch((err) => {
+                                errorhandler({
+                                    message: `I have failed to send a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id}))`,
+                                    err: err.message,
+                                    fatal: false,
+                                });
+                                return false;
+                            });
 
                         errorhandler({
                             fatal: false,
@@ -141,5 +149,6 @@ module.exports.handleUploads = async ({ bot }) => {
                     });
             }
         }
-    }, 600000); //? 10 minutes
+        console.info('🔎 Youtube upload handler Interval has finished');
+    }, interval); //? 10 minutes
 };
