@@ -36,7 +36,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const mode = levelSettings.mode || 'normal';
     const nextLevel = await Levelsystem.getLevelOfUser(levels[mode], playerXP.level_announce, true);
     const currentLevel = await Levelsystem.getLevelOfUser(levels[mode], playerXP.level_announce);
-    
+
     const userRank = await Levelsystem.getRank({
         user_id: user.id,
         guild_id: main_interaction.guild.id,
@@ -56,7 +56,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .setLevel(playerXP.level_announce)
         .setCurrentXP(playerXP.xp)
         .setRequiredXP(nextLevel.xp)
-        .setMinXP(currentLevel.xp)
+        .setMinXP(currentLevel.xp);
 
     rank.build().then((data) => {
         const attachment = new AttachmentBuilder(data, 'RankCard.png');
