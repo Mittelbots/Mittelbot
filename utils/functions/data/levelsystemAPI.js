@@ -175,11 +175,11 @@ class Levelsystem {
         });
     }
 
-    getNextLevel(levels, currentlevel) {
+    getLevelOfUser(levels, currentlevel, isNext = false) {
         return new Promise(async (resolve) => {
             for (let i in levels) {
                 if (levels[i].level == currentlevel) {
-                    return resolve(levels[Number(i) + 1]);
+                    return isNext ? resolve(levels[Number(i) + 1]) : resolve(levels[i]);
                 }
             }
         });

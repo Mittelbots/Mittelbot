@@ -1,8 +1,5 @@
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-
 const canvacord = require('canvacord');
 const { AttachmentBuilder } = require('discord.js');
-const { SlashCommandBuilder } = require('discord.js');
 const levels = require('../../../src/assets/json/levelsystem/levelconfig.json');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const { rankConfig } = require('../_config/level/rank');
@@ -37,8 +34,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const levelSettings = await Levelsystem.getSetting(main_interaction.guild.id);
 
     const mode = levelSettings.mode || 'normal';
-    const nextLevel = await Levelsystem.getNextLevel(levels[mode], playerXP.level_announce);
-
+    const nextLevel = await Levelsystem.getLevelOfUser(levels[mode], playerXP.level_announce, true);
+    const currentLevel = await Levelsystem.getLevelOfUser(levels[mode], playerXP.level_announce);
+    
     const userRank = await Levelsystem.getRank({
         user_id: user.id,
         guild_id: main_interaction.guild.id,
@@ -50,15 +48,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 format: 'jpg',
             }) || user.displayAvatarURL()
         )
-        .setCurrentXP(parseInt(playerXP.xp))
-        .setStatus('online')
-        .setProgressBar('#33ab43', 'COLOR')
         .setUsername(user.username)
         .setDiscriminator(user.discriminator)
-        .setRank(userRank)
-        .setLevel(parseInt(playerXP.level_announce))
         .setStatus('online', true, '30')
-        .setRequiredXP(nextLevel.xp);
+        .setProgressBar(['#240000', '#00e8ff'], 'GRADIENT')
+        .setRank(userRank)
+        .setLevel(playerXP.level_announce)
+        .setCurrentXP(playerXP.xp)
+        .setRequiredXP(nextLevel.xp)
+        .setMinXP(currentLevel.xp)
 
     rank.build().then((data) => {
         const attachment = new AttachmentBuilder(data, 'RankCard.png');
