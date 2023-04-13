@@ -10,7 +10,8 @@
         "restart": "npm run stop && npm run start",
         "log": "docker logs -f mittelbot",
         "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --write .\"",
-        "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\""
+        "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\"",
+        "postinstall": "patch-package"
     },
     "nodemonConfig": {
         "ignore": [
@@ -61,6 +62,7 @@
         "nodemailer": "^6.9.1",
         "os-utils": "^0.0.14",
         "passport": "^0.6.0",
+        "patch-package": "^6.5.1",
         "play-dl": "^1.9.6",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.13.0",
