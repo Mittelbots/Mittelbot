@@ -1,14 +1,31 @@
-const { PermissionFlagsBits } = require('discord.js');
-const { twitchApiClient } = require('../../../src/events/notfifier/twitch_notifier');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { ApiClient } = require('@twurple/api');
+const { AppTokenAuthProvider } = require('@twurple/auth');
+
 const { errorhandler } = require('../errorhandler/errorhandler');
 const twitchStreams = require('../../../src/db/Models/tables/twitchStreams.model');
 
 module.exports = class TwitchNotifier {
-    constructor() {}
+    #twitchApiClient;
+
+    constructor() {
+        const clientId = process.env.TT_CLIENT_ID;
+        const clientSecret = process.env.TT_SECRET;
+
+        const authProvider = new AppTokenAuthProvider(clientId, clientSecret);
+
+        this.#twitchApiClient = new ApiClient({
+            authProvider,
+        });
+    }
+
+    getApiClient() {
+        return this.#twitchApiClient;
+    }
 
     change({ twitchchannel, twdcchannel, twpingrole, guild }) {
         return new Promise(async (resolve, reject) => {
-            const twitch_user = await this.#getTwitchFromChannelName(twitchchannel);
+            const twitch_user = await this.getTwitchFromChannelName(twitchchannel);
 
             const twitchId = twitch_user.id;
             const twitchName = twitch_user.name;
@@ -61,15 +78,32 @@ module.exports = class TwitchNotifier {
         });
     }
 
-    #getTwitchFromChannelName(channelname) {
+    getTwitchFromChannelName(channelname) {
         return new Promise(async (resolve) => {
             try {
-                const twitch_user = await twitchApiClient.users.getUserByName(channelname);
+                const twitch_user = await this.getApiClient().users.getUserByName(channelname);
                 resolve(twitch_user);
             } catch (err) {
                 errorhandler({
                     err,
                     fatal: true,
+                });
+                resolve(false);
+            }
+        });
+    }
+
+    getTwitchStream(channel_id) {
+        return new Promise(async (resolve) => {
+            try {
+                const streamer = await this.getApiClient().streams.getStreamByUserId(channel_id);
+                resolve(streamer);
+            } catch (err) {
+                if (err.message.includes('self-signed certificate')) return false;
+
+                errorhandler({
+                    err,
+                    fatal: false,
                 });
                 resolve(false);
             }
@@ -191,11 +225,69 @@ module.exports = class TwitchNotifier {
                 });
         });
     }
+
+    sendTwitchNotification({ channel, data }) {
+        return new Promise(async (resolve, reject) => {
+            // How many hours ago the stream started
+            const uptime = Math.floor(
+                (Date.now() - new Date(data.started_at).getTime()) / 1000 / 60 / 60
+            );
+
+            channel
+                .send({
+                    content: data.pingrole
+                        ? data.isEveryone
+                            ? '@everyone'
+                            : `${data.pingrole}`
+                        : '',
+                    embeds: [
+                        new EmbedBuilder()
+                            .setURL(`https://twitch.tv/${data.channel_name}`)
+                            .setAuthor({
+                                name: `${data.channel_name} just went live on Twitch!`,
+                                iconURL: data.channel_logo,
+                            })
+                            .setTitle(data.title)
+                            .addFields(
+                                {
+                                    name: 'Game',
+                                    value: data.game,
+                                    inline: true,
+                                },
+                                {
+                                    name: 'Viewers',
+                                    value: data.viewers.toString(),
+                                    inline: true,
+                                },
+                                {
+                                    name: 'Tags',
+                                    value: data.tags.join(', '),
+                                    inline: true,
+                                }
+                            )
+                            .setImage(data.thumbnail_url)
+                            .setFooter({ text: `Live since ${uptime}Hours | Last updated at` })
+                            .setTimestamp()
+                            .setColor('#6441a5'),
+                    ],
+                })
+                .then(() => {
+                    resolve();
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                        fatal: false,
+                    });
+                    reject();
+                });
+        });
+    }
 };
 
 module.exports.delTwChannelFromList = async ({ guild_id, deltwchannel }) => {
     return new Promise(async (resolve, reject) => {
-        const twitch_user = await twitchApiClient.users.getUserByName(deltwchannel);
+        const twitch_user = await this.getApiClient.users.getUserByName(deltwchannel);
         if (!twitch_user) {
             return reject(`❌ I couldn't find the channel you have entered.`);
         }
