@@ -14,7 +14,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .setImage(user.displayAvatarURL({ format: 'png' }) + '?size=1024')
         .setTimestamp();
     return main_interaction
-        .reply({
+        .followUp({
             embeds: [newEmbedBuilder],
         })
         .catch((err) => {
@@ -30,7 +30,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             )
                             .setColor(global.t.trans(['general.colors.error'])),
                     ],
-                    ephemeral: true,
                 })
                 .catch((err) => {});
         });
