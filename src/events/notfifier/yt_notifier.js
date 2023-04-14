@@ -43,7 +43,7 @@ module.exports.handleUploads = async ({ bot }) => {
                         `https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`
                     )
                     .then(async (feed) => {
-                        const uploadedVideos = uploads[i].uploads || [];
+                        let uploadedVideos = uploads[i].uploads || [];
 
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
