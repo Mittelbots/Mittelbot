@@ -14,7 +14,7 @@ const ignoreErrorNames = [
 
 const ignoreErrorCodes = ['404'];
 
-const interval = 1000 * 60; // 10 minutes
+const interval = 1000 * 60; // 1 minute
 
 module.exports.handleUploads = async ({ bot }) => {
     console.info('🔎 Youtube upload handler started');
@@ -43,7 +43,7 @@ module.exports.handleUploads = async ({ bot }) => {
                         `https://www.youtube.com/feeds/videos.xml?channel_id=${uploads[i].channel_id}`
                     )
                     .then(async (feed) => {
-                        const uploadedVideos = uploads[i].uploads || [];
+                        let uploadedVideos = uploads[i].uploads || [];
 
                         const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                         if (videoAlreadyExists) return;
