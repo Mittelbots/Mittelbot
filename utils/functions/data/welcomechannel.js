@@ -1,6 +1,6 @@
 const { ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { delay } = require('../delay/delay');
-const { validURL } = require('../validate/isValidURL');
+const isURI = require('@stdlib/assert-is-uri');
 const { isValidHexCode } = require('../validate/isValidHexCode');
 const { validateCustomStrings } = require('../validate/validateCustomStrings');
 const { GuildConfig } = require('./Config');
@@ -139,7 +139,7 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
                         break;
                     }
                     if (
-                        (validURL(data[value]) && data[value].endsWith('jpg')) ||
+                        (isURI(data[value]) && data[value].endsWith('jpg')) ||
                         data[value].endsWith('png') ||
                         data[value] === '{pfp}'
                     ) {
@@ -162,7 +162,7 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
                         messageEmbed.url = '';
                         break;
                     }
-                    if (validURL(data[value])) {
+                    if (isURI(data[value])) {
                         if (
                             data[value].search('http://') === -1 &&
                             data[value].search('https://') === -1
@@ -191,7 +191,7 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
                         break;
                     }
                     if (
-                        (validURL(data[value]) && data[value].endsWith('jpg')) ||
+                        (isURI(data[value]) && data[value].endsWith('jpg')) ||
                         data[value].endsWith('png') ||
                         data[value].endsWith('jpeg') ||
                         data[value].endsWith('gif')
@@ -432,16 +432,7 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }, isTes
         }
 
         if (welcomeChannel.url) {
-            const validUrl = new RegExp(
-                '^(https?:\\/\\/)?' + // protocol
-                    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-                    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-                    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-                    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-                    '(\\#[-a-z\\d_]*)?$',
-                'i'
-            ); // fragment locator
-            if (!validUrl.test(welcomeChannel.url)) {
+            if (!isURI(welcomeChannel.url)) {
                 welcomeChannel.url = null;
             }
         }
