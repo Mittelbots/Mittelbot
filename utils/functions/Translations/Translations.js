@@ -50,7 +50,9 @@ module.exports = class Translations {
             const value = this.#getTranslation(variable);
             string = string.replace(match, value);
         });
-
+        if (string.match(regex)) {
+            return this.#processCustomStrings(string, searchValue);
+        }
         return string;
     }
 
