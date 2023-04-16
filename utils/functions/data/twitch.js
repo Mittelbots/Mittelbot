@@ -4,6 +4,7 @@ const { AppTokenAuthProvider } = require('@twurple/auth');
 
 const { errorhandler } = require('../errorhandler/errorhandler');
 const twitchStreams = require('../../../src/db/Models/tables/twitchStreams.model');
+const Notification = require('./Notifications/Notifications');
 
 module.exports = class TwitchNotifier {
     #twitchApiClient;
@@ -222,64 +223,6 @@ module.exports = class TwitchNotifier {
                 })
                 .catch((err) => {
                     reject(false);
-                });
-        });
-    }
-
-    sendTwitchNotification({ channel, data }) {
-        return new Promise(async (resolve, reject) => {
-            // How many hours ago the stream started
-            const uptime = Math.floor(
-                (Date.now() - new Date(data.started_at).getTime()) / 1000 / 60 / 60
-            );
-
-            channel
-                .send({
-                    content: data.pingrole
-                        ? data.isEveryone
-                            ? '@everyone'
-                            : `${data.pingrole}`
-                        : '',
-                    embeds: [
-                        new EmbedBuilder()
-                            .setURL(`https://twitch.tv/${data.channel_name}`)
-                            .setAuthor({
-                                name: `${data.channel_name} just went live on Twitch!`,
-                                iconURL: data.channel_logo,
-                            })
-                            .setTitle(data.title)
-                            .addFields(
-                                {
-                                    name: 'Game',
-                                    value: data.game,
-                                    inline: true,
-                                },
-                                {
-                                    name: 'Viewers',
-                                    value: data.viewers.toString(),
-                                    inline: true,
-                                },
-                                {
-                                    name: 'Tags',
-                                    value: data.tags.join(', '),
-                                    inline: true,
-                                }
-                            )
-                            .setImage(data.thumbnail_url)
-                            .setFooter({ text: `Live since ${uptime}Hours | Last updated at` })
-                            .setTimestamp()
-                            .setColor('#6441a5'),
-                    ],
-                })
-                .then(() => {
-                    resolve();
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                        fatal: false,
-                    });
-                    reject();
                 });
         });
     }
