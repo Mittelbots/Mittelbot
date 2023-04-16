@@ -87,7 +87,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
         await main_interaction.showModal(modal);
 
-        return main_interaction.reply({ content: `` }).catch((err) => {});
+        return main_interaction.followUp({ content: `` }).catch((err) => {});
     }
 };
 module.exports.data = afkConfig;
