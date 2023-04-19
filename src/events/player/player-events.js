@@ -93,7 +93,7 @@ module.exports.registerPlayerEvents = (player) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            `I was manually disconnected from the voice channel, clearing queue!`
+                            `I was manually disconnected or left due inactivity from the voice channel, clearing queue!`
                         )
                         .setColor('#ff6e12')
                         .setTimestamp(),
@@ -117,6 +117,8 @@ module.exports.registerPlayerEvents = (player) => {
             .catch(() => {
                 // No permissions
             });
+        
+        queue.destroy();
     });
 
     player.events.on('emptyQueue', (queue) => {
