@@ -178,6 +178,7 @@ module.exports.sendRestartNotice = async (message, args) => {
 
         const noticeMessage = '⚠️ The bot is about to restart! Your music will be stopped. ⚠️';
 
+        let sentMessage = 0;
         for (const player of currentPlayers) {
             for (let i = 0; i < 3; i++) {
                 await player[1].metadata.channel
@@ -189,6 +190,9 @@ module.exports.sendRestartNotice = async (message, args) => {
                                 .setTimestamp(),
                         ],
                     })
+                    .then(() => {
+                        sentMessage++;
+                    })
                     .catch(async () => {
                         await channel
                             .send({
@@ -198,6 +202,13 @@ module.exports.sendRestartNotice = async (message, args) => {
                     });
             }
         }
+
+        await message
+            .reply({
+                content: `✅ Successfully sent ${sentMessage} messages`,
+                ephemeral: true,
+            })
+            .catch((err) => {});
         resolve();
     });
 };

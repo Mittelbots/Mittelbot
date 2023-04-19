@@ -23,6 +23,9 @@ GuildLevel.init(
             type: DataTypes.BIGINT,
             defaultValue: 1,
         },
+        last_message: {
+            type: DataTypes.DATE,
+        },
     },
     {
         sequelize: database,

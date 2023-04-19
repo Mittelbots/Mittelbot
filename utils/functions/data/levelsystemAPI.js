@@ -199,6 +199,7 @@ class Levelsystem {
                     element.xp,
                     element.level_announce,
                     element.message_count,
+                    element.last_message,
                 ]);
             });
 
@@ -393,6 +394,13 @@ class Levelsystem {
                     error: 'updatexp',
                 });
             }
+
+            await this.update({
+                guild_id: message.guild.id,
+                user_id: message.author.id,
+                value: new Date(message.createdTimestamp),
+                valueName: 'last_message',
+            });
 
             await this.updateMessageCount({
                 user_id: message.author.id,
