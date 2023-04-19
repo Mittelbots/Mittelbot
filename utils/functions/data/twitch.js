@@ -1,10 +1,9 @@
-const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 const { ApiClient } = require('@twurple/api');
 const { AppTokenAuthProvider } = require('@twurple/auth');
 
 const { errorhandler } = require('../errorhandler/errorhandler');
 const twitchStreams = require('../../../src/db/Models/tables/twitchStreams.model');
-const Notification = require('./Notifications/Notifications');
 
 module.exports = class TwitchNotifier {
     #twitchApiClient;
@@ -154,7 +153,7 @@ module.exports = class TwitchNotifier {
                 })
                 .catch((err) => {
                     reject(
-                        `❌ Something went wrong while selecting all youtube channels. Please contact the Bot support.`
+                        `❌ Something went wrong while selecting all twitch channels. Please contact the Bot support.`
                     );
                     return false;
                 });
@@ -226,29 +225,45 @@ module.exports = class TwitchNotifier {
                 });
         });
     }
-};
 
-module.exports.delTwChannelFromList = async ({ guild_id, deltwchannel }) => {
-    return new Promise(async (resolve, reject) => {
-        const twitch_user = await this.getApiClient.users.getUserByName(deltwchannel);
-        if (!twitch_user) {
-            return reject(`❌ I couldn't find the channel you have entered.`);
-        }
+    getAllTwitchChannels() {
+        return new Promise(async (resolve, reject) => {
+            await twitchStreams
+                .findAll()
+                .then((res) => {
+                    resolve(res);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                    });
+                    reject(err);
+                });
+        });
+    }
 
-        await twitchStreams
-            .destroy({
-                where: {
-                    guild_id,
-                    channel_id: twitch_user.id,
-                },
-            })
-            .then(() => {
-                resolve('✅ Successfully removed the twitch channel to the notification list.');
-            })
-            .catch((err) => {
-                reject(
-                    '❌ Something went wrong while removing the channel from the database. Please contact the Bot support.'
-                );
-            });
-    });
+    delete(guild_id, channel) {
+        return new Promise(async (resolve, reject) => {
+            const twitchChannel = await this.getTwitchFromChannelName(channel);
+            if (!twitchChannel) {
+                return reject(`❌ I couldn't find the channel you have entered.`);
+            }
+
+            await twitchStreams
+                .destroy({
+                    where: {
+                        guild_id,
+                        channel_id: twitchChannel.id,
+                    },
+                })
+                .then(() => {
+                    resolve('✅ Successfully removed the twitch channel to the notification list.');
+                })
+                .catch((err) => {
+                    reject(
+                        '❌ Something went wrong while removing the channel from the database. Please contact the Bot support.'
+                    );
+                });
+        });
+    }
 };

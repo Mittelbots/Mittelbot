@@ -28,6 +28,9 @@ TwitchStreams.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
+        message: {
+            type: DataTypes.STRING,
+        },
     },
     {
         sequelize: database,

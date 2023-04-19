@@ -41,10 +41,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'remove':
             const deltwchannel = main_interaction.options.getString('twitchchannel');
 
-            delTwChannelFromList({
-                guild_id: main_interaction.guild.id,
-                deltwchannel,
-            })
+            new TwitchNotifier()
+                .delete(main_interaction.guild.id, deltwchannel)
                 .then((res) => {
                     main_interaction
                         .followUp({
