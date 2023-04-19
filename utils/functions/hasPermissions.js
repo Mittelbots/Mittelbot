@@ -79,10 +79,10 @@ module.exports.checkPerms = ({
     if (!userHasRole) {
         return false;
     }
-    if (adminOnly && userHasRole && (roleIsMod == 1 || roleIsHelper == 1)) {
+    if (adminOnly && userHasRole && (roleIsMod === 1 || roleIsHelper === 1)) {
         return false;
     }
-    if (modOnly && userHasRole && roleIsHelper == 1) {
+    if (modOnly && userHasRole && roleIsHelper === 1) {
         return false;
     }
     if (!roleIsAdmin && !roleIsMod && !roleIsHelper) {

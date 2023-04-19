@@ -15,7 +15,7 @@ class Logs {
             const logs = await this.get(guild_id);
 
             if (whitelistrole || whitelistchannel) {
-                if (!logs.whitelist || logs.whitelist.length == 0) {
+                if (!logs.whitelist || logs.whitelist.length === 0) {
                     logs.whitelist = [];
                 }
                 if (whitelistrole) {
@@ -115,7 +115,7 @@ class Logs {
     isEventEnabled({ guild_id, event }) {
         return new Promise(async (resolve) => {
             const events = await this.getEvents({ guild_id });
-            if (!events || events.length == 0) return resolve(true);
+            if (!events || events.length === 0) return resolve(true);
             const isDisabled = events.includes(event);
             return resolve(!isDisabled);
         });

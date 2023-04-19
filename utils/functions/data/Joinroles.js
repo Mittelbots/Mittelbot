@@ -65,7 +65,7 @@ class Joinroles {
                 valueName: 'joinroles',
             })
                 .then(() => {
-                    if (joinroles.length == 0 && passedRoles.length == 0) {
+                    if (joinroles.length === 0 && passedRoles.length === 0) {
                         resolve(`Joinroles successfully cleared.`);
                     } else {
                         resolve(`Successfully updated all joinroles`);

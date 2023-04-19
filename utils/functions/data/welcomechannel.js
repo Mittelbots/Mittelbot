@@ -115,7 +115,7 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
 
             const messageEmbed = main_interaction.message.embeds[0].data;
             switch (value) {
-                case 'message':
+                case 'message': {
                     let newMessage;
                     if (!isClear) {
                         const array = main_interaction.message.content.split(' ');
@@ -125,6 +125,7 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
                     }
                     main_interaction.message.content = newMessage || '';
                     break;
+                }
                 case 'author':
                     messageEmbed.author.name = isClear ? '' : data[value];
                     break;
