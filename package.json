@@ -4,6 +4,9 @@
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
+    "engines": {
+        "node": ">=18.15.0"
+    },
     "scripts": {
         "start": "docker compose up -d && docker logs -f mittelbot",
         "stop": "docker compose down",
