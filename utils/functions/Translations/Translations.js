@@ -41,7 +41,7 @@ module.exports = class Translations {
         if (!string) return null;
         if (typeof string !== 'string') return string;
 
-        const regex = /{([^}]+)*}/g;
+        const regex = /{([^{}]+)(?=[^{}]*})}/g;
         const matches = string.match(regex);
         if (!matches) return string;
 
