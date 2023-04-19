@@ -7,7 +7,7 @@ module.exports = class Afk {
 
     handle(main_interaction) {
         const reason = main_interaction.fields.fields.get('afk_reason').value || 'No reason given.';
-        var date = new Date();
+        let date = new Date();
         date = date.setHours(date.getHours() - 1);
 
         const obj = {

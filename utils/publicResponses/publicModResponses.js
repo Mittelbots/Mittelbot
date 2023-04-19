@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require('
 const { generateModEmote } = require('../functions/generateModEmote');
 
 module.exports.publicModResponses = async (type, moderator, member, reason, time, bot) => {
-    var publicModMessage = new EmbedBuilder()
+    const publicModMessage = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle(`${await generateModEmote({ bot, type })}**Member ${type}!**`)
         .addFields([

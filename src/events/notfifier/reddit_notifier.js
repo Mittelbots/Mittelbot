@@ -16,7 +16,7 @@ module.exports.reddit_notifier = async (bot) => {
             const response = await axios
                 .get(`${reddit.baseUrl()}/${subreddit}/new.json?sort=new`)
                 .catch((err) => {
-                    if (ignoreErroCodes.includes(err.code)) return;
+                    if (ignoreErroCodes.includes(err.code)) return false;
 
                     const isFatal = true;
                     errorhandler({

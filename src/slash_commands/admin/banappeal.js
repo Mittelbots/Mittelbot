@@ -96,7 +96,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             for (let i in questions_array) {
                 exampleEmbed.addFields({
-                    name: `Question ${parseInt(i) + 1}`,
+                    name: `Question ${parseInt(i, 10) + 1}`,
                     value: questions_array[i],
                 });
             }

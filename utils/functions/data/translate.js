@@ -37,30 +37,32 @@ class Translate {
     translate(message) {
         return new Promise(async (resolve, reject) => {
             await this.get(message.guild.id)
-                .then((res) => {
+                .then(async (res) => {
                     const translateConfig = res;
 
                     const isActive = translateConfig.mode === 'enable';
-                    if (!isActive) return;
+                    if (!isActive || message.channel.id !== translateConfig.translate_target)
+                        return resolve();
 
-                    if (message.channel.id === translateConfig.translate_target) {
-                        return translatte(message.content, {
-                            to: translateConfig.translate_language,
+                    await translatte(message.content, {
+                        to: translateConfig.translate_language,
+                    })
+                        .then((res) => {
+                            const channel = message.guild.channels.cache.find(
+                                (c) => c.id === translateConfig.translate_log_channel
+                            );
+                            if (channel) {
+                                channel
+                                    .send(`${message.author} ${message.channel} | ${res.text}`)
+                                    .catch((err) => {});
+                            }
+
+                            return resolve();
                         })
-                            .then((res) => {
-                                const channel = message.guild.channels.cache.find(
-                                    (c) => c.id === translateConfig.translate_log_channel
-                                );
-                                if (channel) {
-                                    channel
-                                        .send(`${message.author} ${message.channel} | ${res.text}`)
-                                        .catch((err) => {});
-                                }
-                            })
-                            .catch((err) => {
-                                errorhandler({ err, fatal: true });
-                            });
-                    }
+                        .catch((err) => {
+                            errorhandler({ err, fatal: true });
+                            return reject(err);
+                        });
                 })
                 .catch((err) => {});
         });
