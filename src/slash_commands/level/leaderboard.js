@@ -21,6 +21,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     let userRank;
     let userXP;
     let userLevel;
+    let last_message;
 
     if (leaderboard.length === 0) {
         return main_interaction
@@ -47,8 +48,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
             userRank = Number(i) + 1;
             userXP = leaderboard[i][1];
             userLevel = Number(leaderboard[i][2]) + 1;
+            last_message = new Date(leaderboard[i][4]).getTime();
         }
+
         if (i >= 10) continue;
+        const last_message_date = new Date(leaderboard[i][4]).getTime();
         lb_embed.addFields([
             {
                 name: `Rank: ${Number(i) + 1}`,
@@ -56,7 +60,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     leaderboard[i][1]
                 }\` - **Level:** \`${Number(leaderboard[i][2])}\` - **Messages:** \`${
                     leaderboard[i][3]
-                }\` `,
+                }\` 
+                **Last message:** <t:${last_message_date.toString().slice(0, 10)}:R>
+                `,
             },
         ]);
     }
@@ -70,7 +76,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         main_interaction.guild.id
                     ),
                     value: global.t.trans(
-                        ['info.leaderboard.XP_Level', userXP, userLevel],
+                        [
+                            'info.leaderboard.XP_Level',
+                            userXP,
+                            userLevel,
+                            `<t:${last_message.toString().slice(0, 10)}:R>`,
+                        ],
                         main_interaction.guild.id
                     ),
                 },
