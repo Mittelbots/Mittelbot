@@ -117,7 +117,7 @@ module.exports.registerPlayerEvents = (player) => {
             .catch(() => {
                 // No permissions
             });
-        
+
         queue.destroy();
     });
 
