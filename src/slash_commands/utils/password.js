@@ -1,5 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { delay } = require('../../../utils/functions/delay/delay');
 const { passwordConfig } = require('../_config/utils/password');
 const { EmbedBuilder } = require('discord.js');
 
@@ -71,7 +69,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ],
             ephemeral: true,
         })
-        .catch((err) => {});
+        .catch(() => {});
 };
 
 module.exports.data = passwordConfig;

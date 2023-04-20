@@ -25,7 +25,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .setImage(punchGifs[Math.floor(Math.random() * punchGifs.length)]),
             ],
         })
-        .catch((err) => {});
+        .catch(() => {});
 };
 
 module.exports.data = punchConfig;

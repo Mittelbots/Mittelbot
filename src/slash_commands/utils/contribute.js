@@ -6,7 +6,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             content: bot.config.github_repo,
             ephemeral: true,
         })
-        .catch((err) => {});
+        .catch(() => {});
 };
 
 module.exports.data = contributeConfig;

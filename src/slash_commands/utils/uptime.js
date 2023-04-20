@@ -20,7 +20,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ],
             ephemeral: true,
         })
-        .catch((err) => {});
+        .catch(() => {});
 };
 
 module.exports.data = uptimeConfig;

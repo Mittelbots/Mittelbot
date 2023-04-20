@@ -26,19 +26,21 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const createdAt = remainingTimeString(remainingTime(createdAtRaw));
     const joinedAt = remainingTimeString(remainingTime(joinedAtRaw));
 
-    return main_interaction.reply({
-        embeds: [
-            new EmbedBuilder()
-                .setDescription(
-                    global.t.trans(
-                        ['info.utils.oldestOrNewestmember', username, joinedAt, createdAt],
-                        main_interaction.guild.id
+    return main_interaction
+        .reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(
+                            ['info.utils.oldestOrNewestmember', username, joinedAt, createdAt],
+                            main_interaction.guild.id
+                        )
                     )
-                )
-                .setColor(global.t.trans(['general.colors.info'])),
-        ],
-        ephemeral: true,
-    });
+                    .setColor(global.t.trans(['general.colors.info'])),
+            ],
+            ephemeral: true,
+        })
+        .catch(() => {});
 };
 
 module.exports.data = newestmemberConfig;
