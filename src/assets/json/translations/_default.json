@@ -345,7 +345,8 @@
                     "value": "In order to have the right password, you have to remove the backticks ( ` ) from the password."
                 }
             },
-            "oldestOrNewestmember": "** %c ** \n**Joined:** %x ago \n **Account created:** %y ago"
+            "oldestOrNewestmember": "** %c ** \n**Joined:** %x ago \n **Account created:** %y ago",
+            "uptime": "I'm up for %c Days %x Hours %y Minutes %z Seconds"
         }
     },
 
