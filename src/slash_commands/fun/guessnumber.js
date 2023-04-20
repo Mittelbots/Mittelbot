@@ -37,7 +37,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const number = originalNumber();
     await message_collector.on('collect', async (message) => {
-        const guess = parseInt(message.content);
+        const guess = parseInt(message.content, 10);
 
         if (guess === number) {
             await message.reply(`✅ You guessed the number! It was ${number}`).catch((err) => {});

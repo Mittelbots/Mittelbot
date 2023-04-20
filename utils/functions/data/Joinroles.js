@@ -34,10 +34,11 @@ class Joinroles {
                     return resolve(`Successfully removed all joinroles`);
                 }
             }
-            var passedRoles = [];
+            let passedRoles = [];
             for (let i in roles) {
+                let role;
                 try {
-                    var role = guild.roles.cache.get(roles[i]);
+                    role = guild.roles.cache.get(roles[i]);
                     if (role.tags && role.tags.botId) continue;
                 } catch (err) {
                     return reject(
@@ -64,7 +65,7 @@ class Joinroles {
                 valueName: 'joinroles',
             })
                 .then(() => {
-                    if (joinroles.length == 0 && passedRoles.length == 0) {
+                    if (joinroles.length === 0 && passedRoles.length === 0) {
                         resolve(`Joinroles successfully cleared.`);
                     } else {
                         resolve(`Successfully updated all joinroles`);

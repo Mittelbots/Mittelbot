@@ -229,14 +229,14 @@ module.exports = class Music {
 
             for (let i = 0; i < 5; i++) {
                 embed.addFields({
-                    name: `${parseInt(i) + 1}. ${request[i].title}`,
+                    name: `${parseInt(i, 10) + 1}. ${request[i].title}`,
                     value: `URL: ${request[i].url}`,
                 });
 
                 buttons.push(
                     new ButtonBuilder()
                         .setStyle(ButtonStyle.Secondary)
-                        .setLabel(`${parseInt(i) + 1}`)
+                        .setLabel(`${parseInt(i, 10) + 1}`)
                         .setCustomId(`searchResult_${request[i].url}`)
                         .setDisabled(false)
                 );

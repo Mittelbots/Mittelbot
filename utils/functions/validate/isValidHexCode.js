@@ -1,7 +1,7 @@
 module.exports.isValidHexCode = async (str) => {
     if (str[0] != '#') return false;
 
-    if (!(str.length == 4 || str.length == 7)) return false;
+    if (!(str.length === 4 || str.length === 7)) return false;
 
     for (let i = 1; i < str.length; i++)
         if (

@@ -16,7 +16,7 @@ module.exports.reddit_notifier = async (bot) => {
             const response = await axios
                 .get(`${reddit.baseUrl()}/${subreddit}/new.json?sort=new`)
                 .catch((err) => {
-                    if (ignoreErroCodes.includes(err.code)) return;
+                    if (ignoreErroCodes.includes(err.code)) return false;
 
                     const isFatal = true;
                     errorhandler({
@@ -79,13 +79,13 @@ module.exports.reddit_notifier = async (bot) => {
             }
 
             if (over_18 && !allowNSFW && !channel.nsfw) {
-                newEmbed.setColor(15548997);
+                newEmbed.setColor(global.t.trans(['general.colors.error']));
                 newEmbed.addFields({
                     name: '🔞 NSFW',
                     value: 'This post is marked as NSFW. Please be careful when viewing it.',
                 });
             } else {
-                newEmbed.setColor(15105570);
+                newEmbed.setColor(global.t.trans(['general.colors.info']));
 
                 try {
                     newEmbed.setImage(url);

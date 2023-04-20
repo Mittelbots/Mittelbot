@@ -76,7 +76,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    var newAmount = Number(currentXP) - Number(amount);
+    const newAmount = Number(currentXP) - Number(amount);
 
     if (newAmount < 0) newAmount = 0;
 
