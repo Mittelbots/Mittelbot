@@ -124,6 +124,9 @@
         "utils": {
             "afk": {
                 "noLongerAfk": "{success.emote} You are no longer afk."
+            },
+            "password": {
+                "generated": "{success.emote} Your password has been generated: ` %c `"
             }
         }
     },
@@ -335,7 +338,18 @@
                         }
                     ]
                 }
-            }
+            },
+            "password": {
+                "removeBackticks": {
+                    "name": "[Mobile/Tablet Only] Remove Backticks",
+                    "value": "In order to have the right password, you have to remove the backticks ( ` ) from the password."
+                }
+            },
+            "oldestOrNewestmember": "** %c ** \n**Joined:** %x ago \n **Account created:** %y ago",
+            "uptime": "I'm up for %c Days %x Hours %y Minutes %z Seconds"
+        },
+        "fun": {
+            "punch": "You punched %c"
         }
     },
 
@@ -476,6 +490,9 @@
             },
             "checkGuild": {
                 "serverNotFound": "This Server doesnt exists or i'm not a member of it. Please invite me to get further informations."
+            },
+            "password": {
+                "noValidLength": "{error.emote} The password must be between %c and %x characters long."
             }
         }
     }

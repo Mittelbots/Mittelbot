@@ -70,7 +70,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    var time = main_interaction.options.getString('time');
+    let time = main_interaction.options.getString('time');
 
     let dbtime = getModTime(time);
 

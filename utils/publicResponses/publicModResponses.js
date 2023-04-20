@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle } = require('
 const { generateModEmote } = require('../functions/generateModEmote');
 
 module.exports.publicModResponses = async (type, moderator, member, reason, time, bot) => {
-    var publicModMessage = new EmbedBuilder()
+    const publicModMessage = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle(`${await generateModEmote({ bot, type })}**Member ${type}!**`)
         .addFields([
@@ -33,19 +33,19 @@ module.exports.publicInfractionResponse = async ({
     if (isOne) {
         let type;
         switch (true) {
-            case infraction.mute == 1:
+            case infraction.mute === 1:
                 type = 'Mute';
                 break;
 
-            case infraction.ban == 1:
+            case infraction.ban === 1:
                 type = 'Ban';
                 break;
 
-            case infraction.warn == 1:
+            case infraction.warn === 1:
                 type = 'Warn';
                 break;
 
-            case infraction.kick == 1:
+            case infraction.kick === 1:
                 type = 'Kick';
                 break;
 
@@ -96,11 +96,11 @@ module.exports.publicInfractionResponse = async ({
                 fields: await Promise.all(
                     current.map(async (inf) => ({
                         name: `${inf.infraction_id} - ${
-                            inf.mute == 1
+                            inf.mute === 1
                                 ? `${'Mute'}`
-                                : inf.kick == 1
+                                : inf.kick === 1
                                 ? `${'Kick'}`
-                                : inf.warn == 1
+                                : inf.warn === 1
                                 ? `${'Warn'}`
                                 : `${'Ban'}`
                         }`,

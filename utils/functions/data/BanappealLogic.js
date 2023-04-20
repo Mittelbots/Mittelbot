@@ -51,7 +51,7 @@ module.exports = class BanappealLogic {
 
             for (let i in questions) {
                 embed.addFields({
-                    name: `Question ${parseInt(i) + 1}`,
+                    name: `Question ${parseInt(i, 10) + 1}`,
                     value: questions[i],
                 });
             }

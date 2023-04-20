@@ -208,7 +208,7 @@ class Levelsystem {
             })[0];
 
             if (user_id) {
-                var index;
+                let index;
                 for (let i in sorted) {
                     if (sorted[i][0] === user_id) {
                         index = Number(i) + 1;
@@ -238,14 +238,14 @@ class Levelsystem {
 
     generate({ lvl_count = 1, mode = 'normal' }) {
         return new Promise((resolve, rejects) => {
-            var xp = 10;
-            var config = {
+            const xp = 10;
+            const config = {
                 easy: mode == 'easy' ? [] : levelConfig.easy,
                 normal: mode == 'normal' ? [] : levelConfig.normal,
                 hard: mode == 'hard' ? [] : levelConfig.hard,
             };
 
-            var lvl_multi;
+            let lvl_multi;
             switch (mode) {
                 case 'easy':
                     lvl_multi = 190; // EASY

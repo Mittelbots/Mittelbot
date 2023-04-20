@@ -89,8 +89,8 @@ class Scam {
         return new Promise(async (resolve, reject) => {
             value = this.checkLinkStructure(value);
 
-            var exits = false;
-            var pass = false;
+            let exits = false;
+            let pass = false;
             await this.getAll().then((res) => {
                 for (let i in res) {
                     if (res[i].guild_id === guild_id) {

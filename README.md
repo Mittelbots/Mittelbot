@@ -6,6 +6,12 @@
 <h1 align="center">Mittelbot</h1>
 
 [![wakatime](https://wakatime.com/badge/github/Mittelbots/Mittelbot.svg)](https://wakatime.com/badge/github/Mittelbots/Mittelbot)
+![GitHub license](https://img.shields.io/github/license/Mittelbots/Mittelbot)
+[![Discord](https://img.shields.io/discord/83000000000000000?color=7289DA&label=Discord&logo=Discord&logoColor=white)](https://discord.gg/AGp4hsccU6)
+![GitHub issues](https://img.shields.io/github/issues/Mittelbots/Mittelbot)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ab27b6a53f5f4946b4eb656f98738814)](https://app.codacy.com/gh/Mittelbots/Mittelbot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
+---
 
 It's a multipurpose Discord Bot with moderation, utilities and a levelsystem.
 

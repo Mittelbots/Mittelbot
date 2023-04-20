@@ -36,14 +36,13 @@ async function setNewModLogMessage(bot, type, moderator, member, reason, time, g
 async function sendToModLog(bot, message, gid) {
     const logs = await Logs.get(gid);
 
-    if (logs && logs.modlog) {
-        await bot.channels.cache
-            .get(logs.modlog)
-            .send({ embeds: [message] })
-            .catch((err) => {});
-        return true;
-    }
-    return;
+    if (!logs || !logs.modlog) return false;
+
+    await bot.channels.cache
+        .get(logs.modlog)
+        .send({ embeds: [message] })
+        .catch((err) => {});
+    return true;
 }
 
 module.exports = { setNewModLogMessage };

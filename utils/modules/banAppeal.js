@@ -21,7 +21,7 @@ module.exports.banAppealModule = async (message, bot) => {
                 content: 'You already sent an appeal. Please wait for an answer.',
             })
             .catch((err) => {});
-    } else if (userBanAppeal.isAccepted == true || userBanAppeal.isAccepted == false) {
+    } else if (userBanAppeal.isAccepted || !userBanAppeal.isAccepted) {
         message
             .reply({
                 content: `Your appeal was ${
