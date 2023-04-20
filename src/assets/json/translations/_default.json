@@ -347,6 +347,9 @@
             },
             "oldestOrNewestmember": "** %c ** \n**Joined:** %x ago \n **Account created:** %y ago",
             "uptime": "I'm up for %c Days %x Hours %y Minutes %z Seconds"
+        },
+        "fun": {
+            "punch": "You punched %c"
         }
     },
 

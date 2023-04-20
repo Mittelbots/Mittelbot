@@ -43,6 +43,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'pride',
         'stromberg',
         'singasong',
+        'punch',
     ];
     const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
     const utils = [
