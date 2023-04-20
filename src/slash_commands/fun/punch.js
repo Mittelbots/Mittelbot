@@ -1,8 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
-const { punchConfig } = require("../_config/fun/punch");
+const { EmbedBuilder } = require('discord.js');
+const { punchConfig } = require('../_config/fun/punch');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const user = main_interaction.options.getUser("user");
+    const user = main_interaction.options.getUser('user');
 
     const punchGifs = [
         'https://media.tenor.com/kw5lYGbw8oAAAAAC/one-punch-man.gif',
@@ -22,11 +22,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     .setDescription(
                         global.t.trans(['info.fun.punch', user], main_interaction.guild.id)
                     )
-                    .setImage(punchGifs[Math.floor(Math.random() * punchGifs.length)])
-            ]
+                    .setImage(punchGifs[Math.floor(Math.random() * punchGifs.length)]),
+            ],
         })
         .catch((err) => {});
-
 };
 
 module.exports.data = punchConfig;
