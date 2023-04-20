@@ -259,6 +259,12 @@
             "description": "Resume the music.",
             "usage": "/resume",
             "icon": "▶️"
+        },
+        "password": {
+            "name": "password",
+            "description": "Create a password for a specific channel. (The bot does **not** store these passwords.)",
+            "usage": "/password <length>",
+            "icon": "🔑"
         }
     },
     "levelsystem": {
