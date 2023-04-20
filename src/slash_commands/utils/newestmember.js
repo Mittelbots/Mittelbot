@@ -1,14 +1,14 @@
-const { EmbedBuilder } = require('discord.js');
-const { oldestmemberConfig } = require('../_config/utils/oldestmember');
+const { newestmemberConfig } = require('../_config/utils/newestmember');
 const {
     remainingTime,
     remainingTimeString,
 } = require('../../../utils/functions/getTimeDifference');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const includeBots = main_interaction.options.getBoolean('bots') || false;
 
-    const oldestMember = main_interaction.guild.members.cache
+    const newestMember = main_interaction.guild.members.cache
         .filter((member) => {
             if (member.id === main_interaction.guild.ownerId) {
                 return false;
@@ -16,12 +16,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             return includeBots ? true : !member.user.bot;
         })
-        .sort((a, b) => a.user.createdAt - b.user.createdAt)
+        .sort((a, b) => b.user.createdAt - a.user.createdAt)
         .first();
 
-    const username = oldestMember.user.username;
-    const createdAtRaw = new Date(oldestMember.user.createdAt);
-    const joinedAtRaw = new Date(oldestMember.joinedAt);
+    const username = newestMember.user.username;
+    const createdAtRaw = new Date(newestMember.user.createdAt);
+    const joinedAtRaw = new Date(newestMember.joinedAt);
 
     const createdAt = remainingTimeString(remainingTime(createdAtRaw));
     const joinedAt = remainingTimeString(remainingTime(joinedAtRaw));
@@ -41,4 +41,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 };
 
-module.exports.data = oldestmemberConfig;
+module.exports.data = newestmemberConfig;
