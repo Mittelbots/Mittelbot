@@ -45,7 +45,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'singasong',
     ];
     const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
-    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'timer', 'poll'];
+    const utils = ['afk', 'info', 'ping', 'checkguild', 'kickme', 'timer', 'poll', 'password'];
     const help = ['help', 'tutorial'];
     const notifications = ['twitch', 'youtube', 'reddit_notifier'];
     const music = [
