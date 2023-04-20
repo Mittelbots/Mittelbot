@@ -23,20 +23,9 @@ module.exports.remainingTime = (date) => {
 
 module.exports.remainingTimeString = (timeDiff) => {
     let string = '';
-
-    switch (true) {
-        case timeDiff.years > 0:
-            string += `${timeDiff.years} Years `;
-
-        case timeDiff.remainingMonths:
-            string += `${timeDiff.remainingMonths} Months `;
-
-        case timeDiff.remainingDays:
-            string += `${timeDiff.remainingDays} Days `;
-
-        case timeDiff.remainingHours:
-            string += `${timeDiff.remainingHours} Hours`;
-    }
-
+    if (timeDiff.years > 0) string += `${timeDiff.years} Years `;
+    if (timeDiff.remainingMonths) string += `${timeDiff.remainingMonths} Months `;
+    if (timeDiff.remainingDays) string += `${timeDiff.remainingDays} Days `;
+    if (timeDiff.remainingHours) string += `${timeDiff.remainingHours} Hours`;
     return string;
 };
