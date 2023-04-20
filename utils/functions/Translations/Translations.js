@@ -41,7 +41,7 @@ module.exports = class Translations {
         if (!string) return null;
         if (typeof string !== 'string') return string;
 
-        const regex = /{([^{}]+)(?=[^{}]*})}/; // eslint-disable-line 
+        const regex = /{([^{}]+)(?=[^{}]*})}/; // eslint-disable-line
         const matches = string.match(regex);
         if (!matches) return string;
 
