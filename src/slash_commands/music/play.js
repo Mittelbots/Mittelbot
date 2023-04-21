@@ -125,7 +125,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     let isAMultipleSearch = false;
 
     if (result.playlist) {
-        await queue.addTrack(result.tracks);
+        await musicApi.addTrack(result.tracks);
         embed
             .setDescription(
                 global.t.trans(
@@ -193,7 +193,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             playTrack = result.tracks[0];
         }
 
-        await queue.addTrack(playTrack);
+        await musicApi.addTrack(playTrack);
         embed
             .setDescription(
                 global.t.trans(

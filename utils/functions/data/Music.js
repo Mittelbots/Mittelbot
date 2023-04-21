@@ -1,6 +1,7 @@
 const { QueryType } = require('discord-player');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const musicModel = require('../../../src/db/Models/tables/music.model');
 
 module.exports = class Music {
     constructor(main_interaction, bot) {
@@ -82,6 +83,7 @@ module.exports = class Music {
     skip() {
         return new Promise(async (resolve) => {
             await this.queue.node.skip();
+            await this.updateQueueInDB();
             return resolve();
         });
     }
@@ -89,6 +91,7 @@ module.exports = class Music {
     pause() {
         return new Promise(async (resolve) => {
             await this.queue.node.pause();
+            await this.updateQueueInDB(false);
             return resolve();
         });
     }
@@ -96,6 +99,7 @@ module.exports = class Music {
     resume() {
         return new Promise(async (resolve) => {
             await this.queue.node.resume();
+            await this.updateQueueInDB(true);
             return resolve();
         });
     }
@@ -104,6 +108,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 await this.queue.delete();
+                await this.deleteQueueFromDB();
                 return resolve();
             } catch (e) {
                 return reject();
@@ -152,6 +157,20 @@ module.exports = class Music {
                 });
                 return resolve(false);
             }
+        });
+    }
+
+    addTrack(track) {
+        return new Promise(async (resolve) => {
+            await this.queue.addTrack(track);
+            await this.getQueueFromDB()
+                .then(async () => {
+                    await this.updateQueueInDB();
+                })
+                .catch(async () => {
+                    await this.addQueueToDB();
+                });
+            return resolve();
         });
     }
 
@@ -242,12 +261,85 @@ module.exports = class Music {
                 );
             }
 
-            const row = new ActionRowBuilder().addComponents(buttons);
-
             return resolve({
                 embed: embed,
-                row: row,
+                row: new ActionRowBuilder().addComponents(buttons),
             });
+        });
+    }
+
+    getQueueFromDB() {
+        return new Promise(async (resolve, reject) => {
+            musicModel
+                .findOne({
+                    guild: this.main_interaction.guild.id,
+                })
+                .then((queue) => {
+                    if (!queue || queue.length === 0) return reject();
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject(e);
+                });
+        });
+    }
+
+    addQueueToDB() {
+        return new Promise(async (resolve, reject) => {
+            const queuedTracks = (await this.getQueuedTracks()).data;
+            musicModel
+                .create({
+                    guild_id: this.main_interaction.guild.id,
+                    queue: queuedTracks,
+                })
+                .then((queue) => {
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject(e);
+                });
+        });
+    }
+
+    updateQueueInDB(isPlaying = true) {
+        return new Promise(async (resolve, reject) => {
+            const queuedTracks = (await this.getQueuedTracks()).data;
+
+            musicModel
+                .update(
+                    {
+                        queue: queuedTracks,
+                        isPlaying: isPlaying,
+                    },
+                    {
+                        where: {
+                            guild_id: this.main_interaction.guild.id,
+                        },
+                    }
+                )
+                .then((queue) => {
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject(e);
+                });
+        });
+    }
+
+    deleteQueueFromDB() {
+        return new Promise(async (resolve, reject) => {
+            musicModel
+                .destroy({
+                    where: {
+                        guild_id: this.main_interaction.guild.id,
+                    },
+                })
+                .then((queue) => {
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject();
+                });
         });
     }
 };
