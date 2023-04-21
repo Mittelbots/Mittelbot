@@ -7,5 +7,7 @@ mittelblot-db-backup/
 *bootstrap*
 *vendor*
 
+.husky/
+
 utils/functions/data/Auditlog.js
 *.md
