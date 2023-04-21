@@ -96,7 +96,7 @@ module.exports = class Translations {
             return 'Translation not found';
         }
 
-        return translation;
+        return translation || 'Translation not found';
     }
 
     #isLanguageSupported(language) {
