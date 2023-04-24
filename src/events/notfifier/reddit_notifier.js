@@ -1,7 +1,7 @@
 const axios = require('axios');
 const Reddit = require('../../../utils/functions/data/Reddit');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { EmbedBuilder } = require('@discordjs/builders');
+const { EmbedBuilder } = require('discord.js');
 
 const ignoreErroCodes = ['EAI_AGAIN', 'ECONNRESET', 'ECONNREFUSED', 'EHOSTUNREACH', 'EPIPE'];
 
