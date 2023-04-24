@@ -4,10 +4,14 @@ const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('
 const musicModel = require('../../../src/db/Models/tables/music.model');
 
 module.exports = class Music {
-    constructor(main_interaction, bot) {
-        this.main_interaction = main_interaction;
+    constructor(main_interaction, bot, nonInteraction = false) {
         this.bot = bot;
+        if(nonInteraction) return;
 
+        this.main_interaction = main_interaction;
+        this.guild = main_interaction.guild;
+        this.textChannel = main_interaction.channel;
+        this.voiceChannel = main_interaction.member.voice.channel
         (async () => {
             this.queue = await this.getQueue();
         })();
@@ -26,30 +30,30 @@ module.exports = class Music {
 
     isBotMuted() {
         return new Promise(async (resolve) => {
-            const me = await this.main_interaction.guild.members.fetchMe();
+            const me = await this.guild.members.fetchMe();
             resolve(me.voice.serverMute);
         });
     }
 
     isUserInChannel() {
         return new Promise(async (resolve) => {
-            return resolve(this.main_interaction.member.voice.channel);
+            return resolve(this.voiceChannel);
         });
     }
 
     isBotInAnotherChannel() {
         return new Promise(async (resolve) => {
-            const me = await this.main_interaction.guild.members.fetchMe();
+            const me = await this.guild.members.fetchMe();
             return resolve(
                 me.voice.channel &&
-                    me.voice.channel.id !== this.main_interaction.member.voice.channel.id
+                    me.voice.channel.id !== this.voiceChannel.id
             );
         });
     }
 
     isBotInAVoiceChannel() {
         return new Promise(async (resolve) => {
-            const me = await this.main_interaction.guild.members.fetchMe();
+            const me = await this.guild.members.fetchMe();
             return resolve(me.voice.channel);
         });
     }
@@ -132,11 +136,10 @@ module.exports = class Music {
         return new Promise(async (resolve) => {
             if (this.queue) return resolve(this.queue);
             try {
-                this.queue = this.bot.player.nodes.create(this.main_interaction.guild, {
+                this.queue = this.bot.player.nodes.create(this.guild, {
                     metadata: {
-                        client: this.main_interaction.client.me,
-                        channel: this.main_interaction.channel,
-                        requestedBy: this.main_interaction.user,
+                        client: this.bot.user,
+                        channel: this.textChannel,
                     },
                     leaveOnEnd: false,
                     leaveOnEndCooldown: 60000 * 5,
@@ -146,7 +149,7 @@ module.exports = class Music {
                     skipOnNoStream: true,
                 });
 
-                await this.queue.connect(this.main_interaction.member.voice.channel.id, {
+                await this.queue.connect(this.voiceChannel.id, {
                     deaf: true,
                 });
 
@@ -179,7 +182,7 @@ module.exports = class Music {
             try {
                 this.destroy();
             } catch (e) {
-                this.main_interaction.guild.me.voice.channel.leave();
+                this.guild.me.voice.channel.leave();
             } finally {
                 return resolve();
             }
@@ -242,7 +245,7 @@ module.exports = class Music {
             const embed = new EmbedBuilder().setDescription(
                 global.t.trans(
                     ['info.music.multipleSearchResultsFound'],
-                    this.main_interaction.guild.id
+                    this.guild.id
                 )
             );
 
@@ -272,7 +275,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             musicModel
                 .findOne({
-                    guild: this.main_interaction.guild.id,
+                    guild: this.guild.id,
                 })
                 .then((queue) => {
                     if (!queue || queue.length === 0) return reject();
@@ -289,7 +292,9 @@ module.exports = class Music {
             const queuedTracks = (await this.getQueuedTracks()).data;
             musicModel
                 .create({
-                    guild_id: this.main_interaction.guild.id,
+                    guild_id: this.guild.id,
+                    text_channel: this.textChannel.id,
+                    voice_channel: this.voiceChannel.id,
                     queue: queuedTracks,
                 })
                 .then((queue) => {
@@ -309,11 +314,13 @@ module.exports = class Music {
                 .update(
                     {
                         queue: queuedTracks,
+                        text_channel: this.textChannel.id,
+                        voice_channel: this.voiceChannel.id,
                         isPlaying: isPlaying,
                     },
                     {
                         where: {
-                            guild_id: this.main_interaction.guild.id,
+                            guild_id: this.guild.id,
                         },
                     }
                 )
@@ -331,7 +338,7 @@ module.exports = class Music {
             musicModel
                 .destroy({
                     where: {
-                        guild_id: this.main_interaction.guild.id,
+                        guild_id: this.guild.id,
                     },
                 })
                 .then((queue) => {
@@ -339,6 +346,30 @@ module.exports = class Music {
                 })
                 .catch((e) => {
                     return reject();
+                });
+        });
+    }
+
+    generateQueueAfterRestart() {
+        return new Promise(async (resolve) => {
+            musicModel.findAll()
+                .then(async (queues) => {
+                    queues.forEach(async (queuedTracks) => {
+                        this.guild = this.bot.guilds.cache.get(queuedTracks.guild_id);
+                        this.channel = this.guild.channels.cache.get(queuedTracks.channel_id);
+
+                        await this.createQueue();
+
+                        queuedTracks.queue.forEach(async (track) => {
+                            await this.queue.addTrack(track);
+                        });
+
+                        if (queuedTracks.isPlaying) {
+                            this.play();
+                        }
+                    });
+                })
+                .catch(async (e) => {
                 });
         });
     }

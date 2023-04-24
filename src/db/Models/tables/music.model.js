@@ -9,6 +9,14 @@ Music.init(
             type: DataTypes.BIGINT,
             unique: 'guild_id',
         },
+        text_channel: {
+            type: DataTypes.BIGINT,
+            unique: 'text_channel',
+        },
+        voice_channel: {
+            type: DataTypes.BIGINT,
+            unique: 'voice_channel',
+        },
         queue: {
             type: DataTypes.JSON,
         },
