@@ -6,13 +6,12 @@ const musicModel = require('../../../src/db/Models/tables/music.model');
 module.exports = class Music {
     constructor(main_interaction, bot, nonInteraction = false) {
         this.bot = bot;
-        if(nonInteraction) return;
+        if (nonInteraction) return;
 
         this.main_interaction = main_interaction;
         this.guild = main_interaction.guild;
         this.textChannel = main_interaction.channel;
-        this.voiceChannel = main_interaction.member.voice.channel
-        (async () => {
+        this.voiceChannel = main_interaction.member.voice.channel(async () => {
             this.queue = await this.getQueue();
         })();
     }
@@ -44,10 +43,7 @@ module.exports = class Music {
     isBotInAnotherChannel() {
         return new Promise(async (resolve) => {
             const me = await this.guild.members.fetchMe();
-            return resolve(
-                me.voice.channel &&
-                    me.voice.channel.id !== this.voiceChannel.id
-            );
+            return resolve(me.voice.channel && me.voice.channel.id !== this.voiceChannel.id);
         });
     }
 
@@ -243,10 +239,7 @@ module.exports = class Music {
         return new Promise(async (resolve) => {
             let buttons = [];
             const embed = new EmbedBuilder().setDescription(
-                global.t.trans(
-                    ['info.music.multipleSearchResultsFound'],
-                    this.guild.id
-                )
+                global.t.trans(['info.music.multipleSearchResultsFound'], this.guild.id)
             );
 
             for (let i = 0; i < 5; i++) {
@@ -352,7 +345,8 @@ module.exports = class Music {
 
     generateQueueAfterRestart() {
         return new Promise(async (resolve) => {
-            musicModel.findAll()
+            musicModel
+                .findAll()
                 .then(async (queues) => {
                     queues.forEach(async (queuedTracks) => {
                         this.guild = this.bot.guilds.cache.get(queuedTracks.guild_id);
@@ -369,8 +363,7 @@ module.exports = class Music {
                         }
                     });
                 })
-                .catch(async (e) => {
-                });
+                .catch(async (e) => {});
         });
     }
 };
