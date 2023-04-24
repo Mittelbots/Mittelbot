@@ -87,7 +87,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             host: '',
         };
     }
-    
+
     const host = await musicApi.getURLHost(url);
     let result;
     if (host === 'spotify') {

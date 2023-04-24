@@ -311,7 +311,7 @@ module.exports = class Music {
 
     updateQueueInDB(isPlaying = true) {
         return new Promise(async (resolve, reject) => {
-            console.log(await this.getQueuedTracks())
+            console.log(await this.getQueuedTracks());
             const queuedTracks = (await this.getQueuedTracks()).data;
             musicModel
                 .update(
@@ -383,37 +383,42 @@ module.exports = class Music {
                     queues.forEach(async (queuedTracks) => {
                         this.guild = this.bot.guilds.cache.get(queuedTracks.guild_id);
                         this.textChannel = this.guild.channels.cache.get(queuedTracks.text_channel);
-                        this.voiceChannel = this.guild.channels.cache.get(queuedTracks.voice_channel);
+                        this.voiceChannel = this.guild.channels.cache.get(
+                            queuedTracks.voice_channel
+                        );
 
                         await this.createQueue();
-                        
+
                         let allTracks = [];
 
                         for (let track of queuedTracks.queue) {
                             const host = await this.getURLHost(new URL(track.url));
-                          
+
                             if (host === 'spotify') {
-                              const search = await this.spotifySearch(track.url, track.requestedBy);
-                              track = search.tracks[0];
+                                const search = await this.spotifySearch(
+                                    track.url,
+                                    track.requestedBy
+                                );
+                                track = search.tracks[0];
                             } else if (host === 'soundcloud') {
-                              const search = await this.soundcloudSearch(track.url);
-                              track = search.tracks[0];
+                                const search = await this.soundcloudSearch(track.url);
+                                track = search.tracks[0];
                             } else {
-                              const search = await this.defaultSearch(track.url);
-                              track = search.tracks[0];
+                                const search = await this.defaultSearch(track.url);
+                                track = search.tracks[0];
                             }
-                          
+
                             allTracks.push(track);
                         }
                         await this.addTrack(allTracks, true);
 
                         if (queuedTracks.isPlaying) {
                             this.play();
-                        }else {
+                        } else {
                             this.pause(true);
                         }
 
-                        resolve()
+                        resolve();
                     });
                 })
                 .catch(async (e) => {});
