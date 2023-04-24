@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const Music = require('../../../utils/functions/data/Music');
 
 module.exports.registerPlayerEvents = (player) => {
     player.events.on('error', (queue, error) => {
@@ -55,7 +56,7 @@ module.exports.registerPlayerEvents = (player) => {
                         .setDescription(`Now playing ${track.title}...`)
                         .addFields({
                             name: 'Requested by',
-                            value: track.requestedBy.username,
+                            value: track.requestedBy ? track.requestedBy.username || 'Unknown' : 'Unknown',
                         })
                         .setColor('#38ff46')
                         .setThumbnail(track.thumbnail)
@@ -75,7 +76,7 @@ module.exports.registerPlayerEvents = (player) => {
                         .setDescription(`Track ${track} added to the queue!`)
                         .addFields({
                             name: 'Requested by',
-                            value: track.requestedBy.username,
+                            value: track.requestedBy ? track.requestedBy.username || 'Unknown' : 'Unknown',
                         })
                         .setColor('#38ff46')
                         .setThumbnail(track.thumbnail)
@@ -102,6 +103,8 @@ module.exports.registerPlayerEvents = (player) => {
             .catch(() => {
                 // No permissions
             });
+        
+        new Music(null, bot, true).disconnect(queue.guild.id);
     });
 
     player.events.on('emptyChannel', (queue) => {
@@ -118,7 +121,8 @@ module.exports.registerPlayerEvents = (player) => {
                 // No permissions
             });
 
-        queue.destroy();
+        new Music(null, bot, true).destroy(queue.guild.id);
+        
     });
 
     player.events.on('emptyQueue', (queue) => {

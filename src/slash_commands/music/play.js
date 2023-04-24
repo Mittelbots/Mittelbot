@@ -87,21 +87,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
             host: '',
         };
     }
+    
+    const host = await musicApi.getURLHost(url);
     let result;
-    switch (url.host) {
-        case 'open.spotify.com':
-        case 'spotify.com':
-        case 'www.spotify.com':
-        case 'play.spotify.com':
-            result = await musicApi.spotifySearch(target);
-            break;
-        case 'soundcloud.com':
-        case 'www.soundcloud.com':
-        case 'm.soundcloud.com':
-            result = await musicApi.soundcloudSearch(target);
-            break;
-        default:
-            result = await musicApi.defaultSearch(target);
+    if (host === 'spotify') {
+        result = await musicApi.spotifySearch(target);
+    } else if (host === 'soundcloud') {
+        result = await musicApi.soundcloudSearch(target);
+    } else {
+        result = await musicApi.defaultSearch(target);
     }
 
     if (result.tracks.length === 0) {
