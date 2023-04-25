@@ -35,11 +35,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
+    if (queue.tracks.length > 0) await musicApi.play();
+    else await musicApi.skip();
+
     const previousTrack = queue.currentTrack;
     const queuedTracks = (await musicApi.getQueuedTracks()).data;
-
-    if (queue.tracks.length > 0) await musicApi.play();
-    else await queue.node.skip();
 
     const nextSong = queuedTracks[0];
 

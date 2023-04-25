@@ -13,6 +13,7 @@ const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier'
 const { timer } = require('../../src/events/timer/timer');
 const ScamDetection = require('../../utils/checkForScam/checkForScam');
 const logs = require('discord-logs');
+const Music = require('../../utils/functions/data/Music');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -22,6 +23,7 @@ module.exports.startBot = async (bot) => {
             await setActivity(bot, true);
             await Promise.resolve(this.fetchCache(bot));
             new ScamDetection().loadScam();
+            new Music(null, bot, true).generateQueueAfterRestart();
 
             /**
                 ---- Events & Timer ----

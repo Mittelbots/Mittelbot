@@ -18,7 +18,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
     }
 
-    await musicApi.disconnect();
+    await musicApi.disconnect(main_interaction.guild.id);
 
     return await main_interaction.followUp({
         embeds: [
