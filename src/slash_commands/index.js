@@ -59,6 +59,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'oldestmember',
         'newestmember',
         'uptime',
+        'imgur',
     ];
     const help = ['help', 'tutorial'];
     const notifications = ['twitch', 'youtube', 'reddit_notifier'];

@@ -1,12 +1,18 @@
 const { QueryType } = require('discord-player');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const musicModel = require('../../../src/db/Models/tables/music.model');
 
 module.exports = class Music {
-    constructor(main_interaction, bot) {
-        this.main_interaction = main_interaction;
+    constructor(main_interaction, bot, nonInteraction = false) {
         this.bot = bot;
+        this.queue;
+        if (nonInteraction) return;
 
+        this.main_interaction = main_interaction;
+        this.guild = this.bot.guilds.cache.get(this.main_interaction.guild.id);
+        this.textChannel = main_interaction.channel;
+        this.voiceChannel = main_interaction.member.voice.channel;
         (async () => {
             this.queue = await this.getQueue();
         })();
@@ -25,30 +31,27 @@ module.exports = class Music {
 
     isBotMuted() {
         return new Promise(async (resolve) => {
-            const me = await this.main_interaction.guild.members.fetchMe();
+            const me = await this.guild.members.fetchMe();
             resolve(me.voice.serverMute);
         });
     }
 
     isUserInChannel() {
         return new Promise(async (resolve) => {
-            return resolve(this.main_interaction.member.voice.channel);
+            return resolve(this.voiceChannel);
         });
     }
 
     isBotInAnotherChannel() {
         return new Promise(async (resolve) => {
-            const me = await this.main_interaction.guild.members.fetchMe();
-            return resolve(
-                me.voice.channel &&
-                    me.voice.channel.id !== this.main_interaction.member.voice.channel.id
-            );
+            const me = await this.guild.members.fetchMe();
+            return resolve(me.voice.channel && me.voice.channel.id !== this.voiceChannel.id);
         });
     }
 
     isBotInAVoiceChannel() {
         return new Promise(async (resolve) => {
-            const me = await this.main_interaction.guild.members.fetchMe();
+            const me = await this.guild.members.fetchMe();
             return resolve(me.voice.channel);
         });
     }
@@ -69,6 +72,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 await this.queue.node.play();
+                await this.updateQueueInDB(true);
                 return resolve();
             } catch (e) {
                 errorhandler({
@@ -82,31 +86,41 @@ module.exports = class Music {
     skip() {
         return new Promise(async (resolve) => {
             await this.queue.node.skip();
+            await this.updateQueueInDB();
             return resolve();
         });
     }
 
-    pause() {
+    pause(isRestart = false) {
         return new Promise(async (resolve) => {
+            if (!isRestart) {
+                await this.updateQueueInDB(false);
+            }
             await this.queue.node.pause();
             return resolve();
         });
     }
 
     resume() {
-        return new Promise(async (resolve) => {
-            await this.queue.node.resume();
-            return resolve();
+        return new Promise(async (resolve, reject) => {
+            try {
+                await this.updateQueueInDB(true);
+                await this.queue.node.resume();
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 
-    destroy() {
+    destroy(guild_id) {
         return new Promise(async (resolve, reject) => {
             try {
+                await this.deleteQueueFromDB(guild_id);
                 await this.queue.delete();
                 return resolve();
             } catch (e) {
-                return reject();
+                return reject(e);
             }
         });
     }
@@ -127,11 +141,10 @@ module.exports = class Music {
         return new Promise(async (resolve) => {
             if (this.queue) return resolve(this.queue);
             try {
-                this.queue = this.bot.player.nodes.create(this.main_interaction.guild, {
+                this.queue = this.bot.player.nodes.create(this.guild, {
                     metadata: {
-                        client: this.main_interaction.client.me,
-                        channel: this.main_interaction.channel,
-                        requestedBy: this.main_interaction.user,
+                        client: this.bot.user,
+                        channel: this.textChannel,
                     },
                     leaveOnEnd: false,
                     leaveOnEndCooldown: 60000 * 5,
@@ -141,7 +154,7 @@ module.exports = class Music {
                     skipOnNoStream: true,
                 });
 
-                await this.queue.connect(this.main_interaction.member.voice.channel.id, {
+                await this.queue.connect(this.voiceChannel.id, {
                     deaf: true,
                 });
 
@@ -155,23 +168,40 @@ module.exports = class Music {
         });
     }
 
-    disconnect() {
+    addTrack(track, isRestart = false) {
         return new Promise(async (resolve) => {
+            await this.queue.addTrack(track);
+            if (isRestart) return resolve();
+
+            await this.getQueueFromDB()
+                .then(async () => {
+                    await this.updateQueueInDB();
+                })
+                .catch(async () => {
+                    await this.addQueueToDB();
+                });
+            return resolve();
+        });
+    }
+
+    disconnect() {
+        return new Promise(async (resolve, reject) => {
             try {
-                this.destroy();
+                const voiceChannel = this.guild.members.me.voice.channel;
+                if (!voiceChannel) reject(`I'm not in a voice channel right now.`);
+                voiceChannel.leave();
+                resolve();
             } catch (e) {
-                this.main_interaction.guild.me.voice.channel.leave();
-            } finally {
-                return resolve();
+                return reject(e);
             }
         });
     }
 
-    spotifySearch(target) {
+    spotifySearch(target, requestedBy) {
         return new Promise(async (resolve) => {
             return resolve(
                 await this.bot.player.search(target, {
-                    requestedBy: this.main_interaction.user,
+                    requestedBy: requestedBy,
                     searchEngine: QueryType.SPOTIFY,
                 })
             );
@@ -191,7 +221,7 @@ module.exports = class Music {
 
     defaultSearch(target) {
         return new Promise(async (resolve) => {
-            return resolve(await this.spotifySearch(target));
+            return resolve(await this.spotifySearch(target, this.main_interaction.user));
         });
     }
 
@@ -221,10 +251,7 @@ module.exports = class Music {
         return new Promise(async (resolve) => {
             let buttons = [];
             const embed = new EmbedBuilder().setDescription(
-                global.t.trans(
-                    ['info.music.multipleSearchResultsFound'],
-                    this.main_interaction.guild.id
-                )
+                global.t.trans(['info.music.multipleSearchResultsFound'], this.guild.id)
             );
 
             for (let i = 0; i < 5; i++) {
@@ -242,12 +269,169 @@ module.exports = class Music {
                 );
             }
 
-            const row = new ActionRowBuilder().addComponents(buttons);
-
             return resolve({
                 embed: embed,
-                row: row,
+                row: new ActionRowBuilder().addComponents(buttons),
             });
+        });
+    }
+
+    getQueueFromDB() {
+        return new Promise(async (resolve, reject) => {
+            musicModel
+                .findOne({
+                    guild: this.guild.id,
+                })
+                .then((queue) => {
+                    if (!queue || queue.length === 0) return reject();
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject(e);
+                });
+        });
+    }
+
+    addQueueToDB() {
+        return new Promise(async (resolve, reject) => {
+            const queuedTracks = (await this.getQueuedTracks()).data;
+            musicModel
+                .create({
+                    guild_id: this.guild.id,
+                    text_channel: this.textChannel.id,
+                    voice_channel: this.voiceChannel.id,
+                    queue: queuedTracks,
+                })
+                .then((queue) => {
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject(e);
+                });
+        });
+    }
+
+    updateQueueInDB(isPlaying = true) {
+        return new Promise(async (resolve, reject) => {
+            const queuedTracks = (await this.getQueuedTracks()).data;
+
+            if (queuedTracks.length === 0) {
+                await this.deleteQueueFromDB(this.guild.id);
+                return resolve();
+            }
+
+            musicModel
+                .update(
+                    {
+                        queue: queuedTracks,
+                        text_channel: this.textChannel.id,
+                        voice_channel: this.voiceChannel.id,
+                        isPlaying: isPlaying,
+                    },
+                    {
+                        where: {
+                            guild_id: this.guild.id,
+                        },
+                    }
+                )
+                .then((queue) => {
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject(e);
+                });
+        });
+    }
+
+    deleteQueueFromDB(guild_id) {
+        return new Promise(async (resolve, reject) => {
+            musicModel
+                .destroy({
+                    where: {
+                        guild_id,
+                    },
+                })
+                .then((queue) => {
+                    return resolve(queue);
+                })
+                .catch((e) => {
+                    return reject(e);
+                });
+        });
+    }
+
+    getURLHost(url) {
+        return new Promise(async (resolve) => {
+            let host;
+            switch (url.host) {
+                case 'open.spotify.com':
+                case 'spotify.com':
+                case 'www.spotify.com':
+                case 'play.spotify.com':
+                    host = 'spotify';
+                    break;
+                case 'soundcloud.com':
+                case 'www.soundcloud.com':
+                case 'm.soundcloud.com':
+                    host = 'soundcloud';
+                    break;
+                default:
+                    host = 'default';
+            }
+            resolve(host);
+        });
+    }
+
+    generateQueueAfterRestart() {
+        return new Promise(async (resolve, reject) => {
+            console.info(`[Music] Generating queue after restart...`);
+            musicModel
+                .findAll()
+                .then(async (queues) => {
+                    queues.forEach(async (queuedTracks) => {
+                        console.info(`[Music] Generating queue for ${queuedTracks.guild_id}`);
+                        this.guild = this.bot.guilds.cache.get(queuedTracks.guild_id);
+                        this.textChannel = this.guild.channels.cache.get(queuedTracks.text_channel);
+                        this.voiceChannel = this.guild.channels.cache.get(
+                            queuedTracks.voice_channel
+                        );
+
+                        await this.createQueue();
+
+                        let allTracks = [];
+
+                        for (let track of queuedTracks.queue) {
+                            if (!track) continue;
+
+                            const host = await this.getURLHost(new URL(track.url));
+
+                            if (host === 'spotify') {
+                                const search = await this.spotifySearch(
+                                    track.url,
+                                    track.requestedBy
+                                );
+                                track = search.tracks[0];
+                            } else if (host === 'soundcloud') {
+                                const search = await this.soundcloudSearch(track.url);
+                                track = search.tracks[0];
+                            } else {
+                                const search = await this.defaultSearch(track.url);
+                                track = search.tracks[0];
+                            }
+
+                            allTracks.push(track);
+                        }
+                        await this.addTrack(allTracks, true);
+                        this.play();
+
+                        console.info(`[Music] Generated queue for ${this.guild.name}!`);
+                        resolve();
+                    });
+                })
+                .catch(async (e) => {
+                    reject(e);
+                });
+            resolve();
         });
     }
 };

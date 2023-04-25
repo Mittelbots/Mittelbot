@@ -59,26 +59,18 @@ module.exports = class Translations {
     processCustomValues(string, values) {
         if (!string) return null;
         if (typeof string !== 'string') return string;
-        const stringArray = string.split(' ');
+
+        const stringArray = string.split(/(%[a-z])/);
 
         let valueIndex = 0;
-
         for (let i in stringArray) {
             if (stringArray[i].includes('%')) {
-                if (
-                    stringArray[i].includes('.') ||
-                    stringArray[i].includes('!') ||
-                    stringArray[i].includes('?') ||
-                    stringArray[i].includes(',')
-                ) {
-                    stringArray[i] = stringArray[i].slice(0, -1);
-                }
                 stringArray[i] = stringArray[i].replace(stringArray[i], values[valueIndex]);
                 valueIndex++;
             }
         }
 
-        string = stringArray.join(' ');
+        string = stringArray.join('');
         return string;
     }
 
@@ -96,7 +88,7 @@ module.exports = class Translations {
             return 'Translation not found';
         }
 
-        return translation;
+        return translation || 'Translation not found';
     }
 
     #isLanguageSupported(language) {

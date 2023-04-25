@@ -1,7 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const Music = require('../../../utils/functions/data/Music');
 
-module.exports.registerPlayerEvents = (player) => {
+module.exports.registerPlayerEvents = (player, bot) => {
     player.events.on('error', (queue, error) => {
         errorhandler({
             err: error,
@@ -23,7 +24,7 @@ module.exports.registerPlayerEvents = (player) => {
                 // No permissions
             });
 
-        queue.destroy();
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('playerError', (queue, error) => {
@@ -55,7 +56,9 @@ module.exports.registerPlayerEvents = (player) => {
                         .setDescription(`Now playing ${track.title}...`)
                         .addFields({
                             name: 'Requested by',
-                            value: track.requestedBy.username,
+                            value: track.requestedBy
+                                ? track.requestedBy.username || 'Unknown'
+                                : 'Unknown',
                         })
                         .setColor('#38ff46')
                         .setThumbnail(track.thumbnail)
@@ -75,7 +78,9 @@ module.exports.registerPlayerEvents = (player) => {
                         .setDescription(`Track ${track} added to the queue!`)
                         .addFields({
                             name: 'Requested by',
-                            value: track.requestedBy.username,
+                            value: track.requestedBy
+                                ? track.requestedBy.username || 'Unknown'
+                                : 'Unknown',
                         })
                         .setColor('#38ff46')
                         .setThumbnail(track.thumbnail)
@@ -102,6 +107,8 @@ module.exports.registerPlayerEvents = (player) => {
             .catch(() => {
                 // No permissions
             });
+
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('emptyChannel', (queue) => {
@@ -118,7 +125,7 @@ module.exports.registerPlayerEvents = (player) => {
                 // No permissions
             });
 
-        queue.destroy();
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('emptyQueue', (queue) => {
@@ -134,5 +141,11 @@ module.exports.registerPlayerEvents = (player) => {
             .catch(() => {
                 // No permissions
             });
+
+        try {
+            new Music(null, bot, true).destroy(queue.guild.id);
+        } catch (e) {
+            // Bot got probably disconnected with the /stop command
+        }
     });
 };

@@ -105,7 +105,7 @@ module.exports.ignoremode = async (message, args) => {
 };
 
 module.exports.disable_command = async (message, args) => {
-    const command = args;
+    const command = args[0];
     const global_config = await GlobalConfig.get();
     const disabled_commands = global_config.disabled_commands;
     let gotDisabled = false;
