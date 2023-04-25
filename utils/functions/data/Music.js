@@ -108,14 +108,13 @@ module.exports = class Music {
         });
     }
 
-    destroy(queue, guild_id) {
+    destroy(guild_id) {
         return new Promise(async (resolve, reject) => {
             try {
-                await queue.delete();
                 await this.deleteQueueFromDB(guild_id);
                 return resolve();
             } catch (e) {
-                return reject();
+                return reject(e);
             }
         });
     }
@@ -179,18 +178,13 @@ module.exports = class Music {
         });
     }
 
-    disconnect(queue, guild_id) {
-        return new Promise(async (resolve) => {
+    disconnect(guild_id) {
+        return new Promise(async (resolve, reject) => {
             try {
-                if (queue) {
-                    this.destroy(queue, guild_id);
-                } else {
-                    this.destroy(this.queue, guild_id);
-                }
-            } catch (e) {
                 this.guild.me.voice.channel.leave();
-            } finally {
-                return resolve();
+                resolve();
+            } catch (e) {
+                return reject(e);
             }
         });
     }

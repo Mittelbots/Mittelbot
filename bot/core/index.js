@@ -56,7 +56,7 @@ bot.player = new Player(bot, {
 
 global.t = new Translations();
 
-registerPlayerEvents(bot.player);
+registerPlayerEvents(bot.player, bot);
 
 bot.config = config;
 

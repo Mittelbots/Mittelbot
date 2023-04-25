@@ -36,6 +36,21 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
+    Promise.all([musicApi.disconnect(), musicApi.destroy(main_interaction.guild.id)]).catch(
+        async (err) => {
+            await main_interaction
+                .followUp({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(global.t.trans(['error.general']))
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        }
+    );
+
     await main_interaction
         .followUp({
             embeds: [
@@ -48,8 +63,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ephemeral: true,
         })
         .catch((err) => {});
-
-    return musicApi.destroy();
 };
 
 module.exports.data = stopConfig;

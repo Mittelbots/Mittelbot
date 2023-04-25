@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const Music = require('../../../utils/functions/data/Music');
 
-module.exports.registerPlayerEvents = (player) => {
+module.exports.registerPlayerEvents = (player, bot) => {
     player.events.on('error', (queue, error) => {
         errorhandler({
             err: error,
@@ -24,7 +24,7 @@ module.exports.registerPlayerEvents = (player) => {
                 // No permissions
             });
 
-        queue.destroy();
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('playerError', (queue, error) => {
@@ -108,7 +108,7 @@ module.exports.registerPlayerEvents = (player) => {
                 // No permissions
             });
 
-        new Music(null, bot, true).disconnect(queue.guild.id);
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('emptyChannel', (queue) => {
@@ -141,5 +141,7 @@ module.exports.registerPlayerEvents = (player) => {
             .catch(() => {
                 // No permissions
             });
+
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 };
