@@ -90,6 +90,9 @@ DP_FORCE_YTDL_MOD=
 
 3. Start the docker container
 ```bash
+docker compose up -d
+
+# For older docker versions:
 docker-compose up -d
 ```
 <br>
