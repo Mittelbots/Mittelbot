@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
 const { nowplayingConfig } = require('../_config/music/nowplaying');
 
@@ -12,7 +11,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const queue = await musicApi.getQueue();
 
-    if (await !musicApi.isPlaying())
+    if ((await !musicApi.isPlaying()) || (await musicApi.isPaused()))
         return main_interaction.followUp({
             embeds: [
                 new EmbedBuilder()
@@ -32,7 +31,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         [
                             'info.music.nowplaying',
                             queue.currentTrack,
-                            queue.currentTrack.requestedBy,
+                            queue.currentTrack ? queue.currentTrack.requestedBy : 'Unknown',
                             queue.currentTrack.duration,
                             queue.currentTrack.url,
                         ],

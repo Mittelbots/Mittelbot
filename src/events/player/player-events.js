@@ -142,6 +142,10 @@ module.exports.registerPlayerEvents = (player, bot) => {
                 // No permissions
             });
 
-        new Music(null, bot, true).destroy(queue.guild.id);
+        try {
+            new Music(null, bot, true).destroy(queue.guild.id);
+        } catch (e) {
+            // Bot got probably disconnected with the /stop command
+        }
     });
 };

@@ -10,7 +10,7 @@ module.exports = class Music {
         if (nonInteraction) return;
 
         this.main_interaction = main_interaction;
-        this.guild = main_interaction.guild;
+        this.guild = this.bot.guilds.cache.get(this.main_interaction.guild.id);
         this.textChannel = main_interaction.channel;
         this.voiceChannel = main_interaction.member.voice.channel;
         (async () => {
@@ -72,6 +72,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 await this.queue.node.play();
+                await this.updateQueueInDB(true);
                 return resolve();
             } catch (e) {
                 errorhandler({
@@ -101,10 +102,14 @@ module.exports = class Music {
     }
 
     resume() {
-        return new Promise(async (resolve) => {
-            await this.updateQueueInDB(true);
-            await this.queue.node.resume();
-            return resolve();
+        return new Promise(async (resolve, reject) => {
+            try {
+                await this.updateQueueInDB(true);
+                await this.queue.node.resume();
+                resolve();
+            } catch (e) {
+                reject(e);
+            }
         });
     }
 
@@ -112,6 +117,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 await this.deleteQueueFromDB(guild_id);
+                await this.queue.delete();
                 return resolve();
             } catch (e) {
                 return reject(e);
@@ -178,10 +184,12 @@ module.exports = class Music {
         });
     }
 
-    disconnect(guild_id) {
+    disconnect() {
         return new Promise(async (resolve, reject) => {
             try {
-                this.guild.me.voice.channel.leave();
+                const voiceChannel = this.guild.members.me.voice.channel;
+                if (!voiceChannel) reject(`I'm not in a voice channel right now.`);
+                voiceChannel.leave();
                 resolve();
             } catch (e) {
                 return reject(e);
@@ -305,8 +313,13 @@ module.exports = class Music {
 
     updateQueueInDB(isPlaying = true) {
         return new Promise(async (resolve, reject) => {
-            console.log(await this.getQueuedTracks());
             const queuedTracks = (await this.getQueuedTracks()).data;
+
+            if (queuedTracks.length === 0) {
+                await this.deleteQueueFromDB(this.guild.id);
+                return resolve();
+            }
+
             musicModel
                 .update(
                     {
@@ -342,7 +355,7 @@ module.exports = class Music {
                     return resolve(queue);
                 })
                 .catch((e) => {
-                    return reject();
+                    return reject(e);
                 });
         });
     }
@@ -370,11 +383,13 @@ module.exports = class Music {
     }
 
     generateQueueAfterRestart() {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
+            console.info(`[Music] Generating queue after restart...`);
             musicModel
                 .findAll()
                 .then(async (queues) => {
                     queues.forEach(async (queuedTracks) => {
+                        console.info(`[Music] Generating queue for ${queuedTracks.guild_id}`);
                         this.guild = this.bot.guilds.cache.get(queuedTracks.guild_id);
                         this.textChannel = this.guild.channels.cache.get(queuedTracks.text_channel);
                         this.voiceChannel = this.guild.channels.cache.get(
@@ -386,6 +401,8 @@ module.exports = class Music {
                         let allTracks = [];
 
                         for (let track of queuedTracks.queue) {
+                            if (!track) continue;
+
                             const host = await this.getURLHost(new URL(track.url));
 
                             if (host === 'spotify') {
@@ -405,17 +422,16 @@ module.exports = class Music {
                             allTracks.push(track);
                         }
                         await this.addTrack(allTracks, true);
+                        this.play();
 
-                        if (queuedTracks.isPlaying) {
-                            this.play();
-                        } else {
-                            this.pause(true);
-                        }
-
+                        console.info(`[Music] Generated queue for ${this.guild.name}!`);
                         resolve();
                     });
                 })
-                .catch(async (e) => {});
+                .catch(async (e) => {
+                    reject(e);
+                });
+            resolve();
         });
     }
 };

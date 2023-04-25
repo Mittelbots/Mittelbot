@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { SlashCommandBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
 const { stopConfig } = require('../_config/music/stop');
 
@@ -36,20 +35,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    Promise.all([musicApi.disconnect(), musicApi.destroy(main_interaction.guild.id)]).catch(
-        async (err) => {
-            await main_interaction
-                .followUp({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setDescription(global.t.trans(['error.general']))
-                            .setColor(global.t.trans(['general.colors.error'])),
-                    ],
-                    ephemeral: true,
-                })
-                .catch((err) => {});
-        }
-    );
+    Promise.all([musicApi.destroy(main_interaction.guild.id)]).catch(async (err) => {
+        await main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(global.t.trans(['error.generalWithMessage', err.message]))
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    });
 
     await main_interaction
         .followUp({

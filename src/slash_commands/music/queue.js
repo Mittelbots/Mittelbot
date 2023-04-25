@@ -44,13 +44,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .setTitle('Queue')
         .setDescription(
             global.t.trans(
-                ['info.music.nowplaying', currentTrack, currentTrack.requestedBy, currentTrack.url],
+                [
+                    'info.music.nowplaying',
+                    currentTrack,
+                    currentTrack ? currentTrack.requestedBy : 'Unknown',
+                    currentTrack.url,
+                ],
                 main_interaction.guild.id
             )
         );
 
     const tracks = (await musicApi.getQueuedTracks()).data;
-    if (!tracks)
+    if (!tracks || tracks.length === 0)
         return main_interaction.followUp({
             embeds: [embed],
             ephemeral: true,
