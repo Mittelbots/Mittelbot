@@ -13,7 +13,7 @@ body:
     - type: textarea
       id: implementation_pr
       attributes:
-          label: 'Angehörige Pull Request(s)'
+          label: 'Related Pull Request(s)'
           description: Pull request used for the release
           placeholder: '- #Pull Request ID'
       validations:
@@ -21,7 +21,7 @@ body:
     - type: textarea
       id: reference_issues
       attributes:
-          label: 'Angehörige Issue(s)'
+          label: 'Related Issue(s)'
           description: Common issues related to the release
           placeholder: '- #Issues IDs'
       validations:
