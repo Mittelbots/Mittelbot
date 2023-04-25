@@ -345,8 +345,9 @@
                     "value": "In order to have the right password, you have to remove the backticks ( ` ) from the password."
                 }
             },
-            "oldestOrNewestmember": "**%c** \n**Joined:** %x ago \n **Account created:** %y ago",
-            "uptime": "I'm up for %c Days %x Hours %y Minutes %z Seconds"
+            "oldestOrNewestmember": "** %c ** \n**Joined:** %x ago \n **Account created:** %y ago",
+            "uptime": "I'm up for %c Days %x Hours %y Minutes %z Seconds",
+            "imgur": "[Click here to view the image]( %c )"
         },
         "fun": {
             "punch": "You punched %c"
@@ -493,6 +494,9 @@
             },
             "password": {
                 "noValidLength": "{error.emote} The password must be between %c and %x characters long."
+            },
+            "imgur": {
+                "noValidLink": "{error.emote} Please send a valid Discord Attachement link. \n(Exp: https://cdn.discordapp.com/attachments/123456789012345678/123456789012345678/image.png)"
             }
         }
     }
