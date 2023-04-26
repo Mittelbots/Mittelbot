@@ -25,7 +25,7 @@ module.exports = class Modules {
             for (let i in defaultModuleSettings) {
                 if (!defaultModuleSettings[i].name) continue;
 
-                if (defaultModuleSettings[i].name.toLowerCase() == name.toLowerCase()) {
+                if (defaultModuleSettings[i].name.toLowerCase() === name.toLowerCase()) {
                     return resolve(defaultModuleSettings[i]);
                 }
             }
@@ -34,7 +34,7 @@ module.exports = class Modules {
         });
     }
 
-    checkEnabled(requestedModule, changeRequest = false) {
+    checkEnabled(requestedModule) {
         return new Promise(async (resolve) => {
             const response = {
                 enabled: false,
