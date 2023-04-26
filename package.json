@@ -67,7 +67,7 @@
         "nodemailer": "^6.9.1",
         "os-utils": "^0.0.14",
         "passport": "^0.6.0",
-        "patch-package": "^6.5.1",
+        "patch-package": "^7.0.0",
         "play-dl": "^1.9.6",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.13.0",
