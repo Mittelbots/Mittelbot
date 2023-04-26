@@ -53,11 +53,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const moduleApi = new Modules(main_interaction.guild.id, bot);
-    const isEnabled = await moduleApi.checkEnabled(requestedModule).catch(() => {
+    const { enabled } = await moduleApi.checkEnabled(requestedModule).catch(() => {
         return false;
     });
 
-    if (isEnabled && status === 'activate') {
+    if (enabled && status === 'activate') {
         return main_interaction
             .followUp({
                 embeds: [
@@ -76,7 +76,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    if (!isEnabled && status === 'deactivate') {
+    if (!enabled && status === 'deactivate') {
         return main_interaction
             .followUp({
                 embeds: [
@@ -124,6 +124,6 @@ module.exports.data = modulesConfig;
 
 module.exports.autocomplete = async (interaction) => {
     const focusedOption = interaction.options.getFocused(true);
-    const filtered = choices.filter((choice) => choice.startsWith(focusedOption.value));
+    const filtered = choices.filter((choice) => choice && choice.startsWith(focusedOption.value));
     await interaction.respond(filtered.map((choice) => ({ name: choice, value: choice })));
 };
