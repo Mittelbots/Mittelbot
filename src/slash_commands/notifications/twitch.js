@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const TwitchNotifier = require('../../../utils/functions/data/twitch');
-const { delTwChannelFromList } = require('../../../utils/functions/data/twitch');
+const TwitchNotifier = require('../../../utils/functions/data/Notifications/TwitchLogic');
+const { delTwChannelFromList } = require('../../../utils/functions/data/Notifications/TwitchLogic');
 const { twitchConfig } = require('../_config/notifications/twitch');
 
 module.exports.run = async ({ main_interaction, bot }) => {

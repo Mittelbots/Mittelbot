@@ -1,10 +1,11 @@
 const twitchStreams = require('../../../../src/db/Models/tables/twitchStreams.model');
 const Notification = require('./Notifications');
-const TwitchNotifier = require('../twitch');
+const TwitchNotifier = require('./TwitchLogic');
 const { errorhandler } = require('../../errorhandler/errorhandler');
 
+let savedStreams = [];
+
 module.exports = class TwitchNotification extends TwitchNotifier {
-    savedStreams = [];
     guild = null;
     dc_channel = null;
     guildPingrole = null;
@@ -54,7 +55,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
 
                 this.stream = await this.getTwitchStream(account.channel_id);
                 this.isLive = await this.checkStreamIsLive();
-                const wasLive = this.savedStreams.filter(
+                const wasLive = savedStreams.filter(
                     (stream) => stream.channel_id === this.streamerInfos.channel_id
                 );
 
@@ -63,11 +64,10 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                 this.dbdata = await this.getDB(this.streamerInfos.channel_id).catch((err) => {
                     reject(err);
                 });
-
                 if (!this.isLive && wasLive.length > 0) {
                     const embed = this.generateTwitchNotificationEmbed(streamer, false);
                     this.updateTwitchMessage(embed);
-                    this.savedStreams.filter(
+                    savedStreams.filter(
                         (stream) => stream.channel_id === this.streamerInfos.channel_id
                     );
                     return;
@@ -80,7 +80,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                     this.updateTwitchMessage(embed);
                     return;
                 } else {
-                    this.savedStreams.push({
+                    savedStreams.push({
                         channel_id: this.streamerInfos.channel_id,
                         stream: this.stream,
                         last_update: Date.now(),
@@ -165,6 +165,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                 .update(
                     {
                         isStreaming: this.isLive,
+                        message: null
                     },
                     {
                         where: {
@@ -290,7 +291,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
     }
 
     saveToSavedStreams(channel_id) {
-        this.savedStreams.push({
+        savedStreams.push({
             channel_id: channel_id,
             isStreaming: this.isLive,
             last_update: Date.now(),
