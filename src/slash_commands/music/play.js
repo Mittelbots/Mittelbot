@@ -197,7 +197,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             )
             .addFields({
                 name: global.t.trans(['info.music.requestedby'], main_interaction.guild.id),
-                value: playTrack.requestedBy.username,
+                value: main_interaction.user.username,
             })
             .setThumbnail(playTrack.thumbnail)
             .setFooter({
