@@ -24,6 +24,12 @@ With Notifications, Moderation with warn roles, Fun Commands, Auto-Translation, 
 
 <br>
 
+## Roadmap
+
+<img src="./.github/roadmap_mittelbot_2023_release1.png" alt="Roadmap Mittelbot Release 1.0" witdth="600px"/>
+
+<br>
+
 ## **Contributing**
 
 Thank you for considering contributing to the Mittelbot! <br>
