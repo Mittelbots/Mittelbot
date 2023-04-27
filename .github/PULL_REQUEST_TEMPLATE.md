@@ -4,10 +4,6 @@
 ## Changes & Bug fixes
 <!-- Describe what has changed or fixed in this version -->
 
-## Dashboard
-###### <i>(If it's a dashboard change)</i>
-<!-- Describe what has changed at the dashboard -->
-
 Type of change:
 - [ ] This PR includes only documentation changes, no code change.
 - [ ] This PR introduces only smaller Bug fixes. Code should work as before and there's no new Dependencies
