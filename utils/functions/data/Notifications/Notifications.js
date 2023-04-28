@@ -3,34 +3,21 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = class Notification {
     constructor() {}
 
-    sendNotification({ channel, content = null, embed = null }) {
-        return new Promise((resolve, reject) => {
-            if (!channel) return reject('No channel provided.');
-            if (!content && !embed) return reject('No content or embed provided.');
+    async sendNotification({ channel, content = null, embed = null, components = null }) {
+        if (!channel) throw new Error('No channel provided.');
+        if (!content && !embed) throw new Error('No content or embed provided.');
 
-            if (content && embed) {
-                return channel
-                    .send({
-                        content,
-                        embeds: [embed],
-                    })
-                    .then((msg) => resolve(msg))
-                    .catch((err) => reject(err));
-            } else if (content) {
-                return channel
-                    .send(content)
-                    .then((msg) => resolve(msg))
-                    .catch((err) => reject(err));
-            } else if (embed) {
-                return channel
-                    .send({
-                        embeds: [embed],
-                    })
-                    .then((msg) => resolve(msg))
-                    .catch((err) => reject(err));
-            }
-            return resolve(null);
-        });
+        const options = {};
+        if (content) options.content = content;
+        if (embed) options.embeds = [embed];
+        if (components) options.components = components;
+
+        try {
+            const msg = await channel.send(options);
+            return msg;
+        } catch (err) {
+            throw new Error(err);
+        }
     }
 
     updateNotification({ message, embed = null }) {

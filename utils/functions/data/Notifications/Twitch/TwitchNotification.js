@@ -1,7 +1,7 @@
 const Notification = require('../Notifications');
 const TwitchNotifier = require('./TwitchLogic');
 const { errorhandler } = require('../../../errorhandler/errorhandler');
-const { ActionRowBuilder, ButtonBuilder, Message } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, Message, ButtonStyle } = require('discord.js');
 const twitchStreams = require('../../../../../src/db/Models/tables/twitchStreams.model');
 
 module.exports = class TwitchNotification extends TwitchNotifier {
@@ -202,7 +202,11 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                     embed,
                     components: [
                         new ActionRowBuilder().addComponents(
-                            new ButtonBuilder().setURL(link).setLabel('Watch Stream')
+                            new ButtonBuilder()
+                                .setStyle(ButtonStyle.Link)
+                                .setLabel('Watch Stream')
+                                .setURL(link)
+                                .setEmoji('🔴')
                         ),
                     ],
                 })
