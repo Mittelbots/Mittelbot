@@ -23,7 +23,9 @@ module.exports = class Modules {
     getDefault(name) {
         return new Promise(async (resolve) => {
             for (let i in defaultModuleSettings) {
-                if (defaultModuleSettings[i].name == name) {
+                if (!defaultModuleSettings[i].name) continue;
+
+                if (defaultModuleSettings[i].name.toLowerCase() === name.toLowerCase()) {
                     return resolve(defaultModuleSettings[i]);
                 }
             }
@@ -34,18 +36,53 @@ module.exports = class Modules {
 
     checkEnabled(requestedModule) {
         return new Promise(async (resolve) => {
-            const defaultModule = await this.getDefault(requestedModule.name || requestedModule);
-            if (!defaultModule) return resolve(true);
+            const response = {
+                enabled: false,
+                name: null,
+            };
+
+            const moduleJSON = this.getDefaultSettings();
+
+            const isBypass = moduleJSON.bypassModulesAndCommands.includes(requestedModule);
+            if (isBypass) {
+                response.enabled = true;
+                return resolve(response);
+            }
+            let defaultModule = await this.getDefault(requestedModule);
+            if (!defaultModule) {
+                for (let i in moduleJSON) {
+                    if (!moduleJSON[i].extraCommands || moduleJSON[i].extraCommands.length === 0)
+                        continue;
+
+                    const isAExtraCommand = moduleJSON[i].extraCommands.includes(requestedModule);
+                    if (isAExtraCommand) {
+                        defaultModule = await this.getDefault(moduleJSON[i].name);
+                        break;
+                    }
+                }
+                if (!defaultModule) {
+                    response.name = requestedModule.name || requestedModule;
+                    return resolve(response);
+                }
+            }
 
             const isAutoDisabled = defaultModule.autoDisable;
             const isDisabled = await this.get().catch(() => {});
 
-            if (isAutoDisabled && !isDisabled.enabled.includes(defaultModule.name))
-                return resolve(false);
+            if (isAutoDisabled && !isDisabled.enabled.includes(defaultModule.name)) {
+                response.enabled = false;
+                response.name = defaultModule.name;
+                return resolve(response);
+            }
 
-            if (isDisabled.disabled.includes(defaultModule.name)) return resolve(false);
+            if (isDisabled.disabled.includes(defaultModule.name)) {
+                response.enabled = false;
+                response.name = defaultModule.name;
+                return resolve(response);
+            }
 
-            return resolve(true);
+            response.enabled = true;
+            return resolve(response);
         });
     }
 

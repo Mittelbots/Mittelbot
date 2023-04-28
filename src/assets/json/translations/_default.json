@@ -373,6 +373,13 @@
         "emote": "❌",
         "general": "{error.emote} There was an error processing your request. {general.tryAgainLater}",
         "generalWithMessage": "{error.general} %c",
+        "modules": {
+            "notEnabled": "{error.emote} This Module **(%c)** is disabled. You or the server admins have to enable it first to use this command."
+        },
+        "commands": {
+            "globallyDisabled": "This command is currently disabled in all Servers. Join the offical support discord for more informations. https://mittelbot.blackdayz.de/support",
+            "disabledOnGuild": "This command is disabled in your Guild."
+        },
         "embed": {
             "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
         },
