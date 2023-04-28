@@ -2,22 +2,36 @@
     "moderation": {
         "autoDisable": false,
         "listed": true,
-        "name": "Moderation"
+        "name": "Moderation",
+        "extraCommands": [
+            "ban",
+            "infractions",
+            "isbanned",
+            "kick",
+            "mute",
+            "unban",
+            "unmute",
+            "purge",
+            "warn"
+        ]
     },
     "level": {
         "autoDisable": true,
         "listed": true,
-        "name": "Level"
+        "name": "Level",
+        "extraCommands": ["levelsettings", "rank", "leaderboard", "givexp", "removexp"]
     },
     "scamdetection": {
         "autoDisable": true,
         "listed": true,
-        "name": "Scam Detection"
+        "name": "Scam Detection",
+        "extraCommands": ["scam"]
     },
     "welcomeUtils": {
         "autoDisable": true,
         "listed": true,
-        "name": "Welcome Utils"
+        "name": "Welcome Utils",
+        "extraCommands": ["joinroles", "goodbye"]
     },
     "autotranslate": {
         "autoDisable": true,
@@ -32,7 +46,8 @@
     "blacklist": {
         "autoDisable": true,
         "listed": true,
-        "name": "Blacklist"
+        "name": "Blacklist",
+        "extraCommands": ["autoblacklist"]
     },
     "banappeal": {
         "autoDisable": true,
@@ -42,7 +57,17 @@
     "music": {
         "autoDisable": false,
         "listed": true,
-        "name": "Music"
+        "name": "Music",
+        "extraCommands": [
+            "play",
+            "skip",
+            "stop",
+            "queue",
+            "pause",
+            "resume",
+            "nowplaying",
+            "disconnect"
+        ]
     },
     "reddit": {
         "autoDisable": false,
@@ -64,7 +89,7 @@
         "listed": true,
         "name": "Sing-a-Song"
     },
-    "Timer": {
+    "timer": {
         "autoDisable": false,
         "listed": true,
         "name": "Timer"
@@ -92,11 +117,48 @@
     "utils": {
         "autoDisable": false,
         "listed": true,
-        "name": "Utils"
+        "name": "Utils",
+        "extraCommands": [
+            "afk",
+            "info",
+            "ping",
+            "checkguild",
+            "kickme",
+            "timer",
+            "poll",
+            "password",
+            "contribute",
+            "oldestmember",
+            "newestmember",
+            "uptime",
+            "imgur"
+        ]
     },
     "fun": {
         "autoDisable": false,
         "listed": true,
-        "name": "Fun"
-    }
+        "name": "Fun",
+        "extraCommands": [
+            "avatar",
+            "ship",
+            "guessnumber",
+            "cats",
+            "dogs",
+            "bunny",
+            "pride",
+            "stromberg",
+            "singasong",
+            "punch"
+        ]
+    },
+    "bypassModulesAndCommands": [
+        "modules",
+        "settings",
+        "help",
+        "tutorial",
+        "log",
+        "modroles",
+        "muterole",
+        "tutorial"
+    ]
 }
