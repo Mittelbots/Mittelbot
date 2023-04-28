@@ -35,7 +35,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    Promise.all([musicApi.destroy(main_interaction.guild.id)]).catch(async (err) => {
+    Promise.all([musicApi.destroy(queue)]).catch(async (err) => {
         await main_interaction
             .followUp({
                 embeds: [

@@ -1,9 +1,13 @@
+const { EmbedBuilder } = require('discord.js');
 const {
     checkActiveCommand,
 } = require('../../utils/functions/checkActiveCommand/checkActiveCommand');
 const Modules = require('../../utils/functions/data/Modules');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
+    const moduleApi = new Modules(main_interaction.guild.id, bot);
+    const defaultSettings = moduleApi.getDefaultSettings();
+
     const admin = [
         'modules',
         'scam',
@@ -22,74 +26,38 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'tickets',
         'muterole',
     ];
-    const moderation = [
-        'ban',
-        'infractions',
-        'isbanned',
-        'kick',
-        'mute',
-        'unban',
-        'unmute',
-        'purge',
-        'warn',
-    ];
-    const fun = [
-        'avatar',
-        'ship',
-        'guessnumber',
-        'cats',
-        'dogs',
-        'bunny',
-        'pride',
-        'stromberg',
-        'singasong',
-        'punch',
-    ];
-    const level = ['rank', 'leaderboard', 'givexp', 'removexp'];
-    const utils = [
-        'afk',
-        'info',
-        'ping',
-        'checkguild',
-        'kickme',
-        'timer',
-        'poll',
-        'password',
-        'contribute',
-        'oldestmember',
-        'newestmember',
-        'uptime',
-        'imgur',
-    ];
     const help = ['help', 'tutorial'];
     const notifications = ['twitch', 'youtube', 'reddit_notifier'];
-    const music = [
-        'play',
-        'stop',
-        'skip',
-        'queue',
-        'nowplaying',
-        'remove',
-        'pause',
-        'resume',
-        'disconnect',
-    ];
+
+    const moderation = defaultSettings.moderation.extraCommands;
+    const fun = defaultSettings.fun.extraCommands;
+    const level = defaultSettings.level.extraCommands;
+    const utils = defaultSettings.utils.extraCommands;
+    const music = defaultSettings.music.extraCommands;
 
     //=========================================================
 
-    const moduleApi = new Modules(main_interaction.guild.id, bot);
-    const defaultSettings = moduleApi.getDefaultSettings();
-
     function isEnabled(requestedModule) {
         return new Promise(async (resolve) => {
-            const enabled = await moduleApi.checkEnabled(requestedModule).catch(() => {
-                return false;
-            });
+            const moduleStatus = await moduleApi
+                .checkEnabled(requestedModule.name || requestedModule)
+                .catch(() => {
+                    return false;
+                });
 
-            if (!enabled) {
+            if (moduleStatus.enabled === false) {
                 main_interaction
                     .reply({
-                        content: `❌ This Module (${requestedModule.name}) is disabled.`,
+                        embeds: [
+                            new EmbedBuilder()
+                                .setDescription(
+                                    global.t.trans(
+                                        ['error.modules.notEnabled', moduleStatus.name],
+                                        main_interaction.guild.id
+                                    )
+                                )
+                                .setColor(global.t.trans(['general.colors.error'])),
+                        ],
                         ephemeral: true,
                     })
                     .catch((err) => {});
@@ -106,17 +74,34 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         main_interaction.guild.id
     );
 
-    if (isActive.global_disabled)
+    if (isActive.global_disabled) {
         return main_interaction.reply({
-            content:
-                'This command is currently disabled in all Servers. Join the offical support discord for more informations. https://mittelbot.blackdayz.de/support',
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(['error.commands.globalDisabled'], main_interaction.guild.id)
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
+            ],
             ephemeral: true,
         });
-    if (!isActive.enabled)
+    }
+
+    if (!isActive.enabled) {
         return main_interaction.reply({
-            content: 'This command is disabled in your Guild.',
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(
+                            ['error.commands.disabledOnGuild'],
+                            main_interaction.guild.id
+                        )
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
+            ],
             ephemeral: true,
         });
+    }
 
     //=========================================================
 

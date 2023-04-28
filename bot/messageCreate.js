@@ -50,7 +50,7 @@ async function messageCreate(message, bot) {
     if (
         message.author.bot &&
         message.channel.id !== process.env.DC_DEBUG &&
-        moduleApi.checkEnabled(defaultModuleSettings.autodelete)
+        moduleApi.checkEnabled(defaultModuleSettings.autodelete.name)
     ) {
         return await new AutoBlacklist().check(message, bot);
     }
@@ -64,7 +64,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isOnBlacklist = (await moduleApi.checkEnabled(defaultModuleSettings.blacklist))
+    const isOnBlacklist = (await moduleApi.checkEnabled(defaultModuleSettings.blacklist.name))
         ? await Guilds.isBlacklist(message.guild.id)
         : false;
     if (isOnBlacklist) {
@@ -87,7 +87,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam))
+    const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam.name))
         ? await antiSpam(message, bot)
         : false;
     if (isSpam) {
@@ -100,7 +100,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite))
+    const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite.name))
         ? await antiInvite(message, bot)
         : false;
     if (isInvite) {
@@ -113,7 +113,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isLink = (await moduleApi.checkEnabled(defaultModuleSettings.antiLinks))
+    const isLink = (await moduleApi.checkEnabled(defaultModuleSettings.antiLinks.name))
         ? await anitLinks(message, bot)
         : false;
     if (isLink) {
@@ -126,7 +126,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isScam = (await moduleApi.checkEnabled(defaultModuleSettings.scamdetection))
+    const isScam = (await moduleApi.checkEnabled(defaultModuleSettings.scamdetection.name))
         ? await new ScamDetection().check(message, bot)
         : false;
     if (isScam) {
@@ -135,7 +135,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isAutodelete = (await moduleApi.checkEnabled(defaultModuleSettings.autodelete))
+    const isAutodelete = (await moduleApi.checkEnabled(defaultModuleSettings.autodelete.name))
         ? await new Autodelete(bot).check(message.channel, message)
         : false;
     if (isAutodelete) {
@@ -161,19 +161,19 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    if (await moduleApi.checkEnabled(defaultModuleSettings.autotranslate)) {
+    if (await moduleApi.checkEnabled(defaultModuleSettings.autotranslate.name)) {
         new Translate().translate(message);
     }
 
     /** ======================================================= */
 
-    if (await moduleApi.checkEnabled(defaultModuleSettings.level)) {
+    if (await moduleApi.checkEnabled(defaultModuleSettings.level.name)) {
         Levelsystem.run({ message, bot });
     }
 
     /** ======================================================= */
 
-    if (await moduleApi.checkEnabled(defaultModuleSettings.utils)) {
+    if (await moduleApi.checkEnabled(defaultModuleSettings.utils.name)) {
         const isAFK = await new Afk().check({ message });
         if (isAFK) {
             return message
