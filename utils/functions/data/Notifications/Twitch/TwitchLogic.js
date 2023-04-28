@@ -2,8 +2,8 @@ const { PermissionFlagsBits } = require('discord.js');
 const { ApiClient } = require('@twurple/api');
 const { AppTokenAuthProvider } = require('@twurple/auth');
 
-const { errorhandler } = require('../../errorhandler/errorhandler');
-const twitchStreams = require('../../../../src/db/Models/tables/twitchStreams.model');
+const { errorhandler } = require('../../../errorhandler/errorhandler');
+const twitchStreams = require('../../../../../src/db/Models/tables/twitchStreams.model');
 
 module.exports = class TwitchNotifier {
     #twitchApiClient;
@@ -86,17 +86,30 @@ module.exports = class TwitchNotifier {
             } catch (err) {
                 errorhandler({
                     err,
-                    fatal: true,
                 });
                 resolve(false);
             }
         });
     }
 
-    getTwitchStream(channel_id) {
+    getTwitchFromChannelId(channelid) {
         return new Promise(async (resolve) => {
             try {
-                const streamer = await this.getApiClient().streams.getStreamByUserId(channel_id);
+                const twitch_user = await this.getApiClient().users.getUserById(channelid);
+                resolve(twitch_user);
+            } catch (err) {
+                errorhandler({
+                    err,
+                });
+                resolve(false);
+            }
+        });
+    }
+
+    getTwitchStream(twitch_id) {
+        return new Promise(async (resolve) => {
+            try {
+                const streamer = await this.getApiClient().streams.getStreamByUserId(twitch_id);
                 resolve(streamer);
             } catch (err) {
                 if (err.message.includes('self-signed certificate')) return false;
@@ -169,7 +182,7 @@ module.exports = class TwitchNotifier {
             const allChannelsFromGuild = await this.getAllChannelsFromGuild({ guild });
             if (allChannelsFromGuild.length > 0) {
                 const twChannelExists = allChannelsFromGuild.filter(
-                    (channel) => channel.channel_id == twitchchannel
+                    (channel) => channel.twitch_id == twitchchannel
                 );
 
                 if (allChannelsFromGuild.length >= 3 && !twChannelExists) {
@@ -188,13 +201,13 @@ module.exports = class TwitchNotifier {
             twitchStreams
                 .update(
                     {
-                        info_channel_id: twdcchannel.id,
+                        dc_channel_id: twdcchannel.id,
                         pingrole: twpingrole ? twpingrole.id : null,
                     },
                     {
                         where: {
                             guild_id: guild.id,
-                            channel_id: twitchchannelId,
+                            twitch_id: twitchchannelId,
                         },
                     }
                 )
@@ -207,15 +220,14 @@ module.exports = class TwitchNotifier {
         });
     }
 
-    #createTwitchChannel({ twitchchannelId, twitchchannelName, twdcchannel, twpingrole, guild }) {
+    #createTwitchChannel({ twitchchannelId, twdcchannel, twpingrole, guild }) {
         return new Promise(async (resolve, reject) => {
             await twitchStreams
                 .create({
                     guild_id: guild.id,
-                    channel_id: twitchchannelId,
-                    info_channel_id: twdcchannel.id,
+                    twitch_id: twitchchannelId,
+                    dc_channel_id: twdcchannel.id,
                     pingrole: twpingrole ? twpingrole.id : null,
-                    channel_name: twitchchannelName,
                 })
                 .then(() => {
                     resolve(true);
@@ -253,7 +265,7 @@ module.exports = class TwitchNotifier {
                 .destroy({
                     where: {
                         guild_id,
-                        channel_id: twitchChannel.id,
+                        twitch_id: twitchChannel.id,
                     },
                 })
                 .then(() => {

@@ -9,27 +9,40 @@ module.exports = class Notification {
             if (!content && !embed) return reject('No content or embed provided.');
 
             if (content && embed) {
-                channel
+                return channel
                     .send({
                         content,
                         embeds: [embed],
                     })
-                    .then(resolve)
+                    .then((msg) => resolve(msg))
                     .catch((err) => reject(err));
             } else if (content) {
-                channel
+                return channel
                     .send(content)
-                    .then(resolve)
+                    .then((msg) => resolve(msg))
                     .catch((err) => reject(err));
             } else if (embed) {
-                channel
+                return channel
                     .send({
                         embeds: [embed],
                     })
-                    .then(resolve)
+                    .then((msg) => resolve(msg))
                     .catch((err) => reject(err));
             }
-            return resolve();
+            return resolve(null);
+        });
+    }
+
+    updateNotification({ message, embed = null }) {
+        return new Promise((resolve, reject) => {
+            if (!message && !embed) return reject('No message, content or embed provided.');
+
+            message
+                .edit({
+                    embeds: [embed],
+                })
+                .then((msg) => resolve(msg))
+                .catch((err) => reject(err));
         });
     }
 
@@ -51,7 +64,6 @@ module.exports = class Notification {
             url: '',
         },
         timestamp = false,
-        update = false,
         embed = new EmbedBuilder(),
     }) {
         return new Promise((resolve, reject) => {
@@ -76,9 +88,11 @@ module.exports = class Notification {
                     url: author.url,
                 });
 
-            if (fields.length > 0) embed.addFields(fields);
+            if (fields) {
+                if (fields.length > 0) embed.addFields(fields);
+            }
 
-            if (timestamp) setTimestamp();
+            if (timestamp) embed.setTimestamp();
 
             return resolve(embed);
         });

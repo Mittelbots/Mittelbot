@@ -9,7 +9,7 @@ TwitchStreams.init(
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        channel_id: {
+        twitch_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
@@ -17,19 +17,21 @@ TwitchStreams.init(
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
-        info_channel_id: {
+        dc_channel_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
         pingrole: {
             type: DataTypes.BIGINT,
         },
-        channel_name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         message: {
             type: DataTypes.STRING,
+        },
+        streamStartedAt: {
+            type: DataTypes.DATE,
+        },
+        embedUpdatedAt: {
+            type: DataTypes.DATE,
         },
     },
     {
