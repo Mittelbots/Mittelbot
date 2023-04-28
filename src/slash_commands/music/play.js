@@ -91,7 +91,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const host = await musicApi.getURLHost(url);
     let result;
     if (host === 'spotify') {
-        result = await musicApi.spotifySearch(target);
+        result = await musicApi.spotifySearch(target, main_interaction.user.id);
     } else if (host === 'soundcloud') {
         result = await musicApi.soundcloudSearch(target);
     } else {
