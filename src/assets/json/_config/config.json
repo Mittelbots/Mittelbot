@@ -9,7 +9,7 @@
     },
     "bulkDeleteLimit": "100",
     "defaultCheckInfractionTimer": "60000",
-    "defaultCheckTemprolesTimer": "5000",
+    "defaultCheckTemprolesTimer": "60000",
     "errormessages": {
         "general": "Something went wrong!",
         "nopermission": "You dont have permission to run this command!",
