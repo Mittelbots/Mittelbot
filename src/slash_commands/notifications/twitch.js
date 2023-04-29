@@ -1,6 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
-const TwitchNotifier = require('../../../utils/functions/data/twitch');
-const { delTwChannelFromList } = require('../../../utils/functions/data/twitch');
+const TwitchNotifier = require('../../../utils/functions/data/Notifications/Twitch/TwitchLogic');
 const { twitchConfig } = require('../_config/notifications/twitch');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -41,10 +39,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'remove':
             const deltwchannel = main_interaction.options.getString('twitchchannel');
 
-            delTwChannelFromList({
-                guild_id: main_interaction.guild.id,
-                deltwchannel,
-            })
+            new TwitchNotifier()
+                .delete(main_interaction.guild.id, deltwchannel)
                 .then((res) => {
                     main_interaction
                         .followUp({
