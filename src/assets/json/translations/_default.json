@@ -108,10 +108,10 @@
                 "songAddedToQueue": "[%c](%x) has been added to the queue."
             },
             "resume": {
-                "resumed": " {success.emote}The current song has been resumed."
+                "resumed": " {success.emote} The current song has been resumed."
             },
             "skip": {
-                "skipped": "{success.emote} **%c** has beend skipped.\n ---------------------------------- \nNow playing: %x \nRequested by: %y \nDuration: %v \nURL: %z"
+                "skipped": "{success.emote} **%c** has been skipped.\n ---------------------------------- \nNow playing: %x \nRequested by: %y \nDuration: %v \nURL: %z"
             },
             "stop": {
                 "stopped": "{success.emote} The song has stopped and the queue is cleared. See you 👋"
@@ -160,10 +160,6 @@
                     {
                         "name": "How to remove Auto-Blacklist?",
                         "value": "To remove Auto-Blacklist, you need to use the command `/autoblacklist delete`"
-                    },
-                    {
-                        "name": "**IMPORTANT**",
-                        "value": "**Due a bug in Discord.js, every message will be detected. Not only the ones send through the webhook.**"
                     }
                 ]
             }
@@ -266,7 +262,7 @@
             "duration": "Duration: %c",
             "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
             "queue": {
-                "queueLength": "Sopngs %c - %x",
+                "queueLength": "Songs %c - %x",
                 "songEmbedName": "Song %c",
                 "songEmbedValue": "%c (%x)\n Requested by: %y"
             },
@@ -458,7 +454,7 @@
             "nothingFound": "{error.emote} I have nothing found for this user. Please gain some xp first."
         },
         "removexp": {
-            "cannotRemoveFromBots": "{error.emote} You can't add xp to a bot or a system account."
+            "cannotRemoveFromBots": "{error.emote} You can't remove xp to a bot or a system account."
         },
         "ban": {
             "alreadyBanned": "{error.emote} This user is already banned."
