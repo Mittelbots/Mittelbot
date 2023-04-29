@@ -101,7 +101,7 @@ GuildConfig.init(
         firstCommand: {
             type: DataTypes.BOOLEAN,
             defaultValue: true,
-        }
+        },
     },
     {
         sequelize: database,

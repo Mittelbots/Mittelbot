@@ -221,36 +221,49 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     async function sendNoticeToFirstCommand() {
-
         const config = await GuildConfig.get(main_interaction.guild.id, 'firstCommand');
-        if(!config.firstCommand) return;
+        if (!config.firstCommand) return;
 
         main_interaction.channel.send({
             embeds: [
                 new EmbedBuilder()
                     .setDescription(
-                        global.t.trans(['info.commands.firstCommand.description'], main_interaction.guild.id)
+                        global.t.trans(
+                            ['info.commands.firstCommand.description'],
+                            main_interaction.guild.id
+                        )
                     )
                     .setColor(global.t.trans(['general.colors.info'])),
             ],
             components: [
                 new ActionRowBuilder()
                     .addComponents(
-                        new ButtonBuilder() 
-                            .setLabel(global.t.trans(['info.commands.firstCommand.buttons.invite'], main_interaction.guild.id))
+                        new ButtonBuilder()
+                            .setLabel(
+                                global.t.trans(
+                                    ['info.commands.firstCommand.buttons.invite'],
+                                    main_interaction.guild.id
+                                )
+                            )
                             .setStyle(ButtonStyle.Link)
                             .setURL(bot.config.support_server)
                     )
                     .addComponents(
                         new ButtonBuilder()
-                            .setLabel(global.t.trans(['info.commands.firstCommand.buttons.close'], main_interaction.guild.id))
+                            .setLabel(
+                                global.t.trans(
+                                    ['info.commands.firstCommand.buttons.close'],
+                                    main_interaction.guild.id
+                                )
+                            )
                             .setStyle(ButtonStyle.Danger)
                             .setCustomId('firstCommand_close')
-                    )
-            ]
-        })
+                    ),
+            ],
+        });
 
-        const filter = (i) => i.customId === 'firstCommand_close' && i.user.id === main_interaction.user.id;
+        const filter = (i) =>
+            i.customId === 'firstCommand_close' && i.user.id === main_interaction.user.id;
         const collector = main_interaction.channel.createMessageComponentCollector({
             filter,
             time: 60000,
@@ -261,7 +274,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
                 guild_id: main_interaction.guild.id,
                 value: false,
                 valueName: 'firstCommand',
-            })
+            });
 
             i.message.delete();
             collector.stop();
