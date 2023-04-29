@@ -23,7 +23,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         target: user,
         type: 'ban',
     }).catch((reason) => {
-        return main_interaction
+        main_interaction
             .followUp({
                 embeds: [
                     new EmbedBuilder()
@@ -34,6 +34,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     });
+    if (!canIBanTheUser) return;
 
     const isUserAlreadyBanned = await isBanned(user, main_interaction.guild);
     if (isUserAlreadyBanned) {

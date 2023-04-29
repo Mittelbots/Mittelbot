@@ -19,14 +19,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
         guild: main_interaction.guild,
         bot,
         type: 'mute',
-    });
-    if (!canIMuteTheUser)
-        return main_interaction
+    }).catch((err) => {
+        main_interaction
             .followUp({
-                content: check,
+                content: err,
                 ephemeral: true,
             })
             .catch((err) => {});
+    });
+    if (!canIMuteTheUser) return;
 
     const isUserMuted = await isMuted({ user, guild: main_interaction.guild, bot });
     if (isUserMuted) {

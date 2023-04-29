@@ -18,15 +18,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
         guild: main_interaction.guild,
         bot,
         type: 'kick',
-    });
-
-    if (!canIKickTheUser)
-        return main_interaction
+    }).catch((err) => {
+        main_interaction
             .followUp({
-                content: canIKickTheUser,
+                content: err,
                 ephemeral: true,
             })
             .catch((err) => {});
+    });
+    if (!canIKickTheUser) return;
 
     const reason = main_interaction.options.getString('reason') || 'No reason provided';
 

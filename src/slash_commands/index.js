@@ -186,6 +186,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         ) {
             return noPermissons();
         }
+
         return runFile(file);
     }
 
@@ -195,8 +196,8 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            globla.t.trans(
-                                ['error.commands.user.useCommand'],
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
                                 main_interaction.guild.id
                             )
                         )

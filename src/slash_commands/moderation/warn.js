@@ -21,7 +21,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         bot,
         type: 'warn',
     }).catch((err) => {
-        return main_interaction
+        main_interaction
             .followUp({
                 content: err,
                 ephemeral: true,
