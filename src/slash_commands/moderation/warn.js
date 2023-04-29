@@ -20,15 +20,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         guild: main_interaction.guild,
         bot,
         type: 'warn',
-    });
-
-    if (!canIWarnTheUser)
+    }).catch((err) => {
         return main_interaction
             .followUp({
-                content: canIWarnTheUser,
+                content: err,
                 ephemeral: true,
             })
             .catch((err) => {});
+    });
+
+    if (!canIWarnTheUser) return;
 
     const warned = await warnUser({
         bot,
