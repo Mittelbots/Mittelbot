@@ -2,38 +2,12 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
 const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
-const { unbanConfig } = require('../_config/moderation/unban');
+const { unbanConfig, unbanPerms } = require('../_config/moderation/unban');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
-
-    const hasPermissions = await hasPermission({
-        guild_id: main_interaction.guild.id,
-        adminOnly: false,
-        modOnly: true,
-        user: main_interaction.member,
-        bot,
-    });
-
-    if (!hasPermissions) {
-        return main_interaction
-            .followUp({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
 
     const user = main_interaction.options.getUser('user');
     const reason = main_interaction.options.getString('reason');
@@ -83,3 +57,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = unbanConfig;
+module.exports.permissions = unbanPerms;

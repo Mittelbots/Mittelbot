@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const TwitchNotifier = require('../../../utils/functions/data/twitch');
 const { delTwChannelFromList } = require('../../../utils/functions/data/twitch');
-const { twitchConfig } = require('../_config/notifications/twitch');
+const { twitchConfig, twitchPerms } = require('../_config/notifications/twitch');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getSubcommand();
@@ -66,3 +66,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = twitchConfig;
+module.exports.permissions = twitchPerms;

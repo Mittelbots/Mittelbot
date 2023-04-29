@@ -1,5 +1,4 @@
 const { Logs } = require('../../../utils/functions/data/Logs');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { logConfig, logPerms } = require('../_config/admin/log');
 
 module.exports.run = async ({ main_interaction, bot }) => {

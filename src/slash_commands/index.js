@@ -152,6 +152,8 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         const file = require(`./${requestedModule}/${main_interaction.commandName}`);
         const perms = file.permissions;
 
+        if (!perms) return runFile(file);
+
         if (perms.botOwnerOnly && main_interaction.user.id !== bot.config.ownerId) {
             return noPermissons();
         } else if (

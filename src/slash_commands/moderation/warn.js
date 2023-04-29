@@ -4,38 +4,12 @@ const { checkTarget } = require('../../../utils/functions/checkMessage/checkMess
 const { warnUser } = require('../../../utils/functions/moderations/warnUser');
 
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { warnConfig } = require('../_config/moderation/warn');
+const { warnConfig, warnPerms } = require('../_config/moderation/warn');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
-
-    const hasPermissions = await hasPermission({
-        guild_id: main_interaction.guild.id,
-        adminOnly: false,
-        modOnly: false,
-        user: main_interaction.member,
-        bot,
-    });
-
-    if (!hasPermissions) {
-        return main_interaction
-            .followUp({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
 
     const user = main_interaction.options.getUser('user');
     const reason = main_interaction.options.getString('reason');
@@ -81,3 +55,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = warnConfig;
+module.exports.permissions = warnPerms;

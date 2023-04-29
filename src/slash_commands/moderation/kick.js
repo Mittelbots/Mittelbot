@@ -3,38 +3,12 @@ const { kickUser } = require('../../../utils/functions/moderations/kickUser');
 const { checkTarget } = require('../../../utils/functions/checkMessage/checkMessage');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
-const { kickConfig } = require('../_config/moderation/kick');
+const { kickConfig, kickPerms } = require('../_config/moderation/kick');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
-
-    const hasPermissions = await hasPermission({
-        guild_id: main_interaction.guild.id,
-        adminOnly: false,
-        modOnly: true,
-        user: main_interaction.member,
-        bot,
-    });
-
-    if (!hasPermissions) {
-        return main_interaction
-            .followUp({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
 
     const user = main_interaction.options.getUser('user');
 
@@ -77,3 +51,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = kickConfig;
+module.exports.permissions = kickPerms;

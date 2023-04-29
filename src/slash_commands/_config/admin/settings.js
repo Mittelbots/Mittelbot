@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports.settingsConfig = new SlashCommandBuilder()
     .setName('settings')
@@ -26,3 +26,11 @@ module.exports.settingsConfig = new SlashCommandBuilder()
                     .setRequired(true)
             )
     );
+
+module.exports.settingsPerms = {
+    adminOnly: false,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [PermissionFlagsBits.Administrator],
+    botOwnerOnly: false,
+};

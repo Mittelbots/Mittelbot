@@ -1,36 +1,15 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const Reddit = require('../../../utils/functions/data/Reddit');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { redditNotifierConfig } = require('../_config/notifications/reddit_notifier');
+const {
+    redditNotifierConfig,
+    redditNotifierPerms,
+} = require('../_config/notifications/reddit_notifier');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
-
-    const hasPerms = await hasPermission({
-        guild_id: main_interaction.guild.id,
-        adminOnly: true,
-        user: main_interaction.user,
-        bot,
-    });
-    if (!hasPerms) {
-        return main_interaction
-            .followUp({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
 
     const type = main_interaction.options.getSubcommand();
 
@@ -235,3 +214,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = redditNotifierConfig;
+module.exports.permissions = redditNotifierPerms;
