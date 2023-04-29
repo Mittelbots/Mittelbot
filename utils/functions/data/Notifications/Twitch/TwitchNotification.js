@@ -61,7 +61,8 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                     // user is new live
                     const uptime = this.#getUptime(stream.startDate);
 
-                    const messageContent = this.#generateMessageContent(data.pingrole);
+                    const isEveryone = data.pingrole === data.guild_id;
+                    const messageContent = this.#generateMessageContent(data.pingrole, isEveryone);
                     const embed = await this.#generateEmbed(streamer, stream, {
                         uptime,
                         isLive: true,
@@ -133,8 +134,8 @@ module.exports = class TwitchNotification extends TwitchNotifier {
         }
     }
 
-    #generateMessageContent(pingrole) {
-        return pingrole ? (isEveryone ? '@everyone' : `${pingrole}`) : '';
+    #generateMessageContent(pingrole, isEveryone = false) {
+        return pingrole ? (isEveryone ? '@everyone' : `<@&${pingrole}>`) : '';
     }
 
     #generateEmbed(streamer, stream, { isLive, uptime }) {
