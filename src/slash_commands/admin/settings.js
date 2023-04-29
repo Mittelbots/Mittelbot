@@ -6,11 +6,32 @@ const {
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const config = require('../../../src/assets/json/_config/config.json');
 const { EmbedBuilder } = require('discord.js');
-const { settingsConfig, settingsPerms } = require('../_config/admin/settings');
+const { settingsConfig } = require('../_config/admin/settings');
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
+
+    const hasPermission = await main_interaction.member.permissions.has(
+        PermissionFlagsBits.Administrator
+    );
+    if (!hasPermission) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
 
     switch (main_interaction.options.getSubcommand()) {
         case 'view':
@@ -100,4 +121,3 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = settingsConfig;
-module.exports.permissions = settingsPerms;

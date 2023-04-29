@@ -1,9 +1,36 @@
 const { Joinroles } = require('../../../utils/functions/data/Joinroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
-const { joinrolesConfig, joinrolesPerms } = require('../_config/admin/joinroles');
+const { joinrolesConfig } = require('../_config/admin/joinroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
+
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.user,
+        bot,
+    });
+
+    if (!hasPermissions) {
+        main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch(() => {});
+        return;
+    }
 
     const roles = main_interaction.options.getString('joinroles');
     const newJoinRoles = removeMention(roles).split(' ');
@@ -33,4 +60,3 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = joinrolesConfig;
-module.exports.permissions = joinrolesPerms;

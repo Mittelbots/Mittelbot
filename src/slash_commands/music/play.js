@@ -91,7 +91,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const host = await musicApi.getURLHost(url);
     let result;
     if (host === 'spotify') {
-        result = await musicApi.spotifySearch(target, main_interaction.user.id);
+        result = await musicApi.spotifySearch(target);
     } else if (host === 'soundcloud') {
         result = await musicApi.soundcloudSearch(target);
     } else {
@@ -197,7 +197,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             )
             .addFields({
                 name: global.t.trans(['info.music.requestedby'], main_interaction.guild.id),
-                value: main_interaction.user.username,
+                value: playTrack.requestedBy.username,
             })
             .setThumbnail(playTrack.thumbnail)
             .setFooter({

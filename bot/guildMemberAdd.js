@@ -9,7 +9,7 @@ const Modules = require('../utils/functions/data/Modules');
 
 module.exports.guildMemberAdd = async (member, bot) => {
     const modulesApi = new Modules(member.guild.id, bot);
-    if (await modulesApi.checkEnabled(modulesApi.getDefaultSettings().welcomeUtils.name)) {
+    if (await modulesApi.checkEnabled(modulesApi.getDefaultSettings().welcomeUtils)) {
         await sendWelcomeMessage({
             guild_id: member.guild.id,
             bot,

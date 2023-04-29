@@ -1,12 +1,39 @@
 const { EmbedBuilder } = require('discord.js');
 const Tickets = require('../../../utils/functions/data/Tickets/Tickets');
-const { ticketConfig, ticketPerms } = require('../_config/admin/tickets');
+const { ticketConfig } = require('../_config/admin/tickets');
 const ticketModel = require('../../db/Models/tables/tickets.model');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
+
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.user,
+        bot,
+    });
+
+    if (!hasPermissions) {
+        main_interaction
+            .editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch(() => {});
+        return;
+    }
 
     const subcommand = main_interaction.options.getSubcommand();
 
@@ -95,4 +122,3 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = ticketConfig;
-module.exports.permissions = ticketPerms;

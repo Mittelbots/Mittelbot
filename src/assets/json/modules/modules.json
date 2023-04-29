@@ -36,14 +36,12 @@
     "autotranslate": {
         "autoDisable": true,
         "listed": true,
-        "name": "Auto Translate",
-        "extraCommands": ["autotranslate"]
+        "name": "Auto Translate"
     },
     "autodelete": {
         "autoDisable": true,
         "listed": true,
-        "name": "Auto Delete",
-        "extraCommands": ["autodelete"]
+        "name": "Auto Delete"
     },
     "blacklist": {
         "autoDisable": true,
@@ -54,8 +52,7 @@
     "banappeal": {
         "autoDisable": true,
         "listed": true,
-        "name": "Ban Appeal",
-        "extraCommands": ["banappeal"]
+        "name": "Ban Appeal"
     },
     "music": {
         "autoDisable": false,
@@ -75,56 +72,47 @@
     "reddit": {
         "autoDisable": false,
         "listed": true,
-        "name": "Reddit",
-        "extraCommands": ["reddit"]
+        "name": "Reddit"
     },
     "twitch": {
         "autoDisable": false,
         "listed": true,
-        "name": "Twitch",
-        "extraCommands": ["twitch"]
+        "name": "Twitch"
     },
     "youtube": {
         "autoDisable": false,
         "listed": true,
-        "name": "YouTube",
-        "extraCommands": ["youtube"]
+        "name": "YouTube"
     },
     "singasong": {
         "autoDisable": true,
         "listed": true,
-        "name": "Sing-a-Song",
-        "extraCommands": ["singasong"]
+        "name": "Sing-a-Song"
     },
     "timer": {
         "autoDisable": false,
         "listed": true,
-        "name": "Timer",
-        "extraCommands": ["timer"]
+        "name": "Timer"
     },
     "warnroles": {
         "autoDisable": true,
         "listed": true,
-        "name": "Warn Roles",
-        "extraCommands": ["warnroles"]
+        "name": "Warn Roles"
     },
     "antiSpam": {
         "autoDisable": true,
         "listed": true,
-        "name": "Anti Spam",
-        "extraCommands": ["antispam"]
+        "name": "Anti Spam"
     },
     "anitInvite": {
         "autoDisable": true,
         "listed": true,
-        "name": "Anti Invite",
-        "extraCommands": ["antiinvite"]
+        "name": "Anti Invite"
     },
     "antiLinks": {
         "autoDisable": true,
         "listed": true,
-        "name": "Anti Links",
-        "extraCommands": ["antilinks"]
+        "name": "Anti Links"
     },
     "utils": {
         "autoDisable": false,
@@ -171,7 +159,6 @@
         "log",
         "modroles",
         "muterole",
-        "tutorial",
-        "language"
+        "tutorial"
     ]
 }

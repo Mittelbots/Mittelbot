@@ -47,11 +47,3 @@ module.exports.banAppealConfig = new SlashCommandBuilder()
     .addSubcommand((subcommand) =>
         subcommand.setName('remove').setDescription('Remove the ban appeal from your server.')
     );
-
-module.exports.banAppealPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

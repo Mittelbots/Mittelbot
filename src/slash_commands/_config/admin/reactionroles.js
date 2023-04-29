@@ -49,11 +49,3 @@ module.exports.reactionRolesConfig = new SlashCommandBuilder()
                     .setRequired(true)
             )
     );
-
-module.exports.reactionrolesPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

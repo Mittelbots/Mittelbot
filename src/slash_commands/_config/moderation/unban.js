@@ -9,11 +9,3 @@ module.exports.unbanConfig = new SlashCommandBuilder()
     .addStringOption((option) =>
         option.setName('reason').setDescription('The reason for the unban').setRequired(false)
     );
-
-module.exports.unbanPerms = {
-    adminOnly: false,
-    modOnly: true,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

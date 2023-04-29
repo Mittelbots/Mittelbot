@@ -56,11 +56,3 @@ module.exports.autoDeleteConfig = new SlashCommandBuilder()
                     .setRequired(true)
             )
     );
-
-module.exports.autoDeletePerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

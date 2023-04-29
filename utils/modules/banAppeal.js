@@ -2,7 +2,7 @@ const Banappeal = require('../functions/data/Banappeal');
 
 module.exports.banAppealModule = async (message, bot) => {
     const banappeal = new Banappeal(bot);
-    const guild_id = await banappeal.getBanAppealMessage(message, bot);
+    const guild_id = await banappeal.getBanAppealMessage(message);
     const userBanAppeal = await banappeal.getBanappeal(guild_id, message.author.id);
     if (!userBanAppeal) return;
 
@@ -49,7 +49,7 @@ module.exports.banAppealModule = async (message, bot) => {
 
     banappeal.updateBanappeal(guild_id, message.author.id, cleanedMessage, 'appeal_msg');
     banappeal
-        .sendAppealToAdmins(guild_id, message.author.id, bot)
+        .sendAppealToAdmins(guild_id, message.author.id)
         .then(() => {
             message
                 .reply({

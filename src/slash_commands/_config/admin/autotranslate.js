@@ -97,11 +97,3 @@ module.exports.autoTranslateConfig = new SlashCommandBuilder()
             })
             .setRequired(true)
     );
-
-module.exports.autotranslatePerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

@@ -181,11 +181,3 @@ module.exports.logConfig = new SlashCommandBuilder()
                     })
             )
     );
-
-module.exports.logPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

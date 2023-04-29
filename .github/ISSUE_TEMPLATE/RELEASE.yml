@@ -13,7 +13,7 @@ body:
     - type: textarea
       id: implementation_pr
       attributes:
-          label: 'Related Pull Request(s)'
+          label: 'Angehörige Pull Request(s)'
           description: Pull request used for the release
           placeholder: '- #Pull Request ID'
       validations:
@@ -21,17 +21,25 @@ body:
     - type: textarea
       id: reference_issues
       attributes:
-          label: 'Related Issue(s)'
+          label: 'Angehörige Issue(s)'
           description: Common issues related to the release
           placeholder: '- #Issues IDs'
       validations:
           required: false
     - type: textarea
-      id: changed_fixed
+      id: summary
       attributes:
-          label: 'What has been changed and fixed'
+          label: 'Summary'
+          description: Provide a brief explanation of the release
+          placeholder: Describe in a few lines the release
+      validations:
+          required: false
+    - type: textarea
+      id: drawbacks
+      attributes:
+          label: 'Drawbacks'
           description: What are the drawbacks/impacts of this release?
-          placeholder: Identify the drawbacks and impacts of the release
+          placeholder: Identify the drawbacks and impacts while being neutral on the release
       validations:
           required: true
     - type: textarea

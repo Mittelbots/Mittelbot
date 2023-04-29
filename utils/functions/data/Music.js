@@ -113,18 +113,14 @@ module.exports = class Music {
         });
     }
 
-    destroy(queue) {
+    destroy(guild_id) {
         return new Promise(async (resolve, reject) => {
             try {
-                await this.deleteQueueFromDB(queue.guild.id);
+                await this.deleteQueueFromDB(guild_id);
+                await this.queue.delete();
+                return resolve();
             } catch (e) {
                 return reject(e);
-            }
-
-            try {
-                await queue.delete();
-            } catch (e) {
-                // already deleted
             }
         });
     }

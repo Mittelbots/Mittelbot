@@ -4,7 +4,7 @@ const config = require('../../assets/json/_config/config.json');
 const Autodelete = require('../../../utils/functions/data/Autodelete');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { EmbedBuilder } = require('discord.js');
-const { autoDeleteConfig, autoDeletePerms } = require('../_config/admin/autodelete');
+const { autoDeleteConfig } = require('../_config/admin/autodelete');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -23,6 +23,32 @@ module.exports.run = async ({ main_interaction, bot }) => {
             main_interaction.guild.id
         ),
     };
+
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.member,
+        bot,
+    });
+
+    if (!hasPermissions) {
+        return main_interaction
+            .followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
 
     const subCommand = main_interaction.options.getSubcommand();
     const autodelete = new Autodelete(main_interaction, bot);
@@ -128,4 +154,3 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = autoDeleteConfig;
-module.exports.permissions = autoDeletePerms;

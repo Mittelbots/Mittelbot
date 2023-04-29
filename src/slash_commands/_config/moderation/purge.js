@@ -11,11 +11,3 @@ module.exports.purgeConfig = new SlashCommandBuilder()
 //     .setDescription('The user to purge')
 //     .setRequired(true)
 // )
-
-module.exports.purgePerms = {
-    adminOnly: false,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

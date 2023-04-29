@@ -1,56 +1,33 @@
 const defaultTranslations = require('../../../src/assets/json/translations/_default.json');
-const guildConfig = require('../../../src/db/Models/tables/guildConfig.model');
-const { GuildConfig } = require('../data/Config');
-const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports = class Translations {
-    constructor() {
-        this.#init();
-    }
+    constructor() {}
 
-    #cache = new Map();
     #defaultLanguage = 'en_EN';
-    #supportedLanguages = ['en_EN', 'de_DE'];
+    #supportedLanguages = ['en_EN'];
 
     #selectedLanguage = this.#defaultLanguage;
     #translationFile;
 
-    #init() {
-        return new Promise(async (resolve) => {
-            await guildConfig
-                .findAll()
-                .then((guildConfigs) => {
-                    guildConfigs.forEach((guildConfig) => {
-                        this.#cache.set(guildConfig.guild_id, guildConfig.lang);
-                    });
-                })
-                .catch((err) => {
-                    errorhandler({ err });
-                });
-            resolve();
-        });
-    }
-
     /**
      *
      * @param {Array} key
-     * @param {Number} guild_id
+     * @param {*} guild_id
      * @returns
      */
     trans(key, guild_id = null) {
         if (!key) return null;
 
         this.guild_id = guild_id;
-
-        const selectedLanguage = this.#getGuildLanguage(guild_id);
-        if (!this.#isLanguageSupported(selectedLanguage)) return null; // FUTURE FEATURE
-        this.#getTranslationFile(selectedLanguage);
+        //if(!this.#isLanguageSupported()) return null; // FUTURE FEATURE
+        this.#getTranslationFile(this.#selectedLanguage);
 
         const searchKey = key[0];
+        const searchValue = key.splice(1, key.length - 1);
+
         const translation = this.#getTranslation(searchKey);
         if (!translation) return null;
 
-        const searchValue = key.splice(1, key.length - 1);
         let newString = this.#processCustomStrings(translation, searchValue);
 
         if (searchValue.length > 0) {
@@ -83,13 +60,11 @@ module.exports = class Translations {
         if (!string) return null;
         if (typeof string !== 'string') return string;
 
-        const regex = /(%[a-z])/;
-
-        const stringArray = string.split(regex);
+        const stringArray = string.split(/(%[a-z])/);
 
         let valueIndex = 0;
         for (let i in stringArray) {
-            if (stringArray[i].match(regex)) {
+            if (stringArray[i].includes('%')) {
                 stringArray[i] = stringArray[i].replace(stringArray[i], values[valueIndex]);
                 valueIndex++;
             }
@@ -120,20 +95,14 @@ module.exports = class Translations {
         return this.#supportedLanguages.includes(language);
     }
 
-    #getTranslationFile(language) {
+    #getTranslationFile() {
         try {
-            this.#translationFile = require(`../../../src/assets/json/translations/${language}.json`);
+            const file = require(`../../../src/assets/json/translations/${
+                this.#selectedLanguage
+            }.json`);
+            this.#translationFile = file;
         } catch (e) {
             this.#translationFile = defaultTranslations;
         }
-    }
-
-    #getGuildLanguage(guild_id) {
-        if (!guild_id) return this.#defaultLanguage;
-
-        const language = this.#cache.get(guild_id);
-        if (!language) return this.#defaultLanguage;
-
-        return language;
     }
 };

@@ -24,7 +24,7 @@ module.exports.registerPlayerEvents = (player, bot) => {
                 // No permissions
             });
 
-        new Music(null, bot, true).destroy(queue);
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('playerError', (queue, error) => {
@@ -107,7 +107,8 @@ module.exports.registerPlayerEvents = (player, bot) => {
             .catch(() => {
                 // No permissions
             });
-        new Music(null, bot, true).destroy(queue);
+
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('emptyChannel', (queue) => {
@@ -124,7 +125,7 @@ module.exports.registerPlayerEvents = (player, bot) => {
                 // No permissions
             });
 
-        new Music(null, bot, true).destroy(queue);
+        new Music(null, bot, true).destroy(queue.guild.id);
     });
 
     player.events.on('emptyQueue', (queue) => {
@@ -142,7 +143,7 @@ module.exports.registerPlayerEvents = (player, bot) => {
             });
 
         try {
-            new Music(null, bot, true).destroy(queue);
+            new Music(null, bot, true).destroy(queue.guild.id);
         } catch (e) {
             // Bot got probably disconnected with the /stop command
         }

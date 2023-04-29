@@ -3,6 +3,14 @@ description: Create a new ticket for a new feature request
 title: '💡 [REQUEST] - <title>'
 body:
     - type: textarea
+      id: implementation_pr
+      attributes:
+          label: 'Implementation PR'
+          description: Pull request used if any
+          placeholder: '#Pull Request ID'
+      validations:
+          required: false
+    - type: textarea
       id: summary
       attributes:
           label: 'Summary'

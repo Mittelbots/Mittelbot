@@ -9,11 +9,3 @@ module.exports.warnConfig = new SlashCommandBuilder()
     .addStringOption((option) =>
         option.setName('reason').setDescription('The reason for the warn').setRequired(true)
     );
-
-module.exports.warnPerms = {
-    adminOnly: false,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

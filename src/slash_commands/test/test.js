@@ -27,11 +27,3 @@ module.exports.data = new SlashCommandBuilder()
     .setName('test')
     .setDescription('Nothing.')
     .setDefaultMemberPermissions(0);
-
-module.exports.permissions = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: true,
-};

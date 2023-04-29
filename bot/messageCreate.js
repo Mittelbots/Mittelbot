@@ -48,6 +48,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     if (
+        message.author.bot &&
         message.channel.id !== process.env.DC_DEBUG &&
         moduleApi.checkEnabled(defaultModuleSettings.autodelete.name)
     ) {

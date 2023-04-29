@@ -30,11 +30,3 @@ module.exports.autoBlacklistConfig = new SlashCommandBuilder()
             .setName('delete')
             .setDescription('Delete auto-blacklist settings for your server')
     );
-
-module.exports.autoBlacklistPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

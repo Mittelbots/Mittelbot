@@ -24,11 +24,3 @@ module.exports.modulesConfig = new SlashCommandBuilder()
             })
             .setRequired(true)
     );
-
-module.exports.modulesPerms = {
-    adminOnly: false,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [PermissionFlagsBits.Administrator],
-    botOwnerOnly: false,
-};

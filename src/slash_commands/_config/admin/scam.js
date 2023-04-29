@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports.scamConfig = new SlashCommandBuilder()
     .setName('scam')
@@ -38,11 +38,3 @@ module.exports.scamConfig = new SlashCommandBuilder()
                     .setRequired(false)
             )
     );
-
-module.exports.scamPerms = {
-    adminOnly: false,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [PermissionFlagsBits.Administrator],
-    botOwnerOnly: false,
-};

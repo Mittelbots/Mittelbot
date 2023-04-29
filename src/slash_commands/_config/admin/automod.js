@@ -222,11 +222,3 @@ module.exports.autoModConfig = new SlashCommandBuilder()
                     })
             )
     );
-
-module.exports.automodPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

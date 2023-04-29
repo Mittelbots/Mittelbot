@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports.muteRoleConfig = new SlashCommandBuilder()
     .setName('muterole')
@@ -17,11 +17,3 @@ module.exports.muteRoleConfig = new SlashCommandBuilder()
     .addSubcommand((subcommand) =>
         subcommand.setName('remove').setDescription('Remove the mute role from your server.')
     );
-
-module.exports.muterolePerms = {
-    adminOnly: false,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [PermissionFlagsBits.Administrator],
-    botOwnerOnly: false,
-};

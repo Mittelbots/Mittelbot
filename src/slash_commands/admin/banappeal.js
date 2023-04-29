@@ -1,9 +1,37 @@
 const { EmbedBuilder } = require('discord.js');
 const Banappeal = require('../../../utils/functions/data/Banappeal');
-const { banAppealConfig, banAppealPerms } = require('../_config/admin/banappeal');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { banAppealConfig } = require('../_config/admin/banappeal');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true });
+
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.user,
+        bot,
+    });
+
+    if (!hasPermissions) {
+        main_interaction
+            .editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch(() => {});
+        return;
+    }
 
     const banappeal = new Banappeal(bot);
 
@@ -119,4 +147,3 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = banAppealConfig;
-module.exports.permissions = banAppealPerms;

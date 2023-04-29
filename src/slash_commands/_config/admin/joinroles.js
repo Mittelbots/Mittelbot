@@ -13,11 +13,3 @@ module.exports.joinrolesConfig = new SlashCommandBuilder()
             )
             .setRequired(true)
     );
-
-module.exports.joinrolesPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

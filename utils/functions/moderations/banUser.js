@@ -14,12 +14,12 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
         if (isAuto) mod = bot.user;
 
         const moduleApi = new Modules(guild.id, bot);
-        if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().banappeal.name)) {
+        if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().banappeal)) {
             const banappeal = new Banappeal();
             await banappeal
-                .createBanappeal(guild.id, user.id || user)
+                .createBanappeal(guild.id, user.id)
                 .then(async () => {
-                    await banappeal.sendBanappealToUser(guild.id, user.id || user, bot);
+                    await banappeal.sendBanappealToUser(guild.id, user.id);
                 })
                 .catch(() => {});
         }
@@ -39,7 +39,7 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
                 reason: reason,
             })
             .catch((err) => {
-                if (err.status !== 403 && err.status !== 404) {
+                if (err.status !== 403) {
                     errorhandler({ err });
                 }
                 return reject(config.errormessages.nopermissions.ban);

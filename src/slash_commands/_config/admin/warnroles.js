@@ -11,11 +11,3 @@ module.exports.warnRolesConfig = new SlashCommandBuilder()
             )
             .setRequired(true)
     );
-
-module.exports.warnRolesPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

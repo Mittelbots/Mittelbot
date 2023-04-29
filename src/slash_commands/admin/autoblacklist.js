@@ -1,8 +1,35 @@
 const { EmbedBuilder } = require('discord.js');
 const AutoBlacklist = require('../../../utils/functions/data/AutoBlacklist');
-const { autoBlacklistConfig, autoBlacklistPerms } = require('../_config/admin/autoblacklist');
+const { autoBlacklistConfig } = require('../_config/admin/autoblacklist');
+const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.member,
+        bot,
+    });
+
+    if (!hasPermissions) {
+        return main_interaction
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
+
     const type = main_interaction.options.getSubcommand();
     switch (type) {
         case 'info':
@@ -136,4 +163,3 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = autoBlacklistConfig;
-module.exports.permissions = autoBlacklistPerms;

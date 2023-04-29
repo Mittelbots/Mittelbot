@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports.modRolesConfig = new SlashCommandBuilder()
     .setName('modroles')
@@ -9,11 +9,3 @@ module.exports.modRolesConfig = new SlashCommandBuilder()
             .setDescription('Add a role to be able to use the moderation commands')
             .setRequired(true)
     );
-
-module.exports.modRolesPerms = {
-    adminOnly: false,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [PermissionFlagsBits.Administrator],
-    botOwnerOnly: false,
-};

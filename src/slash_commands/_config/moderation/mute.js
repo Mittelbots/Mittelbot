@@ -12,11 +12,3 @@ module.exports.muteConfig = new SlashCommandBuilder()
     .addStringOption((option) =>
         option.setName('reason').setDescription('The reason for the ban').setRequired(false)
     );
-
-module.exports.mutePerms = {
-    adminOnly: false,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

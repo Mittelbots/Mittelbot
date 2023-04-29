@@ -60,7 +60,8 @@ module.exports = class AutoBlacklist {
 
     check(message, bot) {
         return new Promise(async (resolve) => {
-            if (!message.webhookId) return resolve(false);
+            if (!message) return resolve(false);
+            if (!message.guild) return resolve(false);
             await this.get(message.guild.id).then(async (settings) => {
                 if (!settings) return resolve(false);
 
@@ -69,13 +70,14 @@ module.exports = class AutoBlacklist {
 
                 message.content = message.content.replace(/\n/g, ' ');
                 const messageArray = message.content.split(' ');
+
                 let users = [];
 
                 for (let i in messageArray) {
                     if (isNaN(messageArray[i])) continue;
-                    let user_id;
+
                     try {
-                        user_id = messageArray[i].match(/\d/g);
+                        var user_id = messageArray[i].match(/\d/g);
                     } catch (e) {}
                     try {
                         users.push(user_id.join(''));

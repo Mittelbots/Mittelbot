@@ -52,11 +52,3 @@ module.exports.ticketConfig = new SlashCommandBuilder()
                     .setRequired(true)
             )
     );
-
-module.exports.ticketPerms = {
-    adminOnly: true,
-    modOnly: false,
-    guildOwnerOnly: false,
-    requirePerms: [],
-    botOwnerOnly: false,
-};

@@ -1,7 +1,7 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { Scam } = require('../../../utils/functions/data/scam');
 const config = require('../../../src/assets/json/_config/config.json');
-const { scamConfig, scamPerms } = require('../_config/admin/scam');
+const { scamConfig } = require('../_config/admin/scam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const hasPermission = await main_interaction.member.permissions.has(
@@ -104,4 +104,3 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = scamConfig;
-module.exports.permissions = scamPerms;
