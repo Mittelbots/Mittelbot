@@ -98,6 +98,10 @@ GuildConfig.init(
             type: DataTypes.STRING,
             defaultValue: 'en_EN',
         },
+        firstCommand: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+        }
     },
     {
         sequelize: database,

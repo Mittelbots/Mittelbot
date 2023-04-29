@@ -352,6 +352,15 @@
         },
         "fun": {
             "punch": "You punched %c"
+        },
+        "commands": {
+            "firstCommand": {
+                "description": "Get the latest informations, features, and bugs in the official support server. You can also report bugs and suggest features there. Join now or close this message forever.",
+                "buttons": {
+                    "invite": "Join Support Server",
+                    "close": "Close and never ask again"
+                }
+            }
         }
     },
 
