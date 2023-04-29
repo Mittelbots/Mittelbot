@@ -67,13 +67,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
         quote = quotes[0]['9_0'][Math.floor(Math.random() * quotes[0]['9_0'].length)];
     }
 
+    console.log(quote);
+
     const canvas = Canvas.createCanvas(950, 550);
     const context = canvas.getContext('2d');
 
     //! Background
-    const backgroundFile = await readFile('./src/assets/img/ship/ship_bg.jpg');
     const background = new Canvas.Image();
-    background.src = backgroundFile;
+    background.src = await readFile('./src/assets/img/ship/ship_bg.jpg');
     context.drawImage(background, 0, 0, canvas.width, canvas.height);
     // Set the color of the stroke
     context.strokeStyle = '#ffffff';
@@ -96,18 +97,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
     context.drawImage(avatar2, canvas.width - 300, 100, 250, 250);
 
     //! score
-
     context.font = 'bold 70px sans-serif';
     context.fillStyle = '#e80d40';
-
     context.fillText(ship + '%', 420, 190);
 
-    console.log(canvas);
-
-    const attachment = new AttachmentBuilder(canvas.toBuffer(), `test.png`);
+    const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), `test.png`);
 
     const newEmbed = new EmbedBuilder().setDescription(
-        globla.t.trans(
+        global.t.trans(
             ['success.ship.showResult', user.username, main_interaction.user.username, ship, quote],
             main_interaction.guild.id
         )
