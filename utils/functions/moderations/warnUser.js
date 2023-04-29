@@ -13,7 +13,7 @@ async function warnUser({ bot, user, mod, guild, reason }) {
 
     const moduleApi = new Modules(guild.id, bot);
     let warnroles;
-    if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().warnroles)) {
+    if (await moduleApi.checkEnabled(moduleApi.getDefaultSettings().warnroles.name)) {
         warnroles = await addWarnRoles({ user, inf_id, guild });
         if (warnroles.error) return warnroles;
     }

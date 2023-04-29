@@ -1,0 +1,22 @@
+name: '🇺🇳 Language'
+description: Create a new ticket for a new language or some changes.
+title: '🇺🇳 [LANGUAGE] - <title>'
+labels: ['language']
+body:
+    - type: textarea
+      id: description
+      attributes:
+          label: 'Description'
+          description: Please enter an explicit description of your issue
+          placeholder: Short and explicit description of your incident...
+      validations:
+          required: true
+    - type: textarea
+      id: screenshot
+      attributes:
+          label: 'Screenshots'
+          description: If applicable, add screenshots to help explain your problem.
+          value: |
+              ![DESCRIPTION](LINK.png)
+      validations:
+          required: false

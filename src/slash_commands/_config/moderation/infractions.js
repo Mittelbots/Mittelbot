@@ -36,3 +36,11 @@ module.exports.infractionsConfig = new SlashCommandBuilder()
                     .setDescription('The id of the infraction to remove')
             )
     );
+
+module.exports.infractionPerms = {
+    adminOnly: false,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [],
+    botOwnerOnly: false,
+};

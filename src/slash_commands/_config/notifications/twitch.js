@@ -43,3 +43,11 @@ module.exports.twitchConfig = new SlashCommandBuilder()
                     .setRequired(true)
             )
     );
+
+module.exports.twitchPerms = {
+    adminOnly: true,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [],
+    botOwnerOnly: false,
+};

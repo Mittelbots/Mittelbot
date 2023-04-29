@@ -2,15 +2,9 @@ const { ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, ButtonStyle } = req
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const { Modroles } = require('../../../utils/functions/data/Modroles');
 const config = require('../../assets/json/_config/config.json');
-const { modRolesConfig } = require('../_config/admin/modroles');
+const { modRolesConfig, modRolesPerms } = require('../_config/admin/modroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    if (!main_interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-        return message
-            .reply({ content: `${config.errormessages.nopermission}`, ephemeral: true })
-            .catch((err) => {});
-    }
-
     const roles = main_interaction.options.getRole('roles');
 
     const guildConfig = await GuildConfig.get(main_interaction.guild.id);
@@ -156,3 +150,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = modRolesConfig;
+module.exports.permissions = modRolesPerms;

@@ -1,24 +1,27 @@
-const { SlashCommandBuilder } = require('discord.js');
-const config = require('../../../src/assets/json/_config/config.json');
-const { delay } = require('../../../utils/functions/delay/delay');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { languageConfig } = require('../_config/admin/language');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { purgeConfig, purgePerms } = require('../_config/moderation/purge');
+const { GuildConfig } = require('../../../utils/functions/data/Config');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    main_interaction.deferReply();
+    await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
 
-    const amount = main_interaction.options.getNumber('number');
+    const hasPermissions = await hasPermission({
+        guild_id: main_interaction.guild.id,
+        adminOnly: true,
+        modOnly: false,
+        user: main_interaction.user,
+        bot,
+    });
 
-    if (amount < 1 || amount >= Number(config.bulkDeleteLimit)) {
-        return main_interaction
+    if (!hasPermissions) {
+        main_interaction
             .followUp({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.purge.notAValidNumber', config.bulkDeleteLimit],
+                                ['error.permissions.user.useCommand'],
                                 main_interaction.guild.id
                             )
                         )
@@ -26,10 +29,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
+        return;
     }
-    await main_interaction.channel
-        .bulkDelete(amount, true)
+
+    const language = main_interaction.options.getString('language');
+
+    GuildConfig.update({
+        guild_id: main_interaction.guild.id,
+        value: language,
+        valueName: 'lang',
+    })
         .then(() => {
             main_interaction
                 .followUp({
@@ -37,21 +47,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['success.purge.purged', amount],
+                                    ['success.admin.lang.set', language],
                                     main_interaction.guild.id
                                 )
                             )
-                            .setColor(global.t.trans(['general.colors.success'])),
+                            .setColor(global.t.trans(['general.colors.error'])),
                     ],
+                    ephemeral: true,
                 })
-                .then(async (msg) => {
-                    await delay(3000);
-                    msg.delete().catch((err) => {});
-                })
-                .catch((err) => {});
+                .catch(() => {});
         })
         .catch((err) => {
-            errorhandler({ err });
             main_interaction
                 .followUp({
                     embeds: [
@@ -63,9 +69,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 
-module.exports.data = purgeConfig;
-module.exports.permissions = purgePerms;
+module.exports.data = languageConfig;

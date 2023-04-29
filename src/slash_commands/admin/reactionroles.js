@@ -3,7 +3,7 @@ const {
     removeReactionRoles,
     viewAllReactionRoles,
 } = require('../../../utils/functions/data/reactionroles');
-const { reactionRolesConfig } = require('../_config/admin/reactionroles');
+const { reactionRolesConfig, reactionrolesPerms } = require('../_config/admin/reactionroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
@@ -85,3 +85,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = reactionRolesConfig;
+module.exports.permissions = reactionrolesPerms;
