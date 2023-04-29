@@ -1,36 +1,10 @@
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
-const { levelSettingsConfig } = require('../_config/admin/levelsettings');
+const { levelSettingsConfig, levelsettingsPerms } = require('../_config/admin/levelsettings');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const hasPermissions = await hasPermission({
-        guild_id: main_interaction.guild.id,
-        adminOnly: true,
-        modOnly: false,
-        user: main_interaction.member,
-        bot,
-    });
-    if (!hasPermissions) {
-        return main_interaction
-            .reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
     const guildConfig = await GuildConfig.get(main_interaction.guild.id);
     let levelsettings = guildConfig.levelsettings;
 
@@ -170,3 +144,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = levelSettingsConfig;
+module.exports.permissions = levelsettingsPerms;

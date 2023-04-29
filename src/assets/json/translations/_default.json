@@ -11,6 +11,11 @@
     "success": {
         "emote": "✅",
         "cheerEmote": "🎉",
+        "admin": {
+            "lang": {
+                "set": "{success.emote} Successfully set the language to %c"
+            }
+        },
         "ticket": {
             "setting": {
                 "set": "{success.emote} Successfully add your Ticket Setting.",
@@ -74,7 +79,7 @@
             "update": "{success.emote} Warn Roles updated!"
         },
         "ship": {
-            "showResult": "**%c** and **%e** are `%p` compatible!. \n\n/ `%r`"
+            "showResult": "**%c** and **%e** match `%p%`. \n\n `%r`"
         },
         "singasong": {
             "userHasBeenBanned": "{success.emote} User has been banned from using the command in this guild!"

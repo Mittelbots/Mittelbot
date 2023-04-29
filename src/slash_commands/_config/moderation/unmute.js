@@ -9,3 +9,11 @@ module.exports.unmuteConfig = new SlashCommandBuilder()
     .addStringOption((option) =>
         option.setName('reason').setDescription('The reason for the unmute').setRequired(false)
     );
+
+module.exports.unmutePerms = {
+    adminOnly: false,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [],
+    botOwnerOnly: false,
+};

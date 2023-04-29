@@ -94,6 +94,10 @@ GuildConfig.init(
         muterole: {
             type: DataTypes.BIGINT,
         },
+        lang: {
+            type: DataTypes.STRING,
+            defaultValue: 'en_EN',
+        },
     },
     {
         sequelize: database,

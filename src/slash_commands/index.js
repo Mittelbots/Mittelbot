@@ -3,6 +3,7 @@ const {
     checkActiveCommand,
 } = require('../../utils/functions/checkActiveCommand/checkActiveCommand');
 const Modules = require('../../utils/functions/data/Modules');
+const { hasPermission } = require('../../utils/functions/hasPermissions');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const moduleApi = new Modules(main_interaction.guild.id, bot);
@@ -25,6 +26,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         'banappeal',
         'tickets',
         'muterole',
+        'language',
     ];
     const help = ['help', 'tutorial'];
     const notifications = ['twitch', 'youtube', 'reddit_notifier'];
@@ -145,13 +147,70 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     if (!(await isEnabled(main_interaction.commandName))) return;
-    return require(`./${main_interaction.commandName}/${main_interaction.commandName}`).run({
-        main_interaction: main_interaction,
-        bot: bot,
-    });
+    return requireModule(main_interaction.commandName);
 
-    function requireModule(requestedModule) {
-        return require(`./${requestedModule}/${main_interaction.commandName}`).run({
+    async function requireModule(requestedModule) {
+        const file = require(`./${requestedModule}/${main_interaction.commandName}`);
+        const perms = file.permissions;
+
+        if (!perms) return runFile(file);
+
+        if (perms.botOwnerOnly && main_interaction.user.id !== bot.config.ownerId) {
+            return noPermissons();
+        } else if (
+            perms.guildOwnerOnly &&
+            main_interaction.guild.ownerId !== main_interaction.user.id
+        ) {
+            return noPermissons();
+        } else if (
+            perms.requirePerms.length > 0 &&
+            !(await main_interaction.guild.members
+                .fetch(main_interaction.user.id)
+                .then((member) => {
+                    for (let permission of perms.requirePerms) {
+                        if (member.permissions.has(permission)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }))
+        ) {
+            return noPermissons();
+        } else if (
+            !(await hasPermission({
+                guild_id: main_interaction.guild.id,
+                adminOnly: perms.adminOnly,
+                modOnly: perms.modOnly,
+                user: main_interaction.user,
+                bot: bot,
+            }))
+        ) {
+            return noPermissons();
+        }
+
+        return runFile(file);
+    }
+
+    async function noPermissons() {
+        return main_interaction
+            .reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['error.permissions.user.useCommand'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            })
+            .catch((err) => {});
+    }
+
+    async function runFile(file) {
+        file.run({
             main_interaction: main_interaction,
             bot: bot,
         });
