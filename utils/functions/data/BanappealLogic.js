@@ -6,19 +6,27 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = class BanappealLogic {
     constructor() {}
 
-    sendBanappealToUser(guild_id, user_id) {
+    bot;
+
+    sendBanappealToUser(guild_id, user_id, bot) {
         return new Promise(async (resolve, reject) => {
             const settings = await this.getSettings(guild_id);
             if (!settings) {
                 return reject(false);
             }
 
-            const user = await this.bot.users.fetch(user_id);
+            let user;
+            try {
+                user = await bot.users.fetch(user_id);
+            } catch (e) {
+                //user not found
+                return reject(false);
+            }
             if (!user) {
                 return reject(false);
             }
 
-            const guild = await this.bot.guilds.fetch(guild_id);
+            const guild = await bot.guilds.fetch(guild_id);
             if (!guild) {
                 return reject(false);
             }
@@ -71,9 +79,9 @@ module.exports = class BanappealLogic {
         });
     }
 
-    getBanAppealMessage(message) {
+    getBanAppealMessage(message, bot) {
         return new Promise(async (resolve, reject) => {
-            const fetchedMessage = await this.bot.channels
+            const fetchedMessage = await bot.channels
                 .fetch(message.reference.channelId)
                 .then((channel) => {
                     return channel.messages.fetch(message.reference.messageId);
@@ -95,14 +103,14 @@ module.exports = class BanappealLogic {
         });
     }
 
-    sendAppealToAdmins(guild_id, user_id) {
+    sendAppealToAdmins(guild_id, user_id, bot) {
         return new Promise(async (resolve, reject) => {
             const settings = await this.getSettings(guild_id);
             if (!settings || !settings.length === 0) {
                 return reject('No settings found for this Guild');
             }
 
-            const guild = await this.bot.guilds.fetch(guild_id);
+            const guild = await bot.guilds.fetch(guild_id);
             if (!guild) {
                 return reject('No Guild found for this ID');
             }
@@ -112,7 +120,7 @@ module.exports = class BanappealLogic {
                 return reject('No Banappeal found for this User');
             }
 
-            const user = await this.bot.users.fetch(user_id);
+            const user = await bot.users.fetch(user_id);
 
             const answers = banappeal.appeal_msg;
 
@@ -142,7 +150,7 @@ module.exports = class BanappealLogic {
                 .setLabel('Deny')
                 .setCustomId(`banappeal_deny_${banappeal.id}`);
 
-            const channel = await this.bot.channels.fetch(settings.channel_id);
+            const channel = await bot.channels.fetch(settings.channel_id);
             await channel
                 .send({
                     embeds: [embed],
@@ -182,7 +190,7 @@ module.exports = class BanappealLogic {
                     .catch((err) => {});
             }
 
-            const guild = await this.bot.guilds.fetch(banappeal.guild_id);
+            const guild = await main_interaction.bot.guilds.fetch(banappeal.guild_id);
             if (!guild) {
                 return reject(false);
             }
@@ -191,7 +199,7 @@ module.exports = class BanappealLogic {
                 .unban(banappeal.user_id)
                 .then(async () => {
                     // The user is unbanned
-                    const user = await this.bot.users.fetch(banappeal.user_id);
+                    const user = await main_interaction.bot.users.fetch(banappeal.user_id);
                     user.send({
                         embeds: [
                             new EmbedBuilder()
