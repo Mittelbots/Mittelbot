@@ -76,7 +76,7 @@ module.exports = class Banappeal extends BanappealLogic {
             }
 
             const date = new Date();
-            date.setDate(date.getDate() + 1 + settings.cooldown);
+            date.setDate(date.getDate() + 1 + settings.cooldown || 1);
             date.setHours(date.getHours() + 1);
 
             await banappealModel
