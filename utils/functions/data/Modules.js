@@ -24,7 +24,6 @@ module.exports = class Modules {
         return new Promise(async (resolve) => {
             for (let i in defaultModuleSettings) {
                 if (!defaultModuleSettings[i].name) continue;
-
                 if (defaultModuleSettings[i].name.toLowerCase() === name.toLowerCase()) {
                     return resolve(defaultModuleSettings[i]);
                 }

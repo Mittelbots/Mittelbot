@@ -1,35 +1,9 @@
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const config = require('../../../src/assets/json/_config/config.json');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
-const { autoTranslateConfig } = require('../_config/admin/autotranslate');
+const { autoTranslateConfig, autotranslatePerms } = require('../_config/admin/autotranslate');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const hasPermissions = await hasPermission({
-        guild_id: main_interaction.guild.id,
-        adminOnly: true,
-        modOnly: false,
-        user: main_interaction.member,
-        bot,
-    });
-    if (!hasPermissions) {
-        return main_interaction
-            .reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
     const translate_language = main_interaction.options.getString('language');
     const translate_target = main_interaction.options.getChannel('target').id;
     const translate_log_channel = main_interaction.options.getChannel('log').id;
@@ -80,3 +54,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = autoTranslateConfig;
+module.exports.permissions = autotranslatePerms;

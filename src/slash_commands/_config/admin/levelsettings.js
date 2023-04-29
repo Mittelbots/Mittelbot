@@ -77,3 +77,11 @@ module.exports.levelSettingsConfig = new SlashCommandBuilder()
                     .setRequired(false)
             )
     );
+
+module.exports.levelsettingsPerms = {
+    adminOnly: true,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [],
+    botOwnerOnly: false,
+};

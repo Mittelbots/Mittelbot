@@ -1,36 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { autoModConfig } = require('../_config/admin/automod');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { autoModConfig, automodPerms } = require('../_config/admin/automod');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const hasPermissions = await hasPermission({
-        guild_id: main_interaction.guild.id,
-        adminOnly: true,
-        modOnly: false,
-        user: main_interaction.member,
-        bot,
-    });
-
-    if (!hasPermissions) {
-        return main_interaction
-            .reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
-
     const setting = await Automod.get(main_interaction.guild.id);
 
     switch (main_interaction.options.getSubcommand()) {
@@ -295,3 +268,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = autoModConfig;
+module.exports.permissions = automodPerms;

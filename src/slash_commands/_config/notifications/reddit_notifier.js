@@ -43,3 +43,11 @@ module.exports.redditNotifierConfig = new SlashCommandBuilder()
                     .setRequired(true)
             )
     );
+
+module.exports.redditNotifierPerms = {
+    adminOnly: true,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [],
+    botOwnerOnly: false,
+};

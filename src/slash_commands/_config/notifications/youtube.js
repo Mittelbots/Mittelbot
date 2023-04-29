@@ -33,3 +33,11 @@ module.exports.youtubeConfig = new SlashCommandBuilder()
             .setName('remove')
             .setDescription('Remove the youtube channel from the notification list.')
     );
+
+module.exports.youtubePerms = {
+    adminOnly: true,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [],
+    botOwnerOnly: false,
+};

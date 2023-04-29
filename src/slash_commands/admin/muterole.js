@@ -1,31 +1,10 @@
 const { PermissionFlagsBits } = require('discord.js');
-const { muteRoleConfig } = require('../_config/admin/muterole');
+const { muteRoleConfig, muterolePerms } = require('../_config/admin/muterole');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true });
-
-    const hasPermission = await main_interaction.member.permissions.has(
-        PermissionFlagsBits.Administrator
-    );
-    if (!hasPermission) {
-        return main_interaction
-            .followUp({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['error.permissions.user.useCommand'],
-                                main_interaction.guild.id
-                            )
-                        )
-                        .setColor(global.t.trans(['general.colors.error'])),
-                ],
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    }
 
     const role = main_interaction.options.getRole('role');
 
@@ -117,3 +96,4 @@ module.exports.run = async ({ main_interaction, bot }) => {
 };
 
 module.exports.data = muteRoleConfig;
+module.exports.permissions = muterolePerms;
