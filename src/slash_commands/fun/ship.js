@@ -102,8 +102,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     context.fillText(ship + '%', 420, 190);
 
-    console.log(canvas);
-
     const attachment = new AttachmentBuilder(canvas.toBuffer(), `test.png`);
 
     const newEmbed = new EmbedBuilder().setDescription(

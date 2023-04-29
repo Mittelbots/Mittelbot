@@ -2,7 +2,6 @@ const { EmbedBuilder } = require('discord.js');
 const { Warnroles } = require('../../../utils/functions/data/Warnroles');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const { warnRolesConfig, warnRolesPerms } = require('../_config/admin/warnroles');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const warnroles = removeMention(main_interaction.options.getString('warnroles')).split(' ');
@@ -20,7 +19,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['success.warnroles.update', cooldown],
+                                    ['success.warnroles.update'],
                                     main_interaction.guild.id
                                 )
                             )
