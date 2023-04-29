@@ -15,5 +15,5 @@ Checklist:
 - [ ] CodeQL **successfully** exited?
 - [ ] Debug Code removed?
 - [ ] Code Review approved?
-- [ ] Alles getestet?
+- [ ] Everything works as expected?
 - [x] _Made a deep breath in?_
