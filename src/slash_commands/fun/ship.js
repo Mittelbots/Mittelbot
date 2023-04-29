@@ -67,8 +67,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
         quote = quotes[0]['9_0'][Math.floor(Math.random() * quotes[0]['9_0'].length)];
     }
 
-    console.log(quote);
-
     const canvas = Canvas.createCanvas(950, 550);
     const context = canvas.getContext('2d');
 
