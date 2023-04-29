@@ -60,11 +60,13 @@ module.exports = class Translations {
         if (!string) return null;
         if (typeof string !== 'string') return string;
 
-        const stringArray = string.split(/(%[a-z])/);
+        const regex = /(%[a-z])/;
+
+        const stringArray = string.split(regex);
 
         let valueIndex = 0;
         for (let i in stringArray) {
-            if (stringArray[i].includes('%')) {
+            if (stringArray[i].match(regex)) {
                 stringArray[i] = stringArray[i].replace(stringArray[i], values[valueIndex]);
                 valueIndex++;
             }
