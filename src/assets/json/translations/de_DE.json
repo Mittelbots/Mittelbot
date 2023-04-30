@@ -506,6 +506,13 @@
             "imgur": {
                 "noValidLink": "{error.emote} Bitte sende einen gültigen Discord Attachement Link. \n(Exp: https://cdn.discordapp.com/attachments/123456789012345678/123456789012345678/image.png)"
             }
+        },
+        "fun": {
+            "counter": {
+                "sameUserAgain": "{error.emote} Du kannst nicht zweimal hintereinander zählen.",
+                "wrongCount": "{error.emote} Du musst mit der richtigen Zahl zählen. Die richtige Zahl hätte %c sein sollen",
+                "countReseted": "Der Zähler wurde zurückgesetzt. Versuchen Sie es erneut!"
+            }
         }
     }
 }
