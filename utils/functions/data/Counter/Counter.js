@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('discord.js');
 const counterModel = require('../../../../src/db/Models/tables/counter.model');
 
 module.exports = class Counter {
@@ -14,7 +15,7 @@ module.exports = class Counter {
                 .catch((err) => {});
 
             if (!counter) {
-                return reject('No counter found');
+                return reject(404);
             }
 
             return resolve(counter);
@@ -48,7 +49,7 @@ module.exports = class Counter {
                     return reject(err.message);
                 });
 
-            return resolve(counter);
+            return resolve();
         });
     }
 
@@ -70,29 +71,47 @@ module.exports = class Counter {
                     return reject(err.message);
                 });
 
-            return resolve(counter);
+            return resolve();
         });
     }
 
     isValidCount(guild_id, user_id, messageContent) {
         return new Promise(async (resolve, reject) => {
+            const errorEmbed = new EmbedBuilder().setColor(
+                global.t.trans(['general.colors.error'])
+            );
+
             const counter = await this.get(guild_id).catch((err) => {
-                return reject(err.message);
+                errorEmbed.setDescription(err.message);
+                return reject(errorEmbed);
             });
+
+            const newCount = counter.count + 1;
 
             if (counter.last_user === user_id) {
                 await this.updateCount(guild_id, null, 0).catch((err) => {
-                    return reject(err.message);
+                    errorEmbed.setDescription(err.message);
+                    return reject(errorEmbed);
                 });
 
-                return reject('User already counted');
-            } else if (messageContent !== counter.count + 1) {
+                errorEmbed.setDescription(
+                    global.t.trans(['error.fun.counter.sameUserAgain'], guild_id)
+                );
+
+                return reject(errorEmbed);
+            } else if (parseInt(messageContent) !== newCount) {
                 await this.updateCount(guild_id, null, 0).catch((err) => {
-                    return reject(err.message);
+                    errorEmbed.setDescription(err.message);
+                    return reject(errorEmbed);
                 });
 
-                return reject('Invalid count');
+                errorEmbed.setDescription(
+                    global.t.trans(['error.fun.counter.wrongCount', newCount], guild_id)
+                );
+                return reject(errorEmbed);
             }
+
+            await this.updateCount(guild_id, user_id, newCount).catch((err) => {});
 
             return resolve();
         });
