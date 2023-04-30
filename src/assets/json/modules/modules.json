@@ -1,4 +1,29 @@
 {
+    "admin": {
+        "autoDisable": false,
+        "listed": false,
+        "name": "Admin",
+        "extraCommands": [
+            "modules",
+            "scam",
+            "autotranslate",
+            "settings",
+            "levelsettings",
+            "automod",
+            "modroles",
+            "log",
+            "autoblacklist",
+            "joinroles",
+            "warnroles",
+            "reactionroles",
+            "autodelete",
+            "banappeal",
+            "tickets",
+            "muterole",
+            "language",
+            "counter"
+        ]
+    },
     "moderation": {
         "autoDisable": false,
         "listed": true,
@@ -160,8 +185,21 @@
             "pride",
             "stromberg",
             "singasong",
-            "punch"
+            "punch",
+            "fun"
         ]
+    },
+    "help": {
+        "autoDisable": false,
+        "listed": false,
+        "name": "Help",
+        "extraCommands": ["help", "tutorial"]
+    },
+    "notifications": {
+        "autoDisable": false,
+        "listed": false,
+        "name": "Notifications",
+        "extraCommands": ["twitch", "youtube", "reddit_notifier"]
     },
     "bypassModulesAndCommands": [
         "modules",
