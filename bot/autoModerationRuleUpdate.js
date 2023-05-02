@@ -22,7 +22,7 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
         };
     }
 
-    newRuleOptions.actions.map((action) => {
+    const newActionFields = newRuleOptions.actions.map((action) => {
         return {
             name:
                 action.type === 1
@@ -89,7 +89,7 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
 
     if (!oldRule) return;
 
-    oldRuleOptions.actions.map((action) => {
+   const oldActionFields = oldRuleOptions.actions.map((action) => {
         return {
             name:
                 action.type === 1
