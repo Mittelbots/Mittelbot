@@ -1,0 +1,518 @@
+{
+    "general": {
+        "tryAgainLater": "Bitte versuche es später erneut",
+        "colors": {
+            "success": "#00ff00",
+            "info": "#0000ff",
+            "warning": "#ffff00",
+            "error": "#ff0000"
+        }
+    },
+    "success": {
+        "emote": "✅",
+        "cheerEmote": "🎉",
+        "admin": {
+            "lang": {
+                "set": "{success.emote} Erfolgreich die Sprache zu %c geändert."
+            }
+        },
+        "ticket": {
+            "setting": {
+                "set": "{success.emote} Erfolgreich die Ticket einstellung gespeichert.",
+                "delete": "{success.emote} Erfolgreich die Ticket einstellung gelöscht."
+            },
+            "interacte": {
+                "create": "{success.emote} Erfolgreich das Ticket erstellt. %c",
+                "close": "{success.emote} Erfolgreich das Ticket geschlossen.",
+                "saveTranscript": "{success.emote} Erfolgreich das Transkript gespeichert. Du kannst es jetzt herunterladen. (Web-hosted wird derzeit nicht unterstützt)"
+            }
+        },
+        "settings": {
+            "muteRole": {
+                "set": "{success.emote} Erfolgreich die Mute Rolle auf %c geändert.",
+                "remove": "{success.emote} Erfolgreich die Mute Rolle entfernt."
+            },
+            "cooldown": {
+                "set": "{success.emote} Abklingzeit des Befehls erfolgreich auf %c Sekunden geändert.",
+                "disabled": "{success.emote} Befehlsabklingzeit erfolgreich ausgeschaltet \n \n**Info: Eine standardmäßige Abklingzeit von 2 Sekunden ist immer noch aktiviert, um den Bot vor Spam zu schützen!**"
+            }
+        },
+        "autoblacklist": {
+            "set": "{success.emote} Die Auto-Blacklist für diesen Server wurde erfolgreich eingerichtet.",
+            "delete": "{success.emote} Die Auto-Blacklist für diesen Server wurde erfolgreich gelöscht."
+        },
+        "autodelete": {
+            "set": "{success.emote} Benutzer %c senden Nachrichten des Typs %e"
+        },
+        "automod": {
+            "whitelistroles": {
+                "add": "{success.emote} Erfolgreich die Rolle %c zur Whitelist hinzugefügt."
+            },
+            "antispam": {
+                "disabled": "{success.emote} Erfolgreich Antispam deaktiviert."
+            },
+            "antiinvite": {
+                "disabled": "{success.emote} Anti-invite erfolgreich deaktiviert."
+            },
+            "antilink": {
+                "disabled": "{success.emote} Erfolgreich Anti-Links deaktiviert."
+            },
+            "antiinsults": {
+                "disabled": "{success.emote} Erfolgreich Anti-Massen-Erwähnung deaktiviert."
+            }
+        },
+        "autotranslate": {
+            "update": "{success.emote} Sie haben Ihre Einstellungen für die automatische Übersetzung erfolgreich aktualisiert."
+        },
+        "banappeal": {
+            "set": "{success.emote} Der Banappeal wurde für Ihren Server eingerichtet. Ein Beispiel dafür, wie er aussehen wird, wird an den von dir angegebenen Kanal gesendet.",
+            "remove": "{success.emote} Der Einspruch gegen Bans wurde von deinem Server entfernt."
+        },
+        "levelsettings": {
+            "set": "{success.emote} Deine Levelkonfiguration wurde erfolgreich in %c gespeichert.",
+            "setAlone": "{success.emote} Du hast deine Levelkonfiguration erfolgreich gespeichert"
+        },
+        "modules": {
+            "update": "{success.emote} Erfolgreich %c %x."
+        },
+        "warnroles": {
+            "update": "{success.emote} Warn-Rollen aktualisiert!"
+        },
+        "ship": {
+            "showResult": "**%c** und **%e** passen zu `%p%` zusammen. \n\n `%r`"
+        },
+        "singasong": {
+            "userHasBeenBanned": "{success.emote} Dem Benutzer wurde die Verwendung des Kommandos in diesem Server untersagt!"
+        },
+        "givexp": {
+            "xpGiven": "{success.emote} %c xp wurde zu %x hinzugefügt."
+        },
+        "removexp": {
+            "xpRemoved": "{success.emote} %c xp wurde von %x entfernt"
+        },
+        "infractions": {
+            "removed": "Verstoß mit der ID %c %x wurde entfernt!"
+        },
+        "isBanned": {
+            "userIsBanned": "Dieser Benutzer ist gesperrt! Grund: `%c` von %x",
+            "userIsNotBanned": "Dieser Benutzer ist nicht gesperrt!"
+        },
+        "purge": {
+            "purged": "{success.emote} Erfolgreich gelöschte %c Nachrichten"
+        },
+        "music": {
+            "disconnect": "{success.emote} Die Verbindung zum Sprachkanal wurde unterbrochen.",
+            "pause": "{success.emote} Der aktuelle Titel wurde angehalten.",
+            "play": {
+                "playlistAddedToQueue": "**%c** mit **%x** Songs wurde der Warteschlange hinzugefügt.",
+                "songAddedToQueue": "[%c](%x) wurde der Warteschlange hinzugefügt."
+            },
+            "resume": {
+                "resumed": " {success.emote} Der aktuelle Song wurde fortgesetzt."
+            },
+            "skip": {
+                "skipped": "{success.emote} **%c** wurde übersprungen.\n ---------------------------------- \nJetzt spielt: %x \nHinzugefügt von: %y \nLänge: %v \nURL: %z"
+            },
+            "stop": {
+                "stopped": "{success.emote} Das Lied wurde gestoppt und die Warteschlange wird gelöscht. Bis dann👋"
+            }
+        },
+        "notifications": {
+            "reddit": {
+                "removed": "{success.cheerEmote} Erfolgreich die reddit-Benachrichtigung für %c entfernt",
+                "added": "{success.cheerEmote} Erfolgreich die reddit-Benachrichtigung für %c hinzugefügt"
+            },
+            "youtube": {
+                "removed": "{success.cheerEmote}Erfolgreich die YouTube-Benachrichtigung für %c entfernt"
+            }
+        },
+        "utils": {
+            "afk": {
+                "noLongerAfk": "{success.emote} Du bist nicht mehr afk."
+            },
+            "password": {
+                "generated": "{success.emote} Ihr Passwort wurde generiert: `%c`"
+            }
+        }
+    },
+
+    "info": {
+        "emote": "💭",
+        "general": {
+            "tryCommandAgainWithoutArgs": "Versuch es erneut"
+        },
+        "ticket": {
+            "deletedTicket": "{info.emote} Dieses Ticket wird in 5 Sekunden gelöscht..."
+        },
+        "autoblacklist": {
+            "info": {
+                "title": "Auto-Blacklist",
+                "description": "Dies ist eine Liste aller Benutzer, die auf die automatische Sperrliste gesetzt wurden.",
+                "fields": [
+                    {
+                        "name": "Wie richtet man eine Auto-Blacklist ein?",
+                        "value": "Um Auto-Blacklist einzurichten, musst du einen Ankündigungskanal erstellen, einen Blacklist-Webhook hinzufügen und ihn mit dem Befehl `/autoblacklist set <channel> [ban_message]` einrichten"
+                    },
+                    {
+                        "name": "Wie benutzt man Auto-Blacklist?",
+                        "value": "Du brauchst nichts zu tun. Wenn eine Nachricht über den Webhook gesendet wird, werden alle Benutzerkennungen in der Nachricht gesperrt."
+                    },
+                    {
+                        "name": "Wie entfernt man Auto-Blacklist?",
+                        "value": "Um Auto-Blacklist zu entfernen, musst Du den Befehl `/autoblacklist delete` verwenden"
+                    }
+                ]
+            }
+        },
+        "modroles": {
+            "info": {
+                "admin": [
+                    {
+                        "name": "Admin-Berechtigungen",
+                        "value": "Diese Rolle kann Befehle wie Ban, Unban usw. verwenden.",
+                        "inline": true
+                    }
+                ],
+                "mod": [
+                    {
+                        "name": "Mod-Berechtigungen",
+                        "value": "Diese Rolle kann Befehle wie Kick, Mute usw. verwenden.",
+                        "inline": true
+                    }
+                ],
+                "helper": [
+                    {
+                        "name": "Helper-Berechtigungen",
+                        "value": "Diese Rolle kann Befehle wie warn usw. verwenden.",
+                        "inline": true
+                    }
+                ],
+                "remove": [
+                    {
+                        "name": "Rolle entfernen",
+                        "value": "Diese Rolle wird aus der Mod-Rollen Liste entfernt.",
+                        "inline": true
+                    }
+                ]
+            }
+        },
+        "autodelete": {
+            "types": {
+                "onlyMedia": "Media",
+                "onlyText": "Text",
+                "onlyEmotes": "Emotes",
+                "onlyStickers": "Stickers"
+            }
+        },
+        "guessnumber": {
+            "guess": "Errate die Zahl zwischen 1 und %c"
+        },
+        "pride": {
+            "sexuality": "Sexualität: %c",
+            "genderSingle": "Geschlecht: %c",
+            "similarto": "Ähnlich wie: ",
+            "genderField": "Geschlecht:",
+            "attractedto": "Angezogen von:",
+            "attactiontype": "Angezogen vom Typ:"
+        },
+        "ship": {
+            "quotes": [
+                {
+                    "100_70": [
+                        "Ihr zwei passt perfekt zusammen!",
+                        "Verdammt! Ihr müsst wirklich zusammen abhängen",
+                        "Wow!",
+                        "Hochzeit, wann?"
+                    ],
+                    "69_40": [
+                        "hm. Vielleicht kann es mit ein wenig mehr Aufwand etwas Besonderes werden",
+                        "Ihr zwei passt gut zusammen",
+                        "Das ist ein guter Anfang"
+                    ],
+                    "39_10": ["Ich weiß nicht. Vielleicht solltest du mit jemand anderem ausgehen"],
+                    "9_0": [
+                        "Ich bin mir nicht sicher, ob man mit so jemandem befreundet sein kann.",
+                        "Das ist schlecht. Wirklich schlimm.",
+                        "Das tut mir leid."
+                    ]
+                }
+            ]
+        },
+        "singasong": {
+            "userPoints": "Du hast %c Punkte."
+        },
+        "stromberg": {
+            "spokenof": "Gesprochen von:",
+            "age": "Alter:",
+            "position": "Position:",
+            "episode": "Episode:",
+            "createdAt": "Erstellt am:",
+            "playedBy": "Gespielt von:"
+        },
+        "leaderboard": {
+            "title": "Die 10 Mitglieder von %c.",
+            "currentRank": "Dein aktueller Rang: %c",
+            "XP_Level": "XP: %c  Level: %e Letzte Nachricht: %x",
+            "notRanksYet": "Du hast noch keinen Rang.",
+            "writeAMessageFirst": "Schreibe deine ersten Nachrichten, um xp zu erhalten."
+        },
+        "music": {
+            "requestedby": "Hinzugefügt von",
+            "songsInQueue": "Lieder in der Warteschlange: %c",
+            "duration": "Länge: %c",
+            "nowplaying": "Jetzt spielt: %c \nHinzugefügt von: %x \nLänge: %y \nURL: %v",
+            "queue": {
+                "queueLength": "Songs %c - %x",
+                "songEmbedName": "Song %c",
+                "songEmbedValue": "%c (%x)\n Hinzugefügt von: %y"
+            },
+            "multipleSearchResultsFound": "Mehrere Suchergebnisse gefunden. Bitte wähle eine der folgenden Möglichkeiten:"
+        },
+        "utils": {
+            "afk": {
+                "modalTitle": "Grund für deinen AFK-Zustand"
+            },
+            "checkGuild": {
+                "embed": {
+                    "title": "---Alle Informationen über %c auf Shard-Id %x---- abrufen",
+                    "description": "Disclaimer: Diese Informationen sind öffentlich und für jeden Bot einsehbar. Ich gebe keine sensiblen Daten preis!",
+                    "fields": [
+                        {
+                            "name": "Ist dieser Server verfügbar?"
+                        },
+                        {
+                            "name": "Server Beschreibung"
+                        },
+                        {
+                            "name": "Verifizierungsstufe:"
+                        },
+                        {
+                            "name": "Regeln Kanal:"
+                        },
+                        {
+                            "name": "Anzahl der Mitglieder:"
+                        },
+                        {
+                            "name": "Anzahl der Kanäle:"
+                        },
+                        {
+                            "name:": "Anzahl der Rollen:"
+                        },
+                        {
+                            "name": "Anzahl der Bans:"
+                        },
+                        {
+                            "name": "Vanity URL:"
+                        },
+                        {
+                            "name": "Vanity URL verwendet:"
+                        },
+                        {
+                            "name": "NSFW Level:"
+                        },
+                        {
+                            "name": "Server Boosts:"
+                        },
+                        {
+                            "name": "Server Boost Level:"
+                        },
+                        {
+                            "name": "Ist der Server groß?"
+                        },
+                        {
+                            "name": "AFK Timer:"
+                        },
+                        {
+                            "name": "AFK Kanal:"
+                        },
+                        {
+                            "name": "Videokanal-Benutzerlimit:"
+                        },
+                        {
+                            "name": "Bevorzugter Standort:"
+                        },
+                        {
+                            "name": "Inhaber"
+                        },
+                        {
+                            "name": "Ich bin beigetreten am:"
+                        }
+                    ]
+                }
+            },
+            "password": {
+                "removeBackticks": {
+                    "name": "[Mobile/Tablet Only] Backticks entfernen",
+                    "value": "Um das richtige Passwort zu erhalten, musst Du die Backticks ( ` ) aus dem Passwort entfernen."
+                }
+            },
+            "oldestOrNewestmember": "** %c ** \n**Beitritt:** %x ago \n **Konto erstellt:** %y ago",
+            "uptime": "Ich bin seit %c Tagen %x Stunden %y Minuten %z Sekunden wach",
+            "imgur": "[Klicken Sie hier, um das Bild zu sehen]( %c )"
+        },
+        "fun": {
+            "punch": "Du hast %c geschlagen"
+        }
+    },
+
+    "warning": {
+        "emote": "⚠️",
+        "autodelete": {
+            "get": " {warning.emote} Benutzer %c senden Nachrichten des Typs %e."
+        },
+        "modules": {
+            "notavalidmodule": "{warning.emote} %c ist kein gültiges Modul.",
+            "isAlreadyEnabled": "{warning.emote} %c ist bereits aktiviert.",
+            "isAlreadyDisabled": "{warning.emote} %c ist bereits deaktiviert."
+        },
+        "music": {
+            "queueEnded": "{warning.emote} Die Warteschlange ist beendet. Stille..."
+        }
+    },
+
+    "error": {
+        "emote": "❌",
+        "general": "{error.emote} Bei der Bearbeitung Deiner Anfrage ist ein Fehler aufgetreten. {general.tryAgainLater}",
+        "generalWithMessage": "{error.general} %c",
+        "modules": {
+            "notEnabled": "{error.emote} Dieses Modul **(%c)** ist deaktiviert. Du oder die Serveradministratoren müssen es erst aktivieren, um diesen Befehl verwenden zu können."
+        },
+        "commands": {
+            "globallyDisabled": "Dieser Befehl ist derzeit auf allen Servern deaktiviert. Besuche den offiziellen Support-Discord für weitere Informationen. https://mittelbot.blackdayz.de/support",
+            "disabledOnGuild": "Dieser Befehl ist in Deiner Gilde deaktiviert."
+        },
+        "embed": {
+            "send": "{error.emote} Es ist ein Fehler beim Senden Deiner eingebetteten Nachricht aufgetreten. {general.tryAgainLater}"
+        },
+        "timelimit": "{error.emote} Zeitlimit erreicht",
+        "permissions": {
+            "user": {
+                "useCommand": "{error.emote} Sie haben keine Berechtigung, diesen Befehl zu verwenden."
+            },
+            "bot": {
+                "write": "{error.emote} Ich habe keine Berechtigung, in %c zu schreiben.",
+                "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen."
+            }
+        },
+        "ticket": {
+            "setting": {
+                "delete": "{error.emote} Beim Löschen Diner Ticket-Einstellung ist ein Fehler aufgetreten. {general.tryAgainLater}"
+            },
+            "MAX_SETTINGS": "{error.emote} Du hast die maximale Anzahl von Tickets erreicht (%c)",
+            "interacte": {
+                "create": "{error.emote} Es ist ein Fehler beim Erstellen deines Tickets aufgetreten. {general.tryAgainLater}",
+                "close": "{error.emote} Es ist ein Fehler beim Schließen deines Tickets aufgetreten. {general.tryAgainLater}",
+                "hasTicketAlready": "{error.emote} Du hast bereits ein Ticket geöffnet."
+            }
+        },
+        "settings": {
+            "muteRole": {
+                "set": "{error.emote} Es ist ein Fehler bei der Einstellung deiner Mute-Rolle aufgetreten. {general.tryAgainLater}",
+                "remove": "{error.emote} Es ist ein Fehler beim Entfernen deiner Mute-Rolle aufgetreten. {general.tryAgainLater}"
+            }
+        },
+        "autoblacklist": {
+            "set": {
+                "alreadySet": "{error.emote} Für diesen Server ist bereits eine Auto-Blacklist eingerichtet! Löschen den Eintrag zuerst."
+            },
+            "delete": {
+                "notSet": "{error.emote} Auto-Blacklist ist für diesen Server nicht eingerichtet!"
+            }
+        },
+        "automod": {
+            "whitelistroles": {
+                "alreadyExists": "{error.emote} Du hast die Rolle %c bereits auf der Whitelist. Wenn du sie entfernen willst, benutze das optionale Argument `remove`."
+            }
+        },
+        "banappeal": {
+            "set": "{error.emote} Beim Senden des Beispiels an den von dir angegebenen Kanal ist ein Fehler aufgetreten. Bitte stelle sicher, dass ich die richtigen Berechtigungen habe, sonst kann der Bot keine Appeals senden."
+        },
+        "levelsettings": {
+            "set": "{error.emote} Beim Ändern der Levelkonfiguration in %c ist etwas schief gelaufen",
+            "setAlone": "{error.emote} Beim Ändern der Levelkonfiguration ist etwas schief gelaufen"
+        },
+        "modroles": {
+            "doesntExist": "{error.emote} Die Rolle %c existiert auf diesem Server nicht."
+        },
+        "guessnumber": {
+            "tooLowOrHigh": "{error.emote} Deine Schätzung ist zu %c. Es war %x.",
+            "haventguessed": "{error.emote} Du hast es nicht erraten. Es war %c."
+        },
+        "ship": {
+            "cannotShip": "Du kannst dich nicht mit %c shippen!"
+        },
+        "singasong": {
+            "nopoints": "Sie haben keine Punkte!"
+        },
+        "givexp": {
+            "cannotGiveToBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp hinzufügen."
+        },
+        "leaderboard": {
+            "noOneRanked": "{error.emote} Es gibt niemanden, der in der Rangliste steht. Schreibe zuerst eine Nachricht."
+        },
+        "rank": {
+            "nothingFound": "{error.emote} Ich habe für diesen Benutzer nichts gefunden. Bitte sammle zuerst etwas Erfahrung."
+        },
+        "removexp": {
+            "cannotRemoveFromBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp entfernen."
+        },
+        "ban": {
+            "alreadyBanned": "{error.emote} Dieser Benutzer ist bereits gesperrt."
+        },
+        "infractions": {
+            "dontHaveAny": "%c hat keine Verstöße!",
+            "notFoundWithId": "Es gibt keinen Verstoß mit dieser ID ` %c `"
+        },
+        "mute": {
+            "alreadyMuted": "{error.emote} Dieser Benutzer ist bereits stummgeschaltet!"
+        },
+        "purge": {
+            "notAValidNumber": "{error.emote} Du musst eine Zahl zwischen 1 und %c eingeben"
+        },
+        "unban": {
+            "notBanned": "{error.emote} Dieser Benutzer ist nicht gesperrt!"
+        },
+        "music": {
+            "nothingPlays": "{error.emote} Es wird gerade kein Song gespielt!",
+            "nothingInQueue": "{error.emote} Im Moment ist nichts in der Warteschlange!",
+            "play": {
+                "notValidInput": "{error.emote} Bitte senden Sie einen gültigen Link oder Songnamen",
+                "notSupported": "{error.emote} Ich unterstütze keine YouTube-Links aufgrund einiger rechtlicher Probleme. Bitte geben Sie einen Spotify- oder Soundcloud-Link an.",
+                "queueCreate": "{error.emote} Bei der Erstellung Ihrer Warteschlange ist ein Fehler aufgetreten. {general.tryAgainLater}",
+                "noResults": "{error.emote} Keine Ergebnisse für deine Suche. Bitte sende einen gültigen Link.",
+                "botIsMuted": "{error.emote} Ich bin in diesem Kanal stummgeschaltet. Deine Warteschlange ist pausiert. Bitte hebe die Stummschaltung auf, um Musik abzuspielen."
+            },
+            "queue": {}
+        },
+        "notifications": {
+            "reddit": {
+                "doesNotExistsOrIsPrivate": "{error.emote} Der Subreddit `%c` existiert nicht oder ist privat.",
+                "isNsfw": "{error.emote} Der Subreddit `%c` ist als NSFW markiert. Bitte verwende das Argument `nsfw`, um NSFW-Inhalte zu aktivieren.",
+                "wasNotAddedBefore": "{error.emote} Der Subreddit `%c` wurde noch nicht hinzugefügt. Bitte verwende das Argument `add`, um ihn hinzuzufügen.",
+                "isAlreadyAdded": "{error.emote} Der Subreddit `%c` ist bereits hinzugefügt. Bitte verwende das Argument `remove`, um ihn zu entfernen."
+            }
+        },
+        "utils": {
+            "afk": {
+                "notAfk": "{error.emote} Du bist nicht afk!",
+                "alreadyAfk": "{error.emote} Du bist bereits afk! Grund: %c` Um deinen afk-Status zu entfernen, füge die Option remove hinzu."
+            },
+            "checkGuild": {
+                "serverNotFound": "Dieser Server existiert nicht oder ich bin kein Mitglied. Bitte lade mich ein, um weitere Informationen zu erhalten."
+            },
+            "password": {
+                "noValidLength": "{error.emote} Das Passwort muss zwischen %c und %x Zeichen lang sein."
+            },
+            "imgur": {
+                "noValidLink": "{error.emote} Bitte sende einen gültigen Discord Attachement Link. \n(Exp: https://cdn.discordapp.com/attachments/123456789012345678/123456789012345678/image.png)"
+            }
+        },
+        "fun": {
+            "counter": {
+                "sameUserAgain": "{error.emote} Du kannst nicht zweimal hintereinander zählen.",
+                "wrongCount": "{error.emote} Du musst mit der richtigen Zahl zählen. Die richtige Zahl hätte %c sein sollen",
+                "countReseted": "Der Zähler wurde zurückgesetzt. Versuchen Sie es erneut!"
+            }
+        }
+    }
+}
