@@ -28,7 +28,7 @@
         "@discord-player/extractor": "^4.2.1",
         "@discord-player/utils": "^0.2.1",
         "@discordjs/opus": "github:discordjs/opus",
-        "@discordjs/rest": "^1.7.0",
+        "@discordjs/rest": "^1.7.1",
         "@discordjs/voice": "^0.16.0",
         "@distube/ytdl-core": "^4.11.9",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
