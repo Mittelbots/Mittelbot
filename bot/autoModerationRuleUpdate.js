@@ -89,7 +89,7 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
 
     if (!oldRule) return;
 
-   const oldActionFields = oldRuleOptions.actions.map((action) => {
+    const oldActionFields = oldRuleOptions.actions.map((action) => {
         return {
             name:
                 action.type === 1
