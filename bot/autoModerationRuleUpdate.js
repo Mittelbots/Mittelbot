@@ -22,14 +22,8 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
         };
     }
 
-    let newActionFields = [
-        {
-            name: 'New Actions',
-            value: '=================',
-        },
-    ];
     newRuleOptions.actions.map((action) => {
-        const obj = {
+        return {
             name:
                 action.type === 1
                     ? 'Delete Message'
@@ -47,39 +41,7 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
                     ? `${action.metadata.durationSeconds} seconds`
                     : 'none',
         };
-        newActionFields.push(obj);
     });
-
-    let oldActionFields;
-    if (oldRule) {
-        oldActionFields = [
-            {
-                name: 'Old Actions',
-                value: '=================',
-            },
-        ];
-        oldRuleOptions.actions.map((action) => {
-            const obj = {
-                name:
-                    action.type === 1
-                        ? 'Delete Message'
-                        : action.type === 2
-                        ? 'Send alert to'
-                        : action.type === 3
-                        ? 'Timeout user'
-                        : 'none',
-                value:
-                    action.type === 1
-                        ? 'True'
-                        : action.type === 2
-                        ? `<#${action.metadata.channelId}>`
-                        : action.type === 3
-                        ? `${action.metadata.durationSeconds} seconds`
-                        : 'none',
-            };
-            oldActionFields.push(obj);
-        });
-    }
 
     const auditLog = new Auditlog();
     await auditLog.init(bot, newRule.guild.id);
@@ -127,6 +89,27 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
 
     if (!oldRule) return;
 
+    oldRuleOptions.actions.map((action) => {
+        return {
+            name:
+                action.type === 1
+                    ? 'Delete Message'
+                    : action.type === 2
+                    ? 'Send alert to'
+                    : action.type === 3
+                    ? 'Timeout user'
+                    : 'none',
+            value:
+                action.type === 1
+                    ? 'True'
+                    : action.type === 2
+                    ? `<#${action.metadata.channelId}>`
+                    : action.type === 3
+                    ? `${action.metadata.durationSeconds} seconds`
+                    : 'none',
+        };
+    });
+
     await auditLog.setEmbed({
         color: global.t.trans(['general.colors.error']),
         text: `**Auto Moderation Rule updated**`,
@@ -166,7 +149,7 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
     });
 
     await auditLog.sendToAuditLog({
-        guildId: newRule.guild.id,
-        target: newRule.guild,
+        guildId: oldRule.guild.id,
+        target: oldRule.guild,
     });
 };

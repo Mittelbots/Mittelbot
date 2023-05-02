@@ -20,9 +20,8 @@ module.exports.autoModerationRuleCreate = async (bot, rule) => {
             : 'none';
     const actions = rule.actions;
 
-    let actionFields = [];
-    actions.map((action) => {
-        const obj = {
+    const actionFields = actions.map((action) => {
+        return {
             name:
                 action.type === 1
                     ? 'Delete Message'
@@ -40,7 +39,6 @@ module.exports.autoModerationRuleCreate = async (bot, rule) => {
                     ? `${action.metadata.durationSeconds} seconds`
                     : 'none',
         };
-        actionFields.push(obj);
     });
 
     const auditLog = new Auditlog();
@@ -90,6 +88,7 @@ module.exports.autoModerationRuleCreate = async (bot, rule) => {
             ...actionFields,
         ],
     });
+
     await auditLog.sendToAuditLog({
         guildId: rule.guild.id,
         target: rule.guild,
