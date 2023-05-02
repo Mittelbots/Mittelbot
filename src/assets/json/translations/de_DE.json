@@ -352,6 +352,15 @@
         },
         "fun": {
             "punch": "Du hast %c geschlagen"
+        },
+        "commands": {
+            "firstCommand": {
+                "description": "Hol dir die neuesten Informationen, Funktionen und Bugs auf dem offiziellen Support-Server. Du kannst dort auch Bugs melden und Features vorschlagen. Jetzt beitreten oder diese Nachricht für immer schließen.",
+                "buttons": {
+                    "invite": "Support-Server beitreten",
+                    "close": "Schließen und nie wieder fragen"
+                }
+            }
         }
     },
 
