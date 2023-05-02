@@ -17,3 +17,11 @@ module.exports.languageConfig = new SlashCommandBuilder()
                 value: 'de_DE',
             })
     );
+
+module.exports.languagePerms = {
+    adminOnly: true,
+    modOnly: false,
+    guildOwnerOnly: false,
+    requirePerms: [],
+    botOwnerOnly: false,
+};
