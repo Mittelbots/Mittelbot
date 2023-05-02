@@ -16,6 +16,7 @@ const { EmbedBuilder, ChannelType } = require('discord.js');
 const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
 const Tickets = require('../utils/functions/data/Tickets/Tickets');
+const Counter = require('../utils/functions/data/Counter/Counter');
 
 async function messageCreate(message, bot) {
     message.bot = bot;
@@ -51,7 +52,7 @@ async function messageCreate(message, bot) {
         message.channel.id !== process.env.DC_DEBUG &&
         moduleApi.checkEnabled(defaultModuleSettings.autodelete.name)
     ) {
-        return await new AutoBlacklist().check(message, bot);
+        await new AutoBlacklist().check(message, bot);
     }
     if (
         message.channel.type === ChannelType.DM ||
@@ -157,6 +158,40 @@ async function messageCreate(message, bot) {
 
         return message.delete().catch((err) => {});
     }
+
+    /** ======================================================= */
+
+    new Counter()
+        .get(message.guild.id)
+        .then(async (counter) => {
+            if (counter.channel_id !== message.channel.id) return;
+
+            await new Counter()
+                .isValidCount(message.guild.id, message.author.id, message.content)
+                .then(async () => {
+                    message.react('✅').catch((err) => {});
+                })
+                .catch(async (err) => {
+                    message
+                        .reply({
+                            content: global.t.trans(
+                                ['error.fun.counter.countReseted'],
+                                message.guild.id
+                            ),
+                            embeds: [err],
+                        })
+                        .then(async (msg) => {
+                            await delay(6000);
+                            msg.delete().catch((err) => {});
+                        })
+                        .catch((err) => {});
+
+                    message.channel.send({
+                        content: '============================',
+                    });
+                });
+        })
+        .catch((err) => {});
 
     /** ======================================================= */
 

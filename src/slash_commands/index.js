@@ -12,27 +12,9 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const moduleApi = new Modules(main_interaction.guild.id, bot);
     const defaultSettings = moduleApi.getDefaultSettings();
 
-    const admin = [
-        'modules',
-        'scam',
-        'autotranslate',
-        'settings',
-        'levelsettings',
-        'automod',
-        'modroles',
-        'log',
-        'autoblacklist',
-        'joinroles',
-        'warnroles',
-        'reactionroles',
-        'autodelete',
-        'banappeal',
-        'tickets',
-        'muterole',
-        'language',
-    ];
-    const help = ['help', 'tutorial'];
-    const notifications = ['twitch', 'youtube', 'reddit_notifier'];
+    const admin = defaultSettings.admin.extraCommands;
+    const help = defaultSettings.help.extraCommands;
+    const notifications = defaultSettings.notifications.extraCommands;
 
     const moderation = defaultSettings.moderation.extraCommands;
     const fun = defaultSettings.fun.extraCommands;

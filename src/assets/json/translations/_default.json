@@ -14,6 +14,10 @@
         "admin": {
             "lang": {
                 "set": "{success.emote} Successfully set the language to %c"
+            },
+            "counter": {
+                "removed": "{success.emote} Successfully removed the counter.",
+                "set": "{success.emote} Successfully set the counter to %c"
             }
         },
         "ticket": {
@@ -514,6 +518,19 @@
             },
             "imgur": {
                 "noValidLink": "{error.emote} Please send a valid Discord Attachement link. \n(Exp: https://cdn.discordapp.com/attachments/123456789012345678/123456789012345678/image.png)"
+            }
+        },
+        "fun": {
+            "counter": {
+                "sameUserAgain": "{error.emote} You can't count twice in a row!",
+                "wrongCount": "{error.emote} You have to count with the right number. The correct number have to be %c",
+                "countReseted": "The counter was reseted. Try again!"
+            }
+        },
+        "admin": {
+            "counter": {
+                "notFound": "{error.emote} I don't have found any counter setting in this server.",
+                "alreadyExists": "{error.emote} There is already a counter in this server. Please delete it first."
             }
         }
     }
