@@ -41,6 +41,9 @@ const { guildMemberOnline } = require('../ext_events/guildMemberOnline');
 const { userAvatarUpdate } = require('../ext_events/userAvatarUpdate');
 const { userUsernameUpdate } = require('../ext_events/userUsernameUpdate');
 const { guildVanityURLRemove } = require('../ext_events/guildVanityURLRemove');
+const { autoModerationRuleCreate } = require('../autoModerationRuleCreate');
+const { autoModerationRuleDelete } = require('../autoModerationRuleDelete');
+const { autoModerationRuleUpdate } = require('../autoModerationRuleUpdate');
 
 module.exports.acceptBotInteraction = (bot) => {
     bot.on('guildCreate', async (guild) => {
@@ -241,5 +244,17 @@ module.exports.acceptBotInteraction = (bot) => {
 
     bot.on('userUsernameUpdate', (user, oldUsername, newUsername) => {
         userUsernameUpdate(bot, user, oldUsername, newUsername);
+    });
+
+    bot.on('autoModerationRuleCreate', (rule) => {
+        autoModerationRuleCreate(bot, rule);
+    });
+
+    bot.on('autoModerationRuleDelete', (rule) => {
+        autoModerationRuleDelete(bot, rule);
+    });
+
+    bot.on('autoModerationRuleUpdate', (oldRule, newRule) => {
+        autoModerationRuleUpdate(bot, oldRule, newRule);
     });
 };
