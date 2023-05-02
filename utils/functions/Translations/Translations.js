@@ -12,9 +12,6 @@ module.exports = class Translations {
     #defaultLanguage = 'en_EN';
     #supportedLanguages = ['en_EN', 'de_DE'];
 
-    #selectedLanguage = this.#defaultLanguage;
-    #translationFile;
-
     #init() {
         return new Promise(async (resolve) => {
             await guildConfig
@@ -43,16 +40,15 @@ module.exports = class Translations {
         this.guild_id = guild_id;
 
         const selectedLanguage = this.#getGuildLanguage(guild_id);
-        if (!this.#isLanguageSupported(selectedLanguage)) return null; // FUTURE FEATURE
-        this.#getTranslationFile(selectedLanguage);
+        if (!this.#isLanguageSupported(selectedLanguage)) return null;
+        const file = this.#getTranslationFile(selectedLanguage);
 
         const searchKey = key[0];
-        const translation = this.#getTranslation(searchKey);
+        const translation = this.#getTranslation(searchKey, file);
         if (!translation) return null;
 
         const searchValue = key.splice(1, key.length - 1);
-        let newString = this.#processCustomStrings(translation, searchValue);
-
+        let newString = this.#processCustomStrings(translation, searchValue, file);
         if (searchValue.length > 0) {
             newString = this.processCustomValues(newString, searchValue);
         }
@@ -60,7 +56,7 @@ module.exports = class Translations {
         return newString;
     }
 
-    #processCustomStrings(string, searchValue) {
+    #processCustomStrings(string, searchValue, file) {
         if (!string) return null;
         if (typeof string !== 'string') return string;
 
@@ -70,7 +66,7 @@ module.exports = class Translations {
 
         matches.forEach((match) => {
             const variable = match.replace('{', '').replace('}', '');
-            const value = this.#getTranslation(variable);
+            const value = this.#getTranslation(variable, file);
             string = string.replace(match, value);
         });
         if (string.match(regex)) {
@@ -99,12 +95,11 @@ module.exports = class Translations {
         return string;
     }
 
-    #getTranslation(key) {
+    #getTranslation(key, file) {
         if (!key) return null;
 
         const keyArray = key.split('.');
-        let translation = this.#translationFile;
-
+        let translation = file;
         try {
             keyArray.forEach((key) => {
                 translation = translation[key];
@@ -112,7 +107,6 @@ module.exports = class Translations {
         } catch (e) {
             return 'Translation not found';
         }
-
         return translation || 'Translation not found';
     }
 
@@ -122,9 +116,9 @@ module.exports = class Translations {
 
     #getTranslationFile(language) {
         try {
-            this.#translationFile = require(`../../../src/assets/json/translations/${language}.json`);
+            return require(`../../../src/assets/json/translations/${language}.json`);
         } catch (e) {
-            this.#translationFile = defaultTranslations;
+            return defaultTranslations;
         }
     }
 
@@ -135,5 +129,9 @@ module.exports = class Translations {
         if (!language) return this.#defaultLanguage;
 
         return language;
+    }
+
+    updateCache(guild_id, lang) {
+        this.#cache.set(guild_id, lang);
     }
 };

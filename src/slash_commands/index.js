@@ -1,35 +1,20 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ButtonStyle } = require('discord.js');
 const {
     checkActiveCommand,
 } = require('../../utils/functions/checkActiveCommand/checkActiveCommand');
 const Modules = require('../../utils/functions/data/Modules');
 const { hasPermission } = require('../../utils/functions/hasPermissions');
+const { ActionRowBuilder } = require('discord.js');
+const { ButtonBuilder } = require('discord.js');
+const { GuildConfig } = require('../../utils/functions/data/Config');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const moduleApi = new Modules(main_interaction.guild.id, bot);
     const defaultSettings = moduleApi.getDefaultSettings();
 
-    const admin = [
-        'modules',
-        'scam',
-        'autotranslate',
-        'settings',
-        'levelsettings',
-        'automod',
-        'modroles',
-        'log',
-        'autoblacklist',
-        'joinroles',
-        'warnroles',
-        'reactionroles',
-        'autodelete',
-        'banappeal',
-        'tickets',
-        'muterole',
-        'language',
-    ];
-    const help = ['help', 'tutorial'];
-    const notifications = ['twitch', 'youtube', 'reddit_notifier'];
+    const admin = defaultSettings.admin.extraCommands;
+    const help = defaultSettings.help.extraCommands;
+    const notifications = defaultSettings.notifications.extraCommands;
 
     const moderation = defaultSettings.moderation.extraCommands;
     const fun = defaultSettings.fun.extraCommands;
@@ -119,6 +104,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
 
     if (admin.indexOf(main_interaction.commandName) !== -1) {
         if (!(await isEnabled(main_interaction.commandName))) return;
+        sendNoticeToFirstCommand();
         return requireModule('admin');
     }
 
@@ -213,6 +199,67 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         file.run({
             main_interaction: main_interaction,
             bot: bot,
+        });
+    }
+
+    async function sendNoticeToFirstCommand() {
+        const config = await GuildConfig.get(main_interaction.guild.id, 'firstCommand');
+        if (!config.firstCommand) return;
+
+        main_interaction.channel.send({
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(
+                            ['info.commands.firstCommand.description'],
+                            main_interaction.guild.id
+                        )
+                    )
+                    .setColor(global.t.trans(['general.colors.info'])),
+            ],
+            components: [
+                new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setLabel(
+                                global.t.trans(
+                                    ['info.commands.firstCommand.buttons.invite'],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setStyle(ButtonStyle.Link)
+                            .setURL(bot.config.support_server)
+                    )
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setLabel(
+                                global.t.trans(
+                                    ['info.commands.firstCommand.buttons.close'],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setStyle(ButtonStyle.Danger)
+                            .setCustomId('firstCommand_close')
+                    ),
+            ],
+        });
+
+        const filter = (i) =>
+            i.customId === 'firstCommand_close' && i.user.id === main_interaction.user.id;
+        const collector = main_interaction.channel.createMessageComponentCollector({
+            filter,
+            time: 60000,
+        });
+
+        collector.on('collect', async (i) => {
+            await GuildConfig.update({
+                guild_id: main_interaction.guild.id,
+                value: false,
+                valueName: 'firstCommand',
+            });
+
+            i.message.delete();
+            collector.stop();
         });
     }
 };
