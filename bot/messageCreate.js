@@ -52,13 +52,16 @@ async function messageCreate(message, bot) {
         message.channel.id !== process.env.DC_DEBUG &&
         moduleApi.checkEnabled(defaultModuleSettings.autodelete.name)
     ) {
-        await new AutoBlacklist().check(message, bot);
+        if (await new AutoBlacklist().check(message, bot)) {
+            return;
+        }
     }
     if (
         message.channel.type === ChannelType.DM ||
         message.author.system ||
         !message.author ||
-        (bot.user.id === '921779661795639336' && message.author.id !== bot.ownerId)
+        (bot.user.id === '921779661795639336' && message.author.id !== bot.ownerId) ||
+        message.author.bot
     )
         return;
 
