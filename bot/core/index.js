@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const { sentryInit } = require('./sentry');
+sentryInit();
+
 const { Client, Options, GatewayIntentBits, Collection, Partials } = require('discord.js');
 
 const config = require('../../src/assets/json/_config/config.json');
