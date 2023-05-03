@@ -115,8 +115,8 @@ module.exports = class AutoBlacklist {
                             message.react('❌').catch((err) => {});
                         });
                     isUserBannedArray.push(member ? member : users[i]);
-                    resolve(true);
                 }
+                resolve(true);
             });
         });
     }
