@@ -20,12 +20,18 @@
             "showGuildCount": true
         },
         {
-            "text": "/help - with {guildCount} guilds",
-            "showGuildCount": true
+            "text": "/help - with {memberCount} members on {guildCount} guilds",
+            "showMemberCount": true
         },
         {
-            "text": "/help - with {memberCount} members",
-            "showMemberCount": true
+            "text": "/help - try /counter"
+        },
+        {
+            "text": "/help - Multi language support with /language"
+        },
+        {
+            "text": "/help - Twitch Notifications 2.0 with /twitch on {guildCount} servers",
+            "showGuildCount": true
         }
     ],
     "type": "Playing",
