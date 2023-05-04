@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.63.1",
+    "version": "0.63.2",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -31,6 +31,7 @@
         "@discordjs/rest": "^1.7.1",
         "@discordjs/voice": "^0.16.0",
         "@distube/ytdl-core": "^4.11.9",
+        "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
         "@napi-rs/canvas": "^0.1.40",
         "@sentry/node": "^7.50.0",

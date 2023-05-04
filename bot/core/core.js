@@ -23,6 +23,7 @@ module.exports.startBot = async (bot) => {
             await setActivity(bot, true);
             await Promise.resolve(this.fetchCache(bot));
             new ScamDetection().loadScam();
+            await bot.player.extractors.loadDefault();
             new Music(null, bot, true).generateQueueAfterRestart();
 
             /**
