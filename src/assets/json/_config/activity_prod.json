@@ -21,7 +21,8 @@
         },
         {
             "text": "/help - with {memberCount} members on {guildCount} guilds",
-            "showMemberCount": true
+            "showMemberCount": true,
+            "showGuildCount": true
         },
         {
             "text": "/help - try /counter"
