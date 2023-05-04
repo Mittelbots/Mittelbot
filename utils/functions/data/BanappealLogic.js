@@ -33,11 +33,11 @@ module.exports = class BanappealLogic {
 
             settings.title = settings.title.replace(
                 '{user}',
-                `${user.username}#${user.discriminator}`
+                `${user.username}`
             );
             settings.description = settings.description.replace(
                 '{user}',
-                `${user.username}#${user.discriminator}`
+                `${user.username}`
             );
 
             settings.title = settings.title.replace('{guild}', guild.name);
@@ -46,7 +46,7 @@ module.exports = class BanappealLogic {
             for (let i in settings.questions) {
                 settings.questions[i] = settings.questions[i].replace(
                     '{user}',
-                    `${user.username}#${user.discriminator}`
+                    `${user.username}`
                 );
                 settings.questions[i] = settings.questions[i].replace('{guild}', guild.name);
             }
@@ -127,7 +127,7 @@ module.exports = class BanappealLogic {
             const embed = new EmbedBuilder()
                 .setTitle(
                     `New Banappeal from ${
-                        user ? `${user.username}#${user.discriminator}` : `${user_id}`
+                        user ? `${user.username}` : `${user_id}`
                     }`
                 )
                 .setColor('#ff0000');

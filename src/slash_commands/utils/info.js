@@ -135,7 +135,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const memberInfoEmbed = new EmbedBuilder()
         .setColor('#0099ff')
-        .setTitle(`**Memberinfos - ${user.username}#${user.discriminator}**`)
+        .setTitle(`**Memberinfos - ${user.username}**`)
         .addFields([
             { name: `Tag/ID: `, value: `<@${user.id}>/${user.id}` },
             {

@@ -54,7 +54,7 @@ module.exports.publicInfractionResponse = async ({
         }
         //let user = await guild.members.fetch(infraction.user_id);
         const publicOneInfractionMessage = new EmbedBuilder()
-            //.setAuthor(`${user.user.username}${user.user.discriminator}`)
+            //.setAuthor(`${user.user.username}`)
             .addFields([
                 {
                     name: `${infraction.infraction_id} - ${type} \nFrom: **${
