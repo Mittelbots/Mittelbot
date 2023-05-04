@@ -32,13 +32,13 @@ module.exports = class BanappealLogic {
             }
 
             settings.title = settings.title.replace('{user}', `${user.username}`);
-            settings.description = settings.description.replace('{user}', `${user.username}`);
+            settings.description = settings.description.replace('{user}', user.username);
 
             settings.title = settings.title.replace('{guild}', guild.name);
             settings.description = settings.description.replace('{guild}', guild.name);
 
             for (let i in settings.questions) {
-                settings.questions[i] = settings.questions[i].replace('{user}', `${user.username}`);
+                settings.questions[i] = settings.questions[i].replace('{user}', user.username);
                 settings.questions[i] = settings.questions[i].replace('{guild}', guild.name);
             }
 
@@ -116,7 +116,7 @@ module.exports = class BanappealLogic {
             const answers = banappeal.appeal_msg;
 
             const embed = new EmbedBuilder()
-                .setTitle(`New Banappeal from ${user ? `${user.username}` : `${user_id}`}`)
+                .setTitle(`New Banappeal from ${user ? user.username : user_id}`)
                 .setColor('#ff0000');
             if (user) {
                 embed.setThumbnail(user.displayAvatarURL());
