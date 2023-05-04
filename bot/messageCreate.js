@@ -91,7 +91,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam.name))
-        ? await antiSpam(message, bot)
+        ? (await new AutomodAntiSpam().init(message.guild.id, bot)).check(message)
         : false;
     if (isSpam) {
         errorhandler({

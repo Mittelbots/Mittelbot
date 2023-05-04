@@ -12,9 +12,11 @@ module.exports = class AutomodAntiSpam {
 
     constructor() {}
 
-    async init(guild_id) {
+    async init(guild_id, bot) {
         const setting = await Automod.get(guild_id);
         this.antiSpamSetting = setting.antispam;
+        this.bot = bot;
+        return this;
     }
 
     async check(message) {
@@ -44,7 +46,20 @@ module.exports = class AutomodAntiSpam {
             user.messages.push(message);
 
             if((user.messages.length < this.#triggerMessages && this.getDifference(first_message, current_time) > this.#triggerSeconds) || (user.messages.length < this.#triggerMessages && this.getDifference(first_message, current_time) > this.#triggerSeconds)) {
-                this.#isSpam = false;
+                if (user.messages.length >= 6) {
+                    user.first_message = current_time;
+                }
+                user.last_message = current_time;
+
+                for (let i in spamCheck) {
+                    if (
+                        spamCheck[i].user_id === message.author.id &&
+                        spamCheck[i].guild_id === message.guild.id
+                    ) {
+                        spamCheck[i] = user;
+                        break;
+                    }
+                }
                 return resolve(this.#isSpam);
             }
 
@@ -54,7 +69,26 @@ module.exports = class AutomodAntiSpam {
                 return resolve(this.#isSpam);
             }
 
-            
+            const obj = {
+                guild_id: message.guild.id,
+                user_id: message.author.id,
+                action: '',
+            }
+
+            const action = new Automod().punishUser({
+                user: message.author,
+                guild: message.guild,
+                mod: message.guild.me,
+                action: this.antiSpamSetting.action,
+                bot: this.bot,
+                message,
+            })
+
+            obj.action = action;
+            userAction.push(obj);
+
+            user.messages = [];
+            return resolve(this.#isSpam);
         });
     }
 

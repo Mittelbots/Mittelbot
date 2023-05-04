@@ -1,5 +1,6 @@
 const guildAutomod = require('../../../src/db/Models/tables/guildAutomod.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { kickUser } = require('../moderations/kickUser');
 const { Guilds } = require('./Guilds');
 
 class Automod {
@@ -74,6 +75,77 @@ class Automod {
         if (role_id) {
             return whitelist.roles.includes(role_id) ? true : false;
         }
+    }
+
+    punishUser({ user, guild, mod, action, bot, message }) {
+        return new Promise(async (resolve, reject) => {
+            let action;
+            switch( action ) {
+                case 'kick':
+                    action = 'kick';
+                    kickUser({
+                        user: user,
+                        mod: mod,
+                        guild: guild,
+                        reason: '[AUTO MOD] Spamming too many letters in a short time',
+                        bot: bot
+                    });
+                    break;
+                case 'ban':
+                    action = 'ban';
+                    banUser({
+                        user: user,
+                        mod: mod,
+                        guild: guild,
+                        reason: '[AUTO MOD] Spamming too many letters in a short time.',
+                        bot: bot,
+                        isAuto: true,
+                        time: '5h',
+                        dbtime: getModTime('5h'),
+                    });
+                    break;
+
+                case 'mute':
+                    action = 'mute';
+                    muteUser({
+                        user: user,
+                        mod: mod,
+                        bot: bot,
+                        guild: guild,
+                        reason: '[AUTO MOD] Spamming too many letters in a short time.',
+                        time: '5h',
+                        dbtime: getModTime('5h'),
+                    });
+                    break;
+                case 'delete':
+                    action = 'delete';
+                    message.channel.messages
+                        .fetch({
+                            limit: 30,
+                        })
+                        .then((messages) => {
+                            messages = messages.filter(
+                                (m) => m.author.id === message.author.id
+                            );
+                            message.channel.bulkDelete(messages).catch((err) => {});
+                        })
+                        .catch((err) => {});
+                    break;
+
+                case 'warn':
+                    action = 'warn';
+                    warnUser({
+                        bot: bot,
+                        user: user,
+                        mod: mod,
+                        guild: guild,
+                        reason: '[AUTO MOD] Spamming too many letters in a short time.',
+                    });
+                    break;
+            }
+
+            return resolve(action);
+        })
     }
 }
 
