@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.63.0",
+    "version": "0.63.2",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -31,8 +31,10 @@
         "@discordjs/rest": "^1.7.1",
         "@discordjs/voice": "^0.16.0",
         "@distube/ytdl-core": "^4.11.9",
+        "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
         "@napi-rs/canvas": "^0.1.40",
+        "@sentry/node": "^7.50.0",
         "@stdlib/assert-is-uri": "^0.0.8",
         "@twurple/api": "^6.2.0",
         "@twurple/auth": "^6.0.2",
@@ -83,9 +85,9 @@
     },
     "devDependencies": {
         "chalk": "^4.1.0",
+        "husky": "^8.0.3",
         "nodemon": "^2.0.22",
         "prettier": "^2.8.8",
-        "string-width": "4.2.3",
-        "husky": "^8.0.3"
+        "string-width": "4.2.3"
     }
 }

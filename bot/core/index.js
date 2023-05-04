@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const { sentryInit } = require('./sentry');
+sentryInit();
+
 const { Client, Options, GatewayIntentBits, Collection, Partials } = require('discord.js');
 
 const config = require('../../src/assets/json/_config/config.json');
@@ -52,11 +55,11 @@ bot.player = new Player(bot, {
         highWaterMark: 1 << 25,
         quality: 'highestaudio',
     },
+    autoRegisterExtractor: false,
 });
+registerPlayerEvents(bot.player, bot);
 
 global.t = new Translations();
-
-registerPlayerEvents(bot.player, bot);
 
 bot.config = config;
 

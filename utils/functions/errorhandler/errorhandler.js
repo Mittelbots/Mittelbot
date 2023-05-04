@@ -1,5 +1,5 @@
-const { log, debug_log, database_log } = require('./logs');
 const callerId = require('caller-id');
+const Sentry = require('@sentry/node');
 
 module.exports.errorhandler = ({
     err = 'No error passed! ',
@@ -9,18 +9,28 @@ module.exports.errorhandler = ({
     databaseError = false,
 }) => {
     const caller = callerId.getData();
-    let errObj = {
+
+    if (JSON.parse(process.env.NODE_ENV === 'development')) {
+        console.error(err, '\n', message, '\n', caller.filePath);
+        return;
+    }
+
+    const errObj = {
         Message: message,
         'Called From': caller.filePath,
         Line: caller.lineNumber,
         '------------': '------------',
     };
 
-    if (JSON.parse(process.env.DEBUG)) console.error(err, '\n', message, '\n', caller.filePath);
-    else if (databaseError) database_log.error(err, '\n', JSON.stringify(errObj, null, 4));
-    else if (fatal && log) log.fatal(err, '\n', JSON.stringify(errObj, null, 4));
-    else if (!fatal) debug_log.info(err, '\n', JSON.stringify(errObj, null, 4));
+    err = err + '\n' + JSON.stringify(errObj, null, 2);
 
-    if (channel) return channel.send(message).catch((err) => {});
-    else return;
+    if (databaseError) {
+        Sentry.captureMessage(err, 'fatal');
+    } else if (fatal) {
+        Sentry.captureMessage(err, 'fatal');
+    } else if (!fatal) {
+        Sentry.captureMessage(err, 'debug');
+    }
+
+    return;
 };
