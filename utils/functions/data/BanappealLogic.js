@@ -31,7 +31,7 @@ module.exports = class BanappealLogic {
                 return reject(false);
             }
 
-            settings.title = settings.title.replace('{user}', `${user.username}`);
+            settings.title = settings.title.replace('{user}', user.username);
             settings.description = settings.description.replace('{user}', user.username);
 
             settings.title = settings.title.replace('{guild}', guild.name);
