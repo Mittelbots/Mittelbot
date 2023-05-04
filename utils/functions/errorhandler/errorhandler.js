@@ -8,13 +8,14 @@ module.exports.errorhandler = ({
     fatal = true,
     databaseError = false,
 }) => {
+    const caller = callerId.getData();
+
     if (JSON.parse(process.env.NODE_ENV === 'development')) {
         console.error(err, '\n', message, '\n', caller.filePath);
         return;
     }
 
-    const caller = callerId.getData();
-    let errObj = {
+    const errObj = {
         Message: message,
         'Called From': caller.filePath,
         Line: caller.lineNumber,
