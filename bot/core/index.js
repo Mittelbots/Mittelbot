@@ -55,11 +55,11 @@ bot.player = new Player(bot, {
         highWaterMark: 1 << 25,
         quality: 'highestaudio',
     },
+    autoRegisterExtractor: false,
 });
+registerPlayerEvents(bot.player, bot);
 
 global.t = new Translations();
-
-registerPlayerEvents(bot.player, bot);
 
 bot.config = config;
 
