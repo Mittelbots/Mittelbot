@@ -143,28 +143,12 @@ module.exports.disable_command = async (message, args) => {
     }
 };
 
-module.exports.export_logs = async (message, args) => {
-    const type = JSON.parse(args) ? '_logs/roll' : '_debug/roll';
-
-    const date = new Date();
-
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    month = (month < 10 ? '0' : '') + month;
-    let day = (date.getDate() < 10 ? '0' : '') + date.getDate();
-
+module.exports.export_logs = async (message) => {
     return message
         .reply({
-            files: [new AttachmentBuilder(`./${type}-${year}.${month}.${day}.log`)],
+            content: `https://blackdayz.sentry.io/issues/`,
         })
-        .catch((err) => {
-            return message
-                .reply({
-                    content: `Something went wrong ${err.toString()}`,
-                    ephemeral: true,
-                })
-                .catch((err) => {});
-        });
+        .catch((err) => {});
 };
 
 module.exports.deploy_commands = async (bot) => {
