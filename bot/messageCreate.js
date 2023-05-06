@@ -16,8 +16,10 @@ const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
 const Counter = require('../utils/functions/data/Counter/Counter');
 const AutomodAntiSpam = require('../utils/functions/data/Automoderation/Automod-AntiSpam');
+const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Automod-AnitInsuts');
 
 const antiSpam = new AutomodAntiSpam();
+const anitInsults = new AutomodAntiInsults();
 
 async function messageCreate(message, bot) {
     message.bot = bot;
@@ -111,6 +113,19 @@ async function messageCreate(message, bot) {
         errorhandler({
             fatal: false,
             message: `${message.author.id} has sent an invite in ${message.guild.id}.`,
+        });
+        return;
+    }
+
+    /** ======================================================= */
+
+    const isInsult = (await moduleApi.checkEnabled(defaultModuleSettings.antiInsults.name))
+        ? await anitInsults.check(message)
+        : false;
+    if (isInvite) {
+        errorhandler({
+            fatal: false,
+            message: `${message.author.id} has sent an insult in ${message.guild.id}.`,
         });
         return;
     }

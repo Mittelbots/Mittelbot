@@ -110,7 +110,7 @@ module.exports = class Translations {
 
         if (!translation && this.translationTries === 0) {
             this.translationTries++;
-            return gthis.#getTranslation(key, defaultTranslations);
+            return this.#getTranslation(key, defaultTranslations);
         }
         this.translationTries = 0;
         return translation || 'Translation not found';

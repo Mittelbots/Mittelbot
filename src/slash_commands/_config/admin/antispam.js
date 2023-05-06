@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 
-module.exports.anitSpamConfig = new SlashCommandBuilder()
+module.exports.antiSpamConfig = new SlashCommandBuilder()
     .setName('antispam')
     .setDescription('Configure anti spam settings.')
     .addStringOption((option) =>
@@ -44,7 +44,7 @@ module.exports.anitSpamConfig = new SlashCommandBuilder()
             })
     );
 
-module.exports.anitSpamPerms = {
+module.exports.antiSpamPerms = {
     adminOnly: true,
     modOnly: false,
     guildOwnerOnly: false,

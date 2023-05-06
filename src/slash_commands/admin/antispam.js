@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { Automod } = require('../../../utils/functions/data/Automod');
-const { anitSpamConfig, anitSpamPerms } = require('../_config/admin/antispam');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { antiSpamConfig, antiSpamPerms } = require('../_config/admin/antispam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const setting = await Automod.get(main_interaction.guild.id);
@@ -69,5 +69,5 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = anitSpamConfig;
-module.exports.permissions = anitSpamPerms;
+module.exports.data = antiSpamConfig;
+module.exports.permissions = antiSpamPerms;

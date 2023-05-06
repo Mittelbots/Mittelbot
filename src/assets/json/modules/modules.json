@@ -22,7 +22,8 @@
             "muterole",
             "language",
             "counter",
-            "antispam"
+            "antispam",
+            "antiinsults"
         ]
     },
     "moderation": {
@@ -151,6 +152,12 @@
         "listed": true,
         "name": "Anti Links",
         "extraCommands": ["antilinks"]
+    },
+    "antiInsults": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Anti Insults",
+        "extraCommands": ["antiinsults"]
     },
     "utils": {
         "autoDisable": false,

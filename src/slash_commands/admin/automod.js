@@ -162,60 +162,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 });
             break;
-
-        case 'antiinsults':
-            const antiInsultsEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiInsultsAction = main_interaction.options.getString('action');
-            const words = main_interaction.options.getString('words');
-            const removeWords = main_interaction.options.getString('remove');
-
-            if (!setting.antiinsults) {
-                setting.antiinsults = {
-                    enabled: antiInsultsEnabled,
-                    action: antiInsultsAction,
-                };
-                break;
-            }
-
-            setting.antiinsults.enabled = antiInsultsEnabled;
-            setting.antiinsults.action = antiInsultsAction;
-            if (setting.antiinsults.words === undefined)
-                setting.antiinsults.words = [words.join(',')];
-            setting.antiinsults.words = removeWords
-                ? setting.antiinsults.words.filter((word) => word !== words)
-                : [...setting.antiinsults.words, words.join(',')];
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antiinsults.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the anti Insults config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antiinsults.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.anitinsults.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
     }
 };
 

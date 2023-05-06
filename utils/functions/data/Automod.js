@@ -115,6 +115,11 @@ class Automod {
                     break;
                 case 'delete':
                     actionTaken = 'delete';
+
+                    if (!Array.isArray(messages)) {
+                        messages.delete().catch((err) => {});
+                        break;
+                    }
                     for (let i in messages) {
                         channel.messages
                             .fetch(messages[i])
