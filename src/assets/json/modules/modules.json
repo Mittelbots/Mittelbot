@@ -24,7 +24,8 @@
             "counter",
             "antispam",
             "antiinsults",
-            "antiinvite"
+            "antiinvite",
+            "antilinks"
         ]
     },
     "moderation": {

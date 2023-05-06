@@ -6,7 +6,6 @@ const Afk = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
-const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 const ScamDetection = require('../utils/checkForScam/checkForScam');
 const Autodelete = require('../utils/functions/data/Autodelete');
@@ -17,10 +16,12 @@ const Counter = require('../utils/functions/data/Counter/Counter');
 const AutomodAntiSpam = require('../utils/functions/data/Automoderation/Automod-AntiSpam');
 const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Automod-AntiInsuts');
 const AutomodAntiInvite = require('../utils/functions/data/Automoderation/Automod-AntiInvite');
+const AutomodAntiLinks = require('../utils/functions/data/Automoderation/Automod-AntiLinks');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
 const antiInvite = new AutomodAntiInvite();
+const antiLinks = new AutomodAntiLinks();
 
 async function messageCreate(message, bot) {
     message.bot = bot;
@@ -134,7 +135,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isLink = (await moduleApi.checkEnabled(defaultModuleSettings.antiLinks.name))
-        ? await anitLinks(message, bot)
+        ? await antiLinks.check(message, bot)
         : false;
     if (isLink) {
         errorhandler({

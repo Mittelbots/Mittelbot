@@ -60,7 +60,8 @@
                 "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`.",
                 "disabled": "{success.emote} Successfully disabled Anti-invite."
             },
-            "antilink": {
+            "antilinks": {
+                "enabled": "{success.emote} Successfully enabled Anti-Links with the action `%c`",
                 "disabled": "{success.emote} Successfully disabled Anti-Links."
             },
             "antiinsults": {

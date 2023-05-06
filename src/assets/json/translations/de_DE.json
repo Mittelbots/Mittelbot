@@ -60,7 +60,8 @@
                 "enabled": "{success.emote} Erfolgreich Anti-Einladungen mit der Aktion `%c` aktiviert.",
                 "disabled": "{success.emote} Anti-invite erfolgreich deaktiviert."
             },
-            "antilink": {
+            "antilinks": {
+                "enabled": "{success.emote} Erfolgreich Anti-Links mit der Aktion `%c` aktiviert",
                 "disabled": "{success.emote} Erfolgreich Anti-Links deaktiviert."
             },
             "antiinsults": {
