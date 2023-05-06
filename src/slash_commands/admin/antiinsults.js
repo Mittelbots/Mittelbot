@@ -77,7 +77,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch(console.log);
+                .catch((err) => {});
         });
 };
 

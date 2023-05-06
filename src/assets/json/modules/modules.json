@@ -23,7 +23,8 @@
             "language",
             "counter",
             "antispam",
-            "antiinsults"
+            "antiinsults",
+            "antiinvite"
         ]
     },
     "moderation": {

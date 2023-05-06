@@ -70,52 +70,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             break;
 
-        case 'antiinvite':
-            const antiInviteEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiInviteAction = main_interaction.options.getString('action');
-
-            if (!setting.antiinvite) {
-                setting.antiinvite = {
-                    enabled: antiInviteEnabled,
-                    action: antiInviteAction,
-                };
-            }
-
-            setting.antiinvite.enabled = antiInviteEnabled;
-            setting.antiinvite.action = antiInviteAction;
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antiinvite.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the antiinvite config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antiinvite.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.antiinvite.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
         case 'antilinks':
             const antiLinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
             const antiLinksAction = main_interaction.options.getString('action');

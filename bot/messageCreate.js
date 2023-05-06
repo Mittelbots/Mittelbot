@@ -1,6 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
 const { delay } = require('../utils/functions/delay/delay');
-const { antiInvite } = require('../utils/automoderation/antiInvite');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
 const Afk = require('../utils/functions/data/Afk');
@@ -16,10 +15,12 @@ const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
 const Counter = require('../utils/functions/data/Counter/Counter');
 const AutomodAntiSpam = require('../utils/functions/data/Automoderation/Automod-AntiSpam');
-const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Automod-AnitInsuts');
+const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Automod-AntiInsuts');
+const AutomodAntiInvite = require('../utils/functions/data/Automoderation/Automod-AntiInvite');
 
 const antiSpam = new AutomodAntiSpam();
-const anitInsults = new AutomodAntiInsults();
+const antiInsults = new AutomodAntiInsults();
+const antiInvite = new AutomodAntiInvite();
 
 async function messageCreate(message, bot) {
     message.bot = bot;
@@ -107,7 +108,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite.name))
-        ? await antiInvite(message, bot)
+        ? await anitInvite.check(message, bot)
         : false;
     if (isInvite) {
         errorhandler({
@@ -120,7 +121,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isInsult = (await moduleApi.checkEnabled(defaultModuleSettings.antiInsults.name))
-        ? await anitInsults.check(message)
+        ? await antiInsults.check(message, bot)
         : false;
     if (isInvite) {
         errorhandler({

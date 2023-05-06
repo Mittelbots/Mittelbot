@@ -57,6 +57,7 @@
                 "disabled": "{success.emote} Successfully disabled antispam."
             },
             "antiinvite": {
+                "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`.",
                 "disabled": "{success.emote} Successfully disabled Anti-invite."
             },
             "antilink": {

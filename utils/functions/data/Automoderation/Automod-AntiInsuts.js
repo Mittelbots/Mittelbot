@@ -1,11 +1,9 @@
 const { Automod } = require('../Automod');
 
 module.exports = class AutomodAntiInsults {
-    constructor(bot) {
-        this.bot = bot;
-    }
+    constructor() {}
 
-    check(message) {
+    check(message, bot) {
         return new Promise(async (resolve) => {
             const settings = await Automod.get(message.guild.id);
             const antiInsultsSetting = settings.antiinsults;
@@ -33,7 +31,7 @@ module.exports = class AutomodAntiInsults {
                 user: message.author,
                 guild: message.guild,
                 action: antiInsultsSetting.action,
-                bot: this.bot,
+                bot: bot,
                 messages: message,
             }).then(() => {
                 resolve(true);
