@@ -1,6 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
 const { delay } = require('../utils/functions/delay/delay');
-const { antiSpam } = require('../utils/automoderation/antiSpam');
 const { antiInvite } = require('../utils/automoderation/antiInvite');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
@@ -15,8 +14,10 @@ const Autodelete = require('../utils/functions/data/Autodelete');
 const { EmbedBuilder, ChannelType } = require('discord.js');
 const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
-const Tickets = require('../utils/functions/data/Tickets/Tickets');
 const Counter = require('../utils/functions/data/Counter/Counter');
+const AutomodAntiSpam = require('../utils/functions/data/Automoderation/Automod-AntiSpam');
+
+const antiSpam = new AutomodAntiSpam();
 
 async function messageCreate(message, bot) {
     message.bot = bot;
@@ -91,7 +92,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam.name))
-        ? (await new AutomodAntiSpam().init(message.guild.id, bot)).check(message)
+        ? await (await antiSpam.init(message.guild.id, bot)).check(message)
         : false;
     if (isSpam) {
         errorhandler({

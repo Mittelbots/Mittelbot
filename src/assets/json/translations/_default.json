@@ -53,6 +53,7 @@
                 "add": "{success.emote} Successfully added the role %c to the whitelist."
             },
             "antispam": {
+                "enabled": "{success.emote} Successfully enabled antispam with the action `%c`.",
                 "disabled": "{success.emote} Successfully disabled antispam."
             },
             "antiinvite": {

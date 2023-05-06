@@ -70,54 +70,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             break;
 
-        case 'antispam':
-            const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiSpamAction = main_interaction.options.getString('action');
-
-            setting.antispam.action = main_interaction.options.getString('action');
-
-            if (!setting.antispam) {
-                setting.antispam = {
-                    enabled: antiSpamEnabled,
-                    action: antiSpamAction,
-                };
-            }
-
-            setting.antispam.enabled = antiSpamEnabled;
-            setting.antispam.action = antiSpamAction;
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antispam.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the antispam config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antispam.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.antispam.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
         case 'antiinvite':
             const antiInviteEnabled = JSON.parse(main_interaction.options.getString('enabled'));
             const antiInviteAction = main_interaction.options.getString('action');

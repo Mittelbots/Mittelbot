@@ -49,15 +49,11 @@ class Automod {
                     }
                 )
                 .then(() => {
-                    return resolve(
-                        `✅ Successfully updated automod settings for your guild to \`${type}\`.`
-                    );
+                    return resolve();
                 })
                 .catch((err) => {
                     errorhandler({ err });
-                    return reject(
-                        `❌ Error updating automod settings for your guild to \`${type}\`.`
-                    );
+                    return reject(err);
                 });
         });
     }
@@ -77,22 +73,22 @@ class Automod {
         }
     }
 
-    punishUser({ user, guild, mod, action, bot, message }) {
-        return new Promise(async (resolve, reject) => {
-            let action;
-            switch( action ) {
+    punishUser({ user, guild, mod, action, bot, messages, channel }) {
+        return new Promise(async (resolve) => {
+            let actionTaken;
+            switch (action) {
                 case 'kick':
-                    action = 'kick';
+                    actionTaken = 'kick';
                     kickUser({
                         user: user,
                         mod: mod,
                         guild: guild,
                         reason: '[AUTO MOD] Spamming too many letters in a short time',
-                        bot: bot
+                        bot: bot,
                     });
                     break;
                 case 'ban':
-                    action = 'ban';
+                    actionTaken = 'ban';
                     banUser({
                         user: user,
                         mod: mod,
@@ -106,7 +102,7 @@ class Automod {
                     break;
 
                 case 'mute':
-                    action = 'mute';
+                    actionTaken = 'mute';
                     muteUser({
                         user: user,
                         mod: mod,
@@ -118,22 +114,21 @@ class Automod {
                     });
                     break;
                 case 'delete':
-                    action = 'delete';
-                    message.channel.messages
-                        .fetch({
-                            limit: 30,
-                        })
-                        .then((messages) => {
-                            messages = messages.filter(
-                                (m) => m.author.id === message.author.id
-                            );
-                            message.channel.bulkDelete(messages).catch((err) => {});
-                        })
-                        .catch((err) => {});
+                    actionTaken = 'delete';
+                    for (let i in messages) {
+                        channel.messages
+                            .fetch(messages[i])
+                            .then((msg) => {
+                                msg.delete().catch((err) => {});
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    }
                     break;
 
                 case 'warn':
-                    action = 'warn';
+                    actionTaken = 'warn';
                     warnUser({
                         bot: bot,
                         user: user,
@@ -145,7 +140,7 @@ class Automod {
             }
 
             return resolve(action);
-        })
+        });
     }
 }
 

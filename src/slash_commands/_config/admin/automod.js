@@ -25,52 +25,6 @@ module.exports.autoModConfig = new SlashCommandBuilder()
 
     .addSubcommand((command) =>
         command
-            .setName('antispam')
-            .setDescription('Configure anti spam settings.')
-            .addStringOption((option) =>
-                option
-                    .setName('enabled')
-                    .setDescription('Enable/disable anti-spam.')
-                    .setRequired(true)
-                    .addChoices({
-                        name: 'true',
-                        value: 'true',
-                    })
-                    .addChoices({
-                        name: 'false',
-                        value: 'false',
-                    })
-            )
-            .addStringOption((option) =>
-                option
-                    .setName('action')
-                    .setDescription('Select an action to take.')
-                    .setRequired(true)
-                    .addChoices({
-                        name: 'ban',
-                        value: 'ban',
-                    })
-                    .addChoices({
-                        name: 'kick',
-                        value: 'kick',
-                    })
-                    .addChoices({
-                        name: 'mute',
-                        value: 'mute',
-                    })
-                    .addChoices({
-                        name: 'delete',
-                        value: 'delete',
-                    })
-                    .addChoices({
-                        name: 'warn',
-                        value: 'warn',
-                    })
-            )
-    )
-
-    .addSubcommand((command) =>
-        command
             .setName('antiinvite')
             .setDescription('Prevent user from sending discord invite links.')
             .addStringOption((option) =>
