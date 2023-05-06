@@ -108,7 +108,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite.name))
-        ? await anitInvite.check(message, bot)
+        ? await antiInvite.check(message, bot)
         : false;
     if (isInvite) {
         errorhandler({

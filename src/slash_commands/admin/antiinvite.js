@@ -20,25 +20,25 @@ module.exports.run = async ({ main_interaction, bot }) => {
     })
         .then((res) => {
             const description = setting.antiinvite.enabled
-                ?  global.t.trans(
-                    ['success.automod.antiinvite.enabled', antiInviteAction],
-                    main_interaction.guild.id
-                );
+                ? global.t.trans(
+                      ['success.automod.antiinvite.enabled', antiInviteAction],
+                      main_interaction.guild.id
+                  )
                 : global.t.trans(
-                    ['success.automod.antiinvite.disabled'],
-                    main_interaction.guild.id
-                );
+                      ['success.automod.antiinvite.disabled'],
+                      main_interaction.guild.id
+                  );
 
-            main_interaction.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(description)
-                        .setColor(
-                            global.t.trans(['general.colors.success'])
-                        )
-                ],
-                ephemeral: true,
-            }).catch((err) => {});
+            main_interaction
+                .reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(description)
+                            .setColor(global.t.trans(['general.colors.success'])),
+                    ],
+                    ephemeral: true,
+                })
+                .catch((err) => {});
         })
         .catch((err) => {
             main_interaction
@@ -57,9 +57,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .catch((err) => {});
         });
-
 };
 
 module.exports.data = antiInviteConfig;
 module.exports.permissions = antiInvitePerms;
-
