@@ -53,20 +53,20 @@
                 "add": "{success.emote} Erfolgreich die Rolle %c zur Whitelist hinzugefügt."
             },
             "antispam": {
-                "enabled": "{success.emote} Erfolgreich Antispam aktiviert mit der Aktion %c.",
+                "enabled": "{success.emote} Erfolgreich Antispam mit der Aktion %c aktiviert. Whitelistrollen: %e.",
                 "disabled": "{success.emote} Erfolgreich Antispam deaktiviert."
             },
             "antiinvite": {
-                "enabled": "{success.emote} Erfolgreich Anti-Einladungen mit der Aktion `%c` aktiviert.",
+                "enabled": "{success.emote} Erfolgreich Anti-Einladungen mit der Aktion `%c` aktiviert. Whitelistrollen: %e.",
                 "disabled": "{success.emote} Anti-invite erfolgreich deaktiviert."
             },
             "antilinks": {
-                "enabled": "{success.emote} Erfolgreich Anti-Links mit der Aktion `%c` aktiviert",
+                "enabled": "{success.emote} Erfolgreich Anti-Links mit der Aktion `%c` aktiviert. Whitelistrollen: %e.",
                 "disabled": "{success.emote} Erfolgreich Anti-Links deaktiviert."
             },
             "antiinsults": {
                 "removed": "{success.emote} Erfolgreich die Beleidigung `%c` aus der Liste entfernt.",
-                "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.",
+                "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert. Whitelistrollen: %e.",
                 "disabled": "{success.emote} Erfolgreich Anti-Beleidigung deaktiviert."
             }
         },

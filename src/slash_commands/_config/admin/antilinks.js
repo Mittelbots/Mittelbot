@@ -42,6 +42,12 @@ module.exports.antiLinksConfig = new SlashCommandBuilder()
                 name: 'warn',
                 value: 'warn',
             })
+    )
+    .addStringOption((option) =>
+        option
+            .setName('whitelist')
+            .setDescription('Whitelist a role. [@role1, @role2, ...]')
+            .setRequired(false)
     );
 
 module.exports.antiLinksPerms = {
