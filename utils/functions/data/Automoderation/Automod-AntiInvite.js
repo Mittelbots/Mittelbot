@@ -3,15 +3,15 @@ const { Automod } = require('../Automod');
 module.exports = class AutomodAntiInvite {
     check(message, bot) {
         return new Promise(async (resolve) => {
-            const settings = await Automod.get(message.guild.id);
-            const antiInviteSetting = settings?.antiinvite;
+            const antiInviteSetting = await Automod.get(message.guild.id, 'antiinvite');
             if (!antiInviteSetting?.enabled || !this.isInviteLink(message.content))
                 return resolve(false);
 
             if (
-                Automod.checkWhitelist({
+                await Automod.checkWhitelist({
                     setting: antiInviteSetting,
                     user_roles: message.member.roles.cache.map((r) => r.id),
+                    guild_id: message.guild.id,
                 })
             ) {
                 return resolve(false);

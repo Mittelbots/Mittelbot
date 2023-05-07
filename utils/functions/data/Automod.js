@@ -27,11 +27,12 @@ class Automod {
         });
     }
 
-    get(guild_id) {
+    get(guild_id, type) {
         return new Promise(async (resolve, reject) => {
             const guild = await Guilds.get(guild_id);
-            const { settings } = await guild.getAutomod();
-            return settings ? resolve(settings) : resolve([]);
+            const automod = await guild.getAutomod();
+            const settings = automod[type];
+            return settings ? resolve(settings) : resolve({});
         });
     }
 
@@ -40,7 +41,7 @@ class Automod {
             await guildAutomod
                 .update(
                     {
-                        settings: value,
+                        [type]: value,
                     },
                     {
                         where: {
@@ -58,19 +59,49 @@ class Automod {
         });
     }
 
-    checkWhitelist({ setting, user_roles, role_id }) {
-        let whitelist = setting.whitelistrole;
-        if (!whitelist) return false;
+    checkWhitelist({ setting, user_roles, role_id, guild_id }) {
+        return new Promise(async (resolve, reject) => {
+            if (await this.checkGlobalWhitelist({ guild_id, user_roles, role_id })) {
+                return resolve(true);
+            }
 
-        if (user_roles) {
-            user_roles = user_roles.map((role) => role.id);
-            whitelist = whitelist.roles.filter((r) => user_roles.includes(r));
-            return whitelist.length > 0 ? true : false;
-        }
+            const whitelist = setting?.whitelist?.roles || [];
 
-        if (role_id) {
-            return whitelist.roles.includes(role_id) ? true : false;
-        }
+            if (user_roles) {
+                const userRoleIds = user_roles.map((role) => role.id);
+                const filteredWhitelist = whitelist.filter((role) => userRoleIds.includes(role));
+                return resolve(filteredWhitelist.length > 0);
+            }
+
+            if (role_id) {
+                return resolve(whitelist.includes(role_id));
+            }
+
+            return resolve(false);
+        });
+    }
+
+    checkGlobalWhitelist({ guild_id, user_roles, role_id }) {
+        return new Promise(async (resolve, reject) => {
+            const globalWhitelist = await this.get(guild_id, 'whitelist');
+            if (!globalWhitelist) {
+                return resolve(false);
+            }
+
+            const whitelist = globalWhitelist.roles || [];
+
+            if (user_roles) {
+                const userRoleIds = user_roles.map((role) => role.id);
+                const filteredWhitelist = whitelist.filter((role) => userRoleIds.includes(role));
+                return resolve(filteredWhitelist.length > 0);
+            }
+
+            if (role_id) {
+                return resolve(whitelist.includes(role_id));
+            }
+
+            return resolve(false);
+        });
     }
 
     punishUser({ user, guild, mod, action, bot, messages, channel }) {

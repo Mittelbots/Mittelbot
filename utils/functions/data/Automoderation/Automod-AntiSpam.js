@@ -15,7 +15,7 @@ module.exports = class AutomodAntiSpam {
 
     init(guild_id, bot) {
         return new Promise(async (resolve) => {
-            const setting = await Automod.get(guild_id);
+            const setting = await Automod.get(guild_id, 'antispam');
             this.antiSpamSetting = setting.antispam;
             this.bot = bot;
             return resolve(this);
@@ -30,9 +30,10 @@ module.exports = class AutomodAntiSpam {
 
             if (!this.antiSpamSetting || !this.antiSpamSetting.enabled)
                 return resolve(this.#isSpam);
-            const isWhitelist = Automod.checkWhitelist({
+            const isWhitelist = await Automod.checkWhitelist({
                 setting: this.antiSpamSetting,
                 user_roles: this.memberRoles,
+                guild_id: message.guild.id,
             });
             if (isWhitelist) return resolve(this.#isSpam);
             const user = this.#spamCheck.find(

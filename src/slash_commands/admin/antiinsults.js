@@ -4,28 +4,28 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { antiInsultsConfig, antiInsultsPerms } = require('../_config/admin/antiinsults');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const setting = await Automod.get(main_interaction.guild.id);
+    let setting = await Automod.get(main_interaction.guild.id, 'antiinsults');
     await main_interaction.deferReply({ ephemeral: true });
     const { enabled: antiInsultsEnabled, action: antiInsultsAction } = main_interaction.options;
     const words = main_interaction.options.getString('words');
     const removeWords = main_interaction.options.getString('remove');
 
-    setting.antiinsults = {
+    setting = {
         enabled: antiInsultsEnabled,
         action: antiInsultsAction,
-        words: setting.antiinsults?.words || [],
+        words: setting.words || [],
     };
 
     if (removeWords) {
-        setting.antiinsults.words = setting.antiinsults.words.filter((word) => word !== words);
+        setting.words = setting.words.filter((word) => word !== words);
     } else {
-        setting.antiinsults.words.push(...words.split(','));
+        setting.words.push(...words.split(','));
     }
 
     Automod.update({
         guild_id: main_interaction.guild.id,
         value: setting,
-        type: setting.antiinsults.action,
+        type: 'antiinsults',
     })
         .then((res) => {
             errorhandler({
@@ -35,13 +35,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             const description = removeWords
                 ? global.t.trans(
-                      ['success.automod.antiinsults.removed', setting.antiinsults.action],
+                      ['success.automod.antiinsults.removed', setting.action],
                       main_interaction.guild.id
                   )
                 : global.t.trans(
                       [
                           'success.automod.antiinsults.' +
-                              (setting.antiinsults.enabled ? 'enabled' : 'disabled'),
+                              (setting.enabled ? 'enabled' : 'disabled'),
                           words,
                       ],
                       main_interaction.guild.id

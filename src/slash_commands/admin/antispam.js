@@ -4,27 +4,27 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { antiSpamConfig, antiSpamPerms } = require('../_config/admin/antispam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const setting = await Automod.get(main_interaction.guild.id);
+    let setting = await Automod.get(main_interaction.guild.id, 'antispam');
 
     const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
     const antiSpamAction = main_interaction.options.getString('action');
 
-    setting.antispam.action = main_interaction.options.getString('action');
+    setting.action = main_interaction.options.getString('action');
 
-    if (!setting.antispam) {
-        setting.antispam = {
+    if (!setting) {
+        setting = {
             enabled: antiSpamEnabled,
             action: antiSpamAction,
         };
     }
 
-    setting.antispam.enabled = antiSpamEnabled;
-    setting.antispam.action = antiSpamAction;
-
+    setting.enabled = antiSpamEnabled;
+    setting.action = antiSpamAction;
+    console.log(setting);
     Automod.update({
         guild_id: main_interaction.guild.id,
         value: setting,
-        type: setting.antispam.action,
+        type: 'antispam',
     })
         .then(() => {
             errorhandler({
@@ -32,9 +32,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 message: `${main_interaction.guild.id} has been updated the antispam config.`,
             });
 
-            const description = setting.antispam.enabled
+            const description = setting.enabled
                 ? global.t.trans(
-                      ['success.automod.antispam.enabled', setting.antispam.action],
+                      ['success.automod.antispam.enabled', setting.action],
                       main_interaction.guild.id
                   )
                 : global.t.trans(['success.automod.antispam.disabled'], main_interaction.guild.id);

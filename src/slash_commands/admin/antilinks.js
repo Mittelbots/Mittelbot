@@ -8,8 +8,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const antilinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
     const antilinksAction = main_interaction.options.getString('action');
 
-    const setting = await Automod.get(guildId);
-    setting.antilinks = {
+    let setting = await Automod.get(guildId, 'antilinks');
+    setting = {
         enabled: antilinksEnabled,
         action: antilinksAction,
     };
@@ -17,7 +17,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     Automod.update({
         guild_id: guildId,
         value: setting,
-        type: antilinksAction,
+        type: 'antilinks',
     })
         .then(() => {
             const description = antilinksEnabled

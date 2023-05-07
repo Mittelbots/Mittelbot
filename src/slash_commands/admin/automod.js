@@ -4,7 +4,7 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { autoModConfig, automodPerms } = require('../_config/admin/automod');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const setting = await Automod.get(main_interaction.guild.id);
+    const setting = await Automod.get(main_interaction.guild.id, 'automod');
 
     switch (main_interaction.options.getSubcommand()) {
         case 'whitelistroles':
@@ -21,9 +21,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     (r) => r !== role.id
                 );
             } else {
-                const alreadyExists = Automod.checkWhitelist({
+                const alreadyExists = await Automod.checkWhitelist({
                     setting: setting,
                     role_id: role.id,
+                    guild_id: main_interaction.guild.id,
                 });
                 if (alreadyExists)
                     return main_interaction.reply({
@@ -45,7 +46,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             Automod.update({
                 guild_id: main_interaction.guild.id,
                 value: setting,
-                type: role,
+                type: 'whitelist',
             })
                 .then((res) => {
                     errorhandler({
@@ -68,53 +69,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 });
 
-            break;
-
-        case 'antilinks':
-            const antiLinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiLinksAction = main_interaction.options.getString('action');
-
-            if (!setting.antilinks) {
-                setting.antilinks = {
-                    enabled: antiLinksEnabled,
-                    action: antiLinksAction,
-                };
-                break;
-            }
-
-            setting.antilinks.enabled = antiLinksEnabled;
-            setting.antilinks.action = antiLinksAction;
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antilinks.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the antilinks config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antilinks.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.antilinks.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
             break;
     }
 };
