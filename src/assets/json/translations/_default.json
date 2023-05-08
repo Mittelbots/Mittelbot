@@ -53,20 +53,20 @@
                 "add": "{success.emote} Successfully added the role %c to the whitelist."
             },
             "antispam": {
-                "enabled": "{success.emote} Successfully enabled antispam with the action `%c`.",
+                "enabled": "{success.emote} Successfully enabled antispam with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q.",
                 "disabled": "{success.emote} Successfully disabled antispam."
             },
             "antiinvite": {
-                "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`.",
+                "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q.\n\nWhitelistlinks: %w.",
                 "disabled": "{success.emote} Successfully disabled Anti-invite."
             },
             "antilinks": {
-                "enabled": "{success.emote} Successfully enabled Anti-Links with the action `%c` and whitelistroles `%e`.",
+                "enabled": "{success.emote} Successfully enabled Anti-Links with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q.\n\nWhitelistlinks: `%w`.",
                 "disabled": "{success.emote} Successfully disabled Anti-Links."
             },
             "antiinsults": {
                 "removed": "{success.emote} Successfully removed the insult `%c` from the list.",
-                "enabled": "{success.emote} Successfully enabled Anti-Insults with the action `%c`.",
+                "enabled": "{success.emote} Successfully enabled Anti-Insults with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q.",
                 "disabled": "{success.emote} Successfully disabled Anti-Mass-Mention."
             }
         },

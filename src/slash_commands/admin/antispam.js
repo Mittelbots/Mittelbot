@@ -20,7 +20,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     setting.enabled = antiSpamEnabled;
     setting.action = antiSpamAction;
-    console.log(setting);
+    
     Automod.update({
         guild_id: main_interaction.guild.id,
         value: setting,
