@@ -1,3 +1,4 @@
+const { Message } = require('discord.js');
 const guildAutomod = require('../../../src/db/Models/tables/guildAutomod.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { kickUser } = require('../moderations/kickUser');
@@ -59,30 +60,41 @@ class Automod {
         });
     }
 
-    checkWhitelist({ setting, user_roles, role_id, guild_id }) {
-        return new Promise(async (resolve, reject) => {
+    checkWhitelist({ setting, user_roles, message, role_id, guild_id }) {
+        return new Promise(async (resolve) => {
             if (await this.checkGlobalWhitelist({ guild_id, user_roles, role_id })) {
                 return resolve(true);
             }
 
-            const whitelist = setting?.whitelist?.roles || [];
+            const whitelistroles = setting?.whitelistroles || [];
+            const whitelistchannels = setting?.whitelistchannels || [];
+            const whitelistinvites = setting?.whitelistinvites || [];
 
-            if (user_roles) {
-                const userRoleIds = user_roles.map((role) => role.id);
-                const filteredWhitelist = whitelist.filter((role) => userRoleIds.includes(role));
-                return resolve(filteredWhitelist.length > 0);
+            let isWhitelisted = false;
+
+            if (user_roles || role_id) {
+                const filteredWhitelist = whitelistroles.filter(
+                    (role) => user_roles.includes(role) || role === role_id
+                );
+                isWhitelisted = filteredWhitelist.length > 0;
             }
 
-            if (role_id) {
-                return resolve(whitelist.includes(role_id));
+            if (message instanceof Message) {
+                const filteredWhitelistChannels = whitelistchannels.filter(
+                    (channel) => message.channel.id === channel
+                );
+                const filteredWhitelistInvites = whitelistinvites.filter((invite) =>
+                    message.content.includes(invite)
+                );
+                isWhitelisted =
+                    filteredWhitelistChannels.length > 0 || filteredWhitelistInvites.length > 0;
             }
-
-            return resolve(false);
+            return resolve(isWhitelisted);
         });
     }
 
     checkGlobalWhitelist({ guild_id, user_roles, role_id }) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             const globalWhitelist = await this.get(guild_id, 'whitelist');
             if (!globalWhitelist) {
                 return resolve(false);
@@ -148,18 +160,16 @@ class Automod {
                     actionTaken = 'delete';
 
                     if (!Array.isArray(messages)) {
-                        messages.delete().catch((err) => {});
+                        messages.delete().catch(() => {});
                         break;
                     }
                     for (let i in messages) {
                         channel.messages
                             .fetch(messages[i])
                             .then((msg) => {
-                                msg.delete().catch((err) => {});
+                                msg.delete().catch(() => {});
                             })
-                            .catch((err) => {
-                                console.log(err);
-                            });
+                            .catch(() => {});
                     }
                     break;
 
