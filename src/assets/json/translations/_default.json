@@ -57,7 +57,7 @@
                 "disabled": "{success.emote} Successfully disabled antispam."
             },
             "antiinvite": {
-                "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q.\n\nWhitelistlinks: %w.",
+                "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q.\n\nWhitelistinvites: `%w`.",
                 "disabled": "{success.emote} Successfully disabled Anti-invite."
             },
             "antilinks": {
