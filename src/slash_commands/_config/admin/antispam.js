@@ -42,6 +42,18 @@ module.exports.antiSpamConfig = new SlashCommandBuilder()
                 name: 'warn',
                 value: 'warn',
             })
+    )
+    .addStringOption((option) =>
+        option
+            .setName('whitelistroles')
+            .setDescription('Whitelist a role. [@role1, @role2, ...]')
+            .setRequired(false)
+    )
+    .addStringOption((option) =>
+        option
+            .setName('whitelistchannels')
+            .setDescription('Whitelist a channel. [#channel1, #channel2, ...]')
+            .setRequired(false)
     );
 
 module.exports.antiSpamPerms = {

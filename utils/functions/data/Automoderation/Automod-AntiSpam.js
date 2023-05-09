@@ -34,6 +34,7 @@ module.exports = class AutomodAntiSpam {
                 setting: this.antiSpamSetting,
                 user_roles: this.memberRoles,
                 guild_id: message.guild.id,
+                message: message,
             });
             if (isWhitelist) return resolve(this.#isSpam);
             const user = this.#spamCheck.find(
