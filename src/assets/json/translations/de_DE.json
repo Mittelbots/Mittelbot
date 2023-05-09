@@ -14,6 +14,10 @@
         "admin": {
             "lang": {
                 "set": "{success.emote} Erfolgreich die Sprache zu %c geändert."
+            },
+            "counter": {
+                "removed": "{success.emote} Der Zähler wurde erfolgreich entfernt.",
+                "set": "{success.emote} Erfolgreich den Zähler auf %c gesetzt"
             }
         },
         "ticket": {
@@ -49,16 +53,21 @@
                 "add": "{success.emote} Erfolgreich die Rolle %c zur Whitelist hinzugefügt."
             },
             "antispam": {
+                "enabled": "{success.emote} Erfolgreich Antispam mit der Aktion %c aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.",
                 "disabled": "{success.emote} Erfolgreich Antispam deaktiviert."
             },
             "antiinvite": {
+                "enabled": "{success.emote} Erfolgreich Anti-Einladungen mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.\n\nWhitelistlinks: %w.",
                 "disabled": "{success.emote} Anti-invite erfolgreich deaktiviert."
             },
-            "antilink": {
+            "antilinks": {
+                "enabled": "{success.emote} Erfolgreich Anti-Links mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.\n\nWhitelistlinks: `%w`.",
                 "disabled": "{success.emote} Erfolgreich Anti-Links deaktiviert."
             },
             "antiinsults": {
-                "disabled": "{success.emote} Erfolgreich Anti-Massen-Erwähnung deaktiviert."
+                "removed": "{success.emote} Erfolgreich die Beleidigung `%c` aus der Liste entfernt.",
+                "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.",
+                "disabled": "{success.emote} Erfolgreich Anti-Beleidigung deaktiviert."
             }
         },
         "autotranslate": {

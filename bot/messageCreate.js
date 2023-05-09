@@ -1,22 +1,27 @@
 const config = require('../src/assets/json/_config/config.json');
 const { delay } = require('../utils/functions/delay/delay');
-const { antiSpam } = require('../utils/automoderation/antiSpam');
-const { antiInvite } = require('../utils/automoderation/antiInvite');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
 const Afk = require('../utils/functions/data/Afk');
 const { Levelsystem } = require('../utils/functions/data/levelsystemAPI');
 const Translate = require('../utils/functions/data/translate');
 const { checkOwnerCommand } = require('../utils/functions/data/Owner');
-const { anitLinks } = require('../utils/automoderation/antiLinks');
 const AutoBlacklist = require('../utils/functions/data/AutoBlacklist');
 const ScamDetection = require('../utils/checkForScam/checkForScam');
 const Autodelete = require('../utils/functions/data/Autodelete');
 const { EmbedBuilder, ChannelType } = require('discord.js');
 const { banAppealModule } = require('../utils/modules/banAppeal');
 const Modules = require('../utils/functions/data/Modules');
-const Tickets = require('../utils/functions/data/Tickets/Tickets');
 const Counter = require('../utils/functions/data/Counter/Counter');
+const AutomodAntiSpam = require('../utils/functions/data/Automoderation/Automod-AntiSpam');
+const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Automod-AntiInsuts');
+const AutomodAntiInvite = require('../utils/functions/data/Automoderation/Automod-AntiInvite');
+const AutomodAntiLinks = require('../utils/functions/data/Automoderation/Automod-AntiLinks');
+
+const antiSpam = new AutomodAntiSpam();
+const antiInsults = new AutomodAntiInsults();
+const antiInvite = new AutomodAntiInvite();
+const antiLinks = new AutomodAntiLinks();
 
 async function messageCreate(message, bot) {
     message.bot = bot;
@@ -91,7 +96,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam.name))
-        ? await antiSpam(message, bot)
+        ? await (await antiSpam.init(message.guild.id, bot)).check(message)
         : false;
     if (isSpam) {
         errorhandler({
@@ -104,7 +109,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite.name))
-        ? await antiInvite(message, bot)
+        ? await antiInvite.check(message, bot)
         : false;
     if (isInvite) {
         errorhandler({
@@ -116,8 +121,21 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
+    const isInsult = (await moduleApi.checkEnabled(defaultModuleSettings.antiInsults.name))
+        ? await antiInsults.check(message, bot)
+        : false;
+    if (isInvite) {
+        errorhandler({
+            fatal: false,
+            message: `${message.author.id} has sent an insult in ${message.guild.id}.`,
+        });
+        return;
+    }
+
+    /** ======================================================= */
+
     const isLink = (await moduleApi.checkEnabled(defaultModuleSettings.antiLinks.name))
-        ? await anitLinks(message, bot)
+        ? await antiLinks.check(message, bot)
         : false;
     if (isLink) {
         errorhandler({
