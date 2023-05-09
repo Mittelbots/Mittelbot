@@ -60,8 +60,7 @@ module.exports.antiLinksConfig = new SlashCommandBuilder()
             .setName('whitelistlinks')
             .setDescription('Whitelist a link. [link1.com, link2.com, ...]')
             .setRequired(false)
-    )
-
+    );
 
 module.exports.antiLinksPerms = {
     adminOnly: true,

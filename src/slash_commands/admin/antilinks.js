@@ -57,39 +57,43 @@ module.exports.run = async ({ main_interaction, bot }) => {
         guild_id: guildId,
         value: setting,
         type: 'antilinks',
-    }).then(() => {
-        const description = antilinksEnabled
-            ? global.t.trans(
-                [
-                    'success.automod.antilinks.enabled', 
-                    antilinksAction, 
-                    setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
-                    setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') || 'Empty',
-                    setting.whitelistlinks.join(', ') || 'Empty',
+    })
+        .then(() => {
+            const description = antilinksEnabled
+                ? global.t.trans(
+                      [
+                          'success.automod.antilinks.enabled',
+                          antilinksAction,
+                          setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
+                          setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||
+                              'Empty',
+                          setting.whitelistlinks.join(', ') || 'Empty',
+                      ],
+                      guildId
+                  )
+                : global.t.trans(['success.automod.antilinks.disabled'], guildId);
+
+            main_interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(description)
+                        .setColor(global.t.trans(['general.colors.success'])),
                 ],
-                guildId
-            )
-            : global.t.trans(['success.automod.antilinks.disabled'], guildId);
-
-        main_interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription(description)
-                    .setColor(global.t.trans(['general.colors.success'])),
-            ],
-            ephemeral: true,
+                ephemeral: true,
+            });
+        })
+        .catch((err) => {
+            main_interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['error.generalWithMessage', err.message], guildId)
+                        )
+                        .setColor(global.t.trans(['general.colors.error'])),
+                ],
+                ephemeral: true,
+            });
         });
-    }).catch((err) => {
-        main_interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setDescription(global.t.trans(['error.generalWithMessage', err.message], guildId))
-                    .setColor(global.t.trans(['general.colors.error'])),
-            ],
-            ephemeral: true,
-        });
-    });
-
 };
 
 module.exports.data = antiLinksConfig;

@@ -4,13 +4,13 @@ module.exports = class AutomodAntiLinks {
     check(message, bot) {
         return new Promise(async (resolve) => {
             const settings = await Automod.get(message.guild.id, 'antilinks');
-            const antiLinksSetting = settings?.antilinks;
-            if (!antiLinksSetting?.enabled || !this.isLink(message.content)) return resolve(false);
+            if (!settings?.enabled || !this.isLink(message.content)) return resolve(false);
 
             if (
                 await Automod.checkWhitelist({
-                    setting: antiLinksSetting,
+                    setting: settings,
                     user_roles: message.member.roles.cache.map((r) => r.id),
+                    message: message,
                     guild_id: message.guild.id,
                 })
             ) {
@@ -19,7 +19,7 @@ module.exports = class AutomodAntiLinks {
             Automod.punishUser({
                 user: message.author,
                 guild: message.guild,
-                action: antiLinksSetting.action,
+                action: settings.action,
                 bot: bot,
                 messages: message,
             }).then(() => {
