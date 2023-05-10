@@ -42,6 +42,30 @@ module.exports.antiSpamConfig = new SlashCommandBuilder()
                 name: 'warn',
                 value: 'warn',
             })
+    )
+    .addBooleanOption((option) =>
+        option
+            .setName('detectduplicate')
+            .setDescription('Detect duplicate links.')
+            .setRequired(true)
+    )
+    .addStringOption((option) =>
+        option
+            .setName('whitelistroles')
+            .setDescription('Whitelist a role. [@role1, @role2, ...]')
+            .setRequired(false)
+    )
+    .addStringOption((option) =>
+        option
+            .setName('whitelistchannels')
+            .setDescription('Whitelist a channel. [#channel1, #channel2, ...]')
+            .setRequired(false)
+    )
+    .addNumberOption((option) =>
+        option
+            .setName('pinglimit')
+            .setDescription('Set the ping limit. Default: Off. Minimum: 3.')
+            .setRequired(false)
     );
 
 module.exports.antiSpamPerms = {
