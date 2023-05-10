@@ -5,7 +5,8 @@ module.exports = class AutomodAntiInsults {
 
     check(message, bot) {
         return new Promise(async (resolve) => {
-            const antiInsultsSetting = await Automod.get(message.guild.id, 'antiinsults');
+            const settings = await Automod.get(message.guild.id, 'antiinsults');
+            const antiInsultsSetting = settings.antiinsults;
 
             if (
                 !antiInsultsSetting ||
@@ -18,9 +19,8 @@ module.exports = class AutomodAntiInsults {
 
             const isWhitelist = await Automod.checkWhitelist({
                 setting: antiInsultsSetting,
-                user_roles: message.member.roles.cache.map((r) => r.id),
+                user_roles: message.member.roles.cache,
                 guild_id: message.guild.id,
-                message: message,
             });
             if (isWhitelist) return resolve(false);
 

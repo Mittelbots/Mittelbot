@@ -11,16 +11,12 @@ module.exports = class AutomodAntiSpam {
 
     #deleteDataInterval = 1000 * 10;
 
-    pingLimitMin = 3;
-    maxSameCharacters = 12;
-    maxSameWords = 5;
-    maxWordLength = 30;
-
     constructor() {}
 
     init(guild_id, bot) {
         return new Promise(async (resolve) => {
-            this.antiSpamSetting = await Automod.get(guild_id, 'antispam');
+            const setting = await Automod.get(guild_id, 'antispam');
+            this.antiSpamSetting = setting.antispam;
             this.bot = bot;
             return resolve(this);
         });
@@ -32,55 +28,42 @@ module.exports = class AutomodAntiSpam {
             this.member = await message.guild.members.fetch(message.author.id);
             this.memberRoles = this.member.roles.cache.map((role) => role.id);
 
-            if (!this.antiSpamSetting || !this.antiSpamSetting?.enabled) {
+            if (!this.antiSpamSetting || !this.antiSpamSetting.enabled)
                 return resolve(this.#isSpam);
-            }
-
             const isWhitelist = await Automod.checkWhitelist({
                 setting: this.antiSpamSetting,
                 user_roles: this.memberRoles,
                 guild_id: message.guild.id,
-                message: message,
             });
             if (isWhitelist) return resolve(this.#isSpam);
-
-            const hasDublicatedWordsOrCharacters = this.hasDublicatedWordsOrCharacters(
-                message.content,
-                this.antiSpamSetting.detectduplicate
+            const user = this.#spamCheck.find(
+                (user) => user.user_id === message.author.id && user.guild_id === message.guild.id
             );
-            const pingLimitReached = this.pingLimitReached(message, this.antiSpamSetting.pinglimit);
+            if (!user) {
+                this.addUserToSpamCheck(message.author, message.guild, message);
+                return resolve(this.#isSpam);
+            }
 
-            if (!hasDublicatedWordsOrCharacters && !pingLimitReached) {
-                const user = this.#spamCheck.find(
-                    (user) =>
-                        user.user_id === message.author.id && user.guild_id === message.guild.id
-                );
-                if (!user) {
-                    this.addUserToSpamCheck(message.author, message.guild, message);
-                    return resolve(this.#isSpam);
-                }
+            const first_message = user.first_message;
+            const current_time = new Date().getTime();
+            user.messages.push(message.id);
 
-                const first_message = user.first_message;
-                const current_time = new Date().getTime();
-                user.messages.push(message.id);
+            if (
+                user.messages.length < this.#triggerMessages &&
+                (this.getDifference(first_message, current_time) > this.#triggerSeconds ||
+                    this.getDifference(first_message, current_time) < this.#triggerSeconds)
+            ) {
+                user.last_message = current_time;
+                this.updateSpamCheck(user);
+                return resolve(this.#isSpam);
+            }
 
-                if (
-                    user.messages.length < this.#triggerMessages &&
-                    (this.getDifference(first_message, current_time) > this.#triggerSeconds ||
-                        this.getDifference(first_message, current_time) < this.#triggerSeconds)
-                ) {
-                    user.last_message = current_time;
-                    this.updateSpamCheck(user);
-                    return resolve(this.#isSpam);
-                }
-
-                if (
-                    !this.antiSpamSetting.action &&
-                    !this.isAlreadyPunished(message.author, message.guild)
-                ) {
-                    this.#isSpam = false;
-                    return resolve(this.#isSpam);
-                }
+            if (
+                !this.antiSpamSetting.action &&
+                !this.isAlreadyPunished(message.author, message.guild)
+            ) {
+                this.#isSpam = false;
+                return resolve(this.#isSpam);
             }
 
             const obj = {
@@ -95,8 +78,7 @@ module.exports = class AutomodAntiSpam {
                 mod: message.guild.me,
                 action: this.antiSpamSetting.action,
                 bot: this.bot,
-                messages:
-                    hasDublicatedWordsOrCharacters || pingLimitReached ? message : user.messages,
+                messages: user.messages,
                 channel: message.channel,
             });
 
@@ -104,15 +86,11 @@ module.exports = class AutomodAntiSpam {
             this.#userAction.push(obj);
             this.#isSpam = true;
 
-            try {
-                user.first_message = null;
-                user.last_message = null;
-                user.messages = [];
+            user.first_message = null;
+            user.last_message = null;
+            user.messages = [];
 
-                this.updateSpamCheck(user);
-            } catch (e) {
-                // appears when pinglimit or duplicate is triggered
-            }
+            this.updateSpamCheck(user);
 
             return resolve(this.#isSpam);
         });
@@ -165,61 +143,5 @@ module.exports = class AutomodAntiSpam {
                 (u) => u.guild_id !== user.guild_id && u.user_id !== user.user_id
             );
         }, this.#deleteDataInterval);
-    }
-
-    hasDublicatedWordsOrCharacters(message, isEnabled) {
-        if (!isEnabled) return false;
-
-        const words = message.split(' ');
-        let prevWord = null;
-        let wordCount = 0;
-
-        for (let i = 0; i < words.length; i++) {
-            const word = words[i];
-            if (word.length >= this.maxWordLength) {
-                return true;
-            }
-
-            if (word === prevWord) {
-                wordCount++;
-                if (wordCount >= this.maxSameWords) {
-                    return true;
-                }
-            } else {
-                prevWord = word;
-                wordCount = 1;
-            }
-
-            let prevChar = null;
-            let charCount = 0;
-
-            for (let j = 0; j < word.length; j++) {
-                const char = word[j];
-                if (char === prevChar) {
-                    charCount++;
-                    if (charCount >= this.maxSameCharacters) {
-                        return true;
-                    }
-                } else {
-                    prevChar = char;
-                    charCount = 1;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    pingLimitReached(message, pingLimit) {
-        if (pingLimit < this.pingLimitMin) return false;
-
-        const pingedUsers = message.mentions.users.map((user) => user.id);
-        const pingedMembers = message.mentions.members.map((members) => members.id);
-        const pingedRoles = message.mentions.roles.map((roles) => roles.id);
-        const pingedChannels = message.mentions.channels.map((channels) => channels.id);
-
-        const pinged = [...pingedUsers, ...pingedMembers, ...pingedRoles, ...pingedChannels];
-
-        return pinged.length >= pingLimit;
     }
 };

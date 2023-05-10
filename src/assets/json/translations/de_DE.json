@@ -53,11 +53,11 @@
                 "add": "{success.emote} Erfolgreich die Rolle %c zur Whitelist hinzugefügt."
             },
             "antispam": {
-                "enabled": "{success.emote} Erfolgreich Antispam mit der Aktion %c aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q\n\nDetect Dublicates: %w\n\nPinglimit: %e.",
+                "enabled": "{success.emote} Erfolgreich Antispam mit der Aktion %c aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.",
                 "disabled": "{success.emote} Erfolgreich Antispam deaktiviert."
             },
             "antiinvite": {
-                "enabled": "{success.emote} Erfolgreich Anti-Einladungen mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.\n\nWhitelistinvites:`%w`.",
+                "enabled": "{success.emote} Erfolgreich Anti-Einladungen mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.\n\nWhitelistlinks: %w.",
                 "disabled": "{success.emote} Anti-invite erfolgreich deaktiviert."
             },
             "antilinks": {
@@ -65,8 +65,8 @@
                 "disabled": "{success.emote} Erfolgreich Anti-Links deaktiviert."
             },
             "antiinsults": {
-                "removed": "{success.emote} Erfolgreich die Beleidigung(en) `%c` aus der Liste entfernt.",
-                "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q\n\nWörter: %r..",
+                "removed": "{success.emote} Erfolgreich die Beleidigung `%c` aus der Liste entfernt.",
+                "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e.\n\nWhitelistkanäle: %q.",
                 "disabled": "{success.emote} Erfolgreich Anti-Beleidigung deaktiviert."
             }
         },

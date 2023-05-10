@@ -1,16 +1,10 @@
-const { isValidDiscordInvite } = require('../../validate/isValidDiscordInvite');
 const { Automod } = require('../Automod');
 
 module.exports = class AutomodAntiLinks {
     check(message, bot) {
         return new Promise(async (resolve) => {
             const settings = await Automod.get(message.guild.id, 'antilinks');
-            if (
-                !settings?.enabled ||
-                !this.isLink(message.content) ||
-                isValidDiscordInvite(message.content)
-            )
-                return resolve(false);
+            if (!settings?.enabled || !this.isLink(message.content)) return resolve(false);
 
             if (
                 await Automod.checkWhitelist({
