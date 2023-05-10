@@ -4,21 +4,16 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { antiInsultsConfig, antiInsultsPerms } = require('../_config/admin/antiinsults');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const anitInsultssetting = await Automod.get(main_interaction.guild.id, 'antiinsults');
+    let setting = await Automod.get(main_interaction.guild.id, 'antiinsults');
     await main_interaction.deferReply({ ephemeral: true });
     const { enabled: antiInsultsEnabled, action: antiInsultsAction } = main_interaction.options;
     const words = main_interaction.options.getString('words');
     const removeWords = main_interaction.options.getString('remove');
 
-    const whitelistrolesInput = main_interaction.options.getString('whitelistroles') || '';
-    const whitelistchannelsInput = main_interaction.options.getString('whitelistchannels') || '';
-
-    const setting = {
+    setting = {
         enabled: antiInsultsEnabled,
         action: antiInsultsAction,
-        words: anitInsultssetting.words || [],
-        whitelistroles: anitInsultssetting.whitelistroles || [],
-        whitelistchannels: anitInsultssetting.whitelistchannels || [],
+        words: setting.words || [],
     };
 
     if (removeWords) {
@@ -43,19 +38,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
                       ['success.automod.antiinsults.removed', setting.action],
                       main_interaction.guild.id
                   )
-                : setting.enabled
-                ? global.t.trans(
-                      ['success.automod.antiinsults.enabled', words],
-                      main_interaction.guild.id
-                  )
                 : global.t.trans(
                       [
-                          'success.automod.antiinsults.disabled',
-                          setting.action,
-                          setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
-                          setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||
-                              'Empty',
-                          setting.words.join(', ') || 'Empty',
+                          'success.automod.antiinsults.' +
+                              (setting.enabled ? 'enabled' : 'disabled'),
+                          words,
                       ],
                       main_interaction.guild.id
                   );

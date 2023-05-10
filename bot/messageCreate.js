@@ -124,7 +124,7 @@ async function messageCreate(message, bot) {
     const isInsult = (await moduleApi.checkEnabled(defaultModuleSettings.antiInsults.name))
         ? await antiInsults.check(message, bot)
         : false;
-    if (isInsult) {
+    if (isInvite) {
         errorhandler({
             fatal: false,
             message: `${message.author.id} has sent an insult in ${message.guild.id}.`,
