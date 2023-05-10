@@ -43,6 +43,12 @@ module.exports.antiSpamConfig = new SlashCommandBuilder()
                 value: 'warn',
             })
     )
+    .addBooleanOption((option) =>
+        option
+            .setName('detectduplicate')
+            .setDescription('Detect duplicate links.')
+            .setRequired(true)
+    )
     .addStringOption((option) =>
         option
             .setName('whitelistroles')
@@ -53,6 +59,12 @@ module.exports.antiSpamConfig = new SlashCommandBuilder()
         option
             .setName('whitelistchannels')
             .setDescription('Whitelist a channel. [#channel1, #channel2, ...]')
+            .setRequired(false)
+    )
+    .addNumberOption((option) =>
+        option
+            .setName('pinglimit')
+            .setDescription('Set the ping limit. Default: Off. Minimum: 3.')
             .setRequired(false)
     );
 

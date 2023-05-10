@@ -53,7 +53,7 @@
                 "add": "{success.emote} Successfully added the role %c to the whitelist."
             },
             "antispam": {
-                "enabled": "{success.emote} Successfully enabled antispam with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q.",
+                "enabled": "{success.emote} Successfully enabled antispam with the action `%c`. \n\nWhitelistroles: %e.\n\nWhitelistchannel: %q\n\nDetect Dublicates: %w\n\nPinglimit: %e.",
                 "disabled": "{success.emote} Successfully disabled antispam."
             },
             "antiinvite": {

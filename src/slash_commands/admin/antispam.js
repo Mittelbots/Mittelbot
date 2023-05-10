@@ -3,12 +3,18 @@ const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { antiSpamConfig, antiSpamPerms } = require('../_config/admin/antispam');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
+const AutomodAntiSpam = require('../../../utils/functions/data/Automoderation/Automod-AntiSpam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const antiSpamSettings = await Automod.get(main_interaction.guild.id, 'antispam');
 
     const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
     const antiSpamAction = main_interaction.options.getString('action');
+
+    const detectduplicate =
+        JSON.parse(main_interaction.options.getBoolean('detectduplicate')) || false;
+    const pingLimit = main_interaction.options.getNumber('pinglimit') || 0;
+    if (pingLimit < new AutomodAntiSpam().pingLimitMin) pingLimit = 0;
 
     const whitelistrolesInput = main_interaction.options.getString('whitelistroles') || '';
     const whitelistchannelsInput = main_interaction.options.getString('whitelistchannels') || '';
@@ -18,6 +24,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
         action: antiSpamAction,
         whitelistroles: antiSpamSettings.whitelistroles || [],
         whitelistchannels: antiSpamSettings.whitelistchannels || [],
+        detectduplicate: detectduplicate,
+        pinglimit: pingLimit,
     };
 
     whitelistrolesInput.split(',').forEach((role) => {
@@ -61,6 +69,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                           setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
                           setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||
                               'Empty',
+                          setting.detectduplicate ? 'Enabled' : 'Disabled',
+                          setting.pinglimit < new AutomodAntiSpam().pingLimitMin
+                              ? 'Disabled'
+                              : setting.pinglimit,
                       ],
                       main_interaction.guild.id
                   )
