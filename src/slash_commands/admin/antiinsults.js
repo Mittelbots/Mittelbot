@@ -3,7 +3,7 @@ const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { antiInsultsConfig, antiInsultsPerms } = require('../_config/admin/antiinsults');
 
-module.exports.run = async ({ main_interaction }) => {
+module.exports.run = async ({ main_interaction, bot }) => {
     let setting = await Automod.get(main_interaction.guild.id, 'antiinsults');
     await main_interaction.deferReply({ ephemeral: true });
     const { enabled: antiInsultsEnabled, action: antiInsultsAction } = main_interaction.options;

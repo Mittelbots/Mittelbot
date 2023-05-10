@@ -3,7 +3,7 @@ const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { antiSpamConfig, antiSpamPerms } = require('../_config/admin/antispam');
 
-module.exports.run = async ({ main_interaction }) => {
+module.exports.run = async ({ main_interaction, bot }) => {
     let setting = await Automod.get(main_interaction.guild.id, 'antispam');
 
     const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
