@@ -12,6 +12,8 @@ module.exports = class Translations {
     #defaultLanguage = 'en_EN';
     #supportedLanguages = ['en_EN', 'de_DE'];
 
+    translationTries = 0;
+
     #init() {
         return new Promise(async (resolve) => {
             await guildConfig
@@ -105,8 +107,14 @@ module.exports = class Translations {
                 translation = translation[key];
             });
         } catch (e) {
-            return 'Translation not found';
+            // translation not found
         }
+
+        if (!translation && this.translationTries === 0) {
+            this.translationTries++;
+            return this.#getTranslation(key, defaultTranslations);
+        }
+        this.translationTries = 0;
         return translation || 'Translation not found';
     }
 

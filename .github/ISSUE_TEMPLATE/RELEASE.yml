@@ -23,7 +23,7 @@ body:
       attributes:
           label: 'Related Issue(s)'
           description: Common issues related to the release
-          placeholder: '- #Issues IDs'
+          placeholder: '- [ ] #Issues IDs'
       validations:
           required: false
     - type: textarea

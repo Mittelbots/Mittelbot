@@ -147,14 +147,23 @@ class Auditlog {
         });
     }
 
-    setEmbed({color = '#021982', text, imageUrl = null}) {
+    setEmbed({color = '#021982', text, imageUrl = null, fields = []}) {
         return new Promise(async (resolve) => {
             this.embed.setColor(color);
             this.embed.setDescription(text);
 
+            if(fields.length > 0) {
+                this.embed.addFields(fields.map(field => {
+                    return {
+                        name: field.name,
+                        value: field.value,
+                        inline: field.inline || false
+                    }
+                }));
+            }
+
 
             if(imageUrl) {
-
                 const isObject = typeof imageUrl === 'object';
                 const isUrl = imageUrl.url;
                 const isVideo = imageUrl.url.includes('mp4');
@@ -163,8 +172,7 @@ class Auditlog {
 
                 if(isObject && isUrl && !isVideo) this.embed.setImage(imageUrl.url);
                 if(!isObject) this.embed.setImage(imageUrl);
-
-        }
+            }
             resolve(true);
         });
     }

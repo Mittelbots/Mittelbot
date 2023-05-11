@@ -13,6 +13,8 @@
 ![GitHub issues](https://img.shields.io/github/issues/Mittelbots/Mittelbot)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ab27b6a53f5f4946b4eb656f98738814)](https://app.codacy.com/gh/Mittelbots/Mittelbot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
+ ![Alt](https://repobeats.axiom.co/api/embed/ac763e09e444c318e62d110a7c80b0d9b4ad370e.svg "Repobeats analytics image")
+  
 </center>
 
 ---

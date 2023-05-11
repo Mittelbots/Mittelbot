@@ -4,7 +4,7 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { autoModConfig, automodPerms } = require('../_config/admin/automod');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const setting = await Automod.get(main_interaction.guild.id);
+    const setting = await Automod.get(main_interaction.guild.id, 'automod');
 
     switch (main_interaction.options.getSubcommand()) {
         case 'whitelistroles':
@@ -21,9 +21,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     (r) => r !== role.id
                 );
             } else {
-                const alreadyExists = Automod.checkWhitelist({
+                const alreadyExists = await Automod.checkWhitelist({
                     setting: setting,
                     role_id: role.id,
+                    guild_id: main_interaction.guild.id,
                 });
                 if (alreadyExists)
                     return main_interaction.reply({
@@ -45,7 +46,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             Automod.update({
                 guild_id: main_interaction.guild.id,
                 value: setting,
-                type: role,
+                type: 'whitelist',
             })
                 .then((res) => {
                     errorhandler({
@@ -68,201 +69,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         .catch((err) => {});
                 });
 
-            break;
-
-        case 'antispam':
-            const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiSpamAction = main_interaction.options.getString('action');
-
-            setting.antispam.action = main_interaction.options.getString('action');
-
-            if (!setting.antispam) {
-                setting.antispam = {
-                    enabled: antiSpamEnabled,
-                    action: antiSpamAction,
-                };
-            }
-
-            setting.antispam.enabled = antiSpamEnabled;
-            setting.antispam.action = antiSpamAction;
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antispam.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the antispam config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antispam.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.antispam.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
-        case 'antiinvite':
-            const antiInviteEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiInviteAction = main_interaction.options.getString('action');
-
-            if (!setting.antiinvite) {
-                setting.antiinvite = {
-                    enabled: antiInviteEnabled,
-                    action: antiInviteAction,
-                };
-            }
-
-            setting.antiinvite.enabled = antiInviteEnabled;
-            setting.antiinvite.action = antiInviteAction;
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antiinvite.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the antiinvite config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antiinvite.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.antiinvite.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
-        case 'antilinks':
-            const antiLinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiLinksAction = main_interaction.options.getString('action');
-
-            if (!setting.antilinks) {
-                setting.antilinks = {
-                    enabled: antiLinksEnabled,
-                    action: antiLinksAction,
-                };
-                break;
-            }
-
-            setting.antilinks.enabled = antiLinksEnabled;
-            setting.antilinks.action = antiLinksAction;
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antilinks.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the antilinks config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antilinks.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.antilinks.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
-            break;
-
-        case 'antiinsults':
-            const antiInsultsEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-            const antiInsultsAction = main_interaction.options.getString('action');
-            const words = main_interaction.options.getString('words');
-            const removeWords = main_interaction.options.getString('remove');
-
-            if (!setting.antiinsults) {
-                setting.antiinsults = {
-                    enabled: antiInsultsEnabled,
-                    action: antiInsultsAction,
-                };
-                break;
-            }
-
-            setting.antiinsults.enabled = antiInsultsEnabled;
-            setting.antiinsults.action = antiInsultsAction;
-            if (setting.antiinsults.words === undefined)
-                setting.antiinsults.words = [words.join(',')];
-            setting.antiinsults.words = removeWords
-                ? setting.antiinsults.words.filter((word) => word !== words)
-                : [...setting.antiinsults.words, words.join(',')];
-
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: setting.antiinsults.action,
-            })
-                .then((res) => {
-                    errorhandler({
-                        fatal: false,
-                        message: `${main_interaction.guild.id} has been updated the anti Insults config.`,
-                    });
-                    main_interaction
-                        .reply({
-                            content: setting.antiinsults.enabled
-                                ? res
-                                : global.t.trans(
-                                      ['success.automod.anitinsults.disabled'],
-                                      main_interaction.guild.id
-                                  ),
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                })
-                .catch((err) => {
-                    main_interaction
-                        .reply({
-                            content: err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
             break;
     }
 };

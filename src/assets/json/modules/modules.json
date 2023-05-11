@@ -21,7 +21,11 @@
             "tickets",
             "muterole",
             "language",
-            "counter"
+            "counter",
+            "antispam",
+            "antiinsults",
+            "antiinvite",
+            "antilinks"
         ]
     },
     "moderation": {
@@ -150,6 +154,12 @@
         "listed": true,
         "name": "Anti Links",
         "extraCommands": ["antilinks"]
+    },
+    "antiInsults": {
+        "autoDisable": true,
+        "listed": true,
+        "name": "Anti Insults",
+        "extraCommands": ["antiinsults"]
     },
     "utils": {
         "autoDisable": false,

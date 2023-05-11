@@ -51,7 +51,7 @@ module.exports.startBot = async (bot) => {
             }
 
             console.info(
-                `****Ready! Logged in as ${bot.user.tag}! I'm on ${bot.guilds.cache.size} Server(s)****`
+                `****Ready! Logged in as ${bot.user.username}! I'm on ${bot.guilds.cache.size} Server(s)****`
             );
 
             return resolve(true);

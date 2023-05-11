@@ -10,9 +10,42 @@ GuildAutomod.init(
             allowNull: false,
             unique: 'guild_id',
         },
-        settings: {
+        antispam: {
             type: DataTypes.JSON,
-            defaultValue: { antispam: { enabled: false, action: '' } },
+            defaultValue: {
+                enabled: false,
+                action: '',
+                whitelist: [],
+            },
+        },
+        antiinvite: {
+            type: DataTypes.JSON,
+            defaultValue: {
+                enabled: false,
+                action: '',
+                whitelist: [],
+            },
+        },
+        antiinsults: {
+            type: DataTypes.JSON,
+            defaultValue: {
+                enabled: false,
+                action: '',
+                whitelist: [],
+                words: [],
+            },
+        },
+        antilinks: {
+            type: DataTypes.JSON,
+            defaultValue: {
+                enabled: false,
+                action: '',
+                whitelist: [],
+            },
+        },
+        whitelist: {
+            type: DataTypes.JSON,
+            defaultValue: [],
         },
     },
     {

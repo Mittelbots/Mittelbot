@@ -1,8 +1,18 @@
 diff --git a/node_modules/canvacord/src/Rank.js b/node_modules/canvacord/src/Rank.js
-index ee33e05..8f23883 100644
+index ee33e05..7eb076a 100644
 --- a/node_modules/canvacord/src/Rank.js
 +++ b/node_modules/canvacord/src/Rank.js
-@@ -82,7 +82,6 @@ class Rank {
+@@ -53,9 +53,6 @@ const assets = require("./Assets");
+  * @property {object} requiredXP Rank card required xp
+  * @property {number} [requiredXP.data=0] required xp
+  * @property {string} [requiredXP.color="#FFFFFF"] Rank card required xp color
+- * @property {object} discriminator Rank card discriminator
+- * @property {number|string} [discriminator.discrim=null] The discriminator
+- * @property {string} [discriminator.color="rgba(255, 255, 255, 0.4)"] Rank card discriminator color
+  * @property {object} username Username Data
+  * @property {string} [username.name=null] Rank card username
+  * @property {string} [username.color="#FFFFFF"] Rank card username color
+@@ -82,7 +79,6 @@ class Rank {
              })
       */
      constructor() {
@@ -10,7 +20,15 @@ index ee33e05..8f23883 100644
          /**
           * Rank card data
           * @type {CanvacordRankData}
-@@ -156,7 +155,11 @@ class Rank {
+@@ -148,15 +144,15 @@ class Rank {
+                 data: 0,
+                 color: "#FFFFFF"
+             },
+-            discriminator: {
+-                discrim: null,
+-                color: "rgba(255, 255, 255, 0.4)"
+-            },
+             username: {
                  name: null,
                  color: "#FFFFFF"
              },
@@ -23,10 +41,29 @@ index ee33e05..8f23883 100644
          };
  
          // Load default fonts
-@@ -291,6 +294,19 @@ class Rank {
+@@ -209,18 +205,6 @@ class Rank {
          return this;
      }
-     
+ 
+-    /**
+-     * Set discriminator
+-     * @param {string|number} discriminator User discriminator
+-     * @param {string} color Discriminator color
+-     * @returns {Rank}
+-     */
+-    setDiscriminator(discriminator, color = "rgba(255, 255, 255, 0.4)") {
+-        this.data.discriminator.discrim = !isNaN(discriminator) && `${discriminator}`.length === 4 ? discriminator : null;
+-        this.data.discriminator.color = color && typeof color === "string" ? color : "rgba(255, 255, 255, 0.4)";
+-        return this;
+-    }
+-
+     /**
+      * Set progressbar style
+      * @param {string|string[]} color Progressbar Color
+@@ -291,6 +275,19 @@ class Rank {
+         return this;
+     }
+ 
 +    /**
 +     * Set minimum xp of the current level
 +     * @param {number} data Required xp
@@ -43,7 +80,30 @@ index ee33e05..8f23883 100644
      /**
       * Set current xp
       * @param {number} data Current xp
-@@ -628,6 +644,15 @@ class Rank {
+@@ -495,21 +492,11 @@ class Rank {
+         ctx.font = `bold 36px ${ops.fontX}`;
+         ctx.fillStyle = this.data.username.color;
+         ctx.textAlign = "start";
+-        const name = Util.shorten(this.data.username.name, 10);
++        const name = Util.shorten(this.data.username.name, 15);
+ 
+         // apply username
+         !this.data.renderEmojis ? ctx.fillText(`${name}`, 257 + 18.5, 164) : await Util.renderEmoji(ctx, name, 257 + 18.5, 164);
+ 
+-        // draw discriminator
+-        if (!this.data.discriminator.discrim) throw new Error("Missing discriminator!");
+-        const discrim = `${this.data.discriminator.discrim}`;
+-        if (discrim) {
+-            ctx.font = `36px ${ops.fontY}`;
+-            ctx.fillStyle = this.data.discriminator.color;
+-            ctx.textAlign = "center";
+-            ctx.fillText(`#${discrim.substr(0, 4)}`, ctx.measureText(name).width + 20 + 335, 164);
+-        }
+-
+         // fill level
+         if (this.data.level.display && !isNaN(this.data.level.data)) {
+             ctx.font = `bold 36px ${ops.fontX}`;
+@@ -628,6 +615,15 @@ class Rank {
          if (rx <= 0) return 1;
          if (cx > rx) return parseInt(this.data.progressBar.width) || 0;
  
