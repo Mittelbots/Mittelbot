@@ -32,6 +32,8 @@ const bot = new Client({
         GatewayIntentBits.DirectMessageReactions,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.AutoModerationConfiguration,
+        GatewayIntentBits.AutoModerationExecution,
     ],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction],
     makeCache: Options.cacheWithLimits({
