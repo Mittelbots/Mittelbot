@@ -190,7 +190,7 @@ class Automod {
                     break;
             }
 
-            return resolve(action);
+            return resolve(actionTaken);
         });
     }
 }
