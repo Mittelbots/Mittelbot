@@ -4,16 +4,21 @@ const { errorhandler } = require('../../../utils/functions/errorhandler/errorhan
 const { antiInsultsConfig, antiInsultsPerms } = require('../_config/admin/antiinsults');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    let setting = await Automod.get(main_interaction.guild.id, 'antiinsults');
+    const anitInsultssetting = await Automod.get(main_interaction.guild.id, 'antiinsults');
     await main_interaction.deferReply({ ephemeral: true });
     const { enabled: antiInsultsEnabled, action: antiInsultsAction } = main_interaction.options;
     const words = main_interaction.options.getString('words');
     const removeWords = main_interaction.options.getString('remove');
 
-    setting = {
+    const whitelistrolesInput = main_interaction.options.getString('whitelistroles') || '';
+    const whitelistchannelsInput = main_interaction.options.getString('whitelistchannels') || '';
+
+    const setting = {
         enabled: antiInsultsEnabled,
         action: antiInsultsAction,
-        words: setting.words || [],
+        words: anitInsultssetting.words || [],
+        whitelistroles: anitInsultssetting.whitelistroles || [],
+        whitelistchannels: anitInsultssetting.whitelistchannels || [],
     };
 
     if (removeWords) {
@@ -27,7 +32,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         value: setting,
         type: 'antiinsults',
     })
-        .then(() => {
+        .then((res) => {
             errorhandler({
                 fatal: false,
                 message: `${main_interaction.guild.id} has been updated the anti Insults config.`,
@@ -38,11 +43,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
                       ['success.automod.antiinsults.removed', setting.action],
                       main_interaction.guild.id
                   )
+                : setting.enabled
+                ? global.t.trans(
+                      ['success.automod.antiinsults.enabled', words],
+                      main_interaction.guild.id
+                  )
                 : global.t.trans(
                       [
-                          'success.automod.antiinsults.' +
-                              (setting.enabled ? 'enabled' : 'disabled'),
-                          words,
+                          'success.automod.antiinsults.disabled',
+                          setting.action,
+                          setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
+                          setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||
+                              'Empty',
+                          setting.words.join(', ') || 'Empty',
                       ],
                       main_interaction.guild.id
                   );
@@ -60,7 +73,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch(() => {});
+                .catch((err) => {});
         })
         .catch((err) => {
             main_interaction
@@ -77,7 +90,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch(() => {});
+                .catch((err) => {});
         });
 };
 
