@@ -33,7 +33,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistroles.includes(roleId)) {
             setting.whitelistroles.splice(setting.whitelistroles.indexOf(roleId), 1);
         } else {
-            if (parseInt(roleId)) {
+            if (parseInt(roleId, 10)) {
                 setting.whitelistroles.push(roleId);
             }
         }
@@ -44,7 +44,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistchannels.includes(channelId)) {
             setting.whitelistchannels.splice(setting.whitelistchannels.indexOf(channelId), 1);
         } else {
-            if (!parseInt(channelId)) return;
+            if (!parseInt(channelId, 10)) return;
 
             setting.whitelistchannels.push(channelId);
         }
@@ -87,7 +87,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         })
         .catch((err) => {
             main_interaction
@@ -104,7 +104,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 

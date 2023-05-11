@@ -32,7 +32,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         value: setting,
         type: 'antiinsults',
     })
-        .then((res) => {
+        .then(() => {
             errorhandler({
                 fatal: false,
                 message: `${main_interaction.guild.id} has been updated the anti Insults config.`,
@@ -73,7 +73,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         })
         .catch((err) => {
             main_interaction
@@ -90,7 +90,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 
