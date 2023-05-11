@@ -1,9 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { antiSpamConfig, antiSpamPerms } = require('../_config/admin/antispam');
 const { removeMention } = require('../../../utils/functions/removeCharacters');
 const AutomodAntiSpam = require('../../../utils/functions/data/Automoderation/Automod-AntiSpam');
+const { antiInviteConfig, antiInvitePerms } = require('../_config/admin/antiinvite');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const antiSpamSettings = await Automod.get(main_interaction.guild.id, 'antispam');
@@ -108,5 +108,5 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = antiSpamConfig;
-module.exports.permissions = antiSpamPerms;
+module.exports.data = antiInviteConfig;
+module.exports.permissions = antiInvitePerms;
