@@ -1,8 +1,4 @@
 module.exports.isValidLink = (link) => {
-    try {
-        new URL(link);
-        return true;
-    } catch (err) {
-        return false;
-    }
+    const regex = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6}\.?)(\/[\w.-]*)*\/?$/i;
+    return regex.test(link);
 };
