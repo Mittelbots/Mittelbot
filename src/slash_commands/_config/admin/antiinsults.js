@@ -72,6 +72,7 @@ module.exports.antiInsultsConfig = new SlashCommandBuilder()
             .setName('whitelistchannels')
             .setDescription('Whitelist a channel. [#channel1, #channel2, ...]')
             .setRequired(false)
+    );
 
 module.exports.antiInsultsPerms = {
     adminOnly: true,
