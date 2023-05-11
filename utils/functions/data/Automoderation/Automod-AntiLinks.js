@@ -1,5 +1,6 @@
 const { Automod } = require('../Automod');
 const { isValidDiscordInvite } = require('../../validate/isValidDiscordInvite');
+const { isValidLink } = require('../../validate/isValidLink');
 
 module.exports = class AutomodAntiLinks {
     check(message, bot) {
@@ -7,7 +8,7 @@ module.exports = class AutomodAntiLinks {
             const settings = await Automod.get(message.guild.id, 'antilinks');
             if (
                 !settings?.enabled ||
-                !this.isLink(message.content) ||
+                !isValidLink(message.content) ||
                 isValidDiscordInvite(message.content)
             )
                 return resolve(false);
@@ -32,10 +33,5 @@ module.exports = class AutomodAntiLinks {
                 resolve(true);
             });
         });
-    }
-
-    isLink(content) {
-        const regex = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6}\.?)(\/[\w.-]*)*\/?$/i;
-        return regex.test(content);
     }
 };
