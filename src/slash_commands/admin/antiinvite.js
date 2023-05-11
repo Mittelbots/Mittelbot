@@ -3,7 +3,7 @@ const { Automod } = require('../../../utils/functions/data/Automod');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { antiInviteConfig, antiInvitePerms } = require('../_config/admin/antiinvite');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({ main_interaction }) => {
     let setting = await Automod.get(main_interaction.guild.id, 'antiinvite');
     const antiInviteEnabled = JSON.parse(main_interaction.options.getString('enabled'));
     const antiInviteAction = main_interaction.options.getString('action');
@@ -19,6 +19,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
         type: 'antiinvite',
     })
         .then((res) => {
+            errorhandler({
+                fatal: false,
+                message: `${main_interaction.guild.id} has been updated the anti Invite config.`,
+            });
             const description = setting.enabled
                 ? global.t.trans(
                       ['success.automod.antiinvite.enabled', antiInviteAction],

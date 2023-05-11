@@ -4,8 +4,9 @@ module.exports = class AutomodAntiInvite {
     check(message, bot) {
         return new Promise(async (resolve) => {
             const antiInviteSetting = await Automod.get(message.guild.id, 'antiinvite');
-            if (!antiInviteSetting?.enabled || !this.isInviteLink(message.content))
+            if (!antiInviteSetting?.enabled || !this.isInviteLink(message.content)) {
                 return resolve(false);
+            }
 
             if (
                 await Automod.checkWhitelist({
@@ -16,6 +17,7 @@ module.exports = class AutomodAntiInvite {
             ) {
                 return resolve(false);
             }
+
             Automod.punishUser({
                 user: message.author,
                 guild: message.guild,
@@ -29,10 +31,9 @@ module.exports = class AutomodAntiInvite {
     }
 
     isInviteLink(content) {
-        const regexWithHttp =
-            /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-zA-Z0-9]/;
+        const regex =
+            /^(?:https?:\/\/)?(?:discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-zA-Z\d]/;
 
-        const regexWithoutHttp = /(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-zA-Z0-9]/;
-        return regexWithHttp.test(content) || regexWithoutHttp.test(content);
+        return regex.test(content);
     }
 };

@@ -106,7 +106,9 @@ module.exports = class Translations {
             keyArray.forEach((key) => {
                 translation = translation[key];
             });
-        } catch (e) {}
+        } catch (e) {
+            // translation not found
+        }
 
         if (!translation && this.translationTries === 0) {
             this.translationTries++;

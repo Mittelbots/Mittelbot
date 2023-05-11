@@ -3,6 +3,10 @@ const guildAutomod = require('../../../src/db/Models/tables/guildAutomod.model')
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { kickUser } = require('../moderations/kickUser');
 const { Guilds } = require('./Guilds');
+const { banUser } = require('../moderations/banUser');
+const { getModTime } = require('../getModTime');
+const { muteUser } = require('../moderations/muteUser');
+const { warnUser } = require('../moderations/warnUser');
 
 class Automod {
     constructor() {}

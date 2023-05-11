@@ -29,7 +29,7 @@ module.exports = class AutomodAntiLinks {
     }
 
     isLink(content) {
-        const regex = /(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?/gi;
+        const regex = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6}\.?)(\/[\w.-]*)*\/?$/i;
         return regex.test(content);
     }
 };

@@ -3,7 +3,7 @@ const { Automod } = require('../../../utils/functions/data/Automod');
 const { antiLinksConfig, antiLinksPerms } = require('../_config/admin/antilinks');
 const { removeMention, removeHttp } = require('../../../utils/functions/removeCharacters');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({ main_interaction }) => {
     const guildId = main_interaction.guild.id;
     const antilinksEnabled = JSON.parse(main_interaction.options.getString('enabled'));
     const antilinksAction = main_interaction.options.getString('action');
@@ -26,7 +26,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistroles.includes(roleId)) {
             setting.whitelistroles.splice(setting.whitelistroles.indexOf(roleId), 1);
         } else {
-            if (parseInt(roleId)) {
+            if (parseInt(roleId, 10)) {
                 setting.whitelistroles.push(roleId);
             }
         }
@@ -37,7 +37,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistchannels.includes(channelId)) {
             setting.whitelistchannels.splice(setting.whitelistchannels.indexOf(channelId), 1);
         } else {
-            if (parseInt(channelId)) {
+            if (parseInt(channelId, 10)) {
                 setting.whitelistchannels.push(channelId);
             }
         }
@@ -59,6 +59,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
         type: 'antilinks',
     })
         .then(() => {
+            errorhandler({
+                fatal: false,
+                message: `${main_interaction.guild.id} has been updated the anti Links config.`,
+            });
             const description = antilinksEnabled
                 ? global.t.trans(
                       [
