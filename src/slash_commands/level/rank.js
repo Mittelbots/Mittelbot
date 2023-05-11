@@ -49,7 +49,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
             }) || user.displayAvatarURL()
         )
         .setUsername(user.username)
-        .setDiscriminator(user.discriminator)
         .setStatus('online', true, '30')
         .setProgressBar(['#240000', '#00e8ff'], 'GRADIENT')
         .setRank(userRank)
