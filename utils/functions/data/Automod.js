@@ -83,7 +83,7 @@ class Automod {
                 isWhitelisted = filteredWhitelist.length > 0;
             }
 
-            if (message instanceof Message) {
+            if (message instanceof Message && !isWhitelisted) {
                 const filteredWhitelistChannels = whitelistchannels.filter(
                     (channel) => message.channel.id === channel
                 );

@@ -1,4 +1,5 @@
 const { Automod } = require('../Automod');
+const { isValidLink } = require('../../validate/isValidLink');
 
 module.exports = class AutomodAntiSpam {
     #spamCheck = [];
@@ -14,7 +15,7 @@ module.exports = class AutomodAntiSpam {
     pingLimitMin = 3;
     maxSameCharacters = 12;
     maxSameWords = 5;
-    maxWordLength = 30;
+    maxWordLength = 55;
 
     constructor() {}
 
@@ -42,7 +43,9 @@ module.exports = class AutomodAntiSpam {
                 guild_id: message.guild.id,
                 message: message,
             });
-            if (isWhitelist) return resolve(this.#isSpam);
+            if (isWhitelist) {
+                return resolve(this.#isSpam);
+            }
 
             const hasDublicatedWordsOrCharacters = this.hasDublicatedWordsOrCharacters(
                 message.content,
@@ -170,13 +173,13 @@ module.exports = class AutomodAntiSpam {
     hasDublicatedWordsOrCharacters(message, isEnabled) {
         if (!isEnabled) return false;
 
-        const words = message.split(' ');
+        const words = message.split(/\s+/);
         let prevWord = null;
         let wordCount = 0;
 
         for (let i = 0; i < words.length; i++) {
             const word = words[i];
-            if (word.length >= this.maxWordLength) {
+            if (word.length >= this.maxWordLength && !isValidLink(word)) {
                 return true;
             }
 
