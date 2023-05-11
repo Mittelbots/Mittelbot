@@ -1,5 +1,5 @@
-const { isValidDiscordInvite } = require('../../validate/isValidDiscordInvite');
 const { Automod } = require('../Automod');
+const { isValidDiscordInvite } = require('../../validate/isValidDiscordInvite');
 
 module.exports = class AutomodAntiInvite {
     check(message, bot) {
@@ -7,11 +7,11 @@ module.exports = class AutomodAntiInvite {
             const antiInviteSetting = await Automod.get(message.guild.id, 'antiinvite');
             if (!antiInviteSetting?.enabled || !isValidDiscordInvite(message.content))
                 return resolve(false);
+
             if (
                 await Automod.checkWhitelist({
                     setting: antiInviteSetting,
                     user_roles: message.member.roles.cache.map((r) => r.id),
-                    message: message,
                     guild_id: message.guild.id,
                 })
             ) {

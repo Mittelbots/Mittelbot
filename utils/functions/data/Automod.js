@@ -72,7 +72,7 @@ class Automod {
 
             const whitelistroles = setting?.whitelistroles || [];
             const whitelistchannels = setting?.whitelistchannels || [];
-            const whitelistwords = setting?.whitelistlinks || [];
+            const whitelistinvites = setting?.whitelistinvites || [];
 
             let isWhitelisted = false;
 
@@ -84,14 +84,14 @@ class Automod {
             }
 
             if (message instanceof Message) {
-                const filteredWhitelistwords = whitelistwords.filter((word) =>
-                    message.content.includes(word)
-                );
                 const filteredWhitelistChannels = whitelistchannels.filter(
                     (channel) => message.channel.id === channel
                 );
+                const filteredWhitelistInvites = whitelistinvites.filter((invite) =>
+                    message.content.includes(invite)
+                );
                 isWhitelisted =
-                    filteredWhitelistwords.length > 0 || filteredWhitelistChannels.length > 0;
+                    filteredWhitelistChannels.length > 0 || filteredWhitelistInvites.length > 0;
             }
 
             return resolve(isWhitelisted);

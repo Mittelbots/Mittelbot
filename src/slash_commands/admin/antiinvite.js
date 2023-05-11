@@ -1,25 +1,31 @@
 const { EmbedBuilder } = require('discord.js');
 const { Automod } = require('../../../utils/functions/data/Automod');
-const { antiInviteConfig, antiInvitePerms } = require('../_config/admin/antiinvite');
-const { removeMention, removeHttp } = require('../../../utils/functions/removeCharacters');
-const { isValidDiscordInvite } = require('../../../utils/functions/validate/isValidDiscordInvite');
+const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { antiSpamConfig, antiSpamPerms } = require('../_config/admin/antispam');
+const { removeMention } = require('../../../utils/functions/removeCharacters');
+const AutomodAntiSpam = require('../../../utils/functions/data/Automoderation/Automod-AntiSpam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const antiInviteSettings = await Automod.get(main_interaction.guild.id, 'antiinvite');
+    const antiSpamSettings = await Automod.get(main_interaction.guild.id, 'antispam');
 
-    const antiInviteEnabled = JSON.parse(main_interaction.options.getString('enabled'));
-    const antiInviteAction = main_interaction.options.getString('action');
+    const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
+    const antiSpamAction = main_interaction.options.getString('action');
+
+    const detectduplicate =
+        JSON.parse(main_interaction.options.getBoolean('detectduplicate')) || false;
+    const pingLimit = main_interaction.options.getNumber('pinglimit') || 0;
+    if (pingLimit < new AutomodAntiSpam().pingLimitMin) pingLimit = 0;
 
     const whitelistrolesInput = main_interaction.options.getString('whitelistroles') || '';
     const whitelistchannelsInput = main_interaction.options.getString('whitelistchannels') || '';
-    const whitelistInviteInput = main_interaction.options.getString('whitelistinvite') || '';
 
     const setting = {
-        enabled: antiInviteEnabled,
-        action: antiInviteAction,
-        whitelistroles: antiInviteSettings.whitelistroles || [],
-        whitelistchannels: antiInviteSettings.whitelistchannels || [],
-        whitelistinvites: antiInviteSettings.whitelistinvites || [],
+        enabled: antiSpamEnabled,
+        action: antiSpamAction,
+        whitelistroles: antiSpamSettings.whitelistroles || [],
+        whitelistchannels: antiSpamSettings.whitelistchannels || [],
+        detectduplicate: detectduplicate,
+        pinglimit: pingLimit,
     };
 
     whitelistrolesInput.split(',').forEach((role) => {
@@ -27,7 +33,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistroles.includes(roleId)) {
             setting.whitelistroles.splice(setting.whitelistroles.indexOf(roleId), 1);
         } else {
-            if (parseInt(roleId)) {
+            if (parseInt(roleId, 10)) {
                 setting.whitelistroles.push(roleId);
             }
         }
@@ -38,45 +44,39 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistchannels.includes(channelId)) {
             setting.whitelistchannels.splice(setting.whitelistchannels.indexOf(channelId), 1);
         } else {
-            if (parseInt(channelId)) {
-                setting.whitelistchannels.push(channelId);
-            }
-        }
-    });
+            if (!parseInt(channelId, 10)) return;
 
-    whitelistInviteInput.split(',').forEach((link) => {
-        if (!isValidDiscordInvite(link)) return;
-
-        if (setting.whitelistinvites.includes(link)) {
-            setting.whitelistinvites.splice(setting.whitelistinvites.indexOf(link), 1);
-        } else {
-            setting.whitelistinvites.push(link);
-            setting.whitelistinvites = setting.whitelistinvites.filter((link) => link !== '');
+            setting.whitelistchannels.push(channelId);
         }
     });
 
     Automod.update({
         guild_id: main_interaction.guild.id,
         value: setting,
-        type: 'antiinvite',
+        type: 'antispam',
     })
         .then(() => {
+            errorhandler({
+                fatal: false,
+                message: `${main_interaction.guild.id} has been updated the antispam config.`,
+            });
+
             const description = setting.enabled
                 ? global.t.trans(
                       [
-                          'success.automod.antiinvite.enabled',
-                          antiInviteAction,
+                          'success.automod.antispam.enabled',
+                          setting.action,
                           setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
                           setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||
                               'Empty',
-                          setting.whitelistinvites.join(', ') || 'Empty',
+                          setting.detectduplicate ? 'Enabled' : 'Disabled',
+                          setting.pinglimit < new AutomodAntiSpam().pingLimitMin
+                              ? 'Disabled'
+                              : setting.pinglimit,
                       ],
                       main_interaction.guild.id
                   )
-                : global.t.trans(
-                      ['success.automod.antiinvite.disabled'],
-                      main_interaction.guild.id
-                  );
+                : global.t.trans(['success.automod.antispam.disabled'], main_interaction.guild.id);
 
             main_interaction
                 .reply({
@@ -108,5 +108,5 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
 };
 
-module.exports.data = antiInviteConfig;
-module.exports.permissions = antiInvitePerms;
+module.exports.data = antiSpamConfig;
+module.exports.permissions = antiSpamPerms;
