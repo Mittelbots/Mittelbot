@@ -365,7 +365,12 @@
             "imgur": "[Click here to view the image]( %c )"
         },
         "fun": {
-            "punch": "You punched %c"
+            "punch": "You punched %c",
+            "timer": {
+                "timerEnded": "Your timer has ended!",
+                "timeLeft": "**Time left:** %c",
+                "timeLeftTime": "**Time Left:** %q Day(s) %w Hour(s) %e Minute(s)"
+            }
         },
         "commands": {
             "firstCommand": {

@@ -365,7 +365,12 @@
             "imgur": "[Klicken Sie hier, um das Bild zu sehen]( %c )"
         },
         "fun": {
-            "punch": "Du hast %c geschlagen"
+            "punch": "Du hast %c geschlagen",
+            "timer": {
+                "timerEnded": "Dein Timer ist abgelaufen!",
+                "timeLeft": "**Zeit verbleibend:** %c",
+                "timeLeftTime": "**Zeit verbleibend** %q Tag(e) %w Stunde(n) %e Minute(n)"
+            }
         },
         "commands": {
             "firstCommand": {
