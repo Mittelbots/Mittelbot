@@ -22,10 +22,9 @@ module.exports = class Afk {
         return main_interaction
             .reply({
                 embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(['success.utils.afk.set', afk], main_interaction.guild.id)
-                        )
+                    new EmbedBuilder().setDescription(
+                        global.t.trans(['success.utils.afk.set', afk], main_interaction.guild.id)
+                    ),
                 ],
                 ephemeral: true,
             })
@@ -81,11 +80,16 @@ module.exports = class Afk {
                         embeds: [
                             new EmbedBuilder()
                                 .setDescription(
-                                    global.t.trans(['info.utils.afk.noLongerAfk', isAuthorAfk.reason, isAuthorAfk.time], message.guild.id)
+                                    global.t.trans(
+                                        [
+                                            'info.utils.afk.noLongerAfk',
+                                            isAuthorAfk.reason,
+                                            isAuthorAfk.time,
+                                        ],
+                                        message.guild.id
+                                    )
                                 )
-                                .setColor(
-                                    global.t.trans(['general.colors.success'])
-                                ),
+                                .setColor(global.t.trans(['general.colors.success'])),
                         ],
                     })
                     .then(async (msg) => {
