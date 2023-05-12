@@ -364,8 +364,6 @@ module.exports.manageScam = async ({ main_interaction }) => {
                 return reject('❌ Error while getting data from the database!');
             });
 
-        console.log(request);
-
         if (!request || !request.length === 0) {
             reject('❌ This request does not exist!');
             main_interaction
