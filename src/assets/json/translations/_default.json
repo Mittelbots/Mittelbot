@@ -23,6 +23,18 @@
                 "updated": "{success.cheerEmote} Successfully updated all joinroles",
                 "removedAll": "{success.emote} Successfully removed all join roles.",
                 "cleared": "{success.emote} Joinroles successfully cleared."
+            },
+            "logs": {
+                "updatedWhitelist": "{success.emote} Successfully updated the whitelist.",
+                "updatedLogs": "{success.emote} Successfully updated the logs."
+            },
+            "modroles": {
+                "updated": "{success.emote} <@&%q> has been updated to %w",
+                "removed": "{success.emote} <@&%q> has been removed from the Modroles setting."
+            },
+            "reactionroles": {
+                "updated": "{success.emote} The reaction roles have been updated.",
+                "removed": "{success.emote} The reaction roles have been removed."
             }
         },
         "ticket": {
@@ -291,7 +303,8 @@
             "trackAddedToQueue": "Track added to queue: %c",
             "disconnected": "I was manually disconnected or left due inactivity from the voice channel, clearing queue!",
             "emptyChannel": "Nobody is in the voice channel, leaving the channel!",
-            "queueHasEnded": "Queue has ended"
+            "queueHasEnded": "Queue has ended",
+            "notInAVC": "I'm not in a voice channel right now."
         },
         "utils": {
             "afk": {
@@ -459,7 +472,8 @@
                 "write": "{error.emote} I don't have permission to write in %c.",
                 "channelDelete": "{error.emote} I don't have permission to delete channels.",
                 "roleAdd": "{error.emote} I don't have permission to add roles.",
-                "roleAddSpecific": "{error.emote} I don't have permission to add the role %c."
+                "roleAddSpecific": "{error.emote} I don't have permission to add the role %c.",
+                "manageReactions": "{error.emote} I don't have permission to manage reactions."
             }
         },
         "ticket": {
@@ -552,7 +566,10 @@
             },
             "queue": {
                 "queueError": "{error.emote} There was an error getting the queue. {general.tryAgainLater}"
-            }
+            },
+            "userIsNotInAVoiceChannel": "{error.emote} You need to be in a voice channel to use this command!",
+            "botIsAlreadyInAVoiceChannel": "{error.emote} I am already in a voice channel! Please join that channel or wait until i left!",
+            "botIsNotInAVoiceChannel": "{error.emote} I am not in a voice channel! Please join a channel first!"
         },
         "notifications": {
             "reddit": {
@@ -597,6 +614,21 @@
             },
             "joinroles": {
                 "notExists": "{error.emote} The role %c doesn't exists on this server. All existing mentions before are saved."
+            },
+            "logs": {
+                "alreadyRoleWhitelisted": "{error.emote} This role is already whitelisted.",
+                "alreadyChannelWhitelisted": "{error.emote} This channel is already whitelisted."
+            },
+            "reactionroles": {
+                "notEqual": "{error.emote} The amount of roles and emojis are not equal.",
+                "messageLinkNotValid": "{error.emote} The message link is not valid.",
+                "messageNotFound": "{error.emote} The message was not found.",
+                "emojiDoesntExists": "{error.emote} The emoji <:emote:&%c> doesn't exists.",
+                "emojiNotFound": "{error.emote} The emoji <:&%c> was not found.",
+                "roleDoesntExists": "{error.emote} The role <@&%c> doesn't exists.",
+                "roleNotFound": "{error.emote} The role <@&%c> was not found.",
+                "maxRoles": "{error.emote} You can't add more than %c roles.",
+                "noReactionRolesInServer": "{error.emote} There are no reaction roles in this server."
             }
         },
         "moderation": {

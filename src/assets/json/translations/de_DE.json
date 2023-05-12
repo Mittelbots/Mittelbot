@@ -23,6 +23,18 @@
                 "updated": "{success.cheerEmote} Erfolgreich alle Joinroles aktualisiert",
                 "removedAll": "{success.emote} Erfolgreich alle Join-Rollen entfernt.",
                 "cleared": "{success.emote} Joinroles erfolgreich geklärt."
+            },
+            "logs": {
+                "updatedWhitelist": "{success.emote} Die Whitelist wurde erfolgreich aktualisiert.",
+                "updatedLogs": "{success.emote} Die Logs wurden erfolgreich aktualisiert."
+            },
+            "modroles": {
+                "updated": "{success.emote} <@&%q> wurde aktualisiert zu %w",
+                "removed": "{success.emote} <@&%q> wurde aus der Modroles-Einstellung entfernt."
+            },
+            "reactionroles": {
+                "updated": "{success.emote} Die Reaktionsrollen wurden aktualisiert.",
+                "removed": "{success.emote} Die Reaktionsrollen wurden entfernt."
             }
         },
         "ticket": {
@@ -290,7 +302,8 @@
             "trackAddedToQueue": "Song hinzugefügt: %c",
             "disconnected": "Ich wurde manuell getrennt oder aufgrund von Inaktivität aus dem Voice-Kanal, Warteschlange wird gelöscht.",
             "emptyChannel": "Niemand ist im Sprachkanal. Ich verlasse den Sprachkanal.",
-            "queueHasEnded": "Warteschlange ist zu Ende. "
+            "queueHasEnded": "Warteschlange ist zu Ende. ",
+            "notInAVC": "I'm not in a voice channel right now."
         },
         "utils": {
             "afk": {
@@ -458,7 +471,8 @@
                 "write": "{error.emote} Ich habe keine Berechtigung, in %c zu schreiben.",
                 "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen.",
                 "roleAdd": "{error.emote} Ich habe nicht die Erlaubnis, Rollen hinzuzufügen.",
-                "roleAddSpecific": "{error.emote} Ich habe nicht die Berechtigung, die Rolle %c hinzuzufügen."
+                "roleAddSpecific": "{error.emote} Ich habe nicht die Berechtigung, die Rolle %c hinzuzufügen.",
+                "manageReactions": "{error.emote} I don't have permission to manage reactions."
             }
         },
         "ticket": {
@@ -551,7 +565,10 @@
             },
             "queue": {
                 "queueError": "{error.emote} There was an error getting the queue. {general.tryAgainLater}"
-            }
+            },
+            "userIsNotInAVoiceChannel": "{error.emote} Du musst dich in einem Sprachkanal befinden, um diesen Befehl zu verwenden!",
+            "botIsAlreadyInAVoiceChannel": "{error.emote} Ich bin bereits in einem Sprachkanal! Bitte trete diesem Kanal bei oder warte bis ich weg bin!",
+            "botIsNotInAVoiceChannel": "{error.emote} Ich bin nicht in einem Sprachkanal! Bitte trete zuerst einem Kanal bei!"
         },
         "notifications": {
             "reddit": {
@@ -596,6 +613,21 @@
             },
             "joinroles": {
                 "notExists": "{error.emote} Die Rolle %c existiert nicht auf diesem Server. Alle vorher existierenden Erwähnungen werden gespeichert."
+            },
+            "logs": {
+                "alreadyRoleWhitelisted": "{error.emote} Diese Rolle ist bereits auf der Whitelist.",
+                "alreadyChannelWhitelisted": "{error.emote} Dieser Kanal ist bereits auf der Whitelist."
+            },
+            "reactionroles": {
+                "notEqual": "{error.emote} Die Anzahl der Rollen und Emojis sind nicht gleich. Bitte überprüfe deine Eingabe.",
+                "messageLinkNotValid": "{error.emote} Der Link zur Nachricht ist ungültig. Bitte überprüfe deine Eingabe.",
+                "messageNotFound": "{error.emote} Die Nachricht wurde nicht gefunden. Bitte überprüfe deine Eingabe.",
+                "emojiDoesntExists": "{error.emote} Das Emoji <:emote:&%c> existiert nicht.",
+                "emojiNotFound": "{error.emote} Das Emoji <:&%c> wurde nicht gefunden.",
+                "roleDoesntExists": "{error.emote} Die Rolle <@&%c> existiert nicht.",
+                "roleNotFound": "{error.emote} Die Rolle <@&%c> wurde nicht gefunden.",
+                "maxRoles": "{error.emote} Sie können nicht mehr als %c Rollen hinzufügen.",
+                "noReactionRolesInServer": "{error.emote} Auf diesem Server gibt es keine Reaktionsrollen."
             }
         },
         "moderation": {

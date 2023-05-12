@@ -37,13 +37,13 @@ class Modroles {
             })
                 .then(async () => {
                     resolve(
-                        `✅ <@&${role_id}> has been updated to ${
-                            isAdmin ? 'Admin' : isMod ? 'Moderator' : 'Helper'
-                        }.`
+                        global.t.trans(['success.admin.modroles.updated', role_id, isAdmin ? 'Admin' : isMod ? 'Moderator' : 'Helper'], guild_id)
                     );
                 })
                 .catch(() => {
-                    reject(`❌ There was an error updating the Modroles.`);
+                    reject(
+                        global.t.trans(['error.general'], guild_id)
+                    );
                 });
         });
     }
@@ -60,10 +60,14 @@ class Modroles {
                 valueName: 'modroles',
             })
                 .then(async () => {
-                    resolve(`✅ <@&${role_id}> has been removed from the Modroles setting.`);
+                    resolve(
+                        global.t.trans(['success.admin.modroles.removed', role_id], guild_id)                        
+                    );
                 })
                 .catch(() => {
-                    reject(`❌ There was an error updating the Modroles.`);
+                    reject(
+                        global.t.trans(['error.general'], guild_id)
+                    );
                 });
         });
     }

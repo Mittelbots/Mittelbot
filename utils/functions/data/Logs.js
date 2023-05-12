@@ -23,7 +23,9 @@ class Logs {
                         logs.whitelist.push(whitelistrole.id);
                     } else {
                         if (!clear) {
-                            return reject('❌ That role is already whitelisted.');
+                            return reject(
+                                global.t.trans(['error.admin.logs.alreadyRoleWhitelisted'], guild_id)
+                            );
                         }
                     }
                 }
@@ -32,7 +34,9 @@ class Logs {
                         logs.whitelist.push(whitelistchannel.id);
                     } else {
                         if (!clear) {
-                            return reject('❌ That channel is already whitelisted.');
+                            return reject(
+                                global.t.trans(['error.admin.logs.alreadyChannelWhitelisted'], guild_id)
+                            );
                         }
                     }
                 }
@@ -64,14 +68,18 @@ class Logs {
             })
                 .then(() => {
                     if (whitelistrole || whitelistchannel) {
-                        return resolve(`✅ Successfully updated the whitelist.`);
+                        return resolve(
+                            global.t.trans(['success.admin.logs.updatedWhitelist'], guild_id)
+                        );
                     } else {
-                        return resolve(`✅ Successfully updated the logs.`);
+                        return resolve(
+                            global.t.trans(['success.admin.logs.updatedWhitelist'], guild_id)
+                        );
                     }
                 })
                 .catch(() => {
                     return reject(
-                        `❌ Something went wrong. Please try again or contact the Bot Support.`
+                        global.t.trans(['error.general'], guild_id)
                     );
                 });
         });
