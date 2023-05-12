@@ -56,7 +56,10 @@ module.exports = class Autodelete {
                     )
                     .catch((err) => {
                         return reject(
-                            global.t.trans(['error.generalWithMessage', err.message], channel.guild.id)
+                            global.t.trans(
+                                ['error.generalWithMessage', err.message],
+                                channel.guild.id
+                            )
                         );
                     });
             } else {
@@ -67,7 +70,10 @@ module.exports = class Autodelete {
                     })
                     .catch((err) => {
                         return reject(
-                            global.t.trans(['error.generalWithMessage', err.message], channel.guild.id)
+                            global.t.trans(
+                                ['error.generalWithMessage', err.message],
+                                channel.guild.id
+                            )
                         );
                     });
             }

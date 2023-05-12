@@ -31,16 +31,20 @@ module.exports = class TwitchNotifier {
             const twitchName = twitch_user.name;
 
             if (!twitch_user) {
-                return reject(
-                    global.t.trans(['error.notifications.twitch.notFound'], guild.id)
-                );
+                return reject(global.t.trans(['error.notifications.twitch.notFound'], guild.id));
             }
 
             await this.#fetchMembers({ guild });
             const hasChannelPermission = await this.#checkChannelPerms({ twdcchannel, guild });
             if (!hasChannelPermission) {
                 reject(
-                    global.t.trans(['error.permissions.bot.roleAdd', '"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"'], guild.id)
+                    global.t.trans(
+                        [
+                            'error.permissions.bot.roleAdd',
+                            '"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"',
+                        ],
+                        guild.id
+                    )
                 );
                 return;
             }
@@ -49,9 +53,7 @@ module.exports = class TwitchNotifier {
                 twitchchannel: twitchId,
                 guild,
             }).catch(() => {
-                reject(
-                    global.t.trans(['error.notifications.twitch.maxReached', 3], guild.id)
-                );
+                reject(global.t.trans(['error.notifications.twitch.maxReached', 3], guild.id));
                 return '3';
             });
 
@@ -65,7 +67,10 @@ module.exports = class TwitchNotifier {
                     guild,
                 }).then(() => {
                     resolve(
-                        global.t.trans(['success.notifications.twitch.updated', twitchchannel], guild.id)
+                        global.t.trans(
+                            ['success.notifications.twitch.updated', twitchchannel],
+                            guild.id
+                        )
                     );
                 });
             } else {
@@ -77,7 +82,10 @@ module.exports = class TwitchNotifier {
                     guild,
                 }).then(() => {
                     resolve(
-                        global.t.trans(['success.notifications.twitch.added', twitchchannel], guild.id)
+                        global.t.trans(
+                            ['success.notifications.twitch.added', twitchchannel],
+                            guild.id
+                        )
                     );
                 });
             }
@@ -264,9 +272,7 @@ module.exports = class TwitchNotifier {
         return new Promise(async (resolve, reject) => {
             const twitchChannel = await this.getTwitchFromChannelName(channel);
             if (!twitchChannel) {
-                return reject(
-                    global.t.trans(['error.notifications.twitch.notFound'], guild.id)
-                );
+                return reject(global.t.trans(['error.notifications.twitch.notFound'], guild.id));
             }
 
             await twitchStreams
@@ -277,14 +283,10 @@ module.exports = class TwitchNotifier {
                     },
                 })
                 .then(() => {
-                    resolve(
-                        global.t.trans(['success.notifications.twitch.removed'], guild.id)
-                    );
+                    resolve(global.t.trans(['success.notifications.twitch.removed'], guild.id));
                 })
                 .catch((err) => {
-                    reject(
-                        global.t.trans(['error.notifications.twitch.removeChannel'], guild.id)
-                    );
+                    reject(global.t.trans(['error.notifications.twitch.removeChannel'], guild.id));
                 });
         });
     }

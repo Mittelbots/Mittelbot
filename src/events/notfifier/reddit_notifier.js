@@ -54,12 +54,15 @@ module.exports.reddit_notifier = async (bot) => {
             const channel = guild.channels.cache.get(channel_id);
             if (!channel) return;
 
-            const message = global.t.trans([
-                'info.notifications.reddit.new_post', 
-                pingrole ? '<@&' + pingrole + '> || ' : '',
-                subreddit,
-                `https://www.reddit.com${permalink}`,
-            ], guild.id)
+            const message = global.t.trans(
+                [
+                    'info.notifications.reddit.new_post',
+                    pingrole ? '<@&' + pingrole + '> || ' : '',
+                    subreddit,
+                    `https://www.reddit.com${permalink}`,
+                ],
+                guild.id
+            );
             const newEmbed = new EmbedBuilder()
                 .setTitle(title.substring(0, 256))
                 .setURL(`https://www.reddit.com${permalink}`)
@@ -83,7 +86,9 @@ module.exports.reddit_notifier = async (bot) => {
 
             if (over_18 && !allowNSFW && !channel.nsfw) {
                 newEmbed.setColor(global.t.trans(['general.colors.error']));
-                newEmbed.addFields(global.t.trans(['info.notifications.reddit.nsfwInfo'], guild.id));
+                newEmbed.addFields(
+                    global.t.trans(['info.notifications.reddit.nsfwInfo'], guild.id)
+                );
             } else {
                 newEmbed.setColor(global.t.trans(['general.colors.info']));
 

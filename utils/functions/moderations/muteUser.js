@@ -40,7 +40,15 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                     message: `${mutedRole} is not a valid Muted Role in ${guild.id}`,
                 });
                 return reject(
-                    global.t.trans(['error.moderation.mute.notAValidMuteRole', mutedRole, guild.id, err.message], guild.id)
+                    global.t.trans(
+                        [
+                            'error.moderation.mute.notAValidMuteRole',
+                            mutedRole,
+                            guild.id,
+                            err.message,
+                        ],
+                        guild.id
+                    )
                 );
             });
         if (user_roles.length !== 0) await removeAllRoles(guild_user);

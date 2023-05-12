@@ -24,7 +24,10 @@ module.exports.timer = async (bot) => {
                     .then(() => {
                         message
                             .edit({
-                                content: global.t.trans(['info.fun.timer.timerEnded'], channel.guild.id),
+                                content: global.t.trans(
+                                    ['info.fun.timer.timerEnded'],
+                                    channel.guild.id
+                                ),
                             })
                             .catch((err) => {});
                     })
@@ -42,10 +45,12 @@ module.exports.timer = async (bot) => {
 
             let timeLeftString;
             if (minutes <= 0 && hours <= 0 && days <= 0) {
-                timeLeftString = global.t.trans(['info.fun.timer.timeLeft'], channel.guild.id)
+                timeLeftString = global.t.trans(['info.fun.timer.timeLeft'], channel.guild.id);
             } else {
-                
-                timeLeftString = global.t.trans(['info.fun.timer.timeLeftTime', days, hours, minutes], channel.guild.id)
+                timeLeftString = global.t.trans(
+                    ['info.fun.timer.timeLeftTime', days, hours, minutes],
+                    channel.guild.id
+                );
             }
 
             if (timeLeftString == message.content) return;

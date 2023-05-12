@@ -26,7 +26,7 @@ module.exports = class Afk {
                         .setDescription(
                             global.t.trans(['success.utils.afk.set', afk], main_interaction.guild.id)
                         )
-                ]
+                ],
                 ephemeral: true,
             })
             .catch((err) => {});

@@ -20,9 +20,7 @@ module.exports.updateReactionRoles = async ({
         }
 
         if (roles.length !== emojis.length) {
-            return reject(
-                global.t.trans(['error.admin.reactionroles.notEqual'], guild_id)
-            );
+            return reject(global.t.trans(['error.admin.reactionroles.notEqual'], guild_id));
         }
 
         const messageLink = message_link.split('/');
@@ -41,9 +39,7 @@ module.exports.updateReactionRoles = async ({
             .messages.fetch(messageId);
 
         if (!message) {
-            return reject(
-                global.t.trans(['error.admin.reactionroles.messageNotFound'], guild_id)
-            );
+            return reject(global.t.trans(['error.admin.reactionroles.messageNotFound'], guild_id));
         }
 
         for (let i in roles) {
@@ -54,7 +50,10 @@ module.exports.updateReactionRoles = async ({
                     isDefault = true;
                 } catch (err) {
                     return reject(
-                        global.t.trans(['error.admin.reactionroles.emojiNotFound', emojis[i]], guild_id)
+                        global.t.trans(
+                            ['error.admin.reactionroles.emojiNotFound', emojis[i]],
+                            guild_id
+                        )
                     );
                 }
             }
@@ -63,7 +62,10 @@ module.exports.updateReactionRoles = async ({
                 .roles.fetch(roles[i])
                 .catch(() => {
                     return reject(
-                        global.t.trans(['error.admin.reactionroles.roleDoesntExists', roles[i]], guild_id)
+                        global.t.trans(
+                            ['error.admin.reactionroles.roleDoesntExists', roles[i]],
+                            guild_id
+                        )
                     );
                 });
             if (!role) {
@@ -78,13 +80,19 @@ module.exports.updateReactionRoles = async ({
                     .emojis.fetch(emojis[i])
                     .catch((err) => {
                         return reject(
-                            global.t.trans(['error.admin.reactionroles.emojiDoesntExists', emojis[i]], guild_id)
+                            global.t.trans(
+                                ['error.admin.reactionroles.emojiDoesntExists', emojis[i]],
+                                guild_id
+                            )
                         );
                     });
 
                 if (!emoji) {
                     return reject(
-                        global.t.trans(['error.admin.reactionroles.emojiNotFound', emojis[i]], guild_id)
+                        global.t.trans(
+                            ['error.admin.reactionroles.emojiNotFound', emojis[i]],
+                            guild_id
+                        )
                     );
                 }
             }
@@ -94,9 +102,7 @@ module.exports.updateReactionRoles = async ({
         const reactionroles = guildConfig.reactionroles || [];
 
         if (reactionroles.length >= 5) {
-            return reject(
-                global.t.trans(['error.admin.reactionroles.maxRoles', 5], guild_id)
-            );
+            return reject(global.t.trans(['error.admin.reactionroles.maxRoles', 5], guild_id));
         }
 
         if (reactionroles.length > 0) {
@@ -142,14 +148,10 @@ module.exports.updateReactionRoles = async ({
                     });
                 }
 
-                resolve(
-                    global.t.trans(['success.admin.reactionroles.updated'], guild_id)
-                );
+                resolve(global.t.trans(['success.admin.reactionroles.updated'], guild_id));
             })
             .catch((err) => {
-                reject(
-                    global.t.trans(['error.general'], guild_id)
-                );
+                reject(global.t.trans(['error.general'], guild_id));
             });
     });
 };
@@ -172,9 +174,7 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
             .messages.fetch(messageId);
 
         if (!message) {
-            return reject(
-                global.t.trans(['error.admin.reactionroles.messageNotFound'], guild_id)
-            );
+            return reject(global.t.trans(['error.admin.reactionroles.messageNotFound'], guild_id));
         }
 
         const guildConfig = await GuildConfig.get(guild_id);
@@ -197,9 +197,7 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
                 await message.reactions
                     .removeAll()
                     .then(() => {
-                        resolve(
-                            global.t.trans(['success.admin.reactionroles.removed'], guild_id)
-                        );
+                        resolve(global.t.trans(['success.admin.reactionroles.removed'], guild_id));
                     })
                     .catch(() => {
                         return reject(
@@ -208,9 +206,7 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
                     });
             })
             .catch((err) => {
-                reject(
-                    global.t.trans(['error.general'], guild_id)
-                );
+                reject(global.t.trans(['error.general'], guild_id));
             });
     });
 };

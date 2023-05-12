@@ -37,13 +37,18 @@ class Modroles {
             })
                 .then(async () => {
                     resolve(
-                        global.t.trans(['success.admin.modroles.updated', role_id, isAdmin ? 'Admin' : isMod ? 'Moderator' : 'Helper'], guild_id)
+                        global.t.trans(
+                            [
+                                'success.admin.modroles.updated',
+                                role_id,
+                                isAdmin ? 'Admin' : isMod ? 'Moderator' : 'Helper',
+                            ],
+                            guild_id
+                        )
                     );
                 })
                 .catch(() => {
-                    reject(
-                        global.t.trans(['error.general'], guild_id)
-                    );
+                    reject(global.t.trans(['error.general'], guild_id));
                 });
         });
     }
@@ -60,14 +65,10 @@ class Modroles {
                 valueName: 'modroles',
             })
                 .then(async () => {
-                    resolve(
-                        global.t.trans(['success.admin.modroles.removed', role_id], guild_id)                        
-                    );
+                    resolve(global.t.trans(['success.admin.modroles.removed', role_id], guild_id));
                 })
                 .catch(() => {
-                    reject(
-                        global.t.trans(['error.general'], guild_id)
-                    );
+                    reject(global.t.trans(['error.general'], guild_id));
                 });
         });
     }

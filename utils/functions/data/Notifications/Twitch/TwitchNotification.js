@@ -144,7 +144,10 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                 .geneateNotificationEmbed({
                     title: isLive
                         ? stream.title
-                        : global.t.trans(['info.notifications.twitch.endedStream', streamer.displayName]),
+                        : global.t.trans([
+                              'info.notifications.twitch.endedStream',
+                              streamer.displayName,
+                          ]),
                     color: '#6441a5',
                     footer: {
                         text: isLive
@@ -157,24 +160,39 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                         : `https://twitch.tv/${streamer.displayName}`,
                     author: {
                         name: isLive
-                            ? global.t.trans(['info.notifications.twitch.justWentLive', streamer.displayName])
-                            : global.t.trans(['info.notifications.twitch.justEnded', streamer.displayName]),
+                            ? global.t.trans([
+                                  'info.notifications.twitch.justWentLive',
+                                  streamer.displayName,
+                              ])
+                            : global.t.trans([
+                                  'info.notifications.twitch.justEnded',
+                                  streamer.displayName,
+                              ]),
                         iconURL: streamer.profilePictureUrl,
                     },
                     fields: isLive
                         ? [
                               {
-                                  name: global.t.trans(['info.notifications.twitch.fields.game', streamer.displayName]),
+                                  name: global.t.trans([
+                                      'info.notifications.twitch.fields.game',
+                                      streamer.displayName,
+                                  ]),
                                   value: stream.gameName,
                                   inline: true,
                               },
                               {
-                                  name: global.t.trans(['info.notifications.twitch.fields.viewers', streamer.displayName]),
+                                  name: global.t.trans([
+                                      'info.notifications.twitch.fields.viewers',
+                                      streamer.displayName,
+                                  ]),
                                   value: stream.viewers.toString(),
                                   inline: true,
                               },
                               {
-                                  name: global.t.trans(['info.notifications.twitch.fields.tags', streamer.displayName]),
+                                  name: global.t.trans([
+                                      'info.notifications.twitch.fields.tags',
+                                      streamer.displayName,
+                                  ]),
                                   value: stream.tags.join(', '),
                                   inline: true,
                               },

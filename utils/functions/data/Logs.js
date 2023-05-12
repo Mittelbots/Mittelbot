@@ -24,7 +24,10 @@ class Logs {
                     } else {
                         if (!clear) {
                             return reject(
-                                global.t.trans(['error.admin.logs.alreadyRoleWhitelisted'], guild_id)
+                                global.t.trans(
+                                    ['error.admin.logs.alreadyRoleWhitelisted'],
+                                    guild_id
+                                )
                             );
                         }
                     }
@@ -35,7 +38,10 @@ class Logs {
                     } else {
                         if (!clear) {
                             return reject(
-                                global.t.trans(['error.admin.logs.alreadyChannelWhitelisted'], guild_id)
+                                global.t.trans(
+                                    ['error.admin.logs.alreadyChannelWhitelisted'],
+                                    guild_id
+                                )
                             );
                         }
                     }
@@ -78,9 +84,7 @@ class Logs {
                     }
                 })
                 .catch(() => {
-                    return reject(
-                        global.t.trans(['error.general'], guild_id)
-                    );
+                    return reject(global.t.trans(['error.general'], guild_id));
                 });
         });
     }

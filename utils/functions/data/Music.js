@@ -192,9 +192,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 const voiceChannel = this.guild.members.me.voice.channel;
-                if (!voiceChannel) reject(
-                    global.t.trans(['info.music.notInVC'])
-                );
+                if (!voiceChannel) reject(global.t.trans(['info.music.notInVC']));
                 voiceChannel.leave();
                 resolve();
             } catch (e) {
@@ -234,18 +232,12 @@ module.exports = class Music {
     checkAvailibility(play = false) {
         return new Promise(async (resolve) => {
             if (!(await this.isUserInChannel())) {
-                return resolve(
-                    global.t.trans(['error.music.userIsNotInAVoiceChannel'])
-                );
+                return resolve(global.t.trans(['error.music.userIsNotInAVoiceChannel']));
             }
             if (await this.isBotInAnotherChannel())
-                return resolve(
-                    global.t.trans(['error.music.botIsAlreadyInAVoiceChannel'])
-                );
+                return resolve(global.t.trans(['error.music.botIsAlreadyInAVoiceChannel']));
             if (!(await this.isBotInAVoiceChannel()) && !play)
-                return resolve(
-                    global.t.trans(['error.music.botIsNotInAVoiceChannel'])
-                );
+                return resolve(global.t.trans(['error.music.botIsNotInAVoiceChannel']));
             return resolve(false);
         });
     }

@@ -70,19 +70,13 @@ class Joinroles {
             })
                 .then(() => {
                     if (joinroles.length === 0 && passedRoles.length === 0) {
-                        resolve(
-                            global.t.trans(['success.admin.joinroles.cleared'], guild.id)
-                        );
+                        resolve(global.t.trans(['success.admin.joinroles.cleared'], guild.id));
                     } else {
-                        resolve(
-                            global.t.trans(['success.admin.joinroles.updated'], guild.id)
-                        );
+                        resolve(global.t.trans(['success.admin.joinroles.updated'], guild.id));
                     }
                 })
                 .catch(() => {
-                    reject(
-                        global.t.trans(['error.general'], guild.id)
-                    );
+                    reject(global.t.trans(['error.general'], guild.id));
                 });
         });
     }
@@ -103,14 +97,10 @@ class Joinroles {
                 valueName: 'joinroles',
             })
                 .then(() => {
-                    resolve(
-                        global.t.trans(['success.admin.joinroles.removedAll'], guild.id)
-                    );
+                    resolve(global.t.trans(['success.admin.joinroles.removedAll'], guild.id));
                 })
                 .catch(() => {
-                    reject(
-                        global.t.trans(['error.general'], guild.id)
-                    );
+                    reject(global.t.trans(['error.general'], guild.id));
                 });
         });
     }
