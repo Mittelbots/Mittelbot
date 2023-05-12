@@ -558,6 +558,13 @@
                 "notFound": "{error.emote} Ich habe auf diesem Server keine Zählereinstellung gefunden.",
                 "alreadyExists": "{error.emote} Es gibt bereits einen Zähler auf diesem Server. Bitte lösche ihn zuerst."
             }
+        },
+        "moderation": {
+            "youcantx": {
+                "yourself": "{error.emote} Du kannst nicht dich selbst %c!",
+                "bot": "{error.emote} Du kannst einen Bot nicht %c!",
+                "mod": "{error.emote} Du kannst einen Moderator nicht %c!"
+            }
         }
     }
 }

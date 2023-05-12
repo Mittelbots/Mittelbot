@@ -558,6 +558,13 @@
                 "notFound": "{error.emote} I don't have found any counter setting in this server.",
                 "alreadyExists": "{error.emote} There is already a counter in this server. Please delete it first."
             }
+        },
+        "moderation": {
+            "youcantx": {
+                "yourself": "{error.emote} You can't %c yourself!",
+                "bot": "{error.emote} You can't %c a bot!",
+                "mod": "{error.emote} You can't %c a moderator!"
+            }
         }
     }
 }
