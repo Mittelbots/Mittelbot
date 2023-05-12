@@ -269,13 +269,18 @@
             "requestedby": "Hinzugefügt von",
             "songsInQueue": "Lieder in der Warteschlange: %c",
             "duration": "Länge: %c",
-            "nowplaying": "Jetzt spielt: %c \nHinzugefügt von: %x \nLänge: %y \nURL: %v",
+            "nowplaying": "{info.music.nowPlayingOnlyTrack} \nHinzugefügt von: %x \nLänge: %y \nURL: %v",
+            "nowPlayingOnlyTrack": "Jetzt spielt: %c",
             "queue": {
                 "queueLength": "Songs %c - %x",
                 "songEmbedName": "Song %c",
                 "songEmbedValue": "%c (%x)\n Hinzugefügt von: %y"
             },
-            "multipleSearchResultsFound": "Mehrere Suchergebnisse gefunden. Bitte wähle eine der folgenden Möglichkeiten:"
+            "multipleSearchResultsFound": "Mehrere Suchergebnisse gefunden. Bitte wähle eine der folgenden Möglichkeiten:",
+            "trackAddedToQueue": "Song hinzugefügt: %c",
+            "disconnected": "Ich wurde manuell getrennt oder aufgrund von Inaktivität aus dem Voice-Kanal, Warteschlange wird gelöscht.",
+            "emptyChannel": "Niemand ist im Sprachkanal. Ich verlasse den Sprachkanal.",
+            "queueHasEnded": "Warteschlange ist zu Ende. "
         },
         "utils": {
             "afk": {
@@ -368,6 +373,15 @@
                 "buttons": {
                     "invite": "Support-Server beitreten",
                     "close": "Schließen und nie wieder fragen"
+                }
+            }
+        },
+        "notifications": {
+            "reddit": {
+                "new_post": "%q Der subreddit %c hat einen neuen Beitrag hochgeladen. Sehe es dir hier an: %x",
+                "nsfwInfo": {
+                    "title": "🔞 NSFW",
+                    "description": "Dieser Beitrag ist als NSFW gekennzeichnet. Bitte sei vorsichtig, wenn du ihn ansiehst."
                 }
             }
         }
@@ -500,7 +514,9 @@
                 "noResults": "{error.emote} Keine Ergebnisse für deine Suche. Bitte sende einen gültigen Link.",
                 "botIsMuted": "{error.emote} Ich bin in diesem Kanal stummgeschaltet. Deine Warteschlange ist pausiert. Bitte hebe die Stummschaltung auf, um Musik abzuspielen."
             },
-            "queue": {}
+            "queue": {
+                "queueError": "{error.emote} There was an error getting the queue. {general.tryAgainLater}"
+            }
         },
         "notifications": {
             "reddit": {
@@ -530,6 +546,12 @@
                 "sameUserAgain": "{error.emote} Du kannst nicht zweimal hintereinander zählen.",
                 "wrongCount": "{error.emote} Du musst mit der richtigen Zahl zählen. Die richtige Zahl hätte %c sein sollen",
                 "countReseted": "Der Zähler wurde zurückgesetzt. Versuchen Sie es erneut!"
+            }
+        },
+        "admin": {
+            "counter": {
+                "notFound": "{error.emote} Ich habe auf diesem Server keine Zählereinstellung gefunden.",
+                "alreadyExists": "{error.emote} Es gibt bereits einen Zähler auf diesem Server. Bitte lösche ihn zuerst."
             }
         }
     }

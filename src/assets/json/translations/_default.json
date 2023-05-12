@@ -270,12 +270,17 @@
             "songsInQueue": "Songs in Queue: %c",
             "duration": "Duration: %c",
             "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
+            "nowPlayingOnlyTrack": "Now playing %c",
             "queue": {
                 "queueLength": "Songs %c - %x",
                 "songEmbedName": "Song %c",
                 "songEmbedValue": "%c (%x)\n Requested by: %y"
             },
-            "multipleSearchResultsFound": "Multiple search results found. Please choose one of the following:"
+            "multipleSearchResultsFound": "Multiple search results found. Please choose one of the following:",
+            "trackAddedToQueue": "Track added to queue: %c",
+            "disconnected": "I was manually disconnected or left due inactivity from the voice channel, clearing queue!",
+            "emptyChannel": "Nobody is in the voice channel, leaving the channel!",
+            "queueHasEnded": "Queue has ended"
         },
         "utils": {
             "afk": {
@@ -368,6 +373,15 @@
                 "buttons": {
                     "invite": "Join Support Server",
                     "close": "Close and never ask again"
+                }
+            }
+        },
+        "notifications": {
+            "reddit": {
+                "new_post": "%q The subreddit %c has uploaded a new post. Check it out here: %x",
+                "nsfwInfo": {
+                    "title": "🔞 NSFW",
+                    "description": "'This post is marked as NSFW. Please be careful when viewing it."
                 }
             }
         }
@@ -500,7 +514,9 @@
                 "noResults": "{error.emote} No results for your search. Be sure to send a valid link.",
                 "botIsMuted": "{error.emote} I am muted in this channel. Your Queue is paused. Please unmute me to play music."
             },
-            "queue": {}
+            "queue": {
+                "queueError": "{error.emote} There was an error getting the queue. {general.tryAgainLater}"
+            }
         },
         "notifications": {
             "reddit": {
