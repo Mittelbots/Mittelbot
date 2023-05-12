@@ -18,6 +18,11 @@
             "counter": {
                 "removed": "{success.emote} Der Zähler wurde erfolgreich entfernt.",
                 "set": "{success.emote} Erfolgreich den Zähler auf %c gesetzt"
+            },
+            "joinroles": {
+                "updated": "{success.cheerEmote} Erfolgreich alle Joinroles aktualisiert",
+                "removedAll": "{success.emote} Erfolgreich alle Join-Rollen entfernt.",
+                "cleared": "{success.emote} Joinroles erfolgreich geklärt."
             }
         },
         "ticket": {
@@ -133,6 +138,11 @@
             },
             "youtube": {
                 "removed": "{success.cheerEmote}Erfolgreich die YouTube-Benachrichtigung für %c entfernt"
+            },
+            "twitch": {
+                "added": "{success.cheerEmote} Erfolgreich den Twitch-Kanal `%q` zur Liste hinzugefügt.",
+                "updated": "{success.cheerEmote} Erfolgreich die Twitch-Benachrichtigung für `%c` aktualisiert",
+                "removed": "{success.cheerEmote} Erfolgreich den Twitch-Kanal aus der Benachrichtigungsliste entfernt."
             }
         },
         "utils": {
@@ -388,6 +398,23 @@
                     "title": "🔞 NSFW",
                     "description": "Dieser Beitrag ist als NSFW gekennzeichnet. Bitte sei vorsichtig, wenn du ihn ansiehst."
                 }
+            },
+            "twitch": {
+                "endedStream": "%q hat den Stream beendet!",
+                "startedHrsAgo": "Stream gestartet vor %q Stunden - Zuletzt aktualisiert",
+                "endedHrsAgo": "Stream endete vor %q Stunden",
+                "justWentLive": "%q ist soeben live gegangen!",
+                "justEnded": "%q hat gerade seinen Stream beendet!",
+                "fields": {
+                    "game": "Spiel",
+                    "viewers": "Zuschauer",
+                    "tags": "Tags"
+                }
+            }
+        },
+        "moderation": {
+            "warn": {
+                "hasAllWarnRoles": "❗️Dieser Benutzer hat bereits alle Warnrollen❗️"
             }
         }
     },
@@ -427,8 +454,11 @@
                 "useCommand": "{error.emote} Sie haben keine Berechtigung, diesen Befehl zu verwenden."
             },
             "bot": {
+                "dontKnow": "{error.emote} Ich habe eine dieser Berechtigungen nicht `%q`. Ändere sie und versuche es erneut.",
                 "write": "{error.emote} Ich habe keine Berechtigung, in %c zu schreiben.",
-                "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen."
+                "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen.",
+                "roleAdd": "{error.emote} Ich habe nicht die Erlaubnis, Rollen hinzuzufügen.",
+                "roleAddSpecific": "{error.emote} Ich habe nicht die Berechtigung, die Rolle %c hinzuzufügen."
             }
         },
         "ticket": {
@@ -529,6 +559,12 @@
                 "isNsfw": "{error.emote} Der Subreddit `%c` ist als NSFW markiert. Bitte verwende das Argument `nsfw`, um NSFW-Inhalte zu aktivieren.",
                 "wasNotAddedBefore": "{error.emote} Der Subreddit `%c` wurde noch nicht hinzugefügt. Bitte verwende das Argument `add`, um ihn hinzuzufügen.",
                 "isAlreadyAdded": "{error.emote} Der Subreddit `%c` ist bereits hinzugefügt. Bitte verwende das Argument `remove`, um ihn zu entfernen."
+            },
+            "twitch": {
+                "notFound": "{error.emote} Ich konnte den Kanal, den du eingegeben hast, nicht finden.",
+                "maxReached": "{error.emote} Du hast die maximale Anzahl von Kanälen erreicht, die du hinzufügen kannst (%q). Bitte entferne zuerst einen.",
+                "selectEveryChannel": "{error.emote} Bei der Auswahl aller Twitch-Kanäle ist ein Fehler aufgetreten. Bitte kontaktiere den Bot-Support.",
+                "removeChannel": "{error.emote} Beim Entfernen des Kanals ist etwas schief gelaufen. Bitte kontaktiere den Bot-Support."
             }
         },
         "utils": {
@@ -557,6 +593,9 @@
             "counter": {
                 "notFound": "{error.emote} Ich habe auf diesem Server keine Zählereinstellung gefunden.",
                 "alreadyExists": "{error.emote} Es gibt bereits einen Zähler auf diesem Server. Bitte lösche ihn zuerst."
+            },
+            "joinroles": {
+                "notExists": "{error.emote} Die Rolle %c existiert nicht auf diesem Server. Alle vorher existierenden Erwähnungen werden gespeichert."
             }
         },
         "moderation": {
@@ -564,6 +603,10 @@
                 "yourself": "{error.emote} Du kannst nicht dich selbst %c!",
                 "bot": "{error.emote} Du kannst einen Bot nicht %c!",
                 "mod": "{error.emote} Du kannst einen Moderator nicht %c!"
+            },
+            "mute": {
+                "noMuteRoleFoundOrCreated": "{error.emote} Ich habe keine Stummschaltungsrolle gefunden oder erstellt. Bitte erstelle eine Rolle mit dem Namen `Muted` und versuche es erneut.",
+                "notAValidMuteRole": "%q is not a valid Muted Role in %w. Error Message: %e"
             }
         }
     }

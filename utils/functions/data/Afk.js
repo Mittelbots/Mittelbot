@@ -21,7 +21,12 @@ module.exports = class Afk {
 
         return main_interaction
             .reply({
-                content: `✅ You are now afk. \`Reason: ${reason}\``,
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(['success.utils.afk.set', afk], main_interaction.guild.id)
+                        )
+                ]
                 ephemeral: true,
             })
             .catch((err) => {});
@@ -75,11 +80,12 @@ module.exports = class Afk {
                     .reply({
                         embeds: [
                             new EmbedBuilder()
-                                .setTitle('Welcome back!')
                                 .setDescription(
-                                    `You are no longer afk. \`Reason: ${isAuthorAfk.reason}\` You were afk: <t:${isAuthorAfk.time}:R>`
+                                    global.t.trans(['info.utils.afk.noLongerAfk', isAuthorAfk.reason, isAuthorAfk.time], message.guild.id)
                                 )
-                                .setColor('#FF0000'),
+                                .setColor(
+                                    global.t.trans(['general.colors.success'])
+                                ),
                         ],
                     })
                     .then(async (msg) => {

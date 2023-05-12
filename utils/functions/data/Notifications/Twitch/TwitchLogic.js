@@ -31,14 +31,16 @@ module.exports = class TwitchNotifier {
             const twitchName = twitch_user.name;
 
             if (!twitch_user) {
-                return reject(`❌ I couldn't find the channel you have entered.`);
+                return reject(
+                    global.t.trans(['error.notifications.twitch.notFound'], guild.id)
+                );
             }
 
             await this.#fetchMembers({ guild });
             const hasChannelPermission = await this.#checkChannelPerms({ twdcchannel, guild });
             if (!hasChannelPermission) {
                 reject(
-                    `❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`
+                    global.t.trans(['error.permissions.bot.roleAdd', '"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"'], guild.id)
                 );
                 return;
             }
@@ -47,7 +49,9 @@ module.exports = class TwitchNotifier {
                 twitchchannel: twitchId,
                 guild,
             }).catch(() => {
-                reject(`❌ You can only add 3 twitch channels. Remove one and try again.`);
+                reject(
+                    global.t.trans(['error.notifications.twitch.maxReached', 3], guild.id)
+                );
                 return '3';
             });
 
@@ -60,7 +64,9 @@ module.exports = class TwitchNotifier {
                     twpingrole,
                     guild,
                 }).then(() => {
-                    resolve(`✅ Successfully updated the twitch channel \`${twitchchannel}\`.`);
+                    resolve(
+                        global.t.trans(['success.notifications.twitch.updated', twitchchannel], guild.id)
+                    );
                 });
             } else {
                 await this.#createTwitchChannel({
@@ -71,7 +77,7 @@ module.exports = class TwitchNotifier {
                     guild,
                 }).then(() => {
                     resolve(
-                        `✅ Successfully added the twitch channel \`${twitchchannel}\` to the list.`
+                        global.t.trans(['success.notifications.twitch.added', twitchchannel], guild.id)
                     );
                 });
             }
@@ -166,7 +172,7 @@ module.exports = class TwitchNotifier {
                 })
                 .catch((err) => {
                     reject(
-                        `❌ Something went wrong while selecting all twitch channels. Please contact the Bot support.`
+                        global.t.trans(['error.notifications.twitch.selectEveryChannel'], guild.id)
                     );
                     return false;
                 });
@@ -258,7 +264,9 @@ module.exports = class TwitchNotifier {
         return new Promise(async (resolve, reject) => {
             const twitchChannel = await this.getTwitchFromChannelName(channel);
             if (!twitchChannel) {
-                return reject(`❌ I couldn't find the channel you have entered.`);
+                return reject(
+                    global.t.trans(['error.notifications.twitch.notFound'], guild.id)
+                );
             }
 
             await twitchStreams
@@ -269,11 +277,13 @@ module.exports = class TwitchNotifier {
                     },
                 })
                 .then(() => {
-                    resolve('✅ Successfully removed the twitch channel to the notification list.');
+                    resolve(
+                        global.t.trans(['success.notifications.twitch.removed'], guild.id)
+                    );
                 })
                 .catch((err) => {
                     reject(
-                        '❌ Something went wrong while removing the channel from the database. Please contact the Bot support.'
+                        global.t.trans(['error.notifications.twitch.removeChannel'], guild.id)
                     );
                 });
         });

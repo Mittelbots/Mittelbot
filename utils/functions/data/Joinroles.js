@@ -31,7 +31,9 @@ class Joinroles {
                 }
 
                 if (joinroles.length == 0) {
-                    return resolve(`Successfully removed all joinroles`);
+                    return resolve(
+                        global.t.trans(['success.admin.joinroles.removedAll'], guild.id)
+                    );
                 }
             }
             let passedRoles = [];
@@ -42,7 +44,7 @@ class Joinroles {
                     if (role.tags && role.tags.botId) continue;
                 } catch (err) {
                     return reject(
-                        `${roles[i]} doesn't exists! All existing mentions before are saved.`
+                        global.t.trans(['error.admin.joinroles.notExists', roles[i]], guild.id)
                     );
                 }
                 try {
@@ -54,7 +56,9 @@ class Joinroles {
                         await user.roles.add(role).catch((err) => {});
                     }
                 } catch (err) {
-                    return reject(`I don't have the permission to add this role: **${role}**`);
+                    return reject(
+                        global.t.trans(['error.permissions.bot.roleAddSpecific', role], guild.id)
+                    );
                 }
                 passedRoles.push(role.id);
             }
@@ -66,14 +70,18 @@ class Joinroles {
             })
                 .then(() => {
                     if (joinroles.length === 0 && passedRoles.length === 0) {
-                        resolve(`Joinroles successfully cleared.`);
+                        resolve(
+                            global.t.trans(['success.admin.joinroles.cleared'], guild.id)
+                        );
                     } else {
-                        resolve(`Successfully updated all joinroles`);
+                        resolve(
+                            global.t.trans(['success.admin.joinroles.updated'], guild.id)
+                        );
                     }
                 })
                 .catch(() => {
                     reject(
-                        `Something went wrong while updating the joinroles config. Please try again later.`
+                        global.t.trans(['error.general'], guild.id)
                     );
                 });
         });
@@ -95,10 +103,14 @@ class Joinroles {
                 valueName: 'joinroles',
             })
                 .then(() => {
-                    resolve(`Successfully removed all joinroles`);
+                    resolve(
+                        global.t.trans(['success.admin.joinroles.removedAll'], guild.id)
+                    );
                 })
                 .catch(() => {
-                    reject(`Something went wrong while removing the joinroles.`);
+                    reject(
+                        global.t.trans(['error.general'], guild.id)
+                    );
                 });
         });
     }

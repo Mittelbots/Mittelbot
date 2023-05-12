@@ -18,6 +18,11 @@
             "counter": {
                 "removed": "{success.emote} Successfully removed the counter.",
                 "set": "{success.emote} Successfully set the counter to %c"
+            },
+            "joinroles": {
+                "updated": "{success.cheerEmote} Successfully updated all joinroles",
+                "removedAll": "{success.emote} Successfully removed all join roles.",
+                "cleared": "{success.emote} Joinroles successfully cleared."
             }
         },
         "ticket": {
@@ -133,11 +138,17 @@
             },
             "youtube": {
                 "removed": "{success.cheerEmote} Successfully removed the youtube notification for %c"
+            },
+            "twitch": {
+                "added": "{success.cheerEmote} Successfully added the twitch channel `%q` to the list.",
+                "updated": "{success.cheerEmote} Successfully updated the twitch notification for `%q`",
+                "removed": "{success.cheerEmote} Successfully removed the twitch channel to the notification list."
             }
         },
         "utils": {
             "afk": {
-                "noLongerAfk": "{success.emote} You are no longer afk."
+                "set": "{success.emote} You are now afk. Reason `%q`",
+                "noLongerAfk": "{success.emote} You are no longer afk. Reason: %w You were afk: <t:%w:R>"
             },
             "password": {
                 "generated": "{success.emote} Your password has been generated: `%c`"
@@ -388,6 +399,23 @@
                     "title": "🔞 NSFW",
                     "description": "'This post is marked as NSFW. Please be careful when viewing it."
                 }
+            },
+            "twitch": {
+                "endedStream": "%q has ended their stream!",
+                "startedHrsAgo": "Stream started %q hours ago - Last updated",
+                "endedHrsAgo": "Stream ended %q hours ago",
+                "justWentLive": "%q just went live!",
+                "justEnded": "%q just ended their stream!",
+                "fields": {
+                    "game": "Game",
+                    "viewers": "Viewers",
+                    "tags": "Tags"
+                }
+            }
+        },
+        "moderation": {
+            "warn": {
+                "hasAllWarnRoles": "❗️This user has already all warnroles.❗️"
             }
         }
     },
@@ -427,8 +455,11 @@
                 "useCommand": "{error.emote} You don't have permission to use this command."
             },
             "bot": {
+                "dontKnow": "{error.emote} I don't have one of these permissions `%q`. Change them and try again.",
                 "write": "{error.emote} I don't have permission to write in %c.",
-                "channelDelete": "{error.emote} I don't have permission to delete channels."
+                "channelDelete": "{error.emote} I don't have permission to delete channels.",
+                "roleAdd": "{error.emote} I don't have permission to add roles.",
+                "roleAddSpecific": "{error.emote} I don't have permission to add the role %c."
             }
         },
         "ticket": {
@@ -529,6 +560,12 @@
                 "isNsfw": "{error.emote} The subreddit `%c` is marked as NSFW. Please use the `nsfw` argument to enable NSFW content.",
                 "wasNotAddedBefore": "{error.emote} The subreddit `%c` was not added before. Please use the `add` argument to add it.",
                 "isAlreadyAdded": "{error.emote} The subreddit `%c` is already added. Please use the `remove` argument to remove it."
+            },
+            "twitch": {
+                "notFound": "{error.emote} I couldn't find the channel you have entered.",
+                "maxReached": "{error.emote} You have reached the maximum amount of channels you can add (%q). Please remove one first.",
+                "selectEveryChannel": "{error.emote}  Something went wrong while selecting all twitch channels. Please contact the Bot support.",
+                "removeChannel": "{error.emote} Something went wrong while removing the channel. Please contact the Bot support."
             }
         },
         "utils": {
@@ -557,6 +594,9 @@
             "counter": {
                 "notFound": "{error.emote} I don't have found any counter setting in this server.",
                 "alreadyExists": "{error.emote} There is already a counter in this server. Please delete it first."
+            },
+            "joinroles": {
+                "notExists": "{error.emote} The role %c doesn't exists on this server. All existing mentions before are saved."
             }
         },
         "moderation": {
@@ -564,6 +604,10 @@
                 "yourself": "{error.emote} You can't %c yourself!",
                 "bot": "{error.emote} You can't %c a bot!",
                 "mod": "{error.emote} You can't %c a moderator!"
+            },
+            "mute": {
+                "noMuteRoleFoundOrCreated": "{error.emote} No mute role found or created. Please create a role with the name `Muted` and set the permissions for this role. I need the permission to send messages in the channel and to manage roles.",
+                "notAValidMuteRole": "%q is not a valid Muted Role in %w. Error Message: %e"
             }
         }
     }
