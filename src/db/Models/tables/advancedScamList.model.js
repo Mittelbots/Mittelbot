@@ -29,6 +29,9 @@ AdvancedScamList.init(
         request_message: {
             type: DataTypes.JSON,
         },
+        request_guild: {
+            type: DataTypes.BIGINT,
+        },
     },
     {
         sequelize: database,

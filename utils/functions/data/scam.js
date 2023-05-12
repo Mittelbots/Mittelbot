@@ -46,7 +46,7 @@ class Scam {
                         return (pass = true);
                     }
                 })
-                .catch((err) => {
+                .catch(() => {
                     return reject(`❌ Error while checking something in the database!`);
                 });
 
@@ -351,7 +351,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
         const data = main_interaction.customId.split('_');
         const request_id = data[1];
 
-        request = await advancedScamList
+        const request = await advancedScamList
             .findOne({
                 where: {
                     request_id: request_id,
@@ -360,7 +360,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
             .then((res) => {
                 return res;
             })
-            .catch((err) => {
+            .catch(() => {
                 return reject('❌ Error while getting data from the database!');
             });
 
@@ -370,7 +370,7 @@ module.exports.manageScam = async ({ main_interaction }) => {
                 .update({
                     components: [],
                 })
-                .catch((err) => {});
+                .catch(() => {});
             return;
         }
         const user = main_interaction.bot.guilds.cache
