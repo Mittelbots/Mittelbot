@@ -192,7 +192,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 const voiceChannel = this.guild.members.me.voice.channel;
-                if (!voiceChannel) reject(`I'm not in a voice channel right now.`);
+                if (!voiceChannel) reject(global.t.trans(['info.music.notInVC']));
                 voiceChannel.leave();
                 resolve();
             } catch (e) {
@@ -231,16 +231,13 @@ module.exports = class Music {
 
     checkAvailibility(play = false) {
         return new Promise(async (resolve) => {
-            if (!(await this.isUserInChannel()))
-                return resolve('You are not in a voice channel to use this command!');
+            if (!(await this.isUserInChannel())) {
+                return resolve(global.t.trans(['error.music.userIsNotInAVoiceChannel']));
+            }
             if (await this.isBotInAnotherChannel())
-                return resolve(
-                    'I am already in another voice channel! Please join that channel or wait until i left!'
-                );
+                return resolve(global.t.trans(['error.music.botIsAlreadyInAVoiceChannel']));
             if (!(await this.isBotInAVoiceChannel()) && !play)
-                return resolve(
-                    'I am not in a voice channel! Please let me join you channel first by using the play command!'
-                );
+                return resolve(global.t.trans(['error.music.botIsNotInAVoiceChannel']));
             return resolve(false);
         });
     }

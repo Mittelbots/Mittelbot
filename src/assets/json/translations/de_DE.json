@@ -18,6 +18,23 @@
             "counter": {
                 "removed": "{success.emote} Der Zähler wurde erfolgreich entfernt.",
                 "set": "{success.emote} Erfolgreich den Zähler auf %c gesetzt"
+            },
+            "joinroles": {
+                "updated": "{success.cheerEmote} Erfolgreich alle Joinroles aktualisiert",
+                "removedAll": "{success.emote} Erfolgreich alle Join-Rollen entfernt.",
+                "cleared": "{success.emote} Joinroles erfolgreich geklärt."
+            },
+            "logs": {
+                "updatedWhitelist": "{success.emote} Die Whitelist wurde erfolgreich aktualisiert.",
+                "updatedLogs": "{success.emote} Die Logs wurden erfolgreich aktualisiert."
+            },
+            "modroles": {
+                "updated": "{success.emote} <@&%q> wurde aktualisiert zu %w",
+                "removed": "{success.emote} <@&%q> wurde aus der Modroles-Einstellung entfernt."
+            },
+            "reactionroles": {
+                "updated": "{success.emote} Die Reaktionsrollen wurden aktualisiert.",
+                "removed": "{success.emote} Die Reaktionsrollen wurden entfernt."
             }
         },
         "ticket": {
@@ -133,6 +150,11 @@
             },
             "youtube": {
                 "removed": "{success.cheerEmote}Erfolgreich die YouTube-Benachrichtigung für %c entfernt"
+            },
+            "twitch": {
+                "added": "{success.cheerEmote} Erfolgreich den Twitch-Kanal `%q` zur Liste hinzugefügt.",
+                "updated": "{success.cheerEmote} Erfolgreich die Twitch-Benachrichtigung für `%c` aktualisiert",
+                "removed": "{success.cheerEmote} Erfolgreich den Twitch-Kanal aus der Benachrichtigungsliste entfernt."
             }
         },
         "utils": {
@@ -269,13 +291,19 @@
             "requestedby": "Hinzugefügt von",
             "songsInQueue": "Lieder in der Warteschlange: %c",
             "duration": "Länge: %c",
-            "nowplaying": "Jetzt spielt: %c \nHinzugefügt von: %x \nLänge: %y \nURL: %v",
+            "nowplaying": "{info.music.nowPlayingOnlyTrack} \nHinzugefügt von: %x \nLänge: %y \nURL: %v",
+            "nowPlayingOnlyTrack": "Jetzt spielt: %c",
             "queue": {
                 "queueLength": "Songs %c - %x",
                 "songEmbedName": "Song %c",
                 "songEmbedValue": "%c (%x)\n Hinzugefügt von: %y"
             },
-            "multipleSearchResultsFound": "Mehrere Suchergebnisse gefunden. Bitte wähle eine der folgenden Möglichkeiten:"
+            "multipleSearchResultsFound": "Mehrere Suchergebnisse gefunden. Bitte wähle eine der folgenden Möglichkeiten:",
+            "trackAddedToQueue": "Song hinzugefügt: %c",
+            "disconnected": "Ich wurde manuell getrennt oder aufgrund von Inaktivität aus dem Voice-Kanal, Warteschlange wird gelöscht.",
+            "emptyChannel": "Niemand ist im Sprachkanal. Ich verlasse den Sprachkanal.",
+            "queueHasEnded": "Warteschlange ist zu Ende. ",
+            "notInAVC": "I'm not in a voice channel right now."
         },
         "utils": {
             "afk": {
@@ -360,7 +388,12 @@
             "imgur": "[Klicken Sie hier, um das Bild zu sehen]( %c )"
         },
         "fun": {
-            "punch": "Du hast %c geschlagen"
+            "punch": "Du hast %c geschlagen",
+            "timer": {
+                "timerEnded": "Dein Timer ist abgelaufen!",
+                "timeLeft": "**Zeit verbleibend:** %c",
+                "timeLeftTime": "**Zeit verbleibend** %q Tag(e) %w Stunde(n) %e Minute(n)"
+            }
         },
         "commands": {
             "firstCommand": {
@@ -369,6 +402,32 @@
                     "invite": "Support-Server beitreten",
                     "close": "Schließen und nie wieder fragen"
                 }
+            }
+        },
+        "notifications": {
+            "reddit": {
+                "new_post": "%q Der subreddit %c hat einen neuen Beitrag hochgeladen. Sehe es dir hier an: %x",
+                "nsfwInfo": {
+                    "title": "🔞 NSFW",
+                    "description": "Dieser Beitrag ist als NSFW gekennzeichnet. Bitte sei vorsichtig, wenn du ihn ansiehst."
+                }
+            },
+            "twitch": {
+                "endedStream": "%q hat den Stream beendet!",
+                "startedHrsAgo": "Stream gestartet vor %q Stunden - Zuletzt aktualisiert",
+                "endedHrsAgo": "Stream endete vor %q Stunden",
+                "justWentLive": "%q ist soeben live gegangen!",
+                "justEnded": "%q hat gerade seinen Stream beendet!",
+                "fields": {
+                    "game": "Spiel",
+                    "viewers": "Zuschauer",
+                    "tags": "Tags"
+                }
+            }
+        },
+        "moderation": {
+            "warn": {
+                "hasAllWarnRoles": "❗️Dieser Benutzer hat bereits alle Warnrollen❗️"
             }
         }
     },
@@ -408,8 +467,12 @@
                 "useCommand": "{error.emote} Sie haben keine Berechtigung, diesen Befehl zu verwenden."
             },
             "bot": {
+                "dontKnow": "{error.emote} Ich habe eine dieser Berechtigungen nicht `%q`. Ändere sie und versuche es erneut.",
                 "write": "{error.emote} Ich habe keine Berechtigung, in %c zu schreiben.",
-                "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen."
+                "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen.",
+                "roleAdd": "{error.emote} Ich habe nicht die Erlaubnis, Rollen hinzuzufügen.",
+                "roleAddSpecific": "{error.emote} Ich habe nicht die Berechtigung, die Rolle %c hinzuzufügen.",
+                "manageReactions": "{error.emote} I don't have permission to manage reactions."
             }
         },
         "ticket": {
@@ -500,7 +563,12 @@
                 "noResults": "{error.emote} Keine Ergebnisse für deine Suche. Bitte sende einen gültigen Link.",
                 "botIsMuted": "{error.emote} Ich bin in diesem Kanal stummgeschaltet. Deine Warteschlange ist pausiert. Bitte hebe die Stummschaltung auf, um Musik abzuspielen."
             },
-            "queue": {}
+            "queue": {
+                "queueError": "{error.emote} There was an error getting the queue. {general.tryAgainLater}"
+            },
+            "userIsNotInAVoiceChannel": "{error.emote} Du musst dich in einem Sprachkanal befinden, um diesen Befehl zu verwenden!",
+            "botIsAlreadyInAVoiceChannel": "{error.emote} Ich bin bereits in einem Sprachkanal! Bitte trete diesem Kanal bei oder warte bis ich weg bin!",
+            "botIsNotInAVoiceChannel": "{error.emote} Ich bin nicht in einem Sprachkanal! Bitte trete zuerst einem Kanal bei!"
         },
         "notifications": {
             "reddit": {
@@ -508,6 +576,12 @@
                 "isNsfw": "{error.emote} Der Subreddit `%c` ist als NSFW markiert. Bitte verwende das Argument `nsfw`, um NSFW-Inhalte zu aktivieren.",
                 "wasNotAddedBefore": "{error.emote} Der Subreddit `%c` wurde noch nicht hinzugefügt. Bitte verwende das Argument `add`, um ihn hinzuzufügen.",
                 "isAlreadyAdded": "{error.emote} Der Subreddit `%c` ist bereits hinzugefügt. Bitte verwende das Argument `remove`, um ihn zu entfernen."
+            },
+            "twitch": {
+                "notFound": "{error.emote} Ich konnte den Kanal, den du eingegeben hast, nicht finden.",
+                "maxReached": "{error.emote} Du hast die maximale Anzahl von Kanälen erreicht, die du hinzufügen kannst (%q). Bitte entferne zuerst einen.",
+                "selectEveryChannel": "{error.emote} Bei der Auswahl aller Twitch-Kanäle ist ein Fehler aufgetreten. Bitte kontaktiere den Bot-Support.",
+                "removeChannel": "{error.emote} Beim Entfernen des Kanals ist etwas schief gelaufen. Bitte kontaktiere den Bot-Support."
             }
         },
         "utils": {
@@ -530,6 +604,41 @@
                 "sameUserAgain": "{error.emote} Du kannst nicht zweimal hintereinander zählen.",
                 "wrongCount": "{error.emote} Du musst mit der richtigen Zahl zählen. Die richtige Zahl hätte %c sein sollen",
                 "countReseted": "Der Zähler wurde zurückgesetzt. Versuchen Sie es erneut!"
+            }
+        },
+        "admin": {
+            "counter": {
+                "notFound": "{error.emote} Ich habe auf diesem Server keine Zählereinstellung gefunden.",
+                "alreadyExists": "{error.emote} Es gibt bereits einen Zähler auf diesem Server. Bitte lösche ihn zuerst."
+            },
+            "joinroles": {
+                "notExists": "{error.emote} Die Rolle %c existiert nicht auf diesem Server. Alle vorher existierenden Erwähnungen werden gespeichert."
+            },
+            "logs": {
+                "alreadyRoleWhitelisted": "{error.emote} Diese Rolle ist bereits auf der Whitelist.",
+                "alreadyChannelWhitelisted": "{error.emote} Dieser Kanal ist bereits auf der Whitelist."
+            },
+            "reactionroles": {
+                "notEqual": "{error.emote} Die Anzahl der Rollen und Emojis sind nicht gleich. Bitte überprüfe deine Eingabe.",
+                "messageLinkNotValid": "{error.emote} Der Link zur Nachricht ist ungültig. Bitte überprüfe deine Eingabe.",
+                "messageNotFound": "{error.emote} Die Nachricht wurde nicht gefunden. Bitte überprüfe deine Eingabe.",
+                "emojiDoesntExists": "{error.emote} Das Emoji <:emote:&%c> existiert nicht.",
+                "emojiNotFound": "{error.emote} Das Emoji <:&%c> wurde nicht gefunden.",
+                "roleDoesntExists": "{error.emote} Die Rolle <@&%c> existiert nicht.",
+                "roleNotFound": "{error.emote} Die Rolle <@&%c> wurde nicht gefunden.",
+                "maxRoles": "{error.emote} Sie können nicht mehr als %c Rollen hinzufügen.",
+                "noReactionRolesInServer": "{error.emote} Auf diesem Server gibt es keine Reaktionsrollen."
+            }
+        },
+        "moderation": {
+            "youcantx": {
+                "yourself": "{error.emote} Du kannst nicht dich selbst %c!",
+                "bot": "{error.emote} Du kannst einen Bot nicht %c!",
+                "mod": "{error.emote} Du kannst einen Moderator nicht %c!"
+            },
+            "mute": {
+                "noMuteRoleFoundOrCreated": "{error.emote} Ich habe keine Stummschaltungsrolle gefunden oder erstellt. Bitte erstelle eine Rolle mit dem Namen `Muted` und versuche es erneut.",
+                "notAValidMuteRole": "%q is not a valid Muted Role in %w. Error Message: %e"
             }
         }
     }

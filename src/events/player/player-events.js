@@ -14,10 +14,12 @@ module.exports.registerPlayerEvents = (player, bot) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            `Error emitted from the queue ${queue.guild.name} | ${error.message}`
+                            global.t.trans(
+                                ['error.generalWithMessage', err.message],
+                                queue.guild.id
+                            )
                         )
-                        .setColor('#bb0000')
-                        .setTimestamp(),
+                        .setColor(global.t.trans(['general.colors.error'], queue.guild.id)),
                 ],
             })
             .catch(() => {
@@ -37,10 +39,12 @@ module.exports.registerPlayerEvents = (player, bot) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            `Error emitted from the connection ${queue.guild.name} | ${error.message}`
+                            global.t.trans(
+                                ['error.generalWithMessage', err.message],
+                                queue.guild.id
+                            )
                         )
-                        .setColor('#bb0000')
-                        .setTimestamp(),
+                        .setColor(global.t.trans(['general.colors.error'], queue.guild.id)),
                 ],
             })
             .catch(() => {
@@ -53,16 +57,20 @@ module.exports.registerPlayerEvents = (player, bot) => {
             .send({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`Now playing ${track.title}...`)
+                        .setDescription(
+                            global.t.trans(
+                                ['info.music.nowPlayingOnlyTrack', track.title],
+                                queue.guild.id
+                            )
+                        )
                         .addFields({
-                            name: 'Requested by',
+                            name: global.t.trans(['info.music.requestedBy'], queue.guild.id),
                             value: track.requestedBy
                                 ? track.requestedBy.username || 'Unknown'
                                 : 'Unknown',
                         })
-                        .setColor('#38ff46')
-                        .setThumbnail(track.thumbnail)
-                        .setTimestamp(),
+                        .setColor(global.t.trans(['general.colors.info']))
+                        .setThumbnail(track.thumbnail),
                 ],
             })
             .catch(() => {
@@ -75,16 +83,17 @@ module.exports.registerPlayerEvents = (player, bot) => {
             .send({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`Track ${track} added to the queue!`)
+                        .setDescription(
+                            global.t.trans(['info.music.tracksAddedToQueue', track], queue.guild.id)
+                        )
                         .addFields({
-                            name: 'Requested by',
+                            name: global.t.trans(['info.music.requestedBy'], queue.guild.id),
                             value: track.requestedBy
                                 ? track.requestedBy.username || 'Unknown'
                                 : 'Unknown',
                         })
-                        .setColor('#38ff46')
-                        .setThumbnail(track.thumbnail)
-                        .setTimestamp(),
+                        .setColor(global.t.trans(['general.colors.info']))
+                        .setThumbnail(track.thumbnail),
                 ],
             })
             .catch(() => {
@@ -97,10 +106,8 @@ module.exports.registerPlayerEvents = (player, bot) => {
             .send({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(
-                            `I was manually disconnected or left due inactivity from the voice channel, clearing queue!`
-                        )
-                        .setColor('#ff6e12')
+                        .setDescription(global.t.trans(['info.music.disconnected'], queue.guild.id))
+                        .setColor(global.t.trans(['general.colors.info']))
                         .setTimestamp(),
                 ],
             })
@@ -115,9 +122,8 @@ module.exports.registerPlayerEvents = (player, bot) => {
             .send({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`Nobody is in the voice channel, leaving the channel!`)
-                        .setColor('#ff6e12')
-                        .setTimestamp(),
+                        .setDescription(global.t.trans(['info.music.emptyChannel'], queue.guild.id))
+                        .setColor(global.t.trans(['general.colors.info'])),
                 ],
             })
             .catch(() => {
@@ -132,9 +138,10 @@ module.exports.registerPlayerEvents = (player, bot) => {
             .send({
                 embeds: [
                     new EmbedBuilder()
-                        .setDescription(`Queue has ended!`)
-                        .setColor('#ff6e12')
-                        .setTimestamp(),
+                        .setDescription(
+                            global.t.trans(['info.music.queueHasEnded'], queue.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.info'])),
                 ],
             })
             .catch(() => {

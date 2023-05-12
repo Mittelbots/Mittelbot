@@ -28,7 +28,9 @@ async function warnUser({ bot, user, mod, guild, reason }) {
         bot
     );
     if (warnroles && warnroles.hasAllRoles) {
-        p_response.message.setDescription(`❗️This user has already all warnroles.❗️`);
+        p_response.message.setDescription(
+            global.t.trans(['info.moderation.warn.hasAllWarnRoles'], guild.id)
+        );
     }
 
     await privateModResponse({

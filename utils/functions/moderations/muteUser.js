@@ -19,7 +19,9 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
 
         if (!mutedRole) {
             errorhandler({ err, fatal: false, message: `${mutedRole} is not a valid Muted Role.` });
-            return reject('Could not find/create Muted role.');
+            return reject(
+                global.t.trans(['error.moderation.mute.noMuteRoleFoundOrCreated'], guild.id)
+            );
         }
 
         await guild_user.roles
@@ -28,7 +30,9 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                 return true;
             })
             .catch((err) => {
-                if (err.code === 50013) return reject(`I don't have permissions to give the role!`);
+                if (err.code === 50013) {
+                    return reject(global.t.trans(['error.permissions.bot.roleAdd'], guild.id));
+                }
 
                 errorhandler({
                     err,
@@ -36,7 +40,15 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                     message: `${mutedRole} is not a valid Muted Role in ${guild.id}`,
                 });
                 return reject(
-                    `${mutedRole} is not a valid Muted Role in ${guild.id}. Error Message: ${err.message}`
+                    global.t.trans(
+                        [
+                            'error.moderation.mute.notAValidMuteRole',
+                            mutedRole,
+                            guild.id,
+                            err.message,
+                        ],
+                        guild.id
+                    )
                 );
             });
         if (user_roles.length !== 0) await removeAllRoles(guild_user);

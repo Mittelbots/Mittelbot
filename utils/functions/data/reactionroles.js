@@ -20,7 +20,7 @@ module.exports.updateReactionRoles = async ({
         }
 
         if (roles.length !== emojis.length) {
-            return reject('❌ The number of roles and emojis must be equal');
+            return reject(global.t.trans(['error.admin.reactionroles.notEqual'], guild_id));
         }
 
         const messageLink = message_link.split('/');
@@ -28,7 +28,9 @@ module.exports.updateReactionRoles = async ({
         const messageId = messageLink[messageLink.length - 1];
 
         if (!messageLink || !channel || !messageId) {
-            return reject('❌ The message link is not valid');
+            return reject(
+                global.t.trans(['error.admin.reactionroles.messageLinkNotValid'], guild_id)
+            );
         }
 
         const message = await main_interaction.bot.guilds.cache
@@ -37,7 +39,7 @@ module.exports.updateReactionRoles = async ({
             .messages.fetch(messageId);
 
         if (!message) {
-            return reject('❌ The message does not exist. Please check the link.');
+            return reject(global.t.trans(['error.admin.reactionroles.messageNotFound'], guild_id));
         }
 
         for (let i in roles) {
@@ -47,17 +49,29 @@ module.exports.updateReactionRoles = async ({
                     message.react(emojis[i]);
                     isDefault = true;
                 } catch (err) {
-                    return reject(`❌<:&${emojis[i]}> not found in this guild.`);
+                    return reject(
+                        global.t.trans(
+                            ['error.admin.reactionroles.emojiNotFound', emojis[i]],
+                            guild_id
+                        )
+                    );
                 }
             }
             let role = await main_interaction.bot.guilds.cache
                 .get(guild_id)
                 .roles.fetch(roles[i])
                 .catch(() => {
-                    return reject(`❌ The role ${roles[i]} does not exist.`);
+                    return reject(
+                        global.t.trans(
+                            ['error.admin.reactionroles.roleDoesntExists', roles[i]],
+                            guild_id
+                        )
+                    );
                 });
             if (!role) {
-                return reject(`❌< @&${roles[i]}> not found in this guild.`);
+                return reject(
+                    global.t.trans(['error.admin.reactionroles.roleNotFound', roles[i]], guild_id)
+                );
             }
 
             if (!isDefault) {
@@ -66,12 +80,20 @@ module.exports.updateReactionRoles = async ({
                     .emojis.fetch(emojis[i])
                     .catch((err) => {
                         return reject(
-                            `❌ The emoji <:emote:${emojis[i]}> does not exist in this Server.`
+                            global.t.trans(
+                                ['error.admin.reactionroles.emojiDoesntExists', emojis[i]],
+                                guild_id
+                            )
                         );
                     });
 
                 if (!emoji) {
-                    return reject(`❌<:${emojis[i]}> not found in this guild.`);
+                    return reject(
+                        global.t.trans(
+                            ['error.admin.reactionroles.emojiNotFound', emojis[i]],
+                            guild_id
+                        )
+                    );
                 }
             }
         }
@@ -80,7 +102,7 @@ module.exports.updateReactionRoles = async ({
         const reactionroles = guildConfig.reactionroles || [];
 
         if (reactionroles.length >= 5) {
-            return reject('❌ You can only have up to 5 reaction roles.');
+            return reject(global.t.trans(['error.admin.reactionroles.maxRoles', 5], guild_id));
         }
 
         if (reactionroles.length > 0) {
@@ -114,20 +136,22 @@ module.exports.updateReactionRoles = async ({
             .then(async (res) => {
                 await message.reactions.removeAll().catch(() => {
                     return reject(
-                        `❌ I dont have permissions to remove the reactions from the message.`
+                        global.t.trans(['error.permissions.bot.manageReactions'], guild_id)
                     );
                 });
 
                 for (let i = 0; i < length; i++) {
                     await message.react(`${emojis[i]}`).catch(() => {
-                        return reject('❌ I do not have the permission to react to this message');
+                        return reject(
+                            global.t.trans(['error.permissions.bot.manageReactions'], guild_id)
+                        );
                     });
                 }
 
-                resolve(`✅ The reaction roles have been updated.`);
+                resolve(global.t.trans(['success.admin.reactionroles.updated'], guild_id));
             })
             .catch((err) => {
-                reject(`❌ There was an error updating the reaction roles.`);
+                reject(global.t.trans(['error.general'], guild_id));
             });
     });
 };
@@ -139,7 +163,9 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
         const messageId = messageLink[messageLink.length - 1];
 
         if (!messageLink || !channel || !messageId) {
-            return reject('❌ The message link is not valid');
+            return reject(
+                global.t.trans(['error.admin.reactionroles.messageLinkNotValid'], guild_id)
+            );
         }
 
         const message = await main_interaction.bot.guilds.cache
@@ -148,7 +174,7 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
             .messages.fetch(messageId);
 
         if (!message) {
-            return reject('❌ The message does not exist');
+            return reject(global.t.trans(['error.admin.reactionroles.messageNotFound'], guild_id));
         }
 
         const guildConfig = await GuildConfig.get(guild_id);
@@ -171,16 +197,16 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
                 await message.reactions
                     .removeAll()
                     .then(() => {
-                        resolve(`✅ The reaction roles have been removed.`);
+                        resolve(global.t.trans(['success.admin.reactionroles.removed'], guild_id));
                     })
                     .catch(() => {
                         return reject(
-                            `❌ I dont have permissions to remove the reactions from the message. ✅ But the reaction roles have been removed from the database.`
+                            global.t.trans(['error.permissions.bot.manageReactions'], guild_id)
                         );
                     });
             })
             .catch((err) => {
-                reject(`❌ There was an error updating the reaction roles.`);
+                reject(global.t.trans(['error.general'], guild_id));
             });
     });
 };
@@ -191,7 +217,6 @@ module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) =>
         try {
             await reaction.fetch();
         } catch (error) {
-            console.error('Something went wrong when fetching the message:', error);
             return;
         }
     }
@@ -235,11 +260,13 @@ module.exports.viewAllReactionRoles = (guild_id) => {
         const reactionroles = guildConfig.reactionroles;
 
         if (reactionroles.length === 0) {
-            return reject('❌ There are no reaction roles in this server.');
+            return reject(
+                global.t.trans(['error.admin.reactionroles.noReactionRolesInServer'], guild_id)
+            );
         }
 
         let embed = new EmbedBuilder()
-            .setColor('#0099ff')
+            .setColor(global.t.trans(['general.colors.info']))
             .setTitle('Reaction Roles')
             .setTimestamp();
 
