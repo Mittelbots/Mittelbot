@@ -1,0 +1,13 @@
+diff --git a/node_modules/canvacord/src/Rank.js b/node_modules/canvacord/src/Rank.js
+index 4ad2145..5ac2490 100644
+--- a/node_modules/canvacord/src/Rank.js
++++ b/node_modules/canvacord/src/Rank.js
+@@ -512,7 +512,7 @@ class Rank {
+         ctx.font = `bold 36px ${ops.fontX}`;
+         ctx.fillStyle = this.data.username.color;
+         ctx.textAlign = "start";
+-        const name = Util.shorten(this.data.username.name, 10);
++        const name = Util.shorten(this.data.username.name, this.data.discriminator.discrim ? 10 : 15);
+ 
+         const hasHandle = typeof this.data.discriminator.discrim === 'string' && this.data.discriminator.discrim.startsWith('@');
+         const yCoord = hasHandle ? 140 : 164;
