@@ -7,13 +7,13 @@ module.exports.autoModerationRuleCreate = async (bot, rule) => {
     const allowList = rule.triggerMetadata.allowList.join(', ') || 'none';
     const mentionTotalLimit = rule.triggerMetadata.mentionTotalLimit || 'none';
     const exemptRoles =
-        rule.triggerMetadata.exemptRoles.length > 0
+        rule.triggerMetadata?.exemptRoles?.length > 0
             ? rule.triggerMetadata.exemptRoles.map((role) => {
                   return `<@&${role}>`;
               }) || 'none'
             : 'none';
     const exemptChannels =
-        rule.triggerMetadata.exemptChannels.length > 0
+        rule.triggerMetadata?.exemptChannels?.length > 0
             ? rule.triggerMetadata.exemptChannels.map((channel) => {
                   return `<#${channel}>`;
               }) || 'none'
