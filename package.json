@@ -41,7 +41,7 @@
         "axios": "^1.4.0",
         "body-parser": "^1.20.2",
         "caller-id": "^0.1.0",
-        "canvacord": "5.4.8",
+        "canvacord": "5.4.9",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "discord-html-transcripts": "^3.1.4",
