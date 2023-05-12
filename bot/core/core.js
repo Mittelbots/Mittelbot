@@ -1,7 +1,6 @@
 const { checkInfractions } = require('../../src/events/checkInfraction');
 const { checkTemproles } = require('../../src/events/checkTemproles');
 const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier');
-const { handleUploads } = require('../../src/events/notfifier/yt_notifier');
 const {
     createSlashCommands,
     loadCommandList,
@@ -14,6 +13,7 @@ const { timer } = require('../../src/events/timer/timer');
 const ScamDetection = require('../../utils/checkForScam/checkForScam');
 const logs = require('discord-logs');
 const Music = require('../../utils/functions/data/Music');
+const YouTubeNotification = require('../../utils/functions/data/Notifications/YouTube/YouTubeNotification');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -29,9 +29,7 @@ module.exports.startBot = async (bot) => {
             /**
                 ---- Events & Timer ----
             */
-            handleUploads({
-                bot,
-            });
+            new YouTubeNotification().init(bot);
             twitch_notifier({
                 bot,
             });
