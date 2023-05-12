@@ -29,12 +29,12 @@ module.exports = class ScamDetection {
 
             if (await isMod({ member, guild: message.guild })) return resolve(false);
 
-            const scamListDB = advancedScamList
+            const scamListDB = await advancedScamList
                 .findAll()
                 .then((res) => {
                     return res;
                 })
-                .catch((err) => {
+                .catch(() => {
                     return [];
                 });
             const scamLinksExt = publicScamList;
@@ -81,21 +81,21 @@ module.exports = class ScamDetection {
                         match = 100;
                     }
 
-                    if (match >= 85) {
-                        // await banUser({
-                        //     user: await message.guild.members.fetch(message.author),
-                        //     mod: bot.user,
-                        //     guild: message.guild,
-                        //     reason: `User tried to sent a Scam Link : ${scamLinksExt[index]}`,
-                        //     bot,
-                        //     dbtime: getModTime('99999d'),
-                        //     time: 'Permanent',
-                        //     isAuto: true
-                        // });
+                    if (match >= 94) {
+                        await banUser({
+                            user: await message.guild.members.fetch(message.author),
+                            mod: bot.user,
+                            guild: message.guild,
+                            reason: `User tried to sent a Scam Link : ${scamLinksExt[index]}`,
+                            bot,
+                            dbtime: getModTime('99999d'),
+                            time: 'Permanent',
+                            isAuto: true,
+                        });
                         errorhandler({
                             err: `User tried to sent a Scam Link : ${scamLinksExt[index]}, Users Input: ${messageArray[i]}`,
                         });
-                        await message.delete().catch((err) => {});
+                        await message.delete().catch(() => {});
                         i = 0;
                         return resolve(true);
                     }

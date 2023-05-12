@@ -22,6 +22,8 @@ const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
 const antiInvite = new AutomodAntiInvite();
 const antiLinks = new AutomodAntiLinks();
+const antiScam = new ScamDetection();
+antiScam.loadScam();
 
 async function messageCreate(message, bot) {
     message.bot = bot;
@@ -73,6 +75,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     const isOnBlacklist = (await moduleApi.checkEnabled(defaultModuleSettings.blacklist.name))
+        .enabled
         ? await Guilds.isBlacklist(message.guild.id)
         : false;
     if (isOnBlacklist) {
@@ -83,19 +86,28 @@ async function messageCreate(message, bot) {
             .send({
                 content: `Hello. I'm sorry but your server is on the blacklist and i'll leave your server again. If it's false please join the official discord support server. https://mittelbot.blackdayz.de/support.`,
             })
-            .catch((err) => {});
+            .catch(() => {});
 
         errorhandler({
             fatal: false,
             message: ` I was in a BLACKLISTED Guild, but left after >messageCreate< : ${guild.name} (${guild.id})`,
         });
 
-        return guild.leave().catch((err) => {});
+        return guild.leave().catch(() => {});
     }
 
     /** ======================================================= */
 
-    const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam.name))
+    const isScam = (await moduleApi.checkEnabled(defaultModuleSettings.scamdetection.name)).enabled
+        ? await antiScam.check(message, bot)
+        : false;
+    if (isScam) {
+        return;
+    }
+
+    /** ======================================================= */
+
+    const isSpam = (await moduleApi.checkEnabled(defaultModuleSettings.antiSpam.name)).enabled
         ? await (await antiSpam.init(message.guild.id, bot)).check(message)
         : false;
     if (isSpam) {
@@ -108,7 +120,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite.name))
+    const isInvite = (await moduleApi.checkEnabled(defaultModuleSettings.anitInvite.name)).enabled
         ? await antiInvite.check(message, bot)
         : false;
     if (isInvite) {
@@ -121,7 +133,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isInsult = (await moduleApi.checkEnabled(defaultModuleSettings.antiInsults.name))
+    const isInsult = (await moduleApi.checkEnabled(defaultModuleSettings.antiInsults.name)).enabled
         ? await antiInsults.check(message, bot)
         : false;
     if (isInsult) {
@@ -134,7 +146,7 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isLink = (await moduleApi.checkEnabled(defaultModuleSettings.antiLinks.name))
+    const isLink = (await moduleApi.checkEnabled(defaultModuleSettings.antiLinks.name)).enabled
         ? await antiLinks.check(message, bot)
         : false;
     if (isLink) {
@@ -147,16 +159,8 @@ async function messageCreate(message, bot) {
 
     /** ======================================================= */
 
-    const isScam = (await moduleApi.checkEnabled(defaultModuleSettings.scamdetection.name))
-        ? await new ScamDetection().check(message, bot)
-        : false;
-    if (isScam) {
-        return;
-    }
-
-    /** ======================================================= */
-
     const isAutodelete = (await moduleApi.checkEnabled(defaultModuleSettings.autodelete.name))
+        .enabled
         ? await new Autodelete(bot).check(message.channel, message)
         : false;
     if (isAutodelete) {
@@ -173,11 +177,11 @@ async function messageCreate(message, bot) {
             })
             .then(async (msg) => {
                 await delay(6000);
-                msg.delete().catch((err) => {});
+                msg.delete().catch(() => {});
             })
-            .catch((err) => {});
+            .catch(() => {});
 
-        return message.delete().catch((err) => {});
+        return message.delete().catch(() => {});
     }
 
     /** ======================================================= */
@@ -190,7 +194,7 @@ async function messageCreate(message, bot) {
             await new Counter()
                 .isValidCount(message.guild.id, message.author.id, message.content)
                 .then(async () => {
-                    message.react('✅').catch((err) => {});
+                    message.react('✅').catch(() => {});
                 })
                 .catch(async (err) => {
                     message
@@ -203,32 +207,32 @@ async function messageCreate(message, bot) {
                         })
                         .then(async (msg) => {
                             await delay(6000);
-                            msg.delete().catch((err) => {});
+                            msg.delete().catch(() => {});
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
 
                     message.channel.send({
                         content: '============================',
                     });
                 });
         })
-        .catch((err) => {});
+        .catch(() => {});
 
     /** ======================================================= */
 
-    if (await moduleApi.checkEnabled(defaultModuleSettings.autotranslate.name)) {
+    if ((await moduleApi.checkEnabled(defaultModuleSettings.autotranslate.name)).enabled) {
         new Translate().translate(message);
     }
 
     /** ======================================================= */
 
-    if (await moduleApi.checkEnabled(defaultModuleSettings.level.name)) {
+    if ((await moduleApi.checkEnabled(defaultModuleSettings.level.name)).enabled) {
         Levelsystem.run({ message, bot });
     }
 
     /** ======================================================= */
 
-    if (await moduleApi.checkEnabled(defaultModuleSettings.utils.name)) {
+    if ((await moduleApi.checkEnabled(defaultModuleSettings.utils.name)).enabled) {
         const isAFK = await new Afk().check({ message });
         if (isAFK) {
             return message
@@ -237,9 +241,9 @@ async function messageCreate(message, bot) {
                 )
                 .then(async (msg) => {
                     await delay(8000);
-                    msg.delete().catch((err) => {});
+                    msg.delete().catch(() => {});
                 })
-                .catch((err) => {});
+                .catch(() => {});
         }
     }
 
