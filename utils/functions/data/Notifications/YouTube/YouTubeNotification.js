@@ -19,21 +19,23 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
     async checkUploads() {
         try {
             const uploads = await guildUploads.findAll();
-        
+
             if (uploads.length === 0) {
-                console.info("🔎 Youtube upload handler Interval has ended because there are no uploads to check");
+                console.info(
+                    '🔎 Youtube upload handler Interval has ended because there are no uploads to check'
+                );
                 return false;
             }
-        
+
             for (const upload of uploads) {
                 if (!upload.channel_id) continue;
-        
+
                 const feed = await this.getFeed(upload.channel_id);
-        
+
                 if (!feed) continue;
-        
+
                 const uploadedVideos = upload.uploads || [];
-        
+
                 const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                 if (videoAlreadyExists) {
                     if (!this.isLongerThanXh(upload.updatedAt)) continue;
@@ -43,48 +45,48 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         upload.guild_id,
                         upload.info_channel_id
                     );
-        
+
                     continue;
                 }
-        
+
                 const videoDetails = await this.getVideoInfos(feed.items[0].link);
-        
+
                 if (uploadedVideos.length >= 10) {
                     uploadedVideos = [feed.items[0].link];
                 } else {
                     uploadedVideos.push(feed.items[0].link);
                 }
-        
+
                 const { channel, guild } = await this.getServerInfos(
                     upload.guild_id,
                     upload.info_channel_id
                 );
                 if (!channel) continue;
-        
+
                 const pingrole = guild.roles.cache.get(upload.pingrole);
                 let isEveryone = false;
                 if (pingrole) {
-                    isEveryone = pingrole.name === "@everyone";
+                    isEveryone = pingrole.name === '@everyone';
                 }
-                const ping = pingrole ? (isEveryone ? "@everyone " : `${pingrole}`) : "";
-        
+                const ping = pingrole ? (isEveryone ? '@everyone ' : `${pingrole}`) : '';
+
                 const premiereStartsIn = this.handlePremiere(videoDetails?.liveBroadcastDetails);
-        
+
                 const embedContent = this.generateMessageContent(
                     videoDetails?.liveBroadcastDetails,
                     premiereStartsIn,
                     ping
                 );
-        
+
                 const embed = await this.generateEmbed(videoDetails);
-        
+
                 try {
                     const message = await this.notificationApi.sendNotification({
                         channel,
                         content: embedContent,
                         embed: embed,
                     });
-        
+
                     if (message instanceof Message) {
                         await this.updateUploads({
                             guildId: upload.guild_id,
@@ -93,15 +95,19 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                             messageId: message.id,
                         });
                     }
-        
-                    console.log(`📥 New upload sent! GUILD: ${upload.guild_id} CHANNEL ID: ${upload.info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`);
+
+                    console.log(
+                        `📥 New upload sent! GUILD: ${upload.guild_id} CHANNEL ID: ${upload.info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`
+                    );
                 } catch (err) {
-                    console.error(`I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`);
+                    console.error(
+                        `I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`
+                    );
                     continue;
                 }
             }
-        
-            console.info("🔎 Youtube upload handler Interval has finished");
+
+            console.info('🔎 Youtube upload handler Interval has finished');
             return true;
         } catch (err) {
             errorhandler({
