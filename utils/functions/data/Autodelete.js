@@ -25,7 +25,9 @@ module.exports = class Autodelete {
                     return resolve(result);
                 })
                 .catch((err) => {
-                    return reject(`An error occured while fetching the settings.`);
+                    return reject(
+                        global.t.trans(['error.generalWithMessage', err.message], channel.guild.id)
+                    );
                 });
         });
     }
@@ -53,7 +55,12 @@ module.exports = class Autodelete {
                         }
                     )
                     .catch((err) => {
-                        return reject(`An error occured while saving the settings.`);
+                        return reject(
+                            global.t.trans(
+                                ['error.generalWithMessage', err.message],
+                                channel.guild.id
+                            )
+                        );
                     });
             } else {
                 await autodeleteModel
@@ -62,7 +69,12 @@ module.exports = class Autodelete {
                         channel_id: channel.id,
                     })
                     .catch((err) => {
-                        return reject(`An error occured while saving the settings.`);
+                        return reject(
+                            global.t.trans(
+                                ['error.generalWithMessage', err.message],
+                                channel.guild.id
+                            )
+                        );
                     });
             }
 
@@ -82,7 +94,9 @@ module.exports = class Autodelete {
                     return resolve();
                 })
                 .catch((err) => {
-                    return reject(`An error occured while setting the channel in the database`);
+                    return reject(
+                        global.t.trans(['error.generalWithMessage', err.message], channel.guild.id)
+                    );
                 });
         });
     }

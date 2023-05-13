@@ -143,13 +143,16 @@ module.exports = class TwitchNotification extends TwitchNotifier {
             const embed = await this.notificationApi
                 .geneateNotificationEmbed({
                     title: isLive
-                        ? `${stream.title}`
-                        : `${streamer.displayName} has ended their stream!`,
+                        ? stream.title
+                        : global.t.trans([
+                              'info.notifications.twitch.endedStream',
+                              streamer.displayName,
+                          ]),
                     color: '#6441a5',
                     footer: {
                         text: isLive
-                            ? `Stream started ${uptime} hours ago - Last updated`
-                            : `Stream ended after ${uptime} hours.`,
+                            ? global.t.trans(['info.notifications.twitch.startedHrsAgo', uptime])
+                            : global.t.trans(['info.notifications.twitch.endedHrsAgo', uptime]),
                     },
                     image: isLive ? stream.getThumbnailUrl(1920, 1080) : streamer.profilePictureUrl,
                     url: isLive
@@ -157,24 +160,39 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                         : `https://twitch.tv/${streamer.displayName}`,
                     author: {
                         name: isLive
-                            ? `${stream.userDisplayName} just went live on Twitch!`
-                            : `${streamer.displayName} just ended their stream!`,
+                            ? global.t.trans([
+                                  'info.notifications.twitch.justWentLive',
+                                  streamer.displayName,
+                              ])
+                            : global.t.trans([
+                                  'info.notifications.twitch.justEnded',
+                                  streamer.displayName,
+                              ]),
                         iconURL: streamer.profilePictureUrl,
                     },
                     fields: isLive
                         ? [
                               {
-                                  name: 'Game',
+                                  name: global.t.trans([
+                                      'info.notifications.twitch.fields.game',
+                                      streamer.displayName,
+                                  ]),
                                   value: stream.gameName,
                                   inline: true,
                               },
                               {
-                                  name: 'Viewers',
+                                  name: global.t.trans([
+                                      'info.notifications.twitch.fields.viewers',
+                                      streamer.displayName,
+                                  ]),
                                   value: stream.viewers.toString(),
                                   inline: true,
                               },
                               {
-                                  name: 'Tags',
+                                  name: global.t.trans([
+                                      'info.notifications.twitch.fields.tags',
+                                      streamer.displayName,
+                                  ]),
                                   value: stream.tags.join(', '),
                                   inline: true,
                               },

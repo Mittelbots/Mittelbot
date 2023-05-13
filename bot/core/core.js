@@ -1,7 +1,6 @@
 const { checkInfractions } = require('../../src/events/checkInfraction');
 const { checkTemproles } = require('../../src/events/checkTemproles');
 const { twitch_notifier } = require('../../src/events/notfifier/twitch_notifier');
-const { handleUploads } = require('../../src/events/notfifier/yt_notifier');
 const {
     createSlashCommands,
     loadCommandList,
@@ -11,9 +10,9 @@ const database = require('../../src/db/db');
 const { Guilds } = require('../../utils/functions/data/Guilds');
 const { reddit_notifier } = require('../../src/events/notfifier/reddit_notifier');
 const { timer } = require('../../src/events/timer/timer');
-const ScamDetection = require('../../utils/checkForScam/checkForScam');
 const logs = require('discord-logs');
 const Music = require('../../utils/functions/data/Music');
+const YouTubeNotification = require('../../utils/functions/data/Notifications/YouTube/YouTubeNotification');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -22,16 +21,13 @@ module.exports.startBot = async (bot) => {
             await database.init();
             await setActivity(bot, true);
             await Promise.resolve(this.fetchCache(bot));
-            new ScamDetection().loadScam();
             await bot.player.extractors.loadDefault();
             new Music(null, bot, true).generateQueueAfterRestart();
 
             /**
                 ---- Events & Timer ----
             */
-            handleUploads({
-                bot,
-            });
+            new YouTubeNotification().init(bot);
             twitch_notifier({
                 bot,
             });

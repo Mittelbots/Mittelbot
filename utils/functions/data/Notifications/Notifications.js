@@ -4,20 +4,22 @@ module.exports = class Notification {
     constructor() {}
 
     async sendNotification({ channel, content = null, embed = null, components = null }) {
-        if (!channel) throw new Error('No channel provided.');
-        if (!content && !embed) throw new Error('No content or embed provided.');
+        return new Promise(async (resolve, reject) => {
+            if (!channel) reject('No channel provided.');
+            if (!content && !embed) reject('No content or embed provided.');
 
-        const options = {};
-        if (content) options.content = content;
-        if (embed) options.embeds = [embed];
-        if (components) options.components = components;
+            const options = {};
+            if (content) options.content = content;
+            if (embed) options.embeds = [embed];
+            if (components) options.components = components;
 
-        try {
-            const msg = await channel.send(options);
-            return msg;
-        } catch (err) {
-            throw new Error(err);
-        }
+            try {
+                const msg = await channel.send(options);
+                return resolve(msg);
+            } catch (err) {
+                return reject(err);
+            }
+        });
     }
 
     updateNotification({ message, embed = null }) {

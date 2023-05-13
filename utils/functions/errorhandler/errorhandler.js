@@ -2,9 +2,8 @@ const callerId = require('caller-id');
 const Sentry = require('@sentry/node');
 
 module.exports.errorhandler = ({
-    err = 'No error passed! ',
-    message = 'No message passed! ',
-    channel = null,
+    err = null,
+    message = null,
     fatal = true,
     databaseError = false,
 }) => {
@@ -15,21 +14,14 @@ module.exports.errorhandler = ({
         return;
     }
 
-    const errObj = {
-        Message: message,
-        'Called From': caller.filePath,
-        Line: caller.lineNumber,
-        '------------': '------------',
-    };
-
-    err = err + '\n' + JSON.stringify(errObj, null, 2);
+    const errString = err + (message ? ' -- ' + message : '');
 
     if (databaseError) {
-        Sentry.captureMessage(err, 'fatal');
+        Sentry.captureMessage(errString, 'fatal');
     } else if (fatal) {
-        Sentry.captureMessage(err, 'fatal');
+        Sentry.captureMessage(errString, 'fatal');
     } else if (!fatal) {
-        Sentry.captureMessage(err, 'debug');
+        Sentry.captureMessage(errString, 'debug');
     }
 
     return;
