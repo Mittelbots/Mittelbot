@@ -24,11 +24,14 @@ GuildUploads.init(
         pingrole: {
             type: DataTypes.BIGINT,
         },
+        messageId: {
+            type: DataTypes.BIGINT,
+        },
     },
     {
         sequelize: database,
         tableName: 'guild_uploads',
-        timestamps: false,
+        timestamps: true,
     }
 );
 

@@ -1,6 +1,5 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { Scam } = require('../../../utils/functions/data/scam');
-const config = require('../../../src/assets/json/_config/config.json');
 const { scamConfig, scamPerms } = require('../_config/admin/scam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -22,7 +21,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
     const link = main_interaction.options.getString('link');
@@ -42,7 +41,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             content: res,
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 })
                 .catch((err) => {
                     return main_interaction
@@ -50,7 +49,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             content: err,
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 });
             break;
 
@@ -68,7 +67,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             content: res,
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 })
                 .catch((err) => {
                     return main_interaction
@@ -76,7 +75,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             content: err,
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 });
             break;
         case 'view':
@@ -91,7 +90,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             content: res,
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 })
                 .catch((err) => {
                     return main_interaction.reply({
