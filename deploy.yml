@@ -1,0 +1,23 @@
+name: Deployment BETA
+
+on:
+  push:
+    branches:
+      - beta
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH Setup
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY_BETA }}
+
+      - name: Deploy code and restart
+        run: |
+          ssh ${{ secrets.BETA_USER }}@${{ secrets.BETA_IP }} "cd ${{ secrets.BETA_PATH }} && git pull && npm install && npm run restart"
