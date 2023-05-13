@@ -34,7 +34,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
 
                 if (!feed) continue;
 
-                const uploadedVideos = upload.uploads || [];
+                let uploadedVideos = upload.uploads || [];
 
                 const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                 if (videoAlreadyExists) {
@@ -111,7 +111,6 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
             return true;
         } catch (err) {
             errorhandler({
-                message: `CODE: ${err.code} ERRNO: ${err.errno}`,
                 err,
                 fatal: true,
             });
