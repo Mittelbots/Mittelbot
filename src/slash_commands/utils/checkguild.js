@@ -97,7 +97,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     for (let i in embedFieldData) {
         embed.addFields({
-            name: translationFields[i],
+            name: translationFields[i].name,
             value: embedFieldData[i],
             inline: true,
         });
