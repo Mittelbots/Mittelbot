@@ -25,7 +25,9 @@ jobs:
             #     source .env
 
             - name: Show Files
-              run: ls -la
+              run: |
+                ls -la
+                pwd
 
             - name: Install dependencies
               run: npm install --production
