@@ -20,4 +20,4 @@ jobs:
 
             - name: Deploy code and restart
               run: |
-                  ssh ${{ secrets.BETA_USER }}@${{ secrets.BETA_IP }} "cd ${{ secrets.BETA_PATH }} && git pull && npm install && npm run restart"
+                  ssh -p ${{ secrets.BETA_PORT }} ${{ secrets.BETA_USER }}@${{ secrets.BETA_IP }} "cd ${{ secrets.BETA_PATH }} && git pull && npm install && npm run restart"
