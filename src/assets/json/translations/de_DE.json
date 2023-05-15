@@ -333,7 +333,7 @@
                             "name": "Anzahl der Kanäle:"
                         },
                         {
-                            "name:": "Anzahl der Rollen:"
+                            "name": "Anzahl der Rollen:"
                         },
                         {
                             "name": "Anzahl der Bans:"
@@ -355,6 +355,9 @@
                         },
                         {
                             "name": "Ist der Server groß?"
+                        },
+                        {
+                            "name": "Maximale Anzahl von Mitgliedern:"
                         },
                         {
                             "name": "AFK Timer:"

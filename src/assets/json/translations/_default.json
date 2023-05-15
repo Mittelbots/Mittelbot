@@ -358,6 +358,9 @@
                             "name": "Is the server a large one?"
                         },
                         {
+                            "name": "Maximum Members:"
+                        },
+                        {
                             "name": "AFK Timer:"
                         },
                         {
