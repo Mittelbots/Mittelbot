@@ -15,7 +15,7 @@ module.exports.registerPlayerEvents = (player, bot) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.generalWithMessage', err.message],
+                                ['error.generalWithMessage', error.message],
                                 queue.guild.id
                             )
                         )
@@ -40,7 +40,7 @@ module.exports.registerPlayerEvents = (player, bot) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.generalWithMessage', err.message],
+                                ['error.generalWithMessage', error.message],
                                 queue.guild.id
                             )
                         )
