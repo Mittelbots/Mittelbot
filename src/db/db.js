@@ -32,42 +32,42 @@ const database = new Sequelize(
 const orgFindAll = SequelizeModel.findAll;
 SequelizeModel.findAll = function () {
     return orgFindAll.apply(this, arguments).catch((err) => {
-        errorhandler({ err, databaseError: true });
+        errorhandler({ err });
         throw err;
     });
 };
 const orgFindOne = SequelizeModel.findOne;
 SequelizeModel.findOne = function () {
     return orgFindOne.apply(this, arguments).catch((err) => {
-        errorhandler({ err, databaseError: true });
+        errorhandler({ err });
         throw err;
     });
 };
 const orgFindOrCreate = SequelizeModel.findOrCreate;
 SequelizeModel.findOrCreate = function () {
     return orgFindOrCreate.apply(this, arguments).catch((err) => {
-        errorhandler({ err, databaseError: true });
+        errorhandler({ err });
         throw err;
     });
 };
 const orgCreate = SequelizeModel.create;
 SequelizeModel.create = function () {
     return orgCreate.apply(this, arguments).catch((err) => {
-        errorhandler({ err, databaseError: true });
+        errorhandler({ err });
         throw err;
     });
 };
 const orgUpdate = SequelizeModel.update;
 SequelizeModel.update = function () {
     return orgUpdate.apply(this, arguments).catch((err) => {
-        errorhandler({ err, databaseError: true });
+        errorhandler({ err });
         throw err;
     });
 };
 const orgDestroy = SequelizeModel.destroy;
 SequelizeModel.destroy = function () {
     return orgDestroy.apply(this, arguments).catch((err) => {
-        errorhandler({ err, databaseError: true });
+        errorhandler({ err });
         throw err;
     });
 };
