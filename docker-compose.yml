@@ -15,7 +15,7 @@ services:
         links:
             - mysql
         env_file:
-            - .env
+            - ./.env
         volumes:
             - .:/app
         ports:
@@ -31,7 +31,7 @@ services:
             - MYSQL_PASSWORD=root
             - MYSQL_PORT=3306
         env_file:
-            - .env
+            - ./.env
         volumes:
             - mysql:/var/lib/mysql
         ports:
