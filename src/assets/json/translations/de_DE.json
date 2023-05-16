@@ -149,7 +149,7 @@
                 "added": "{success.cheerEmote} Erfolgreich die reddit-Benachrichtigung für %c hinzugefügt"
             },
             "youtube": {
-                "removed": "{success.cheerEmote}Erfolgreich die YouTube-Benachrichtigung für %c entfernt"
+                "removed": "{success.cheerEmote}Erfolgreich die YouTube-Benachrichtigung entfernt"
             },
             "twitch": {
                 "added": "{success.cheerEmote} Erfolgreich den Twitch-Kanal `%q` zur Liste hinzugefügt.",
