@@ -13,6 +13,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
+              with:
+                  path: ${{ secrets.BETA_PATH }}
 
             - name: Setup Node.js
               uses: actions/setup-node@v3
@@ -26,8 +28,8 @@ jobs:
 
             - name: Show Files
               run: |
-                ls -la
-                pwd
+                  ls -la
+                  pwd
 
             - name: Install dependencies
               run: npm install --production
