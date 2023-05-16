@@ -15,7 +15,7 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
             .then((id) => {
                 return id;
             })
-            .catch((err) => {
+            .catch(() => {
                 reject(`❌ I couldn't find the channel you have entered.`);
                 return false;
             });
