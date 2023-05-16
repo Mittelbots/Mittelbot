@@ -17,13 +17,16 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
-            - name: Load environment variables
-              run: |
-                echo "Loading environment variables from .env file"
-                source .env
 
             - name: Install dependencies
-              run: npm install --production
+              run: npm install --omit=dev
+
+            - name: Get production files
+              run: |
+                  cp ../.env .env
+                  cp ../docker-compose.override.yml docker-compose.override.yml
+                  cp ../Dockerfile.prod Dockerfile.prod
 
             - name: Build
-              run: npm run restart
+              run: |
+                  npm run restart-prod
