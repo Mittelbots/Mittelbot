@@ -9,15 +9,13 @@ on:
 jobs:
     deploy:
         runs-on: self-hosted
+        env:
+            WORKING_DIRECTORY: ${{ secrets.BETA_PATH }}
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
 
-            - name: Set working directory
-              run: |
-                echo "::set-env name=WORKING_DIRECTORY::${{ secrets.BETA_PATH }}"
-            
             - name: Use working directory
               run: |
                 cd $WORKING_DIRECTORY
