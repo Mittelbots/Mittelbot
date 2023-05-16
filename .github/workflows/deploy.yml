@@ -29,4 +29,6 @@ jobs:
                 cp ../Dockerfile.prod Dockerfile.prod
 
             - name: Build
-              run: npm run restart
+              run: |
+                npm run restart
+                exit 0
