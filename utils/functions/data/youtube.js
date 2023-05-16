@@ -6,8 +6,7 @@ const request = new (require('rss-parser'))();
 
 module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild }) => {
     return new Promise(async (resolve, reject) => {
-        const url = new URL('https://www.youtube.com' + '/@' + ytchannel);
-
+        const url = new URL('https://www.youtube.com' + '/' + ytchannel);
         if (url.pathname === '/@') {
             return reject(`❌ You have entered an invalid channel.`);
         }
@@ -25,8 +24,10 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
         if (!guild.members.me) {
             await guild.members.fetch(process.env.DISCORD_APPLICATION_ID);
         }
+
+        let hasChannelPerms = false;
         try {
-            var hasChannelPerms = dcchannel
+            hasChannelPerms = dcchannel
                 .permissionsFor(guild.members.me)
                 .has([
                     PermissionFlagsBits.ViewChannel,
