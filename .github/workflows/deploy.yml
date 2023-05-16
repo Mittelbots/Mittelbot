@@ -9,26 +9,17 @@ on:
 jobs:
     deploy:
         runs-on: self-hosted
-        env:
-            WORKING_DIRECTORY: ${{ secrets.BETA_PATH }}
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
-
-            - name: Use working directory
-              run: |
-                cd $WORKING_DIRECTORY
+              with:
+                  path: ${{ secrets.BETA_PATH }}
 
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: 18
-
-            # - name: Load environment variables
-            #   run: |
-            #     echo "Loading environment variables from .env file"
-            #     source .env
 
             - name: Show Files
               run: |
