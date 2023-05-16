@@ -19,11 +19,6 @@ jobs:
               with:
                   node-version: 18
 
-            - name: Show Files
-              run: |
-                  ls -la
-                  pwd
-
             - name: Install dependencies
               run: npm install --production
 
