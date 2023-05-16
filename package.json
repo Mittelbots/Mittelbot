@@ -9,8 +9,10 @@
     },
     "scripts": {
         "start": "docker compose up -d && docker logs -f mittelbot",
+        "start-prod": "docker compose up -d",
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
+        "restart-prod": "npm run stop && npm run start-prod",
         "log": "docker logs -f mittelbot",
         "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --write .\"",
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\"",
