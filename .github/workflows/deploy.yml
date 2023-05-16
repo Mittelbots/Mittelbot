@@ -20,7 +20,13 @@ jobs:
                   node-version: 18
 
             - name: Install dependencies
-              run: npm install --production
+              run: npm install --omit=dev
+
+            - name: Get production files
+              run: |
+                cp ../.env .env
+                cp ../docker-compose.override.yml docker-compose.override.yml
+                cp ../Dockerfile.prod Dockerfile.prod
 
             - name: Build
               run: npm run restart
