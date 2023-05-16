@@ -13,8 +13,14 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
-              with:
-                  path: ${{ secrets.BETA_PATH }}
+
+            - name: Set working directory
+              run: |
+                echo "::set-env name=WORKING_DIRECTORY::${{ secrets.BETA_PATH }}"
+            
+            - name: Use working directory
+              run: |
+                cd $WORKING_DIRECTORY
 
             - name: Setup Node.js
               uses: actions/setup-node@v3
