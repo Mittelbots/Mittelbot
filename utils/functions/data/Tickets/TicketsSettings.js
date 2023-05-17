@@ -64,6 +64,7 @@ module.exports = class TicketSettings {
         close_category,
         moderator,
         ticket_description,
+        log_channel,
     }) {
         return new Promise(async (resolve, reject) => {
             await this.getSettings();
@@ -85,11 +86,13 @@ module.exports = class TicketSettings {
                 close_category,
                 moderator,
                 ticket_description,
+                log_channel,
             };
 
             const message_link = await this.sendTicketEmbed(newSettings);
-            if (!message_link)
+            if (!message_link) {
                 return reject(global.t.trans(['error.embed.send'], this.main_interaction.guild.id));
+            }
 
             newSettings.message_link = message_link;
             this.settings.push(newSettings);

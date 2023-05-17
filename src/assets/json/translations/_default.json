@@ -174,7 +174,16 @@
             "tryCommandAgainWithoutArgs": "Try again by clicking"
         },
         "ticket": {
-            "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds..."
+            "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds...",
+            "transcript": {
+                "title": "Ticket Saved - %c",
+                "fields": {
+                    "id": "Ticket ID",
+                    "openedBy": "Opened by",
+                    "closedBy": "Saved by",
+                    "createdAt": "Created at"
+                }
+            }
         },
         "autoblacklist": {
             "info": {
