@@ -172,6 +172,9 @@
         "general": {
             "tryCommandAgainWithoutArgs": "Versuch es erneut"
         },
+        "admin": {
+            "messageUpdate": "**Message gesented von <@%q> editiert in <#%w>\n[Zur Nachricht springen](https://discord.com/channels/%e/%r/%t)**\n\n**Vorher**\n%z\n\n**Nacher [BETA]**\n%u"
+        },
         "ticket": {
             "deletedTicket": "{info.emote} Dieses Ticket wird in 5 Sekunden gelöscht..."
         },

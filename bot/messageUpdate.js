@@ -1,4 +1,6 @@
 const Auditlog = require('../utils/functions/data/Auditlog');
+const sm = require('string-mismatch');
+const greedyInstance = new sm.Greedy();
 
 module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
     if (messageBefore.content === messageAfter.content) return;
@@ -23,15 +25,42 @@ module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
         }
     };
 
+    const before = cleanedMessage(messageBefore.content);
+    const after = cleanedMessage(messageAfter.content);
+
+    const difference = greedyInstance.differences(before, after);
+
+    function showResult(diffs) {
+        return diffs.reduce(function (text, value) {
+            value.value = value.value.replace(/`/g, '\\`');
+            value.value = value.value.replace(/~/g, '\\~');
+            value.value = value.value.replace(/\*/g, '\\*');
+
+            switch (value.type) {
+                case 'del':
+                    return text + '~~' + value.value + '~~';
+                case 'ins':
+                    return text + '**' + value.value + '**';
+                case 'sub':
+                    return text + '**' + value.value + '**';
+                case 'eql':
+                    return text + value.value;
+            }
+        }, '');
+    }
+
     await auditLog.setEmbed({
         color: '#36d30a',
-        text: `**Message sent by <@${messageAfter.author.id}> edited in <#${
-            messageAfter.channelId
-        }>\n[Jump to Message](https://discord.com/channels/${messageAfter.guildId}/${
-            messageAfter.channelId
-        }/${messageAfter.id})**\n\n**Before**\n${cleanedMessage(
-            messageBefore.content
-        )}\n\n**After**\n${cleanedMessage(messageAfter.content)}`,
+        text: global.t.trans([
+            'info.admin.messageUpdate',
+            messageAfter.author.id,
+            messageAfter.channelId,
+            messageAfter.guildId,
+            messageAfter.channelId,
+            messageAfter.id,
+            before,
+            showResult(difference),
+        ]),
     });
     await auditLog.sendToAuditLog({
         guildId: messageBefore.guild.id,

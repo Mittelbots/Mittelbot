@@ -78,6 +78,7 @@
         "sequelize": "^6.31.1",
         "simple-node-logger": "^21.8.12",
         "simple-youtube-api": "^5.2.1",
+        "string-mismatch": "^2.1.1",
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
         "undici": "^5.22.1",
