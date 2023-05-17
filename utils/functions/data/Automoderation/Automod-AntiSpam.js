@@ -53,16 +53,16 @@ module.exports = class AutomodAntiSpam {
             );
             const pingLimitReached = this.pingLimitReached(message, this.antiSpamSetting.pinglimit);
 
-            if (!hasDublicatedWordsOrCharacters && !pingLimitReached) {
-                const user = this.#spamCheck.find(
-                    (user) =>
-                        user.user_id === message.author.id && user.guild_id === message.guild.id
-                );
-                if (!user) {
-                    this.addUserToSpamCheck(message.author, message.guild, message);
-                    return resolve(this.#isSpam);
-                }
+            const user = this.#spamCheck.find(
+                (user) => user.user_id === message.author.id && user.guild_id === message.guild.id
+            );
 
+            if (!user) {
+                this.addUserToSpamCheck(message.author, message.guild, message);
+                return resolve(this.#isSpam);
+            }
+
+            if (!hasDublicatedWordsOrCharacters && !pingLimitReached) {
                 const first_message = user.first_message;
                 const current_time = new Date().getTime();
                 user.messages.push(message.id);
@@ -101,6 +101,7 @@ module.exports = class AutomodAntiSpam {
                 messages:
                     hasDublicatedWordsOrCharacters || pingLimitReached ? message : user.messages,
                 channel: message.channel,
+                reason: '[ANTI SPAM] Spamming too many letters in a short time.',
             });
 
             obj.action = action;

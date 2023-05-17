@@ -1,4 +1,5 @@
 const Auditlog = require('../utils/functions/data/Auditlog');
+const { messageDeleteReasons } = require('../utils/data/info/messageDeleteReasons');
 
 module.exports.messageDelete = async (bot, message) => {
     if (!message.author) return;
@@ -10,9 +11,11 @@ module.exports.messageDelete = async (bot, message) => {
         color: '#a80f2b',
         text: `**Message sent by <@${message.author.id}> deleted in <#${message.channelId}>** \n${
             message.attachments.first() !== undefined ? '' : message
-        }`,
+        }\n\n**Reason:**\n${messageDeleteReasons.get(message.id) || 'No reason provided'}`,
         imageUrl: message.attachments.first() !== undefined ? message.attachments.first() : null,
     });
+
+    messageDeleteReasons.delete(message.id);
 
     await auditLog.sendToAuditLog({
         guildId: message.guild.id,

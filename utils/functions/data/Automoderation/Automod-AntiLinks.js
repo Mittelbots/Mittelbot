@@ -29,6 +29,7 @@ module.exports = class AutomodAntiLinks {
                 action: settings.action,
                 bot: bot,
                 messages: message,
+                reason: '[ANTI LINKS] Posted a link',
             }).then(() => {
                 resolve(true);
             });

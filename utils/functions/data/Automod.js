@@ -7,6 +7,7 @@ const { banUser } = require('../moderations/banUser');
 const { getModTime } = require('../getModTime');
 const { muteUser } = require('../moderations/muteUser');
 const { warnUser } = require('../moderations/warnUser');
+const { messageDeleteReasons } = require('../../data/info/messageDeleteReasons');
 
 class Automod {
     constructor() {}
@@ -121,8 +122,10 @@ class Automod {
         });
     }
 
-    punishUser({ user, guild, mod, action, bot, messages, channel }) {
+    punishUser({ user, guild, mod, action, bot, messages, channel, reason }) {
         return new Promise(async (resolve) => {
+            const punishReason = '[AUTO MOD]' + reason;
+
             let actionTaken;
             switch (action) {
                 case 'kick':
@@ -131,7 +134,7 @@ class Automod {
                         user: user,
                         mod: mod,
                         guild: guild,
-                        reason: '[AUTO MOD] Spamming too many letters in a short time',
+                        reason: punishReason,
                         bot: bot,
                     });
                     break;
@@ -141,7 +144,7 @@ class Automod {
                         user: user,
                         mod: mod,
                         guild: guild,
-                        reason: '[AUTO MOD] Spamming too many letters in a short time.',
+                        reason: punishReason,
                         bot: bot,
                         isAuto: true,
                         time: '5h',
@@ -156,7 +159,7 @@ class Automod {
                         mod: mod,
                         bot: bot,
                         guild: guild,
-                        reason: '[AUTO MOD] Spamming too many letters in a short time.',
+                        reason: punishReason,
                         time: '5h',
                         dbtime: getModTime('5h'),
                     });
@@ -172,6 +175,7 @@ class Automod {
                         channel.messages
                             .fetch(messages[i])
                             .then((msg) => {
+                                messageDeleteReasons.set(msg.id, reason);
                                 msg.delete().catch(() => {});
                             })
                             .catch(() => {});
@@ -185,7 +189,7 @@ class Automod {
                         user: user,
                         mod: mod,
                         guild: guild,
-                        reason: '[AUTO MOD] Spamming too many letters in a short time.',
+                        reason: punishReason,
                     });
                     break;
             }

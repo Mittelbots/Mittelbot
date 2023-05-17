@@ -26,6 +26,7 @@ module.exports = class AutomodAntiInvite {
                 action: antiInviteSetting.action,
                 bot: bot,
                 messages: message,
+                reason: '[ANTI INVITES] Posted an invite link',
             }).then(() => {
                 resolve(true);
             });
