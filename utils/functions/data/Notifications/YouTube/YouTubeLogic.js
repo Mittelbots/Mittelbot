@@ -1,6 +1,8 @@
 const guildUploads = require('../../../../../src/db/Models/tables/guildUploads.model');
 const { errorhandler } = require('../../../errorhandler/errorhandler');
 const yt = require('ytdl-core');
+const request = new (require('rss-parser'))();
+const { channelId } = require('@gonetone/get-youtube-id-by-url');
 
 module.exports = class YouTubeLogic {
     bot;
@@ -72,5 +74,38 @@ module.exports = class YouTubeLogic {
         const now = new Date().getTime() / 1000;
         const diff = now - updatedAt;
         return diff > this.updateTime;
+    }
+
+    getUploads(channelId) {
+        return new Promise(async (resolve, reject) => {
+            await request.parseURL(this.baseURL + channelId).then(async (feed) => {
+                if (!feed.items[0]) {
+                    return reject(
+                        "❌ The channel you have entered does not have any videos or doesn't exists. Please try again with another channel."
+                    );
+                }
+
+                return resolve(feed.items);
+            });
+        });
+    }
+
+    getChannelId(ytchannel) {
+        return new Promise(async (resolve, reject) => {
+            const url = new URL('https://www.youtube.com' + '/@' + ytchannel);
+            if (url.pathname === '/@') {
+                return resolve(false);
+            }
+
+            const channelid = await channelId(url.href)
+                .then((id) => {
+                    return id;
+                })
+                .catch(() => {
+                    return false;
+                });
+
+            return resolve(channelid);
+        });
     }
 };
