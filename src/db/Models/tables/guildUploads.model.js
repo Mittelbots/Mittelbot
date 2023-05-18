@@ -27,6 +27,10 @@ GuildUploads.init(
         messageId: {
             type: DataTypes.BIGINT,
         },
+        updateCount: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0,
+        },
     },
     {
         sequelize: database,

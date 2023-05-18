@@ -43,7 +43,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         feed.items[0],
                         upload.messageId,
                         upload.guild_id,
-                        upload.info_channel_id
+                        upload.info_channel_id,
+                        upload.channel_id
                     );
 
                     continue;
@@ -193,7 +194,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
         });
     }
 
-    updateEmbed(video, messageId, guildId, channelId) {
+    updateEmbed(video, messageId, guildId, channelId, ytChannelId) {
         return new Promise(async (resolve) => {
             const videoDetails = await this.getVideoInfos(video.link);
             const { channel, guild } = await this.getServerInfos(guildId, channelId);
@@ -209,8 +210,10 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 })
                 .then(async () => {
                     await this.updateUploads({
+                        messageId: messageId,
                         guildId: guildId,
                         channelId: channelId,
+                        ytChannelId: ytChannelId,
                     });
 
                     errorhandler({
