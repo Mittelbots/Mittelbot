@@ -1,5 +1,4 @@
 const callerId = require('caller-id');
-const Sentry = require('@sentry/node');
 
 module.exports.errorhandler = ({ err = null, message = null, fatal = true }) => {
     const caller = callerId.getData();
@@ -11,10 +10,10 @@ module.exports.errorhandler = ({ err = null, message = null, fatal = true }) => 
 
     if (fatal) {
         if (err === null) err = message;
-        Sentry.captureMessage(err, Sentry.Severity.Fatal);
+        Sentry.captureMessage(err, 'fatal');
     } else {
         if (message === null) message = err;
-        Sentry.captureMessage(message, Sentry.Severity.Info);
+        Sentry.captureMessage(message, 'info');
     }
 
     return;
