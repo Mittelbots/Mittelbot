@@ -1,5 +1,4 @@
 const { PermissionFlagsBits } = require('discord.js');
-const guildUploads = require('../../../src/db/Models/tables/guildUploads.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const YouTubeSettings = require('./Notifications/YouTube/YouTubeSettings');
 const { hasPermissionsFor } = require('../../permissions/permissions');
