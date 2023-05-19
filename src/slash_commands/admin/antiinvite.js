@@ -5,7 +5,7 @@ const { removeMention } = require('../../../utils/functions/removeCharacters');
 const AutomodAntiSpam = require('../../../utils/functions/data/Automoderation/Automod-AntiSpam');
 const { antiInviteConfig, antiInvitePerms } = require('../_config/admin/antiinvite');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({ main_interaction }) => {
     const antiSpamSettings = await Automod.get(main_interaction.guild.id, 'antispam');
 
     const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
