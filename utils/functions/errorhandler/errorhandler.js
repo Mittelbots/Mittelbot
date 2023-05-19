@@ -9,12 +9,12 @@ module.exports.errorhandler = ({ err = null, message = null, fatal = true }) => 
         return;
     }
 
-    const errString = err + (message ? ' -- ' + message : '');
-
     if (fatal) {
-        Sentry.captureMessage(errString, 'fatal');
+        if (err === null) err = message;
+        Sentry.captureMessage(err, Sentry.Severity.Fatal);
     } else {
-        Sentry.captureMessage(errString, 'debug');
+        if (message === null) message = err;
+        Sentry.captureMessage(message, Sentry.Severity.Info);
     }
 
     return;
