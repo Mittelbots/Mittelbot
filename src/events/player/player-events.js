@@ -84,7 +84,7 @@ module.exports.registerPlayerEvents = (player, bot) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            global.t.trans(['info.music.tracksAddedToQueue', track], queue.guild.id)
+                            global.t.trans(['info.music.trackAddedToQueue', track], queue.guild.id)
                         )
                         .addFields({
                             name: global.t.trans(['info.music.requestedBy'], queue.guild.id),
