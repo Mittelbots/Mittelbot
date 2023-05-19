@@ -106,7 +106,7 @@ module.exports.delYTChannelFromList = async ({ guild_id, ytchannel }) => {
         const channelid = await youtubeSettingsApi.getChannelId(ytchannel);
         if (!channelid) {
             return reject(
-                global.t.trans(['error.notifications.youtube.channelNotFound', ytchannel], guild.id)
+                global.t.trans(['error.notifications.youtube.channelNotFound', ytchannel], guild_id)
             );
         }
 
@@ -117,6 +117,6 @@ module.exports.delYTChannelFromList = async ({ guild_id, ytchannel }) => {
                 return false;
             });
 
-        resolve(global.t.trans(['success.notifications.youtube.removed', ytchannel], guild.id));
+        resolve(global.t.trans(['success.notifications.youtube.removed', ytchannel], guild_id));
     });
 };
