@@ -1,4 +1,5 @@
 const callerId = require('caller-id');
+const Sentry = require('@sentry/node');
 
 module.exports.errorhandler = ({ err = null, message = null, fatal = true }) => {
     const caller = callerId.getData();
