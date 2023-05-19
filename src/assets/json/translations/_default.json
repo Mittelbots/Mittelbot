@@ -176,6 +176,9 @@
         "general": {
             "tryCommandAgainWithoutArgs": "Try again by clicking"
         },
+        "admin": {
+            "messageUpdate": "**Message sent by <@%q> edited in <#%w>\n[Jump to Message](https://discord.com/channels/%e/%r/%t)**\n\n**Before**\n%z\n\n**After [BETA]**\n%u"
+        },
         "ticket": {
             "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds...",
             "transcript": {
