@@ -22,22 +22,33 @@ module.exports = class YouTubeLogic {
 
     constructor() {}
 
-    updateUploads({ guildId, channelId, uploads, messageId }) {
+    updateUploads({ guildId, channelId, uploads, messageId, ytChannelId }) {
         return new Promise(async (resolve) => {
+            const update = uploads
+                ? {
+                      uploads: uploads,
+                      messageId: messageId,
+                  }
+                : {
+                      updateCount: Math.floor(Math.random() * 200) + 1,
+                  };
+
+            const whereCond = ytChannelId
+                ? {
+                      guild_id: guildId,
+                      channel_id: channelId,
+                      channel_id: ytChannelId,
+                  }
+                : {
+                      guild_id: guildId,
+                      channel_id: channelId,
+                  };
+
             await guildUploads
-                .update(
-                    {
-                        uploads: uploads,
-                        messageId: messageId,
-                    },
-                    {
-                        where: {
-                            guild_id: guildId,
-                            channel_id: channelId,
-                        },
-                    }
-                )
-                .then(() => {
+                .update(update, {
+                    where: whereCond,
+                })
+                .then((res) => {
                     return resolve(true);
                 })
                 .catch((err) => {
@@ -70,7 +81,7 @@ module.exports = class YouTubeLogic {
 
     isLongerThanXh(updatedAt) {
         const now = new Date().getTime() / 1000;
-        const diff = now - updatedAt;
-        return diff > this.updateTime;
+        const diff = now - new Date(updatedAt).getTime() / 1000;
+        return diff >= this.updateTime / 1000;
     }
 };
