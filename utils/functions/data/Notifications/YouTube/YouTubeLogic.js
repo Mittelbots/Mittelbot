@@ -77,12 +77,10 @@ module.exports = class YouTubeLogic {
     }
 
     getUploads(channelId) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             await request.parseURL(this.baseURL + channelId).then(async (feed) => {
                 if (!feed.items[0]) {
-                    return reject(
-                        "❌ The channel you have entered does not have any videos or doesn't exists. Please try again with another channel."
-                    );
+                    return resolve([]);
                 }
 
                 return resolve(feed.items);

@@ -10,7 +10,9 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
 
         const channelid = await youtubeSettingsApi.getChannelId(ytchannel);
         if (!channelid) {
-            return reject(`❌ I couldn't find a channel with the name \`${ytchannel}\`.`);
+            return reject(
+                global.t.trans(['error.notifications.youtube.channelNotFound', ytchannel], guild.id)
+            );
         }
 
         if (!guild.members.me) {
@@ -30,13 +32,19 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
             errorhandler({
                 err,
             });
-            reject(`❌ Something went wrong while checking the permissions. Please try again.`);
+            reject(global.t.trans(['error.notifications.youtube.permissionCheck'], guild.id));
             return false;
         }
 
         if (!hasChannelPerms) {
             return reject(
-                `❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`
+                global.t.trans(
+                    [
+                        'error.permissions.bot.dontKnow',
+                        '`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"',
+                    ],
+                    guild.id
+                )
             );
         }
 
@@ -51,21 +59,22 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
 
         if (!allChannelsFromGuild) {
             return;
-        } else if (allChannelsFromGuild.length >= youtubeSettingsApi.MAX_CHANNELS) {
+        }
+        if (allChannelsFromGuild.length >= youtubeSettingsApi.MAX_CHANNELS) {
             return reject(
-                `❌ You can only add ${youtubeSettingsApi.MAX_CHANNELS} channels to the list.`
+                global.t.trans(
+                    ['error.notifications.youtube.maxReached', youtubeSettingsApi.MAX_CHANNELS],
+                    guild.id
+                )
             );
-        } else if (channelExists) {
-            return reject(`This channel is already in the list. Please remove it first.`);
+        }
+        if (channelExists) {
+            return reject(
+                global.t.trans(['error.notifications.youtube.alreadyExists', ytchannel], guild.id)
+            );
         }
 
-        const ytUploads = await youtubeSettingsApi.getUploads(channelid).catch((err) => {
-            reject(err);
-            return false;
-        });
-        if (!ytUploads) {
-            return;
-        }
+        const ytUploads = await youtubeSettingsApi.getUploads(channelid);
 
         youtubeSettingsApi
             .set({
@@ -73,19 +82,19 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
                 channel_id: channelid,
                 info_channel_id: dcchannel.id,
                 pingrole: pingrole ? pingrole.id : null,
-                uploads: [ytUploads[0].link],
+                uploads: [ytUploads[0]?.link || ''],
             })
             .then(() => {
-                resolve('✅ Successfully added the youtube channel to the notification list.');
+                resolve(
+                    global.t.trans(['success.notifications.youtube.added', ytchannel], guild.id)
+                );
             })
             .catch((err) => {
                 errorhandler({
                     err,
                     fatal: true,
                 });
-                reject(
-                    '❌ Something went wrong while adding the channel to the database. Please contact the Bot support.'
-                );
+                reject(global.t.trans(['error.general'], guild.id));
             });
     });
 };
@@ -96,7 +105,9 @@ module.exports.delYTChannelFromList = async ({ guild_id, ytchannel }) => {
 
         const channelid = await youtubeSettingsApi.getChannelId(ytchannel);
         if (!channelid) {
-            return reject(`❌ I couldn't find a channel with the name \`${ytchannel}\`.`);
+            return reject(
+                global.t.trans(['error.notifications.youtube.channelNotFound', ytchannel], guild.id)
+            );
         }
 
         await youtubeSettingsApi
@@ -106,6 +117,6 @@ module.exports.delYTChannelFromList = async ({ guild_id, ytchannel }) => {
                 return false;
             });
 
-        resolve('✅ Successfully removed the youtube channel from the notification list.');
+        resolve(global.t.trans(['success.notifications.youtube.removed', ytchannel], guild.id));
     });
 };
