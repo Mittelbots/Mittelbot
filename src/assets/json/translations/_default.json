@@ -164,6 +164,9 @@
             },
             "password": {
                 "generated": "{success.emote} Your password has been generated: `%c`"
+            },
+            "bug": {
+                "sent": "{success.emote} Your bug report has been sent!"
             }
         }
     },

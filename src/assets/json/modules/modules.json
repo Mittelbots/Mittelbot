@@ -178,7 +178,8 @@
             "oldestmember",
             "newestmember",
             "uptime",
-            "imgur"
+            "imgur",
+            "bug"
         ]
     },
     "fun": {
@@ -220,6 +221,7 @@
         "modroles",
         "muterole",
         "tutorial",
-        "language"
+        "language",
+        "bug"
     ]
 }
