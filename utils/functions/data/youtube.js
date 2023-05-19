@@ -1,25 +1,18 @@
-const { channelId } = require('@gonetone/get-youtube-id-by-url');
 const { PermissionFlagsBits } = require('discord.js');
-const guildUploads = require('../../../src/db/Models/tables/guildUploads.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
-const request = new (require('rss-parser'))();
+const YouTubeSettings = require('./Notifications/YouTube/YouTubeSettings');
+const { hasPermissionsFor } = require('../../permissions/permissions');
 
 module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild }) => {
     return new Promise(async (resolve, reject) => {
-        const url = new URL('https://www.youtube.com' + '/' + ytchannel);
-        if (url.pathname === '/@') {
-            return reject(`❌ You have entered an invalid channel.`);
-        }
+        const youtubeSettingsApi = new YouTubeSettings(guild.id);
 
-        const channelid = await channelId(url.href)
-            .then((id) => {
-                return id;
-            })
-            .catch(() => {
-                reject(`❌ I couldn't find the channel you have entered.`);
-                return false;
-            });
-        if (!channelid) return;
+        const channelid = await youtubeSettingsApi.getChannelId(ytchannel);
+        if (!channelid) {
+            return reject(
+                global.t.trans(['error.notifications.youtube.channelNotFound', ytchannel], guild.id)
+            );
+        }
 
         if (!guild.members.me) {
             await guild.members.fetch(process.env.DISCORD_APPLICATION_ID);
@@ -27,112 +20,102 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
 
         let hasChannelPerms = false;
         try {
-            hasChannelPerms = dcchannel
-                .permissionsFor(guild.members.me)
-                .has([
-                    PermissionFlagsBits.ViewChannel,
-                    PermissionFlagsBits.SendMessages,
-                    PermissionFlagsBits.EmbedLinks,
-                    PermissionFlagsBits.AttachFiles,
-                    PermissionFlagsBits.MentionEveryone,
-                ]);
+            hasChannelPerms = hasPermissionsFor(dcchannel, guild.members.me, [
+                PermissionFlagsBits.ViewChannel,
+                PermissionFlagsBits.SendMessages,
+                PermissionFlagsBits.EmbedLinks,
+                PermissionFlagsBits.AttachFiles,
+                PermissionFlagsBits.MentionEveryone,
+            ]);
         } catch (err) {
             errorhandler({
                 err,
-                fatal: true,
             });
-            reject(`❌ Something went wrong while checking the permissions. Please try again.`);
+            reject(global.t.trans(['error.notifications.youtube.permissionCheck'], guild.id));
             return false;
         }
 
         if (!hasChannelPerms) {
             return reject(
-                `❌ I don't have one of these permissions \`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"\`. Change them and try again.`
+                global.t.trans(
+                    [
+                        'error.permissions.bot.dontKnow',
+                        '`"VIEW_CHANNEL", "SEND_MESSAGES", "EMBED_LINKS", "ATTACH_FILES", "MENTION_EVERYONE"',
+                    ],
+                    guild.id
+                )
             );
         }
 
-        const allChannelsFromGuild = await guildUploads
-            .findOne({
-                where: {
-                    guild_id: guild.id,
-                },
-            })
-            .then((res) => {
-                return {
-                    error: false,
-                    data: res,
-                };
-            })
-            .catch((err) => {
-                reject(
-                    `❌ Something went wrong while selecting all youtube channels. Please contact the Bot support.`
-                );
-                return {
-                    error: true,
-                };
-            });
-        if (allChannelsFromGuild.error) return;
-        if (allChannelsFromGuild.data) {
-            return reject(`You already have a youtube channel. Please remove it first.`);
+        const allChannelsFromGuild = await youtubeSettingsApi.get(guild.id).catch((err) => {
+            reject(err);
+            return false;
+        });
+
+        const channelExists = allChannelsFromGuild.find(
+            (channel) => channel.channel_id === channelid
+        );
+
+        if (!allChannelsFromGuild) {
+            return;
+        }
+        if (allChannelsFromGuild.length >= youtubeSettingsApi.MAX_CHANNELS) {
+            return reject(
+                global.t.trans(
+                    ['error.notifications.youtube.maxReached', youtubeSettingsApi.MAX_CHANNELS],
+                    guild.id
+                )
+            );
+        }
+        if (channelExists) {
+            return reject(
+                global.t.trans(['error.notifications.youtube.alreadyExists', ytchannel], guild.id)
+            );
         }
 
-        await request
-            .parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelid}`)
-            .then(async (feed) => {
-                if (!feed.items[0])
-                    return reject(
-                        "❌ The channel you have entered does not have any videos or doesn't exists. Please try again with another channel."
-                    );
+        const ytUploads = await youtubeSettingsApi.getUploads(channelid);
 
-                const latestVideo = [feed.items[0].link];
-                guildUploads
-                    .create({
-                        guild_id: guild.id,
-                        channel_id: channelid,
-                        info_channel_id: dcchannel.id,
-                        pingrole: pingrole ? pingrole.id : null,
-                        uploads: latestVideo,
-                    })
-                    .then((res) => {
-                        resolve(
-                            '✅ Successfully added the youtube channel to the notification list.'
-                        );
-                    })
-                    .catch((err) => {
-                        errorhandler({
-                            err,
-                            fatal: true,
-                        });
-                        reject(
-                            '❌ Something went wrong while adding the channel to the database. Please contact the Bot support.'
-                        );
-                    });
+        youtubeSettingsApi
+            .set({
+                guild_id: guild.id,
+                channel_id: channelid,
+                info_channel_id: dcchannel.id,
+                pingrole: pingrole ? pingrole.id : null,
+                uploads: [ytUploads[0]?.link || ''],
+            })
+            .then(() => {
+                resolve(
+                    global.t.trans(['success.notifications.youtube.added', ytchannel], guild.id)
+                );
             })
             .catch((err) => {
                 errorhandler({
                     err,
                     fatal: true,
                 });
-                reject(
-                    '❌ Something went wrong while fetching the youtube data. Please contact the Bot support or try again later.'
-                );
+                reject(global.t.trans(['error.general'], guild.id));
             });
     });
 };
 
-module.exports.delYTChannelFromList = async ({ guild_id }) => {
+module.exports.delYTChannelFromList = async ({ guild_id, ytchannel }) => {
     return new Promise(async (resolve, reject) => {
-        guildUploads
-            .destroy({
-                where: {
-                    guild_id,
-                },
-            })
-            .then(() => {
-                resolve(true);
-            })
+        const youtubeSettingsApi = new YouTubeSettings(guild_id);
+
+        const channelid = await youtubeSettingsApi.getChannelId(ytchannel);
+        if (!channelid) {
+            return reject(
+                global.t.trans(['error.notifications.youtube.channelNotFound', ytchannel], guild_id)
+            );
+        }
+
+        await youtubeSettingsApi
+            .remove({ guild_id: guild_id, channel_id: channelid })
             .catch((err) => {
                 reject(err);
+                return false;
             });
+
+        resolve(global.t.trans(['success.notifications.youtube.removed', ytchannel], guild_id));
     });
 };

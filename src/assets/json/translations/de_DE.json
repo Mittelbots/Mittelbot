@@ -145,16 +145,17 @@
         },
         "notifications": {
             "reddit": {
-                "removed": "{success.cheerEmote} Erfolgreich die reddit-Benachrichtigung für %c entfernt",
-                "added": "{success.cheerEmote} Erfolgreich die reddit-Benachrichtigung für %c hinzugefügt"
+                "removed": "{success.cheerEmote} Erfolgreich die reddit Benachrichtigung für %c entfernt",
+                "added": "{success.cheerEmote} Erfolgreich die reddit Benachrichtigung für %c hinzugefügt"
             },
             "youtube": {
-                "removed": "{success.cheerEmote}Erfolgreich die YouTube-Benachrichtigung entfernt"
+                "added": "{success.cheerEmote} Erfolgreich den YouTube Kanal `%q` zur Liste hinzugefügt.",
+                "removed": "{success.cheerEmote} Erfolgreich den YouTube Kanal `%q` entfernt."
             },
             "twitch": {
-                "added": "{success.cheerEmote} Erfolgreich den Twitch-Kanal `%q` zur Liste hinzugefügt.",
-                "updated": "{success.cheerEmote} Erfolgreich die Twitch-Benachrichtigung für `%c` aktualisiert",
-                "removed": "{success.cheerEmote} Erfolgreich den Twitch-Kanal aus der Benachrichtigungsliste entfernt."
+                "added": "{success.cheerEmote} Erfolgreich den Twitch Kanal `%q` zur Liste hinzugefügt.",
+                "updated": "{success.cheerEmote} Erfolgreich die Twitch Benachrichtigung für `%c` aktualisiert",
+                "removed": "{success.cheerEmote} Erfolgreich den Twitch Kanal aus der Benachrichtigungsliste entfernt."
             }
         },
         "utils": {
@@ -597,6 +598,12 @@
                 "maxReached": "{error.emote} Du hast die maximale Anzahl von Kanälen erreicht, die du hinzufügen kannst (%q). Bitte entferne zuerst einen.",
                 "selectEveryChannel": "{error.emote} Bei der Auswahl aller Twitch-Kanäle ist ein Fehler aufgetreten. Bitte kontaktiere den Bot-Support.",
                 "removeChannel": "{error.emote} Beim Entfernen des Kanals ist etwas schief gelaufen. Bitte kontaktiere den Bot-Support."
+            },
+            "youtube": {
+                "channelNotFound": "{error.emote} Ich konnte den von dir eingegebenen Kanal mit dem Namen `%q` nicht finden.",
+                "permissionCheck": "{error.emote} Bei der Überprüfung der Berechtigungen ist etwas schief gelaufen.",
+                "maxReached": "{error.emote} Du hast die maximale Anzahl von Kanälen erreicht, die du hinzufügen kannst (%q). Bitte entferne zuerst einen.",
+                "alreadyExists": "{error.emote} Der Kanal %q ist bereits hinzugefügt. Bitte verwende das Argument `remove`, um ihn zu entfernen."
             }
         },
         "utils": {

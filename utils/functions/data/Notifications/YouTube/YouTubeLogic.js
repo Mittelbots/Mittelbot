@@ -1,6 +1,8 @@
 const guildUploads = require('../../../../../src/db/Models/tables/guildUploads.model');
 const { errorhandler } = require('../../../errorhandler/errorhandler');
 const yt = require('ytdl-core');
+const request = new (require('rss-parser'))();
+const { channelId } = require('@gonetone/get-youtube-id-by-url');
 
 module.exports = class YouTubeLogic {
     bot;
@@ -83,5 +85,36 @@ module.exports = class YouTubeLogic {
         const now = new Date().getTime() / 1000;
         const diff = now - new Date(updatedAt).getTime() / 1000;
         return diff >= this.updateTime / 1000;
+    }
+
+    getUploads(channelId) {
+        return new Promise(async (resolve) => {
+            await request.parseURL(this.baseURL + channelId).then(async (feed) => {
+                if (!feed.items[0]) {
+                    return resolve([]);
+                }
+
+                return resolve(feed.items);
+            });
+        });
+    }
+
+    getChannelId(ytchannel) {
+        return new Promise(async (resolve) => {
+            const url = new URL('https://www.youtube.com' + '/@' + ytchannel);
+            if (url.pathname === '/@') {
+                return resolve(false);
+            }
+
+            const channelid = await channelId(url.href)
+                .then((id) => {
+                    return id;
+                })
+                .catch(() => {
+                    return false;
+                });
+
+            return resolve(channelid);
+        });
     }
 };

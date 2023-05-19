@@ -32,6 +32,14 @@ module.exports.youtubeConfig = new SlashCommandBuilder()
         subcommand
             .setName('remove')
             .setDescription('Remove the youtube channel from the notification list.')
+            .addStringOption((option) =>
+                option
+                    .setName('ytchannel')
+                    .setDescription(
+                        'Insert here your youtube name. Example: Mittelblut9 (without @)'
+                    )
+                    .setRequired(true)
+            )
     );
 
 module.exports.youtubePerms = {
