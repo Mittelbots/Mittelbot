@@ -13,7 +13,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const detectduplicate =
         JSON.parse(main_interaction.options.getBoolean('detectduplicate')) || false;
-    const pingLimit = main_interaction.options.getNumber('pinglimit') || 0;
+    let pingLimit = main_interaction.options.getNumber('pinglimit') || 0;
     if (pingLimit < new AutomodAntiSpam().pingLimitMin) pingLimit = 0;
 
     const whitelistrolesInput = main_interaction.options.getString('whitelistroles') || '';

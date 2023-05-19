@@ -38,7 +38,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
 
                 const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
                 if (videoAlreadyExists) {
-                    if (!this.isLongerThanXh(upload.updatedAt)) continue;
+                    if (!this.isLongerThanXh(upload.updatedAt) || !upload.messageId) continue;
                     await this.updateEmbed(
                         feed.items[0],
                         upload.messageId,
