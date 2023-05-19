@@ -16,6 +16,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const close_category = main_interaction.options.getChannel('close_category');
     const ticket_description = main_interaction.options.getString('ticket_description');
     const message_link = main_interaction.options.getString('message_link');
+    const log_channel = main_interaction.options.getChannel('log_channel');
     let moderator = main_interaction.options.getString('moderator');
 
     const ticketApi = new Tickets(bot, main_interaction);
@@ -32,6 +33,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 close_category,
                 moderator,
                 ticket_description,
+                log_channel: log_channel.id,
             })
             .then((res) => {
                 main_interaction.followUp({

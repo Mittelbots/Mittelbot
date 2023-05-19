@@ -4,6 +4,7 @@ const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
 const fs = require('fs');
 const { errorhandler } = require('../functions/errorhandler/errorhandler');
+const { messageDeleteReasons } = require('../data/info/messageDeleteReasons');
 
 let publicScamList = [];
 
@@ -82,19 +83,22 @@ module.exports = class ScamDetection {
                     }
 
                     if (match >= 94) {
+                        const reason = `User tried to sent a Scam Link : ${scamLinksExt[index]}`;
+
                         await banUser({
                             user: await message.guild.members.fetch(message.author),
                             mod: bot.user,
                             guild: message.guild,
-                            reason: `User tried to sent a Scam Link : ${scamLinksExt[index]}`,
+                            reason: reason,
                             bot,
                             dbtime: getModTime('99999d'),
                             time: 'Permanent',
                             isAuto: true,
                         });
                         errorhandler({
-                            err: `User tried to sent a Scam Link : ${scamLinksExt[index]}, Users Input: ${messageArray[i]}`,
+                            err: `${reason}, Users Input: ${messageArray[i]}`,
                         });
+                        messageDeleteReasons.set(message.id, reason);
                         await message.delete().catch(() => {});
                         i = 0;
                         return resolve(true);

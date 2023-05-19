@@ -8,7 +8,6 @@ GuildUploads.init(
         guild_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
-            unique: 'guild_id',
         },
         channel_id: {
             type: DataTypes.STRING,
@@ -26,6 +25,10 @@ GuildUploads.init(
         },
         messageId: {
             type: DataTypes.BIGINT,
+        },
+        updateCount: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0,
         },
     },
     {

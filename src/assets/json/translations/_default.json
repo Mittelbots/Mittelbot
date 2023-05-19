@@ -149,7 +149,8 @@
                 "added": "{success.cheerEmote} Successfully added the reddit notification for %c"
             },
             "youtube": {
-                "removed": "{success.cheerEmote} Successfully removed the youtube notification"
+                "added": "{success.cheerEmote} Successfully added the youtube channel `%q` to the list.",
+                "removed": "{success.cheerEmote} Successfully removed the youtube channel `%q`."
             },
             "twitch": {
                 "added": "{success.cheerEmote} Successfully added the twitch channel `%q` to the list.",
@@ -164,6 +165,9 @@
             },
             "password": {
                 "generated": "{success.emote} Your password has been generated: `%c`"
+            },
+            "bug": {
+                "sent": "{success.emote} Your bug report has been sent!"
             }
         }
     },
@@ -173,8 +177,20 @@
         "general": {
             "tryCommandAgainWithoutArgs": "Try again by clicking"
         },
+        "admin": {
+            "messageUpdate": "**Message sent by <@%q> edited in <#%w>\n[Jump to Message](https://discord.com/channels/%e/%r/%t)**\n\n**Before**\n%z\n\n**After [BETA]**\n%u"
+        },
         "ticket": {
-            "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds..."
+            "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds...",
+            "transcript": {
+                "title": "Ticket Saved - %c",
+                "fields": {
+                    "id": "Ticket ID",
+                    "openedBy": "Opened by",
+                    "closedBy": "Saved by",
+                    "createdAt": "Created at"
+                }
+            }
         },
         "autoblacklist": {
             "info": {
@@ -586,6 +602,12 @@
                 "maxReached": "{error.emote} You have reached the maximum amount of channels you can add (%q). Please remove one first.",
                 "selectEveryChannel": "{error.emote}  Something went wrong while selecting all twitch channels. Please contact the Bot support.",
                 "removeChannel": "{error.emote} Something went wrong while removing the channel. Please contact the Bot support."
+            },
+            "youtube": {
+                "channelNotFound": "{error.emote} I couldn't find the channel you have entered with the name `%q`.",
+                "permissionCheck": "{error.emote} Something went wrong while checking the permissions.",
+                "maxReached": "{error.emote} You have reached the maximum amount of channels you can add (%q). Please remove one first.",
+                "alreadyExists": "{error.emote} The channel %q is already added. Please use the `remove` argument to remove it."
             }
         },
         "utils": {

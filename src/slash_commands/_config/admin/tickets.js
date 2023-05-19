@@ -13,6 +13,12 @@ module.exports.ticketConfig = new SlashCommandBuilder()
                     .setDescription('The channel to create the ticket system in.')
                     .setRequired(true)
             )
+            .addChannelOption((option) =>
+                option
+                    .setName('log_channel')
+                    .setDescription('The place where all saved Transcripts will be sent to.')
+                    .setRequired(true)
+            )
             .addStringOption((option) =>
                 option
                     .setName('description')
