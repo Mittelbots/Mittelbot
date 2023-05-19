@@ -89,7 +89,7 @@ module.exports = class YouTubeLogic {
     }
 
     getChannelId(ytchannel) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             const url = new URL('https://www.youtube.com' + '/@' + ytchannel);
             if (url.pathname === '/@') {
                 return resolve(false);
