@@ -301,7 +301,7 @@
             "writeAMessageFirst": "Schreibe deine ersten Nachrichten, um xp zu erhalten."
         },
         "music": {
-            "requestedby": "Hinzugefügt von",
+            "requestedBy": "Hinzugefügt von",
             "songsInQueue": "Lieder in der Warteschlange: %c",
             "duration": "Länge: %c",
             "nowplaying": "{info.music.nowPlayingOnlyTrack} \nHinzugefügt von: %x \nLänge: %y \nURL: %v",

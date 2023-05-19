@@ -305,7 +305,7 @@
             "writeAMessageFirst": "Write your first messages to gain xp."
         },
         "music": {
-            "requestedby": "Requested by",
+            "requestedBy": "Requested by",
             "songsInQueue": "Songs in Queue: %c",
             "duration": "Duration: %c",
             "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
