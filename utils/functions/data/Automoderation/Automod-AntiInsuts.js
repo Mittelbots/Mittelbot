@@ -34,6 +34,7 @@ module.exports = class AutomodAntiInsults {
                 action: antiInsultsSetting.action,
                 bot: bot,
                 messages: message,
+                reason: '[ANTI INSULTS] Sent a blacklisted insult word',
             }).then(() => {
                 resolve(true);
             });
