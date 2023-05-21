@@ -1,13 +1,7 @@
-const { PermissionFlagsBits } = require('discord.js');
-const {
-    sendWelcomeSetting,
-    updateWelcomeSettings,
-} = require('../../../utils/functions/data/welcomechannel');
 const { GuildConfig } = require('../../../utils/functions/data/Config');
-const config = require('../../../src/assets/json/_config/config.json');
 const { EmbedBuilder } = require('discord.js');
 const { settingsConfig, settingsPerms } = require('../_config/admin/settings');
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({ main_interaction }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
@@ -19,28 +13,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     content: 'This command is currenty disabled',
                     ephemeral: true,
                 })
-                .catch((err) => {});
-            break;
-
-        case 'welcomemessage':
-            await updateWelcomeSettings({
-                guild_id: main_interaction.guild.id,
-                valueName: 'id',
-                value: main_interaction.options.getChannel('channel').id,
-            })
-                .then(() => {
-                    sendWelcomeSetting({
-                        main_interaction,
-                    });
-                })
-                .catch((err) => {
-                    main_interaction
-                        .followUp({
-                            content: '❌ ' + err,
-                            ephemeral: true,
-                        })
-                        .catch((err) => {});
-                });
+                .catch(() => {});
             break;
 
         case 'cooldown':
@@ -65,7 +38,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ],
                         ephemeral: true,
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             } else {
                 await saveSetting({
                     value: cooldown * 1000,
@@ -85,7 +58,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ],
                         ephemeral: true,
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             }
             break;
     }

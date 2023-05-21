@@ -35,6 +35,9 @@
             "reactionroles": {
                 "updated": "{success.emote} The reaction roles have been updated.",
                 "removed": "{success.emote} The reaction roles have been removed."
+            },
+            "welcome": {
+                "removed": "{success.emote} Successfully removed the welcome message."
             }
         },
         "ticket": {
