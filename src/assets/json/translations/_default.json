@@ -37,6 +37,8 @@
                 "removed": "{success.emote} The reaction roles have been removed."
             },
             "welcome": {
+                "statusActivated": "{success.emote} Successfully activated the welcome message.",
+                "statusDeactivated": "{success.emote} Successfully deactivated the welcome message.",
                 "removed": "{success.emote} Successfully removed the welcome message."
             }
         },

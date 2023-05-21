@@ -6,78 +6,67 @@ const {
 const { welcomeSettingsConfig, welcomeSettingsPerms } = require('../_config/admin/welcome');
 
 module.exports.run = async ({ main_interaction }) => {
-    await main_interaction.deferReply({
-        ephemeral: true,
-    });
+    await main_interaction.deferReply({ ephemeral: true });
 
     const subcommand = main_interaction.options.getSubcommand();
 
-    if (subcommand === 'add') {
-        await updateWelcomeSettings({
-            guild_id: main_interaction.guild.id,
-            valueName: 'id',
-            value: main_interaction.options.getChannel('channel').id,
-        })
-            .then(() => {
-                sendWelcomeSetting({
-                    main_interaction,
-                });
-            })
-            .catch((err) => {
-                main_interaction
-                    .followUp({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setDescription(
-                                    global.t.trans(
-                                        ['error.generalWithMessage', err.message],
-                                        main_interaction.guild.id
-                                    )
-                                )
-                                .setColor(global.t.trans(['general.colors.success'])),
-                        ],
-                        ephemeral: true,
-                    })
-                    .catch(() => {});
+    try {
+        if (subcommand === 'add') {
+            const channelId = main_interaction.options.getChannel('channel').id;
+            await updateWelcomeSettings({
+                guild_id: main_interaction.guild.id,
+                valueName: 'id',
+                value: channelId,
             });
-    } else if (subcommand === 'remove') {
-        await updateWelcomeSettings({
-            guild_id: main_interaction.guild.id,
-            remove: true,
-        })
-            .then(() => {
-                main_interaction
-                    .followUp({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setDescription(
-                                    global.t.trans(
-                                        ['success.emote.admin.welcome.removed'],
-                                        main_interaction.guild.id
-                                    )
-                                )
-                                .setColor(global.t.trans(['general.colors.success'])),
-                        ],
-                    })
-                    .catch(() => {});
-            })
-            .catch((err) => {
-                main_interaction
-                    .followUp({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setDescription(
-                                    global.t.trans(
-                                        ['error.generalWithMessage', err.message],
-                                        main_interaction.guild.id
-                                    )
-                                )
-                                .setColor(global.t.trans(['general.colors.success'])),
-                        ],
-                        ephemeral: true,
-                    })
-                    .catch(() => {});
+            sendWelcomeSetting({ main_interaction });
+        } else if (subcommand === 'status') {
+            const status = main_interaction.options.getBoolean('status');
+            await updateWelcomeSettings({
+                guild_id: main_interaction.guild.id,
+                valueName: 'active',
+                value: status,
             });
+            const descriptionTrans = status
+                ? 'success.admin.welcome.statusActivated'
+                : 'success.admin.welcome.statusDeactivated';
+            main_interaction.followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans([descriptionTrans], main_interaction.guild.id)
+                        )
+                        .setColor(global.t.trans(['general.colors.success'])),
+                ],
+            });
+        } else if (subcommand === 'remove') {
+            await updateWelcomeSettings({ guild_id: main_interaction.guild.id, remove: true });
+            main_interaction.followUp({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                ['success.admin.welcome.removed'],
+                                main_interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.success'])),
+                ],
+            });
+        }
+    } catch (err) {
+        const description = global.t.trans(
+            ['error.generalWithMessage', err.message],
+            main_interaction.guild.id
+        );
+        const color = global.t.trans(['general.colors.success']);
+        const ephemeral = subcommand === 'add' ? true : false;
+
+        main_interaction
+            .followUp({
+                embeds: [new EmbedBuilder().setDescription(description).setColor(color)],
+                ephemeral: ephemeral,
+            })
+            .catch(() => {});
     }
 };
 

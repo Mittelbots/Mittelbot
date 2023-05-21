@@ -37,6 +37,8 @@
                 "removed": "{success.emote} Die Reaktionsrollen wurden entfernt."
             },
             "welcome": {
+                "statusActivated": "{success.emote} Die Willkommensnachricht wurde erfolgreich aktiviert.",
+                "statusDeactivated": "{success.emote} Die Willkommensnachricht wurde erfolgreich deaktiviert.",
                 "removed": "{success.emote} Die Willkommensnachricht wurde erfolgreich entfernt."
             }
         },
