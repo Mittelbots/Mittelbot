@@ -97,7 +97,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.banappeal.set'],
+                                        ['error.admin.banappeal.set'],
                                         main_interaction.guild.id
                                     )
                                 )

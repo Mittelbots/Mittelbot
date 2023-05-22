@@ -25,7 +25,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 return main_interaction.reply({
                     embeds: [
                         new EmbedBuilder().setDescription(
-                            global.t.trans(['error.singasong.noPoints'], main_interaction.guild.id)
+                            global.t.trans(
+                                ['error.fun.singasong.noPoints'],
+                                main_interaction.guild.id
+                            )
                         ),
                     ],
                     ephemeral: true,

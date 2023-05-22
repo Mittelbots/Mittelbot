@@ -32,7 +32,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.automod.whitelistroles.alreadyExists', role.name],
+                                        [
+                                            'error.admin.automod.whitelistroles.alreadyExists',
+                                            role.name,
+                                        ],
                                         main_interaction.guild.id
                                     )
                                 )

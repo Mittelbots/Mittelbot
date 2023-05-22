@@ -18,7 +18,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.purge.notAValidNumber', config.bulkDeleteLimit],
+                                ['error.moderation.purge.notAValidNumber', config.bulkDeleteLimit],
                                 main_interaction.guild.id
                             )
                         )

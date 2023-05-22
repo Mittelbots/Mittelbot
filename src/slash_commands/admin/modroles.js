@@ -18,7 +18,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
             embeds: [
                 new EmbedBuilder()
                     .setDescription(
-                        global.t.trans(['error.modroles.doesntExists'], main_interaction.guild.id)
+                        global.t.trans(
+                            ['error.admin.modroles.doesntExists'],
+                            main_interaction.guild.id
+                        )
                     )
                     .setColor(global.t.trans(['general.colors.error'])),
             ],

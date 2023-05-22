@@ -45,7 +45,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['error.autoblacklist.set.alreadySet'],
+                                    ['error.admin.autoblacklist.set.alreadySet'],
                                     main_interaction.guild.id
                                 )
                             )
@@ -99,7 +99,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['error.autoblacklist.delete.notSet'],
+                                    ['error.admin.autoblacklist.delete.notSet'],
                                     main_interaction.guild.id
                                 )
                             )

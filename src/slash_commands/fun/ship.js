@@ -15,7 +15,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.ship.cannotShip', 'yourself'],
+                                ['error.fun.ship.cannotShip', 'yourself'],
                                 main_interaction.guild.id
                             )
                         )
@@ -31,7 +31,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.ship.cannotShip', 'bots'],
+                                ['error.fun.ship.cannotShip', 'bots'],
                                 main_interaction.guild.id
                             )
                         )

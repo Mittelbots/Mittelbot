@@ -45,7 +45,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.givexp.cannotGiveToBots'],
+                                ['error.level.givexp.cannotGiveToBots'],
                                 main_interaction.guild.id
                             )
                         )

@@ -50,7 +50,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                 .setDescription(
                                     global.t.trans(
                                         [
-                                            'warning.autodelete.get',
+                                            'warning.admin.autodelete.get',
                                             result ? 'have to' : "don't have to",
                                             typeTranslations[filtered[0]],
                                         ],

@@ -30,7 +30,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.leaderboard.noOneRanked'],
+                                ['error.level.leaderboard.noOneRanked'],
                                 main_interaction.guild.id
                             )
                         )

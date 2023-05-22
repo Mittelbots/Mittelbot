@@ -20,7 +20,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            global.t.trans(['error.unban.notBanned'], main_interaction.guild.id)
+                            global.t.trans(
+                                ['error.moderation.unban.notBanned'],
+                                main_interaction.guild.id
+                            )
                         )
                         .setColor(global.t.trans(['general.colors.error'])),
                 ],

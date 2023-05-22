@@ -463,13 +463,15 @@
 
     "warning": {
         "emote": "⚠️",
-        "autodelete": {
-            "get": " {warning.emote} Benutzer %c senden Nachrichten des Typs %e."
-        },
-        "modules": {
-            "notavalidmodule": "{warning.emote} %c ist kein gültiges Modul.",
-            "isAlreadyEnabled": "{warning.emote} %c ist bereits aktiviert.",
-            "isAlreadyDisabled": "{warning.emote} %c ist bereits deaktiviert."
+        "admin": {
+            "autodelete": {
+                "get": " {warning.emote} Benutzer %c senden Nachrichten des Typs %e."
+            },
+            "modules": {
+                "notavalidmodule": "{warning.emote} %c ist kein gültiges Modul.",
+                "isAlreadyEnabled": "{warning.emote} %c ist bereits aktiviert.",
+                "isAlreadyDisabled": "{warning.emote} %c ist bereits deaktiviert."
+            }
         },
         "music": {
             "queueEnded": "{warning.emote} Die Warteschlange ist beendet. Stille..."
@@ -514,73 +516,6 @@
                 "close": "{error.emote} Es ist ein Fehler beim Schließen deines Tickets aufgetreten. {general.tryAgainLater}",
                 "hasTicketAlready": "{error.emote} Du hast bereits ein Ticket geöffnet."
             }
-        },
-        "settings": {
-            "muteRole": {
-                "set": "{error.emote} Es ist ein Fehler bei der Einstellung deiner Mute-Rolle aufgetreten. {general.tryAgainLater}",
-                "remove": "{error.emote} Es ist ein Fehler beim Entfernen deiner Mute-Rolle aufgetreten. {general.tryAgainLater}"
-            }
-        },
-        "autoblacklist": {
-            "set": {
-                "alreadySet": "{error.emote} Für diesen Server ist bereits eine Auto-Blacklist eingerichtet! Löschen den Eintrag zuerst."
-            },
-            "delete": {
-                "notSet": "{error.emote} Auto-Blacklist ist für diesen Server nicht eingerichtet!"
-            }
-        },
-        "automod": {
-            "whitelistroles": {
-                "alreadyExists": "{error.emote} Du hast die Rolle %c bereits auf der Whitelist. Wenn du sie entfernen willst, benutze das optionale Argument `remove`."
-            }
-        },
-        "banappeal": {
-            "set": "{error.emote} Beim Senden des Beispiels an den von dir angegebenen Kanal ist ein Fehler aufgetreten. Bitte stelle sicher, dass ich die richtigen Berechtigungen habe, sonst kann der Bot keine Appeals senden."
-        },
-        "levelsettings": {
-            "set": "{error.emote} Beim Ändern der Levelkonfiguration in %c ist etwas schief gelaufen",
-            "setAlone": "{error.emote} Beim Ändern der Levelkonfiguration ist etwas schief gelaufen"
-        },
-        "modroles": {
-            "doesntExist": "{error.emote} Die Rolle %c existiert auf diesem Server nicht."
-        },
-        "guessnumber": {
-            "tooLowOrHigh": "{error.emote} Deine Schätzung ist zu %c. Es war %x.",
-            "haventguessed": "{error.emote} Du hast es nicht erraten. Es war %c."
-        },
-        "ship": {
-            "cannotShip": "Du kannst dich nicht mit %c shippen!"
-        },
-        "singasong": {
-            "nopoints": "Sie haben keine Punkte!"
-        },
-        "givexp": {
-            "cannotGiveToBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp hinzufügen."
-        },
-        "leaderboard": {
-            "noOneRanked": "{error.emote} Es gibt niemanden, der in der Rangliste steht. Schreibe zuerst eine Nachricht."
-        },
-        "rank": {
-            "nothingFound": "{error.emote} Ich habe für diesen Benutzer nichts gefunden. Bitte sammle zuerst etwas Erfahrung."
-        },
-        "removexp": {
-            "cannotRemoveFromBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp entfernen."
-        },
-        "ban": {
-            "alreadyBanned": "{error.emote} Dieser Benutzer ist bereits gesperrt."
-        },
-        "infractions": {
-            "dontHaveAny": "%c hat keine Verstöße!",
-            "notFoundWithId": "Es gibt keinen Verstoß mit dieser ID ` %c `"
-        },
-        "mute": {
-            "alreadyMuted": "{error.emote} Dieser Benutzer ist bereits stummgeschaltet!"
-        },
-        "purge": {
-            "notAValidNumber": "{error.emote} Du musst eine Zahl zwischen 1 und %c eingeben"
-        },
-        "unban": {
-            "notBanned": "{error.emote} Dieser Benutzer ist nicht gesperrt!"
         },
         "music": {
             "nothingPlays": "{error.emote} Es wird gerade kein Song gespielt!",
@@ -639,6 +574,16 @@
                 "sameUserAgain": "{error.emote} Du kannst nicht zweimal hintereinander zählen.",
                 "wrongCount": "{error.emote} Du musst mit der richtigen Zahl zählen. Die richtige Zahl hätte %c sein sollen",
                 "countReseted": "Der Zähler wurde zurückgesetzt. Versuchen Sie es erneut!"
+            },
+            "guessnumber": {
+                "tooLowOrHigh": "{error.emote} Deine Schätzung ist zu %c. Es war %x.",
+                "haventguessed": "{error.emote} Du hast es nicht erraten. Es war %c."
+            },
+            "ship": {
+                "cannotShip": "Du kannst dich nicht mit %c shippen!"
+            },
+            "singasong": {
+                "nopoints": "Sie haben keine Punkte!"
             }
         },
         "admin": {
@@ -663,6 +608,35 @@
                 "roleNotFound": "{error.emote} Die Rolle <@&%c> wurde nicht gefunden.",
                 "maxRoles": "{error.emote} Sie können nicht mehr als %c Rollen hinzufügen.",
                 "noReactionRolesInServer": "{error.emote} Auf diesem Server gibt es keine Reaktionsrollen."
+            },
+            "settings": {
+                "muteRole": {
+                    "set": "{error.emote} Es ist ein Fehler bei der Einstellung deiner Mute-Rolle aufgetreten. {general.tryAgainLater}",
+                    "remove": "{error.emote} Es ist ein Fehler beim Entfernen deiner Mute-Rolle aufgetreten. {general.tryAgainLater}"
+                }
+            },
+            "autoblacklist": {
+                "set": {
+                    "alreadySet": "{error.emote} Für diesen Server ist bereits eine Auto-Blacklist eingerichtet! Löschen den Eintrag zuerst."
+                },
+                "delete": {
+                    "notSet": "{error.emote} Auto-Blacklist ist für diesen Server nicht eingerichtet!"
+                }
+            },
+            "automod": {
+                "whitelistroles": {
+                    "alreadyExists": "{error.emote} Du hast die Rolle %c bereits auf der Whitelist. Wenn du sie entfernen willst, benutze das optionale Argument `remove`."
+                }
+            },
+            "banappeal": {
+                "set": "{error.emote} Beim Senden des Beispiels an den von dir angegebenen Kanal ist ein Fehler aufgetreten. Bitte stelle sicher, dass ich die richtigen Berechtigungen habe, sonst kann der Bot keine Appeals senden."
+            },
+            "levelsettings": {
+                "set": "{error.emote} Beim Ändern der Levelkonfiguration in %c ist etwas schief gelaufen",
+                "setAlone": "{error.emote} Beim Ändern der Levelkonfiguration ist etwas schief gelaufen"
+            },
+            "modroles": {
+                "doesntExist": "{error.emote} Die Rolle %c existiert auf diesem Server nicht."
             }
         },
         "moderation": {
@@ -673,7 +647,35 @@
             },
             "mute": {
                 "noMuteRoleFoundOrCreated": "{error.emote} Ich habe keine Stummschaltungsrolle gefunden oder erstellt. Bitte erstelle eine Rolle mit dem Namen `Muted` und versuche es erneut.",
-                "notAValidMuteRole": "%q is not a valid Muted Role in %w. Error Message: %e"
+                "notAValidMuteRole": "%q is not a valid Muted Role in %w. Error Message: %e",
+                "alreadyMuted": "{error.emote} Dieser Benutzer ist bereits stummgeschaltet!"
+            },
+            "ban": {
+                "alreadyBanned": "{error.emote} Dieser Benutzer ist bereits gesperrt."
+            },
+            "infractions": {
+                "dontHaveAny": "%c hat keine Verstöße!",
+                "notFoundWithId": "Es gibt keinen Verstoß mit dieser ID ` %c `"
+            },
+            "purge": {
+                "notAValidNumber": "{error.emote} Du musst eine Zahl zwischen 1 und %c eingeben"
+            },
+            "unban": {
+                "notBanned": "{error.emote} Dieser Benutzer ist nicht gesperrt!"
+            }
+        },
+        "level": {
+            "givexp": {
+                "cannotGiveToBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp hinzufügen."
+            },
+            "leaderboard": {
+                "noOneRanked": "{error.emote} Es gibt niemanden, der in der Rangliste steht. Schreibe zuerst eine Nachricht."
+            },
+            "rank": {
+                "nothingFound": "{error.emote} Ich habe für diesen Benutzer nichts gefunden. Bitte sammle zuerst etwas Erfahrung."
+            },
+            "removexp": {
+                "cannotRemoveFromBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp entfernen."
             }
         }
     }
