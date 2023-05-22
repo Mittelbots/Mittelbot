@@ -10,7 +10,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 new EmbedBuilder()
                     .setDescription(
                         global.t.trans(
-                            ['info.guessnumber.guess', maxNumber],
+                            ['info.fun.guessnumber.guess', maxNumber],
                             main_interaction.guild.id
                         )
                     )

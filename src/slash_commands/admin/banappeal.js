@@ -19,7 +19,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['success.banappeal.remove'],
+                                    ['success.admin.banappeal.remove'],
                                     main_interaction.guild.id
                                 )
                             )
@@ -77,7 +77,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            global.t.trans(['success.banappeal.set'], main_interaction.guild.id)
+                            global.t.trans(
+                                ['success.admin.banappeal.set'],
+                                main_interaction.guild.id
+                            )
                         )
                         .setColor(global.t.trans(['general.colors.success'])),
                 ],

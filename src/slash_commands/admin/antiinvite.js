@@ -64,7 +64,7 @@ module.exports.run = async ({ main_interaction }) => {
             const description = setting.enabled
                 ? global.t.trans(
                       [
-                          'success.automod.antispam.enabled',
+                          'success.admin.automod.antispam.enabled',
                           setting.action,
                           setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
                           setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||
@@ -76,7 +76,10 @@ module.exports.run = async ({ main_interaction }) => {
                       ],
                       main_interaction.guild.id
                   )
-                : global.t.trans(['success.automod.antispam.disabled'], main_interaction.guild.id);
+                : global.t.trans(
+                      ['success.admin.automod.antispam.disabled'],
+                      main_interaction.guild.id
+                  );
 
             main_interaction
                 .reply({

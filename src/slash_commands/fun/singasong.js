@@ -35,7 +35,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder().setDescription(
                         global.t.trans(
-                            ['info.singasong.userPoints', points],
+                            ['info.fun.singasong.userPoints', points],
                             main_interaction.guild.id
                         )
                     ),
@@ -82,7 +82,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['success.singasong.userHasBeenBanned'],
+                                        ['success.moderation.singasong.userHasBeenBanned'],
                                         main_interaction.guild.id
                                     )
                                 )

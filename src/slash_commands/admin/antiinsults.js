@@ -40,17 +40,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
             const description = removeWords
                 ? global.t.trans(
-                      ['success.automod.antiinsults.removed', setting.action],
+                      ['success.admin.automod.antiinsults.removed', setting.action],
                       main_interaction.guild.id
                   )
                 : setting.enabled
                 ? global.t.trans(
-                      ['success.automod.antiinsults.enabled', words],
+                      ['success.admin.automod.antiinsults.enabled', words],
                       main_interaction.guild.id
                   )
                 : global.t.trans(
                       [
-                          'success.automod.antiinsults.disabled',
+                          'success.admin.automod.antiinsults.disabled',
                           setting.action,
                           setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
                           setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||

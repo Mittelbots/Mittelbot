@@ -37,7 +37,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['success.purge.purged', amount],
+                                    ['success.moderation.purge.purged', amount],
                                     main_interaction.guild.id
                                 )
                             )

@@ -94,7 +94,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['success.removexp.xpRemoved', amount, user],
+                                ['success.moderation.removexp.xpRemoved', amount, user],
                                 main_interaction.guild.id
                             )
                         )

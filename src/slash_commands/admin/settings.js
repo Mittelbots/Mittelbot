@@ -30,7 +30,7 @@ module.exports.run = async ({ main_interaction }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['success.settings.cooldown.disabled'],
+                                        ['success.admin.settings.cooldown.disabled'],
                                         main_interaction.guild.id
                                     )
                                 )
@@ -50,7 +50,7 @@ module.exports.run = async ({ main_interaction }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['success.settings.cooldown.set', cooldown],
+                                        ['success.admin.settings.cooldown.set', cooldown],
                                         main_interaction.guild.id
                                     )
                                 )

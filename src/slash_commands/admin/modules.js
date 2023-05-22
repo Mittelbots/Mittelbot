@@ -82,7 +82,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             .setDescription(
                                 global.t.trans(
                                     [
-                                        'success.modules.update',
+                                        'success.admin.modules.update',
                                         status === 'activate' ? 'activated' : 'disabled',
                                         requestedModule[0].toUpperCase() + requestedModule.slice(1),
                                     ],

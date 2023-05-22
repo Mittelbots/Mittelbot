@@ -89,7 +89,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder().setDescription(
                         global.t.trans(
-                            ['success.givexp.xpGiven', amount, user],
+                            ['success.moderation.givexp.xpGiven', amount, user],
                             main_interaction.guild.id
                         )
                     ),

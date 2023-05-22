@@ -67,7 +67,7 @@ module.exports.run = async ({ main_interaction }) => {
             const description = antilinksEnabled
                 ? global.t.trans(
                       [
-                          'success.automod.antilinks.enabled',
+                          'success.admin.automod.antilinks.enabled',
                           antilinksAction,
                           setting.whitelistroles.map((role) => `<@&${role}>`).join(' ') || 'Empty',
                           setting.whitelistchannels.map((channel) => `<#${channel}>`).join(' ') ||
@@ -76,7 +76,7 @@ module.exports.run = async ({ main_interaction }) => {
                       ],
                       guildId
                   )
-                : global.t.trans(['success.automod.antilinks.disabled'], guildId);
+                : global.t.trans(['success.admin.automod.antilinks.disabled'], guildId);
 
             main_interaction.reply({
                 embeds: [

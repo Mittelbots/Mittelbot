@@ -40,6 +40,62 @@
                 "statusActivated": "{success.emote} Successfully activated the welcome message.",
                 "statusDeactivated": "{success.emote} Successfully deactivated the welcome message.",
                 "removed": "{success.emote} Successfully removed the welcome message."
+            },
+            "settings": {
+                "muteRole": {
+                    "set": "{success.emote} Successfully set your Mute Role to %c.",
+                    "remove": "{success.emote} Successfully removed your Mute Role."
+                },
+                "cooldown": {
+                    "set": "{success.emote} Command Cooldown successfully changed to %c seconds.",
+                    "disabled": "{success.emote} Command Cooldown successfully turned off \n \n**Info: A default Cooldown of 2 Seconds is still enabled to protect the bot from spam!**"
+                }
+            },
+            "autoblacklist": {
+                "set": "{success.emote} Successfully set up Auto-Blacklist for this server.",
+                "delete": "{success.emote} Successfully deleted Auto-Blacklist for this server."
+            },
+            "autodelete": {
+                "set": "{success.emote} Users %c send messages of type %e"
+            },
+            "automod": {
+                "whitelistroles": {
+                    "add": "{success.emote} Successfully added the role %c to the whitelist."
+                },
+                "antispam": {
+                    "enabled": "{success.emote} Successfully enabled antispam with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nDetect Dublicates: %w\n\nPinglimit: %e.",
+                    "disabled": "{success.emote} Successfully disabled antispam."
+                },
+                "antiinvite": {
+                    "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinks: %w\n\nWhitelistinvites: `%w`.",
+                    "disabled": "{success.emote} Successfully disabled Anti-invite."
+                },
+                "antilinks": {
+                    "enabled": "{success.emote} Successfully enabled Anti-Links with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinks: `%w`.",
+                    "disabled": "{success.emote} Successfully disabled Anti-Links."
+                },
+                "antiinsults": {
+                    "removed": "{success.emote} Successfully removed the insult `%c` from the list.",
+                    "enabled": "{success.emote} Successfully enabled Anti-Insults with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nnWords: %r",
+                    "disabled": "{success.emote} Successfully disabled Anti-Mass-Mention."
+                }
+            },
+            "autotranslate": {
+                "update": "{success.emote} Successfully updated your Auto-Translate settings."
+            },
+            "banappeal": {
+                "set": "{success.emote} The ban appeal has been setup for your server. An example of how it will look will be sent to the channel you specified.",
+                "remove": "{success.emote} The ban appeal has been removed from your server."
+            },
+            "levelsettings": {
+                "set": "{success.emote} Successfully saved your level config to %c",
+                "setAlone": "{success.emote} Successfully saved your level config"
+            },
+            "modules": {
+                "update": "{success.emote} Successfully %c %x."
+            },
+            "warnroles": {
+                "update": "{success.emote} Warn Roles updated!"
             }
         },
         "ticket": {
@@ -53,83 +109,31 @@
                 "saveTranscript": "{success.emote} Successfully saved your transcript. You can download it now. (Web-hosted is not currently supported)"
             }
         },
-        "settings": {
-            "muteRole": {
-                "set": "{success.emote} Successfully set your Mute Role to %c.",
-                "remove": "{success.emote} Successfully removed your Mute Role."
-            },
-            "cooldown": {
-                "set": "{success.emote} Command Cooldown successfully changed to %c seconds.",
-                "disabled": "{success.emote} Command Cooldown successfully turned off \n \n**Info: A default Cooldown of 2 Seconds is still enabled to protect the bot from spam!**"
+        "fun": {
+            "ship": {
+                "showResult": "**%c** and **%e** match `%p%`. \n\n `%r`"
             }
         },
-        "autoblacklist": {
-            "set": "{success.emote} Successfully set up Auto-Blacklist for this server.",
-            "delete": "{success.emote} Successfully deleted Auto-Blacklist for this server."
-        },
-        "autodelete": {
-            "set": "{success.emote} Users %c send messages of type %e"
-        },
-        "automod": {
-            "whitelistroles": {
-                "add": "{success.emote} Successfully added the role %c to the whitelist."
+        "moderation": {
+            "singasong": {
+                "userHasBeenBanned": "{success.emote} User has been banned from using the command in this guild!"
             },
-            "antispam": {
-                "enabled": "{success.emote} Successfully enabled antispam with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nDetect Dublicates: %w\n\nPinglimit: %e.",
-                "disabled": "{success.emote} Successfully disabled antispam."
+            "givexp": {
+                "xpGiven": "{success.emote} %c xp has been added to %x"
             },
-            "antiinvite": {
-                "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinks: %w\n\nWhitelistinvites: `%w`.",
-                "disabled": "{success.emote} Successfully disabled Anti-invite."
+            "removexp": {
+                "xpRemoved": "{success.emote} %c xp has been removed from %x"
             },
-            "antilinks": {
-                "enabled": "{success.emote} Successfully enabled Anti-Links with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinks: `%w`.",
-                "disabled": "{success.emote} Successfully disabled Anti-Links."
+            "infractions": {
+                "removed": "Infraction with id %c %x be removed!"
             },
-            "antiinsults": {
-                "removed": "{success.emote} Successfully removed the insult `%c` from the list.",
-                "enabled": "{success.emote} Successfully enabled Anti-Insults with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nnWords: %r",
-                "disabled": "{success.emote} Successfully disabled Anti-Mass-Mention."
+            "isBanned": {
+                "userIsBanned": "This user is banned! Reason: `%c` by %x",
+                "userIsNotBanned": "This user isn't banned!"
+            },
+            "purge": {
+                "purged": "{success.emote} Successfully pruned %c messages"
             }
-        },
-        "autotranslate": {
-            "update": "{success.emote} Successfully updated your Auto-Translate settings."
-        },
-        "banappeal": {
-            "set": "{success.emote} The ban appeal has been setup for your server. An example of how it will look will be sent to the channel you specified.",
-            "remove": "{success.emote} The ban appeal has been removed from your server."
-        },
-        "levelsettings": {
-            "set": "{success.emote} Successfully saved your level config to %c",
-            "setAlone": "{success.emote} Successfully saved your level config"
-        },
-        "modules": {
-            "update": "{success.emote} Successfully %c %x."
-        },
-        "warnroles": {
-            "update": "{success.emote} Warn Roles updated!"
-        },
-        "ship": {
-            "showResult": "**%c** and **%e** match `%p%`. \n\n `%r`"
-        },
-        "singasong": {
-            "userHasBeenBanned": "{success.emote} User has been banned from using the command in this guild!"
-        },
-        "givexp": {
-            "xpGiven": "{success.emote} %c xp has been added to %x"
-        },
-        "removexp": {
-            "xpRemoved": "{success.emote} %c xp has been removed from %x"
-        },
-        "infractions": {
-            "removed": "Infraction with id %c %x be removed!"
-        },
-        "isBanned": {
-            "userIsBanned": "This user is banned! Reason: `%c` by %x",
-            "userIsNotBanned": "This user isn't banned!"
-        },
-        "purge": {
-            "purged": "{success.emote} Successfully pruned %c messages"
         },
         "music": {
             "disconnect": "{success.emote} Disconnected from the voice channel.",
@@ -183,7 +187,67 @@
             "tryCommandAgainWithoutArgs": "Try again by clicking"
         },
         "admin": {
-            "messageUpdate": "**Message sent by <@%q> edited in <#%w>\n[Jump to Message](https://discord.com/channels/%e/%r/%t)**\n\n**Before**\n%z\n\n**After [BETA]**\n%u"
+            "messageUpdate": "**Message sent by <@%q> edited in <#%w>\n[Jump to Message](https://discord.com/channels/%e/%r/%t)**\n\n**Before**\n%z\n\n**After [BETA]**\n%u",
+            "autoblacklist": {
+                "info": {
+                    "title": "Auto-Blacklist",
+                    "description": "This is a list of all the users that have been auto-blacklisted.",
+                    "fields": [
+                        {
+                            "name": "How to set up Auto-Blacklist?",
+                            "value": "To set up Auto-Blacklist, you need to create a announcement channel, add a blacklist webhook and set it up with the command `/autoblacklist set <channel> [ban_message]`"
+                        },
+                        {
+                            "name": "How to use Auto-Blacklist?",
+                            "value": "You don't need to do anything. If a message is send through the webhook, all user ids in the message will be banned."
+                        },
+                        {
+                            "name": "How to remove Auto-Blacklist?",
+                            "value": "To remove Auto-Blacklist, you need to use the command `/autoblacklist delete`"
+                        }
+                    ]
+                }
+            },
+            "modroles": {
+                "info": {
+                    "admin": [
+                        {
+                            "name": "Admin Permissions",
+                            "value": "This role can use commands like ban, unban, etc.",
+                            "inline": true
+                        }
+                    ],
+                    "mod": [
+                        {
+                            "name": "Mod Permissions",
+                            "value": "This role can use commands like kick, mute, etc.",
+                            "inline": true
+                        }
+                    ],
+                    "helper": [
+                        {
+                            "name": "Helper Permissions",
+                            "value": "This role can use commands like warn, etc.",
+                            "inline": true
+                        }
+                    ],
+                    "remove": [
+                        {
+                            "name": "Remove Role",
+                            "value": "This role will be removed from the modroles list.",
+                            "inline": true
+                        }
+                    ]
+                }
+            },
+            "autodelete": {
+                "types": {
+                    "onlyMedia": "Media",
+                    "onlyText": "Text",
+                    "onlyEmotes": "Emotes",
+                    "onlyStickers": "Stickers"
+                }
+            }
         },
         "ticket": {
             "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds...",
@@ -196,118 +260,6 @@
                     "createdAt": "Created at"
                 }
             }
-        },
-        "autoblacklist": {
-            "info": {
-                "title": "Auto-Blacklist",
-                "description": "This is a list of all the users that have been auto-blacklisted.",
-                "fields": [
-                    {
-                        "name": "How to set up Auto-Blacklist?",
-                        "value": "To set up Auto-Blacklist, you need to create a announcement channel, add a blacklist webhook and set it up with the command `/autoblacklist set <channel> [ban_message]`"
-                    },
-                    {
-                        "name": "How to use Auto-Blacklist?",
-                        "value": "You don't need to do anything. If a message is send through the webhook, all user ids in the message will be banned."
-                    },
-                    {
-                        "name": "How to remove Auto-Blacklist?",
-                        "value": "To remove Auto-Blacklist, you need to use the command `/autoblacklist delete`"
-                    }
-                ]
-            }
-        },
-        "modroles": {
-            "info": {
-                "admin": [
-                    {
-                        "name": "Admin Permissions",
-                        "value": "This role can use commands like ban, unban, etc.",
-                        "inline": true
-                    }
-                ],
-                "mod": [
-                    {
-                        "name": "Mod Permissions",
-                        "value": "This role can use commands like kick, mute, etc.",
-                        "inline": true
-                    }
-                ],
-                "helper": [
-                    {
-                        "name": "Helper Permissions",
-                        "value": "This role can use commands like warn, etc.",
-                        "inline": true
-                    }
-                ],
-                "remove": [
-                    {
-                        "name": "Remove Role",
-                        "value": "This role will be removed from the modroles list.",
-                        "inline": true
-                    }
-                ]
-            }
-        },
-        "autodelete": {
-            "types": {
-                "onlyMedia": "Media",
-                "onlyText": "Text",
-                "onlyEmotes": "Emotes",
-                "onlyStickers": "Stickers"
-            }
-        },
-        "guessnumber": {
-            "guess": "Guess the number between 1 and %c"
-        },
-        "pride": {
-            "sexuality": "Sexuality: %c",
-            "genderSingle": "Gender: %c",
-            "similarto": "Similar to: ",
-            "genderField": "Genders:",
-            "attractedto": "Attracted to:",
-            "attactiontype": "Attraction Type:"
-        },
-        "ship": {
-            "quotes": [
-                {
-                    "100_70": [
-                        "You two are a perfect match!",
-                        "Damn! You really have to hangout together",
-                        "Wow!",
-                        "Wedding, when?"
-                    ],
-                    "69_40": [
-                        "hm. Maybe with a little more effort it can be something special",
-                        "You two are a good match",
-                        "That's a good start"
-                    ],
-                    "39_10": ["IDK. Maybe you should go out with someone else"],
-                    "9_0": [
-                        "I'm not sure if you can be friends with someone like that",
-                        "This is bad. Really bad.",
-                        "Sorry for that"
-                    ]
-                }
-            ]
-        },
-        "singasong": {
-            "userPoints": "You have %c points."
-        },
-        "stromberg": {
-            "spokenof": "Spoken of:",
-            "age": "Age:",
-            "position": "Position:",
-            "episode": "Episode:",
-            "createdAt": "Created at:",
-            "playedBy": "Played by:"
-        },
-        "leaderboard": {
-            "title": "Top 10 members of %c.",
-            "currentRank": "Your current rank: %c",
-            "XP_Level": "XP: %c  Level: %e Last Message: %x",
-            "notRanksYet": "You don't have a rank yet.",
-            "writeAMessageFirst": "Write your first messages to gain xp."
         },
         "music": {
             "requestedBy": "Requested by",
@@ -418,6 +370,51 @@
                 "timerEnded": "Your timer has ended!",
                 "timeLeft": "**Time left:** %c",
                 "timeLeftTime": "**Time Left:** %q Day(s) %w Hour(s) %e Minute(s)"
+            },
+            "guessnumber": {
+                "guess": "Guess the number between 1 and %c"
+            },
+            "pride": {
+                "sexuality": "Sexuality: %c",
+                "genderSingle": "Gender: %c",
+                "similarto": "Similar to: ",
+                "genderField": "Genders:",
+                "attractedto": "Attracted to:",
+                "attactiontype": "Attraction Type:"
+            },
+            "ship": {
+                "quotes": [
+                    {
+                        "100_70": [
+                            "You two are a perfect match!",
+                            "Damn! You really have to hangout together",
+                            "Wow!",
+                            "Wedding, when?"
+                        ],
+                        "69_40": [
+                            "hm. Maybe with a little more effort it can be something special",
+                            "You two are a good match",
+                            "That's a good start"
+                        ],
+                        "39_10": ["IDK. Maybe you should go out with someone else"],
+                        "9_0": [
+                            "I'm not sure if you can be friends with someone like that",
+                            "This is bad. Really bad.",
+                            "Sorry for that"
+                        ]
+                    }
+                ]
+            },
+            "singasong": {
+                "userPoints": "You have %c points."
+            },
+            "stromberg": {
+                "spokenof": "Spoken of:",
+                "age": "Age:",
+                "position": "Position:",
+                "episode": "Episode:",
+                "createdAt": "Created at:",
+                "playedBy": "Played by:"
             }
         },
         "commands": {
@@ -448,6 +445,15 @@
                     "viewers": "Viewers",
                     "tags": "Tags"
                 }
+            }
+        },
+        "level": {
+            "leaderboard": {
+                "title": "Top 10 members of %c.",
+                "currentRank": "Your current rank: %c",
+                "XP_Level": "XP: %c  Level: %e Last Message: %x",
+                "notRanksYet": "You don't have a rank yet.",
+                "writeAMessageFirst": "Write your first messages to gain xp."
             }
         },
         "moderation": {

@@ -42,17 +42,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
         });
         if (quote.character) {
             newEmbed.addFields({
-                name: global.t.trans(['info.stromberg.spokenof'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.stromberg.spokenof'], main_interaction.guild.id),
                 value: quote.character.name,
                 inline: true,
             });
             newEmbed.addFields({
-                name: global.t.trans(['info.stromberg.age'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.stromberg.age'], main_interaction.guild.id),
                 value: quote.character.age.toString(),
                 inline: true,
             });
             newEmbed.addFields({
-                name: global.t.trans(['info.stromberg.position'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.stromberg.position'], main_interaction.guild.id),
                 value: quote.character.position,
             });
             newEmbed.addFields({
@@ -75,7 +75,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         }
         if (quote.created_at) {
             newEmbed.addFields({
-                name: global.t.trans(['info.stromberg.createdAt'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.stromberg.createdAt'], main_interaction.guild.id),
                 value: new Date(quote.created_at).toLocaleDateString('de-DE'),
             });
         }
@@ -107,16 +107,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         newEmbed.setDescription(character.description);
         newEmbed.addFields(
             {
-                name: global.t.trans(['info.stromberg.age'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.stromberg.age'], main_interaction.guild.id),
                 value: character.age.toString(),
                 inline: true,
             },
             {
-                name: global.t.trans(['info.stromberg.position'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.stromberg.position'], main_interaction.guild.id),
                 value: character.position,
             },
             {
-                name: global.t.trans(['info.stromberg.playedBy'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.stromberg.playedBy'], main_interaction.guild.id),
                 value: character.played_by,
             }
         );

@@ -129,7 +129,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                 .setDescription(
                                     global.t.trans(
                                         [
-                                            'success.infractions.removed',
+                                            'success.moderation.infractions.removed',
                                             infraction_id,
                                             response ? 'has beend' : 'could not',
                                         ],

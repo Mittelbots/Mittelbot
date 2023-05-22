@@ -12,14 +12,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
     });
 
     const typeTranslations = {
-        isOnlyMedia: global.t.trans(['info.autodelete.types.onlyMedia'], main_interaction.guild.id),
-        isOnlyText: global.t.trans(['info.autodelete.types.onlyText'], main_interaction.guild.id),
+        isOnlyMedia: global.t.trans(
+            ['info.admin.autodelete.types.onlyMedia'],
+            main_interaction.guild.id
+        ),
+        isOnlyText: global.t.trans(
+            ['info.admin.autodelete.types.onlyText'],
+            main_interaction.guild.id
+        ),
         isOnlyEmotes: global.t.trans(
-            ['info.autodelete.types.onlyEmotes'],
+            ['info.admin.autodelete.types.onlyEmotes'],
             main_interaction.guild.id
         ),
         isOnlyStickers: global.t.trans(
-            ['info.autodelete.types.onlyStickers'],
+            ['info.admin.autodelete.types.onlyStickers'],
             main_interaction.guild.id
         ),
     };
@@ -91,7 +97,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                 .setDescription(
                                     global.t.trans(
                                         [
-                                            'success.autodelete.set',
+                                            'success.admin.autodelete.set',
                                             value ? 'have to' : "don't have to",
                                             typeTranslations[type],
                                         ],

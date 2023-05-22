@@ -24,7 +24,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['success.levelsettings.set', mode],
+                                        ['success.admin.levelsettings.set', mode],
                                         main_interaction.guild.id
                                     )
                                 )
