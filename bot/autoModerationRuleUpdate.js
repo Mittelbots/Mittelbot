@@ -78,7 +78,7 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
             value: newRuleOptions.mentionTotalLimit,
         },
         ...newActionFields,
-    ]
+    ];
 
     if (oldRule) {
         const oldActionFields = oldRuleOptions.actions.map((action) => {
@@ -129,7 +129,7 @@ module.exports.autoModerationRuleUpdate = async (bot, oldRule, newRule) => {
                 value: newRuleOptions.mentionTotalLimit,
             },
             ...oldActionFields,
-        ]
+        ];
     }
 
     await auditLog.setEmbed({
