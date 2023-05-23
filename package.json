@@ -38,7 +38,7 @@
         "@napi-rs/canvas": "^0.1.40",
         "@sentry/node": "^7.52.1",
         "@stdlib/assert-is-uri": "^0.0.8",
-        "@twurple/api": "^6.2.0",
+        "@twurple/api": "^6.2.1",
         "@twurple/auth": "^6.0.2",
         "axios": "^1.4.0",
         "body-parser": "^1.20.2",
