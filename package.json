@@ -36,7 +36,7 @@
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
         "@napi-rs/canvas": "^0.1.40",
-        "@sentry/node": "^7.52.1",
+        "@sentry/node": "^7.53.0",
         "@stdlib/assert-is-uri": "^0.0.8",
         "@twurple/api": "^6.2.0",
         "@twurple/auth": "^6.0.2",
