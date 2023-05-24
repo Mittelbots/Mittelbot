@@ -16,9 +16,15 @@ module.exports.guildBanAdd = async (bot, guildBan) => {
 
         //! Debug: To be removed
         errorhandler({
-            message: `Banlist: ${JSON.stringify(banlist)} | user: ${JSON.stringify(
-                guildBan.user
-            )} | guild: ${JSON.stringify(guildBan.guild)} `,
+            message: `Banlist: ${JSON.stringify(banlist, null, 2)}`,
+            fatal: false,
+        });
+        errorhandler({
+            message: `User: ${JSON.stringify(guildBan.user, null, 2)}`,
+            fatal: false,
+        });
+        errorhandler({
+            message: `Guild: ${JSON.stringify(guildBan.guild, null, 2)} `,
             fatal: false,
         });
 
@@ -27,9 +33,9 @@ module.exports.guildBanAdd = async (bot, guildBan) => {
         setNewModLogMessage(
             bot,
             config.defaultModTypes.ban,
-            banlist[2].id,
+            banlist[2]?.id ? banlist[2].id : null,
             guildBan.user,
-            banlist[1],
+            banlist[1] ? banlist[1] : banlist[2],
             null,
             guildBan.guild.id
         );
