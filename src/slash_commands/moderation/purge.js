@@ -18,7 +18,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.purge.notAValidNumber', config.bulkDeleteLimit],
+                                ['error.moderation.purge.notAValidNumber', config.bulkDeleteLimit],
                                 main_interaction.guild.id
                             )
                         )
@@ -37,7 +37,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['success.purge.purged', amount],
+                                    ['success.moderation.purge.purged', amount],
                                     main_interaction.guild.id
                                 )
                             )

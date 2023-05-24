@@ -18,7 +18,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
             embeds: [
                 new EmbedBuilder()
                     .setDescription(
-                        global.t.trans(['error.modroles.doesntExists'], main_interaction.guild.id)
+                        global.t.trans(
+                            ['error.admin.modroles.doesntExists'],
+                            main_interaction.guild.id
+                        )
                     )
                     .setColor(global.t.trans(['general.colors.error'])),
             ],
@@ -46,26 +49,26 @@ module.exports.run = async ({ main_interaction, bot }) => {
     if (!dbEntity.isAdmin) {
         row.addComponents(buttons.isAdmin);
         modRoleEmbed.addFields(
-            global.t.trans(['info.modroles.info.admin'], main_interaction.guild.id)
+            global.t.trans(['info.admin.modroles.info.admin'], main_interaction.guild.id)
         );
     }
     if (!dbEntity.isMod) {
         row.addComponents(buttons.isMod);
         modRoleEmbed.addFields(
-            global.t.trans(['info.modroles.info.mod'], main_interaction.guild.id)
+            global.t.trans(['info.admin.modroles.info.mod'], main_interaction.guild.id)
         );
     }
     if (!dbEntity.isHelper) {
         row.addComponents(buttons.isHelper);
         modRoleEmbed.addFields(
-            global.t.trans(['info.modroles.info.helper'], main_interaction.guild.id)
+            global.t.trans(['info.admin.modroles.info.helper'], main_interaction.guild.id)
         );
     }
 
     if (dbEntity.isAdmin || dbEntity.isMod || dbEntity.isHelper) {
         row.addComponents(buttons.isRemove);
         modRoleEmbed.addFields(
-            global.t.trans(['info.modroles.info.remove'], main_interaction.guild.id)
+            global.t.trans(['info.admin.modroles.info.remove'], main_interaction.guild.id)
         );
     }
 

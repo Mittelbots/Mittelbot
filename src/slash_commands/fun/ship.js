@@ -15,7 +15,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.ship.cannotShip', 'yourself'],
+                                ['error.fun.ship.cannotShip', 'yourself'],
                                 main_interaction.guild.id
                             )
                         )
@@ -31,7 +31,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.ship.cannotShip', 'bots'],
+                                ['error.fun.ship.cannotShip', 'bots'],
                                 main_interaction.guild.id
                             )
                         )
@@ -54,7 +54,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const ship = Math.floor(Math.random() * 100);
 
-    const quotes = global.t.trans(['info.ship.quotes'], main_interaction.guild.id);
+    const quotes = global.t.trans(['info.fun.ship.quotes'], main_interaction.guild.id);
 
     let quote = '';
     if (ship >= 70) {
@@ -103,7 +103,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const newEmbed = new EmbedBuilder().setDescription(
         global.t.trans(
-            ['success.ship.showResult', user.username, main_interaction.user.username, ship, quote],
+            [
+                'success.fun.ship.showResult',
+                user.username,
+                main_interaction.user.username,
+                ship,
+                quote,
+            ],
             main_interaction.guild.id
         )
     );

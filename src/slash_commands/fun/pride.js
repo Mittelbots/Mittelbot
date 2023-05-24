@@ -18,7 +18,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         newEmbed.setTitle(`Gender: ${newGender.name}`);
         newEmbed.setDescription(newGender.description);
         newEmbed.addFields({
-            name: global.t.trans(['info.pride.similarto'], main_interaction.guild.id),
+            name: global.t.trans(['info.fun.pride.similarto'], main_interaction.guild.id),
             value: newGender.differentFrom.join(', '),
         });
 
@@ -38,24 +38,27 @@ module.exports.run = async ({ main_interaction, bot }) => {
         const newSexuality = getRandomSexuality();
 
         newEmbed.setTitle(
-            globla.t.trans(['info.pride.sexuality', newSexuality.name], main_interaction.guild.id)
+            globla.t.trans(
+                ['info.fun.pride.sexuality', newSexuality.name],
+                main_interaction.guild.id
+            )
         );
         newEmbed.setDescription(newSexuality.description);
         newEmbed.addFields(
             {
-                name: global.t.trans(['info.pride.genderField'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.pride.genderField'], main_interaction.guild.id),
                 value: newSexuality.gender.join(', '),
             },
             {
-                name: global.t.trans(['info.pride.attractedto'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.pride.attractedto'], main_interaction.guild.id),
                 value: newSexuality.attractedTo.join(', '),
             },
             {
-                name: global.t.trans(['info.pride.attractiontype'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.pride.attractiontype'], main_interaction.guild.id),
                 value: newSexuality.attractionType,
             },
             {
-                name: global.t.trans(['info.pride.similarto'], main_interaction.guild.id),
+                name: global.t.trans(['info.fun.pride.similarto'], main_interaction.guild.id),
                 value: newSexuality.differentFrom.join(', '),
             },
             {

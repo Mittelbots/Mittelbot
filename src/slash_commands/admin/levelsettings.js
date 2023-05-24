@@ -24,7 +24,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['success.levelsettings.set', mode],
+                                        ['success.admin.levelsettings.set', mode],
                                         main_interaction.guild.id
                                     )
                                 )
@@ -39,7 +39,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.levelsettings.set', mode],
+                                        ['error.admin.levelsettings.set', mode],
                                         main_interaction.guild.id
                                     )
                                 )
@@ -103,7 +103,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.levelsettings.setAlone'],
+                                        ['error.admin.levelsettings.setAlone'],
                                         main_interaction.guild.id
                                     )
                                 )

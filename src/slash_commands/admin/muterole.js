@@ -22,7 +22,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                 new EmbedBuilder()
                                     .setDescription(
                                         global.t.trans(
-                                            ['success.settings.muteRole.set', role],
+                                            ['success.admin.settings.muteRole.set', role],
                                             main_interaction.guild.id
                                         )
                                     )
@@ -64,7 +64,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                 new EmbedBuilder()
                                     .setDescription(
                                         global.t.trans(
-                                            ['success.settings.muteRole.remove'],
+                                            ['success.admin.settings.muteRole.remove'],
                                             main_interaction.guild.id
                                         )
                                     )

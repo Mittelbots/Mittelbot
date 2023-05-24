@@ -10,7 +10,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 new EmbedBuilder()
                     .setDescription(
                         global.t.trans(
-                            ['info.guessnumber.guess', maxNumber],
+                            ['info.fun.guessnumber.guess', maxNumber],
                             main_interaction.guild.id
                         )
                     )
@@ -49,7 +49,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['error.guessnumber.tooLowOrHigh', 'high', number],
+                                    ['error.fun.guessnumber.tooLowOrHigh', 'high', number],
                                     main_interaction.guild.id
                                 )
                             )
@@ -64,7 +64,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['error.guessnumber.tooLowOrHigh', 'low', number],
+                                    ['error.fun.guessnumber.tooLowOrHigh', 'low', number],
                                     main_interaction.guild.id
                                 )
                             )
@@ -83,7 +83,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['error.guessnumber.haventguessed', number],
+                                    ['error.fun.guessnumber.haventguessed', number],
                                     main_interaction.guild.id
                                 )
                             )

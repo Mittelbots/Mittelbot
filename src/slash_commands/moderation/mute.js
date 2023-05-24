@@ -36,7 +36,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
-                            global.t.trans(['error.mute.alreadyMuted'], main_interaction.guild.id)
+                            global.t.trans(
+                                ['error.moderation.mute.alreadyMuted'],
+                                main_interaction.guild.id
+                            )
                         )
                         .setColor(global.t.trans(['general.colors.error'])),
                 ],

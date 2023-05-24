@@ -47,7 +47,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.infractions.dontHaveAny', user],
+                                        ['error.moderation.infractions.dontHaveAny', user],
                                         main_interaction.guild.id
                                     )
                                 )
@@ -82,7 +82,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.infractions.notFoundWithId', inf_id],
+                                        ['error.moderation.infractions.notFoundWithId', inf_id],
                                         main_interaction.guild.id
                                     )
                                 )
@@ -129,7 +129,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                                 .setDescription(
                                     global.t.trans(
                                         [
-                                            'success.infractions.removed',
+                                            'success.moderation.infractions.removed',
                                             infraction_id,
                                             response ? 'has beend' : 'could not',
                                         ],
@@ -148,7 +148,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['error.infractions.notFoundWithId', infraction_id],
+                                        [
+                                            'error.moderation.infractions.notFoundWithId',
+                                            infraction_id,
+                                        ],
                                         main_interaction.guild.id
                                     )
                                 )

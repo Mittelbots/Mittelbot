@@ -25,7 +25,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 return main_interaction.reply({
                     embeds: [
                         new EmbedBuilder().setDescription(
-                            global.t.trans(['error.singasong.noPoints'], main_interaction.guild.id)
+                            global.t.trans(
+                                ['error.fun.singasong.noPoints'],
+                                main_interaction.guild.id
+                            )
                         ),
                     ],
                     ephemeral: true,
@@ -35,7 +38,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 embeds: [
                     new EmbedBuilder().setDescription(
                         global.t.trans(
-                            ['info.singasong.userPoints', points],
+                            ['info.fun.singasong.userPoints', points],
                             main_interaction.guild.id
                         )
                     ),
@@ -82,7 +85,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                             new EmbedBuilder()
                                 .setDescription(
                                     global.t.trans(
-                                        ['success.singasong.userHasBeenBanned'],
+                                        ['success.moderation.singasong.userHasBeenBanned'],
                                         main_interaction.guild.id
                                     )
                                 )
