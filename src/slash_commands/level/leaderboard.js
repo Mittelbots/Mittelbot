@@ -30,7 +30,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.leaderboard.noOneRanked'],
+                                ['error.level.leaderboard.noOneRanked'],
                                 main_interaction.guild.id
                             )
                         )
@@ -72,12 +72,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             lb_embed.addFields([
                 {
                     name: global.t.trans(
-                        ['info.leaderboard.currentRank', userRank],
+                        ['info.level.leaderboard.currentRank', userRank],
                         main_interaction.guild.id
                     ),
                     value: global.t.trans(
                         [
-                            'info.leaderboard.XP_Level',
+                            'info.level.leaderboard.XP_Level',
                             userXP,
                             userLevel,
                             `<t:${last_message.toString().slice(0, 10)}:R>`,
@@ -90,11 +90,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
             lb_embed.addFields([
                 {
                     name: global.t.trans(
-                        ['info.leaderboard.notRanksYet'],
+                        ['info.level.leaderboard.notRanksYet'],
                         main_interaction.guild.id
                     ),
                     value: global.t.trans(
-                        ['info.leaderboard.writeAMessageFirst'],
+                        ['info.level.leaderboard.writeAMessageFirst'],
                         main_interaction.guild.id
                     ),
                 },

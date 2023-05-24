@@ -19,10 +19,17 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .followUp({
             content: isOnBanListCB[0]
                 ? global.t.trans(
-                      ['success.isBanned.userIsBanned', isOnBanListCB[1], isOnBanListCB[2]],
+                      [
+                          'success.moderation.isBanned.userIsBanned',
+                          isOnBanListCB[1],
+                          isOnBanListCB[2],
+                      ],
                       main_interaction.guild.id
                   )
-                : global.t.trans(['success.isBanned.userIsNotBanned'], main_interaction.guild.id),
+                : global.t.trans(
+                      ['success.moderation.isBanned.userIsNotBanned'],
+                      main_interaction.guild.id
+                  ),
             ephemeral: true,
         })
         .catch((err) => {});

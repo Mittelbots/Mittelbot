@@ -7,13 +7,17 @@ const { GuildConfig } = require('./Config');
 const { defaultWelcomeMessage } = require('./variables');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
-module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value }) => {
+module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value, remove = false }) => {
     return new Promise(async (resolve, reject) => {
-        const welcomeSettings = await this.getWelcomechannel({
+        let welcomeSettings = await this.getWelcomechannel({
             guild_id,
         });
 
-        welcomeSettings[valueName] = value;
+        if (remove) {
+            welcomeSettings = null;
+        } else {
+            welcomeSettings[valueName] = value;
+        }
 
         return await GuildConfig.update({
             guild_id,
@@ -65,7 +69,7 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
                     }),
                 ]).then(async (res) => {
                     await delay(1000);
-                    res[0].delete().catch((err) => {});
+                    res[0].delete().catch(() => {});
                     await main_interaction.message.react('✅').catch((err) => {});
                 });
             } catch (err) {

@@ -27,7 +27,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new EmbedBuilder()
                             .setDescription(
                                 global.t.trans(
-                                    ['success.autotranslate.update'],
+                                    ['success.admin.autotranslate.update'],
                                     main_interaction.guild.id
                                 )
                             )

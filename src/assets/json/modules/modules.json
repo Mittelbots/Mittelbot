@@ -25,7 +25,8 @@
             "antispam",
             "antiinsults",
             "antiinvite",
-            "antilinks"
+            "antilinks",
+            "welcome"
         ]
     },
     "moderation": {
@@ -60,7 +61,7 @@
         "autoDisable": true,
         "listed": true,
         "name": "Welcome Utils",
-        "extraCommands": ["joinroles", "goodbye"]
+        "extraCommands": ["joinroles", "welcome"]
     },
     "autotranslate": {
         "autoDisable": true,
