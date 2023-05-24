@@ -30,7 +30,7 @@ module.exports.welcomeSettingsConfig = new SlashCommandBuilder()
     );
 
 module.exports.welcomeSettingsPerms = {
-    adminOnly: true,
+    adminOnly: false,
     modOnly: false,
     guildOwnerOnly: false,
     requirePerms: [PermissionFlagsBits.Administrator],
