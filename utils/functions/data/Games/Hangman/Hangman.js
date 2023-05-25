@@ -49,39 +49,43 @@ class Hangman extends HangmanLogic {
 
             let wrongGuess = false;
 
-            if (messageContent.length > 1 && messageContent !== word) {
-                game.config.lives--;
-                wrongGuess = true;
-            } else if (messageContent.length > 1 && messageContent === word) {
-                await this.delete(message.channel.id);
-            } else if (guessedLetters.includes(messageContent)) {
-                game.config.lives--;
-                wrongGuess = true;
-            } else if (falsyGuessedLetters.includes(messageContent)) {
-                game.config.lives--;
-                wrongGuess = true;
-            } else if (!word.includes(messageContent)) {
-                game.config.falsyGuessedLetters.push(messageContent);
-                game.config.lives--;
-                wrongGuess = true;
+            if (messageContent.length > 1) {
+                if (messageContent === word) {
+                    await this.delete(message.channel.id);
+                } else {
+                    game.config.lives--;
+                    wrongGuess = true;
+                }
+            } else {
+                if (
+                    guessedLetters.includes(messageContent) ||
+                    falsyGuessedLetters.includes(messageContent) ||
+                    !word.includes(messageContent)
+                ) {
+                    game.config.lives--;
+                    wrongGuess = true;
+                } else {
+                    game.config.guessedLetters.push(messageContent);
+                    if (
+                        game.config.guessedLetters.length === word.length ||
+                        word === messageContent
+                    ) {
+                        return resolve('You have guessed the word!');
+                    }
+                }
             }
 
-            if (wrongGuess && game.config.lives === 0) {
-                await this.delete(message.channel.id);
-                return resolve(`You lost! The word was \`${word}\``);
-            } else if (wrongGuess) {
-                await this.update(game.config, message.channel.id);
-                return resolve('That letter or word is not in the word!');
+            if (wrongGuess) {
+                if (game.config.lives === 0) {
+                    await this.delete(message.channel.id);
+                    return resolve(`You lost! The word was \`${word}\``);
+                } else {
+                    await this.update(game.config, message.channel.id);
+                    return resolve('That letter or word is not in the word!');
+                }
             } else {
                 game.config.guessedLetters.push(messageContent);
-
-                if (game.config.guessedLetters.length === word.length || word === messageContent) {
-                    return resolve('You have guessed the word!');
-                }
-
-                game.config.guessedLetters.push(messageContent);
                 await this.update(game.config, message.channel.id);
-
                 return resolve('That letter is in the word!');
             }
         });
