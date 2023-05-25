@@ -15,13 +15,13 @@ module.exports.run = async ({ main_interaction }) => {
 
     const hangmanApi = new Hangman(main_interaction);
 
-    if (await hangmanApi.get()) {
+    if (await hangmanApi.get(main_interaction.channel.id)) {
         return main_interaction.followUp({
             content: 'There is already a game of hangman running in this channel',
         });
     }
 
-    const word = main_interaction.options.getString('word');
+    const word = main_interaction.options.getString('word').toLowerCase();
     const config = await hangmanApi.createConfig(word);
     const game = await hangmanApi.set(config);
 
@@ -51,15 +51,6 @@ module.exports.run = async ({ main_interaction }) => {
     const publicEmbed = new EmbedBuilder()
         .setDescription(`An game of hangman has been started in ${main_interaction.guild.name}`)
         .addFields(hangmanApi.generateEmbedFields(game))
-        .addComponents(
-            new ActionRowBuilder().addComponents(
-                new ButtonBuilder()
-                    .setCustomId(`hangman_cancel`)
-                    .setLabel('Cancel')
-                    .setStyle(ButtonStyle.Danger)
-                    .setEmoji('🚫')
-            )
-        )
         .setColor('#FF0000')
         .setTimestamp();
 
@@ -70,6 +61,15 @@ module.exports.run = async ({ main_interaction }) => {
 
     main_interaction.channel.send({
         embeds: [publicEmbed],
+        components: [
+            new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                    .setCustomId(`hangman_cancel`)
+                    .setLabel('Cancel')
+                    .setStyle(ButtonStyle.Danger)
+                    .setEmoji('🚫')
+            ),
+        ],
     });
 };
 

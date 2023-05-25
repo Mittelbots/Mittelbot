@@ -12,11 +12,9 @@ Games.init(
         guild_id: {
             type: DataTypes.STRING,
             unique: 'guild_id',
-            allowNull: false,
         },
         channel_id: {
             type: DataTypes.STRING,
-            allowNull: false,
         },
         config: {
             type: DataTypes.JSON,

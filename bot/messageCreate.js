@@ -17,6 +17,7 @@ const AutomodAntiSpam = require('../utils/functions/data/Automoderation/Automod-
 const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Automod-AntiInsuts');
 const AutomodAntiInvite = require('../utils/functions/data/Automoderation/Automod-AntiInvite');
 const AutomodAntiLinks = require('../utils/functions/data/Automoderation/Automod-AntiLinks');
+const Hangman = require('../utils/functions/data/Games/Hangman/Hangman');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
@@ -244,6 +245,16 @@ async function messageCreate(message, bot) {
                     msg.delete().catch(() => {});
                 })
                 .catch(() => {});
+        }
+    }
+
+    /** ======================================================= */
+    if ((await moduleApi.checkEnabled(defaultModuleSettings.fun.name)).enabled) {
+        const hangmanGame = await new Hangman().handleMessage(message);
+        if (hangmanGame) {
+            return message.channel.send({
+                content: hangmanGame,
+            });
         }
     }
 
