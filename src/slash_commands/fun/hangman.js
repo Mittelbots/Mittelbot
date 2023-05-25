@@ -15,15 +15,13 @@ module.exports.run = async ({ main_interaction }) => {
 
     const hangmanApi = new Hangman(main_interaction);
 
-    const alreadyAnGame = await hangmanApi.get();
-    if (alreadyAnGame) {
+    if (await hangmanApi.get()) {
         return main_interaction.followUp({
-            content: 'There is already an game of hangman running in this channel',
+            content: 'There is already a game of hangman running in this channel',
         });
     }
 
     const word = main_interaction.options.getString('word');
-
     const config = await hangmanApi.createConfig(word);
     const game = await hangmanApi.set(config);
 

@@ -1,58 +1,43 @@
 const HangmanLogic = require('./HangmanLogic');
 const { gamesConfig } = require('../games.config');
 
-module.exports = class Hangman extends HangmanLogic {
+class Hangman extends HangmanLogic {
     constructor(interaction) {
         super(interaction);
         this.interaction = interaction;
     }
 
     createConfig(word) {
-        return new Promise(async (resolve, reject) => {
-            const config = gamesConfig['hangman'].defaultConfig;
-            config.word = word;
-            resolve(config);
-        });
+        const config = { ...gamesConfig.hangman.defaultConfig, word };
+        return Promise.resolve(config);
     }
 
     generateEmbedFields(game) {
-        const word = game.config.word;
-        const falsyGuessedLetters = game.config.falsyGuessedLetters;
-        const guessedLetters = game.config.guessedLetters;
+        const { word, falsyGuessedLetters, guessedLetters } = game.config;
 
         let wordString = '';
         for (let i = 0; i < word.length; i++) {
             const letter = word[i];
-            if (guessedLetters.includes(letter)) {
-                wordString += letter;
-            } else {
-                wordString += '_ ';
-            }
+            wordString += guessedLetters.includes(letter) ? letter : '_ ';
         }
 
         const fields = [
-            {
-                name: 'Word',
-                value: `\`${wordString}\``,
-                inline: true,
-            },
-            {
-                name: 'Lives',
-                value: `\`${game.config.lives}\``,
-                inline: true,
-            },
+            { name: 'Word', value: `\`${wordString}\``, inline: true },
+            { name: 'Lives', value: `\`${game.config.lives}\``, inline: true },
             {
                 name: 'Guessed Letters',
-                value: `\`${guessedLetters.join(', ') | 'None'}\``,
+                value: `\`${guessedLetters.join(', ') || 'None'}\``,
                 inline: true,
             },
             {
                 name: 'Falsy Guessed Letters',
-                value: `\`${falsyGuessedLetters.join(', ') | 'None'}\``,
+                value: `\`${falsyGuessedLetters.join(', ') || 'None'}\``,
                 inline: true,
             },
         ];
 
         return fields;
     }
-};
+}
+
+module.exports = Hangman;

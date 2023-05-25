@@ -1,6 +1,6 @@
 const games = require('../../../../../src/db/Models/tables/games.model');
 
-module.exports = class HangmanLogic {
+class HangmanLogic {
     constructor(interaction) {
         this.guild = interaction.guild;
         this.channel = interaction.channel;
@@ -41,4 +41,6 @@ module.exports = class HangmanLogic {
                 });
         });
     }
-};
+}
+
+module.exports = HangmanLogic;
