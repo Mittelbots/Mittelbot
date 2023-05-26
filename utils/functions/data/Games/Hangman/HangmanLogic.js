@@ -1,7 +1,8 @@
 const games = require('../../../../../src/db/Models/tables/games.model');
 
 class HangmanLogic {
-    constructor(interaction) {
+    constructor(interaction, bot) {
+        this.bot = bot;
         if (!interaction) return;
         this.guild = interaction.guild;
         this.channel = interaction.channel;

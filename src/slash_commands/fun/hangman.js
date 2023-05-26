@@ -8,12 +8,12 @@ const {
 const { hangmanConfig } = require('../_config/fun/hangman');
 const Hangman = require('../../../utils/functions/data/Games/Hangman/Hangman');
 
-module.exports.run = async ({ main_interaction }) => {
+module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
 
-    const hangmanApi = new Hangman(main_interaction);
+    const hangmanApi = new Hangman(main_interaction, bot);
 
     if (await hangmanApi.get(main_interaction.channel.id)) {
         return main_interaction.followUp({
@@ -59,18 +59,22 @@ module.exports.run = async ({ main_interaction }) => {
         ephemeral: true,
     });
 
-    main_interaction.channel.send({
-        embeds: [publicEmbed],
-        components: [
-            new ActionRowBuilder().addComponents(
-                new ButtonBuilder()
-                    .setCustomId(`hangman_cancel`)
-                    .setLabel('Cancel')
-                    .setStyle(ButtonStyle.Danger)
-                    .setEmoji('🚫')
-            ),
-        ],
-    });
+    main_interaction.channel
+        .send({
+            embeds: [publicEmbed],
+            components: [
+                new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(`hangman_cancel`)
+                        .setLabel('Cancel')
+                        .setStyle(ButtonStyle.Danger)
+                        .setEmoji('🚫')
+                ),
+            ],
+        })
+        .then((msg) => {
+            hangmanApi.update({ ...game.config, message_id: msg.id }, game.channel_id);
+        });
 };
 
 module.exports.data = hangmanConfig;

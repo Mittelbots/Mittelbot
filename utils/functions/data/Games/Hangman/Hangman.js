@@ -1,14 +1,20 @@
 const HangmanLogic = require('./HangmanLogic');
 const { gamesConfig } = require('../games.config');
+const { EmbedBuilder } = require('discord.js');
 
 class Hangman extends HangmanLogic {
-    constructor(interaction = null) {
-        super(interaction);
+    constructor(interaction = null, bot) {
+        super(interaction, bot);
+        this.bot = bot;
         this.interaction = interaction;
     }
 
     createConfig(word) {
-        const config = { ...gamesConfig.hangman.defaultConfig, word };
+        const config = {
+            ...gamesConfig.hangman.defaultConfig,
+            word,
+            host: this.interaction.user.id,
+        };
         return Promise.resolve(config);
     }
 
@@ -34,6 +40,10 @@ class Hangman extends HangmanLogic {
                 value: `\`${falsyGuessedLetters.join(', ') || 'None'}\``,
                 inline: true,
             },
+            {
+                name: 'Host',
+                value: `<@${game.config.host}>`,
+            },
         ];
 
         return fields;
@@ -43,11 +53,17 @@ class Hangman extends HangmanLogic {
         return new Promise(async (resolve) => {
             const messageContent = message.content.toLowerCase();
             const game = await this.get(message.channel.id);
-            if (!game) return resolve();
+            if (!game) return resolve(404);
 
-            const { word, guessedLetters, falsyGuessedLetters } = game.config;
+            const { word, guessedLetters, falsyGuessedLetters, host } = game.config;
+
+            //if (message.author.id === host) {
+            //return resolve(403);
+            //}
 
             let wrongGuess = false;
+            let response = '';
+            let gameEnded = false;
 
             if (messageContent.length > 1) {
                 if (messageContent === word) {
@@ -70,25 +86,58 @@ class Hangman extends HangmanLogic {
                         game.config.guessedLetters.length === word.length ||
                         word === messageContent
                     ) {
-                        return resolve('You have guessed the word!');
+                        response = 'You have guessed the word!';
+                        gameEnded = true;
                     }
                 }
             }
 
-            if (wrongGuess) {
-                if (game.config.lives === 0) {
-                    await this.delete(message.channel.id);
-                    return resolve(`You lost! The word was \`${word}\``);
-                } else {
-                    await this.update(game.config, message.channel.id);
-                    return resolve('That letter or word is not in the word!');
-                }
-            } else {
-                game.config.guessedLetters.push(messageContent);
-                await this.update(game.config, message.channel.id);
-                return resolve('That letter is in the word!');
+            if (game.config.guessedLetters.length === word.length || word === messageContent) {
+                this.delete(message.channel.id);
+                response = 'You have guessed the word!';
+                gameEnded = true;
             }
+
+            if (!gameEnded) {
+                if (wrongGuess) {
+                    if (game.config.lives === 0) {
+                        await this.delete(message.channel.id);
+                        response = `You lost! The word was \`${word}\``;
+                        gameEnded = true;
+                    } else {
+                        falsyGuessedLetters.push(messageContent);
+                        await this.update(game.config, message.channel.id);
+                        response = 'That letter or word is not in the word!';
+                    }
+                } else {
+                    game.config.guessedLetters.push(messageContent);
+                    await this.update(game.config, message.channel.id);
+                    response = 'That letter is in the word!';
+                }
+            }
+
+            this.updateEmbed(game, response, gameEnded);
+            resolve(200);
         });
+    }
+
+    updateEmbed(game, message = '', gameEnded = false) {
+        const fields = this.generateEmbedFields(game);
+        const embed = new EmbedBuilder().addFields(fields);
+
+        if (gameEnded) {
+            embed.setDescription(message);
+        }
+
+        this.bot.channels.cache
+            .get(game.channel_id)
+            .messages.fetch(game.config.message_id)
+            .then((msg) => {
+                msg.edit({
+                    content: message,
+                    embeds: [embed],
+                });
+            });
     }
 }
 
