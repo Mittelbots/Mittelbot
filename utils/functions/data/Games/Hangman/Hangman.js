@@ -70,9 +70,9 @@ class Hangman extends HangmanLogic {
 
             let { word, guessedLetters, falsyGuessedLetters, host, lives } = game.config;
 
-            //if (message.author.id === host) {
-            //return resolve(403);
-            //}
+            if (message.author.id === host) {
+                return resolve(403);
+            }
 
             let wrongGuess = false;
             let response = '';

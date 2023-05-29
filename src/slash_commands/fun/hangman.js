@@ -1,10 +1,4 @@
-const {
-    AttachmentBuilder,
-    EmbedBuilder,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-} = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { hangmanConfig } = require('../_config/fun/hangman');
 const Hangman = require('../../../utils/functions/data/Games/Hangman/Hangman');
 
