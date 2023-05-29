@@ -16,9 +16,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const hangmanApi = new Hangman(main_interaction, bot);
 
     if (await hangmanApi.get(main_interaction.channel.id)) {
-        return main_interaction.followUp({
-            content: 'There is already a game of hangman running in this channel',
+        main_interaction.followUp({
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(
+                            ['error.fun.hangman.alreadyRunningGameInChannel'],
+                            main_interaction.guild.id
+                        )
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
+            ],
+            ephemeral: true,
         });
+        return;
     }
 
     const word = main_interaction.options.getString('word').toLowerCase();
@@ -26,7 +37,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const wordRegex = /^[a-z]+$/;
     if (!wordRegex.test(word)) {
         return main_interaction.followUp({
-            content: 'The word can only contain letters',
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(['error.fun.hangman.noValidWord'], main_interaction.guild.id)
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
+            ],
+            ephemeral: true,
         });
     }
 
@@ -35,31 +53,52 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const privateEmbed = new EmbedBuilder()
         .setDescription(
-            `You started an game of hangman in ${main_interaction.guild.name} (${main_interaction.channel})`
+            global.t.trans(
+                [
+                    'success.fun.hangman.createdPrv',
+                    main_interaction.guild,
+                    main_interaction.channel,
+                ],
+                main_interaction.guild.id
+            )
         )
         .addFields(
             {
-                name: 'Word',
+                name: global.t.trans(
+                    ['info.fun.hangman.embed.fields.word'],
+                    main_interaction.guild.id
+                ),
                 value: `\`${game.config.word}\``,
                 inline: true,
             },
             {
-                name: 'Channel',
+                name: global.t.trans(
+                    ['info.fun.hangman.embed.fields.channel'],
+                    main_interaction.guild.id
+                ),
                 value: `<#${game.channel_id}>`,
                 inline: true,
             },
             {
-                name: 'Lives',
+                name: global.t.trans(
+                    ['info.fun.hangman.embed.fields.lives'],
+                    main_interaction.guild.id
+                ),
                 value: `\`${game.config.lives}\``,
             }
         )
-        .setColor('#FF0000')
+        .setColor(global.t.trans(['general.colors.success']))
         .setTimestamp();
 
     const publicEmbed = new EmbedBuilder()
-        .setDescription(`An game of hangman has been started in ${main_interaction.guild.name}`)
+        .setDescription(
+            global.t.trans(
+                ['success.fun.hangman.createdPub', main_interaction.guild],
+                main_interaction.guild.id
+            )
+        )
         .addFields(hangmanApi.generateEmbedFields(game))
-        .setColor('#FF0000')
+        .setColor(global.t.trans(['general.colors.success']))
         .setTimestamp();
 
     main_interaction.followUp({
@@ -74,7 +113,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 new ActionRowBuilder().addComponents(
                     new ButtonBuilder()
                         .setCustomId(`hangman_cancel`)
-                        .setLabel('Cancel')
+                        .setLabel(
+                            global.t.trans(
+                                ['general.embed.buttons.cancel'],
+                                main_interaction.guild.id
+                            )
+                        )
                         .setStyle(ButtonStyle.Danger)
                         .setEmoji('🚫')
                 ),

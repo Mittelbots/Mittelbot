@@ -6,6 +6,11 @@
             "info": "#0000ff",
             "warning": "#ffff00",
             "error": "#ff0000"
+        },
+        "embed": {
+            "buttons": {
+                "cancel": "Cancel"
+            }
         }
     },
     "success": {
@@ -112,6 +117,10 @@
         "fun": {
             "ship": {
                 "showResult": "**%c** and **%e** match `%p%`. \n\n `%r`"
+            },
+            "hangman": {
+                "createdPrv": "{success.emote} Successfully created a new hangman game in %q (%w)",
+                "createdPub": "An game of hangman has been started in %c"
             }
         },
         "moderation": {
@@ -415,6 +424,22 @@
                 "episode": "Episode:",
                 "createdAt": "Created at:",
                 "playedBy": "Played by:"
+            },
+            "hangman": {
+                "embed": {
+                    "fields": {
+                        "guessedLetters": "Guessed Letters",
+                        "falsyGuessedLetters": "Falsy Guessed Letters",
+                        "host": "Host",
+                        "word": "Word",
+                        "channel": "Channel",
+                        "lives": "Lives"
+                    }
+                },
+                "guessedWord": "{success.emote} %c has guessed the word! The word was `%e`",
+                "guessedLetter": "{success.emote} %c has guessed the right letter `%e`",
+                "gameOver": "{error.emote} Game over! The word was `%c`",
+                "falsyGuessed": "{error.emote} %c has guessed the wrong letter `%e`"
             }
         },
         "commands": {
@@ -592,6 +617,10 @@
             },
             "singasong": {
                 "nopoints": "You have no points!"
+            },
+            "hangman": {
+                "alreadyRunningGameInChannel": "{error.emote} There is already a game running in this channel. Please wait until it is finished.",
+                "noValidWord": "{error.emote} Please send a valid word.The word must contain only letters."
             }
         },
         "admin": {

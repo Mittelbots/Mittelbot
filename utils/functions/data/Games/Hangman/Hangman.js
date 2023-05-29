@@ -19,7 +19,7 @@ class Hangman extends HangmanLogic {
     }
 
     generateEmbedFields(game) {
-        const { word, falsyGuessedLetters, guessedLetters } = game.config;
+        const { word, falsyGuessedLetters, guessedLetters, guild_id } = game.config;
 
         let wordString = '';
         for (let i = 0; i < word.length; i++) {
@@ -28,20 +28,31 @@ class Hangman extends HangmanLogic {
         }
 
         const fields = [
-            { name: 'Word', value: `\`${wordString}\``, inline: true },
-            { name: 'Lives', value: `\`${game.config.lives}\``, inline: true },
             {
-                name: 'Guessed Letters',
+                name: global.t.trans(['info.fun.hangman.embed.fields.word'], guild_id),
+                value: `\`${wordString}\``,
+                inline: true,
+            },
+            {
+                name: global.t.trans(['info.fun.hangman.embed.fields.lives'], guild_id),
+                value: `\`${game.config.lives}\``,
+                inline: true,
+            },
+            {
+                name: global.t.trans(['info.fun.hangman.embed.fields.guessedLetters'], guild_id),
                 value: `\`${guessedLetters.join(', ') || 'None'}\``,
                 inline: true,
             },
             {
-                name: 'Falsy Guessed Letters',
+                name: global.t.trans(
+                    ['info.fun.hangman.embed.fields.falsyGuessedLetters'],
+                    guild_id
+                ),
                 value: `\`${falsyGuessedLetters.join(', ') || 'None'}\``,
                 inline: true,
             },
             {
-                name: 'Host',
+                name: global.t.trans(['info.fun.hangman.embed.fields.host'], guild_id),
                 value: `<@${game.config.host}>`,
             },
         ];
@@ -71,7 +82,10 @@ class Hangman extends HangmanLogic {
                 if (messageContent === word) {
                     await this.delete(message.channel.id);
                     gameEnded = true;
-                    response = 'You have guessed the word!';
+                    response = global.t.trans(
+                        ['info.fun.hangman.guessedWord', message.author, word],
+                        message.guild.id
+                    );
                 } else {
                     lives--;
                     wrongGuess = true;
@@ -88,30 +102,37 @@ class Hangman extends HangmanLogic {
                     !guessedLetters.includes(messageContent)
                         ? guessedLetters.push(messageContent)
                         : null;
-                    if (this.hasGuessedTheWord(word, guessedLetters) || word === messageContent) {
-                        response = 'You have guessed the word!';
-                        gameEnded = true;
-                    } else {
-                        response = 'That letter is in the word!';
-                    }
+                    response = global.t.trans(
+                        ['info.fun.hangman.guessedLetter', message.author, messageContent],
+                        message.guild.id
+                    );
                 }
             }
 
             if (this.hasGuessedTheWord(word, guessedLetters) || word === messageContent) {
                 this.delete(message.channel.id);
-                response = 'You have guessed the word!';
+                response = global.t.trans(
+                    ['info.fun.hangman.guessedWord', message.author, messageContent],
+                    message.guild.id
+                );
                 gameEnded = true;
             } else {
                 if (wrongGuess) {
                     if (lives <= 0) {
                         await this.delete(message.channel.id);
-                        response = `You lost! The word was \`${word}\``;
+                        response = global.t.trans(
+                            ['info.fun.hangman.gameOver', message.author, word],
+                            message.guild.id
+                        );
                         gameEnded = true;
                     } else {
                         !falsyGuessedLetters.includes(messageContent)
                             ? falsyGuessedLetters.push(messageContent)
                             : null;
-                        response = 'That letter or word is not in the word!';
+                        response = global.t.trans(
+                            ['info.fun.hangman.falsyGuessed', message.author, messageContent],
+                            message.guild.id
+                        );
                     }
                 }
             }
@@ -148,7 +169,7 @@ class Hangman extends HangmanLogic {
             .messages.fetch(game.config.message_id)
             .then((msg) => {
                 msg.edit({
-                    content: `${author} ${message}`,
+                    content: message,
                     embeds: [embed],
                 });
             });

@@ -112,6 +112,10 @@
         "fun": {
             "ship": {
                 "showResult": "**%c** und **%e** passen zu `%p%` zusammen. \n\n `%r`"
+            },
+            "hangman": {
+                "createdPrv": "{success.emote} Erfolgreich ein neues Galgenmännchen-Spiel in %q erstellt (%w)",
+                "createdPub": "Ein Galgenmännchen-Spiel wurde in %c gestartet"
             }
         },
         "moderation": {
@@ -413,6 +417,22 @@
                 "episode": "Episode:",
                 "createdAt": "Erstellt am:",
                 "playedBy": "Gespielt von:"
+            },
+            "hangman": {
+                "embed": {
+                    "fields": {
+                        "guessedLetters": "Erratene Buchstaben",
+                        "falsyGuessedLetters": "Falsch erratene Buchstaben",
+                        "host": "Gastgeber",
+                        "word": "Wort",
+                        "channel": "Kanal",
+                        "lives": "Leben"
+                    }
+                },
+                "guessedWord": "{success.emote} %c hat das Wort erraten! Das Wort war `%e`",
+                "guessedLetter": "{success.emote} %c hat den richtigen Buchstaben `%e` erraten",
+                "gameOver": "{error.emote} Das Spiel ist aus! Das Wort war `%c`.",
+                "falsyGuessed": "{error.emote} %c hat den falschen Buchstaben `%e` erraten"
             }
         },
         "commands": {
@@ -584,6 +604,10 @@
             },
             "singasong": {
                 "nopoints": "Sie haben keine Punkte!"
+            },
+            "hangman": {
+                "alreadyRunningGameInChannel": "{error.emote} Es läuft bereits ein Spiel in diesem Kanal. Bitte warte, bis es beendet ist.",
+                "noValidWord": "{error.emote} Bitte sende ein gültiges Wort. Das Wort darf nur Buchstaben enthalten."
             }
         },
         "admin": {
