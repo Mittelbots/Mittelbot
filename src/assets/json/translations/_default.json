@@ -621,8 +621,8 @@
             },
             "hangman": {
                 "alreadyRunningGameInChannel": "{error.emote} There is already a game running in this channel. Please wait until it is finished.",
-                "noValidWord": "{error.emote} Please send a valid word.The word must contain only letters.",
-                "notCancelled": "{error.emote} The game has not been cancelled. You can't cancel a game that's not running or that you're not hosting."
+                "noValidWord": "{error.emote} Please send a valid word.The word must contain only letters and at least 3 Letters long.",
+                "notCancelled": "{error.emote} You can't cancel a game that's not running or that you're not hosting."
             }
         },
         "admin": {
