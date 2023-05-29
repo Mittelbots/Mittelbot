@@ -22,6 +22,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const word = main_interaction.options.getString('word').toLowerCase();
+
+    const wordRegex = /^[a-z]+$/;
+    if (!wordRegex.test(word)) {
+        return main_interaction.followUp({
+            content: 'The word can only contain letters',
+        });
+    }
+
     const config = await hangmanApi.createConfig(word);
     const game = await hangmanApi.set(config);
 
