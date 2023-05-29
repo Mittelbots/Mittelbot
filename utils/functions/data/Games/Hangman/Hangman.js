@@ -55,7 +55,7 @@ class Hangman extends HangmanLogic {
             const game = await this.get(message.channel.id);
             if (!game) return resolve(404);
 
-            const { word, guessedLetters, falsyGuessedLetters, host } = game.config;
+            let { word, guessedLetters, falsyGuessedLetters, host, lives } = game.config;
 
             //if (message.author.id === host) {
             //return resolve(403);
@@ -68,8 +68,10 @@ class Hangman extends HangmanLogic {
             if (messageContent.length > 1) {
                 if (messageContent === word) {
                     await this.delete(message.channel.id);
+                    gameEnded = true;
+                    response = 'You have guessed the word!';
                 } else {
-                    game.config.lives--;
+                    lives--;
                     wrongGuess = true;
                 }
             } else {
@@ -78,66 +80,81 @@ class Hangman extends HangmanLogic {
                     falsyGuessedLetters.includes(messageContent) ||
                     !word.includes(messageContent)
                 ) {
-                    game.config.lives--;
+                    lives--;
                     wrongGuess = true;
                 } else {
-                    game.config.guessedLetters.push(messageContent);
-                    if (
-                        game.config.guessedLetters.length === word.length ||
-                        word === messageContent
-                    ) {
+                    guessedLetters.push(messageContent);
+                    if (this.hasGuessedTheWord(word, guessedLetters) || word === messageContent) {
                         response = 'You have guessed the word!';
                         gameEnded = true;
+                    } else {
+                        response = 'That letter is in the word!';
                     }
                 }
             }
 
-            if (game.config.guessedLetters.length === word.length || word === messageContent) {
+            if (this.hasGuessedTheWord(word, guessedLetters) || word === messageContent) {
                 this.delete(message.channel.id);
                 response = 'You have guessed the word!';
                 gameEnded = true;
-            }
-
-            if (!gameEnded) {
+            } else {
                 if (wrongGuess) {
-                    if (game.config.lives === 0) {
+                    if (lives <= 0) {
                         await this.delete(message.channel.id);
                         response = `You lost! The word was \`${word}\``;
                         gameEnded = true;
                     } else {
                         falsyGuessedLetters.push(messageContent);
-                        await this.update(game.config, message.channel.id);
                         response = 'That letter or word is not in the word!';
                     }
-                } else {
-                    game.config.guessedLetters.push(messageContent);
-                    await this.update(game.config, message.channel.id);
-                    response = 'That letter is in the word!';
                 }
             }
 
-            this.updateEmbed(game, response, gameEnded);
+            if (!gameEnded) {
+                game.config.lives = lives;
+                game.config.guessedLetters = guessedLetters;
+                game.config.falsyGuessedLetters = falsyGuessedLetters;
+
+                await this.update(game.config, message.channel.id);
+            }
+
+            this.updateEmbed(game, response, gameEnded, message.author, wrongGuess);
             resolve(200);
         });
     }
 
-    updateEmbed(game, message = '', gameEnded = false) {
+    updateEmbed(game, message = '', gameEnded = false, author, wasIncorrect = false) {
         const fields = this.generateEmbedFields(game);
         const embed = new EmbedBuilder().addFields(fields);
 
         if (gameEnded) {
             embed.setDescription(message);
+            embed.setColor(global.t.trans(['general.colors.success']));
+        } else {
+            if (wasIncorrect) {
+                global.t.trans(['general.colors.error']);
+            } else {
+                global.t.trans(['general.colors.info']);
+            }
         }
-
         this.bot.channels.cache
             .get(game.channel_id)
             .messages.fetch(game.config.message_id)
             .then((msg) => {
                 msg.edit({
-                    content: message,
+                    content: `${author} ${message}`,
                     embeds: [embed],
                 });
             });
+    }
+
+    hasGuessedTheWord(word, guessedLetters) {
+        for (let i = 0; i < word.length; i++) {
+            if (!guessedLetters.includes(word[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
