@@ -6,6 +6,11 @@
             "info": "#0000ff",
             "warning": "#ffff00",
             "error": "#ff0000"
+        },
+        "embed": {
+            "buttons": {
+                "cancel": "Abbrechen"
+            }
         }
     },
     "success": {
