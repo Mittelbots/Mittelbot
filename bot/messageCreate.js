@@ -252,6 +252,12 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
     if ((await moduleApi.checkEnabled(defaultModuleSettings.fun.name)).enabled) {
         const hangmanGame = await new Hangman(null, bot).handleMessage(message);
+        if (hangmanGame === 429) {
+            messageDeleteReasons.set(message.id, 'User tried to play hangman in cooldown');
+            message.delete().catch(() => {});
+            return;
+        }
+
         if (hangmanGame === 403 || hangmanGame !== 404) {
             messageDeleteReasons.set(message.id, 'User is playing hangman');
             message.delete().catch(() => {});

@@ -1,5 +1,7 @@
 const games = require('../../../../../src/db/Models/tables/games.model');
 
+let cooldown = new Set();
+
 class HangmanLogic {
     constructor(interaction, bot) {
         this.bot = bot;
@@ -79,6 +81,19 @@ class HangmanLogic {
                     reject(err);
                 });
         });
+    }
+
+    cooldown(author_id, channel_id) {
+        const data = `${author_id}-${channel_id}`;
+        if (cooldown.has(data)) {
+            return true;
+        }
+
+        cooldown.add(data);
+        setTimeout(() => {
+            cooldown.delete(data);
+        }, 5000);
+        return false;
     }
 }
 

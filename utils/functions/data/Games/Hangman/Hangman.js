@@ -51,6 +51,8 @@ class Hangman extends HangmanLogic {
 
     handleMessage(message) {
         return new Promise(async (resolve) => {
+            if (this.cooldown(message.author.id, message.channel.id)) return resolve(429);
+
             const messageContent = message.content.toLowerCase();
             const game = await this.get(message.channel.id);
             if (!game) return resolve(404);
@@ -83,7 +85,9 @@ class Hangman extends HangmanLogic {
                     lives--;
                     wrongGuess = true;
                 } else {
-                    guessedLetters.push(messageContent);
+                    !guessedLetters.includes(messageContent)
+                        ? guessedLetters.push(messageContent)
+                        : null;
                     if (this.hasGuessedTheWord(word, guessedLetters) || word === messageContent) {
                         response = 'You have guessed the word!';
                         gameEnded = true;
@@ -104,7 +108,9 @@ class Hangman extends HangmanLogic {
                         response = `You lost! The word was \`${word}\``;
                         gameEnded = true;
                     } else {
-                        falsyGuessedLetters.push(messageContent);
+                        !falsyGuessedLetters.includes(messageContent)
+                            ? falsyGuessedLetters.push(messageContent)
+                            : null;
                         response = 'That letter or word is not in the word!';
                     }
                 }
