@@ -120,7 +120,8 @@
             },
             "hangman": {
                 "createdPrv": "{success.emote} Successfully created a new hangman game in %q (%w)",
-                "createdPub": "An game of hangman has been started in %c"
+                "createdPub": "An game of hangman has been started in %c",
+                "cancelled": "{success.emote} Successfully cancelled the hangman game in %q (%w)"
             }
         },
         "moderation": {
@@ -620,7 +621,8 @@
             },
             "hangman": {
                 "alreadyRunningGameInChannel": "{error.emote} There is already a game running in this channel. Please wait until it is finished.",
-                "noValidWord": "{error.emote} Please send a valid word.The word must contain only letters."
+                "noValidWord": "{error.emote} Please send a valid word.The word must contain only letters.",
+                "notCancelled": "{error.emote} The game has not been cancelled. You can't cancel a game that's not running or that you're not hosting."
             }
         },
         "admin": {

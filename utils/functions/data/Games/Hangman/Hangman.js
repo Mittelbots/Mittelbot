@@ -183,6 +183,49 @@ class Hangman extends HangmanLogic {
         }
         return true;
     }
+
+    cancel() {
+        return new Promise(async (resolve) => {
+            const game = await this.get(this.interaction.channel.id);
+            if (!game || game.config.host !== this.interaction.user.id) {
+                this.interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.fun.hangman.notCancelled'],
+                                    this.interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                    ephemeral: true,
+                });
+                return resolve();
+            }
+
+            await this.delete(this.interaction.channel.id);
+            this.interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setDescription(
+                            global.t.trans(
+                                [
+                                    'success.fun.hangman.cancelled',
+                                    this.interaction.guild,
+                                    this.interaction.channel,
+                                ],
+                                this.interaction.guild.id
+                            )
+                        )
+                        .setColor(global.t.trans(['general.colors.success'])),
+                ],
+                ephemeral: true,
+            });
+            this.interaction.message.delete().catch(() => {});
+            resolve();
+        });
+    }
 }
 
 module.exports = Hangman;
