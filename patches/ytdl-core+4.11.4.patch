@@ -8,10 +8,10 @@ index 1eb28b4..c211dea 100644
        if (ndx >= 0) {
 -        const subBody = body.slice(ndx + functionStart.length);
 -        const functionBody = `var ${functionStart}${utils.cutAfterJS(subBody)};${functionName}(ncode);`;
--        functions.push(functionBody);
 +        const end = body.indexOf('.join("")};', ndx);
 +        const subBody = body.slice(ndx, end);
 +        const functionBody = `${subBody}.join("")};${functionName}(ncode);`;
+         functions.push(functionBody);
        }
      }
    };
