@@ -425,6 +425,7 @@ class Levelsystem {
     run({ message, bot }) {
         return new Promise(async (resolve) => {
             await this.cooldown({ message, bot });
+            return resolve(true);
         });
     }
 

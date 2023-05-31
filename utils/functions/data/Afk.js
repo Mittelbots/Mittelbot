@@ -102,7 +102,7 @@ module.exports = class Afk {
 
             let isAFK = false;
 
-            if (mentions.size === 0) return isAFK;
+            if (mentions.size === 0) return resolve(isAFK);
 
             mentions.map(async (user) => {
                 if (user.id === author.id) return;
