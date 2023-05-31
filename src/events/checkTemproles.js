@@ -1,4 +1,3 @@
-const config = require('../../src/assets/json/_config/config.json');
 const { Temproles } = require('../../utils/functions/data/Temproles');
 
 const interval = 1000 * 60 * 10; // 10 minutes

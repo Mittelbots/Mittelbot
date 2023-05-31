@@ -1,9 +1,9 @@
-const { delay } = require('../../../utils/functions/delay/delay');
+const { delay } = require('../../../utils/functions/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { purgeConfig, purgePerms } = require('../_config/moderation/purge');
 const { EmbedBuilder } = require('discord.js');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({ main_interaction }) => {
     main_interaction.deferReply();
 
     const amount = main_interaction.options.getNumber('number');
