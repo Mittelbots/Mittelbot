@@ -57,7 +57,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {});
             }
-            if (JSON.parse(process.env.DEBUG)) console.info('Infraction Command passed!');
+            if (process.env.NODE_ENV === 'development') console.info('Infraction Command passed!');
 
             await publicInfractionResponse({
                 member: user.id,

@@ -152,7 +152,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         ])
         .setTimestamp();
 
-    if (JSON.parse(process.env.DEBUG)) console.info('info command passed!');
+    if (process.env.NODE_ENV === 'development') console.info('info command passed!');
 
     const axios = require('axios');
     const pfp = axios
