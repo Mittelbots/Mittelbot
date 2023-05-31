@@ -101,6 +101,14 @@ module.exports = class Music {
         });
     }
 
+    shuffle() {
+        return new Promise(async (resolve) => {
+            await this.queue.tracks.shuffle();
+            await this.updateQueueInDB();
+            return resolve();
+        });
+    }
+
     resume() {
         return new Promise(async (resolve, reject) => {
             try {
