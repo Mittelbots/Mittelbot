@@ -16,7 +16,8 @@
         "log": "docker logs -f mittelbot",
         "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --write .\"",
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\"",
-        "postinstall": "patch-package"
+        "postinstall": "patch-package",
+        "transCheck": "node ./scripts/translationCheck.js"
     },
     "nodemonConfig": {
         "ignore": [
