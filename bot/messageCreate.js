@@ -18,7 +18,7 @@ const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Autom
 const AutomodAntiInvite = require('../utils/functions/data/Automoderation/Automod-AntiInvite');
 const AutomodAntiLinks = require('../utils/functions/data/Automoderation/Automod-AntiLinks');
 const Hangman = require('../utils/functions/data/Games/Hangman/Hangman');
-const { messageDeleteReasons } = require('../utils/data/info/messageDeleteReasons');
+const { messageDeleteReasons } = require('../src/assets/js/messageDeleteReasons');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
