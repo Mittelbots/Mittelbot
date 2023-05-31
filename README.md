@@ -61,11 +61,10 @@ git clone https://github.com/Mittelbots/Mittelbot.git
 (The most important values explained):
 
 ```env
-DEBUG= #True: If you want to run the bot on debug mode; False: For Production
 DISCORD_SECRET= #Your bot secret (Visit the Discord Developer Portal for your token)
 DISCORD_TOKEN= #Your bot token (Visit the Discord Developer Portal for your token)
 DISCORD_APPLICATION_ID= #Your Bot Application ID (Also known as User ID)
-DEVELOPER_DISCORD_GUILD_ID= #The Guild were all commands should load on (When DEBUG is True)
+DEVELOPER_DISCORD_GUILD_ID= #The Guild were all commands should load on (When NODE_ENV is development)
 
 # DEVELOPER CHANNELS
 # -> All channels for informations
