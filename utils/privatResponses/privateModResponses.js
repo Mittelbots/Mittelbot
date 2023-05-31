@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { generateModEmote } = require('../functions/generateModEmote');
 
 module.exports.privateModResponse = ({ member, type, reason, time = null, bot, guildname }) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
         const privateModMessage = new EmbedBuilder()
             .setTitle(
                 `${await generateModEmote({ bot, type })} **You got ${type} from ${guildname}!**`
