@@ -72,14 +72,13 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
             null,
             userGuild.id
         );
-        await privateModResponse(
-            user,
-            config.defaultModTypes.unmute,
+        await privateModResponse({
+            member: user,
+            type: config.defaultModTypes.unmute,
             reason,
-            null,
             bot,
-            userGuild.name
-        );
+            guildname: userGuild.name,
+        });
         const p_response = await publicModResponses(
             config.defaultModTypes.unmute,
             mod,
