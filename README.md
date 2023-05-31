@@ -111,30 +111,9 @@ docker-compose up -d
 
 # **Production**
 
-1. Add File "Dockerfile.prod" to your project root
+1. Add File "docker-compose.override.yml" to your project root
 
-2. Add File "docker-compose.override.yml" to your project root
-
-3. Insert this code into the Dockerfile.prod
-
-```Dockerfile
-FROM node:18.15.0
-
-WORKDIR /app
-
-COPY package.json ./
-
-RUN npm install
-
-COPY . .
-
-EXPOSE 5000
-
-CMD [ "node", "bot/core/shard.js" ]
-
-```
-
-4. Insert this code into the docker-compose.override.yml
+2. Insert this code into the docker-compose.override.yml
 
 ```yml
 services:
@@ -142,6 +121,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.prod
+            args:
+                - NODE_ENV=production
 
         environment:
             - NODE_ENV=production
