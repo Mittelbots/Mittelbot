@@ -1,5 +1,3 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { unmuteUser } = require('../../../utils/functions/moderations/unmuteUser');
 const { unmuteConfig, unmutePerms } = require('../_config/moderation/unmute');
 
