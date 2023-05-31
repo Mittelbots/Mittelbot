@@ -1,4 +1,4 @@
-const { QueryType } = require('discord-player');
+const { QueryType, QueueRepeatMode } = require('discord-player');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const musicModel = require('../../../src/db/Models/tables/music.model');
@@ -101,6 +101,28 @@ module.exports = class Music {
         });
     }
 
+    shuffle() {
+        return new Promise(async (resolve) => {
+            await this.queue.tracks.shuffle();
+            await this.updateQueueInDB();
+            return resolve();
+        });
+    }
+
+    repeat(enable) {
+        return new Promise(async (resolve) => {
+            await this.queue.setRepeatMode(enable ? QueueRepeatMode.QUEUE : QueueRepeatMode.OFF);
+            return resolve();
+        });
+    }
+
+    volume(volume) {
+        return new Promise(async (resolve) => {
+            await this.queue.node.setVolume(volume);
+            return resolve();
+        });
+    }
+
     resume() {
         return new Promise(async (resolve, reject) => {
             try {
@@ -192,7 +214,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 const voiceChannel = this.guild.members.me.voice.channel;
-                if (!voiceChannel) reject(global.t.trans(['info.music.notInVC']));
+                if (!voiceChannel) return reject(global.t.trans(['info.music.notInVC']));
                 voiceChannel.leave();
                 resolve();
             } catch (e) {

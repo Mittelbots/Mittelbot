@@ -13,6 +13,6 @@ updates:
       labels:
           - 'npm dependencies'
       commit-message:
-          prefix: '[CORE]'
+          prefix: '[FIX]'
           include: 'scope'
       milestone: 4

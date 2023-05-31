@@ -1,4 +1,4 @@
-const { delay } = require('../delay/delay');
+const { delay } = require('../delay');
 const { GlobalConfig } = require('./GlobalConfig');
 const { Levelsystem } = require('./levelsystemAPI');
 const { spawn } = require('child_process');

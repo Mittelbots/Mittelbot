@@ -1,5 +1,6 @@
-const config = require('../../src/assets/json/_config/config.json');
 const { Temproles } = require('../../utils/functions/data/Temproles');
+
+const interval = 1000 * 60 * 10; // 10 minutes
 
 module.exports.checkTemproles = async (bot) => {
     console.info('🔎📜 CheckTemproles handler started');
@@ -34,5 +35,5 @@ module.exports.checkTemproles = async (bot) => {
             }
         }
         console.info(`Check Temproles finished. ${done} roles removed`);
-    }, config.defaultCheckTemprolesTimer);
+    }, interval);
 };

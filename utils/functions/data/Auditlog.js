@@ -44,7 +44,7 @@ class Auditlog {
         });
     }
 
-    sendToAuditLog({guildId, target = null, type = 'auditlog'}) {
+    sendToAuditLog({ guildId, target = null, type = 'auditlog' }) {
         return new Promise(async (resolve) => {
             await this.#getLogs(guildId, type);
             if (await this.#checkWhitelist(target)) return resolve(false);
@@ -55,7 +55,7 @@ class Auditlog {
 
     send() {
         return new Promise(async (resolve) => {
-            if(!this.logs) return resolve(false);
+            if (!this.logs) return resolve(false);
             this.logs
                 .send({
                     embeds: [this.embed],
@@ -74,7 +74,7 @@ class Auditlog {
             const settings = await Logs.get(guild_id);
             try {
                 this.logs = this.bot.guilds.cache.get(guild_id).channels.cache.get(settings[type]);
-            }catch(e) {
+            } catch (e) {
                 resolve(false);
             }
             resolve(true);
@@ -98,9 +98,8 @@ class Auditlog {
                         text: `Author: ${target.author.id} | MessageID: ${target.id}`,
                     });
             } else {
+                if (target.user) target = target.guild;
 
-                if(target.user) target = target.guild;
-                
                 this.embed
                     .setAuthor({
                         name: target.name,
@@ -118,8 +117,9 @@ class Auditlog {
         return new Promise(async (resolve) => {
             if (!this.#checkWhitelistUser || !message) return resolve(false);
             try {
-                if(this.#ignoreBots && message.author.bot || message.author.system) return resolve(true);
-            }catch(e) {
+                if ((this.#ignoreBots && message.author.bot) || message.author.system)
+                    return resolve(true);
+            } catch (e) {
                 // ignore err because it's probably a channel change
             }
 
@@ -130,7 +130,7 @@ class Auditlog {
             if (!this.logs || !this.logs.whitelist) {
                 return resolve(false);
             }
-            
+
             const roles = message.member.roles.cache.map((role) => role.id);
             const channels = message.channel;
 
@@ -142,36 +142,37 @@ class Auditlog {
 
     checkEnabledEvents(guild_id, eventName) {
         return new Promise(async (resolve) => {
-            const isEnabled = await Logs.isEventEnabled({guild_id, event: eventName});
+            const isEnabled = await Logs.isEventEnabled({ guild_id, event: eventName });
             resolve(isEnabled);
         });
     }
 
-    setEmbed({color = '#021982', text, imageUrl = null, fields = []}) {
+    setEmbed({ color = '#021982', text, imageUrl = null, fields = [] }) {
         return new Promise(async (resolve) => {
             this.embed.setColor(color);
             this.embed.setDescription(text);
 
-            if(fields.length > 0) {
-                this.embed.addFields(fields.map(field => {
-                    return {
-                        name: field.name,
-                        value: field.value,
-                        inline: field.inline || false
-                    }
-                }));
+            if (fields.length > 0) {
+                this.embed.addFields(
+                    fields.map((field) => {
+                        return {
+                            name: field.name,
+                            value: field.value,
+                            inline: field.inline || false,
+                        };
+                    })
+                );
             }
 
-
-            if(imageUrl) {
+            if (imageUrl) {
                 const isObject = typeof imageUrl === 'object';
                 const isUrl = imageUrl.url;
                 const isVideo = imageUrl.url.includes('mp4');
 
-                if(isObject && isUrl && isVideo) this.embed.setDescription(imageUrl.url);
+                if (isObject && isUrl && isVideo) this.embed.setDescription(imageUrl.url);
 
-                if(isObject && isUrl && !isVideo) this.embed.setImage(imageUrl.url);
-                if(!isObject) this.embed.setImage(imageUrl);
+                if (isObject && isUrl && !isVideo) this.embed.setImage(imageUrl.url);
+                if (!isObject) this.embed.setImage(imageUrl);
             }
             resolve(true);
         });
@@ -211,7 +212,9 @@ class Auditlog {
                 }>\n**After**\n${channelUpdate.parent}\n\n`;
             }
             if (changedOptions.includes('rateLimitPerUser')) {
-                description += `**<#${channelUpdate.id}> rateLimitPerUser changed**\n\n**Before**\n${
+                description += `**<#${
+                    channelUpdate.id
+                }> rateLimitPerUser changed**\n\n**Before**\n${
                     changedBefore[changedOptions.indexOf('rateLimitPerUser')]
                 }s\n**After**\n${channelUpdate.rateLimitPerUser || 0}s\n\n`;
             }
@@ -237,7 +240,9 @@ class Auditlog {
                             return 'Unknown';
                     }
                 };
-                description = `**<#${channelUpdate.id}> type changed**\n\n**Before**\n${getRealTypeName(
+                description = `**<#${
+                    channelUpdate.id
+                }> type changed**\n\n**Before**\n${getRealTypeName(
                     changedBefore[changedOptions.indexOf('type')]
                 )}\n**After**\n${getRealTypeName(channelUpdate.type)}\n\n`;
             }

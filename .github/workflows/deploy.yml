@@ -25,7 +25,6 @@ jobs:
               run: |
                   cp ../.env .env
                   cp ../docker-compose.override.yml docker-compose.override.yml
-                  cp ../Dockerfile.prod Dockerfile.prod
 
             - name: Build
               run: |

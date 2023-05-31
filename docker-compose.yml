@@ -9,6 +9,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+            args:
+                - NODE_ENV=development
         restart: unless-stopped
         environment:
             - NODE_ENV=development

@@ -12,7 +12,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const check = await musicApi.checkAvailibility();
     if (check) {
         return main_interaction.followUp({
-            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(check)],
+            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(isNotAvailable)],
             ephemeral: true,
         });
     }

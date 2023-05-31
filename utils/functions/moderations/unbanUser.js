@@ -11,7 +11,7 @@ function unbanUser({ user, mod, guild, reason, bot }) {
             .then(() => (pass = true))
             .catch((err) => {
                 errorhandler({ err });
-                return reject(config.errormessages.nopermissions.unban);
+                return reject(global.t.trans(['error.permissions.bot.kick'], guild.id));
             });
 
         const infractions = await Infractions.getOpen({

@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { MemberInfo } = require('./MemberInfo');
-const { delay } = require('../delay/delay');
+const { delay } = require('../delay');
 
 module.exports = class Afk {
     constructor() {}
@@ -102,7 +102,7 @@ module.exports = class Afk {
 
             let isAFK = false;
 
-            if (mentions.size === 0) return isAFK;
+            if (mentions.size === 0) return resolve(isAFK);
 
             mentions.map(async (user) => {
                 if (user.id === author.id) return;

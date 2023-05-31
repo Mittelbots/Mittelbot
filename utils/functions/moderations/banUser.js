@@ -42,7 +42,7 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
                 if (err.status !== 403 && err.status !== 404) {
                     errorhandler({ err });
                 }
-                return reject(config.errormessages.nopermissions.ban);
+                return reject(global.t.trans(['error.permissions.bot.ban'], guild.id));
             });
 
         Infractions.insertOpen({

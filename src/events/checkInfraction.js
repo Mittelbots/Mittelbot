@@ -7,6 +7,8 @@ const { saveAllRoles } = require('../../utils/functions/roles/saveAllRoles');
 const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
 const { Infractions } = require('../../utils/functions/data/Infractions');
 
+const interval = 1000 * 60; // 1 Minute
+
 module.exports.checkInfractions = (bot) => {
     console.info('🔎📜 CheckInfraction handler started');
     setInterval(async () => {
@@ -116,5 +118,5 @@ module.exports.checkInfractions = (bot) => {
                 timeZone: 'Europe/Berlin',
             })
         );
-    }, config.defaultCheckInfractionTimer);
+    }, interval);
 };
