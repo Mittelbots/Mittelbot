@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
-const { shuffleConfig } = require('../_config/music/shuffle');
 const { volumeConfig } = require('../_config/music/volume');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -25,7 +24,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const isNotAvailable = await musicApi.checkAvailibility();
     if (isNotAvailable) {
         return main_interaction.followUp({
-            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(check)],
+            embeds: [new EmbedBuilder().setColor('#ff0000').setDescription(isNotAvailable)],
             ephemeral: true,
         });
     }

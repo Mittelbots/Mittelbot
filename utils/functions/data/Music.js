@@ -118,7 +118,7 @@ module.exports = class Music {
 
     volume(volume) {
         return new Promise(async (resolve) => {
-            await this.queue.setVolume(volume);
+            await this.queue.node.setVolume(volume);
             return resolve();
         });
     }
@@ -214,7 +214,7 @@ module.exports = class Music {
         return new Promise(async (resolve, reject) => {
             try {
                 const voiceChannel = this.guild.members.me.voice.channel;
-                if (!voiceChannel) reject(global.t.trans(['info.music.notInVC']));
+                if (!voiceChannel) return reject(global.t.trans(['info.music.notInVC']));
                 voiceChannel.leave();
                 resolve();
             } catch (e) {
