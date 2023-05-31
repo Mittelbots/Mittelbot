@@ -1,11 +1,14 @@
 const { EmbedBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
 const { shuffleConfig } = require('../_config/music/shuffle');
+const { repeatConfig } = require('../_config/music/repeat');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
+
+    const enable = await main_interaction.options.getBoolean('enable');
 
     const musicApi = new Music(main_interaction, bot);
 
@@ -36,15 +39,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch(() => {});
     }
 
-    await musicApi.shuffle();
+    await musicApi.repeat(enable);
 
     return main_interaction.followUp({
         embeds: [
             new EmbedBuilder().setDescription(
-                global.t.trans(['success.music.shuffle.enable'], main_interaction.guild.id)
+                global.t.trans(
+                    [enable ? 'success.music.repeat.enable' : 'success.music.repeat.disable'],
+                    main_interaction.guild.id
+                )
             ),
         ],
     });
 };
 
-module.exports.data = shuffleConfig;
+module.exports.data = repeatConfig;

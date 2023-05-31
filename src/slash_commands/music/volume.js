@@ -1,11 +1,24 @@
 const { EmbedBuilder } = require('discord.js');
 const Music = require('../../../utils/functions/data/Music');
 const { shuffleConfig } = require('../_config/music/shuffle');
+const { volumeConfig } = require('../_config/music/volume');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
+
+    const volume = await main_interaction.options.getNumber('volume');
+
+    if (volume < 0 || volume > 100) {
+        return main_interaction.followUp({
+            embeds: [
+                new EmbedBuilder().setDescription(
+                    global.t.trans(['error.music.volume.invalid'], main_interaction.guild.id)
+                ),
+            ],
+        });
+    }
 
     const musicApi = new Music(main_interaction, bot);
 
@@ -36,15 +49,18 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch(() => {});
     }
 
-    await musicApi.shuffle();
+    await musicApi.volume(volume);
 
     return main_interaction.followUp({
         embeds: [
             new EmbedBuilder().setDescription(
-                global.t.trans(['success.music.shuffle.enable'], main_interaction.guild.id)
+                global.t.trans(
+                    ['success.music.volume.set', volume.toString() + '%'],
+                    main_interaction.guild.id
+                )
             ),
         ],
     });
 };
 
-module.exports.data = shuffleConfig;
+module.exports.data = volumeConfig;

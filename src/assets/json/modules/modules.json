@@ -99,7 +99,10 @@
             "pause",
             "resume",
             "nowplaying",
-            "disconnect"
+            "disconnect",
+            "volume",
+            "shuffle",
+            "repeat"
         ]
     },
     "reddit": {

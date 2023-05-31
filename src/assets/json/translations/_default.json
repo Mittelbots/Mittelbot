@@ -150,6 +150,16 @@
             },
             "stop": {
                 "stopped": "{success.emote} The song has stopped and the queue is cleared. See you 👋"
+            },
+            "shuffle": {
+                "enable": "{success.emote} Successfully enabled shuffle."
+            },
+            "repeat": {
+                "enable": "{success.emote} Successfully enabled repeat.",
+                "disable": "{success.emote} Successfully disabled repeat."
+            },
+            "volume": {
+                "set": "{success.emote} Successfully set the volume to %c%"
             }
         },
         "notifications": {
@@ -540,7 +550,10 @@
             },
             "userIsNotInAVoiceChannel": "{error.emote} You need to be in a voice channel to use this command!",
             "botIsAlreadyInAVoiceChannel": "{error.emote} I am already in a voice channel! Please join that channel or wait until i left!",
-            "botIsNotInAVoiceChannel": "{error.emote} I am not in a voice channel! Please join a channel first!"
+            "botIsNotInAVoiceChannel": "{error.emote} I am not in a voice channel! Please join a channel first!",
+            "volume": {
+                "invalid": "{error.emote} Please enter a valid number between 0 and 100"
+            }
         },
         "notifications": {
             "reddit": {
