@@ -13,6 +13,7 @@ const SingASong = require('../utils/functions/data/SingASong');
 const Banappeal = require('../utils/functions/data/Banappeal');
 const Tickets = require('../utils/functions/data/Tickets/Tickets');
 const { EmbedBuilder } = require('discord.js');
+const Hangman = require('../utils/functions/data/Games/Hangman/Hangman');
 
 const defaultCooldown = new Set();
 
@@ -100,6 +101,9 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                 break;
             case 'tutorial':
                 new Tutorial(main_interaction, bot);
+                break;
+            case 'hangman_cancel':
+                new Hangman(main_interaction, bot).cancel();
                 break;
         }
 

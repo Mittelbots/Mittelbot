@@ -1,14 +1,23 @@
 FROM node:18.15.0
 
+ARG NODE_ENV=production
+
 WORKDIR /app
 
-COPY package.json ./
+COPY package*.json ./
 
-RUN npm install
-RUN npm install -g nodemon
+RUN if [ "$NODE_ENV" = "development" ]; then \
+        npm install && npm install -g nodemon ; \
+    else \
+        npm install --only=production ; \
+    fi
 
 COPY . .
 
 EXPOSE 5000
 
-CMD [ "nodemon", "bot/core/index.js" ]
+CMD if [ "$NODE_ENV" = "development" ]; then \
+        nodemon bot/core/shard.js ; \
+    else \
+        node bot/core/shard.js ; \
+    fi

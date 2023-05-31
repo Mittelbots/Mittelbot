@@ -6,6 +6,11 @@
             "info": "#0000ff",
             "warning": "#ffff00",
             "error": "#ff0000"
+        },
+        "embed": {
+            "buttons": {
+                "cancel": "Cancel"
+            }
         }
     },
     "success": {
@@ -112,6 +117,11 @@
         "fun": {
             "ship": {
                 "showResult": "**%c** and **%e** match `%p%`. \n\n `%r`"
+            },
+            "hangman": {
+                "createdPrv": "{success.emote} Successfully created a new hangman game in %q (%w)",
+                "createdPub": "An game of hangman has been started in %c",
+                "cancelled": "{success.emote} Successfully cancelled the hangman game in %q (%w)"
             }
         },
         "moderation": {
@@ -150,6 +160,16 @@
             },
             "stop": {
                 "stopped": "{success.emote} The song has stopped and the queue is cleared. See you 👋"
+            },
+            "shuffle": {
+                "enable": "{success.emote} Successfully enabled shuffle."
+            },
+            "repeat": {
+                "enable": "{success.emote} Successfully enabled repeat.",
+                "disable": "{success.emote} Successfully disabled repeat."
+            },
+            "volume": {
+                "set": "{success.emote} Successfully set the volume to %c%"
             }
         },
         "notifications": {
@@ -415,6 +435,22 @@
                 "episode": "Episode:",
                 "createdAt": "Created at:",
                 "playedBy": "Played by:"
+            },
+            "hangman": {
+                "embed": {
+                    "fields": {
+                        "guessedLetters": "Guessed Letters",
+                        "falsyGuessedLetters": "Falsy Guessed Letters",
+                        "host": "Host",
+                        "word": "Word",
+                        "channel": "Channel",
+                        "lives": "Lives"
+                    }
+                },
+                "guessedWord": "{success.emote} %c has guessed the word! The word was `%e`",
+                "guessedLetter": "{success.emote} %c has guessed the right letter `%e`",
+                "gameOver": "{error.emote} Game over! The word was `%c`",
+                "falsyGuessed": "{error.emote} %c has guessed the wrong letter `%e`"
             }
         },
         "commands": {
@@ -544,7 +580,10 @@
             },
             "userIsNotInAVoiceChannel": "{error.emote} You need to be in a voice channel to use this command!",
             "botIsAlreadyInAVoiceChannel": "{error.emote} I am already in a voice channel! Please join that channel or wait until i left!",
-            "botIsNotInAVoiceChannel": "{error.emote} I am not in a voice channel! Please join a channel first!"
+            "botIsNotInAVoiceChannel": "{error.emote} I am not in a voice channel! Please join a channel first!",
+            "volume": {
+                "invalid": "{error.emote} Please enter a valid number between 0 and 100"
+            }
         },
         "notifications": {
             "reddit": {
@@ -596,6 +635,11 @@
             },
             "singasong": {
                 "nopoints": "You have no points!"
+            },
+            "hangman": {
+                "alreadyRunningGameInChannel": "{error.emote} There is already a game running in this channel. Please wait until it is finished.",
+                "noValidWord": "{error.emote} Please send a valid word.The word must contain only letters and at least 3 Letters long.",
+                "notCancelled": "{error.emote} You can't cancel a game that's not running or that you're not hosting."
             }
         },
         "admin": {

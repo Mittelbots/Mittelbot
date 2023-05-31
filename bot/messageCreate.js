@@ -1,5 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
-const { delay } = require('../utils/functions/delay/delay');
+const { delay } = require('../utils/functions/delay');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
 const Afk = require('../utils/functions/data/Afk');
@@ -17,6 +17,8 @@ const AutomodAntiSpam = require('../utils/functions/data/Automoderation/Automod-
 const AutomodAntiInsults = require('../utils/functions/data/Automoderation/Automod-AntiInsuts');
 const AutomodAntiInvite = require('../utils/functions/data/Automoderation/Automod-AntiInvite');
 const AutomodAntiLinks = require('../utils/functions/data/Automoderation/Automod-AntiLinks');
+const Hangman = require('../utils/functions/data/Games/Hangman/Hangman');
+const { messageDeleteReasons } = require('../utils/data/info/messageDeleteReasons');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
@@ -244,6 +246,22 @@ async function messageCreate(message, bot) {
                     msg.delete().catch(() => {});
                 })
                 .catch(() => {});
+        }
+    }
+
+    /** ======================================================= */
+    if ((await moduleApi.checkEnabled(defaultModuleSettings.fun.name)).enabled) {
+        const hangmanGame = await new Hangman(null, bot).handleMessage(message);
+        if (hangmanGame === 429) {
+            messageDeleteReasons.set(message.id, 'User tried to play hangman in cooldown');
+            message.delete().catch(() => {});
+            return;
+        }
+
+        if (hangmanGame === 403 || hangmanGame !== 404) {
+            messageDeleteReasons.set(message.id, 'User is playing hangman');
+            message.delete().catch(() => {});
+            return;
         }
     }
 

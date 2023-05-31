@@ -99,7 +99,10 @@
             "pause",
             "resume",
             "nowplaying",
-            "disconnect"
+            "disconnect",
+            "volume",
+            "shuffle",
+            "repeat"
         ]
     },
     "reddit": {
@@ -198,7 +201,8 @@
             "stromberg",
             "singasong",
             "punch",
-            "fun"
+            "fun",
+            "hangman"
         ]
     },
     "help": {

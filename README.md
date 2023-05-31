@@ -61,11 +61,10 @@ git clone https://github.com/Mittelbots/Mittelbot.git
 (The most important values explained):
 
 ```env
-DEBUG= #True: If you want to run the bot on debug mode; False: For Production
 DISCORD_SECRET= #Your bot secret (Visit the Discord Developer Portal for your token)
 DISCORD_TOKEN= #Your bot token (Visit the Discord Developer Portal for your token)
 DISCORD_APPLICATION_ID= #Your Bot Application ID (Also known as User ID)
-DEVELOPER_DISCORD_GUILD_ID= #The Guild were all commands should load on (When DEBUG is True)
+DEVELOPER_DISCORD_GUILD_ID= #The Guild were all commands should load on (When NODE_ENV is development)
 
 # DEVELOPER CHANNELS
 # -> All channels for informations
@@ -111,30 +110,9 @@ docker-compose up -d
 
 # **Production**
 
-1. Add File "Dockerfile.prod" to your project root
+1. Add File "docker-compose.override.yml" to your project root
 
-2. Add File "docker-compose.override.yml" to your project root
-
-3. Insert this code into the Dockerfile.prod
-
-```Dockerfile
-FROM node:18.15.0
-
-WORKDIR /app
-
-COPY package.json ./
-
-RUN npm install
-
-COPY . .
-
-EXPOSE 5000
-
-CMD [ "node", "bot/core/shard.js" ]
-
-```
-
-4. Insert this code into the docker-compose.override.yml
+2. Insert this code into the docker-compose.override.yml
 
 ```yml
 services:
@@ -142,6 +120,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.prod
+            args:
+                - NODE_ENV=production
 
         environment:
             - NODE_ENV=production
@@ -154,3 +134,8 @@ services:
             - MYSQL_PASSWORD=xxxxx
             - MYSQL_PORT=3306
 ```
+
+<br/>
+<br/>
+
+<center>© BlackDayz 2023. All rights reserved</center>
