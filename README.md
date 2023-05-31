@@ -134,3 +134,8 @@ services:
             - MYSQL_PASSWORD=xxxxx
             - MYSQL_PORT=3306
 ```
+
+<br/>
+<br/>
+
+<center>© BlackDayz 2023. All rights reserved</center>

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const config = require('../../../src/assets/json/_config/config.json');
-const { delay } = require('../../../utils/functions/delay/delay');
+const { delay } = require('../../../utils/functions/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
 const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { purgeConfig, purgePerms } = require('../_config/moderation/purge');

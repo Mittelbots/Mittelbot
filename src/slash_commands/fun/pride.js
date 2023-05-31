@@ -1,10 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
-
-const genders = require('../../../utils/data/pride/gender/');
-const sexualities = require('../../../utils/data/pride/sexualities/');
+const genders = require('../../../src/assets/js/pride/gender/');
+const sexualities = require('../../../src/assets/js/pride/sexualities/');
 const { prideConfig } = require('../_config/fun/pride');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({ main_interaction }) => {
     const type = main_interaction.options.getString('type');
     const newEmbed = new EmbedBuilder();
 
@@ -91,7 +90,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 

@@ -1,5 +1,5 @@
 const { ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
-const { delay } = require('../delay/delay');
+const { delay } = require('../delay');
 const isURI = require('@stdlib/assert-is-uri');
 const { isValidHexCode } = require('../validate/isValidHexCode');
 const { validateCustomStrings } = require('../validate/validateCustomStrings');

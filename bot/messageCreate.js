@@ -1,5 +1,5 @@
 const config = require('../src/assets/json/_config/config.json');
-const { delay } = require('../utils/functions/delay/delay');
+const { delay } = require('../utils/functions/delay');
 const { errorhandler } = require('../utils/functions/errorhandler/errorhandler');
 const { Guilds } = require('../utils/functions/data/Guilds');
 const Afk = require('../utils/functions/data/Afk');
