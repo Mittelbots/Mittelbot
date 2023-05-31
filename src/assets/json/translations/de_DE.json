@@ -160,6 +160,16 @@
             },
             "stop": {
                 "stopped": "{success.emote} Das Lied wurde gestoppt und die Warteschlange wird gelöscht. Bis dann👋"
+            },
+            "shuffle": {
+                "enable": "{success.emote} Die Zufallswiedergabe wurde erfolgreich aktiviert."
+            },
+            "repeat": {
+                "enable": "{success.emote} Die Wiederholung wurde erfolgreich aktiviert.",
+                "disable": "{success.emote} Die Wiederholung wurde erfolgreich deaktiviert."
+            },
+            "volume": {
+                "set": "{success.emote} Die Laustärke wurde erfolgreich auf %c% gesetzt"
             }
         },
         "notifications": {
