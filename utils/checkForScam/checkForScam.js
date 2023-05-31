@@ -4,7 +4,7 @@ const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
 const fs = require('fs');
 const { errorhandler } = require('../functions/errorhandler/errorhandler');
-const { messageDeleteReasons } = require('../data/info/messageDeleteReasons');
+const { messageDeleteReasons } = require('../../src/assets/js/messageDeleteReasons');
 
 let publicScamList = [];
 

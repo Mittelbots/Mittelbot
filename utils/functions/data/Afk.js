@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { MemberInfo } = require('./MemberInfo');
-const { delay } = require('../delay/delay');
+const { delay } = require('../delay');
 
 module.exports = class Afk {
     constructor() {}
