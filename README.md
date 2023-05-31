@@ -118,8 +118,6 @@ docker-compose up -d
 services:
     bot:
         build:
-            context: .
-            dockerfile: Dockerfile.prod
             args:
                 - NODE_ENV=production
 
