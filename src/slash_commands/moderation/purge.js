@@ -1,8 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const config = require('../../../src/assets/json/_config/config.json');
-const { delay } = require('../../../utils/functions/delay');
+const { delay } = require('../../../utils/functions/delay/delay');
 const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
 const { purgeConfig, purgePerms } = require('../_config/moderation/purge');
 const { EmbedBuilder } = require('discord.js');
 
@@ -10,15 +7,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
     main_interaction.deferReply();
 
     const amount = main_interaction.options.getNumber('number');
+    const maxLimit = 100;
 
-    if (amount < 1 || amount >= Number(config.bulkDeleteLimit)) {
+    if (amount < 1 || amount >= maxLimit) {
         return main_interaction
             .followUp({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(
                             global.t.trans(
-                                ['error.moderation.purge.notAValidNumber', config.bulkDeleteLimit],
+                                ['error.moderation.purge.notAValidNumber', maxLimit],
                                 main_interaction.guild.id
                             )
                         )
@@ -26,7 +24,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
     await main_interaction.channel
         .bulkDelete(amount, true)
@@ -46,7 +44,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 })
                 .then(async (msg) => {
                     await delay(3000);
-                    msg.delete().catch((err) => {});
+                    msg.delete().catch(() => {});
                 })
                 .catch((err) => {});
         })
@@ -63,7 +61,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 

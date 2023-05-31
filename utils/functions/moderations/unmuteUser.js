@@ -54,7 +54,7 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
             });
             return {
                 error: true,
-                message: config.errormessages.general,
+                message: global.t.trans(['error.general'], guild.id),
             };
         });
 
