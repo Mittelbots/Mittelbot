@@ -30,10 +30,13 @@ module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
                             });
                             return true;
                         })
-                        .catch((err) => {
+                        .catch(() => {
                             return {
                                 error: true,
-                                message: config.errormessages.nopermissions.manageRoles,
+                                message: global.t.trans(
+                                    ['error.permissions.bot.managRoles'],
+                                    guild.id
+                                ),
                             };
                         });
                 } else {

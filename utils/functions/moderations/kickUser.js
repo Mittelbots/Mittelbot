@@ -61,7 +61,7 @@ module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
 
             return resolve(p_response.message);
         } else {
-            return reject(config.errormessages.nopermissions.kick);
+            return reject(global.t.trans(['error.permissions.bot.kick'], guild.id));
         }
     });
 };

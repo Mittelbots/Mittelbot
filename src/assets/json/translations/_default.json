@@ -505,7 +505,11 @@
                 "channelDelete": "{error.emote} I don't have permission to delete channels.",
                 "roleAdd": "{error.emote} I don't have permission to add roles.",
                 "roleAddSpecific": "{error.emote} I don't have permission to add the role %c.",
-                "manageReactions": "{error.emote} I don't have permission to manage reactions."
+                "manageReactions": "{error.emote} I don't have permission to manage reactions.",
+                "ban": "{error.emote} I don't have permission to ban members.",
+                "kick": "{error.emote} I don't have permission to kick members.",
+                "unban": "{error.emote} I don't have permission to unban members.",
+                "manageRoles": "{error.emote} I don't have permission to manage roles."
             }
         },
         "ticket": {
