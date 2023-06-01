@@ -62,12 +62,12 @@ class Hangman extends HangmanLogic {
 
     handleMessage(message) {
         return new Promise(async (resolve) => {
-            if (this.cooldown(message.author.id, message.channel.id)) return resolve(429);
-
             const messageContent = message.content.toLowerCase();
             const game = await this.get(message.channel.id);
             if (!game) return resolve(404);
-
+            
+            if (this.cooldown(message.author.id, message.channel.id)) return resolve(429);
+            
             let { word, guessedLetters, falsyGuessedLetters, host, lives } = game.config;
 
             if (message.author.id === host) {
