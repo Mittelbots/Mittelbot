@@ -15,7 +15,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const helpEmbedMessage = new EmbedBuilder()
         .setTitle('Everything you need to know from each Command \n Choose a category')
         .setDescription(
-            'Something wrong? Report it on my discord https://mittelbot.blackdayz.de/support \n _All commands are slash commands (/)_ '
+            'Something wrong? Report it on my discord https://mittelbot.xyz/support \n _All commands are slash commands (/)_ '
         );
 
     for (const [index, [key, value]] of Object.entries(Object.entries(cmd_help))) {

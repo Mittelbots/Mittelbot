@@ -522,7 +522,7 @@
             "notEnabled": "{error.emote} Dieses Modul **(%c)** ist deaktiviert. Du oder die Serveradministratoren müssen es erst aktivieren, um diesen Befehl verwenden zu können."
         },
         "commands": {
-            "globallyDisabled": "Dieser Befehl ist derzeit auf allen Servern deaktiviert. Besuche den offiziellen Support-Discord für weitere Informationen. https://mittelbot.blackdayz.de/support",
+            "globallyDisabled": "Dieser Befehl ist derzeit auf allen Servern deaktiviert. Besuche den offiziellen Support-Discord für weitere Informationen. https://mittelbot.xyz/support",
             "disabledOnGuild": "Dieser Befehl ist in Deiner Gilde deaktiviert."
         },
         "embed": {

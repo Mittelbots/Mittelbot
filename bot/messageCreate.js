@@ -86,7 +86,7 @@ async function messageCreate(message, bot) {
         await bot.users.cache
             .get(guild.ownerId)
             .send({
-                content: `Hello. I'm sorry but your server is on the blacklist and i'll leave your server again. If it's false please join the official discord support server. https://mittelbot.blackdayz.de/support.`,
+                content: `Hello. I'm sorry but your server is on the blacklist and i'll leave your server again. If it's false please join the official discord support server. https://mittelbot.xyz/support.`,
             })
             .catch(() => {});
 

@@ -92,7 +92,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         new ButtonBuilder()
                             .setStyle(ButtonStyle.Link)
                             .setLabel('Add the bot to your server')
-                            .setURL(`https://mittelbot.blackdayz.de/invite`)
+                            .setURL(`https://mittelbot.xyz/invite`)
                     ),
                 ],
                 ephemeral: true,
