@@ -13,13 +13,13 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const dbEntity = modroles.find((x) => x.role === roles.id) || {};
     const serverRole = await main_interaction.guild.roles.fetch(roles.id);
 
-    if (!serverRole)
-        return main_interaction.reply({
+    if (!serverRole) {
+        main_interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setDescription(
                         global.t.trans(
-                            ['error.admin.modroles.doesntExists'],
+                            ['error.admin.modroles.doesntExist'],
                             main_interaction.guild.id
                         )
                     )
@@ -27,6 +27,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
             ],
             ephemeral: true,
         });
+        return;
+    }
 
     const modRoleEmbed = new EmbedBuilder().setTitle(
         `Choose setting for _${serverRole.name}_. \n\nCurrent: **${
@@ -46,23 +48,30 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const row = new ActionRowBuilder();
 
+    modRoleEmbed.addFields(
+        !dbEntity.isAdmin
+            ? global.t.trans(['info.admin.modroles.info.admin'], main_interaction.guild.id)
+            : {},
+        !dbEntity.isMod
+            ? modRoleEmbed.addFields(
+                  global.t.trans(['info.admin.modroles.info.mod'], main_interaction.guild.id)
+              )
+            : {},
+        !dbEntity.isHelper
+            ? modRoleEmbed.addFields(
+                  global.t.trans(['info.admin.modroles.info.helper'], main_interaction.guild.id)
+              )
+            : {}
+    );
+
     if (!dbEntity.isAdmin) {
         row.addComponents(buttons.isAdmin);
-        modRoleEmbed.addFields(
-            global.t.trans(['info.admin.modroles.info.admin'], main_interaction.guild.id)
-        );
     }
     if (!dbEntity.isMod) {
         row.addComponents(buttons.isMod);
-        modRoleEmbed.addFields(
-            global.t.trans(['info.admin.modroles.info.mod'], main_interaction.guild.id)
-        );
     }
     if (!dbEntity.isHelper) {
         row.addComponents(buttons.isHelper);
-        modRoleEmbed.addFields(
-            global.t.trans(['info.admin.modroles.info.helper'], main_interaction.guild.id)
-        );
     }
 
     if (dbEntity.isAdmin || dbEntity.isMod || dbEntity.isHelper) {
@@ -70,6 +79,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
         modRoleEmbed.addFields(
             global.t.trans(['info.admin.modroles.info.remove'], main_interaction.guild.id)
         );
+        a;
+    }
+
+    if (modRoleEmbed.toJSON().fields.length > 3) {
+        modRoleEmbed.data.fields = modRoleEmbed.data.fields.slice(0, 3);
     }
 
     const sentMessage = await main_interaction
