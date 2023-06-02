@@ -120,7 +120,6 @@ services:
         build:
             args:
                 - NODE_ENV=production
-
         environment:
             - NODE_ENV=production
 
