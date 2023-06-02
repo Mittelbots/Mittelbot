@@ -8,7 +8,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const mainEmbed = new EmbedBuilder()
         .setTitle('Tutorial')
         .setDescription(
-            `Learn everything important about the Bot.\nPlease select one of options in the Dropdown menu to get started.\nYou can add more questions and answers in the official discord support server https://mittelbot.blackdayz.de/support`
+            `Learn everything important about the Bot.\nPlease select one of options in the Dropdown menu to get started.\nYou can add more questions and answers in the official discord support server https://mittelbot.xyz/support`
         )
         .setImage(`https://media.giphy.com/media/VXCPgZwEP7f1e/giphy-downsized-large.gif`);
 
