@@ -79,7 +79,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
         modRoleEmbed.addFields(
             global.t.trans(['info.admin.modroles.info.remove'], main_interaction.guild.id)
         );
-        a;
     }
 
     if (modRoleEmbed.toJSON().fields.length > 3) {
