@@ -55,7 +55,7 @@ module.exports = class Tutorial {
         this.embeds
             .setTitle('Slash Commands')
             .setDescription(
-                `Slash Commands are the main way to interact with the Bot.\nYou can use them by typing \`/\` in any channel.\nYou can also use them in DMs.\nYou can request more slash commands in the official discord support server https://mittelbot.blackdayz.de/support`
+                `Slash Commands are the main way to interact with the Bot.\nYou can use them by typing \`/\` in any channel.\nYou can also use them in DMs.\nYou can request more slash commands in the official discord support server https://mittelbot.xyz/support`
             )
             .setImage(
                 `https://raw.githubusercontent.com/RileyAbr/rat-facts-Discord-Bot/main/assets/rat%20facts%20clip.gif`
