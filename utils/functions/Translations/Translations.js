@@ -1,5 +1,5 @@
 const defaultTranslations = require('../../../src/assets/json/translations/_default.json');
-const guildConfig = require('../../../src/db/Models/tables/guildConfig.model');
+const guildConfig = require('../../../src/db/Models/guildConfig.model');
 const { GuildConfig } = require('../data/Config');
 const { errorhandler } = require('../errorhandler/errorhandler');
 

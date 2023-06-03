@@ -1,6 +1,6 @@
 const request = new (require('rss-parser'))();
 const { Message } = require('discord.js');
-const guildUploads = require('../../../../../src/db/Models/tables/guildUploads.model');
+const guildUploads = require('../../../../../src/db/Models/guildUploads.model');
 const { errorhandler } = require('../../../errorhandler/errorhandler');
 const Notification = require('../Notifications');
 const YouTubeLogic = require('./YouTubeLogic');

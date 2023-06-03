@@ -74,7 +74,7 @@ SequelizeModel.destroy = function () {
 
 database.init = () => {
     return new Promise(async (resolve, reject) => {
-        const dir = path.resolve('src/db/Models/tables/');
+        const dir = path.resolve('./src/db/Models/');
         await database
             .authenticate()
             .then(() => {
@@ -94,7 +94,7 @@ database.init = () => {
             alter: true,
         });
 
-        const data_mg_path = path.resolve('src/db/data_migration/');
+        const data_mg_path = path.resolve('./src/db/data_migration/');
         fs.readdirSync(data_mg_path).forEach((file) => {
             if (!file.includes('.default')) return;
             console.info('Loading data migration: ' + file);

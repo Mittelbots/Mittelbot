@@ -2,7 +2,7 @@ const database = require('../../../src/db/db');
 const dns = require('dns');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { removeHttp } = require('../removeCharacters');
-const advancedScamList = require('../../../src/db/Models/tables/advancedScamList.model');
+const advancedScamList = require('../../../src/db/Models/advancedScamList.model');
 
 class Scam {
     constructor() {}

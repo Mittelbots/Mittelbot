@@ -1,4 +1,4 @@
-const guildUploads = require('../../../../../src/db/Models/tables/guildUploads.model');
+const guildUploads = require('../../../../../src/db/Models/guildUploads.model');
 const { errorhandler } = require('../../../errorhandler/errorhandler');
 const YouTubeLogic = require('./YouTubeLogic');
 

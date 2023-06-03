@@ -1,5 +1,5 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
-const guildConfig = require('../../../src/db/Models/tables/guildConfig.model');
+const guildConfig = require('../../../src/db/Models/guildConfig.model');
 const { Guilds } = require('./Guilds');
 
 class GuildConfig {

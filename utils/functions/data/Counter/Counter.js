@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const counterModel = require('../../../../src/db/Models/tables/counter.model');
+const counterModel = require('../../../../src/db/Models/counter.model');
 
 module.exports = class Counter {
     constructor() {}

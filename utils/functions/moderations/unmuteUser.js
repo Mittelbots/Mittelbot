@@ -6,7 +6,7 @@ const { getMutedRole } = require('../roles/getMutedRole');
 const { giveAllRoles } = require('../roles/giveAllRoles');
 const config = require('../../../src/assets/json/_config/config.json');
 const { Infractions } = require('../data/Infractions');
-const openInfractions = require('../../../src/db/Models/tables/open_infractions.model');
+const openInfractions = require('../../../src/db/Models/open_infractions.model');
 
 async function unmuteUser({ user, bot, mod, reason, guild }) {
     const userGuild = await bot.guilds.cache.get(guild.id);

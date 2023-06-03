@@ -1,4 +1,4 @@
-const autodeleteModel = require('../../../src/db/Models/tables/autodelete.model.js');
+const autodeleteModel = require('../../../src/db/Models/autodelete.model.js');
 const { hasPermission } = require('../hasPermissions.js');
 
 module.exports = class Autodelete {

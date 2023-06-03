@@ -3,7 +3,7 @@ const { ApiClient } = require('@twurple/api');
 const { AppTokenAuthProvider } = require('@twurple/auth');
 
 const { errorhandler } = require('../../../errorhandler/errorhandler');
-const twitchStreams = require('../../../../../src/db/Models/tables/twitchStreams.model');
+const twitchStreams = require('../../../../../src/db/Models/twitchStreams.model');
 
 module.exports = class TwitchNotifier {
     #twitchApiClient;

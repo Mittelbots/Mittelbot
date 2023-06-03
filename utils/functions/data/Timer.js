@@ -1,4 +1,4 @@
-const timer = require('../../../src/db/Models/tables/timer.model');
+const timer = require('../../../src/db/Models/timer.model');
 const momentTZ = require('moment-timezone');
 
 class Timer {

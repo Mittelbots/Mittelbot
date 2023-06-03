@@ -1,4 +1,4 @@
-const guildAutoBlacklist = require('../../../src/db/Models/tables/guildAutoBlacklist.model');
+const guildAutoBlacklist = require('../../../src/db/Models/guildAutoBlacklist.model');
 const { getModTime } = require('../getModTime');
 const { isMod } = require('../isMod');
 const { banUser } = require('../moderations/banUser');

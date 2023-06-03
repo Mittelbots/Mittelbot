@@ -1,4 +1,4 @@
-const allGuildId = require('../../../src/db/Models/tables/guilds.model');
+const allGuildId = require('../../../src/db/Models/guilds.model');
 const blacklist = require('../../../src/assets/json/blacklist/guilds.json');
 
 class Guilds {

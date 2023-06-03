@@ -1,5 +1,5 @@
 const { default: axios } = require('axios');
-const reddit = require('../../../src/db/Models/tables/reddit.model');
+const reddit = require('../../../src/db/Models/reddit.model');
 
 class Reddit {
     constructor() {}

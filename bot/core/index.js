@@ -15,7 +15,7 @@ const { startBot } = require('./core');
 const { delay } = require('../../utils/functions/delay');
 const { acceptBotInteraction } = require('./botEvents');
 const { Player } = require('discord-player');
-const { registerPlayerEvents } = require('../../src/events/player/player-events');
+const { registerPlayerEvents } = require('../../bot/events/player/player-events');
 const Translations = require('../../utils/functions/Translations/Translations');
 
 processErrorHandler();

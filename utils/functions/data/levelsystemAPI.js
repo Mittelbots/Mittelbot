@@ -3,7 +3,7 @@ const { errorhandler } = require('../errorhandler/errorhandler');
 const fs = require('fs');
 const levelConfig = require('../../../src/assets/json/levelsystem/levelconfig.json');
 const { GuildConfig } = require('./Config');
-const guildLevel = require('../../../src/db/Models/tables/guildLevel.model');
+const guildLevel = require('../../../src/db/Models/guildLevel.model');
 const config = require('../../../src/assets/json/_config/config.json');
 
 let levelCooldownArray = [];

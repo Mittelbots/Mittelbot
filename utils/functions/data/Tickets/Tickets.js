@@ -2,7 +2,7 @@ const classes = require('extends-classes');
 
 const { ChannelType, PermissionFlagsBits } = require('discord.js');
 const { errorhandler } = require('../../errorhandler/errorhandler');
-const ticketModel = require('../../../../src/db/Models/tables/tickets.model');
+const ticketModel = require('../../../../src/db/Models/tickets.model');
 const TicketSettings = require('./TicketsSettings');
 const TicketInteraction = require('./TicketInteraction');
 const TicketEmbeds = require('./TicketEmbeds');

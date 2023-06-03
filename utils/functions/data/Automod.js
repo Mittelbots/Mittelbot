@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const guildAutomod = require('../../../src/db/Models/tables/guildAutomod.model');
+const guildAutomod = require('../../../src/db/Models/guildAutomod.model');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { kickUser } = require('../moderations/kickUser');
 const { Guilds } = require('./Guilds');

@@ -1,4 +1,4 @@
-const globalConfig = require('../../../src/db/Models/tables/globalConfig.model');
+const globalConfig = require('../../../src/db/Models/globalConfig.model');
 
 class GlobalConfig {
     constructor() {}

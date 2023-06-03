@@ -1,5 +1,5 @@
 const { GuildConfig } = require('../../../utils/functions/data/Config');
-const guilds = require('../Models/tables/guilds.model');
+const guilds = require('../Models/guilds.model');
 
 (async () => {
     const allGuilds = await guilds.findAll();

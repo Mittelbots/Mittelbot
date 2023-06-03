@@ -1,4 +1,4 @@
-const advancedScamList = require('../../src/db/Models/tables/advancedScamList.model');
+const advancedScamList = require('../../src/db/Models/advancedScamList.model');
 const { getModTime } = require('../functions/getModTime');
 const { isMod } = require('../functions/isMod');
 const { banUser } = require('../functions/moderations/banUser');
