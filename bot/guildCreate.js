@@ -9,14 +9,14 @@ module.exports.guildCreate = async (guild, bot) => {
             .send({
                 content: `Hello. I'm sorry but your server is on the blacklist and i'll leave your server again. If it's false please join the official discord support server. https://mittelbot.xyz/support.`,
             })
-            .catch((err) => {});
+            .catch(() => {});
 
         errorhandler({
             fatal: false,
             message: ` I joined a BLACKLISTED Guild: ${guild.name} (${guild.id})`,
         });
 
-        return guild.leave().catch((err) => {});
+        return guild.leave().catch(() => {});
     }
 
     errorhandler({
