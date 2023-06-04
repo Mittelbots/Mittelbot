@@ -1,4 +1,4 @@
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 
 module.exports.guildDelete = async (guild) => {
     errorhandler({

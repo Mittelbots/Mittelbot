@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
-const Automod = require('@utils/classes/Automod');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const { removeMention } = require('@utils/functions/removeCharacters');
-const AutomodAntiSpam = require('@utils/classes/Automoderation/Automod-AntiSpam');
+const Automod = require('~utils/classes/Automod');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const { removeMention } = require('~utils/functions/removeCharacters');
+const AutomodAntiSpam = require('~utils/classes/Automoderation/Automod-AntiSpam');
 const { antiInviteConfig, antiInvitePerms } = require('../_config/admin/antiinvite');
 
 module.exports.run = async ({ main_interaction }) => {

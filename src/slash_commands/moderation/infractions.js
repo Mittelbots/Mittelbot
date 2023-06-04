@@ -1,5 +1,5 @@
-const { publicInfractionResponse } = require('@utils/functions/publicResponses/publicModResponses');
-const Infractions = require('@utils/classes/Infractions');
+const { publicInfractionResponse } = require('~utils/functions/publicResponses/publicModResponses');
+const Infractions = require('~utils/classes/Infractions');
 const { infractionsConfig, infractionPerms } = require('../_config/moderation/infractions');
 const { EmbedBuilder } = require('discord.js');
 

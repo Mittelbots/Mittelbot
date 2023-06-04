@@ -1,6 +1,6 @@
 const { default: axios } = require('axios');
-const { sequelize } = require('@src/db/Models/singasong.model');
-const singasong = require('@src/db/Models/singasong.model');
+const { sequelize } = require('~src/db/Models/singasong.model');
+const singasong = require('~src/db/Models/singasong.model');
 
 module.exports = class SingASongLogic {
     constructor() {}

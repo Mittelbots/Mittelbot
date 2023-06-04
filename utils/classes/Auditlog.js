@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const Logs = require('@utils/classes/Logs');
+const Logs = require('~utils/classes/Logs');
 
 class Auditlog {
     bot;

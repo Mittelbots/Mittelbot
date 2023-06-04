@@ -1,4 +1,4 @@
-const temproles = require('@src/db/Models/temproles.model');
+const temproles = require('~src/db/Models/temproles.model');
 
 class Temproles {
     constructor() {}

@@ -1,5 +1,5 @@
 const { languageConfig, languagePerms } = require('../_config/admin/language');
-const GuildConfig = require('@utils/classes/Config');
+const GuildConfig = require('~utils/classes/Config');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {

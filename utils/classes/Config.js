@@ -1,4 +1,4 @@
-const guildConfig = require('@src/db/Models/guildConfig.model');
+const guildConfig = require('~src/db/Models/guildConfig.model');
 const Guilds = require('./Guilds');
 
 class GuildConfig {

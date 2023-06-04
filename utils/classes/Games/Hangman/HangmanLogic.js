@@ -1,4 +1,4 @@
-const games = require('@src/db/Models/games.model');
+const games = require('~src/db/Models/games.model');
 
 let cooldown = new Set();
 

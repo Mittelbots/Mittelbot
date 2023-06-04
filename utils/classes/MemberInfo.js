@@ -1,4 +1,4 @@
-const memberInfo = require('@src/db/Models/memberInfo.model');
+const memberInfo = require('~src/db/Models/memberInfo.model');
 const Guilds = require('./Guilds');
 
 class MemberInfo {

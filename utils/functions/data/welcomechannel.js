@@ -3,7 +3,7 @@ const { delay } = require('../delay');
 const isURI = require('@stdlib/assert-is-uri');
 const { isValidHexCode } = require('../validate/isValidHexCode');
 const { validateCustomStrings } = require('../validate/validateCustomStrings');
-const GuildConfig = require('@utils/classes/Config');
+const GuildConfig = require('~utils/classes/Config');
 const { defaultWelcomeMessage } = require('./variables');
 const { errorhandler } = require('../errorhandler/errorhandler');
 

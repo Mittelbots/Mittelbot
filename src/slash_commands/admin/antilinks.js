@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
-const Automod = require('@utils/classes/Automod');
+const Automod = require('~utils/classes/Automod');
 const { antiLinksConfig, antiLinksPerms } = require('../_config/admin/antilinks');
-const { removeMention, removeHttp } = require('@utils/functions/removeCharacters');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { removeMention, removeHttp } = require('~utils/functions/removeCharacters');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction }) => {
     const guildId = main_interaction.guild.id;

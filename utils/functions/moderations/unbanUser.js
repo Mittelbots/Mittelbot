@@ -1,8 +1,8 @@
-const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
-const { publicModResponses } = require('@utils/functions/publicResponses/publicModResponses');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const config = require('@assets/json/_config/config.json');
-const Infractions = require('@utils/classes/Infractions');
+const { setNewModLogMessage } = require('~utils/functions/modlog/modlog');
+const { publicModResponses } = require('~utils/functions/publicResponses/publicModResponses');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const config = require('~assets/json/_config/config.json');
+const Infractions = require('~utils/classes/Infractions');
 
 function unbanUser({ user, mod, guild, reason, bot }) {
     return new Promise(async (resolve, reject) => {

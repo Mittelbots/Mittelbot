@@ -1,5 +1,5 @@
 const GuildConfig = require('./Config');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 const translatte = require('translatte');
 
 class Translate {

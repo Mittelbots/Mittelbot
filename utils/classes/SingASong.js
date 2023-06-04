@@ -2,8 +2,8 @@ const { ButtonBuilder } = require('discord.js');
 const { ActionRowBuilder } = require('discord.js');
 const { ButtonStyle } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
-const singasong = require('@src/db/Models/singasong.model');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const singasong = require('~src/db/Models/singasong.model');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 const SingASongLogic = require('./SingASongLogic');
 
 module.exports = class SingASong extends SingASongLogic {

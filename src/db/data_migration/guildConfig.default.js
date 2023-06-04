@@ -1,4 +1,4 @@
-const GuildConfig = require('@utils/classes/Config');
+const GuildConfig = require('~utils/classes/Config');
 const guilds = require('../Models/guilds.model');
 
 (async () => {

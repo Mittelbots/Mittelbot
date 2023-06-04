@@ -1,4 +1,4 @@
-const Auditlog = require('@utils/classes/Auditlog');
+const Auditlog = require('~utils/classes/Auditlog');
 
 module.exports.guildAfkChannelAdd = async (bot, guild, afkChannel) => {
     const auditLog = new Auditlog();

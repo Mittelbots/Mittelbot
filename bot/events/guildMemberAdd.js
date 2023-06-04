@@ -1,10 +1,10 @@
-const { giveAllRoles } = require('@utils/functions/roles/giveAllRoles');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const MemberInfo = require('@utils/classes/MemberInfo');
-const { sendWelcomeMessage } = require('@utils/functions/data/welcomechannel');
-const Infractions = require('@utils/classes/Infractions');
-const Joinroles = require('@utils/classes/Joinroles');
-const Modules = require('@utils/classes/Modules');
+const { giveAllRoles } = require('~utils/functions/roles/giveAllRoles');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const MemberInfo = require('~utils/classes/MemberInfo');
+const { sendWelcomeMessage } = require('~utils/functions/data/welcomechannel');
+const Infractions = require('~utils/classes/Infractions');
+const Joinroles = require('~utils/classes/Joinroles');
+const Modules = require('~utils/classes/Modules');
 
 module.exports.guildMemberAdd = async (member, bot) => {
     const modulesApi = new Modules(member.guild.id, bot);

@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const genders = require('@assets/js/pride/gender/');
-const sexualities = require('@assets/js/pride/sexualities/');
+const genders = require('~assets/js/pride/gender/');
+const sexualities = require('~assets/js/pride/sexualities/');
 const { prideConfig } = require('../_config/fun/pride');
 
 module.exports.run = async ({ main_interaction }) => {

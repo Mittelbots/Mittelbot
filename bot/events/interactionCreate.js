@@ -1,19 +1,19 @@
-const { handleSlashCommands } = require('@src/slash_commands');
-const { manageNewWelcomeSetting } = require('@utils/functions/data/welcomechannel');
-const config = require('@assets/json/_config/config.json');
-const GuildConfig = require('@utils/classes/Config');
+const { handleSlashCommands } = require('~src/slash_commands');
+const { manageNewWelcomeSetting } = require('~utils/functions/data/welcomechannel');
+const config = require('~assets/json/_config/config.json');
+const GuildConfig = require('~utils/classes/Config');
 const { InteractionType } = require('discord.js');
-const { manageScam } = require('@utils/classes/scam');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const Afk = require('@utils/classes/Afk');
-const GlobalConfig = require('@utils/classes/GlobalConfig');
-const pride = require('@src/slash_commands/fun/pride');
-const Tutorial = require('@utils/classes/Tutorial');
-const SingASong = require('@utils/classes/SingASong');
-const Banappeal = require('@utils/classes/Banappeal');
-const Tickets = require('@utils/classes/Tickets/Tickets');
+const { manageScam } = require('~utils/classes/scam');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const Afk = require('~utils/classes/Afk');
+const GlobalConfig = require('~utils/classes/GlobalConfig');
+const pride = require('~src/slash_commands/fun/pride');
+const Tutorial = require('~utils/classes/Tutorial');
+const SingASong = require('~utils/classes/SingASong');
+const Banappeal = require('~utils/classes/Banappeal');
+const Tickets = require('~utils/classes/Tickets/Tickets');
 const { EmbedBuilder } = require('discord.js');
-const Hangman = require('@utils/classes/Games/Hangman/Hangman');
+const Hangman = require('~utils/classes/Games/Hangman/Hangman');
 
 const defaultCooldown = new Set();
 

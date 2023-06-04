@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const {
     sendWelcomeSetting,
     updateWelcomeSettings,
-} = require('@utils/functions/data/welcomechannel');
+} = require('~utils/functions/data/welcomechannel');
 const { welcomeSettingsConfig, welcomeSettingsPerms } = require('../_config/admin/welcome');
 
 module.exports.run = async ({ main_interaction }) => {

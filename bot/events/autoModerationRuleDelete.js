@@ -1,4 +1,4 @@
-const Auditlog = require('@utils/classes/Auditlog');
+const Auditlog = require('~utils/classes/Auditlog');
 
 module.exports.autoModerationRuleDelete = async (bot, rule) => {
     const auditLog = new Auditlog();

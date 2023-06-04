@@ -1,4 +1,4 @@
-const Logs = require('@utils/classes/Logs');
+const Logs = require('~utils/classes/Logs');
 const { logConfig, logPerms } = require('../_config/admin/log');
 
 module.exports.run = async ({ main_interaction, bot }) => {

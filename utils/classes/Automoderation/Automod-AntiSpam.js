@@ -1,5 +1,5 @@
 const Automod = require('../Automod');
-const { isValidLink } = require('@utils/functions/validate/isValidLink');
+const { isValidLink } = require('~utils/functions/validate/isValidLink');
 
 module.exports = class AutomodAntiSpam {
     #spamCheck = [];

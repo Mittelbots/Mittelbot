@@ -1,10 +1,10 @@
-const { delay } = require('@utils/functions/delay');
+const { delay } = require('~utils/functions/delay');
 const GlobalConfig = require('./GlobalConfig');
 const Levelsystem = require('./levelsystemAPI');
 const { spawn } = require('child_process');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 const { EmbedBuilder } = require('discord.js');
-const { createSlashCommands } = require('@utils/functions/createSlashCommands/createSlashCommands');
+const { createSlashCommands } = require('~utils/functions/createSlashCommands/createSlashCommands');
 
 module.exports.checkOwnerCommand = async (message) => {
     const args = message.content.split(' ');

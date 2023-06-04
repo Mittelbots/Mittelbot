@@ -1,4 +1,4 @@
-const GuildConfig = require('@utils/classes/Config');
+const GuildConfig = require('~utils/classes/Config');
 
 module.exports.isMod = async ({ member, guild }) => {
     if (!member || typeof member !== 'object') return false;

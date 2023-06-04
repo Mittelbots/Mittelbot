@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const Warnroles = require('@utils/classes/Warnroles');
-const { removeMention } = require('@utils/functions/removeCharacters');
+const Warnroles = require('~utils/classes/Warnroles');
+const { removeMention } = require('~utils/functions/removeCharacters');
 const { warnRolesConfig, warnRolesPerms } = require('../_config/admin/warnroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {

@@ -1,5 +1,5 @@
-const { getAllRoles } = require('@utils/functions/roles/getAllRoles');
-const MemberInfo = require('@utils/classes/MemberInfo');
+const { getAllRoles } = require('~utils/functions/roles/getAllRoles');
+const MemberInfo = require('~utils/classes/MemberInfo');
 
 module.exports.guildMemberRemove = async ({ member }) => {
     const member_info = await new MemberInfo().get({

@@ -1,11 +1,11 @@
-const config = require('@assets/json/_config/config.json');
-const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
-const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
-const { giveAllRoles } = require('@utils/functions/roles/giveAllRoles');
-const { removeMutedRole } = require('@utils/functions/roles/removeMutedRole');
-const { saveAllRoles } = require('@utils/functions/roles/saveAllRoles');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const Infractions = require('@utils/classes/Infractions');
+const config = require('~assets/json/_config/config.json');
+const { setNewModLogMessage } = require('~utils/functions/modlog/modlog');
+const { privateModResponse } = require('~utils/functions/privatResponses/privateModResponses');
+const { giveAllRoles } = require('~utils/functions/roles/giveAllRoles');
+const { removeMutedRole } = require('~utils/functions/roles/removeMutedRole');
+const { saveAllRoles } = require('~utils/functions/roles/saveAllRoles');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const Infractions = require('~utils/classes/Infractions');
 
 const interval = 1000 * 60; // 1 Minute
 
