@@ -9,7 +9,7 @@ COPY package*.json ./
 RUN if [ "$NODE_ENV" = "development" ]; then \
         npm install && npm install -g nodemon ; \
     else \
-        npm install --only=production ; \
+        npm install --omit-dev ; \
     fi
 
 COPY . .
