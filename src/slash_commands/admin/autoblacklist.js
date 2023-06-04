@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const AutoBlacklist = require('@/utils/classes/AutoBlacklist');
+const AutoBlacklist = require('@utils/classes/AutoBlacklist');
 const { autoBlacklistConfig, autoBlacklistPerms } = require('../_config/admin/autoblacklist');
 
 module.exports.run = async ({ main_interaction, bot }) => {

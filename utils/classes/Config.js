@@ -1,5 +1,5 @@
-const guildConfig = require('@/src/db/Models/guildConfig.model');
-const { Guilds } = require('./Guilds');
+const guildConfig = require('@src/db/Models/guildConfig.model');
+const Guilds = require('./Guilds');
 
 class GuildConfig {
     constructor() {}
@@ -25,8 +25,8 @@ class GuildConfig {
     }
 
     get(guild_id) {
-        return new Promise(async (resolve, reject) => {
-            const guild = await Guilds.get(guild_id).catch((err) => {});
+        return new Promise(async (resolve) => {
+            const guild = await new Guilds().get(guild_id).catch(() => {});
             if (!guild) return resolve(false);
             try {
                 return resolve(await guild.getConfig());
@@ -59,4 +59,4 @@ class GuildConfig {
     }
 }
 
-module.exports.GuildConfig = new GuildConfig();
+module.exports = GuildConfig;

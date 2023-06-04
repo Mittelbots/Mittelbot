@@ -1,4 +1,4 @@
-const Banappeal = require('@/utils/classes/Banappeal');
+const Banappeal = require('@utils/classes/Banappeal');
 
 module.exports.banAppealModule = async (message, bot) => {
     const banappeal = new Banappeal(bot);

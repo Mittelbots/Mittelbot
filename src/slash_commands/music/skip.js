@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
-const Music = require('@/utils/classes/Music');
+const Music = require('@utils/classes/Music');
 const { skipConfig } = require('../_config/music/skip');
 
 module.exports.run = async ({ main_interaction, bot }) => {

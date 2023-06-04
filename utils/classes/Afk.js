@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const { MemberInfo } = require('@/utils/classes/MemberInfo');
-const { delay } = require('@/utils/functions/delay');
+const MemberInfo = require('@utils/classes/MemberInfo');
+const { delay } = require('@utils/functions/delay');
 
 module.exports = class Afk {
     constructor() {}
@@ -33,7 +33,7 @@ module.exports = class Afk {
 
     isAfk(user_id, guild_id) {
         return new Promise(async (resolve, reject) => {
-            const member = await MemberInfo.get({ guild_id, user_id });
+            const member = await new MemberInfo().get({ guild_id, user_id });
 
             const isAfk = member.afk || {};
             if (Object.keys(isAfk).length === 0 && isAfk.constructor === Object) {
@@ -45,7 +45,8 @@ module.exports = class Afk {
 
     remove(user_id, guild_id) {
         return new Promise(async (resolve, reject) => {
-            await MemberInfo.updateAfk({ guild_id, user_id, afk: {} })
+            await new MemberInfo()
+                .updateAfk({ guild_id, user_id, afk: {} })
                 .then((res) => {
                     resolve(true);
                 })
@@ -57,7 +58,8 @@ module.exports = class Afk {
 
     set(user_id, guild_id, afk) {
         return new Promise(async (resolve, reject) => {
-            await MemberInfo.updateAfk({ guild_id, user_id, afk })
+            await new MemberInfo()
+                .updateAfk({ guild_id, user_id, afk })
                 .then((res) => {
                     resolve(true);
                 })

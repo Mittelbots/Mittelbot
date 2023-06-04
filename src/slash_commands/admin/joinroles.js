@@ -1,5 +1,5 @@
-const { Joinroles } = require('@/utils/classes/Joinroles');
-const { removeMention } = require('@/utils/functions/removeCharacters');
+const Joinroles = require('@utils/classes/Joinroles');
+const { removeMention } = require('@utils/functions/removeCharacters');
 const { joinrolesConfig, joinrolesPerms } = require('../_config/admin/joinroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -7,13 +7,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const roles = main_interaction.options.getString('joinroles');
     const newJoinRoles = removeMention(roles).split(' ');
-    Joinroles.update({
-        guild: main_interaction.guild,
-        roles: newJoinRoles,
-        user: bot.guilds.cache
-            .get(main_interaction.guild.id)
-            .members.cache.get(main_interaction.user.id),
-    })
+    new Joinroles()
+        .update({
+            guild: main_interaction.guild,
+            roles: newJoinRoles,
+            user: bot.guilds.cache
+                .get(main_interaction.guild.id)
+                .members.cache.get(main_interaction.user.id),
+        })
         .then((res) => {
             main_interaction
                 .followUp({

@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { avatarConfig } = require('../_config/fun/avatar');
 
 module.exports.run = async ({ main_interaction, bot }) => {

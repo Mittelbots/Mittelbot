@@ -1,5 +1,5 @@
-const { Automod } = require('../Automod');
-const { isValidLink } = require('@/utils/functions/validate/isValidLink');
+const Automod = require('../Automod');
+const { isValidLink } = require('@utils/functions/validate/isValidLink');
 
 module.exports = class AutomodAntiSpam {
     #spamCheck = [];
@@ -21,7 +21,7 @@ module.exports = class AutomodAntiSpam {
 
     init(guild_id, bot) {
         return new Promise(async (resolve) => {
-            this.antiSpamSetting = await Automod.get(guild_id, 'antispam');
+            this.antiSpamSetting = await new Automod().get(guild_id, 'antispam');
             this.bot = bot;
             return resolve(this);
         });
@@ -37,7 +37,7 @@ module.exports = class AutomodAntiSpam {
                 return resolve(this.#isSpam);
             }
 
-            const isWhitelist = await Automod.checkWhitelist({
+            const isWhitelist = await new Automod().checkWhitelist({
                 setting: this.antiSpamSetting,
                 user_roles: this.memberRoles,
                 guild_id: message.guild.id,
@@ -92,7 +92,7 @@ module.exports = class AutomodAntiSpam {
                 action: '',
             };
 
-            const action = Automod.punishUser({
+            const action = new Automod().punishUser({
                 user: message.author,
                 guild: message.guild,
                 mod: message.guild.me,

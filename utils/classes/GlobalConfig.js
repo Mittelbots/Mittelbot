@@ -1,4 +1,4 @@
-const globalConfig = require('@/src/db/Models/globalConfig.model');
+const globalConfig = require('@src/db/Models/globalConfig.model');
 
 class GlobalConfig {
     constructor() {}
@@ -39,4 +39,4 @@ class GlobalConfig {
     }
 }
 
-module.exports.GlobalConfig = new GlobalConfig();
+module.exports = GlobalConfig;

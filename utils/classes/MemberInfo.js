@@ -1,5 +1,5 @@
-const memberInfo = require('@/src/db/Models/memberInfo.model');
-const { Guilds } = require('./Guilds');
+const memberInfo = require('@src/db/Models/memberInfo.model');
+const Guilds = require('./Guilds');
 
 class MemberInfo {
     constructor() {}
@@ -25,7 +25,7 @@ class MemberInfo {
 
     get({ guild_id, user_id }) {
         return new Promise(async (resolve) => {
-            const guild = await Guilds.get(guild_id);
+            const guild = await new Guilds().get(guild_id);
             const memberInfo = await guild.getMemberInfo({
                 where: {
                     user_id,
@@ -96,4 +96,4 @@ class MemberInfo {
     }
 }
 
-module.exports.MemberInfo = new MemberInfo();
+module.exports = MemberInfo;

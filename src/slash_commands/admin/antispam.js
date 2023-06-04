@@ -1,12 +1,12 @@
 const { EmbedBuilder } = require('discord.js');
-const { Automod } = require('@/utils/classes/Automod');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const Automod = require('@utils/classes/Automod');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { antiSpamConfig, antiSpamPerms } = require('../_config/admin/antispam');
-const { removeMention } = require('@/utils/functions/removeCharacters');
-const AutomodAntiSpam = require('@/utils/classes/Automoderation/Automod-AntiSpam');
+const { removeMention } = require('@utils/functions/removeCharacters');
+const AutomodAntiSpam = require('@utils/classes/Automoderation/Automod-AntiSpam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const antiSpamSettings = await Automod.get(main_interaction.guild.id, 'antispam');
+    const antiSpamSettings = await new Automod().get(main_interaction.guild.id, 'antispam');
 
     const antiSpamEnabled = JSON.parse(main_interaction.options.getString('enabled'));
     const antiSpamAction = main_interaction.options.getString('action');
@@ -50,11 +50,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
         }
     });
 
-    Automod.update({
-        guild_id: main_interaction.guild.id,
-        value: setting,
-        type: 'antispam',
-    })
+    new Automod()
+        .update({
+            guild_id: main_interaction.guild.id,
+            value: setting,
+            type: 'antispam',
+        })
         .then(() => {
             errorhandler({
                 fatal: false,

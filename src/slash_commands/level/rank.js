@@ -1,7 +1,7 @@
 const canvacord = require('canvacord');
 const { AttachmentBuilder } = require('discord.js');
-const levels = require('@/src/assets/json/levelsystem/levelconfig.json');
-const { Levelsystem } = require('@/utils/classes/levelsystemAPI');
+const levels = require('@src/assets/json/levelsystem/levelconfig.json');
+const Levelsystem = require('@utils/classes/levelsystemAPI');
 const { rankConfig } = require('../_config/level/rank');
 const { EmbedBuilder } = require('discord.js');
 
@@ -12,7 +12,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const user = main_interaction.options.getUser('user') || main_interaction.user;
 
-    const playerXP = await Levelsystem.get({
+    const playerXP = await new Levelsystem().get({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
     });
@@ -34,13 +34,20 @@ module.exports.run = async ({ main_interaction, bot }) => {
             })
             .catch((err) => {});
     }
-    const levelSettings = await Levelsystem.getSetting(main_interaction.guild.id);
+    const levelSettings = await new Levelsystem().getSetting(main_interaction.guild.id);
 
     const mode = levelSettings.mode || 'normal';
-    const nextLevel = await Levelsystem.getLevelOfUser(levels[mode], playerXP.level_announce, true);
-    const currentLevel = await Levelsystem.getLevelOfUser(levels[mode], playerXP.level_announce);
+    const nextLevel = await new Levelsystem().getLevelOfUser(
+        levels[mode],
+        playerXP.level_announce,
+        true
+    );
+    const currentLevel = await new Levelsystem().getLevelOfUser(
+        levels[mode],
+        playerXP.level_announce
+    );
 
-    const userRank = await Levelsystem.getRank({
+    const userRank = await new Levelsystem().getRank({
         user_id: user.id,
         guild_id: main_interaction.guild.id,
     });

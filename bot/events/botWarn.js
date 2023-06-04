@@ -1,4 +1,4 @@
-const Auditlog = require('@/utils/classes/Auditlog');
+const Auditlog = require('@utils/classes/Auditlog');
 
 module.exports.botWarn = async (bot, warn) => {
     const auditLog = new Auditlog();

@@ -1,5 +1,5 @@
-const allGuildId = require('@/src/db/Models/guilds.model');
-const blacklist = require('@/src/assets/json/blacklist/guilds.json');
+const allGuildId = require('@src/db/Models/guilds.model');
+const blacklist = require('@src/assets/json/blacklist/guilds.json');
 
 class Guilds {
     constructor() {}
@@ -52,7 +52,7 @@ class Guilds {
             .then((res) => {
                 return res.length > 0 ? res : false;
             })
-            .catch((err) => {
+            .catch(() => {
                 return false;
             });
     }
@@ -64,4 +64,4 @@ class Guilds {
     }
 }
 
-module.exports.Guilds = new Guilds();
+module.exports = Guilds;

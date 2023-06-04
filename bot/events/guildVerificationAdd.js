@@ -1,4 +1,4 @@
-const Auditlog = require('@/utils/classes/Auditlog');
+const Auditlog = require('@utils/classes/Auditlog');
 
 module.exports.guildVerificationAdd = async (bot, guild) => {
     const auditLog = new Auditlog();

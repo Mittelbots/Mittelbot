@@ -1,8 +1,8 @@
-const Auditlog = require('@/utils/classes/Auditlog');
-const { isOnBanList } = require('@/utils/functions/moderations/checkOpenInfractions');
-const { setNewModLogMessage } = require('@/utils/functions/modlog/modlog');
-const config = require('@/src/assets/json/_config/config.json');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const Auditlog = require('@utils/classes/Auditlog');
+const { isOnBanList } = require('@utils/functions/moderations/checkOpenInfractions');
+const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
+const config = require('@src/assets/json/_config/config.json');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 
 module.exports.guildBanAdd = async (bot, guildBan) => {
     try {

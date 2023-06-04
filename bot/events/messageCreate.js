@@ -1,24 +1,24 @@
-const config = require('@/src/assets/json/_config/config.json');
-const { delay } = require('@/utils/functions/delay');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
-const { Guilds } = require('@/utils/classes/Guilds');
-const Afk = require('@/utils/classes/Afk');
-const { Levelsystem } = require('@/utils/classes/levelsystemAPI');
-const Translate = require('@/utils/classes/translate');
-const { checkOwnerCommand } = require('@/utils/classes/Owner');
-const AutoBlacklist = require('@/utils/classes/AutoBlacklist');
-const ScamDetection = require('@/utils/functions/checkForScam/checkForScam');
-const Autodelete = require('@/utils/classes/Autodelete');
+const config = require('@src/assets/json/_config/config.json');
+const { delay } = require('@utils/functions/delay');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const Guilds = require('@utils/classes/Guilds');
+const Afk = require('@utils/classes/Afk');
+const Levelsystem = require('@utils/classes/levelsystemAPI');
+const Translate = require('@utils/classes/translate');
+const { checkOwnerCommand } = require('@utils/classes/Owner');
+const AutoBlacklist = require('@utils/classes/AutoBlacklist');
+const ScamDetection = require('@utils/functions/checkForScam/checkForScam');
+const Autodelete = require('@utils/classes/Autodelete');
 const { EmbedBuilder, ChannelType } = require('discord.js');
-const { banAppealModule } = require('@/utils/functions/modules/banAppeal');
-const Modules = require('@/utils/classes/Modules');
-const Counter = require('@/utils/classes/Counter/Counter');
-const AutomodAntiSpam = require('@/utils/classes/Automoderation/Automod-AntiSpam');
-const AutomodAntiInsults = require('@/utils/classes/Automoderation/Automod-AntiInsuts');
-const AutomodAntiInvite = require('@/utils/classes/Automoderation/Automod-AntiInvite');
-const AutomodAntiLinks = require('@/utils/classes/Automoderation/Automod-AntiLinks');
-const Hangman = require('@/utils/classes/Games/Hangman/Hangman');
-const { messageDeleteReasons } = require('@/src/assets/js/messageDeleteReasons');
+const { banAppealModule } = require('@utils/functions/modules/banAppeal');
+const Modules = require('@utils/classes/Modules');
+const Counter = require('@utils/classes/Counter/Counter');
+const AutomodAntiSpam = require('@utils/classes/Automoderation/Automod-AntiSpam');
+const AutomodAntiInsults = require('@utils/classes/Automoderation/Automod-AntiInsuts');
+const AutomodAntiInvite = require('@utils/classes/Automoderation/Automod-AntiInvite');
+const AutomodAntiLinks = require('@utils/classes/Automoderation/Automod-AntiLinks');
+const Hangman = require('@utils/classes/Games/Hangman/Hangman');
+const { messageDeleteReasons } = require('@src/assets/js/messageDeleteReasons');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
@@ -78,7 +78,7 @@ async function messageCreate(message, bot) {
 
     const isOnBlacklist = (await moduleApi.checkEnabled(defaultModuleSettings.blacklist.name))
         .enabled
-        ? await Guilds.isBlacklist(message.guild.id)
+        ? await new Guilds().isBlacklist(message.guild.id)
         : false;
     if (isOnBlacklist) {
         const guild = bot.guilds.cache.get(message.guild.id);
@@ -229,7 +229,7 @@ async function messageCreate(message, bot) {
     /** ======================================================= */
 
     if ((await moduleApi.checkEnabled(defaultModuleSettings.level.name)).enabled) {
-        Levelsystem.run({ message, bot });
+        new Levelsystem().run({ message, bot });
     }
 
     /** ======================================================= */

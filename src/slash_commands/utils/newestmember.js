@@ -1,5 +1,5 @@
 const { newestmemberConfig } = require('../_config/utils/newestmember');
-const { remainingTime, remainingTimeString } = require('@/utils/functions/getTimeDifference');
+const { remainingTime, remainingTimeString } = require('@utils/functions/getTimeDifference');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {

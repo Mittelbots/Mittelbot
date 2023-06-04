@@ -1,12 +1,12 @@
 const classes = require('extends-classes');
 
-const ticketModel = require('@/src/db/Models/tickets.model');
+const ticketModel = require('@src/db/Models/tickets.model');
 const TicketSettings = require('./TicketsSettings');
 const TicketInteraction = require('./TicketInteraction');
 const TicketEmbeds = require('./TicketEmbeds');
 const TicketChannel = require('./TicketChannel');
 const TicketTransscript = require('./TicketTransscript');
-const { hasPermission } = require('@/utils/functions/hasPermissions');
+const { hasPermission } = require('@utils/functions/hasPermissions');
 
 module.exports = class Tickets extends (
     classes(TicketSettings, TicketInteraction, TicketEmbeds, TicketChannel, TicketTransscript)

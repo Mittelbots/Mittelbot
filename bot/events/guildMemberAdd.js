@@ -1,11 +1,11 @@
-const { giveAllRoles } = require('@/utils/functions/roles/giveAllRoles');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
-const { MemberInfo } = require('@/utils/classes/MemberInfo');
-const { sendWelcomeMessage } = require('@/utils/functions/data/welcomechannel');
-const { GuildConfig } = require('@/utils/classes/Config');
-const { Infractions } = require('@/utils/classes/Infractions');
-const { Joinroles } = require('@/utils/classes/Joinroles');
-const Modules = require('@/utils/classes/Modules');
+const { giveAllRoles } = require('@utils/functions/roles/giveAllRoles');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const MemberInfo = require('@utils/classes/MemberInfo');
+const { sendWelcomeMessage } = require('@utils/functions/data/welcomechannel');
+const GuildConfig = require('@utils/classes/Config');
+const Infractions = require('@utils/classes/Infractions');
+const Joinroles = require('@utils/classes/Joinroles');
+const Modules = require('@utils/classes/Modules');
 
 module.exports.guildMemberAdd = async (member, bot) => {
     const modulesApi = new Modules(member.guild.id, bot);
@@ -19,13 +19,13 @@ module.exports.guildMemberAdd = async (member, bot) => {
 
     if (member.user.bot) return;
 
-    const memberInfo = await MemberInfo.get({
+    const memberInfo = await new MemberInfo().get({
         guild_id: member.guild.id,
         user_id: member.user.id,
     });
 
     if (!memberInfo) {
-        await MemberInfo.add({
+        await new MemberInfo().add({
             guild_id: member.guild.id,
             user_id: member.user.id,
             user_joined: new Date(),
@@ -33,7 +33,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
         });
     } else {
         if (memberInfo.user_joined == null) {
-            await MemberInfo.update({
+            await new MemberInfo().update({
                 guild_id: member.guild.id,
                 user_id: member.user.id,
                 user_joined: new Date(),
@@ -43,7 +43,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
 
     const userInfractions =
         (
-            await Infractions.getOpen({
+            await new Infractions().getOpen({
                 user_id: member.user.id,
                 guild_id: member.guild.id,
             })
@@ -80,7 +80,7 @@ module.exports.guildMemberAdd = async (member, bot) => {
         }, 2000);
     }
 
-    const joinroles = await Joinroles.get({
+    const joinroles = await new Joinroles().get({
         guild_id: member.guild.id,
     });
     if (joinroles.length === 0) return;

@@ -2,8 +2,8 @@ const { ButtonStyle } = require('discord.js');
 const { ActionRowBuilder } = require('discord.js');
 const { ButtonBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
-const { kickUser } = require('@/utils/functions/moderations/kickUser');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { kickUser } = require('@utils/functions/moderations/kickUser');
 const { kickmeConfig } = require('../_config/utils/kickme');
 
 module.exports.run = async ({ main_interaction, bot }) => {

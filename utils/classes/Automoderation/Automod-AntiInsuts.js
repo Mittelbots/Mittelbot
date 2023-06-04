@@ -1,11 +1,11 @@
-const { Automod } = require('../Automod');
+const Automod = require('../Automod');
 
 module.exports = class AutomodAntiInsults {
     constructor() {}
 
     check(message, bot) {
         return new Promise(async (resolve) => {
-            const antiInsultsSetting = await Automod.get(message.guild.id, 'antiinsults');
+            const antiInsultsSetting = await new Automod().get(message.guild.id, 'antiinsults');
 
             if (
                 !antiInsultsSetting ||
@@ -16,7 +16,7 @@ module.exports = class AutomodAntiInsults {
                 return resolve(false);
             }
 
-            const isWhitelist = await Automod.checkWhitelist({
+            const isWhitelist = await new Automod().checkWhitelist({
                 setting: antiInsultsSetting,
                 user_roles: message.member.roles.cache.map((role) => role.id),
                 guild_id: message.guild.id,
@@ -28,16 +28,18 @@ module.exports = class AutomodAntiInsults {
                 return resolve(false);
             }
 
-            Automod.punishUser({
-                user: message.author,
-                guild: message.guild,
-                action: antiInsultsSetting.action,
-                bot: bot,
-                messages: message,
-                reason: '[ANTI INSULTS] Sent a blacklisted insult word',
-            }).then(() => {
-                resolve(true);
-            });
+            new Automod()
+                .punishUser({
+                    user: message.author,
+                    guild: message.guild,
+                    action: antiInsultsSetting.action,
+                    bot: bot,
+                    messages: message,
+                    reason: '[ANTI INSULTS] Sent a blacklisted insult word',
+                })
+                .then(() => {
+                    resolve(true);
+                });
         });
     }
 

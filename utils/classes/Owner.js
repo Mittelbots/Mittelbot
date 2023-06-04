@@ -1,12 +1,10 @@
-const { delay } = require('@/utils/functions/delay');
-const { GlobalConfig } = require('./GlobalConfig');
-const { Levelsystem } = require('./levelsystemAPI');
+const { delay } = require('@utils/functions/delay');
+const GuildConfig = require('./GlobalConfig');
+const Levelsystem = require('./levelsystemAPI');
 const { spawn } = require('child_process');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { EmbedBuilder } = require('discord.js');
-const {
-    createSlashCommands,
-} = require('@/utils/functions/createSlashCommands/createSlashCommands');
+const { createSlashCommands } = require('@utils/functions/createSlashCommands/createSlashCommands');
 
 module.exports.checkOwnerCommand = async (message) => {
     const args = message.content.split(' ');
@@ -78,23 +76,25 @@ module.exports.shutdown = async (message = null) => {
 };
 
 module.exports.generatelevel = async (message, args) => {
-    await Levelsystem.generate({
-        lvl_count: args,
-        mode: args[1],
-    }).then(async () => {
-        await delay(2000);
-        message
-            .reply({
-                content: 'Successfully created!',
-                ephemeral: true,
-            })
-            .catch((err) => {});
-    });
+    await new Levelsystem()
+        .generate({
+            lvl_count: args,
+            mode: args[1],
+        })
+        .then(async () => {
+            await delay(2000);
+            message
+                .reply({
+                    content: 'Successfully created!',
+                    ephemeral: true,
+                })
+                .catch((err) => {});
+        });
 };
 
 module.exports.ignoremode = async (message, args) => {
     const mode = JSON.parse(args);
-    await GlobalConfig.update({
+    await new GlobalConfig().update({
         valueName: 'ignoreMode',
         value: mode,
     });
@@ -108,19 +108,19 @@ module.exports.ignoremode = async (message, args) => {
 
 module.exports.disable_command = async (message, args) => {
     const command = args[0];
-    const global_config = await GlobalConfig.get();
+    const global_config = await new GlobalConfig().get();
     const disabled_commands = global_config.disabled_commands;
     let gotDisabled = false;
     try {
         if (disabled_commands.includes(command)) {
-            GlobalConfig.update({
+            new GlobalConfig().update({
                 value: disabled_commands.filter((c) => c !== command),
                 valueName: 'disabled_commands',
             });
         } else {
             gotDisabled = true;
             disabled_commands.push(command);
-            GlobalConfig.update({
+            new GlobalConfig().update({
                 value: disabled_commands,
                 valueName: 'disabled_commands',
             });

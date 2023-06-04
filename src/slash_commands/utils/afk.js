@@ -5,7 +5,7 @@ const {
     TextInputStyle,
     EmbedBuilder,
 } = require('discord.js');
-const Afk = require('@/utils/classes/Afk');
+const Afk = require('@utils/classes/Afk');
 const { afkConfig } = require('../_config/utils/afk');
 
 module.exports.run = async ({ main_interaction, bot }) => {

@@ -1,8 +1,8 @@
-const guildAutoBlacklist = require('@/src/db/Models/guildAutoBlacklist.model');
-const { getModTime } = require('@/utils/functions/getModTime');
-const { isMod } = require('@/utils/functions//isMod');
-const { banUser } = require('@/utils/functions//moderations/banUser');
-const { isBanned } = require('@/utils/functions//moderations/checkOpenInfractions');
+const guildAutoBlacklist = require('@src/db/Models/guildAutoBlacklist.model');
+const { getModTime } = require('@utils/functions/getModTime');
+const { isMod } = require('@utils/functions//isMod');
+const { banUser } = require('@utils/functions//moderations/banUser');
+const { isBanned } = require('@utils/functions//moderations/checkOpenInfractions');
 
 module.exports = class AutoBlacklist {
     constructor() {}

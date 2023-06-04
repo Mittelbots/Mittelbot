@@ -1,4 +1,4 @@
-const { unmuteUser } = require('@/utils/functions/moderations/unmuteUser');
+const { unmuteUser } = require('@utils/functions/moderations/unmuteUser');
 const { unmuteConfig, unmutePerms } = require('../_config/moderation/unmute');
 
 module.exports.run = async ({ main_interaction, bot }) => {

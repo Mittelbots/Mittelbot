@@ -1,4 +1,4 @@
-const guildUploads = require('@/src/db/Models/guildUploads.model');
+const guildUploads = require('@src/db/Models/guildUploads.model');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const YouTubeLogic = require('./YouTubeLogic');
 

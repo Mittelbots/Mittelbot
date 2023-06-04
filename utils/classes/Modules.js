@@ -1,5 +1,5 @@
-const defaultModuleSettings = require('@/src/assets/json/modules/modules.json');
-const { GuildConfig } = require('./Config');
+const defaultModuleSettings = require('@src/assets/json/modules/modules.json');
+const GuildConfig = require('./Config');
 
 module.exports = class Modules {
     constructor(guild_id, bot) {
@@ -13,7 +13,7 @@ module.exports = class Modules {
 
     get() {
         return new Promise(async (resolve) => {
-            const config = await GuildConfig.get(this.guild_id).catch(() => {});
+            const config = await new GuildConfig().get(this.guild_id).catch(() => {});
             if (!config) return resolve(false);
 
             return resolve(config.modules);
@@ -87,7 +87,7 @@ module.exports = class Modules {
 
     manageDisable(requestedModule, disable = false) {
         return new Promise(async (resolve) => {
-            const config = await GuildConfig.get(this.guild_id).catch(() => {});
+            const config = await new GuildConfig().get(this.guild_id).catch(() => {});
             if (!config) return resolve(false);
 
             const modules = config.modules;
@@ -106,11 +106,13 @@ module.exports = class Modules {
                     modules.enabled.push(requestedModule);
             }
 
-            await GuildConfig.update({
-                guild_id: this.guild_id,
-                value: modules,
-                valueName: 'modules',
-            }).catch(() => {});
+            await new GuildConfig()
+                .update({
+                    guild_id: this.guild_id,
+                    value: modules,
+                    valueName: 'modules',
+                })
+                .catch(() => {});
 
             return resolve(true);
         });

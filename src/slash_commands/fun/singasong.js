@@ -1,5 +1,5 @@
-const SingASong = require('@/utils/classes/SingASong');
-const { hasPermission } = require('@/utils/functions/hasPermissions');
+const SingASong = require('@utils/classes/SingASong');
+const { hasPermission } = require('@utils/functions/hasPermissions');
 const { singasongConfig } = require('../_config/fun/singasong');
 const { EmbedBuilder } = require('discord.js');
 

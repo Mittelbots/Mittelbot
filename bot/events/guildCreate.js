@@ -1,8 +1,8 @@
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
-const { Guilds } = require('@/utils/classes/Guilds');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const Guilds = require('@utils/classes/Guilds');
 
 module.exports.guildCreate = async (guild, bot) => {
-    const isOnBlacklist = await Guilds.isBlacklist(guild.id);
+    const isOnBlacklist = await new Guilds().isBlacklist(guild.id);
     if (isOnBlacklist) {
         await bot.users.cache
             .get(guild.ownerId)

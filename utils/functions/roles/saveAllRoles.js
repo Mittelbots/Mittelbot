@@ -1,4 +1,4 @@
-const { MemberInfo } = require('@/utils/classes/MemberInfo');
+const MemberInfo = require('@utils/classes/MemberInfo');
 
 module.exports.saveAllRoles = async (roles, member, guild) => {
     let guild_id;
@@ -12,16 +12,16 @@ module.exports.saveAllRoles = async (roles, member, guild) => {
 
     if (!guild_id || !user_id) return false;
 
-    const memberInfo = await MemberInfo.get({ guild_id, user_id });
+    const memberInfo = await new MemberInfo().get({ guild_id, user_id });
     if (!memberInfo) {
-        return await MemberInfo.add({
+        return await new MemberInfo().add({
             guild_id,
             user_id,
             member_roles: roles,
             user_joined: new Date(member.joinedAt),
         });
     } else {
-        return await MemberInfo.update({
+        return await new MemberInfo().update({
             guild_id,
             user_id,
             member_roles: roles,

@@ -1,14 +1,14 @@
 const { setNewModLogMessage } = require('../modlog/modlog');
-const { privateModResponse } = require('@/utils/functions/privatResponses/privateModResponses');
-const { publicModResponses } = require('@/utils/functions/publicResponses/publicModResponses');
+const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
+const { publicModResponses } = require('@utils/functions/publicResponses/publicModResponses');
 const { createInfractionId } = require('../createInfractionId');
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getFutureDate } = require('../getFutureDate');
 const { getAllRoles } = require('../roles/getAllRoles');
 const { getMutedRole } = require('../roles/getMutedRole');
 const { removeAllRoles } = require('../roles/removeAllRoles');
-const config = require('@/src/assets/json/_config/config.json');
-const { Infractions } = require('@/utils/classes/Infractions');
+const config = require('@src/assets/json/_config/config.json');
+const Infractions = require('@utils/classes/Infractions');
 
 async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
     return new Promise(async (resolve, reject) => {
@@ -54,7 +54,7 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
         if (user_roles.length !== 0) await removeAllRoles(guild_user);
 
         try {
-            Infractions.insertOpen({
+            new Infractions().insertOpen({
                 uid: user.id,
                 modid: mod.id || mod,
                 mute: 1,

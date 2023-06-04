@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { delay } = require('@/utils/functions/delay');
+const { delay } = require('@utils/functions/delay');
 const { pingConfig } = require('../_config/utils/ping');
 
 module.exports.run = async ({ main_interaction, bot }) => {

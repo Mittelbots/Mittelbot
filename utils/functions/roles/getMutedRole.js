@@ -1,11 +1,11 @@
-const { GuildConfig } = require('@/utils/classes/Guilds');
+const GuildConfig = require('@utils/classes/Guilds');
 const { createMutedRole } = require('./createMutedRole');
 
 const commonMutedRole = ['muted', 'mute'];
 
 module.exports.getMutedRole = (guild) => {
     return new Promise(async (resolve) => {
-        const guildConfig = await GuildConfig.get(guild.id);
+        const guildConfig = await new GuildConfig().get(guild.id);
 
         let mutedRole = guildConfig.mutedRole;
         if (mutedRole) {

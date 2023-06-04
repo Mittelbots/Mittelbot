@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { GuildConfig } = require('../Config');
+const GuildConfig = require('../Config');
 
 module.exports = class TicketSettings {
     constructor() {}
@@ -9,7 +9,8 @@ module.exports = class TicketSettings {
 
     getSettings() {
         return new Promise(async (resolve) => {
-            await GuildConfig.get(this.main_interaction.guild.id)
+            await new GuildConfig()
+                .get(this.main_interaction.guild.id)
                 .then(async (config) => {
                     return resolve((this.settings = config.tickets));
                 })
@@ -97,11 +98,12 @@ module.exports = class TicketSettings {
             newSettings.message_link = message_link;
             this.settings.push(newSettings);
 
-            await GuildConfig.update({
-                guild_id: this.main_interaction.guild.id,
-                value: this.settings,
-                valueName: 'tickets',
-            })
+            await new GuildConfig()
+                .update({
+                    guild_id: this.main_interaction.guild.id,
+                    value: this.settings,
+                    valueName: 'tickets',
+                })
                 .then(() => {
                     return resolve(
                         global.t.trans(
@@ -126,11 +128,12 @@ module.exports = class TicketSettings {
                 (setting) => setting.message_link !== message_link
             );
 
-            await GuildConfig.update({
-                guild_id: this.main_interaction.guild.id,
-                value: newSettings,
-                valueName: 'tickets',
-            })
+            await new GuildConfig()
+                .update({
+                    guild_id: this.main_interaction.guild.id,
+                    value: newSettings,
+                    valueName: 'tickets',
+                })
                 .then(() => {
                     resolve();
                 })

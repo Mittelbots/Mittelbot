@@ -1,6 +1,6 @@
-const banappealModel = require('@/src/db/Models/banappeal.model');
+const banappealModel = require('@src/db/Models/banappeal.model');
 const BanappealLogic = require('./BanappealLogic');
-const { GuildConfig } = require('./Config');
+const GuildConfig = require('./Config');
 
 module.exports = class Banappeal extends BanappealLogic {
     constructor(bot) {
@@ -10,7 +10,7 @@ module.exports = class Banappeal extends BanappealLogic {
 
     getSettings(guild_id) {
         return new Promise(async (resolve, reject) => {
-            const settings = await GuildConfig.get(guild_id).catch((err) => {
+            const settings = await new GuildConfig().get(guild_id).catch((err) => {
                 reject(false);
             });
             return resolve(settings.banappeal);
@@ -51,11 +51,12 @@ module.exports = class Banappeal extends BanappealLogic {
 
     updateBanappealSettings(guild_id, settings) {
         return new Promise(async (resolve, reject) => {
-            GuildConfig.update({
-                guild_id: guild_id,
-                value: settings,
-                valueName: 'banappeal',
-            })
+            new GuildConfig()
+                .update({
+                    guild_id: guild_id,
+                    value: settings,
+                    valueName: 'banappeal',
+                })
                 .then(() => {
                     resolve(true);
                 })

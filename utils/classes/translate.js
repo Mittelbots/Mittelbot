@@ -1,5 +1,5 @@
-const { GuildConfig } = require('./Config');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const GuildConfig = require('./Config');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const translatte = require('translatte');
 
 class Translate {
@@ -14,7 +14,7 @@ class Translate {
 
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
-            let translateConfig = await GuildConfig.get(guild_id);
+            let translateConfig = await new GuildConfig().get(guild_id);
             try {
                 translateConfig = translateConfig.translate;
             } catch (err) {

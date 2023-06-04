@@ -1,13 +1,13 @@
-const closedInfractions = require('@/src/db/Models/closedInfractions.model');
-const openInfractions = require('@/src/db/Models/open_infractions.model');
-const { Guilds } = require('./Guilds');
+const closedInfractions = require('@src/db/Models/closedInfractions.model');
+const openInfractions = require('@src/db/Models/open_infractions.model');
+const Guilds = require('./Guilds');
 
 class Infractions {
     constructor() {}
 
     get({ inf_id, guild_id }) {
         return new Promise(async (resolve) => {
-            const guild = await Guilds.get(guild_id);
+            const guild = await new Guilds().get(guild_id);
 
             const open = await guild.getOpenInfractions({
                 where: {
@@ -35,7 +35,7 @@ class Infractions {
 
     getOpen({ user_id, guild_id }) {
         return new Promise(async (resolve) => {
-            const guild = await Guilds.get(guild_id);
+            const guild = await new Guilds().get(guild_id);
             return resolve(
                 guild.getOpenInfractions({
                     where: {
@@ -161,7 +161,7 @@ class Infractions {
 
     getClosed({ user_id, guild_id }) {
         return new Promise(async (resolve) => {
-            const guild = await Guilds.get(guild_id);
+            const guild = await new Guilds().get(guild_id);
             return resolve(
                 guild.getClosedInfractions({
                     where: {
@@ -193,4 +193,4 @@ class Infractions {
     }
 }
 
-module.exports.Infractions = new Infractions();
+module.exports = Infractions;

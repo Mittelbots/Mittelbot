@@ -1,4 +1,4 @@
-const Auditlog = require('@/utils/classes/Auditlog');
+const Auditlog = require('@utils/classes/Auditlog');
 
 module.exports.guildVanityURLUpdate = async (bot, guild, oldvanityURL, newVanityURL) => {
     const auditLog = new Auditlog();

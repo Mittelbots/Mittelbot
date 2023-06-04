@@ -1,9 +1,9 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { Infractions } = require('@/utils/classes/Infractions');
+const Infractions = require('@utils/classes/Infractions');
 
 async function isMuted({ user, guild }) {
     return new Promise(async (resolve, reject) => {
-        let open_infractions = await Infractions.getOpen({
+        let open_infractions = await new Infractions().getOpen({
             user_id: user.id,
             guild_id: guild.id,
         });
@@ -72,7 +72,7 @@ function isBanned(member, guild) {
     return new Promise(async (resolve) => {
         let banList = await guild.bans.fetch();
 
-        const open_infractions = await Infractions.getOpen({
+        const open_infractions = await new Infractions().getOpen({
             user_id: member.id || member,
             guild_id: guild.id,
         });
@@ -88,8 +88,8 @@ function isBanned(member, guild) {
                     return resolve(true);
                 } else {
                     if (currentdate - till_date >= 0 || isUserOnBanList === undefined) {
-                        await Infractions.deleteOpen(inf.infraction_id);
-                        await Infractions.insertClosed({
+                        await new Infractions().deleteOpen(inf.infraction_id);
+                        await new Infractions().insertClosed({
                             uid: inf.user_id,
                             mod_id: inf.mod_id,
                             mute: inf.mute,

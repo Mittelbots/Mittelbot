@@ -1,5 +1,5 @@
-const autodeleteModel = require('@/src/db/Models/autodelete.model.js');
-const { hasPermission } = require('@/utils/functions/hasPermissions.js');
+const autodeleteModel = require('@src/db/Models/autodelete.model.js');
+const { hasPermission } = require('@utils/functions/hasPermissions.js');
 
 module.exports = class Autodelete {
     #defaultTypes = ['isOnlyMedia', 'isOnlyText', 'isOnlyEmotes', 'isOnlyStickers'];

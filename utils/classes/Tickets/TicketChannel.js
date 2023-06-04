@@ -1,5 +1,5 @@
 const { ChannelType, PermissionsBitField } = require('discord.js');
-const { GuildConfig } = require('../Config');
+const GuildConfig = require('../Config');
 
 module.exports = class TicketChannel {
     constructor() {}
@@ -43,7 +43,7 @@ module.exports = class TicketChannel {
     setModeratorPermissionsToChannel(channel) {
         return new Promise(async (resolve) => {
             if (!this.settings.moderator || this.settings.moderator.length < 1) {
-                const guildConfig = await GuildConfig.get(this.main_interaction.guild.id);
+                const guildConfig = await new GuildConfig().get(this.main_interaction.guild.id);
                 const serverModerators = guildConfig.modroles;
 
                 if (!serverModerators || serverModerators.length < 1) {

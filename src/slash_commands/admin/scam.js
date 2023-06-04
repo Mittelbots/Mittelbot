@@ -1,5 +1,5 @@
 const { PermissionFlagsBits } = require('discord.js');
-const { Scam } = require('@/utils/classes/scam');
+const Scam = require('@utils/classes/scam');
 const { scamConfig, scamPerms } = require('../_config/admin/scam');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -28,13 +28,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     switch (main_interaction.options.getSubcommand()) {
         case 'add':
-            Scam.add({
-                value: link,
-                guild_id: main_interaction.guild.id,
-                guild_name: main_interaction.guild.name,
-                bot,
-                author: main_interaction.user,
-            })
+            new Scam()
+                .add({
+                    value: link,
+                    guild_id: main_interaction.guild.id,
+                    guild_name: main_interaction.guild.name,
+                    bot,
+                    author: main_interaction.user,
+                })
                 .then((res) => {
                     return main_interaction
                         .reply({
@@ -54,13 +55,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
 
         case 'remove':
-            Scam.remove({
-                value: link,
-                guild_id: main_interaction.guild.id,
-                guild_name: main_interaction.guild.name,
-                bot,
-                author: main_interaction.user,
-            })
+            new Scam()
+                .remove({
+                    value: link,
+                    guild_id: main_interaction.guild.id,
+                    guild_name: main_interaction.guild.name,
+                    bot,
+                    author: main_interaction.user,
+                })
                 .then((res) => {
                     return main_interaction
                         .reply({
@@ -79,11 +81,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 });
             break;
         case 'view':
-            Scam.view({
-                value: link,
-                channel: main_interaction.channel,
-                author: main_interaction.user,
-            })
+            new Scam()
+                .view({
+                    value: link,
+                    channel: main_interaction.channel,
+                    author: main_interaction.user,
+                })
                 .then((res) => {
                     return main_interaction
                         .reply({

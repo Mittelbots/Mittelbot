@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const SequelizeModel = require('sequelize/lib/model');
 require('dotenv').config();
 

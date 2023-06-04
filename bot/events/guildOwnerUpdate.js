@@ -1,4 +1,4 @@
-const Auditlog = require('@/utils/classes/Auditlog');
+const Auditlog = require('@utils/classes/Auditlog');
 
 module.exports.guildOwnerUpdate = async (bot, oldGuild, newGuild) => {
     const auditLog = new Auditlog();

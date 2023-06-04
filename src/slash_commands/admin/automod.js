@@ -1,10 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
-const { Automod } = require('@/utils/classes/Automod');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const Automod = require('@utils/classes/Automod');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { autoModConfig, automodPerms } = require('../_config/admin/automod');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const setting = await Automod.get(main_interaction.guild.id, 'automod');
+    const setting = await new Automod().get(main_interaction.guild.id, 'automod');
 
     switch (main_interaction.options.getSubcommand()) {
         case 'whitelistroles':
@@ -21,7 +21,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     (r) => r !== role.id
                 );
             } else {
-                const alreadyExists = await Automod.checkWhitelist({
+                const alreadyExists = await new Automod().checkWhitelist({
                     setting: setting,
                     role_id: role.id,
                     guild_id: main_interaction.guild.id,
@@ -46,11 +46,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 setting.whitelistrole.roles.push(role.id);
             }
 
-            Automod.update({
-                guild_id: main_interaction.guild.id,
-                value: setting,
-                type: 'whitelist',
-            })
+            new Automod()
+                .update({
+                    guild_id: main_interaction.guild.id,
+                    value: setting,
+                    type: 'whitelist',
+                })
                 .then((res) => {
                     errorhandler({
                         fatal: false,

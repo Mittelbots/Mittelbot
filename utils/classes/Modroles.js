@@ -1,12 +1,12 @@
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
-const { GuildConfig } = require('./Config');
+const GuildConfig = require('./Config');
 
 class Modroles {
     constructor() {}
 
     get(guild_id) {
         return new Promise(async (resolve) => {
-            const guildConfig = await GuildConfig.get(guild_id);
+            const guildConfig = await new GuildConfig().get(guild_id);
             resolve(guildConfig.modroles);
         });
     }
@@ -30,11 +30,12 @@ class Modroles {
                 modroles.push(obj);
             }
 
-            return await GuildConfig.update({
-                guild_id,
-                value: modroles,
-                valueName: 'modroles',
-            })
+            return await new GuildConfig()
+                .update({
+                    guild_id,
+                    value: modroles,
+                    valueName: 'modroles',
+                })
                 .then(async () => {
                     resolve(
                         global.t.trans(
@@ -59,11 +60,12 @@ class Modroles {
 
             const filteredModroles = modroles.filter((role) => role.role !== role_id);
 
-            return await GuildConfig.update({
-                guild_id,
-                value: filteredModroles,
-                valueName: 'modroles',
-            })
+            return await new GuildConfig()
+                .update({
+                    guild_id,
+                    value: filteredModroles,
+                    valueName: 'modroles',
+                })
                 .then(async () => {
                     resolve(global.t.trans(['success.admin.modroles.removed', role_id], guild_id));
                 })
@@ -115,4 +117,4 @@ class Modroles {
     }
 }
 
-module.exports.Modroles = new Modroles();
+module.exports = Modroles;

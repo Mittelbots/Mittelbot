@@ -1,13 +1,13 @@
 const { Message } = require('discord.js');
-const guildAutomod = require('@/src/db/Models/guildAutomod.model');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
-const { kickUser } = require('@/utils/functions/moderations/kickUser');
-const { Guilds } = require('@/utils/classes/Guilds');
-const { banUser } = require('@/utils/functions/moderations/banUser');
-const { getModTime } = require('@/utils/functions/getModTime');
-const { muteUser } = require('@/utils/functions/moderations/muteUser');
-const { warnUser } = require('@/utils/functions/moderations/warnUser');
-const { messageDeleteReasons } = require('@/src/assets/js/messageDeleteReasons');
+const guildAutomod = require('@src/db/Models/guildAutomod.model');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { kickUser } = require('@utils/functions/moderations/kickUser');
+const Guilds = require('@utils/classes/Guilds');
+const { banUser } = require('@utils/functions/moderations/banUser');
+const { getModTime } = require('@utils/functions/getModTime');
+const { muteUser } = require('@utils/functions/moderations/muteUser');
+const { warnUser } = require('@utils/functions/moderations/warnUser');
+const { messageDeleteReasons } = require('@src/assets/js/messageDeleteReasons');
 
 class Automod {
     constructor() {}
@@ -35,7 +35,7 @@ class Automod {
 
     get(guild_id, type) {
         return new Promise(async (resolve, reject) => {
-            const guild = await Guilds.get(guild_id);
+            const guild = await new Guilds().get(guild_id);
             const automod = await guild.getAutomod();
             const settings = automod[type];
             return settings ? resolve(settings) : resolve({});
@@ -199,4 +199,4 @@ class Automod {
     }
 }
 
-module.exports.Automod = new Automod();
+module.exports = Automod;

@@ -1,4 +1,4 @@
-const guildUploads = require('@/src/db/Models/guildUploads.model');
+const guildUploads = require('@src/db/Models/guildUploads.model');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const yt = require('ytdl-core');
 const request = new (require('rss-parser'))();

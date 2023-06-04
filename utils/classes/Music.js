@@ -1,7 +1,7 @@
 const { QueryType, QueueRepeatMode } = require('discord-player');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const musicModel = require('@/src/db/Models/music.model');
+const musicModel = require('@src/db/Models/music.model');
 
 module.exports = class Music {
     constructor(main_interaction, bot, nonInteraction = false) {

@@ -1,10 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const fs = require('fs');
-const levelConfig = require('@/src/assets/json/levelsystem/levelconfig.json');
-const { GuildConfig } = require('./Config');
-const guildLevel = require('@/src/db/Models/guildLevel.model');
-const config = require('@/src/assets/json/_config/config.json');
+const levelConfig = require('@src/assets/json/levelsystem/levelconfig.json');
+const GuildConfig = require('./Config');
+const guildLevel = require('@src/db/Models/guildLevel.model');
+const config = require('@src/assets/json/_config/config.json');
 
 let levelCooldownArray = [];
 
@@ -169,7 +169,7 @@ class Levelsystem {
     }
     getSetting(guild_id) {
         return new Promise(async (resolve) => {
-            const guildConfig = await GuildConfig.get(guild_id);
+            const guildConfig = await new GuildConfig().get(guild_id);
 
             return resolve(guildConfig.levelsettings);
         });
@@ -431,7 +431,7 @@ class Levelsystem {
 
     changeLevelUp({ type, guild, channel }) {
         return new Promise(async (resolve, reject) => {
-            const guildConfig = await GuildConfig.get(guild.id);
+            const guildConfig = await new GuildConfig().get(guild.id);
             const levelsettings = guildConfig.levelsettings;
 
             if (type === 'dm' || type === 'disable') {
@@ -457,11 +457,12 @@ class Levelsystem {
                 levelsettings.levelup_channel = channel.id;
             }
 
-            await GuildConfig.update({
-                guild_id: guild.id,
-                value: levelsettings,
-                valueName: 'levelsettings',
-            })
+            await new GuildConfig()
+                .update({
+                    guild_id: guild.id,
+                    value: levelsettings,
+                    valueName: 'levelsettings',
+                })
                 .then(() => {
                     return resolve(
                         `✅ Successfully update the levelup ${
@@ -485,7 +486,7 @@ class Levelsystem {
         return new Promise(async (resolve) => {
             let blacklistchannels;
 
-            const guildConfig = await GuildConfig.get(message.guild.id);
+            const guildConfig = await new GuildConfig().get(message.guild.id);
             const levelsettings = guildConfig.levelsettings;
             if (levelsettings.length > 0) {
                 blacklistchannels = levelsettings.blacklistchannels;
@@ -502,7 +503,7 @@ class Levelsystem {
 
     sendNewLevelMessage(newLevel, message, currentxp, nextlevel) {
         return new Promise(async (resolve) => {
-            const guildConfig = await GuildConfig.get(message.guild.id);
+            const guildConfig = await new GuildConfig().get(message.guild.id);
 
             const levelsettings = guildConfig.levelsettings;
 
@@ -555,4 +556,4 @@ class Levelsystem {
         });
     }
 }
-module.exports.Levelsystem = new Levelsystem();
+module.exports = Levelsystem;

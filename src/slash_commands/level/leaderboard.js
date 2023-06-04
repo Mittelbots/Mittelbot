@@ -1,13 +1,13 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
-const { Levelsystem } = require('@/utils/classes/levelsystemAPI');
+const Levelsystem = require('@utils/classes/levelsystemAPI');
 const { leaderboardConfig } = require('../_config/level/leaderboard');
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
 
-    const leaderboard = await Levelsystem.getRank({
+    const leaderboard = await new Levelsystem().getRank({
         guild_id: main_interaction.guild.id,
     });
 

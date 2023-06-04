@@ -1,12 +1,12 @@
-const { checkRole } = require('@/utils/functions/roles/checkRole');
-const { GuildConfig } = require('./Config');
+const { checkRole } = require('@utils/functions/roles/checkRole');
+const GuildConfig = require('./Config');
 
 class Warnroles {
     constructor() {}
 
     get(guild_id) {
         return new Promise(async (resolve, reject) => {
-            const guildConfig = await GuildConfig.get(guild_id);
+            const guildConfig = await new GuildConfig().get(guild_id);
             return guildConfig.warnroles ? resolve(guildConfig.warnroles) : reject(false);
         });
     }
@@ -17,11 +17,12 @@ class Warnroles {
 
             warnroles.push(warnrole_id);
 
-            return await GuildConfig.update({
-                guild_id,
-                value: warnroles,
-                valueName: 'warnroles',
-            })
+            return await new GuildConfig()
+                .update({
+                    guild_id,
+                    value: warnroles,
+                    valueName: 'warnroles',
+                })
                 .then(() => {
                     return resolve(true);
                 })
@@ -36,11 +37,12 @@ class Warnroles {
             const warnroles = await this.get(guild_id);
             const newWarnroles = warnroles.filter((role) => role !== warnrole_id);
 
-            return await GuildConfig.update({
-                guild_id,
-                value: newWarnroles,
-                valueName: 'warnroles',
-            })
+            return await new GuildConfig()
+                .update({
+                    guild_id,
+                    value: newWarnroles,
+                    valueName: 'warnroles',
+                })
                 .then(() => {
                     return true;
                 })
@@ -128,4 +130,4 @@ class Warnroles {
     }
 }
 
-module.exports.Warnroles = new Warnroles();
+module.exports = Warnroles;

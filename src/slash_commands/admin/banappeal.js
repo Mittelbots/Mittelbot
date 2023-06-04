@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const Banappeal = require('@/utils/classes/Banappeal');
+const Banappeal = require('@utils/classes/Banappeal');
 const { banAppealConfig, banAppealPerms } = require('../_config/admin/banappeal');
 
 module.exports.run = async ({ main_interaction, bot }) => {

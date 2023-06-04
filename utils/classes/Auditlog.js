@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { Logs } = require('@/utils/classes/Logs');
+const Logs = require('@utils/classes/Logs');
 
 class Auditlog {
     bot;
@@ -71,7 +71,7 @@ class Auditlog {
 
     #getLogs(guild_id, type) {
         return new Promise(async (resolve) => {
-            const settings = await Logs.get(guild_id);
+            const settings = await new Logs().get(guild_id);
             try {
                 this.logs = this.bot.guilds.cache.get(guild_id).channels.cache.get(settings[type]);
             } catch (e) {
@@ -142,7 +142,7 @@ class Auditlog {
 
     checkEnabledEvents(guild_id, eventName) {
         return new Promise(async (resolve) => {
-            const isEnabled = await Logs.isEventEnabled({ guild_id, event: eventName });
+            const isEnabled = await new Logs().isEventEnabled({ guild_id, event: eventName });
             resolve(isEnabled);
         });
     }

@@ -1,10 +1,10 @@
 const { EmbedBuilder, ButtonStyle } = require('discord.js');
-const { checkActiveCommand } = require('@/utils/functions/checkActiveCommand/checkActiveCommand');
-const Modules = require('@/utils/classes/Modules');
-const { hasPermission } = require('@/utils/functions/hasPermissions');
+const { checkActiveCommand } = require('@utils/functions/checkActiveCommand/checkActiveCommand');
+const Modules = require('@utils/classes/Modules');
+const { hasPermission } = require('@utils/functions/hasPermissions');
 const { ActionRowBuilder } = require('discord.js');
 const { ButtonBuilder } = require('discord.js');
-const { GuildConfig } = require('@/utils/classes/Config');
+const GuildConfig = require('@utils/classes/Config');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const moduleApi = new Modules(main_interaction.guild.id, bot);
@@ -201,7 +201,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     }
 
     async function sendNoticeToFirstCommand() {
-        const config = await GuildConfig.get(main_interaction.guild.id, 'firstCommand');
+        const config = await new GuildConfig().get(main_interaction.guild.id, 'firstCommand');
         if (!config.firstCommand) return;
 
         main_interaction.channel.send({
@@ -250,7 +250,7 @@ module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
         });
 
         collector.on('collect', async (i) => {
-            await GuildConfig.update({
+            await new GuildConfig().update({
                 guild_id: main_interaction.guild.id,
                 value: false,
                 valueName: 'firstCommand',
