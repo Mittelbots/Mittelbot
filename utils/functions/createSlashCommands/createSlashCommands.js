@@ -50,7 +50,7 @@ module.exports.loadCommandList = async (bot) => {
         for (const command_file of files) {
             if (command_file.startsWith('._')) continue;
             console.info(`${command_file} Command has been loaded!`);
-            const command = require(`../../../src/slash_commands/${cmd_folder}/${command_file}`);
+            const command = require(`@src/slash_commands/${cmd_folder}/${command_file}`);
             commands.push(command.data.toJSON());
             cmd.push(command);
         }

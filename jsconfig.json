@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "module": "Node16",
+        "paths": {
+            "@root": ["./*"],
+            "@src/*": ["./src/*"],
+            "@utils/*": ["./utils/*"],
+            "@bot/*": ["./bot/*"],
+            "@root/*": ["./*"]
+        }
+    },
+    "exclude": ["node_modules"]
+}

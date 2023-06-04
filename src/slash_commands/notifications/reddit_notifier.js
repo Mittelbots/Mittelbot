@@ -1,6 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const Reddit = require('../../../utils/functions/data/Reddit');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const { EmbedBuilder } = require('discord.js');
+const Reddit = require('@utils/classes/Reddit');
 const {
     redditNotifierConfig,
     redditNotifierPerms,

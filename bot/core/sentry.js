@@ -13,8 +13,6 @@ module.exports.sentryInit = () => {
         tracesSampleRate: 0.8,
         attachStacktrace: true,
         profilesSampleRate: 0.8,
-        integrations: [
-            new ProfilingIntegration(),
-          ],
+        integrations: [new ProfilingIntegration()],
     });
 };

@@ -1,4 +1,4 @@
-const { GuildConfig } = require('../../../utils/functions/data/Config');
+const GuildConfig = require('@utils/classes/Config');
 const { EmbedBuilder } = require('discord.js');
 const { settingsConfig, settingsPerms } = require('../_config/admin/settings');
 module.exports.run = async ({ main_interaction }) => {
@@ -64,7 +64,7 @@ module.exports.run = async ({ main_interaction }) => {
     }
 
     async function saveSetting({ value, valueName }) {
-        await GuildConfig.update({
+        await new GuildConfig().update({
             guild_id: main_interaction.guild.id,
             value,
             valueName,

@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
-const { changeYtNotifier, delYTChannelFromList } = require('../../../utils/functions/data/youtube');
+const { changeYtNotifier, delYTChannelFromList } = require('@utils/functions/data/youtube');
 const { youtubeConfig, youtubePerms } = require('../_config/notifications/youtube');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+module.exports.run = async ({ main_interaction }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });

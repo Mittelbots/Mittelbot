@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('discord.js');
 
-const config = require('../../../src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 
-const { getModTime } = require('../../../utils/functions/getModTime');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { banUser } = require('../../../utils/functions/moderations/banUser');
-const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
-const { checkTarget } = require('../../../utils/functions/checkMessage/checkMessage');
+const { getModTime } = require('@utils/functions/getModTime');
+const { hasPermission } = require('@utils/functions/hasPermissions');
+const { banUser } = require('@utils/functions/moderations/banUser');
+const { isBanned } = require('@utils/functions/moderations/checkOpenInfractions');
+const { checkTarget } = require('@utils/functions/checkMessage/checkMessage');
 const { banConfig, banPerms } = require('../_config/moderation/ban');
 const { EmbedBuilder } = require('discord.js');
 

@@ -1,5 +1,5 @@
 const { PermissionFlagsBits } = require('discord.js');
-const { GuildConfig } = require('./data/Config');
+const GuildConfig = require('@utils/classes/Config');
 const { errorhandler } = require('./errorhandler/errorhandler');
 
 module.exports.hasPermission = async ({
@@ -18,7 +18,7 @@ module.exports.hasPermission = async ({
         return true;
     }
 
-    const { modroles } = await GuildConfig.get(guild_id);
+    const { modroles } = await new GuildConfig().get(guild_id);
     const hasPermission = modroles.some(({ role, isAdmin, isMod, isHelper }) =>
         this.checkPerms({
             role_id: role,

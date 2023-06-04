@@ -1,11 +1,11 @@
-const { Temproles } = require('../../utils/functions/data/Temproles');
+const Temproles = require('@utils/classes/Temproles');
 
 const interval = 1000 * 60 * 10; // 10 minutes
 
 module.exports.checkTemproles = async (bot) => {
     console.info('🔎📜 CheckTemproles handler started');
     setInterval(async () => {
-        const results = await Temproles.getAll();
+        const results = await new Temproles().getAll();
 
         let done = 0;
         for (let i in results) {
@@ -31,7 +31,7 @@ module.exports.checkTemproles = async (bot) => {
                         ])
                         .catch((err) => {});
                 } catch (err) {}
-                await Temproles.delete(results[i].infraction_id);
+                await new Temproles().delete(results[i].infraction_id);
             }
         }
         console.info(`Check Temproles finished. ${done} roles removed`);

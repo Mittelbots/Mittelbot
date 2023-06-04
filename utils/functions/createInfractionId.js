@@ -1,4 +1,4 @@
-const { Infractions } = require('./data/Infractions');
+const Infractions = require('@utils/classes/Infractions');
 
 function generate() {
     return Math.random().toString(30).substr(2, 50);
@@ -6,7 +6,7 @@ function generate() {
 
 module.exports.createInfractionId = async (guild_id) => {
     const infractionid = generate();
-    const open_infractions = await Infractions.get({
+    const open_infractions = await new Infractions().get({
         inf_id: infractionid,
         guild_id,
     });

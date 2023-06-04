@@ -3,20 +3,20 @@ require('dotenv').config();
 const { sentryInit } = require('./sentry');
 sentryInit();
 
-const { Client, Options, GatewayIntentBits, Collection, Partials } = require('discord.js');
+const { Client, Options, GatewayIntentBits, Partials } = require('discord.js');
 
-const config = require('../../src/assets/json/_config/config.json');
-const version = require('../../package.json').version;
+const config = require('@assets/json/_config/config.json');
+const version = require('@root/package.json').version;
 
-const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
-const { setActivity } = require('../../utils/functions/data/activity');
-const { processErrorHandler } = require('../../utils/functions/errorhandler/processErrorHandler');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { setActivity } = require('@utils/functions/data/activity');
+const { processErrorHandler } = require('@utils/functions/errorhandler/processErrorHandler');
 const { startBot } = require('./core');
-const { delay } = require('../../utils/functions/delay');
+const { delay } = require('@utils/functions/delay');
 const { acceptBotInteraction } = require('./botEvents');
 const { Player } = require('discord-player');
-const { registerPlayerEvents } = require('../../src/events/player/player-events');
-const Translations = require('../../utils/functions/Translations/Translations');
+const { registerPlayerEvents } = require('../../bot/events/player/player-events');
+const Translations = require('@utils/functions/Translations/Translations');
 
 processErrorHandler();
 

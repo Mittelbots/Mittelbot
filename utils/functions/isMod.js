@@ -1,9 +1,9 @@
-const { GuildConfig } = require('./data/Config');
+const GuildConfig = require('@utils/classes/Config');
 
 module.exports.isMod = async ({ member, guild }) => {
     if (!member || typeof member !== 'object') return false;
 
-    const guildConfig = await GuildConfig.get(guild.id);
+    const guildConfig = await new GuildConfig().get(guild.id);
     const modroles = guildConfig.modroles;
 
     let isTeam = false;

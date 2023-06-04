@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { isBanned } = require('../../../utils/functions/moderations/checkOpenInfractions');
-const { unbanUser } = require('../../../utils/functions/moderations/unbanUser');
+const { hasPermission } = require('@utils/functions/hasPermissions');
+const { isBanned } = require('@utils/functions/moderations/checkOpenInfractions');
+const { unbanUser } = require('@utils/functions/moderations/unbanUser');
 const { unbanConfig, unbanPerms } = require('../_config/moderation/unban');
 
 module.exports.run = async ({ main_interaction, bot }) => {

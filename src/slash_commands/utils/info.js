@@ -1,7 +1,7 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { version } = require('../../../package.json');
-const { MemberInfo } = require('../../../utils/functions/data/MemberInfo');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const MemberInfo = require('@utils/classes/MemberInfo');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { infoConfig } = require('../_config/utils/info');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -101,7 +101,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 errorhandler({ err });
             });
     }
-    const memberInfo = await MemberInfo.get({
+    const memberInfo = await new MemberInfo().get({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
     });

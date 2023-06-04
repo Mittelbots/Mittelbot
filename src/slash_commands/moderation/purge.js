@@ -1,5 +1,5 @@
-const { delay } = require('../../../utils/functions/delay');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { delay } = require('@utils/functions/delay');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { purgeConfig, purgePerms } = require('../_config/moderation/purge');
 const { EmbedBuilder } = require('discord.js');
 

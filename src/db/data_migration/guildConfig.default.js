@@ -1,11 +1,11 @@
-const { GuildConfig } = require('../../../utils/functions/data/Config');
-const guilds = require('../Models/tables/guilds.model');
+const GuildConfig = require('@utils/classes/Config');
+const guilds = require('../Models/guilds.model');
 
 (async () => {
     const allGuilds = await guilds.findAll();
 
     for (let i in allGuilds) {
-        const config = await GuildConfig.get(allGuilds[i].guild_id);
+        const config = await new GuildConfig().get(allGuilds[i].guild_id);
 
         if (
             !config.modules ||
@@ -18,7 +18,7 @@ const guilds = require('../Models/tables/guilds.model');
                 disabled: [],
             };
 
-            await GuildConfig.update({
+            await new GuildConfig().update({
                 guild_id: allGuilds[i].guild_id,
                 value: newModules,
                 valueName: 'modules',
@@ -28,7 +28,7 @@ const guilds = require('../Models/tables/guilds.model');
         }
 
         if (config.tickets == null) {
-            await GuildConfig.update({
+            await new GuildConfig().update({
                 guild_id: allGuilds[i].guild_id,
                 value: [],
                 valueName: 'tickets',

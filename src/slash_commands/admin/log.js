@@ -1,4 +1,4 @@
-const { Logs } = require('../../../utils/functions/data/Logs');
+const Logs = require('@utils/classes/Logs');
 const { logConfig, logPerms } = require('../_config/admin/log');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -13,15 +13,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const messagelog = main_interaction.options.getChannel('messagelog');
             const modlog = main_interaction.options.getChannel('modlog');
             const reset = main_interaction.options.getString('reset');
-            await Logs.update({
-                guild_id: main_interaction.guild.id,
-                channel: {
-                    auditlog: auditlog,
-                    messagelog: messagelog,
-                    modlog: modlog,
-                },
-                clear: reset,
-            })
+            await new Logs()
+                .update({
+                    guild_id: main_interaction.guild.id,
+                    channel: {
+                        auditlog: auditlog,
+                        messagelog: messagelog,
+                        modlog: modlog,
+                    },
+                    clear: reset,
+                })
                 .then((res) => {
                     sendResponse(res);
                 })
@@ -31,10 +32,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
         case 'whitelist_role':
             const role = main_interaction.options.getRole('role');
-            await Logs.update({
-                guild_id: main_interaction.guild.id,
-                whitelistrole: role,
-            })
+            await new Logs()
+                .update({
+                    guild_id: main_interaction.guild.id,
+                    whitelistrole: role,
+                })
                 .then((res) => {
                     sendResponse(res);
                 })
@@ -44,10 +46,11 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
         case 'whitelist_channel':
             const channel = main_interaction.options.getChannel('channel');
-            await Logs.update({
-                guild_id: main_interaction.guild.id,
-                whitelistchannel: channel,
-            })
+            await new Logs()
+                .update({
+                    guild_id: main_interaction.guild.id,
+                    whitelistchannel: channel,
+                })
                 .then((res) => {
                     sendResponse(res);
                 })
@@ -57,11 +60,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
         case 'whitelist_clear':
             const clear_channel = main_interaction.options.getChannel('channel');
-            await Logs.update({
-                guild_id: main_interaction.guild.id,
-                whitelistchannel: clear_channel,
-                clear: true,
-            })
+            await new Logs()
+                .update({
+                    guild_id: main_interaction.guild.id,
+                    whitelistchannel: clear_channel,
+                    clear: true,
+                })
                 .then((res) => {
                     sendResponse(res);
                 })
@@ -71,11 +75,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
         case 'whitelist_clear_role':
             const clear_role = main_interaction.options.getRole('role');
-            await Logs.update({
-                guild_id: main_interaction.guild.id,
-                whitelistrole: clear_role,
-                clear: true,
-            })
+            await new Logs()
+                .update({
+                    guild_id: main_interaction.guild.id,
+                    whitelistrole: clear_role,
+                    clear: true,
+                })
                 .then((res) => {
                     sendResponse(res);
                 })
@@ -88,7 +93,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const event = main_interaction.options.getString('event');
             const status = main_interaction.options.getString('status');
 
-            await Logs.updateEvents({
+            await new Logs().updateEvents({
                 guild_id: main_interaction.guild.id,
                 events: event,
                 disable: status === 'disable' ? true : false,

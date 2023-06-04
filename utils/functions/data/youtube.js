@@ -1,7 +1,7 @@
 const { PermissionFlagsBits } = require('discord.js');
-const { errorhandler } = require('../errorhandler/errorhandler');
-const YouTubeSettings = require('./Notifications/YouTube/YouTubeSettings');
-const { hasPermissionsFor } = require('../../permissions/permissions');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const YouTubeSettings = require('@utils/classes/Notifications/YouTube/YouTubeSettings');
+const { hasPermissionsFor } = require('@utils/functions/permissions/permissions');
 
 module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild }) => {
     return new Promise(async (resolve, reject) => {
