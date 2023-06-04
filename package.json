@@ -53,6 +53,7 @@
         "ffmpeg-static": "^5.1.0",
         "imgur": "^2.3.0",
         "jsonwebtoken": "^9.0.0",
+        "module-alias": "^2.2.3",
         "moment-timezone": "^0.5.43",
         "mysql2": "^3.3.3",
         "nconf": "^0.12.0",

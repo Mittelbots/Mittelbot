@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { kickUser } = require('../../../utils/functions/moderations/kickUser');
-const { checkTarget } = require('../../../utils/functions/checkMessage/checkMessage');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const config = require('../../../src/assets/json/_config/config.json');
+const { kickUser } = require('@/utils/functions/moderations/kickUser');
+const { checkTarget } = require('@/utils/functions/checkMessage/checkMessage');
+const { hasPermission } = require('@/utils/functions/hasPermissions');
+const config = require('@/src/assets/json/_config/config.json');
 const { kickConfig, kickPerms } = require('../_config/moderation/kick');
 
 module.exports.run = async ({ main_interaction, bot }) => {

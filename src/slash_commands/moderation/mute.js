@@ -1,8 +1,8 @@
-const { checkTarget } = require('../../../utils/functions/checkMessage/checkMessage');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { getModTime } = require('../../../utils/functions/getModTime');
-const { muteUser } = require('../../../utils/functions/moderations/muteUser');
-const { isMuted } = require('../../../utils/functions/moderations/checkOpenInfractions');
+const { checkTarget } = require('@/utils/functions/checkMessage/checkMessage');
+const { hasPermission } = require('@/utils/functions/hasPermissions');
+const { getModTime } = require('@/utils/functions/getModTime');
+const { muteUser } = require('@/utils/functions/moderations/muteUser');
+const { isMuted } = require('@/utils/functions/moderations/checkOpenInfractions');
 const { muteConfig, mutePerms } = require('../_config/moderation/mute');
 const { EmbedBuilder } = require('discord.js');
 

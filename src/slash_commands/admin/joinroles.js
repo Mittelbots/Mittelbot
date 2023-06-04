@@ -1,9 +1,9 @@
-const { Joinroles } = require('../../../utils/functions/data/Joinroles');
-const { removeMention } = require('../../../utils/functions/removeCharacters');
+const { Joinroles } = require('@/utils/classes/Joinroles');
+const { removeMention } = require('@/utils/functions/removeCharacters');
 const { joinrolesConfig, joinrolesPerms } = require('../_config/admin/joinroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});
+    await main_interaction.deferReply({ ephemeral: true }).catch(() => {});
 
     const roles = main_interaction.options.getString('joinroles');
     const newJoinRoles = removeMention(roles).split(' ');
@@ -20,7 +20,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     content: `✅ ${res}`,
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         })
         .catch((err) => {
             main_interaction

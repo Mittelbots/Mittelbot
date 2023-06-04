@@ -1,5 +1,5 @@
 const { getEmote } = require('./getEmote');
-const config = require('../../src/assets/json/_config/config.json');
+const config = require('@/src/assets/json/_config/config.json');
 
 async function generateModEmote({ bot, type }) {
     let emote;

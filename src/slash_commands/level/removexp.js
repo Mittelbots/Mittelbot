@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
+const { hasPermission } = require('@/utils/functions/hasPermissions');
+const { Levelsystem } = require('@/utils/classes/levelsystemAPI');
 const config = require('../../assets/json/_config/config.json');
 const { removexpConfig } = require('../_config/level/removexp');
 const { EmbedBuilder } = require('discord.js');

@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { checkguildConfig } = require('../_config/utils/checkguild');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});

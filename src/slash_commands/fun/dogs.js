@@ -1,6 +1,6 @@
 const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 const animals = require('random-animals-api');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
 const { dogsConfig } = require('../_config/fun/dogs');
 
 module.exports.run = async ({ main_interaction, bot }) => {

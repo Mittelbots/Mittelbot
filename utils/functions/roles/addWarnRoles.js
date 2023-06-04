@@ -1,8 +1,7 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getFutureDate } = require('../getFutureDate');
-const config = require('../../../src/assets/json/_config/config.json');
-const { Temproles } = require('../data/Temproles');
-const { Warnroles } = require('../data/Warnroles');
+const { Temproles } = require('@/utils/classes/Temproles');
+const { Warnroles } = require('@/utils/classes/Warnroles');
 
 module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
     const roles = await Warnroles.get(guild.id);

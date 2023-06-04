@@ -1,4 +1,4 @@
-const { GuildConfig } = require('../data/Config');
+const { GuildConfig } = require('@/utils/classes/Guilds');
 const { createMutedRole } = require('./createMutedRole');
 
 const commonMutedRole = ['muted', 'mute'];

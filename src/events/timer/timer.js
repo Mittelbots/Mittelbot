@@ -1,4 +1,4 @@
-const Timer = require('../../../utils/functions/data/Timer');
+const Timer = require('@/utils/classes/Timer');
 
 module.exports.timer = async (bot) => {
     console.info(`⏱ Timer started`);

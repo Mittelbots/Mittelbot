@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { hangmanConfig } = require('../_config/fun/hangman');
-const Hangman = require('../../../utils/functions/data/Games/Hangman/Hangman');
+const Hangman = require('@/utils/classes/Games/Hangman/Hangman');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({

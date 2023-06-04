@@ -36,7 +36,7 @@
         };
     }
 
-    const transFilesPath = '../src/assets/json/translations/';
+    const transFilesPath = '@/src/assets/json/translations/';
 
     const defaultTranslationPath = path.resolve(__dirname, transFilesPath + '_default.json');
     const defaultTranslation = JSON.parse(fs.readFileSync(defaultTranslationPath, 'utf8'));

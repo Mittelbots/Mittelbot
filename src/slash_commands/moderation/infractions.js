@@ -1,8 +1,7 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
-const config = require('../../../src/assets/json/_config/config.json');
-const { Infractions } = require('../../../utils/functions/data/Infractions');
+const {
+    publicInfractionResponse,
+} = require('@/utils/functions/publicResponses/publicModResponses');
+const { Infractions } = require('@/utils/classes/Infractions');
 const { infractionsConfig, infractionPerms } = require('../_config/moderation/infractions');
 const { EmbedBuilder } = require('discord.js');
 

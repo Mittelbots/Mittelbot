@@ -1,6 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { muteRoleConfig, muterolePerms } = require('../_config/admin/muterole');
-const { GuildConfig } = require('../../../utils/functions/data/Config');
+const { GuildConfig } = require('@/utils/classes/Config');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {

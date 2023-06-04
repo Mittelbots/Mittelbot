@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { bugConfig } = require('../_config/utils/bug');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const bugDescription = main_interaction.options.getString('bug');

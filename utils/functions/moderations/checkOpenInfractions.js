@@ -1,7 +1,7 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
-const { Infractions } = require('../data/Infractions');
+const { Infractions } = require('@/utils/classes/Infractions');
 
-async function isMuted({ user, guild, bot }) {
+async function isMuted({ user, guild }) {
     return new Promise(async (resolve, reject) => {
         let open_infractions = await Infractions.getOpen({
             user_id: user.id,

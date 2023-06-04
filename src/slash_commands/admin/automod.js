@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const { Automod } = require('../../../utils/functions/data/Automod');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { Automod } = require('@/utils/classes/Automod');
+const { errorhandler } = require('@/utils/functions/errorhandler/errorhandler');
 const { autoModConfig, automodPerms } = require('../_config/admin/automod');
 
 module.exports.run = async ({ main_interaction, bot }) => {

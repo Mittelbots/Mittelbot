@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const Music = require('../../../utils/functions/data/Music');
+const Music = require('@/utils/classes/Music');
 const { pauseConfig } = require('../_config/music/pause');
 
 module.exports.run = async ({ main_interaction, bot }) => {

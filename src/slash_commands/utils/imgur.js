@@ -1,9 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
-const Imgur = require('../../../utils/functions/data/Imgur');
+const Imgur = require('@/utils/classes/Imgur');
 const { imgurConfig } = require('../_config/utils/imgur');
 const {
     isValidDiscordAttachmentsLink,
-} = require('../../../utils/functions/validate/isValidDiscordAttachmentsLink');
+} = require('@/utils/functions/validate/isValidDiscordAttachmentsLink');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const image = main_interaction.options.getString('image');

@@ -1,6 +1,6 @@
 const { ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, ButtonStyle } = require('discord.js');
-const { GuildConfig } = require('../../../utils/functions/data/Config');
-const { Modroles } = require('../../../utils/functions/data/Modroles');
+const { GuildConfig } = require('@/utils/classes/Config');
+const { Modroles } = require('@/utils/classes/Modroles');
 const config = require('../../assets/json/_config/config.json');
 const { modRolesConfig, modRolesPerms } = require('../_config/admin/modroles');
 

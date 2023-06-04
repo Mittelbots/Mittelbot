@@ -2,7 +2,7 @@ const {
     updateReactionRoles,
     removeReactionRoles,
     viewAllReactionRoles,
-} = require('../../../utils/functions/data/reactionroles');
+} = require('@/utils/functions/data/reactionroles');
 const { reactionRolesConfig, reactionrolesPerms } = require('../_config/admin/reactionroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {

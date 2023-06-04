@@ -1,4 +1,4 @@
-const Auditlog = require('../../utils/functions/data/Auditlog');
+const Auditlog = require('@/utils/classes/Auditlog');
 
 module.exports.messageDeleteBulk = async (bot, messages) => {
     const auditLog = new Auditlog();

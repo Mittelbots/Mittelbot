@@ -1,5 +1,5 @@
 const { PermissionFlagsBits } = require('discord.js');
-const { GuildConfig } = require('./data/Config');
+const { GuildConfig } = require('@/utils/classes/Config');
 const { errorhandler } = require('./errorhandler/errorhandler');
 
 module.exports.hasPermission = async ({

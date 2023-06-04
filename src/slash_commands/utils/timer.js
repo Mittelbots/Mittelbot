@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const Timer = require('../../../utils/functions/data/Timer');
+const Timer = require('@/utils/classes/Timer');
 const { timerConfig } = require('../_config/utils/timer');
 
 module.exports.run = async ({ main_interaction, bot }) => {

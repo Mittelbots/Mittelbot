@@ -1,4 +1,4 @@
-const Auditlog = require('../../utils/functions/data/Auditlog');
+const Auditlog = require('@/utils/classes/Auditlog');
 const sm = require('string-mismatch');
 const greedyInstance = new sm.Greedy();
 
