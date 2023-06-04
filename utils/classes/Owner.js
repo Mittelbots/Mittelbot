@@ -1,5 +1,5 @@
 const { delay } = require('@utils/functions/delay');
-const GuildConfig = require('./GlobalConfig');
+const GlobalConfig = require('./GlobalConfig');
 const Levelsystem = require('./levelsystemAPI');
 const { spawn } = require('child_process');
 const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');

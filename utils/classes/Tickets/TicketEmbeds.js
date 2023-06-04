@@ -1,5 +1,4 @@
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder } = require('discord.js');
-const { errorhandler } = require('../../functions/errorhandler/errorhandler');
 
 module.exports = class TicketEmbeds {
     constructor() {}
