@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 
 const { getModTime } = require('@utils/functions/getModTime');
 const { hasPermission } = require('@utils/functions/hasPermissions');

@@ -1,6 +1,6 @@
 const Auditlog = require('@utils/classes/Auditlog');
 const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 
 module.exports.guildBanRemove = async (bot, guildBan) => {
     const auditLog = new Auditlog();

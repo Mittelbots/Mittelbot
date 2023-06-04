@@ -5,7 +5,7 @@ sentryInit();
 
 const { Client, Options, GatewayIntentBits, Partials } = require('discord.js');
 
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 const version = require('@root/package.json').version;
 
 const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');

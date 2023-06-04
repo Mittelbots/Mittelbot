@@ -1,4 +1,4 @@
-const defaultModuleSettings = require('@src/assets/json/modules/modules.json');
+const defaultModuleSettings = require('@assets/json/modules/modules.json');
 const GuildConfig = require('./Config');
 
 module.exports = class Modules {

@@ -1,6 +1,6 @@
 const canvacord = require('canvacord');
 const { AttachmentBuilder } = require('discord.js');
-const levels = require('@src/assets/json/levelsystem/levelconfig.json');
+const levels = require('@assets/json/levelsystem/levelconfig.json');
 const Levelsystem = require('@utils/classes/levelsystemAPI');
 const { rankConfig } = require('../_config/level/rank');
 const { EmbedBuilder } = require('discord.js');

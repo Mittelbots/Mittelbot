@@ -1,4 +1,4 @@
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 const { delay } = require('@utils/functions/delay');
 const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const Guilds = require('@utils/classes/Guilds');
@@ -18,7 +18,7 @@ const AutomodAntiInsults = require('@utils/classes/Automoderation/Automod-AntiIn
 const AutomodAntiInvite = require('@utils/classes/Automoderation/Automod-AntiInvite');
 const AutomodAntiLinks = require('@utils/classes/Automoderation/Automod-AntiLinks');
 const Hangman = require('@utils/classes/Games/Hangman/Hangman');
-const { messageDeleteReasons } = require('@src/assets/js/messageDeleteReasons');
+const { messageDeleteReasons } = require('@assets/js/messageDeleteReasons');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();

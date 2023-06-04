@@ -1,4 +1,4 @@
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
 const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
 const { giveAllRoles } = require('@utils/functions/roles/giveAllRoles');

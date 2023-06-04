@@ -1,6 +1,6 @@
 const { handleSlashCommands } = require('@src/slash_commands');
 const { manageNewWelcomeSetting } = require('@utils/functions/data/welcomechannel');
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 const GuildConfig = require('@utils/classes/Config');
 const { InteractionType } = require('discord.js');
 const { manageScam } = require('@utils/classes/scam');

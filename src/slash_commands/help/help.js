@@ -1,4 +1,4 @@
-const cmd_help = require('@src/assets/json/command_config/command_help.json');
+const cmd_help = require('@assets/json/command_config/command_help.json');
 const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { SlashCommandBuilder } = require('discord.js');

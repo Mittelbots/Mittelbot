@@ -7,7 +7,7 @@ const { banUser } = require('@utils/functions/moderations/banUser');
 const { getModTime } = require('@utils/functions/getModTime');
 const { muteUser } = require('@utils/functions/moderations/muteUser');
 const { warnUser } = require('@utils/functions/moderations/warnUser');
-const { messageDeleteReasons } = require('@src/assets/js/messageDeleteReasons');
+const { messageDeleteReasons } = require('@assets/js/messageDeleteReasons');
 
 class Automod {
     constructor() {}

@@ -2,7 +2,7 @@ const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
 const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
 const { publicModResponses } = require('@utils/functions/publicResponses/publicModResponses');
 const { createInfractionId } = require('../createInfractionId');
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const Infractions = require('@utils/classes/Infractions');
 

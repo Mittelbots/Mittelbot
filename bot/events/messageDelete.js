@@ -1,5 +1,5 @@
 const Auditlog = require('@utils/classes/Auditlog');
-const { messageDeleteReasons } = require('@src/assets/js/messageDeleteReasons');
+const { messageDeleteReasons } = require('@assets/js/messageDeleteReasons');
 
 module.exports.messageDelete = async (bot, message) => {
     if (!message.author) return;

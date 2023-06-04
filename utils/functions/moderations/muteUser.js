@@ -7,7 +7,7 @@ const { getFutureDate } = require('../getFutureDate');
 const { getAllRoles } = require('../roles/getAllRoles');
 const { getMutedRole } = require('../roles/getMutedRole');
 const { removeAllRoles } = require('../roles/removeAllRoles');
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 const Infractions = require('@utils/classes/Infractions');
 
 async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {

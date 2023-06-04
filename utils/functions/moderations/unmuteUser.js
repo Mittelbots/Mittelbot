@@ -4,7 +4,7 @@ const { publicModResponses } = require('@utils/functions/publicResponses/publicM
 const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { getMutedRole } = require('@utils/functions/roles/getMutedRole');
 const { giveAllRoles } = require('@utils/functions/roles/giveAllRoles');
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 const Infractions = require('@utils/classes/Infractions');
 const openInfractions = require('@src/db/Models/open_infractions.model');
 

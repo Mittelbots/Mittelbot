@@ -1,10 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
 const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const fs = require('fs');
-const levelConfig = require('@src/assets/json/levelsystem/levelconfig.json');
+const levelConfig = require('@assets/json/levelsystem/levelconfig.json');
 const GuildConfig = require('./Config');
 const guildLevel = require('@src/db/Models/guildLevel.model');
-const config = require('@src/assets/json/_config/config.json');
+const config = require('@assets/json/_config/config.json');
 
 let levelCooldownArray = [];
 

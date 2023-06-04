@@ -1,5 +1,5 @@
 const allGuildId = require('@src/db/Models/guilds.model');
-const blacklist = require('@src/assets/json/blacklist/guilds.json');
+const blacklist = require('@assets/json/blacklist/guilds.json');
 
 class Guilds {
     constructor() {}
