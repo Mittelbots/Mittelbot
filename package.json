@@ -61,7 +61,7 @@
         "patch-package": "^7.0.0",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.13.0",
-        "sequelize": "^6.31.1",
+        "sequelize": "^6.32.0",
         "string-mismatch": "^2.1.1",
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
