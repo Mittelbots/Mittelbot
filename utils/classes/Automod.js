@@ -1,13 +1,13 @@
 const { Message } = require('discord.js');
-const guildAutomod = require('@src/db/Models/guildAutomod.model');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const { kickUser } = require('@utils/functions/moderations/kickUser');
-const Guilds = require('@utils/classes/Guilds');
-const { banUser } = require('@utils/functions/moderations/banUser');
-const { getModTime } = require('@utils/functions/getModTime');
-const { muteUser } = require('@utils/functions/moderations/muteUser');
-const { warnUser } = require('@utils/functions/moderations/warnUser');
-const { messageDeleteReasons } = require('@assets/js/messageDeleteReasons');
+const guildAutomod = require('~src/db/Models/guildAutomod.model');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const { kickUser } = require('~utils/functions/moderations/kickUser');
+const Guilds = require('~utils/classes/Guilds');
+const { banUser } = require('~utils/functions/moderations/banUser');
+const { getModTime } = require('~utils/functions/getModTime');
+const { muteUser } = require('~utils/functions/moderations/muteUser');
+const { warnUser } = require('~utils/functions/moderations/warnUser');
+const { messageDeleteReasons } = require('~assets/js/messageDeleteReasons');
 
 class Automod {
     constructor() {}

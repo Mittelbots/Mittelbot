@@ -1,4 +1,4 @@
-const config = require('@assets/json/_config/config.json');
+const config = require('~assets/json/_config/config.json');
 const {
     TextInputBuilder,
     SlashCommandBuilder,

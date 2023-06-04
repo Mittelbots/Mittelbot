@@ -1,7 +1,7 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getFutureDate } = require('../getFutureDate');
-const Temproles = require('@utils/classes/Temproles');
-const Warnroles = require('@utils/classes/Warnroles');
+const Temproles = require('~utils/classes/Temproles');
+const Warnroles = require('~utils/classes/Warnroles');
 
 module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
     const roles = await new Warnroles().get(guild.id);

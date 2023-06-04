@@ -1,5 +1,5 @@
-const Joinroles = require('@utils/classes/Joinroles');
-const { removeMention } = require('@utils/functions/removeCharacters');
+const Joinroles = require('~utils/classes/Joinroles');
+const { removeMention } = require('~utils/functions/removeCharacters');
 const { joinrolesConfig, joinrolesPerms } = require('../_config/admin/joinroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {

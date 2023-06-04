@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const Counter = require('@utils/classes/Counter/Counter');
+const Counter = require('~utils/classes/Counter/Counter');
 const { counterConfig, counterPerms } = require('../_config/admin/counter');
 
 module.exports.run = async ({ main_interaction, bot }) => {

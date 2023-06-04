@@ -1,6 +1,6 @@
-const config = require('@assets/json/_config/config.json');
-const Levelsystem = require('@utils/classes/levelsystemAPI');
-const GuildConfig = require('@utils/classes/Config');
+const config = require('~assets/json/_config/config.json');
+const Levelsystem = require('~utils/classes/levelsystemAPI');
+const GuildConfig = require('~utils/classes/Config');
 const { levelSettingsConfig, levelsettingsPerms } = require('../_config/admin/levelsettings');
 const { EmbedBuilder } = require('discord.js');
 

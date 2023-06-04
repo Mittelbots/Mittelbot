@@ -2,7 +2,7 @@ const Notification = require('../Notifications');
 const TwitchNotifier = require('./TwitchLogic');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const { ActionRowBuilder, ButtonBuilder, Message, ButtonStyle } = require('discord.js');
-const twitchStreams = require('@src/db/Models/twitchStreams.model');
+const twitchStreams = require('~src/db/Models/twitchStreams.model');
 
 module.exports = class TwitchNotification extends TwitchNotifier {
     constructor(bot) {

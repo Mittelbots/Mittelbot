@@ -1,13 +1,13 @@
-const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
-const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
-const { publicModResponses } = require('@utils/functions/publicResponses/publicModResponses');
-const { createInfractionId } = require('@utils/functions/createInfractionId');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const { getFutureDate } = require('@utils/functions/getFutureDate');
-const config = require('@assets/json/_config/config.json');
-const Infractions = require('@utils/classes/Infractions');
-const Banappeal = require('@utils/classes/Banappeal');
-const Modules = require('@utils/classes/Modules');
+const { setNewModLogMessage } = require('~utils/functions/modlog/modlog');
+const { privateModResponse } = require('~utils/functions/privatResponses/privateModResponses');
+const { publicModResponses } = require('~utils/functions/publicResponses/publicModResponses');
+const { createInfractionId } = require('~utils/functions/createInfractionId');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const { getFutureDate } = require('~utils/functions/getFutureDate');
+const config = require('~assets/json/_config/config.json');
+const Infractions = require('~utils/classes/Infractions');
+const Banappeal = require('~utils/classes/Banappeal');
+const Modules = require('~utils/classes/Modules');
 
 async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) {
     return new Promise(async (resolve, reject) => {

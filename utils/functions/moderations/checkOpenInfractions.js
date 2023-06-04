@@ -1,5 +1,5 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
-const Infractions = require('@utils/classes/Infractions');
+const Infractions = require('~utils/classes/Infractions');
 
 async function isMuted({ user, guild }) {
     return new Promise(async (resolve, reject) => {

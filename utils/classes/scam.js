@@ -1,8 +1,8 @@
-const database = require('@src/db/db');
+const database = require('~src/db/db');
 const dns = require('dns');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { removeHttp } = require('@utils/functions/removeCharacters');
-const advancedScamList = require('@src/db/Models/advancedScamList.model');
+const { removeHttp } = require('~utils/functions/removeCharacters');
+const advancedScamList = require('~src/db/Models/advancedScamList.model');
 
 class Scam {
     constructor() {}

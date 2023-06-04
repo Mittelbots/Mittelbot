@@ -1,4 +1,4 @@
-const Infractions = require('@utils/classes/Infractions');
+const Infractions = require('~utils/classes/Infractions');
 
 function generate() {
     return Math.random().toString(30).substr(2, 50);

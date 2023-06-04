@@ -1,5 +1,5 @@
-const config = require('@assets/json/_config/config.json');
-const GuildConfig = require('@utils/classes/Config');
+const config = require('~assets/json/_config/config.json');
+const GuildConfig = require('~utils/classes/Config');
 const { autoTranslateConfig, autotranslatePerms } = require('../_config/admin/autotranslate');
 const { EmbedBuilder } = require('discord.js');
 

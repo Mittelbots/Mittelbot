@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
-const Music = require('@utils/classes/Music');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const Music = require('~utils/classes/Music');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 const { playConfig } = require('../_config/music/play');
 
 module.exports.run = async ({ main_interaction, bot }) => {

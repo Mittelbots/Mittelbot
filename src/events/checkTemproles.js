@@ -1,4 +1,4 @@
-const Temproles = require('@utils/classes/Temproles');
+const Temproles = require('~utils/classes/Temproles');
 
 const interval = 1000 * 60 * 10; // 10 minutes
 

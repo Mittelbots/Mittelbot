@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const Reddit = require('@utils/classes/Reddit');
+const Reddit = require('~utils/classes/Reddit');
 const {
     redditNotifierConfig,
     redditNotifierPerms,

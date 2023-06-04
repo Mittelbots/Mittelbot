@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { oldestmemberConfig } = require('../_config/utils/oldestmember');
-const { remainingTime, remainingTimeString } = require('@utils/functions/getTimeDifference');
+const { remainingTime, remainingTimeString } = require('~utils/functions/getTimeDifference');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const includeBots = main_interaction.options.getBoolean('bots') || false;

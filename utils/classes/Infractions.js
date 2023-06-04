@@ -1,5 +1,5 @@
-const closedInfractions = require('@src/db/Models/closedInfractions.model');
-const openInfractions = require('@src/db/Models/open_infractions.model');
+const closedInfractions = require('~src/db/Models/closedInfractions.model');
+const openInfractions = require('~src/db/Models/open_infractions.model');
 const Guilds = require('./Guilds');
 
 class Infractions {

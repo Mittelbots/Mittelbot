@@ -1,5 +1,5 @@
 const { PermissionFlagsBits } = require('discord.js');
-const Scam = require('@utils/classes/scam');
+const Scam = require('~utils/classes/scam');
 const { scamConfig, scamPerms } = require('../_config/admin/scam');
 
 module.exports.run = async ({ main_interaction, bot }) => {

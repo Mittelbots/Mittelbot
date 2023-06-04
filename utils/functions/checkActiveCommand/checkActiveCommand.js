@@ -1,5 +1,5 @@
-const GuildConfig = require('@utils/classes/Config');
-const GlobalConfig = require('@utils/classes/GlobalConfig');
+const GuildConfig = require('~utils/classes/Config');
+const GlobalConfig = require('~utils/classes/GlobalConfig');
 
 module.exports.checkActiveCommand = async (command_name, guild_id) => {
     const global_config = await new GlobalConfig().get();

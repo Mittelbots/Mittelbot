@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { removeMention, removeEmojiTags } = require('../removeCharacters');
-const GuildConfig = require('@utils/classes/Config');
+const GuildConfig = require('~utils/classes/Config');
 
 module.exports.updateReactionRoles = async ({
     guild_id,

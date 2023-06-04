@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
-const Music = require('@utils/classes/Music');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const Music = require('~utils/classes/Music');
 
 module.exports.registerPlayerEvents = (player, bot) => {
     player.events.on('error', (queue, error) => {

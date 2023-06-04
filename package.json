@@ -26,12 +26,12 @@
         ]
     },
     "_moduleAliases": {
-        "@root": ".",
-        "@bot": "./bot",
-        "@core": "./bot/core",
-        "@src": "./src",
-        "@utils": "./utils",
-        "@assets": "./src/assets"
+        "~root": ".",
+        "~bot": "./bot",
+        "~core": "./bot/core",
+        "~src": "./src",
+        "~utils": "./utils",
+        "~assets": "./src/assets"
     },
     "author": "BlackDayz",
     "license": "GPL-3.0",

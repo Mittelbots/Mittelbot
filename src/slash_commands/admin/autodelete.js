@@ -1,8 +1,8 @@
-const { hasPermission } = require('@utils/functions/hasPermissions');
+const { hasPermission } = require('~utils/functions/hasPermissions');
 
 const config = require('../../assets/json/_config/config.json');
-const Autodelete = require('@utils/classes/Autodelete');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const Autodelete = require('~utils/classes/Autodelete');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 const { EmbedBuilder } = require('discord.js');
 const { autoDeleteConfig, autoDeletePerms } = require('../_config/admin/autodelete');
 

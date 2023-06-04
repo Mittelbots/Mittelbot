@@ -4,9 +4,9 @@
         "module": "Node16",
         "paths": {
             "@root": ["./*"],
-            "@src/*": ["./src/*"],
-            "@utils/*": ["./utils/*"],
-            "@bot/*": ["./bot/*"],
+            "~src/*": ["./src/*"],
+            "~utils/*": ["./utils/*"],
+            "~bot/*": ["./bot/*"],
             "@root/*": ["./*"]
         }
     },

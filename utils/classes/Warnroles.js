@@ -1,4 +1,4 @@
-const { checkRole } = require('@utils/functions/roles/checkRole');
+const { checkRole } = require('~utils/functions/roles/checkRole');
 const GuildConfig = require('./Config');
 
 class Warnroles {

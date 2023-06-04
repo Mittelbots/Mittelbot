@@ -1,7 +1,7 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { version } = require('../../../package.json');
-const MemberInfo = require('@utils/classes/MemberInfo');
-const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const MemberInfo = require('~utils/classes/MemberInfo');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 const { infoConfig } = require('../_config/utils/info');
 
 module.exports.run = async ({ main_interaction, bot }) => {

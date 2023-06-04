@@ -1,4 +1,4 @@
-const banappealModel = require('@src/db/Models/banappeal.model');
+const banappealModel = require('~src/db/Models/banappeal.model');
 const BanappealLogic = require('./BanappealLogic');
 const GuildConfig = require('./Config');
 

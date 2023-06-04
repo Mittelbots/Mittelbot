@@ -1,10 +1,10 @@
 const { EmbedBuilder, ButtonStyle } = require('discord.js');
-const { checkActiveCommand } = require('@utils/functions/checkActiveCommand/checkActiveCommand');
-const Modules = require('@utils/classes/Modules');
-const { hasPermission } = require('@utils/functions/hasPermissions');
+const { checkActiveCommand } = require('~utils/functions/checkActiveCommand/checkActiveCommand');
+const Modules = require('~utils/classes/Modules');
+const { hasPermission } = require('~utils/functions/hasPermissions');
 const { ActionRowBuilder } = require('discord.js');
 const { ButtonBuilder } = require('discord.js');
-const GuildConfig = require('@utils/classes/Config');
+const GuildConfig = require('~utils/classes/Config');
 
 module.exports.handleSlashCommands = async ({ main_interaction, bot }) => {
     const moduleApi = new Modules(main_interaction.guild.id, bot);

@@ -1,4 +1,4 @@
-const MemberInfo = require('@utils/classes/MemberInfo');
+const MemberInfo = require('~utils/classes/MemberInfo');
 
 module.exports.saveAllRoles = async (roles, member, guild) => {
     let guild_id;

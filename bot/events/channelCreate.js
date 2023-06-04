@@ -1,4 +1,4 @@
-const Auditlog = require('@utils/classes/Auditlog');
+const Auditlog = require('~utils/classes/Auditlog');
 
 module.exports.channelCreate = async (bot, channel) => {
     const auditLog = new Auditlog();

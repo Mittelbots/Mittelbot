@@ -1,6 +1,6 @@
 const Automod = require('../Automod');
-const { isValidDiscordInvite } = require('@utils/functions/validate/isValidDiscordInvite');
-const { isValidLink } = require('@utils/functions/validate/isValidLink');
+const { isValidDiscordInvite } = require('~utils/functions/validate/isValidDiscordInvite');
+const { isValidLink } = require('~utils/functions/validate/isValidLink');
 
 module.exports = class AutomodAntiLinks {
     check(message, bot) {
