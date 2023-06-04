@@ -3,7 +3,7 @@ const { delay } = require('../delay');
 const isURI = require('@stdlib/assert-is-uri');
 const { isValidHexCode } = require('../validate/isValidHexCode');
 const { validateCustomStrings } = require('../validate/validateCustomStrings');
-const { GuildConfig } = require('./Config');
+const GuildConfig = require('@utils/classes/Config');
 const { defaultWelcomeMessage } = require('./variables');
 const { errorhandler } = require('../errorhandler/errorhandler');
 
@@ -19,11 +19,12 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value, remo
             welcomeSettings[valueName] = value;
         }
 
-        return await GuildConfig.update({
-            guild_id,
-            value: welcomeSettings,
-            valueName: 'welcome_channel',
-        })
+        return await new GuildConfig()
+            .update({
+                guild_id,
+                value: welcomeSettings,
+                valueName: 'welcome_channel',
+            })
             .then(() => {
                 resolve(true);
             })
@@ -36,7 +37,7 @@ module.exports.updateWelcomeSettings = async ({ guild_id, valueName, value, remo
 //=========================================================
 
 module.exports.getWelcomechannel = async ({ guild_id }) => {
-    const guildConfig = await GuildConfig.get(guild_id);
+    const guildConfig = await new GuildConfig().get(guild_id);
     return guildConfig && guildConfig.welcome_channel
         ? guildConfig.welcome_channel
         : defaultWelcomeMessage;

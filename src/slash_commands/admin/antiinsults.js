@@ -1,10 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
-const { Automod } = require('../../../utils/functions/data/Automod');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const Automod = require('@utils/classes/Automod');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 const { antiInsultsConfig, antiInsultsPerms } = require('../_config/admin/antiinsults');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    const anitInsultssetting = await Automod.get(main_interaction.guild.id, 'antiinsults');
+    const anitInsultssetting = await new Automod().get(main_interaction.guild.id, 'antiinsults');
     await main_interaction.deferReply({ ephemeral: true });
     const { enabled: antiInsultsEnabled, action: antiInsultsAction } = main_interaction.options;
     const words = main_interaction.options.getString('words');
@@ -27,11 +27,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
         setting.words.push(...words.split(','));
     }
 
-    Automod.update({
-        guild_id: main_interaction.guild.id,
-        value: setting,
-        type: 'antiinsults',
-    })
+    new Automod()
+        .update({
+            guild_id: main_interaction.guild.id,
+            value: setting,
+            type: 'antiinsults',
+        })
         .then(() => {
             errorhandler({
                 fatal: false,

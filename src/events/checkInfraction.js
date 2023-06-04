@@ -1,18 +1,18 @@
-const config = require('../../src/assets/json/_config/config.json');
-const { setNewModLogMessage } = require('../../utils/modlog/modlog');
-const { privateModResponse } = require('../../utils/privatResponses/privateModResponses');
-const { giveAllRoles } = require('../../utils/functions/roles/giveAllRoles');
-const { removeMutedRole } = require('../../utils/functions/roles/removeMutedRole');
-const { saveAllRoles } = require('../../utils/functions/roles/saveAllRoles');
-const { errorhandler } = require('../../utils/functions/errorhandler/errorhandler');
-const { Infractions } = require('../../utils/functions/data/Infractions');
+const config = require('@assets/json/_config/config.json');
+const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
+const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
+const { giveAllRoles } = require('@utils/functions/roles/giveAllRoles');
+const { removeMutedRole } = require('@utils/functions/roles/removeMutedRole');
+const { saveAllRoles } = require('@utils/functions/roles/saveAllRoles');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const Infractions = require('@utils/classes/Infractions');
 
 const interval = 1000 * 60; // 1 Minute
 
 module.exports.checkInfractions = (bot) => {
     console.info('🔎📜 CheckInfraction handler started');
     setInterval(async () => {
-        const results = await Infractions.getAllOpen();
+        const results = await new Infractions().getAllOpen();
 
         let done = 0;
         let mutecount = 0;
@@ -68,7 +68,7 @@ module.exports.checkInfractions = (bot) => {
                             guildname: guild.name,
                         });
 
-                        await Infractions.moveFromOpenToClosed(results[i]);
+                        await new Infractions().moveFromOpenToClosed(results[i]);
                     } catch (err) {
                         errorhandler({
                             err,
@@ -81,7 +81,7 @@ module.exports.checkInfractions = (bot) => {
                     continue;
                 } else {
                     //Member got banned
-                    await Infractions.moveFromOpenToClosed(results[i]);
+                    await new Infractions().moveFromOpenToClosed(results[i]);
                     await bot.guilds.cache
                         .get(results[i].guild_id)
                         .members.unban(`${results[i].user_id}`, `Auto`)

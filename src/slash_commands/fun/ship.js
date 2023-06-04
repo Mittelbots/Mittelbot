@@ -1,6 +1,6 @@
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const { readFile } = require('fs/promises');
-const { delay } = require('../../../utils/functions/delay');
+const { delay } = require('@utils/functions/delay');
 const Canvas = require('@napi-rs/canvas');
 const { request } = require('undici');
 const { shipConfig } = require('../_config/fun/ship');

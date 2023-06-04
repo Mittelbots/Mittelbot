@@ -1,11 +1,10 @@
 const { errorhandler } = require('../errorhandler/errorhandler');
 const { getFutureDate } = require('../getFutureDate');
-const config = require('../../../src/assets/json/_config/config.json');
-const { Temproles } = require('../data/Temproles');
-const { Warnroles } = require('../data/Warnroles');
+const Temproles = require('@utils/classes/Temproles');
+const Warnroles = require('@utils/classes/Warnroles');
 
 module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
-    const roles = await Warnroles.get(guild.id);
+    const roles = await new Warnroles().get(guild.id);
 
     let hasRoleAlready = false;
     if (roles.length > 0) {
@@ -21,7 +20,7 @@ module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
                                 fatal: false,
                                 message: `${user.id} has got a warn roles in ${guild.id}`,
                             });
-                            Temproles.insert({
+                            new Temproles().insert({
                                 uid: user.id,
                                 role_id: roles[i],
                                 till_date: getFutureDate(2678400),

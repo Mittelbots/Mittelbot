@@ -1,4 +1,4 @@
-const TwitchNotifier = require('../../../utils/functions/data/Notifications/Twitch/TwitchLogic');
+const TwitchNotifier = require('@utils/classes/Notifications/Twitch/TwitchLogic');
 const { twitchConfig, twitchPerms } = require('../_config/notifications/twitch');
 
 module.exports.run = async ({ main_interaction, bot }) => {

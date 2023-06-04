@@ -1,12 +1,12 @@
-const { setNewModLogMessage } = require('../../modlog/modlog');
-const { privateModResponse } = require('../../privatResponses/privateModResponses');
-const { publicModResponses } = require('../../publicResponses/publicModResponses');
+const { setNewModLogMessage } = require('../modlog/modlog');
+const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
+const { publicModResponses } = require('@utils/functions/publicResponses/publicModResponses');
 const { createInfractionId } = require('../createInfractionId');
 const { addWarnRoles } = require('../roles/addWarnRoles');
-const config = require('../../../src/assets/json/_config/config.json');
-const { errorhandler } = require('../errorhandler/errorhandler');
-const { Infractions } = require('../data/Infractions');
-const Modules = require('../data/Modules');
+const config = require('@assets/json/_config/config.json');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const Infractions = require('@utils/classes/Infractions');
+const Modules = require('@utils/classes/Modules');
 
 async function warnUser({ bot, user, mod, guild, reason }) {
     const inf_id = await createInfractionId(guild.id);
@@ -41,7 +41,7 @@ async function warnUser({ bot, user, mod, guild, reason }) {
         guildname: guild.name,
     });
 
-    await Infractions.insertClosed({
+    await new Infractions().insertClosed({
         uid: user.id,
         mod_id: mod.id,
         ban: 0,

@@ -1,7 +1,6 @@
-const defaultTranslations = require('../../../src/assets/json/translations/_default.json');
-const guildConfig = require('../../../src/db/Models/tables/guildConfig.model');
-const { GuildConfig } = require('../data/Config');
-const { errorhandler } = require('../errorhandler/errorhandler');
+const defaultTranslations = require('@assets/json/translations/_default.json');
+const guildConfig = require('@src/db/Models/guildConfig.model');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 
 module.exports = class Translations {
     constructor() {
@@ -124,7 +123,7 @@ module.exports = class Translations {
 
     #getTranslationFile(language) {
         try {
-            return require(`../../../src/assets/json/translations/${language}.json`);
+            return require(`@assets/json/translations/${language}.json`);
         } catch (e) {
             return defaultTranslations;
         }

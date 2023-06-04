@@ -1,12 +1,12 @@
-const { setNewModLogMessage } = require('../../modlog/modlog');
-const { privateModResponse } = require('../../privatResponses/privateModResponses');
-const { publicModResponses } = require('../../publicResponses/publicModResponses');
-const { errorhandler } = require('../errorhandler/errorhandler');
-const { getMutedRole } = require('../roles/getMutedRole');
-const { giveAllRoles } = require('../roles/giveAllRoles');
-const config = require('../../../src/assets/json/_config/config.json');
-const { Infractions } = require('../data/Infractions');
-const openInfractions = require('../../../src/db/Models/tables/open_infractions.model');
+const { setNewModLogMessage } = require('@utils/functions/modlog/modlog');
+const { privateModResponse } = require('@utils/functions/privatResponses/privateModResponses');
+const { publicModResponses } = require('@utils/functions/publicResponses/publicModResponses');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
+const { getMutedRole } = require('@utils/functions/roles/getMutedRole');
+const { giveAllRoles } = require('@utils/functions/roles/giveAllRoles');
+const config = require('@assets/json/_config/config.json');
+const Infractions = require('@utils/classes/Infractions');
+const openInfractions = require('@src/db/Models/open_infractions.model');
 
 async function unmuteUser({ user, bot, mod, reason, guild }) {
     const userGuild = await bot.guilds.cache.get(guild.id);

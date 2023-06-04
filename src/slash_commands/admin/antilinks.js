@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
-const { Automod } = require('../../../utils/functions/data/Automod');
+const Automod = require('@utils/classes/Automod');
 const { antiLinksConfig, antiLinksPerms } = require('../_config/admin/antilinks');
-const { removeMention, removeHttp } = require('../../../utils/functions/removeCharacters');
-const { errorhandler } = require('../../../utils/functions/errorhandler/errorhandler');
+const { removeMention, removeHttp } = require('@utils/functions/removeCharacters');
+const { errorhandler } = require('@utils/functions/errorhandler/errorhandler');
 
 module.exports.run = async ({ main_interaction }) => {
     const guildId = main_interaction.guild.id;
@@ -12,7 +12,7 @@ module.exports.run = async ({ main_interaction }) => {
     const whitelistchannelsInput = main_interaction.options.getString('whitelistchannels') || '';
     const whitelistlinksInput = main_interaction.options.getString('whitelistlinks') || '';
 
-    const antilinksSetting = await Automod.get(main_interaction.guild.id, 'antilinks');
+    const antilinksSetting = await new Automod().get(main_interaction.guild.id, 'antilinks');
 
     const setting = {
         enabled: antilinksEnabled,
@@ -54,11 +54,12 @@ module.exports.run = async ({ main_interaction }) => {
         }
     });
 
-    Automod.update({
-        guild_id: guildId,
-        value: setting,
-        type: 'antilinks',
-    })
+    new Automod()
+        .update({
+            guild_id: guildId,
+            value: setting,
+            type: 'antilinks',
+        })
         .then(() => {
             errorhandler({
                 fatal: false,

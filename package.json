@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.65.2",
+    "version": "0.65.3",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -8,21 +8,30 @@
         "node": ">=18.15.0"
     },
     "scripts": {
-        "start": "docker compose up -d && docker logs -f mittelbot",
-        "start-prod": "docker compose up -d",
+        "start": "npm run alias-build && docker compose up -d && docker logs -f mittelbot",
+        "start-prod": "npm run alias-build docker compose up -d",
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
         "restart-prod": "npm run stop && docker compose build --no-cache && npm run start-prod",
         "log": "docker logs -f mittelbot",
         "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --write .\"",
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\"",
-        "postinstall": "patch-package",
-        "transCheck": "node ./scripts/translationCheck.js"
+        "postinstall": "patch-package && link-module-alias",
+        "transCheck": "node ./scripts/translationCheck.js",
+        "alias-build": "link-module-alias"
     },
     "nodemonConfig": {
         "ignore": [
             "*.json"
         ]
+    },
+    "_moduleAliases": {
+        "@root": ".",
+        "@bot": "./bot",
+        "@core": "./bot/core",
+        "@src": "./src",
+        "@utils": "./utils",
+        "@assets": "./src/assets"
     },
     "author": "BlackDayz",
     "license": "GPL-3.0",
@@ -37,7 +46,8 @@
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@gonetone/get-youtube-id-by-url": "^1.0.0",
         "@napi-rs/canvas": "^0.1.41",
-        "@sentry/node": "^7.53.1",
+        "@sentry/node": "^7.54.0",
+        "@sentry/profiling-node": "^0.3.0",
         "@stdlib/assert-is-uri": "^0.0.8",
         "@twurple/api": "^6.2.1",
         "@twurple/auth": "^6.0.2",
@@ -53,6 +63,7 @@
         "ffmpeg-static": "^5.1.0",
         "imgur": "^2.3.0",
         "jsonwebtoken": "^9.0.0",
+        "link-module-alias": "^1.2.0",
         "moment-timezone": "^0.5.43",
         "mysql2": "^3.3.3",
         "nconf": "^0.12.0",
@@ -60,7 +71,7 @@
         "patch-package": "^7.0.0",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.13.0",
-        "sequelize": "^6.31.1",
+        "sequelize": "^6.32.0",
         "string-mismatch": "^2.1.1",
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
@@ -69,7 +80,9 @@
     },
     "devDependencies": {
         "husky": "^8.0.3",
+        "module-alias": "^2.2.3",
         "nodemon": "^2.0.22",
-        "prettier": "^2.8.8"
+        "prettier": "^2.8.8",
+        "webpack-cli": "^5.1.2"
     }
 }

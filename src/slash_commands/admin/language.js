@@ -1,5 +1,5 @@
 const { languageConfig, languagePerms } = require('../_config/admin/language');
-const { GuildConfig } = require('../../../utils/functions/data/Config');
+const GuildConfig = require('@utils/classes/Config');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
@@ -7,11 +7,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const language = main_interaction.options.getString('language');
 
-    GuildConfig.update({
-        guild_id: main_interaction.guild.id,
-        value: language,
-        valueName: 'lang',
-    })
+    new GuildConfig()
+        .update({
+            guild_id: main_interaction.guild.id,
+            value: language,
+            valueName: 'lang',
+        })
         .then(() => {
             global.t.updateCache(main_interaction.guild.id, language);
             main_interaction

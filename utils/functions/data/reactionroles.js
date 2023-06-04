@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { removeMention, removeEmojiTags } = require('../removeCharacters');
-const { GuildConfig } = require('./Config');
+const GuildConfig = require('@utils/classes/Config');
 
 module.exports.updateReactionRoles = async ({
     guild_id,
@@ -98,7 +98,7 @@ module.exports.updateReactionRoles = async ({
             }
         }
 
-        const guildConfig = await GuildConfig.get(guild_id);
+        const guildConfig = await new GuildConfig().get(guild_id);
         const reactionroles = guildConfig.reactionroles || [];
 
         if (reactionroles.length >= 5) {
@@ -128,11 +128,12 @@ module.exports.updateReactionRoles = async ({
 
         reactionroles.push(newReactionRoles);
 
-        return await GuildConfig.update({
-            guild_id,
-            value: reactionroles,
-            valueName: 'reactionroles',
-        })
+        return await new GuildConfig()
+            .update({
+                guild_id,
+                value: reactionroles,
+                valueName: 'reactionroles',
+            })
             .then(async (res) => {
                 await message.reactions.removeAll().catch(() => {
                     return reject(
@@ -177,7 +178,7 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
             return reject(global.t.trans(['error.admin.reactionroles.messageNotFound'], guild_id));
         }
 
-        const guildConfig = await GuildConfig.get(guild_id);
+        const guildConfig = await new GuildConfig().get(guild_id);
         const reactionroles = guildConfig.reactionroles;
 
         if (reactionroles.length > 0) {
@@ -188,11 +189,12 @@ module.exports.removeReactionRoles = async ({ guild_id, message_link, main_inter
             }
         }
 
-        return await GuildConfig.update({
-            guild_id,
-            value: reactionroles,
-            valueName: 'reactionroles',
-        })
+        return await new GuildConfig()
+            .update({
+                guild_id,
+                value: reactionroles,
+                valueName: 'reactionroles',
+            })
             .then(async (res) => {
                 await message.reactions
                     .removeAll()
@@ -222,7 +224,7 @@ module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) =>
     }
 
     const guild = bot.guilds.cache.get(reaction.message.guildId);
-    const guildConfig = await GuildConfig.get(guild.id);
+    const guildConfig = await new GuildConfig().get(guild.id);
     const reactionroles = guildConfig.reactionroles;
 
     for (let i in reactionroles) {
@@ -256,7 +258,7 @@ module.exports.handleAddedReactions = async ({ reaction, user, bot, remove }) =>
 
 module.exports.viewAllReactionRoles = (guild_id) => {
     return new Promise(async (resolve, reject) => {
-        const guildConfig = await GuildConfig.get(guild_id);
+        const guildConfig = await new GuildConfig().get(guild_id);
         const reactionroles = guildConfig.reactionroles;
 
         if (reactionroles.length === 0) {

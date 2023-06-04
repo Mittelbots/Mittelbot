@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { Levelsystem } = require('../../../utils/functions/data/levelsystemAPI');
+const { hasPermission } = require('@utils/functions/hasPermissions');
+const Levelsystem = require('@utils/classes/levelsystemAPI');
 const config = require('../../assets/json/_config/config.json');
 const { removexpConfig } = require('../_config/level/removexp');
 const { EmbedBuilder } = require('discord.js');
@@ -56,7 +56,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             .catch((err) => {});
     }
 
-    const currentXP = await Levelsystem.gain({
+    const currentXP = await new Levelsystem().gain({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
     });
@@ -80,7 +80,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     if (newAmount < 0) newAmount = 0;
 
-    const updated = await Levelsystem.update({
+    const updated = await new Levelsystem().update({
         guild_id: main_interaction.guild.id,
         user_id: user.id,
         value: newAmount,

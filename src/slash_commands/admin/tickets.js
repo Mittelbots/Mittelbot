@@ -1,9 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
-const Tickets = require('../../../utils/functions/data/Tickets/Tickets');
+const Tickets = require('@utils/classes/Tickets/Tickets');
 const { ticketConfig, ticketPerms } = require('../_config/admin/tickets');
-const ticketModel = require('../../db/Models/tables/tickets.model');
-const { removeMention } = require('../../../utils/functions/removeCharacters');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
+const ticketModel = require('../../db/Models/tickets.model');
+const { removeMention } = require('@utils/functions/removeCharacters');
+const { hasPermission } = require('@utils/functions/hasPermissions');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true }).catch((err) => {});

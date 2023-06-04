@@ -1,8 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { hasPermission } = require('../../../utils/functions/hasPermissions');
-const { publicInfractionResponse } = require('../../../utils/publicResponses/publicModResponses');
-const config = require('../../../src/assets/json/_config/config.json');
-const { Infractions } = require('../../../utils/functions/data/Infractions');
+const { publicInfractionResponse } = require('@utils/functions/publicResponses/publicModResponses');
+const Infractions = require('@utils/classes/Infractions');
 const { infractionsConfig, infractionPerms } = require('../_config/moderation/infractions');
 const { EmbedBuilder } = require('discord.js');
 
@@ -15,12 +12,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'all':
             const user = main_interaction.options.getUser('user');
 
-            const closed_infractions = await Infractions.getClosed({
+            const closed_infractions = await new Infractions().getClosed({
                 user_id: user.id,
                 guild_id: main_interaction.guild.id,
             });
 
-            const open_infractions = await Infractions.getOpen({
+            const open_infractions = await new Infractions().getOpen({
                 user_id: user.id,
                 guild_id: main_interaction.guild.id,
             });
@@ -70,7 +67,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'view':
             const inf_id = main_interaction.options.getString('infractionid');
 
-            const { infraction } = await Infractions.get({
+            const { infraction } = await new Infractions().get({
                 inf_id,
                 guild_id: main_interaction.guild.id,
             });
@@ -110,16 +107,16 @@ module.exports.run = async ({ main_interaction, bot }) => {
         case 'remove':
             const infraction_id = main_interaction.options.getString('infractionid');
 
-            const { table } = await Infractions.get({
+            const { table } = await new Infractions().get({
                 inf_id: infraction_id,
                 guild_id: main_interaction.guild.id,
             });
 
             if (table) {
                 if (table === 'open') {
-                    await Infractions.deleteOpen(inf_id);
+                    await new Infractions().deleteOpen(inf_id);
                 } else {
-                    await Infractions.deleteClosed(infraction_id);
+                    await new Infractions().deleteClosed(infraction_id);
                 }
 
                 return main_interaction

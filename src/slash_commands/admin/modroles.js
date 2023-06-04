@@ -1,13 +1,13 @@
 const { ActionRowBuilder, EmbedBuilder, PermissionFlagsBits, ButtonStyle } = require('discord.js');
-const { GuildConfig } = require('../../../utils/functions/data/Config');
-const { Modroles } = require('../../../utils/functions/data/Modroles');
+const GuildConfig = require('@utils/classes/Config');
+const Modroles = require('@utils/classes/Modroles');
 const config = require('../../assets/json/_config/config.json');
 const { modRolesConfig, modRolesPerms } = require('../_config/admin/modroles');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const roles = main_interaction.options.getRole('roles');
 
-    const guildConfig = await GuildConfig.get(main_interaction.guild.id);
+    const guildConfig = await new GuildConfig().get(main_interaction.guild.id);
     const modroles = guildConfig.modroles;
 
     const dbEntity = modroles.find((x) => x.role === roles.id) || {};
@@ -44,7 +44,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         }**`
     );
 
-    const buttons = Modroles.generateButtons();
+    const buttons = new Modroles().generateButtons();
 
     const row = new ActionRowBuilder();
 
@@ -102,7 +102,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     collector.on('collect', async (interaction) => {
         switch (interaction.customId) {
             case 'isAdmin':
-                returnMessage = await Modroles.update({
+                returnMessage = await new Modroles().update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: true,
@@ -112,7 +112,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isAdmin.setStyle(ButtonStyle.Success);
                 break;
             case 'isMod':
-                returnMessage = await Modroles.update({
+                returnMessage = await new Modroles().update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: false,
@@ -122,7 +122,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isMod.setStyle(ButtonStyle.Success);
                 break;
             case 'isHelper':
-                returnMessage = await Modroles.update({
+                returnMessage = await new Modroles().update({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                     isAdmin: false,
@@ -132,7 +132,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 buttons.isHelper.setStyle(ButtonStyle.Success);
                 break;
             case 'isRemove':
-                returnMessage = await Modroles.remove({
+                returnMessage = await new Modroles().remove({
                     guild_id: main_interaction.guild.id,
                     role_id: roles.id,
                 });
