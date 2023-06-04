@@ -44,10 +44,15 @@ const { guildVanityURLRemove } = require('../ext_events/guildVanityURLRemove');
 const { autoModerationRuleCreate } = require('../autoModerationRuleCreate');
 const { autoModerationRuleDelete } = require('../autoModerationRuleDelete');
 const { autoModerationRuleUpdate } = require('../autoModerationRuleUpdate');
+const { guildDelete } = require('../guildDelete');
 
 module.exports.acceptBotInteraction = (bot) => {
     bot.on('guildCreate', async (guild) => {
         guildCreate(guild, bot);
+    });
+
+    bot.on('guildDelete', async (guild) => {
+        guildDelete(guild);
     });
 
     bot.on('guildMemberAdd', (member) => {
