@@ -3,11 +3,11 @@
         "baseUrl": "./",
         "module": "Node16",
         "paths": {
-            "@root": ["./*"],
+            "~root": ["./*"],
             "~src/*": ["./src/*"],
             "~utils/*": ["./utils/*"],
             "~bot/*": ["./bot/*"],
-            "@root/*": ["./*"]
+            "~root/*": ["./*"]
         }
     },
     "exclude": ["node_modules"]
