@@ -175,11 +175,13 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
     generateEmbed(videoDetails) {
         return new Promise(async (resolve) => {
             const embed = await new Notification().geneateNotificationEmbed({
-                title: videoDetails.title.substring(0, 250),
-                description: videoDetails?.description.substring(0, 500),
+                title: videoDetails.title ? videoDetails.title.substring(0, 250) : 'No title',
+                description: videoDetails.description
+                    ? videoDetails.description.substring(0, 500)
+                    : '',
                 url: videoDetails.video_url,
                 image: videoDetails.thumbnails.splice(-1)[0].url,
-                thumbnail: videoDetails.author.thumbnails.splice(-1)[0].url,
+                thumbnail: videoDetails?.author.thumbnails?.splice(-1)[0].url,
                 color: '#ff0000',
                 footer: {
                     text: `Subscribers ${videoDetails.author.subscriber_count} | Views ${videoDetails.viewCount} | Length ${videoDetails.lengthSeconds}s | ${videoDetails.author.name}`,
