@@ -16,8 +16,6 @@ COPY . .
 
 EXPOSE 5000
 
-RUN npm run webpack-build
-
 CMD if [ "$NODE_ENV" = "development" ]; then \
         nodemon bot/core/shard.js ; \
     else \
