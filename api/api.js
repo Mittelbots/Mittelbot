@@ -1,4 +1,7 @@
-const { getRoutes} = require('./routes/get');
+const { getRoutes } = require('./routes/get');
+const { postRoutes } = require('./routes/post');
+const { putRoutes } = require('./routes/put');
+const { deleteRoutes } = require('./routes/delete');
 const express = require('express');
 
 class MittelbotApi {
@@ -31,8 +34,9 @@ class MittelbotApi {
                 this.bot = req.data.bot;
             });               
             this.app.get('*', getRoutes);
-            this.app.post('*', post);
+            this.app.post('*', postRoutes);
             this.app.delete('*', deleteRoute);
+            this.app.put('*', putRoutes);
             resolve(true);
         });
     }
