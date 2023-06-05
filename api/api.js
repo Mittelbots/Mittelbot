@@ -32,7 +32,7 @@ class MittelbotApi {
         return new Promise((resolve) => {
             this.app.get('/init', (req, res) => {
                 this.bot = req.data.bot;
-            });               
+            });
             this.app.get('*', getRoutes);
             this.app.post('*', postRoutes);
             this.app.delete('*', deleteRoute);
@@ -48,13 +48,13 @@ class MittelbotApi {
             );
         });
 
-        process.once('SIGUSR2', function() {
+        process.once('SIGUSR2', function () {
             console.info('SIGUSR2 received, closing server');
             this.app.close();
             process.kill(process.pid, 'SIGUSR2');
         });
 
-        process.on("beforeExit", () => {
+        process.on('beforeExit', () => {
             console.info('beforeExit received, closing server');
             this.app.close();
         });

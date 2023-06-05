@@ -1,3 +1,1 @@
-module.exports.postRoutes = async () => {
-    
-}
+module.exports.postRoutes = async () => {};

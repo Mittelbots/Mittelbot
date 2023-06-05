@@ -8,7 +8,7 @@
             "~utils/*": ["./utils/*"],
             "~bot/*": ["./bot/*"],
             "~root/*": ["./*"],
-            "~api/*": ["./api/*"],
+            "~api/*": ["./api/*"]
         }
     },
     "exclude": ["node_modules"]

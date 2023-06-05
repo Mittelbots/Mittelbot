@@ -1,3 +1,1 @@
-module.exports.getRoutes = async () => {
-    
-}
+module.exports.getRoutes = async () => {};

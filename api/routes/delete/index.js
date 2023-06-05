@@ -1,3 +1,1 @@
-module.exports.deleteRoutes = async () => {
-    
-}
+module.exports.deleteRoutes = async () => {};
