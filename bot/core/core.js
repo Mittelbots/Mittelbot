@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const { checkInfractions } = require('~src/events/checkInfraction');
 const { checkTemproles } = require('~src/events/checkTemproles');
 const { twitch_notifier } = require('~src/events/notfifier/twitch_notifier');
@@ -48,6 +50,20 @@ module.exports.startBot = async (bot) => {
             }
 
             new MittelbotApi();
+
+            axios
+                .get('http://localhost:5000/auth', {
+                    headers: {
+                        'x-email': 'test@test.de',
+                        'x-password': '123',
+                    },
+                })
+                .then((res) => {
+                    console.log(res.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });
 
             console.info(
                 `****Ready! Logged in as ${bot.user.username}! I'm on ${bot.guilds.cache.size} Server(s)****`

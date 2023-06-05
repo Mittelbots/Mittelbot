@@ -1,8 +1,6 @@
-const { getRoutes } = require('./routes/get');
-const { postRoutes } = require('./routes/post');
-const { putRoutes } = require('./routes/put');
-const { deleteRoutes } = require('./routes/delete');
+const { getRoutes } = require('./routes/routes');
 const express = require('express');
+const auth = require('./auth/auth');
 
 class MittelbotApi {
     constructor() {
@@ -33,10 +31,11 @@ class MittelbotApi {
             this.app.get('/init', (req, res) => {
                 this.bot = req.data.bot;
             });
-            this.app.get('*', getRoutes);
-            this.app.post('*', postRoutes);
-            this.app.delete('*', deleteRoute);
-            this.app.put('*', putRoutes);
+
+            this.app.get('*', (req, res) => getRoutes(req, res, 'get'));
+            this.app.post('*', (req, res) => getRoutes(req, res, 'post'));
+            this.app.delete('*', (req, res) => getRoutes(req, res, 'delete'));
+            this.app.put('*', (req, res) => getRoutes(req, res, 'put'));
             resolve(true);
         });
     }
@@ -50,13 +49,12 @@ class MittelbotApi {
 
         process.once('SIGUSR2', function () {
             console.info('SIGUSR2 received, closing server');
-            this.app.close();
             process.kill(process.pid, 'SIGUSR2');
         });
 
         process.on('beforeExit', () => {
             console.info('beforeExit received, closing server');
-            this.app.close();
+            process.exit();
         });
     }
 }
