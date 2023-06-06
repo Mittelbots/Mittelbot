@@ -20,7 +20,7 @@ module.exports = (req, res) => {
         decryptedAuthKey = jsonwebtoken.verify(authKey, process.env.JWT_SECRET).authKey;
     }
 
-    console.log(decryptedAuthKey, 'decryptedAuthKey')
+    console.log(decryptedAuthKey, 'decryptedAuthKey');
 
     if (!decryptedAuthKey) {
         res.status(401).json({
@@ -34,7 +34,7 @@ module.exports = (req, res) => {
         process.env.AUTH_KEY_SECRET
     ).toString(cryptojs.enc.Utf8);
 
-    console.log(authKeyDecrypted)
+    console.log(authKeyDecrypted);
     if (authKeyDecrypted.toLocaleLowerCase() !== process.env.AUTH_KEY.toLocaleLowerCase()) {
         res.status(401).json({
             message: 'Unauthorized',
