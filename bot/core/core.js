@@ -16,6 +16,7 @@ const logs = require('discord-logs');
 const Music = require('~utils/classes/Music');
 const YouTubeNotification = require('~utils/classes/Notifications/YouTube/YouTubeNotification');
 const MittelbotApi = require('~api/api');
+const apiAuth = require('~core/apiAuth');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -51,11 +52,13 @@ module.exports.startBot = async (bot) => {
 
             new MittelbotApi();
 
+            apiAuth();
+
             axios
-                .get('http://localhost:5000/auth', {
+                .get('http://localhost:5000/get/config', {
                     headers: {
-                        'x-email': 'test@test.de',
-                        'x-password': '123',
+                        accept: 'application/json',
+                        'x-auth-key': process.env.BOT_AUTH_KEY,
                     },
                 })
                 .then((res) => {

@@ -3,9 +3,10 @@ const jsonwebtoken = require('jsonwebtoken');
 
 module.exports = (req, res) => {
     const authKey = req.headers['x-auth-key'];
+
     if (!authKey) {
         res.status(401).json({
-            message: 'Unauthorized',
+            message: 'Unauthorized. No Auth Key provided',
         });
         return false;
     }
@@ -19,9 +20,11 @@ module.exports = (req, res) => {
         decryptedAuthKey = jsonwebtoken.verify(authKey, process.env.JWT_SECRET).authKey;
     }
 
+    console.log(decryptedAuthKey, 'decryptedAuthKey');
+
     if (!decryptedAuthKey) {
         res.status(401).json({
-            message: 'Unauthorized',
+            message: 'Unauthorized. Invalid Auth Key provided',
         });
         return false;
     }
@@ -30,6 +33,8 @@ module.exports = (req, res) => {
         decryptedAuthKey,
         process.env.AUTH_KEY_SECRET
     ).toString(cryptojs.enc.Utf8);
+
+    console.log(authKeyDecrypted);
     if (authKeyDecrypted.toLocaleLowerCase() !== process.env.AUTH_KEY.toLocaleLowerCase()) {
         res.status(401).json({
             message: 'Unauthorized',

@@ -3,8 +3,9 @@ const express = require('express');
 const auth = require('./auth/auth');
 
 class MittelbotApi {
-    constructor() {
+    constructor(bot) {
         return new Promise(async (resolve) => {
+            this.bot = bot;
             await this.create();
             await this.config();
             await this.routes();
@@ -28,14 +29,10 @@ class MittelbotApi {
 
     routes() {
         return new Promise((resolve) => {
-            this.app.get('/init', (req, res) => {
-                this.bot = req.data.bot;
-            });
-
-            this.app.get('*', (req, res) => getRoutes(req, res, 'get'));
-            this.app.post('*', (req, res) => getRoutes(req, res, 'post'));
-            this.app.delete('*', (req, res) => getRoutes(req, res, 'delete'));
-            this.app.put('*', (req, res) => getRoutes(req, res, 'put'));
+            this.app.get('*', (req, res) => getRoutes(req, res, 'get', this.bot));
+            this.app.post('*', (req, res) => getRoutes(req, res, 'post', this.bot));
+            this.app.delete('*', (req, res) => getRoutes(req, res, 'delete', this.bot));
+            this.app.put('*', (req, res) => getRoutes(req, res, 'put', this.bot));
             resolve(true);
         });
     }
