@@ -58,6 +58,7 @@ bot.player = new Player(bot, {
         quality: 'highestaudio',
     },
     autoRegisterExtractor: false,
+    useLegacyFFmpeg: true,
 });
 registerPlayerEvents(bot.player, bot);
 

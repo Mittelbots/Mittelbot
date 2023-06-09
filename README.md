@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=250px src="./.github/logo.png" alt="Project logo"></a>
+ <img width=250px src="./.github/project_files/logo.png" alt="Project logo"></a>
 </p>
 
 <h1 align="center">Mittelbot</h1>
@@ -28,7 +28,7 @@ With Notifications, Moderation with warn roles, Fun Commands, Auto-Translation, 
 
 ## Roadmap
 
-<img src="./.github/roadmap_mittelbot_2023_release1.png" alt="Roadmap Mittelbot Release 1.0" witdth="600px"/>
+<img src="./.github/project_files/roadmap_mittelbot_2023_release1.png" alt="Roadmap Mittelbot Release 1.0" witdth="600px"/>
 
 <br>
 

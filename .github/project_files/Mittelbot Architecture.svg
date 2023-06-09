@@ -1,0 +1,58 @@
+<mxfile host="app.diagrams.net" modified="2023-06-05T10:07:27.068Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/113.0" etag="AsCGahi2_AhdugkY1uVk" version="21.3.7" type="device">
+  <diagram name="Seite-1" id="2niabJmOzZZpsmv9nIls">
+    <mxGraphModel dx="1327" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="LVacEoWz_aWMGLHppKyI-14" value="" style="whiteSpace=wrap;html=1;aspect=fixed;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="170" y="95" width="410" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="LVacEoWz_aWMGLHppKyI-3" target="LVacEoWz_aWMGLHppKyI-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="LVacEoWz_aWMGLHppKyI-3" target="LVacEoWz_aWMGLHppKyI-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="LVacEoWz_aWMGLHppKyI-3" target="LVacEoWz_aWMGLHppKyI-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-3" value="Bot" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://avatars.githubusercontent.com/u/26492485?s=280&amp;v=4;" vertex="1" parent="1">
+          <mxGeometry x="335" y="140" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="LVacEoWz_aWMGLHppKyI-6" target="LVacEoWz_aWMGLHppKyI-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="230" y="360" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="250" y="340" />
+              <mxPoint x="250" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="LVacEoWz_aWMGLHppKyI-6" target="LVacEoWz_aWMGLHppKyI-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-6" value="Database" style="shape=datastore;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="220" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="LVacEoWz_aWMGLHppKyI-8" target="LVacEoWz_aWMGLHppKyI-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-8" value="&lt;div&gt;Database&lt;/div&gt;&lt;div&gt;Backup&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="210" y="360" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-15" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;&lt;b&gt;Docker&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="320" y="55" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-16" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://blog.theodo.com/static/63d60039b4d984c7014f2b72544cf46c/46604/sentry-logo.png;" vertex="1" parent="1">
+          <mxGeometry x="600" y="260" width="130" height="45.24" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="LVacEoWz_aWMGLHppKyI-20" target="LVacEoWz_aWMGLHppKyI-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LVacEoWz_aWMGLHppKyI-20" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://disforge.com/assets/icons/81384788765712384.png?t=a8eccf1628b1e739d535a813f279e905;" vertex="1" parent="1">
+          <mxGeometry x="626" y="136" width="78" height="78" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
