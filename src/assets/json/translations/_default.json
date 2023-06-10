@@ -81,7 +81,7 @@
                 },
                 "antiinsults": {
                     "removed": "{success.emote} Successfully removed the insult `%c` from the list.",
-                    "enabled": "{success.emote} Successfully enabled Anti-Insults with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nnWords: %r",
+                    "enabled": "{success.emote} Successfully enabled Anti-Insults with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nnWords: `%r`",
                     "disabled": "{success.emote} Successfully disabled Anti-Mass-Mention."
                 }
             },

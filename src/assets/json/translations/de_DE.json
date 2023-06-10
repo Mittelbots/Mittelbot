@@ -81,7 +81,7 @@
                 },
                 "antiinsults": {
                     "removed": "{success.emote} Erfolgreich die Beleidigung(en) `%c` aus der Liste entfernt.",
-                    "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e\n\nWhitelistkanäle: %q\n\nWörter: %r.",
+                    "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e\n\nWhitelistkanäle: %q\n\nWörter: `%r`.",
                     "disabled": "{success.emote} Erfolgreich Anti-Beleidigung deaktiviert."
                 }
             },
