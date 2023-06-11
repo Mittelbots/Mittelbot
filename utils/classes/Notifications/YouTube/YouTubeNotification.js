@@ -97,7 +97,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         });
                     }
 
-                    console.log(
+                    console.info(
                         `📥 New upload sent! GUILD: ${upload.guild_id} CHANNEL ID: ${upload.info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`
                     );
                 } catch (err) {
