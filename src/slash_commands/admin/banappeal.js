@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const Banappeal = require('~utils/classes/Banappeal');
 const { banAppealConfig, banAppealPerms } = require('../_config/admin/banappeal');
+const { escape } = require('validator');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({ ephemeral: true });
@@ -42,9 +43,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
             });
     }
 
-    const title = main_interaction.options.getString('title');
-    const description = main_interaction.options.getString('description');
-    const questions = main_interaction.options.getString('questions');
+    const title = escape(main_interaction.options.getString('title'));
+    const description = escape(main_interaction.options.getString('description'));
+    const questions = escape(main_interaction.options.getString('questions'));
     const channel = main_interaction.options.getChannel('channel');
     const cooldown = main_interaction.options.getNumber('cooldown');
 

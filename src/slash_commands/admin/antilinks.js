@@ -3,6 +3,7 @@ const Automod = require('~utils/classes/Automod');
 const { antiLinksConfig, antiLinksPerms } = require('../_config/admin/antilinks');
 const { removeMention, removeHttp } = require('~utils/functions/removeCharacters');
 const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const { isURL } = require('validator');
 
 module.exports.run = async ({ main_interaction }) => {
     const guildId = main_interaction.guild.id;
@@ -45,6 +46,12 @@ module.exports.run = async ({ main_interaction }) => {
     });
 
     whitelistlinksInput.split(',').forEach((link) => {
+        if (
+            !isURL(link, {
+                require_host: true,
+            })
+        )
+            return;
         const hostname = removeHttp(link);
         if (setting.whitelistlinks.includes(hostname)) {
             setting.whitelistlinks.splice(setting.whitelistlinks.indexOf(hostname), 1);
