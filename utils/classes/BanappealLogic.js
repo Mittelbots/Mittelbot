@@ -41,14 +41,14 @@ module.exports = class BanappealLogic {
             title = rawTitle.replace('{guild}', guild.name);
             description = rawDescription.replace('{guild}', guild.name);
 
-            let rawQuestions = unescape(settings.questions);
-
-            for (let i in rawQuestions) {
-                rawQuestions[i] = rawQuestions[i].replace('{user}', user.username);
-                rawQuestions[i] = rawQuestions[i].replace('{guild}', guild.name);
+            for (let i in settings.questions) {
+                let rawQuestion = unescape(settings.questions[i]);
+                rawQuestion = rawQuestion.replace('{user}', user.username);
+                rawQuestion = rawQuestion.replace('{guild}', guild.name);
+                settings.questions[i] = rawQuestion;
             }
 
-            const questions = rawQuestions;
+            const questions = settings.questions;
 
             const embed = new EmbedBuilder().setTitle(title).setDescription(description);
 

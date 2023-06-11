@@ -45,7 +45,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const title = escape(main_interaction.options.getString('title'));
     const description = escape(main_interaction.options.getString('description'));
-    const questions = escape(main_interaction.options.getString('questions'));
+    const questions = main_interaction.options.getString('questions');
     const channel = main_interaction.options.getChannel('channel');
     const cooldown = main_interaction.options.getNumber('cooldown');
 
@@ -70,7 +70,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             for (let i in questions_array) {
                 exampleEmbed.addFields({
                     name: `Question ${parseInt(i, 10) + 1}`,
-                    value: questions_array[i],
+                    value: escape(questions_array[i]),
                 });
             }
 
