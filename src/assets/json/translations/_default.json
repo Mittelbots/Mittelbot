@@ -548,6 +548,10 @@
                 "manageRoles": "{error.emote} I don't have permission to manage roles."
             }
         },
+        "input": {
+            "invalidLink": "{error.emote} %c is not a valid link.",
+            "invalidNumber": "{error.emote} %c is not a valid number."
+        },
         "ticket": {
             "setting": {
                 "delete": "{error.emote} There was an error deleting your Ticket Setting. {general.tryAgainLater}"

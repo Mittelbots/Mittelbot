@@ -542,6 +542,10 @@
                 "manageReactions": "{error.emote} I don't have permission to manage reactions."
             }
         },
+        "input": {
+            "invalidLink": "{error.emote} %c ist kein gültiger Link.",
+            "invalidNumber": "{error.emote} %c is not a valid number."
+        },
         "ticket": {
             "setting": {
                 "delete": "{error.emote} Beim Löschen Diner Ticket-Einstellung ist ein Fehler aufgetreten. {general.tryAgainLater}"

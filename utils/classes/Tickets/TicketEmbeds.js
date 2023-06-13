@@ -1,4 +1,5 @@
 const { EmbedBuilder, ButtonStyle, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { unescape } = require('validator');
 
 module.exports = class TicketEmbeds {
     constructor() {}
@@ -15,7 +16,9 @@ module.exports = class TicketEmbeds {
         return new Promise(async (resolve) => {
             const embed = new EmbedBuilder()
                 .setTitle(this.defaultEmbedOptions.title)
-                .setDescription(newSettings.description || this.defaultEmbedOptions.description)
+                .setDescription(
+                    unescape(newSettings.description) || this.defaultEmbedOptions.description
+                )
                 .setColor(this.defaultEmbedOptions.color);
 
             const btn = await this.generateCreateButton();
@@ -40,7 +43,8 @@ module.exports = class TicketEmbeds {
             const embed = new EmbedBuilder()
                 .setTitle(this.defaultEmbedOptions.title)
                 .setDescription(
-                    this.settings.ticket_description || this.defaultEmbedOptions.ticket_description
+                    unescape(this.settings.ticket_description) ||
+                        this.defaultEmbedOptions.ticket_description
                 )
                 .setColor(this.defaultEmbedOptions.color);
 

@@ -12,7 +12,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             const auditlog = main_interaction.options.getChannel('auditlog');
             const messagelog = main_interaction.options.getChannel('messagelog');
             const modlog = main_interaction.options.getChannel('modlog');
-            const reset = main_interaction.options.getString('reset');
+            const reset = main_interaction.options.getBoolean('reset');
             await new Logs()
                 .update({
                     guild_id: main_interaction.guild.id,
