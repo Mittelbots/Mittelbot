@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { guessnumberConfig } = require('../_config/fun/guessnumber');
+const { isAlphanumeric } = require('validator');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const maxNumber = Math.floor(Math.random() * 100) + 1;
@@ -37,6 +38,23 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const number = originalNumber();
     await message_collector.on('collect', async (message) => {
+        if (!isAlphanumeric(message.content)) {
+            await message
+                .reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['error.input.invalidNumber', number],
+                                    main_interaction.guild.id
+                                )
+                            )
+                            .setColor(global.t.trans(['general.colors.error'])),
+                    ],
+                })
+                .catch((err) => {});
+        }
+
         const guess = parseInt(message.content, 10);
 
         if (guess === number) {

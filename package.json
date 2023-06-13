@@ -26,7 +26,6 @@
         ]
     },
     "_moduleAliases": {
-        "~root": ".",
         "~bot": "./bot",
         "~core": "./bot/core",
         "~src": "./src",
@@ -77,6 +76,7 @@
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
         "undici": "^5.22.1",
+        "validator": "^13.9.0",
         "ytdl-core": "npm:@distube/ytdl-core@^4.11.10"
     },
     "devDependencies": {

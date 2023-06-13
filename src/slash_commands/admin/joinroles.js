@@ -7,6 +7,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     const roles = main_interaction.options.getString('joinroles');
     const newJoinRoles = removeMention(roles).split(' ');
+
     new Joinroles()
         .update({
             guild: main_interaction.guild,

@@ -81,7 +81,7 @@
                 },
                 "antiinsults": {
                     "removed": "{success.emote} Erfolgreich die Beleidigung(en) `%c` aus der Liste entfernt.",
-                    "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e\n\nWhitelistkanäle: %q\n\nWörter: %r.",
+                    "enabled": "{success.emote} Erfolgreich Anti-Beleidigung mit der Aktion `%c` aktiviert.\n\nWhitelistrollen: %e\n\nWhitelistkanäle: %q\n\nWörter: `%r`.",
                     "disabled": "{success.emote} Erfolgreich Anti-Beleidigung deaktiviert."
                 }
             },
@@ -541,6 +541,10 @@
                 "roleAddSpecific": "{error.emote} Ich habe nicht die Berechtigung, die Rolle %c hinzuzufügen.",
                 "manageReactions": "{error.emote} I don't have permission to manage reactions."
             }
+        },
+        "input": {
+            "invalidLink": "{error.emote} %c ist kein gültiger Link.",
+            "invalidNumber": "{error.emote} %c is not a valid number."
         },
         "ticket": {
             "setting": {
