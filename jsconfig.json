@@ -1,13 +1,13 @@
 {
     "compilerOptions": {
         "baseUrl": "./",
-        "module": "Node16",
+        "module": "CommonJS",
         "paths": {
-            "~root": ["./*"],
             "~src/*": ["./src/*"],
             "~utils/*": ["./utils/*"],
             "~bot/*": ["./bot/*"],
-            "~root/*": ["./*"]
+            "~core/*": ["./bot/core/*"],
+            "~assets/*": ["./src/assets/*"]
         }
     },
     "exclude": ["node_modules"]

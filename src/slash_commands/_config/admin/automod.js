@@ -13,15 +13,11 @@ module.exports.autoModConfig = new SlashCommandBuilder()
             .addRoleOption((option) =>
                 option.setName('role').setDescription('Enable/disable anti-spam.').setRequired(true)
             )
-            .addStringOption((option) =>
+            .addBooleanOption((option) =>
                 option
                     .setName('remove')
                     .setDescription('Select if you want to remove the role from the whitelist.')
                     .setRequired(false)
-                    .addChoices({
-                        name: 'remove',
-                        value: 'remove',
-                    })
             )
     );
 
