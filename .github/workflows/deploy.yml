@@ -21,10 +21,11 @@ jobs:
             - name: Install dependencies
               run: npm install --omit=dev
 
-            - name: Get production files
+            - name: Get production data
               run: |
-                  cp ../.env .env
-                  cp ../docker-compose.override.yml docker-compose.override.yml
+                  touch .env
+                  echo "$PRODUCTION_ENV" > .env
+                  echo "$PRODUCTION_DOCKER" > docker-compose.override.yml
 
             - name: Build
               run: |

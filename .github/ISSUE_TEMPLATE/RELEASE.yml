@@ -14,7 +14,7 @@ body:
       id: implementation_pr
       attributes:
           label: 'Related Pull Request(s)'
-          description: Pull request used for the release
+          description: Pull request used for the release that doesn't have a related issue
           placeholder: '- #Pull Request ID'
       validations:
           required: false
