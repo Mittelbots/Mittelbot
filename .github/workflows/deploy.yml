@@ -26,6 +26,14 @@ jobs:
                   touch .env
                   echo "$PRODUCTION_ENV" > .env
                   echo "$PRODUCTION_DOCKER" > docker-compose.override.yml
+                  
+            - name: Check if .env file has content
+              run: |
+                if grep -q . .env; then
+                    echo ".env file is not empty"
+                else
+                    echo ".env file is empty"
+                fi
 
             - name: Build
               run: |
