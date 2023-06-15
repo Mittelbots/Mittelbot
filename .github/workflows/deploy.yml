@@ -29,11 +29,19 @@ jobs:
                   
             - name: Check if .env file has content
               run: |
-                if grep -q . .env; then
+                  if grep -q . .env; then
                     echo ".env file is not empty"
-                else
+                  else
                     echo ".env file is empty"
-                fi
+                  fi
+                  
+            - name: Check if docker-compose.override.yml file has content
+              run: |
+                  if grep -q . docker-compose.override.yml; then
+                    echo "docker-compose.override.yml file is not empty"
+                  else
+                    echo "docker-compose.override.yml file is empty"
+                  fi
 
             - name: Build
               run: |
