@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - beta
-            - dev
 
 jobs:
     deploy:
@@ -25,16 +24,18 @@ jobs:
             - name: Get production data
               run: |
                   touch .env
-                  echo "$PRODUCTION_ENV" > .env
-                  echo "$PRODUCTION_DOCKER" > docker-compose.override.yml
+                  echo "${{ secrets.PRODUCTION_ENV }}" > .env
+                  echo "${{ secrets.PRODUCTION_DOCKER }}" > docker-compose.override.yml
 
             - name: Check if PRODUCTION_ENV file has content
               run: |
-                  if [ -n ${{ secrets.PRODUCTION_ENV }} ]; then
-                    echo "Secret exists and has content."
+                  if grep -q . .env; then
+                    echo "$PRODUCTION_ENV file is not empty"
                   else
-                    echo "Secret does not exist or is empty."
+                    echo "$PRODUCTION_ENV file is empty"
+                    exit 0
                   fi
+
 
             - name: Check if docker-compose.override.yml file has content
               run: |
@@ -42,6 +43,7 @@ jobs:
                     echo "docker-compose.override.yml file is not empty"
                   else
                     echo "docker-compose.override.yml file is empty"
+                    exit 0
                   fi
 
             - name: Build
