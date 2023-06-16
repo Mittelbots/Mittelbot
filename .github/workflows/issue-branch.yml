@@ -10,12 +10,13 @@ jobs:
               uses: robvanderleek/create-issue-branch@main
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              branches:
-                  - label: enhancement
-                    prefix: feature/
-                  - label: bug
-                    prefix: fix/
-                  - label: '*'
-                    skip: true
-              branchName: '${issue.title[0,45]}'
-              commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
+              with:
+                  branches:
+                      - label: enhancement
+                        prefix: feature/
+                      - label: bug
+                        prefix: fix/
+                      - label: '*'
+                        skip: true
+                  branchName: '${issue.title[0,45]}'
+                  commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
