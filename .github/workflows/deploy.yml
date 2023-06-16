@@ -29,8 +29,8 @@ jobs:
 
             - name: Get production data
               run: |
-                  echo $PRODUCTION_ENV > .env
-                  echo $PRODUCTION_DOCKER > docker-compose.override.yml
+                  echo "$PRODUCTION_ENV" > .env
+                  echo "$PRODUCTION_DOCKER" > docker-compose.override.yml
 
             - name: Check if .env file has content
               run: |
