@@ -6,3 +6,4 @@ branches:
   - label: '*'
     skip: true
 commentMessage: 'Branch `${branchName}` created for issue: `${issue.title}`'
+autoCloseIssue: true
