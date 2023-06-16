@@ -24,15 +24,16 @@ jobs:
             - name: Get production data
               run: |
                   touch .env
-                  echo "$PRODUCTION_ENV" > .env
-                  echo "$PRODUCTION_DOCKER" > docker-compose.override.yml
+                  echo "${{ secrets.PRODUCTION_ENV }}" > .env
+                  echo "${{ secrets.PRODUCTION_DOCKER }}" > docker-compose.override.yml
 
             - name: Check if PRODUCTION_ENV file has content
               run: |
-                  if grep -q . "$PRODUCTION_ENV"; then
+                  if grep -q . .env; then
                     echo "$PRODUCTION_ENV file is not empty"
                   else
                     echo "$PRODUCTION_ENV file is empty"
+                    exit 0
                   fi
 
             - name: Check if docker-compose.override.yml file has content
@@ -41,6 +42,7 @@ jobs:
                     echo "docker-compose.override.yml file is not empty"
                   else
                     echo "docker-compose.override.yml file is empty"
+                    exit 0
                   fi
 
             - name: Build
