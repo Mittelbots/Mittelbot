@@ -30,7 +30,7 @@ jobs:
 
             - name: Check if PRODUCTION_ENV file has content
               run: |
-                  if [ -n "$PRODUCTION_ENV" ]; then
+                  if [ -n ${{ secrets.PRODUCTION_ENV }} ]; then
                     echo "Secret exists and has content."
                   else
                     echo "Secret does not exist or is empty."
