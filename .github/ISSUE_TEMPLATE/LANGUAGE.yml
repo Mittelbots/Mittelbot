@@ -1,7 +1,7 @@
 name: '🇺🇳 Language'
 description: Create a new ticket for a new language or some changes.
 title: '🇺🇳 [LANGUAGE] - <title>'
-labels: ['language']
+labels: ['language', 'enhancement']
 body:
     - type: textarea
       id: description

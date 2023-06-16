@@ -1,0 +1,22 @@
+on:
+    project_card:
+        types: [converted]
+
+jobs:
+    create_issue_branch_job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Create Issue Branch
+              if: github.event.project_card.project_column.project.state == '🏗 In progress'
+              uses: robvanderleek/create-issue-branch@main
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              branches:
+                  - label: enhancement
+                    prefix: feature/
+                  - label: bug
+                    prefix: fix/
+                  - label: '*'
+                    skip: true
+              branchName: '${issue.title[0,45]}'
+              commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'

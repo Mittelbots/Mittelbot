@@ -1,6 +1,7 @@
 name: '📝 Change Request'
 description: Create a new ticket for a new change request of an existing feature
 title: '📝 [CHANGE-REQUEST] - <title>'
+labels: ['enhancement']
 body:
     - type: textarea
       id: summary
