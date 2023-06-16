@@ -1,9 +1,8 @@
 branches:
   - label: enhancement
-  prefix: feature/
+  prefix: 'feature/${issue.title[0,45]}'
 - label: bug
-  prefix: fix/
+  prefix: 'fix/${issue.title[0,45]}'
 - label: '*'
   skip: true
-branchName: '${issue.title[0,45]}'
 commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
