@@ -7,7 +7,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Create Issue Branch
-              if: github.event.project_card.project_column.project.state == '🏗 In progress'
               uses: robvanderleek/create-issue-branch@main
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
