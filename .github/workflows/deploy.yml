@@ -24,8 +24,8 @@ jobs:
             - name: Get production data
               run: |
                   touch .env
-                  echo "${{ secrets.PRODUCTION_ENV }}" > .env
-                  echo "${{ secrets.PRODUCTION_DOCKER }}" > docker-compose.override.yml
+                  echo ${{ secrets.PRODUCTION_ENV }} > .env
+                  echo ${{ secrets.PRODUCTION_DOCKER }} > docker-compose.override.yml
 
             - name: Check if PRODUCTION_ENV file has content
               run: |
