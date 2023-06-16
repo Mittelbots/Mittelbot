@@ -45,7 +45,7 @@ jobs:
                     echo ".env file is not empty"
                   else
                     echo ".env file is empty"
-                    echo "::set-output name=stop_workflow::true"
+                    echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
             - name: Check if docker-compose.override.yml file has content
@@ -54,7 +54,7 @@ jobs:
                     echo "docker-compose.override.yml file is not empty"
                   else
                     echo "docker-compose.override.yml file is empty"
-                    echo "::set-output name=stop_workflow::true"
+                    echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
             - name: Build
