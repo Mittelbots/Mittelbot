@@ -21,16 +21,10 @@ jobs:
             - name: Install dependencies
               run: npm install --omit=dev
 
-            - name: Set up environment variables
-              run: |
-                  echo "export PRODUCTION_ENV=${{ secrets.PRODUCTION_ENV }}" >> $GITHUB_ENV
-                  echo "export PRODUCTION_DOCKER=${{ secrets.PRODUCTION_DOCKER }}" >> $GITHUB_ENV
-
             - name: Get production data
               run: |
-                  touch .env
-                  echo $PRODUCTION_ENV > .env
-                  echo $PRODUCTION_DOCKER > docker-compose.override.yml
+                  cp ../.env .env
+                  cp ../docker-compose.override.yml docker-compose.override.yml
 
             - name: Check if .env file has content
               run: |
@@ -38,7 +32,7 @@ jobs:
                     echo ".env file is not empty"
                   else
                     echo ".env file is empty"
-                    echo "::set-output name=stop_workflow::true"
+                    echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
             - name: Check if docker-compose.override.yml file has content
@@ -47,7 +41,7 @@ jobs:
                     echo "docker-compose.override.yml file is not empty"
                   else
                     echo "docker-compose.override.yml file is empty"
-                    echo "::set-output name=stop_workflow::true"
+                    echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
             - name: Build

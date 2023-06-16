@@ -30,14 +30,7 @@ module.exports.logConfig = new SlashCommandBuilder()
                     .setRequired(false)
             )
             .addBooleanOption((string) =>
-                string
-                    .setName('reset')
-                    .setDescription('Reset all log channels.')
-                    .setRequired(false)
-                    .addChoices({
-                        name: 'Reset',
-                        value: 'reset',
-                    })
+                string.setName('reset').setDescription('Reset all log channels.').setRequired(false)
             )
     )
     .addSubcommand((subcommand) =>
