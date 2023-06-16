@@ -36,7 +36,6 @@ jobs:
                     exit 0
                   fi
 
-
             - name: Check if docker-compose.override.yml file has content
               run: |
                   if grep -q . docker-compose.override.yml; then
