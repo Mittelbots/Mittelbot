@@ -1,6 +1,8 @@
 on:
     project_card:
-        types: [converted]
+        types:
+            - converted
+            - moved
 
 jobs:
     create_issue_branch_job:
