@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - beta
+            - dev
 
 jobs:
     deploy:
@@ -29,10 +30,10 @@ jobs:
 
             - name: Check if PRODUCTION_ENV file has content
               run: |
-                  if grep -q . "$PRODUCTION_ENV"; then
-                    echo "$PRODUCTION_ENV file is not empty"
+                  if [ -n "${{ secrets.PRODUCTION_ENV }}" ]; then
+                    echo "Secret exists and has content."
                   else
-                    echo "$PRODUCTION_ENV file is empty"
+                    echo "Secret does not exist or is empty."
                   fi
 
             - name: Check if docker-compose.override.yml file has content
