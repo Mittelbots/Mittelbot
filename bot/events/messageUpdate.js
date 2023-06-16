@@ -32,9 +32,13 @@ module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
 
     function showResult(diffs) {
         return diffs.reduce(function (text, value) {
-            value.value = value.value.replace(/`/g, '\\`');
-            value.value = value.value.replace(/~/g, '\\~');
-            value.value = value.value.replace(/\*/g, '\\*');
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+            }
+
+            value.value = value.value.replace(new RegExp(escapeRegExp('`'), 'g'), '\\`');
+            value.value = value.value.replace(new RegExp(escapeRegExp('~'), 'g'), '\\~');
+            value.value = value.value.replace(new RegExp(escapeRegExp('*'), 'g'), '\\*');
 
             switch (value.type) {
                 case 'del':
