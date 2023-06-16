@@ -1,6 +1,7 @@
 name: '🧮 Release'
 description: Create a new ticket for a new change release
 title: '🧮 [Release] - <type> VERSION <version>'
+labels: ['release']
 body:
     - type: input
       id: released_date
