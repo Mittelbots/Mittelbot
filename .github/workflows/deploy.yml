@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - beta
+            - dev
 
 jobs:
     deploy:
@@ -25,6 +26,12 @@ jobs:
               run: |
                   echo "export PRODUCTION_ENV=${{ secrets.PRODUCTION_ENV }}" >> $GITHUB_ENV
                   echo "export PRODUCTION_DOCKER=${{ secrets.PRODUCTION_DOCKER }}" >> $GITHUB_ENV
+                  echo "export PROD_TEST=${{ secrets.PROD_TEST }}" >> $GITHUB_ENV
+
+            - name: Debug
+              run: |
+                  echo $PROD_TEST
+                  echo "$PROD_TEST"
 
             - name: Get production data
               run: |
