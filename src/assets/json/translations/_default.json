@@ -207,7 +207,7 @@
             "tryCommandAgainWithoutArgs": "Try again by clicking"
         },
         "admin": {
-            "messageUpdate": "**Message sent by <@%q> edited in <#%w>\n[Jump to Message](https://discord.com/channels/%e/%r/%t)**\n\n**Before**\n%z\n\n**After [BETA]**\n%u",
+            "messageUpdate": "**Message sent by <@%q> edited in <#%w>\n[Jump to Message](https://discord.com/channels/%e/%r/%t)**\n\n**Before**\n%z\n\n**After**\n%u",
             "autoblacklist": {
                 "info": {
                     "title": "Auto-Blacklist",
