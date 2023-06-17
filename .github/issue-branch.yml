@@ -1,11 +1,12 @@
 branches:
     - label: enhancement
-      prefix: 'feature/${issue.title[15,60]}'
+      prefix: 'feature/'
     - label: bug
-      prefix: 'fix/${issue.title[10,60]}'
+      prefix: 'fix/'
     - label: change
-      prefix: 'fix/${issue.title[21,60]}'
+      prefix: 'feature/'
     - label: '*'
       skip: true
+branchName: '${issue.title[0, 45]}'
 commentMessage: 'Branch `${branchName}` created for issue: `${issue.title}`'
 autoCloseIssue: true
