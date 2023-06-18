@@ -14,7 +14,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 };
             }
             const role = main_interaction.options.getRole('role');
-            const remove = main_interaction.options.getString('remove');
+            const remove = main_interaction.options.getBoolean('remove');
 
             if (remove) {
                 setting.whitelistrole.roles = setting.whitelistrole.roles.filter(

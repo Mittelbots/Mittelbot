@@ -3,12 +3,11 @@
         "baseUrl": "./",
         "module": "CommonJS",
         "paths": {
-            "~root": ["./*"],
             "~src/*": ["./src/*"],
             "~utils/*": ["./utils/*"],
             "~bot/*": ["./bot/*"],
-            "~root/*": ["./*"],
-            "~api/*": ["./api/*"]
+            "~core/*": ["./bot/core/*"],
+            "~assets/*": ["./src/assets/*"]
         }
     },
     "exclude": ["node_modules"]

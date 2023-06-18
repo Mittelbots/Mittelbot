@@ -1,6 +1,7 @@
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const Scam = require('~utils/classes/scam');
 const { scamConfig, scamPerms } = require('../_config/admin/scam');
+const { isURL } = require('validator');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const hasPermission = await main_interaction.member.permissions.has(
@@ -25,6 +26,19 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const link = main_interaction.options.getString('link');
+
+    if (!isURL(link)) {
+        main_interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setDescription(
+                        global.t.trans(['error.input.invalidLink', link], main_interaction.guild.id)
+                    )
+                    .setColor(global.t.trans(['general.colors.error'])),
+            ],
+        });
+        return;
+    }
 
     switch (main_interaction.options.getSubcommand()) {
         case 'add':

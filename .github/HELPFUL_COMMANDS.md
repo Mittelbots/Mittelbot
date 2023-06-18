@@ -5,3 +5,7 @@
 
 # run patch-package to create a .patch file
 npx patch-package some-package
+
+
+## Delete all build cache
+`docker builder prune`

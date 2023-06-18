@@ -1,6 +1,6 @@
 # Discord Bot Terms of Service
 
-Last Updated: [DATE]
+Last Updated: 06.06.2023
 
 Please read these Terms of Service ("Agreement") carefully before using the Discord bot ("Bot"). By using the Bot, you agree to the following terms and conditions:
 

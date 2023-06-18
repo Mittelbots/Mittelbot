@@ -1,4 +1,4 @@
-const { ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder } = require('discord.js');
+const { ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, Embed } = require('discord.js');
 const { delay } = require('../delay');
 const isURI = require('@stdlib/assert-is-uri');
 const { isValidHexCode } = require('../validate/isValidHexCode');
@@ -490,13 +490,22 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }, isTes
             joined_user,
         });
 
+        let sendObject = {};
+        if (welcomeChannel instanceof Embed) {
+            sendObject = {
+                content: cleanedMessage,
+                embeds: [welcomeChannel],
+            };
+        } else {
+            sendObject = {
+                content: cleanedMessage,
+            };
+        }
+
         return await bot.guilds.cache
             .get(guild_id)
             .channels.cache.get(welcomeChannel.id)
-            .send({
-                content: cleanedMessage,
-                embeds: [welcomeMessage],
-            })
+            .send(sendObject)
             .then((msg) => {
                 errorhandler({
                     message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}`,
@@ -504,28 +513,13 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }, isTes
                 });
                 resolve(msg);
             })
-            .catch(async () => {
-                await bot.guilds.cache
-                    .get(guild_id)
-                    .channels.cache.get(welcomeChannel.id)
-                    .send({
-                        content: cleanedMessage,
-                    })
-                    .then((msg) => {
-                        errorhandler({
-                            message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}. ❌ But the embed failed.`,
-                            fatal: false,
-                        });
-                        resolve(msg);
-                    })
-                    .catch((err) => {
-                        errorhandler({
-                            message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
-                            err: err.toString(),
-                            fatal: false,
-                        });
-                        reject(err);
-                    });
+            .catch(async (err) => {
+                errorhandler({
+                    message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
+                    err,
+                    fatal: false,
+                });
+                reject(err);
             });
     });
 };

@@ -2,6 +2,7 @@ const { ButtonBuilder } = require('discord.js');
 const { ActionRowBuilder } = require('discord.js');
 const { ButtonStyle } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
+const { unescape } = require('validator');
 
 module.exports = class BanappealLogic {
     constructor() {}
@@ -31,19 +32,22 @@ module.exports = class BanappealLogic {
                 return reject(false);
             }
 
-            settings.title = settings.title.replace('{user}', user.username);
-            settings.description = settings.description.replace('{user}', user.username);
+            const rawTitle = unescape(settings.title);
+            const rawDescription = unescape(settings.description);
 
-            settings.title = settings.title.replace('{guild}', guild.name);
-            settings.description = settings.description.replace('{guild}', guild.name);
+            let title = rawTitle.replace('{user}', user.username);
+            let description = rawDescription.replace('{user}', user.username);
+
+            title = rawTitle.replace('{guild}', guild.name);
+            description = rawDescription.replace('{guild}', guild.name);
 
             for (let i in settings.questions) {
-                settings.questions[i] = settings.questions[i].replace('{user}', user.username);
-                settings.questions[i] = settings.questions[i].replace('{guild}', guild.name);
+                let rawQuestion = unescape(settings.questions[i]);
+                rawQuestion = rawQuestion.replace('{user}', user.username);
+                rawQuestion = rawQuestion.replace('{guild}', guild.name);
+                settings.questions[i] = rawQuestion;
             }
 
-            const title = settings.title;
-            const description = settings.description;
             const questions = settings.questions;
 
             const embed = new EmbedBuilder().setTitle(title).setDescription(description);

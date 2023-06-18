@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const AutoBlacklist = require('~utils/classes/AutoBlacklist');
 const { autoBlacklistConfig, autoBlacklistPerms } = require('../_config/admin/autoblacklist');
+const { escape } = require('validator');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     const type = main_interaction.options.getSubcommand();
@@ -34,7 +35,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             break;
         case 'set':
             const channel = main_interaction.options.getChannel('channel');
-            const ban_message = main_interaction.options.getString('ban_message');
+            const ban_message = escape(main_interaction.options.getString('ban_message'));
 
             const autoBlacklist = new AutoBlacklist();
 
