@@ -7,6 +7,10 @@
 
 <center>
 
+[![Deployment Beta Bot](https://github.com/Mittelbots/Mittelbot/actions/workflows/deploy.yml/badge.svg?branch=beta)](https://github.com/Mittelbots/Mittelbot/actions/workflows/deploy.yml)
+
+<br>
+
 [![wakatime](https://wakatime.com/badge/github/Mittelbots/Mittelbot.svg)](https://wakatime.com/badge/github/Mittelbots/Mittelbot)
 ![GitHub license](https://img.shields.io/github/license/Mittelbots/Mittelbot)
 [![Discord](https://img.shields.io/discord/83000000000000000?color=7289DA&label=Discord&logo=Discord&logoColor=white)](https://discord.gg/AGp4hsccU6)
