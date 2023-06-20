@@ -2,17 +2,9 @@ name: Release Drafter
 
 on:
     push:
-        # branches to consider in the event; optional, defaults to all
         branches:
             - main
             - beta
-    # pull_request event is required only for autolabeler
-    pull_request:
-        # Only following types are handled by the action, but one can default to all as well
-        types: [opened, reopened, synchronize]
-    # pull_request_target event is required for autolabeler to support PRs from forks
-    # pull_request_target:
-    #   types: [opened, reopened, synchronize]
 
 permissions:
     contents: read
@@ -24,6 +16,22 @@ jobs:
             pull-requests: write
         runs-on: ubuntu-latest
         steps:
-            - uses: release-drafter/release-drafter@v5
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'latest'
+
+            - name: Extract version from package.json
+              id: extract-version
+              run: echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+
+            - name: Release Drafter
+              uses: release-drafter/release-drafter@v5
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  config-path: .github/release-drafter.yml
+                  tag: ${{ github.ref }}
