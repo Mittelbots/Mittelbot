@@ -35,3 +35,4 @@ jobs:
               with:
                   config-path: .github/release-drafter.yml
                   tag: ${{ github.ref }}
+                  version: ${{ steps.extract-version.outputs.version }}
