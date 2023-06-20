@@ -6,8 +6,8 @@
 --target dev +task+ Code Review approved?
 
 --target beta +title+ **Beta Branch checks**
---target main +task+ Release issue created?
---target main +task+ Release npm version updated?
+--target beta +task+ Release issue created?
+--target beta +task+ Release npm version updated?
 --target beta +task+ Code works as expected?
 --target beta +task+ All Code checks are successfully?
 --target beta +task+ Debug Code removed?
