@@ -39,7 +39,7 @@ async function messageCreate(message, bot) {
         return await banAppealModule(message, bot);
     }
 
-    if (message.channel.type === ChannelType.DM && message.author.id === config.Bot_Owner_ID) {
+    if (message.channel.type === ChannelType.DM && message.author.id === bot.ownerId) {
         return checkOwnerCommand(message);
     }
 
