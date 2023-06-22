@@ -19,7 +19,8 @@
         "postinstall": "patch-package && link-module-alias",
         "transCheck": "node ./scripts/translationCheck.js",
         "alias-build": "link-module-alias",
-        "test": "jest"
+        "test": "jest",
+        "bash": "docker compose exec bot bash"
     },
     "nodemonConfig": {
         "ignore": [
