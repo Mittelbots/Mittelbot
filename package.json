@@ -34,14 +34,16 @@
         "~assets": "./src/assets"
     },
     "jest": {
-        "setupFiles": ["<rootDir>/jest.setup.js"],
+        "setupFiles": [
+            "<rootDir>/jest.setup.js"
+        ],
         "moduleNameMapper": {
-          "^~bot(.*)$": "<rootDir>/bot$1",
-          "^~core(.*)$": "<rootDir>/bot/core$1",
-          "^~src(.*)$": "<rootDir>/src$1",
-          "^~utils(.*)$": "<rootDir>/utils$1",
-          "^~assets(.*)$": "<rootDir>/src/assets$1"
-        } 
+            "^~bot(.*)$": "<rootDir>/bot$1",
+            "^~core(.*)$": "<rootDir>/bot/core$1",
+            "^~src(.*)$": "<rootDir>/src$1",
+            "^~utils(.*)$": "<rootDir>/utils$1",
+            "^~assets(.*)$": "<rootDir>/src/assets$1"
+        }
     },
     "author": "BlackDayz",
     "license": "GPL-3.0",

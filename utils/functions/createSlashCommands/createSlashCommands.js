@@ -12,7 +12,7 @@ module.exports.createSlashCommands = async (bot) => {
         const commands = loadedCommandList.commands;
 
         bot.commands = loadedCommandList.cmd;
-        
+
         const rest = new REST({
             version: '10',
         }).setToken(process.env.DISCORD_TOKEN);
@@ -36,7 +36,6 @@ module.exports.createSlashCommands = async (bot) => {
         } catch (error) {
             reject(error);
         }
-        
     });
 };
 
