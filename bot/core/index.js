@@ -46,9 +46,8 @@ const bot = new Client({
 bot.setMaxListeners(0);
 
 bot.version = version;
-bot.owner = config.Bot_Owner;
-bot.ownerId = config.Bot_Owner_ID;
-bot.testAcc = config.Test_Account;
+bot.ownerId = process.env.OWNER_ID;
+bot.testAcc = process.env.TEST_ACCOUNTS;
 
 bot.player = new Player(bot, {
     connectionTimeout: 60000 * 10,
