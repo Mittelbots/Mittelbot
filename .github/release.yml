@@ -1,32 +1,32 @@
 changelog:
-  exclude:
-    labels:
-      - internal
-  categories:
-    - title: New Features & Improvements
-      labels:
-        - enhancement
-        - feature
+    exclude:
+        labels:
+            - internal
+    categories:
+        - title: New Features & Improvements
+          labels:
+              - enhancement
+              - feature
 
-    - title: Bug Fixes
-      labels:
-        - bug
-        - maintenance
+        - title: Bug Fixes
+          labels:
+              - bug
+              - maintenance
 
-    - title: Documentation
-      labels:
-        - documentation
-        - docs
+        - title: Documentation
+          labels:
+              - documentation
+              - docs
 
-    - title: Language
-      labels:
-        - language
-        - translation
+        - title: Language
+          labels:
+              - language
+              - translation
 
-     - title: Dependencies Updates
-      labels:
-        - npm dependencies
+        - title: Dependencies Updates
+          labels:
+              - npm dependencies
 
-    - title: Other Changes
-      labels:
-        - "*"
+        - title: Other Changes
+          labels:
+              - '*'
