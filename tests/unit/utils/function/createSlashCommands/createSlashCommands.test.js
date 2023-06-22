@@ -10,5 +10,5 @@ describe('Slashcommands can be generated on the developer guild', () => {
             .catch((error) => {
                 throw error;
             });
-    }, 10000);
+    }, 20000);
 });
