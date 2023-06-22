@@ -2,6 +2,7 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord.js');
 const fs = require('node:fs');
 const { errorhandler } = require('../errorhandler/errorhandler');
+const { delay } = require('../delay');
 
 module.exports.createSlashCommands = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -32,7 +33,7 @@ module.exports.createSlashCommands = async (bot) => {
                 });
             }
             console.info('✅ Successfully reloaded application (/) commands.');
-            resolve();
+            resolve(true);
         } catch (error) {
             reject(error);
         }
