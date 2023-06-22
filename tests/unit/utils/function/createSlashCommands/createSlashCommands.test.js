@@ -1,4 +1,3 @@
-const assert = require('assert');
 const { createSlashCommands } = require('~utils/functions/createSlashCommands/createSlashCommands');
 
 describe('Slashcommands can be generated on the developer guild', () => {
