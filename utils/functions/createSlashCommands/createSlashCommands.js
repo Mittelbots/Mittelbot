@@ -1,21 +1,22 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord.js');
 const fs = require('node:fs');
+const { errorhandler } = require('../errorhandler/errorhandler');
 
 module.exports.createSlashCommands = async (bot) => {
-    const clientId = process.env.DISCORD_APPLICATION_ID;
-    const guildId = process.env.DEVELOPER_DISCORD_GUILD_ID;
+    return new Promise(async (resolve, reject) => {
+        const clientId = process.env.DISCORD_APPLICATION_ID;
+        const guildId = process.env.DEVELOPER_DISCORD_GUILD_ID;
 
-    const loadedCommandList = await this.loadCommandList(bot);
-    const commands = loadedCommandList.commands;
+        const loadedCommandList = await this.loadCommandList();
+        const commands = loadedCommandList.commands;
 
-    bot.commands = loadedCommandList.cmd;
+        bot.commands = loadedCommandList.cmd;
+        
+        const rest = new REST({
+            version: '10',
+        }).setToken(process.env.DISCORD_TOKEN);
 
-    const rest = new REST({
-        version: '10',
-    }).setToken(process.env.DISCORD_TOKEN);
-
-    (async () => {
         try {
             console.info('🕐 Started refreshing application (/) commands.');
 
@@ -30,15 +31,16 @@ module.exports.createSlashCommands = async (bot) => {
                     body: commands,
                 });
             }
-
             console.info('✅ Successfully reloaded application (/) commands.');
+            resolve();
         } catch (error) {
-            console.error(error);
+            reject(error);
         }
-    })();
+        
+    });
 };
 
-module.exports.loadCommandList = async (bot) => {
+module.exports.loadCommandList = async () => {
     const modules = fs.readdirSync('./src/slash_commands').filter((file) => file !== 'index.js');
 
     const commands = [];

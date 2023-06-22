@@ -9,6 +9,7 @@ node_modules/
 .env.prod
 .env.local
 .env.save
+.env.test
 
 Dockerfile.prod
 docker-compose.override.yml
