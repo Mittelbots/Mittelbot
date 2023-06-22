@@ -30,6 +30,11 @@ Tickets.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
+        closed_by: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+            defaultValue: 0,
+        },
     },
     {
         sequelize: database,

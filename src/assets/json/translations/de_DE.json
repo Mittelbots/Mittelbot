@@ -272,7 +272,7 @@
                 "fields": {
                     "id": "Ticket ID",
                     "openedBy": "Geöffnet von",
-                    "closedBy": "Gespeichert von",
+                    "closedBy": "Geschlossen von",
                     "createdAt": "Erstellt am"
                 }
             }
