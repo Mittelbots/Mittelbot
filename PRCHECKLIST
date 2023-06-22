@@ -1,5 +1,5 @@
 --target dev +title+ **👨‍💻 Dev Branch checks**
---target dev +task+ All Code checks are successfully? (Alerts from Socket Security should be checked and ignored for this checkpoint)
+--target dev +task+ All Code checks are successfully?
 --target dev +task+ No sensetive data leaked?
 --target dev +task+ Code works as expected?
 --target dev +task+ Debug Code removed?
@@ -9,7 +9,7 @@
 --target beta +task+ Release issue created?
 --target beta +task+ Release npm version updated?
 --target beta +task+ Code works as expected?
---target beta +task+ All Code checks are successfully?
+--target beta +task+ All Code checks are successfully? (Alerts from Socket Security should be checked and ignored for this checkpoint)
 --target beta +task+ Debug Code removed?
 --target beta +task+ Code Review approved?
 

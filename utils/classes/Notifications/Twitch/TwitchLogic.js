@@ -14,6 +14,16 @@ module.exports = class TwitchNotifier {
 
         const authProvider = new AppTokenAuthProvider(clientId, clientSecret);
 
+        if (!clientId || !clientSecret) {
+            console.error('===============================');
+            console.error('TwitchNotifier: No Client ID or Client Secret found!');
+            console.error('TwitchNotifier: Please check your .env file!');
+            console.error('TwitchNotifier: Disabling TwitchNotifier...');
+            console.error('===============================');
+            this.disabled = true;
+            return;
+        }
+
         this.#twitchApiClient = new ApiClient({
             authProvider,
         });

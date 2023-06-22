@@ -276,7 +276,7 @@
                 "fields": {
                     "id": "Ticket ID",
                     "openedBy": "Opened by",
-                    "closedBy": "Saved by",
+                    "closedBy": "Closed by",
                     "createdAt": "Created at"
                 }
             }

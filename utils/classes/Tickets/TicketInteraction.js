@@ -181,10 +181,10 @@ module.exports = class TicketInteraction {
                     },
                     {
                         name: global.t.trans(
-                            ['info.ticket.transcript.fields.openedBy'],
+                            ['info.ticket.transcript.fields.closedBy'],
                             this.main_interaction.guild.id
                         ),
-                        value: `<@${ticket.owner}>`,
+                        value: `<@${ticket.closed_by}>`,
                         inline: true,
                     },
                     {

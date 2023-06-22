@@ -84,6 +84,7 @@ module.exports = class Tickets extends (
                 .update(
                     {
                         isOpen: false,
+                        closed_by: this.main_interaction.user.id,
                     },
                     {
                         where: {

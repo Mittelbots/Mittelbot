@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.65.8",
+    "version": "0.65.9",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -18,7 +18,9 @@
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --check .\"",
         "postinstall": "patch-package && link-module-alias",
         "transCheck": "node ./scripts/translationCheck.js",
-        "alias-build": "link-module-alias"
+        "alias-build": "link-module-alias",
+        "test": "jest",
+        "bash": "docker compose exec bot bash"
     },
     "nodemonConfig": {
         "ignore": [
@@ -31,6 +33,18 @@
         "~src": "./src",
         "~utils": "./utils",
         "~assets": "./src/assets"
+    },
+    "jest": {
+        "setupFiles": [
+            "<rootDir>/jest.setup.js"
+        ],
+        "moduleNameMapper": {
+            "^~bot(.*)$": "<rootDir>/bot$1",
+            "^~core(.*)$": "<rootDir>/bot/core$1",
+            "^~src(.*)$": "<rootDir>/src$1",
+            "^~utils(.*)$": "<rootDir>/utils$1",
+            "^~assets(.*)$": "<rootDir>/src/assets$1"
+        }
     },
     "author": "BlackDayz",
     "license": "GPL-3.0",
@@ -81,6 +95,7 @@
     },
     "devDependencies": {
         "husky": "^8.0.3",
+        "jest": "^29.5.0",
         "nodemon": "^2.0.22",
         "prettier": "^2.8.8"
     }
