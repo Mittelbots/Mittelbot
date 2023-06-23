@@ -22,5 +22,6 @@ if echo "$commit_message" | grep -qE '^(feat:|fix:|chore:|docs:|refactor:|style:
     exit 0  # Exit with success status
 else
     printf "${RED}Commit message does not have any of the specified prefixes.${NC}\n"
+    printf "${RED}Allowed prefixes: \"feat:\" \"fix:\" \"chore:\" \"docs:\" \"refactor:\" \"style:\" \"test:\" \"chore:\" \"perf:\" \"ci:\" \"revert:\" \"lang:\"${NC}\n"
     exit 1  # Exit with failure status
 fi
