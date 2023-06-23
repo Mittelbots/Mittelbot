@@ -6,25 +6,21 @@
 # ====================
 # allowed prefixes: "feat:" "fix:" "chore:" "docs:" "refactor:" "style:" "test:" "chore:" "perf:" "ci:" "revert:" "lang:"
 
-chmod +x .husky/prepare-commit-msg
+chmod +x .husky/commit-msg
 chmod +w .git/COMMIT_EDITMSG
 
 commit_message_file="$1"
 commit_message=$(cat "$commit_message_file")
-echo commit_message: "$commit_message"
-
-prefixes=("feat:" "fix:" "chore:" "docs:" "refactor:" "style:" "test:" "chore:" "perf:" "ci:" "revert:" "lang:")
 
 RED='\033[0;31m'  # Red color code
+GREEN='\033[0;32m'  # Green color code
 NC='\033[0m'  # No color code
 
-# Loop through the prefixes and check if any of them is a prefix of the commit message
-for prefix in "${prefixes[@]}"; do
-    if [[ "$commit_message" == "$prefix"* ]]; then
-        printf "${RED}Commit message has the prefix: %s${NC}\n" "$prefix"
-        exit 0  # Exit with success status
-    fi
-done
-
-printf "${RED}Commit message does not have any of the specified prefixes.${NC}\n"
-exit 1  # Exit with failure status
+# Check if commit message has any of the specified prefixes
+if echo "$commit_message" | grep -qE '^(feat:|fix:|chore:|docs:|refactor:|style:|test:|chore:|perf:|ci:|revert:|lang:)'; then
+    printf "${GREEN}Commit message has a valid prefix.${NC}\n"
+    exit 0  # Exit with success status
+else
+    printf "${RED}Commit message does not have any of the specified prefixes.${NC}\n"
+    exit 1  # Exit with failure status
+fi
