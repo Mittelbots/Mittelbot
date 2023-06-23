@@ -20,9 +20,7 @@
         "transCheck": "node ./scripts/translationCheck.js",
         "alias-build": "link-module-alias",
         "test": "jest",
-        "bash": "docker compose exec bot bash",
-        "prepare": "husky install",
-        "commit-msg": "npm run husky:commit-msg"
+        "bash": "docker compose exec bot bash"
     },
     "nodemonConfig": {
         "ignore": [
