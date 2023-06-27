@@ -18,6 +18,10 @@ async function getLinesOfCode() {
                 '.git',
                 '.github',
                 'scamLinks.json',
+                'dashboard/node_modules',
+                'dashboard/public',
+                'dashboard/package-lock.json',
+                'dashboard/package.json',
             ], // A list of directories to ignore. Supports glob patterns.
             ignoreDefault: true, // Whether to ignore the default file extensions or not
         };
