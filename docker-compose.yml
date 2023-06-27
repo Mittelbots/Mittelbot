@@ -64,3 +64,17 @@ services:
             - TIMEOUT=10s
             - INIT_BACKUP=1
             - MAX_BACKUPS=7
+
+
+    dashboard:
+        build: 
+            context: ./dashboard
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        env_file:
+            - ./.env
+        ports:
+            - 8080:8080
+        volumes:
+            - ./dashboard:/app
+        command: npm run serve
