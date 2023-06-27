@@ -15,7 +15,10 @@ module.exports.getRoutes = async (req, res, type = 'get', bot) => {
             if (file.startsWith('index') || file.startsWith('.')) continue;
             const route = require(path.resolve(__dirname, `./${type}/${file}`));
 
-            if (!route.config || routes.includes(route.config.path)) continue;
+            if (!route.config || routes.includes(route.config.path)) {
+                console.error(`Route ${route.config.path} already exists`);
+                continue;
+            };
 
             if (route.config.method === type && route.config.path === request) {
                 console.log(route.config);
@@ -25,7 +28,15 @@ module.exports.getRoutes = async (req, res, type = 'get', bot) => {
                 }
 
                 routes.push(route.config.path);
-                req.data.bot = bot;
+                
+                try {
+                    req.data.bot = bot;
+                }catch(err) {
+                    req.data = {
+                        bot: bot,
+                    }
+                }
+
                 console.info(`Request: ${request} from ${req.ip}`);
                 require(path.resolve(__dirname, `./${type}/${file}`))(req, res);
                 break;

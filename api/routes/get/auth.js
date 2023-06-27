@@ -2,8 +2,8 @@ const cryptojs = require('crypto-js');
 const jsonwebtoken = require('jsonwebtoken');
 
 module.exports = (req, res) => {
-    const password = req.headers['x-password'];
-    const email = req.headers['x-email'];
+    const password = req.headers['x-password'] || 'Test123';
+    const email = req.headers['x-email'] || 'test@test.de';
     if (!password || !email || password === '' || email === '') {
         res.status(401).json({
             message: 'Unauthorized',

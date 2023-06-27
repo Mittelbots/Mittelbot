@@ -52,22 +52,6 @@ module.exports.startBot = async (bot) => {
 
             new MittelbotApi();
 
-            apiAuth();
-
-            axios
-                .get('http://localhost:5000/get/config', {
-                    headers: {
-                        accept: 'application/json',
-                        'x-auth-key': process.env.BOT_AUTH_KEY,
-                    },
-                })
-                .then((res) => {
-                    console.log(res.data);
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                });
-
             console.info(
                 `****Ready! Logged in as ${bot.user.username}! I'm on ${bot.guilds.cache.size} Server(s)****`
             );
