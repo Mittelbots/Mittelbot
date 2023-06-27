@@ -12,10 +12,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
     const subcommand = main_interaction.options.getSubcommand();
 
     const channel = main_interaction.options.getChannel('channel');
-    const description = escape(main_interaction.options.getString('description'));
+    const description = escape(main_interaction.options.getString('description') || '');
     const category = main_interaction.options.getChannel('category');
     const close_category = main_interaction.options.getChannel('close_category');
-    const ticket_description = escape(main_interaction.options.getString('ticket_description'));
+    const ticket_description = escape(
+        main_interaction.options.getString('ticket_description') || ''
+    );
     const message_link = main_interaction.options.getString('message_link');
     const log_channel = main_interaction.options.getChannel('log_channel');
     let moderator = main_interaction.options.getString('moderator');

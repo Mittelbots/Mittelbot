@@ -4,10 +4,18 @@ const yt = require('ytdl-core');
 const request = new (require('rss-parser'))();
 const { google } = require('googleapis');
 
-const youtube = google.youtube({
-    version: 'v3',
-    auth: process.env.YT_KEY,
-});
+let youtube;
+if (process.env.YT_KEY) {
+    youtube = google.youtube({
+        version: 'v3',
+        auth: process.env.YT_KEY,
+    });
+} else {
+    console.error('===============================');
+    console.error('YouTube: No YT_KEY found in .env');
+    console.error('YouTube: YouTube notifications will not work');
+    console.error('===============================');
+}
 
 module.exports = class YouTubeLogic {
     bot;
@@ -106,6 +114,8 @@ module.exports = class YouTubeLogic {
 
     getChannelId(ytchannel) {
         return new Promise(async (resolve) => {
+            if (!youtube) return resolve(false);
+
             const response = await youtube.search.list({
                 q: ytchannel,
                 part: 'id',

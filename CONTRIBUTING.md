@@ -119,7 +119,8 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/Mittel
 
 ## Styleguides
 ### Commit Messages
-- Every individual commit in your pull request is meaningful. The best commit message starts with "fix/" or "add/" and a short description of the change. If you have multiple commits, please try to provide a short description for each of them.
+- Every individual commit in your pull request is meaningful. The best commit message starts with "fix: " or "add: " and a short description of the change. If you have multiple commits, please try to provide a short description for each of them.
+> All valid prefixes: fix, feat, docs, refactor, style, test, chore, perf, ci, revert, lang
 - Your code don't have any spelling mistakes, typos or grammatical errors. If you are not sure, please use a spell checker.
 - Your code don't contain any debug output or commented out code.
 - Your code don't contain any unsafe methods or functions (Example: `var test = eval(xxx)`).
