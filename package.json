@@ -49,7 +49,7 @@
     "author": "BlackDayz",
     "license": "GPL-3.0",
     "dependencies": {
-        "@discord-player/equalizer": "^0.2.1",
+        "@discord-player/equalizer": "^0.2.2",
         "@discord-player/extractor": "^4.2.2",
         "@discord-player/utils": "^0.2.1",
         "@discordjs/opus": "github:discordjs/opus",
