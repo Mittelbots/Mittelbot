@@ -35,24 +35,24 @@
             },
             "modroles": {
                 "updated": "{success.emote} <@&%q> frissítve lett a következőre: %w",
-                "removed": "{success.emote} <@&%q> has been removed from the Modroles setting."
+                "removed": "{success.emote} <@&%q> el lett távolítva a modrole beállitásokból."
             },
             "reactionroles": {
-                "updated": "{success.emote} The reaction roles have been updated.",
-                "removed": "{success.emote} The reaction roles have been removed."
+                "updated": "{success.emote} A reakció-szerepek frissítésre kerülteltek.",
+                "removed": "{success.emote} A reakciós szerepek eltávolításra kerültek."
             },
             "welcome": {
-                "statusActivated": "{success.emote} Successfully activated the welcome message.",
-                "statusDeactivated": "{success.emote} Successfully deactivated the welcome message.",
-                "removed": "{success.emote} Successfully removed the welcome message."
+                "statusActivated": "{success.emote} A köszönő üzenetek sikeresen aktiválódtak.",
+                "statusDeactivated": "{success.emote} A köszönő üzenetek sikeresen deaktiválódtak.",
+                "removed": "{success.emote} A köszönő uzenetek sikeresen eltávolítva."
             },
             "settings": {
                 "muteRole": {
-                    "set": "{success.emote} Successfully set your Mute Role to %c.",
-                    "remove": "{success.emote} Successfully removed your Mute Role."
+                    "set": "{success.emote} A Némított szerep (role) sikeresen át lett álitva a %c szerepre.",
+                    "remove": "{success.emote} A némított szerep sikeresen eltávolítva."
                 },
                 "cooldown": {
-                    "set": "{success.emote} Command Cooldown successfully changed to %c seconds.",
+                    "set": "{success.emote} Parancs cooldown sikeresen megváltoztatva %c másodpercre.",
                     "disabled": "{success.emote} Command Cooldown successfully turned off \n \n**Info: A default Cooldown of 2 Seconds is still enabled to protect the bot from spam!**"
                 }
             },
@@ -139,10 +139,10 @@
             },
             "isBanned": {
                 "userIsBanned": "This user is banned! Reason: `%c` by %x",
-                "userIsNotBanned": "This user isn't banned!"
+                "userIsNotBanned": "Ez a felhasználó nincs bannolva!"
             },
             "purge": {
-                "purged": "{success.emote} Successfully pruned %c messages"
+                "purged": "{success.emote} Sikeresen el lett távolítva %c üzenet"
             }
         },
         "music": {
