@@ -189,14 +189,17 @@
         },
         "utils": {
             "afk": {
+                "set": "{success.emote} You are now afk. Reason `%q`",
                 "noLongerAfk": "{success.emote} Du bist nicht mehr afk."
             },
             "password": {
                 "generated": "{success.emote} Ihr Passwort wurde generiert: `%c`"
+            },
+            "bug": {
+                "sent": "{success.emote} Your bug report has been sent!"
             }
         }
     },
-
     "info": {
         "emote": "💭",
         "general": {
@@ -323,7 +326,7 @@
                             "name": "Anzahl der Kanäle:"
                         },
                         {
-                            "name": "Anzahl der Rollen:"
+                            "name:": "Role Count:"
                         },
                         {
                             "name": "Anzahl der Bans:"
@@ -496,7 +499,6 @@
             }
         }
     },
-
     "warning": {
         "emote": "⚠️",
         "admin": {
@@ -513,7 +515,6 @@
             "queueEnded": "{warning.emote} Die Warteschlange ist beendet. Stille..."
         }
     },
-
     "error": {
         "emote": "❌",
         "general": "{error.emote} Bei der Bearbeitung Deiner Anfrage ist ein Fehler aufgetreten. {general.tryAgainLater}",
@@ -539,7 +540,11 @@
                 "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen.",
                 "roleAdd": "{error.emote} Ich habe nicht die Erlaubnis, Rollen hinzuzufügen.",
                 "roleAddSpecific": "{error.emote} Ich habe nicht die Berechtigung, die Rolle %c hinzuzufügen.",
-                "manageReactions": "{error.emote} I don't have permission to manage reactions."
+                "manageReactions": "{error.emote} I don't have permission to manage reactions.",
+                "ban": "{error.emote} I don't have permission to ban members.",
+                "kick": "{error.emote} I don't have permission to kick members.",
+                "unban": "{error.emote} I don't have permission to unban members.",
+                "manageRoles": "{error.emote} I don't have permission to manage roles."
             }
         },
         "input": {
@@ -557,6 +562,12 @@
                 "hasTicketAlready": "{error.emote} Du hast bereits ein Ticket geöffnet."
             }
         },
+        "settings": {
+            "muteRole": {
+                "set": "{error.emote} There was an error setting your Mute Role. {general.tryAgainLater}",
+                "remove": "{error.emote} There was an error removing your Mute Role. {general.tryAgainLater}"
+            }
+        },
         "music": {
             "nothingPlays": "{error.emote} Es wird gerade kein Song gespielt!",
             "nothingInQueue": "{error.emote} Im Moment ist nichts in der Warteschlange!",
@@ -572,7 +583,10 @@
             },
             "userIsNotInAVoiceChannel": "{error.emote} Du musst dich in einem Sprachkanal befinden, um diesen Befehl zu verwenden!",
             "botIsAlreadyInAVoiceChannel": "{error.emote} Ich bin bereits in einem Sprachkanal! Bitte trete diesem Kanal bei oder warte bis ich weg bin!",
-            "botIsNotInAVoiceChannel": "{error.emote} Ich bin nicht in einem Sprachkanal! Bitte trete zuerst einem Kanal bei!"
+            "botIsNotInAVoiceChannel": "{error.emote} Ich bin nicht in einem Sprachkanal! Bitte trete zuerst einem Kanal bei!",
+            "volume": {
+                "invalid": "{error.emote} Please enter a valid number between 0 and 100"
+            }
         },
         "notifications": {
             "reddit": {
@@ -654,12 +668,6 @@
                 "maxRoles": "{error.emote} Sie können nicht mehr als %c Rollen hinzufügen.",
                 "noReactionRolesInServer": "{error.emote} Auf diesem Server gibt es keine Reaktionsrollen."
             },
-            "settings": {
-                "muteRole": {
-                    "set": "{error.emote} Es ist ein Fehler bei der Einstellung deiner Mute-Rolle aufgetreten. {general.tryAgainLater}",
-                    "remove": "{error.emote} Es ist ein Fehler beim Entfernen deiner Mute-Rolle aufgetreten. {general.tryAgainLater}"
-                }
-            },
             "autoblacklist": {
                 "set": {
                     "alreadySet": "{error.emote} Für diesen Server ist bereits eine Auto-Blacklist eingerichtet! Löschen den Eintrag zuerst."
@@ -713,14 +721,14 @@
             "givexp": {
                 "cannotGiveToBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp hinzufügen."
             },
+            "removexp": {
+                "cannotRemoveFromBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp entfernen."
+            },
             "leaderboard": {
                 "noOneRanked": "{error.emote} Es gibt niemanden, der in der Rangliste steht. Schreibe zuerst eine Nachricht."
             },
             "rank": {
                 "nothingFound": "{error.emote} Ich habe für diesen Benutzer nichts gefunden. Bitte sammle zuerst etwas Erfahrung."
-            },
-            "removexp": {
-                "cannotRemoveFromBots": "{error.emote} Du kannst einem Bot oder einem Systemkonto kein xp entfernen."
             }
         }
     }
