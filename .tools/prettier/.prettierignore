@@ -9,4 +9,10 @@ mittelblot-db-backup/
 .husky/
 *.md
 crowdin.yml
-src/assets/json/translations/**/*
+
+<!-- TRANSLATION FILES -->
+de_DE.json
+en_EN.json
+en_US.json
+hu_HU.json
+pl_PL.json
