@@ -169,13 +169,13 @@
                 "disable": "{success.emote} Die Wiederholung wurde erfolgreich deaktiviert."
             },
             "volume": {
-                "set": "{success.emote} Die Laustärke wurde erfolgreich auf %c% gesetzt"
+                "set": "{success.emote} Die Lautstärke wurde erfolgreich auf %c% gesetzt"
             }
         },
         "notifications": {
             "reddit": {
-                "removed": "{success.cheerEmote} Erfolgreich die reddit Benachrichtigung für %c entfernt",
-                "added": "{success.cheerEmote} Erfolgreich die reddit Benachrichtigung für %c hinzugefügt"
+                "removed": "{success.cheerEmote} Erfolgreich die Reddit Benachrichtigung für %c entfernt",
+                "added": "{success.cheerEmote} Erfolgreich die Reddit Benachrichtigung für %c hinzugefügt"
             },
             "youtube": {
                 "added": "{success.cheerEmote} Erfolgreich den YouTube Kanal `%q` zur Liste hinzugefügt.",
