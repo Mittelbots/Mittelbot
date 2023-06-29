@@ -1,3 +1,2 @@
-files:
     - source: /src/assets/json/translations/*.json
       translation: /src/assets/json/translations/%locale_with_underscore%.json
