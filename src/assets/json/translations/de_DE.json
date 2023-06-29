@@ -196,6 +196,7 @@
             }
         }
     },
+
     "info": {
         "emote": "💭",
         "general": {
@@ -495,6 +496,7 @@
             }
         }
     },
+
     "warning": {
         "emote": "⚠️",
         "admin": {
@@ -511,6 +513,7 @@
             "queueEnded": "{warning.emote} Die Warteschlange ist beendet. Stille..."
         }
     },
+
     "error": {
         "emote": "❌",
         "general": "{error.emote} Bei der Bearbeitung Deiner Anfrage ist ein Fehler aufgetreten. {general.tryAgainLater}",
