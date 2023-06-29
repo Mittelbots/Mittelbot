@@ -1,6 +1,6 @@
 {
     "general": {
-        "tryAgainLater": "Please try again later.",
+        "tryAgainLater": "Próbáld meg később.",
         "colors": {
             "success": "#00ff00",
             "info": "#0000ff",
@@ -9,7 +9,7 @@
         },
         "embed": {
             "buttons": {
-                "cancel": "Cancel"
+                "cancel": "Elvetés"
             }
         }
     },
@@ -18,23 +18,23 @@
         "cheerEmote": "🎉",
         "admin": {
             "lang": {
-                "set": "{success.emote} Successfully set the language to %c"
+                "set": "{success.emote} A nyelv sikeresen megváltoztatva %c-re"
             },
             "counter": {
-                "removed": "{success.emote} Successfully removed the counter.",
-                "set": "{success.emote} Successfully set the counter to %c"
+                "removed": "{success.emote} Sikeresen eltávolította a számlálót.",
+                "set": "{success.emote} Sikeresen beállította a szamlálót %c-ra"
             },
             "joinroles": {
-                "updated": "{success.cheerEmote} Successfully updated all joinroles",
-                "removedAll": "{success.emote} Successfully removed all join roles.",
-                "cleared": "{success.emote} Joinroles successfully cleared."
+                "updated": "{success.cheerEmote} Sikeresen frísítet mindegyik joinroles-okat",
+                "removedAll": "{success.emote} Sikeresen eltávolította midegyik joinroles-okat.",
+                "cleared": "{success.emote} Joinroles sikeresen takarítva."
             },
             "logs": {
-                "updatedWhitelist": "{success.emote} Successfully updated the whitelist.",
-                "updatedLogs": "{success.emote} Successfully updated the logs."
+                "updatedWhitelist": "{success.emote} Sikeresen fríssített a fehérlista.",
+                "updatedLogs": "{success.emote} Sikeresen frissültek a naplók."
             },
             "modroles": {
-                "updated": "{success.emote} <@&%q> has been updated to %w",
+                "updated": "{success.emote} <@&%q> frissítve lett a következőre: %w",
                 "removed": "{success.emote} <@&%q> has been removed from the Modroles setting."
             },
             "reactionroles": {
