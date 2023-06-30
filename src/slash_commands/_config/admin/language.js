@@ -16,6 +16,14 @@ module.exports.languageConfig = new SlashCommandBuilder()
                 name: 'German',
                 value: 'de_DE',
             })
+            .addChoices({
+                name: 'Hungarian',
+                value: 'hu_HU',
+            })
+            .addChoices({
+                name: 'Polish',
+                value: 'pl_PL',
+            })
     );
 
 module.exports.languagePerms = {

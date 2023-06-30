@@ -22,7 +22,6 @@ jobs:
             - name: Prettify code
               uses: creyD/prettier_action@v4.3
               with:
-                  # This part is also where you can pass other options, for example:
-                  prettier_options: '--check . --single-quote --bracket-same-line=true'
+                  prettier_options: '--config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --check . --single-quote --bracket-same-line=true'
                   dry: true
                   only_changed: True
