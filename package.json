@@ -16,7 +16,7 @@
         "log": "docker logs -f mittelbot",
         "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --write .\"",
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --check .\"",
-        "postinstall": "patch-package && link-module-alias && if [[ $NODE_ENV = 'development' ]]; then husky install; fi",
+        "postinstall": "patch-package && link-module-alias && husky install",
         "transCheck": "node ./scripts/translationCheck.js",
         "alias-build": "link-module-alias",
         "test": "jest",
@@ -74,6 +74,7 @@
         "extends-classes": "^1.0.5",
         "ffmpeg-static": "^5.1.0",
         "googleapis": "^118.0.0",
+        "husky": "^8.0.3",
         "imgur": "^2.3.0",
         "jsonwebtoken": "^9.0.0",
         "link-module-alias": "^1.2.0",
@@ -93,7 +94,6 @@
         "ytdl-core": "npm:@distube/ytdl-core@^4.11.10"
     },
     "devDependencies": {
-        "husky": "^8.0.3",
         "jest": "^29.5.0",
         "node-sloc": "^0.2.1",
         "nodemon": "^2.0.22",
