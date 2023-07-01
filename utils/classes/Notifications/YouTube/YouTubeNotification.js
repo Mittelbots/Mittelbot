@@ -71,7 +71,9 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 }
                 const ping = pingrole ? (isEveryone ? '@everyone ' : `${pingrole}`) : '';
 
-                const premiereStartsIn = this.handlePremiere(videoDetails?.liveBroadcastDetails);
+                const premiereStartsIn = await this.handlePremiere(
+                    videoDetails?.liveBroadcastDetails
+                );
 
                 const embedContent = this.generateMessageContent(
                     videoDetails?.liveBroadcastDetails,
@@ -168,7 +170,11 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
     generateMessageContent(isALiveVideoOrPremiere, premiereStartsIn, pingrole) {
         return (
             pingrole +
-            `${isALiveVideoOrPremiere ? `\n**Premiere starts in <t:${premiereStartsIn}:R>**` : ''}`
+            `${
+                isALiveVideoOrPremiere && premiereStartsIn
+                    ? `\n**Premiere starts in <t:${premiereStartsIn}:R>**`
+                    : ''
+            }`
         );
     }
 
@@ -181,7 +187,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     : '',
                 url: videoDetails.video_url,
                 image: videoDetails.thumbnails.splice(-1)[0].url,
-                thumbnail: videoDetails?.author.thumbnails?.splice(-1)[0].url,
+                thumbnail: videoDetails?.author.thumbnails?.splice(-1)[0]?.url,
                 color: '#ff0000',
                 footer: {
                     text: `Subscribers ${videoDetails.author.subscriber_count} | Views ${videoDetails.viewCount} | Length ${videoDetails.lengthSeconds}s | ${videoDetails.author.name}`,
