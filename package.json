@@ -73,7 +73,7 @@
         "dotenv": "^16.3.1",
         "extends-classes": "^1.0.5",
         "ffmpeg-static": "^5.1.0",
-        "googleapis": "^118.0.0",
+        "googleapis": "^120.0.0",
         "husky": "^8.0.3",
         "imgur": "^2.3.0",
         "jsonwebtoken": "^9.0.0",
