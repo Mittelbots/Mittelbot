@@ -53,29 +53,36 @@ module.exports.registerPlayerEvents = (player, bot) => {
     });
 
     player.events.on('playerStart', (queue, track) => {
-        queue.metadata.channel
-            .send({
-                embeds: [
-                    new EmbedBuilder()
-                        .setDescription(
-                            global.t.trans(
-                                ['info.music.nowPlayingOnlyTrack', track.title],
-                                queue.guild.id
+        try {
+            queue.metadata.channel
+                .send({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(
+                                global.t.trans(
+                                    ['info.music.nowPlayingOnlyTrack', track.title],
+                                    queue.guild.id
+                                )
                             )
-                        )
-                        .addFields({
-                            name: global.t.trans(['info.music.requestedBy'], queue.guild.id),
-                            value: track.requestedBy
-                                ? track.requestedBy.username || 'Unknown'
-                                : 'Unknown',
-                        })
-                        .setColor(global.t.trans(['general.colors.info']))
-                        .setThumbnail(track.thumbnail),
-                ],
-            })
-            .catch(() => {
-                // No permissions
+                            .addFields({
+                                name: global.t.trans(['info.music.requestedBy'], queue.guild.id),
+                                value: track.requestedBy
+                                    ? track.requestedBy.username || 'Unknown'
+                                    : 'Unknown',
+                            })
+                            .setColor(global.t.trans(['general.colors.info']))
+                            .setThumbnail(track.thumbnail),
+                    ],
+                })
+                .catch(() => {
+                    // No permissions
+                });
+        } catch (e) {
+            errorhandler({
+                err: e,
+                message: `Error emitted from the connection ${queue.guild.name} | ${e.message}`,
             });
+        }
     });
 
     player.events.on('audioTrackAdd', (queue, track) => {
