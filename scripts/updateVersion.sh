@@ -14,8 +14,12 @@ patch=$((patch + 1))
 # Construct the new version number
 new_version="$major.$minor.$patch"
 
+echo "Updating $current_version to $new_version"
+
 # Update the package version
 npm version "$new_version"
 
 # Amend the commit message with the updated version
 git commit --amend -m "chore: v$new_version"
+
+exit 0
