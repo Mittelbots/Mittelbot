@@ -52,20 +52,36 @@ module.exports.run = async ({ main_interaction, bot }) => {
         })
         .catch((err) => {});
 
-    const ship = Math.floor(Math.random() * 100);
+    const ship = Math.floor(Math.random() * 100) + 1;
 
-    const quotes = global.t.trans(['info.fun.ship.quotes'], main_interaction.guild.id);
+    const generateQuote = () => {
+        const quotes = global.t.trans(['info.fun.ship.quotes'], main_interaction.guild.id);
 
-    let quote = '';
-    if (ship >= 70) {
-        quote = quotes[0]['100_70'][Math.floor(Math.random() * quotes[0]['100_70'].length)];
-    } else if (ship >= 40) {
-        quote = quotes[0]['69_40'][Math.floor(Math.random() * quotes[0]['69_40'].length)];
-    } else if (ship >= 10) {
-        quote = quotes[0]['39_10'][Math.floor(Math.random() * quotes[0]['39_10'].length)];
-    } else {
-        quote = quotes[0]['9_0'][Math.floor(Math.random() * quotes[0]['9_0'].length)];
-    }
+        try {
+            if (ship >= 70) {
+                return quotes[0]['100_70'][Math.floor(Math.random() * quotes[0]['100_70'].length)];
+            } else if (ship >= 40) {
+                return quotes[0]['69_40'][Math.floor(Math.random() * quotes[0]['69_40'].length)];
+            } else if (ship >= 10) {
+                return quotes[0]['39_10'][Math.floor(Math.random() * quotes[0]['39_10'].length)];
+            } else {
+                return quotes[0]['9_0'][Math.floor(Math.random() * quotes[0]['9_0'].length)];
+            }
+        } catch (err) {
+            return null;
+        }
+    };
+
+    let quote;
+    let tries = 0;
+    do {
+        quote = generateQuote();
+        tries++;
+        if (tries > 10) {
+            quote = '';
+            break;
+        }
+    } while (quote === null);
 
     const canvas = Canvas.createCanvas(950, 550);
     const context = canvas.getContext('2d');
