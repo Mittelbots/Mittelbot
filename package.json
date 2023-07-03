@@ -21,7 +21,7 @@
         "alias-build": "link-module-alias",
         "test": "jest",
         "bash": "docker compose exec bot bash",
-        "preversion": "git commit --amend -m \"chore: v$(node -pe \"require('./package.json').version\")\""
+        "preversion": "./scripts/version-update.sh"
     },
     "nodemonConfig": {
         "ignore": [
