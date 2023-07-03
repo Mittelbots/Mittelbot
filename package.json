@@ -20,8 +20,7 @@
         "transCheck": "node ./scripts/translationCheck.js",
         "alias-build": "link-module-alias",
         "test": "jest",
-        "bash": "docker compose exec bot bash",
-        "update-version": "./scripts/updateVersion.sh"
+        "bash": "docker compose exec bot bash"
     },
     "nodemonConfig": {
         "ignore": [
