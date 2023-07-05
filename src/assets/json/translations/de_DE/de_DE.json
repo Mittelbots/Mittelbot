@@ -189,14 +189,14 @@
         },
         "utils": {
             "afk": {
-                "set": "{success.emote} You are now afk. Reason `%q`",
+                "set": "{success.emote} Du bist jetzt afk. Grund `%q`",
                 "noLongerAfk": "{success.emote} Du bist nicht mehr afk."
             },
             "password": {
                 "generated": "{success.emote} Ihr Passwort wurde generiert: `%c`"
             },
             "bug": {
-                "sent": "{success.emote} Your bug report has been sent!"
+                "sent": "{success.emote} Ihr Fehlerbericht wurde gesendet!"
             }
         }
     },
@@ -261,7 +261,7 @@
             },
             "autodelete": {
                 "types": {
-                    "onlyMedia": "Media",
+                    "onlyMedia": "Medien",
                     "onlyText": "Text",
                     "onlyEmotes": "Emotes",
                     "onlyStickers": "Stickers"
@@ -296,7 +296,7 @@
             "disconnected": "Ich wurde manuell getrennt oder aufgrund von Inaktivität aus dem Voice-Kanal, Warteschlange wird gelöscht.",
             "emptyChannel": "Niemand ist im Sprachkanal. Ich verlasse den Sprachkanal.",
             "queueHasEnded": "Warteschlange ist zu Ende. ",
-            "notInAVC": "I'm not in a voice channel right now."
+            "notInAVC": "Ich bin im Moment nicht in einem Sprachkanal."
         },
         "utils": {
             "afk": {
@@ -326,7 +326,7 @@
                             "name": "Anzahl der Kanäle:"
                         },
                         {
-                            "name:": "Role Count:"
+                            "name:": "Anzahl der Rollen:"
                         },
                         {
                             "name": "Anzahl der Bans:"
@@ -540,16 +540,16 @@
                 "channelDelete": "{error.emote} Ich habe nicht die Erlaubnis, Kanäle zu löschen.",
                 "roleAdd": "{error.emote} Ich habe nicht die Erlaubnis, Rollen hinzuzufügen.",
                 "roleAddSpecific": "{error.emote} Ich habe nicht die Berechtigung, die Rolle %c hinzuzufügen.",
-                "manageReactions": "{error.emote} I don't have permission to manage reactions.",
-                "ban": "{error.emote} I don't have permission to ban members.",
-                "kick": "{error.emote} I don't have permission to kick members.",
-                "unban": "{error.emote} I don't have permission to unban members.",
-                "manageRoles": "{error.emote} I don't have permission to manage roles."
+                "manageReactions": "{error.emote} Ich habe nicht die Erlaubnis, Reaktionen zu steuern.",
+                "ban": "{error.emote} Ich habe nicht die Erlaubnis, Mitglieder zu sperren.",
+                "kick": "{error.emote} Ich habe nicht die Erlaubnis, Mitglieder zu kicken.",
+                "unban": "{error.emote} Ich habe nicht die Erlaubnis, Mitglieder zu entsperren.",
+                "manageRoles": "{error.emote} Ich habe nicht die Erlaubnis, Rollen zu verwalten."
             }
         },
         "input": {
             "invalidLink": "{error.emote} %c ist kein gültiger Link.",
-            "invalidNumber": "{error.emote} %c is not a valid number."
+            "invalidNumber": "{error.emote} %c ist keine gültige Zahl."
         },
         "ticket": {
             "setting": {
@@ -564,8 +564,8 @@
         },
         "settings": {
             "muteRole": {
-                "set": "{error.emote} There was an error setting your Mute Role. {general.tryAgainLater}",
-                "remove": "{error.emote} There was an error removing your Mute Role. {general.tryAgainLater}"
+                "set": "{error.emote} Es ist ein Fehler bei der Einstellung Ihrer Stummschaltrolle aufgetreten. {general.tryAgainLater}",
+                "remove": "{error.emote} Es ist ein Fehler beim Entfernen Ihrer Stummschalt-Rolle aufgetreten. {general.tryAgainLater}"
             }
         },
         "music": {
@@ -579,13 +579,13 @@
                 "botIsMuted": "{error.emote} Ich bin in diesem Kanal stummgeschaltet. Deine Warteschlange ist pausiert. Bitte hebe die Stummschaltung auf, um Musik abzuspielen."
             },
             "queue": {
-                "queueError": "{error.emote} There was an error getting the queue. {general.tryAgainLater}"
+                "queueError": "{error.emote} Es ist ein Fehler beim Abrufen der Warteschlange aufgetreten. {general.tryAgainLater}"
             },
             "userIsNotInAVoiceChannel": "{error.emote} Du musst dich in einem Sprachkanal befinden, um diesen Befehl zu verwenden!",
             "botIsAlreadyInAVoiceChannel": "{error.emote} Ich bin bereits in einem Sprachkanal! Bitte trete diesem Kanal bei oder warte bis ich weg bin!",
             "botIsNotInAVoiceChannel": "{error.emote} Ich bin nicht in einem Sprachkanal! Bitte trete zuerst einem Kanal bei!",
             "volume": {
-                "invalid": "{error.emote} Please enter a valid number between 0 and 100"
+                "invalid": "{error.emote} Bitte geben Sie eine gültige Zahl zwischen 0 und 100 ein"
             }
         },
         "notifications": {
@@ -700,7 +700,7 @@
             },
             "mute": {
                 "noMuteRoleFoundOrCreated": "{error.emote} Ich habe keine Stummschaltungsrolle gefunden oder erstellt. Bitte erstelle eine Rolle mit dem Namen `Muted` und versuche es erneut.",
-                "notAValidMuteRole": "%q is not a valid Muted Role in %w. Error Message: %e",
+                "notAValidMuteRole": "%q ist keine gültige Muted Role in %w. Fehlermeldung: %e",
                 "alreadyMuted": "{error.emote} Dieser Benutzer ist bereits stummgeschaltet!"
             },
             "ban": {
