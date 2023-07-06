@@ -105,12 +105,14 @@ YT_KEY= #Your Youtube API Key to run the youtube notifier
 
 <br>
 
-3. Start the docker container
+3. Execute the install script
 ```bash
-docker compose up -d
+# Linux
+bash ./scripts/install-linux.sh
 
-# For older docker versions:
-docker-compose up -d
+# Windows
+./scripts/install-windows.bat
+
 ```
 
 <br>
