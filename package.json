@@ -76,7 +76,7 @@
         "googleapis": "^120.0.0",
         "husky": "^8.0.3",
         "imgur": "^2.3.0",
-        "jsonwebtoken": "^9.0.0",
+        "jsonwebtoken": "^9.0.1",
         "link-module-alias": "^1.2.0",
         "module-alias": "^2.2.3",
         "moment-timezone": "^0.5.43",
