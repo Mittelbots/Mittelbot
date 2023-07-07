@@ -9,7 +9,7 @@ const config = require('~assets/json/_config/config.json');
 const version = require('../../package.json').version;
 
 const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
-const { setActivity } = require('~utils/functions/data/activity');
+const { setActivity } = require('~utils/functions/activity');
 const { processErrorHandler } = require('~utils/functions/errorhandler/processErrorHandler');
 const { startBot } = require('./core');
 const { delay } = require('~utils/functions/delay');
