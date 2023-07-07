@@ -1,4 +1,4 @@
-const { getLinesOfCode } = require('../getLinesOfCode/getLinesOfCode');
+const { getLinesOfCode } = require('./getLinesOfCode/getLinesOfCode');
 const { ActivityType } = require('discord.js');
 
 const fs = require('fs');
