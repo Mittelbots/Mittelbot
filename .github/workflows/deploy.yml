@@ -42,7 +42,7 @@ jobs:
 
             - name: Start docker container
               run: |
-                  docker-compose up -d
+                  docker compose up -d
 
             - name: Install important data
               run: |
