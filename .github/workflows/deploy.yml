@@ -40,6 +40,10 @@ jobs:
                     echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
+            - name: Start docker container
+              run: |
+                  docker-compose up -d
+
             - name: Install important data
               run: |
                   ./scripts/install-linux.sh deployment

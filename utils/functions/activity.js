@@ -35,7 +35,6 @@ module.exports.setActivity = async (bot, restart = false) => {
 
     if (activity.indexOf('{loc}') !== -1) {
         const loc = await getLinesOfCode();
-        console.log(loc);
         newActivity = newActivity.replaceAll('{loc}', loc);
     }
 
