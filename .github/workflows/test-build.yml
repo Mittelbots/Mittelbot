@@ -19,10 +19,10 @@ jobs:
             - name: Install test env data
               run: |
                   cp .env.example .env
-                  echo {{ secrets.TEST_TOKEN }} >> .env
-                  echo {{ secrets.TEST_SECRET }} >> .env
-                  echo {{ secrets.TEST_APPLICATION_ID }} >> .env
-                  echo {{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
+                  echo ${{ secrets.TEST_TOKEN }} >> .env
+                  echo ${{ secrets.TEST_SECRET }} >> .env
+                  echo ${{ secrets.TEST_APPLICATION_ID }} >> .env
+                  echo ${{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
 
             - name: Install important data
               run: |
