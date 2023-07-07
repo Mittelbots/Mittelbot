@@ -5,10 +5,14 @@ on:
         branches:
             - beta
 
+    workflow_run:
+        workflows:
+            - Deployment Test Build
+        types:
+            - completed
 jobs:
     deploy:
         runs-on: self-hosted
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
