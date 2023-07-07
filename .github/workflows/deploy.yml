@@ -44,6 +44,12 @@ jobs:
                     echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
+            - name: Install important data
+              run: |
+                  npm run start-prod
+                  docker compose exec bot npm install --omit=dev
+                  docker compose exec bot npm run alias-build
+
             - name: Build
               run: |
                   npm run restart-prod
