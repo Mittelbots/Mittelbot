@@ -5,11 +5,6 @@ on:
         branches:
             - beta
 
-    workflow_run:
-        workflows:
-            - Deployment Test Build
-        types:
-            - completed
 jobs:
     deploy:
         runs-on: self-hosted
@@ -50,7 +45,7 @@ jobs:
 
             - name: Install important data
               run: |
-                  npm run start-prod
+                  docker compose up -d
                   docker compose exec bot npm install --omit=dev
                   docker compose exec bot npm run alias-build
 
