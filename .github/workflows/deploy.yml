@@ -17,10 +17,6 @@ jobs:
               with:
                   node-version: 18
 
-            - name: Stop docker
-              run: |
-                  docker compose down
-
             - name: Get production data
               run: |
                   cp ../.env .env
@@ -43,6 +39,10 @@ jobs:
                     echo "docker-compose.override.yml file is empty"
                     echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
+
+            - name: Stop docker
+              run: |
+                  docker compose down
 
             - name: Start docker
               run: |
