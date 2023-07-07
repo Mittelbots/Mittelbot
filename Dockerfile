@@ -8,8 +8,6 @@ COPY . .
 
 RUN if [ "$NODE_ENV" = "development" ]; then \
         npm install -g nodemon ; \
-    else \
-        npm install --omit-dev ; \
     fi
 
 EXPOSE 5000
