@@ -42,7 +42,7 @@ jobs:
 
             - name: Install important data
               run: |
-                  ./scripts/install.sh deployment
+                  ./scripts/install-linux.sh deployment
 
             - name: Build
               run: |
