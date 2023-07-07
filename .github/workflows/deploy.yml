@@ -40,24 +40,9 @@ jobs:
                     echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
-            - name: Stop docker
-              run: |
-                  docker compose down
-
-            - name: Start docker
-              run: |
-                  docker compose up -d
-
             - name: Install important data
               run: |
-                  while ! docker compose exec bot npm install --omit=dev; do
-                    echo "Waiting for bot to start"
-                    sleep 1
-                  done
-                  while ! docker compose exec bot npm run alias-build; do
-                    echo "Waiting for bot to start"
-                    sleep 1
-                  done
+                  ./scripts/install.sh deployment
 
             - name: Build
               run: |
