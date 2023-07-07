@@ -51,7 +51,7 @@
     "dependencies": {
         "@discord-player/equalizer": "^0.2.1",
         "@discord-player/extractor": "^4.2.2",
-        "@discord-player/utils": "^0.2.1",
+        "@discord-player/utils": "^0.2.2",
         "@discordjs/opus": "github:discordjs/opus",
         "@discordjs/rest": "^1.7.1",
         "@discordjs/voice": "^0.16.0",
