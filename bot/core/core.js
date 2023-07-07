@@ -5,7 +5,7 @@ const {
     createSlashCommands,
     loadCommandList,
 } = require('~utils/functions/createSlashCommands/createSlashCommands');
-const { setActivity } = require('~utils/functions/data/activity');
+const { setActivity } = require('~utils/functions/activity');
 const database = require('~src/db/db');
 const Guilds = require('~utils/classes/Guilds');
 const { reddit_notifier } = require('~src/events/notfifier/reddit_notifier');

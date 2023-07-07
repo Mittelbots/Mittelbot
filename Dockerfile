@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 RUN if [ "$NODE_ENV" = "development" ]; then \
-        npm install && npm install -g nodemon ; \
+        npm install -g nodemon ; \
     else \
         npm install --omit-dev ; \
     fi

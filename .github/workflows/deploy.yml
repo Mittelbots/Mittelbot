@@ -5,10 +5,14 @@ on:
         branches:
             - beta
 
+    workflow_run:
+        workflows:
+            - Deployment Test Build
+        types:
+            - completed
 jobs:
     deploy:
         runs-on: self-hosted
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
@@ -43,6 +47,12 @@ jobs:
                     echo "docker-compose.override.yml file is empty"
                     echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
+
+            - name: Install important data
+              run: |
+                  npm run start-prod
+                  docker compose exec bot npm install --omit=dev
+                  docker compose exec bot npm run alias-build
 
             - name: Build
               run: |

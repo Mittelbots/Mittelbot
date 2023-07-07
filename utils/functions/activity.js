@@ -1,4 +1,4 @@
-const { getLinesOfCode } = require('../getLinesOfCode/getLinesOfCode');
+const { getLinesOfCode } = require('./getLinesOfCode/getLinesOfCode');
 const { ActivityType } = require('discord.js');
 
 const fs = require('fs');
@@ -19,33 +19,32 @@ module.exports.setActivity = async (bot, restart = false) => {
     );
     const texts = JSON.parse(settings).texts;
     const activity = texts[Math.floor(Math.random() * texts.length)];
+    let newActivity = activity;
 
-    if (activity.showGuildCount) {
+    if (activity.indexOf('{guildCount}') !== -1) {
         const guildCount = bot.guilds.cache.size;
-        activity.text = activity.text.replace('{guildCount}', guildCount);
+        newActivity = newActivity.replaceAll('{guildCount}', guildCount);
     }
 
-    if (activity.showMemberCount) {
+    if (activity.indexOf('{memberCount}') !== -1) {
         const memberCount = bot.guilds.cache
             .map((guild) => guild.memberCount)
             .reduce((a, b) => a + b, 0);
-        activity.text = activity.text.replace('{memberCount}', memberCount);
+        newActivity = newActivity.replaceAll('{memberCount}', memberCount);
     }
 
-    if (activity.showLinesOfCode) {
+    if (activity.indexOf('{loc}') !== -1) {
         const loc = await getLinesOfCode();
-        activity.text = activity.text.replace('{loc}', loc);
+        console.log(loc);
+        newActivity = newActivity.replaceAll('{loc}', loc);
     }
 
-    if (activity.showVersion) {
-        activity.text = activity.text.replace(
-            '{version}',
-            require('../../../package.json').version
-        );
+    if (activity.indexOf('{version}') !== -1) {
+        newActivity = newActivity.replaceAll('{version}', require('../../package.json').version);
     }
 
     bot.user.setActivity({
-        name: activity.text,
-        type: activity.type ? ActivityType[activity.type] : ActivityType.Playing,
+        name: newActivity,
+        type: ActivityType.Playing,
     });
 };
