@@ -50,8 +50,14 @@ jobs:
 
             - name: Install important data
               run: |
-                  docker compose exec bot npm install --omit=dev
-                  docker compose exec bot npm run alias-build
+                  while ! docker compose exec bot npm install --omit=dev; do
+                    echo "Waiting for bot to start"
+                    sleep 1
+                  done
+                  while ! docker compose exec bot npm run alias-build; do
+                    echo "Waiting for bot to start"
+                    sleep 1
+                  done
 
             - name: Build
               run: |
