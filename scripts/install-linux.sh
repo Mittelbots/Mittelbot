@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DEPLOYMENT=$1
+
 stopContainer() {
     echo "Stopping docker container"
     docker compose down
@@ -29,13 +31,15 @@ echo "Starting installation"
 
 DOCKER_CONTAINER="bot"
 
-answer=""
-read -e -i "$answer" -p "Do you have inserted all important data to the .env file? [y/n]: " input
-answer="${input:-$answer}"
+if [ "$DEPLOYMENT" != "deployment" ]; then
+    answer=""
+    read -e -i "$answer" -p "Do you have inserted all important data to the .env file? [y/n]: " input
+    answer="${input:-$answer}"
 
-if [ "$answer" != "${answer#[Nn]}" ] ;then
-    echo "Please insert all important data to the .env file and run the script again."
-    exit 1
+    if [ "$answer" != "${answer#[Nn]}" ] ;then
+        echo "Please insert all important data to the .env file and run the script again."
+        exit 1
+    fi
 fi
 
 
