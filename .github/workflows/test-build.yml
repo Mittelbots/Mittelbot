@@ -1,0 +1,43 @@
+name: Deployment Test Build
+
+on:
+    push:
+        branches:
+            - beta
+            - main
+
+jobs:
+    test-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+
+            - name: Install test env data
+              run: |
+                  cp .env.example .env
+                  echo {{ secrets.TEST_TOKEN }} >> .env
+                  echo {{ secrets.TEST_SECRET }} >> .env
+                  echo {{ secrets.TEST_APPLICATION_ID }} >> .env
+                  echo {{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
+
+            - name: Install important data
+              run: |
+                  npm run start-prod
+                  docker compose exec bot npm install --omit=dev
+                  docker compose exec bot npm run alias-build
+
+            - name: Build
+              run: |
+                  npm run restart-prod
+
+            - name: Stop Workflow
+              if: steps.check_condition.outputs.stop_workflow == 'true'
+              run: |
+                  echo "Stopping workflow"
+                  exit 0
