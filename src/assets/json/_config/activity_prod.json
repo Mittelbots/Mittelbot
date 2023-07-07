@@ -1,42 +1,13 @@
 {
     "texts": [
-        {
-            "text": "/help - Thank you for using me!"
-        },
-        {
-            "text": "/help - Listen to music with /play",
-            "showGuildCount": true
-        },
-        {
-            "text": "/help - with new command /tutorial with {memberCount} members",
-            "showMemberCount": true
-        },
-        {
-            "text": "/help - with new command /autodelete on {guildCount} servers",
-            "showGuildCount": true
-        },
-        {
-            "text": "/help - with new Ticket System /tickets on {guildCount} servers",
-            "showGuildCount": true
-        },
-        {
-            "text": "/help - with {memberCount} members on {guildCount} guilds",
-            "showMemberCount": true,
-            "showGuildCount": true
-        },
-        {
-            "text": "/help - try /counter"
-        },
-        {
-            "text": "/help - Multi language support with /language"
-        },
-        {
-            "text": "/help - Twitch Notifications 2.0 with /twitch on {guildCount} servers",
-            "showGuildCount": true
-        }
-    ],
-    "type": "Playing",
-    "showLinesOfCode": false,
-    "showMemberCount": false,
-    "showGuildCount": false
+        "/help - Thank you for using me!",
+        "/help - Listen to music with /play",
+        "/help - with new command /tutorial with {memberCount} members",
+        "/help - with new command /autodelete on {guildCount} servers",
+        "/help - with new Ticket System /tickets on {guildCount} servers",
+        "/help - with {memberCount} members on {guildCount} guilds",
+        "/help - try /counter",
+        "/help - Multi language support with /language",
+        "/help - Twitch Notifications 2.0 with /twitch on {guildCount} servers"
+    ]
 }
