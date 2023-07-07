@@ -17,8 +17,9 @@ jobs:
               with:
                   node-version: 18
 
-            - name: Install dependencies
-              run: npm install --omit=dev
+            - name: Stop docker
+              run: |
+                  docker compose down
 
             - name: Get production data
               run: |
@@ -43,9 +44,12 @@ jobs:
                     echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
 
-            - name: Install important data
+            - name: Start docker
               run: |
                   docker compose up -d
+
+            - name: Install important data
+              run: |
                   docker compose exec bot npm install --omit=dev
                   docker compose exec bot npm run alias-build
 
