@@ -4,12 +4,7 @@ on:
     push:
         branches:
             - beta
-
-    workflow_run:
-        workflows:
-            - Deployment Test Build
-        types:
-            - completed
+  
 jobs:
     deploy:
         runs-on: self-hosted
