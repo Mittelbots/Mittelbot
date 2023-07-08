@@ -9,7 +9,7 @@
     },
     "scripts": {
         "start": "docker compose up -d && docker logs -f mittelbot",
-        "start-prod": "docker compose up -d",
+        "start-prod": "npm install && npm run alias-build && docker compose up -d",
         "stop": "docker compose down",
         "restart": "npm run stop && npm run start",
         "restart-prod": "npm run stop && npm run start-prod",
