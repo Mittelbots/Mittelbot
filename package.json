@@ -17,7 +17,6 @@
         "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --write .\"",
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --check .\"",
         "postinstall": "patch-package && husky install",
-        "transCheck": "node ./scripts/translationCheck.js",
         "alias-build": "link-module-alias",
         "test": "jest",
         "bash": "docker compose exec bot bash"
