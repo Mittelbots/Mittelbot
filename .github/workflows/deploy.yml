@@ -8,6 +8,7 @@ on:
 jobs:
     deploy:
         runs-on: self-hosted
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
@@ -16,6 +17,9 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
+
+            - name: Install dependencies
+              run: npm install --omit=dev
 
             - name: Get production data
               run: |
@@ -39,14 +43,6 @@ jobs:
                     echo "docker-compose.override.yml file is empty"
                     echo "stop_workflow=true" >> $GITHUB_OUTPUT
                   fi
-
-            - name: Start docker container
-              run: |
-                  docker compose up -d
-
-            - name: Install important data
-              run: |
-                  ./scripts/install-linux.sh deployment
 
             - name: Build
               run: |
