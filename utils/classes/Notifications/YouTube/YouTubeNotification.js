@@ -80,8 +80,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     premiereStartsIn,
                     ping
                 );
-
-                const embed = await this.generateEmbed(videoDetails);
+                const embed = await this.generateEmbed(videoDetails, upload.channel_id, guild.id);
 
                 try {
                     const message = await this.notificationApi.sendNotification({
@@ -92,15 +91,17 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
 
                     if (message instanceof Message) {
                         await this.updateUploads({
-                            guildId: upload.guild_id,
+                            guildId: guild.id,
                             channelId: upload.channel_id,
                             uploads: uploadedVideos,
                             messageId: message.id,
+                            views: videoDetails.viewCount,
+                            subs: videoDetails.author.subscriber_count,
                         });
                     }
 
                     console.info(
-                        `📥 New upload sent! GUILD: ${upload.guild_id} CHANNEL ID: ${upload.info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`
+                        `📥 New upload sent! GUILD: ${guild.id} CHANNEL ID: ${upload.info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`
                     );
                 } catch (err) {
                     console.error(
@@ -178,8 +179,15 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
         );
     }
 
-    generateEmbed(videoDetails) {
+    generateEmbed(videoDetails, channel, guild_id) {
         return new Promise(async (resolve) => {
+            const subs = await this.getSubsDiff(
+                videoDetails.author.subscriber_count,
+                channel,
+                guild_id
+            );
+            const views = await this.getViewsDiff(videoDetails.viewCount, channel, guild_id);
+
             const embed = await new Notification().geneateNotificationEmbed({
                 title: videoDetails.title ? videoDetails.title.substring(0, 250) : 'No title',
                 description: videoDetails.description
@@ -190,7 +198,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 thumbnail: videoDetails?.author.thumbnails?.splice(-1)[0]?.url,
                 color: '#ff0000',
                 footer: {
-                    text: `Subscribers ${videoDetails.author.subscriber_count} | Views ${videoDetails.viewCount} | Length ${videoDetails.lengthSeconds}s | ${videoDetails.author.name}`,
+                    text: `Subscribers ${subs} | Views ${views} | Length ${videoDetails.lengthSeconds}s | ${videoDetails.author.name}`,
                 },
                 author: {
                     name: `${videoDetails.author.name} just uploaded a new video!`,
@@ -202,6 +210,22 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
         });
     }
 
+    getViewsDiff(newViews, channel_id, guild_id) {
+        return new Promise(async (resolve) => {
+            const oldViews = await this.getViews(channel_id, guild_id);
+            const diff = newViews - oldViews;
+            resolve(`${newViews} (${diff > 0 ? '+' : ''}${diff})`);
+        });
+    }
+
+    getSubsDiff(newSubs, channel_id, guild_id) {
+        return new Promise(async (resolve) => {
+            const oldSubs = await this.getSubs(channel_id, guild_id);
+            const diff = newSubs - oldSubs;
+            resolve(`${newSubs} (${diff > 0 ? '+' : ''}${diff})`);
+        });
+    }
+
     updateEmbed(video, messageId, guildId, channelId, ytChannelId) {
         return new Promise(async (resolve) => {
             const videoDetails = await this.getVideoInfos(video.link);
@@ -209,7 +233,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
             if (!channel) return resolve(false);
 
             const message = await channel.messages.fetch(messageId);
-            const embed = await this.generateEmbed(videoDetails);
+            const embed = await this.generateEmbed(videoDetails, ytChannelId, guildId);
 
             await this.notificationApi
                 .updateNotification({
