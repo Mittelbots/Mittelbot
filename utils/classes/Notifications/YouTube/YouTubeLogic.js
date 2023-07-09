@@ -37,15 +37,19 @@ module.exports = class YouTubeLogic {
 
     constructor() {}
 
-    updateUploads({ guildId, channelId, uploads, messageId, ytChannelId }) {
+    updateUploads({ guildId, channelId, uploads, messageId, ytChannelId, views, subs }) {
         return new Promise(async (resolve) => {
             const update = uploads
                 ? {
                       uploads: uploads,
                       messageId: messageId,
+                      views: views,
+                      subs: subs,
                   }
                 : {
                       updateCount: Math.floor(Math.random() * 200) + 1,
+                      views: views,
+                      subs: subs,
                   };
 
             const whereCond = ytChannelId
@@ -126,6 +130,32 @@ module.exports = class YouTubeLogic {
                 return resolve(false);
             }
             return resolve(response.data.items[0].id.channelId);
+        });
+    }
+
+    getViews(channel_id, guild_id) {
+        return new Promise(async (resolve) => {
+            const uploads = await guildUploads.findOne({
+                where: {
+                    guild_id: guild_id,
+                    channel_id: channel_id,
+                },
+            });
+
+            return resolve(uploads.views);
+        });
+    }
+
+    getSubs(channel_id, guild_id) {
+        return new Promise(async (resolve) => {
+            const uploads = await guildUploads.findOne({
+                where: {
+                    guild_id: guild_id,
+                    channel_id: channel_id,
+                },
+            });
+
+            return resolve(uploads.subs);
         });
     }
 };
