@@ -24,10 +24,16 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                         if (!wasLive) return;
 
                         const uptime = this.#getUptime(data.streamStartedAt);
-                        const embed = await this.#generateEmbed(streamer, stream, {
-                            isLive: false,
-                            uptime,
-                        });
+                        const embed = await this.#generateEmbed(
+                            streamer,
+                            stream,
+                            {
+                                isLive: false,
+                                uptime,
+                            },
+                            data.twitch_id,
+                            data.guild_id
+                        );
 
                         const dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
                         const dcMessage = await dcChannel.messages.fetch(data.message);
@@ -63,10 +69,16 @@ module.exports = class TwitchNotification extends TwitchNotifier {
 
                     const isEveryone = data.pingrole === data.guild_id;
                     const messageContent = this.#generateMessageContent(data.pingrole, isEveryone);
-                    const embed = await this.#generateEmbed(streamer, stream, {
-                        uptime,
-                        isLive: true,
-                    });
+                    const embed = await this.#generateEmbed(
+                        streamer,
+                        stream,
+                        {
+                            uptime,
+                            isLive: true,
+                        },
+                        data.twitch_id,
+                        data.guild_id
+                    );
 
                     const dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
                     let message;
@@ -138,7 +150,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
         return pingrole ? (isEveryone ? '@everyone' : `<@&${pingrole}>`) : '';
     }
 
-    #generateEmbed(streamer, stream, { isLive, uptime }) {
+    #generateEmbed(streamer, stream, { isLive, uptime }, twitch_id, guild_id) {
         return new Promise(async (resolve, reject) => {
             const embed = await this.notificationApi
                 .geneateNotificationEmbed({
@@ -185,7 +197,11 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                       'info.notifications.twitch.fields.viewers',
                                       streamer.displayName,
                                   ]),
-                                  value: stream.viewers.toString(),
+                                  value: await this.getViewsDiff(
+                                      stream.viewers.toString(),
+                                      twitch_id,
+                                      guild_id
+                                  ),
                                   inline: true,
                               },
                               {
