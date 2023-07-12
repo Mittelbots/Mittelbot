@@ -81,7 +81,7 @@
         "moment-timezone": "^0.5.43",
         "mysql2": "^3.5.0",
         "nconf": "^0.12.0",
-        "patch-package": "^7.0.0",
+        "patch-package": "^7.0.1",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.13.0",
         "sequelize": "^6.32.1",
