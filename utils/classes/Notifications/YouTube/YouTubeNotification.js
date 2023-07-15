@@ -4,10 +4,12 @@ const guildUploads = require('~src/db/Models/guildUploads.model');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const Notification = require('../Notifications');
 const YouTubeLogic = require('./YouTubeLogic');
+const delay = require('~utils/functions/delay');
 
 module.exports = class YouTubeNotification extends YouTubeLogic {
     constructor() {
         super();
+        this.intervalTries = 0;
     }
 
     init(bot) {
@@ -31,31 +33,33 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 if (!upload.channel_id) continue;
 
                 const feed = await this.getFeed(upload.channel_id);
-
                 if (!feed) continue;
+
+                const latestVideo = feed.items[0];
 
                 let uploadedVideos = upload.uploads || [];
 
-                const videoAlreadyExists = uploadedVideos.includes(feed.items[0].link);
-                if (videoAlreadyExists) {
-                    if (!this.isLongerThanXh(upload.updatedAt) || !upload.messageId) continue;
+                const videoAlreadyExists = uploadedVideos.includes(latestVideo.link);
+                if (videoAlreadyExists && upload.messageId) {
+                    if (!this.isLongerThanXh(upload.updatedAt)) continue;
                     await this.updateEmbed(
-                        feed.items[0],
+                        latestVideo,
                         upload.messageId,
                         upload.guild_id,
                         upload.info_channel_id,
                         upload.channel_id
                     );
-
                     continue;
                 }
 
-                const videoDetails = await this.getVideoInfos(feed.items[0].link);
+                await this.updateViews(upload.channel_id, upload.guild_id, latestVideo.viewCount);
+
+                const videoDetails = await this.getVideoInfos(latestVideo.link);
 
                 if (uploadedVideos.length >= 10) {
-                    uploadedVideos = [feed.items[0].link];
+                    uploadedVideos = [latestVideo.link];
                 } else {
-                    uploadedVideos.push(feed.items[0].link);
+                    uploadedVideos.push(latestVideo.link);
                 }
 
                 const { channel, guild } = await this.getServerInfos(
@@ -89,6 +93,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         embed: embed,
                     });
 
+                    if (!message || !message.id) continue;
+
                     if (message instanceof Message) {
                         await this.updateUploads({
                             guildId: guild.id,
@@ -101,13 +107,19 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     }
 
                     console.info(
-                        `📥 New upload sent! GUILD: ${guild.id} CHANNEL ID: ${upload.info_channel_id} YOUTUBE LINK: ${feed.items[0].link}`
+                        `📥 New upload sent! GUILD: ${guild.id} CHANNEL ID: ${upload.info_channel_id} YOUTUBE LINK: ${latestVideo.link}`
                     );
                 } catch (err) {
                     console.error(
-                        `I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`
+                        `I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id}). LINK: ${latestVideo.link}`
                     );
-                    continue;
+                }
+
+                this.intervalTries++;
+
+                if (this.intervalTries >= 10) {
+                    await delay(1000);
+                    this.intervalTries = 0;
                 }
             }
 
