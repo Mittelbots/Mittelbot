@@ -254,10 +254,11 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     });
                 })
                 .catch((err) => {
+                    this.updateUdateCount(messageId);
+
                     errorhandler({
-                        message: `I have failed to update a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id}))`,
-                        err: err.message,
-                        fatal: false,
+                        err: `I have failed to update a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id})) | ${err.message}`,
+                        fatal: true,
                     });
                     return false;
                 });
