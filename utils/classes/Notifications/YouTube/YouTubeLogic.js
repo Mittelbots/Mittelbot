@@ -158,4 +158,30 @@ module.exports = class YouTubeLogic {
             return resolve(uploads.subs);
         });
     }
+
+    updateUdateCount(messageId) {
+        return new Promise(async (resolve) => {
+            await guildUploads
+                .update(
+                    {
+                        updateCount: Math.floor(Math.random() * 200) + 1,
+                    },
+                    {
+                        where: {
+                            messageId: messageId,
+                        },
+                    }
+                )
+                .then((res) => {
+                    return resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                        fatal: true,
+                    });
+                    return resolve(false);
+                });
+        });
+    }
 };
