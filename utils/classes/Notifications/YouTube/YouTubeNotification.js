@@ -89,6 +89,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         embed: embed,
                     });
 
+                    if (!message || !message.id) continue;
+
                     if (message instanceof Message) {
                         await this.updateUploads({
                             guildId: guild.id,
