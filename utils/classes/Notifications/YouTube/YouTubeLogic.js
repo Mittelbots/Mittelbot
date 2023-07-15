@@ -146,6 +146,33 @@ module.exports = class YouTubeLogic {
         });
     }
 
+    updateViews(channel_id, guild_id, views) {
+        return new Promise(async (resolve) => {
+            await guildUploads
+                .update(
+                    {
+                        views: views,
+                    },
+                    {
+                        where: {
+                            guild_id: guild_id,
+                            channel_id: channel_id,
+                        },
+                    }
+                )
+                .then((res) => {
+                    return resolve(true);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err,
+                        fatal: true,
+                    });
+                    return resolve(false);
+                });
+        });
+    }
+
     getSubs(channel_id, guild_id) {
         return new Promise(async (resolve) => {
             const uploads = await guildUploads.findOne({
