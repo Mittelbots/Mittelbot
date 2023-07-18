@@ -259,11 +259,6 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         channelId: channelId,
                         ytChannelId: ytChannelId,
                     });
-
-                    errorhandler({
-                        fatal: false,
-                        message: `📥 Upload embed updated! GUILD: ${guildId} CHANNEL ID: ${channelId} YOUTUBE LINK: ${video.link}`,
-                    });
                 })
                 .catch((err) => {
                     this.updateUdateCount(messageId);
