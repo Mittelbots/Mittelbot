@@ -35,7 +35,14 @@ module.exports = class Notification {
                     embeds: [embed],
                 })
                 .then((msg) => resolve(msg))
-                .catch((err) => reject(err));
+                .catch((err) => {
+                    message
+                        .update({
+                            embeds: [embed],
+                        })
+                        .then((msg) => resolve(msg))
+                        .catch((err) => reject(err));
+                });
         });
     }
 

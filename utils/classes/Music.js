@@ -413,11 +413,19 @@ module.exports = class Music {
                 .then(async (queues) => {
                     queues.forEach(async (queuedTracks) => {
                         console.info(`[Music] Generating queue for ${queuedTracks.guild_id}`);
-                        this.guild = this.bot.guilds.cache.get(queuedTracks.guild_id);
-                        this.textChannel = this.guild.channels.cache.get(queuedTracks.text_channel);
-                        this.voiceChannel = this.guild.channels.cache.get(
-                            queuedTracks.voice_channel
-                        );
+
+                        try {
+                            this.guild = this.bot.guilds.cache.get(queuedTracks.guild_id);
+                            this.textChannel = this.guild.channels.cache.get(
+                                queuedTracks.text_channel
+                            );
+                            this.voiceChannel = this.guild.channels.cache.get(
+                                queuedTracks.voice_channel
+                            );
+                        } catch (e) {
+                            await this.deleteQueueFromDB(queuedTracks.guild_id);
+                            return;
+                        }
 
                         await this.createQueue();
 
