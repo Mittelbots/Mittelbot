@@ -30,19 +30,20 @@ module.exports = class Notification {
                 return reject('Message is not a valid message object.');
             }
 
-            message
-                .edit({
-                    embeds: [embed],
-                })
-                .then((msg) => resolve(msg))
-                .catch((err) => {
-                    message
-                        .update({
-                            embeds: [embed],
-                        })
-                        .then((msg) => resolve(msg))
-                        .catch((err) => reject(err));
-                });
+            try {
+                message
+                    .edit({
+                        embeds: [embed],
+                    })
+                    .then((msg) => resolve(msg));
+            } catch (error) {
+                message
+                    .update({
+                        embeds: [embed],
+                    })
+                    .then((msg) => resolve(msg))
+                    .catch((err) => reject(err));
+            }
         });
     }
 
