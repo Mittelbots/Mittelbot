@@ -2,6 +2,29 @@ const Auditlog = require('~utils/classes/Auditlog');
 const sm = require('string-mismatch');
 const greedyInstance = new sm.Greedy();
 
+function showResult(diffs) {
+    return diffs.reduce(function (text, value) {
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+        }
+
+        value.value = value.value.replace(new RegExp(escapeRegExp('`'), 'g'), '\\`');
+        value.value = value.value.replace(new RegExp(escapeRegExp('~'), 'g'), '\\~');
+        value.value = value.value.replace(new RegExp(escapeRegExp('*'), 'g'), '\\*');
+
+        switch (value.type) {
+            case 'del':
+                return text + '~~' + value.value + '~~';
+            case 'ins':
+                return text + '**' + value.value + '**';
+            case 'sub':
+                return text + '**' + value.value + '**';
+            case 'eql':
+                return text + value.value;
+        }
+    }, '');
+}
+
 module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
     if (messageBefore.content === messageAfter.content) return;
     if (
@@ -29,29 +52,6 @@ module.exports.messageUpdate = async (bot, messageBefore, messageAfter) => {
     const after = cleanedMessage(messageAfter.content);
 
     const difference = greedyInstance.differences(before, after);
-
-    function showResult(diffs) {
-        return diffs.reduce(function (text, value) {
-            function escapeRegExp(string) {
-                return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-            }
-
-            value.value = value.value.replace(new RegExp(escapeRegExp('`'), 'g'), '\\`');
-            value.value = value.value.replace(new RegExp(escapeRegExp('~'), 'g'), '\\~');
-            value.value = value.value.replace(new RegExp(escapeRegExp('*'), 'g'), '\\*');
-
-            switch (value.type) {
-                case 'del':
-                    return text + '~~' + value.value + '~~';
-                case 'ins':
-                    return text + '**' + value.value + '**';
-                case 'sub':
-                    return text + '**' + value.value + '**';
-                case 'eql':
-                    return text + value.value;
-            }
-        }, '');
-    }
 
     await auditLog.setEmbed({
         color: '#36d30a',
