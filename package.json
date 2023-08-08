@@ -93,7 +93,7 @@
         "ytdl-core": "npm:@distube/ytdl-core@^4.11.10"
     },
     "devDependencies": {
-        "jest": "^29.6.1",
+        "jest": "^29.6.2",
         "node-sloc": "^0.2.1",
         "nodemon": "^3.0.1",
         "prettier": "^3.0.0"
