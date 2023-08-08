@@ -17,3 +17,7 @@ CMD if [ "$NODE_ENV" = "development" ]; then \
     else \
         node bot/core/shard.js ; \
     fi
+
+
+
+
