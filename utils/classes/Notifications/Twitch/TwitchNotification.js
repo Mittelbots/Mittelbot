@@ -17,6 +17,14 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                 const allTwitchStreams = await this.getAllTwitchChannels();
 
                 allTwitchStreams.forEach(async (data) => {
+                    let dcChannel;
+                    try {
+                        dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
+                    } catch (err) {
+                        // channel not available anymore or bot doesn't have access
+                        return;
+                    }
+
                     const streamer = await this.getTwitchFromChannelId(data.twitch_id);
                     const stream = await this.getTwitchStream(data.twitch_id);
                     if (!stream) {
@@ -34,14 +42,6 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                             data.twitch_id,
                             data.guild_id
                         );
-
-                        let dcChannel;
-                        try {
-                            dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
-                        } catch (err) {
-                            // channel not available anymore or bot doesn't have access
-                            return;
-                        }
 
                         const dcMessage = await dcChannel.messages.fetch(data.message);
                         await this.notificationApi.updateNotification({
