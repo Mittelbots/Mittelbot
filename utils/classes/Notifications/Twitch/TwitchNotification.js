@@ -209,7 +209,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                       'info.notifications.twitch.fields.tags',
                                       streamer.displayName,
                                   ]),
-                                  value: stream.tags.join(', '),
+                                  value: stream.tags.join(', ') || stream.tags || 'None',
                                   inline: true,
                               },
                           ]
