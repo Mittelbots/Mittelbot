@@ -14,10 +14,13 @@ const Banappeal = require('~utils/classes/Banappeal');
 const Tickets = require('~utils/classes/Tickets/Tickets');
 const { EmbedBuilder } = require('discord.js');
 const Hangman = require('~utils/classes/Games/Hangman/Hangman');
+const { generateSession } = require('~src/assets/js/sessionID');
 
 const defaultCooldown = new Set();
 
 module.exports.interactionCreate = async ({ main_interaction, bot }) => {
+    generateSession(main_interaction.user, main_interaction.guild);
+
     main_interaction.bot = bot;
 
     if (

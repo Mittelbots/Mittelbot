@@ -1,5 +1,6 @@
 const callerId = require('caller-id');
 const Sentry = require('@sentry/node');
+const { getSession, removeSession } = require('~src/assets/js/sessionID');
 
 module.exports.errorhandler = ({ err = null, message = null, fatal = true }) => {
     const caller = callerId.getData();
@@ -9,13 +10,22 @@ module.exports.errorhandler = ({ err = null, message = null, fatal = true }) => 
         return;
     }
 
+    const session = getSession();
+
+    Sentry.addBreadcrumb({
+        category: 'Saved Session',
+        message: JSON.stringify(session),
+    });
+
     if (fatal) {
         if (err === null) err = message;
-        Sentry.captureMessage(err, 'fatal');
+
+        Sentry.captureException(err);
     } else {
         if (message === null) message = err;
-        Sentry.captureMessage(message, 'info');
+        Sentry.captureMessage(message);
     }
 
+    removeSession();
     return;
 };
