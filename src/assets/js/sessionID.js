@@ -1,8 +1,10 @@
+const _ = require('underscore');
+
 let session = null;
 
 function generateSession(user, guild) {
     const timestamp = Date.now();
-    const randomValue = Math.floor(Math.random() * 100000);
+    const randomValue = _.random(0, 999999).toString();
     const sessionId = `${timestamp}-${randomValue}`;
 
     session = dataTransformer({ user, guild }, sessionId);
