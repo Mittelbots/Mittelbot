@@ -246,9 +246,6 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 }
             })
             .catch((err) => {
-                errorhandler({
-                    err,
-                });
                 main_interaction
                     .followUp({
                         embeds: [

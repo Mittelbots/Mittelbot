@@ -35,7 +35,14 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                             data.guild_id
                         );
 
-                        const dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
+                        let dcChannel;
+                        try {
+                            dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
+                        } catch (err) {
+                            // channel not available anymore or bot doesn't have access
+                            return;
+                        }
+
                         const dcMessage = await dcChannel.messages.fetch(data.message);
                         await this.notificationApi.updateNotification({
                             message: dcMessage,
@@ -80,7 +87,6 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                         data.guild_id
                     );
 
-                    const dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
                     let message;
                     if (isUpdate) {
                         const dcMessage = await dcChannel.messages.fetch(data.message);
@@ -209,7 +215,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                       'info.notifications.twitch.fields.tags',
                                       streamer.displayName,
                                   ]),
-                                  value: stream.tags.join(', '),
+                                  value: stream.tags.join(', ') || stream.tags || 'None',
                                   inline: true,
                               },
                           ]

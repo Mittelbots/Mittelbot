@@ -4,7 +4,7 @@ const guildUploads = require('~src/db/Models/guildUploads.model');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const Notification = require('../Notifications');
 const YouTubeLogic = require('./YouTubeLogic');
-const delay = require('~utils/functions/delay');
+const { delay } = require('~utils/functions/delay');
 
 module.exports = class YouTubeNotification extends YouTubeLogic {
     constructor() {
@@ -41,6 +41,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
 
                 const videoAlreadyExists = uploadedVideos.includes(latestVideo.link);
                 if (videoAlreadyExists && upload.messageId) {
+                    // temporary fix -> https://github.com/Mittelbots/Mittelbot/issues/1593
+                    continue;
                     if (!this.isLongerThanXh(upload.updatedAt)) continue;
                     await this.updateEmbed(
                         latestVideo,

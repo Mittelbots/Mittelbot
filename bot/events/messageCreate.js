@@ -19,6 +19,7 @@ const AutomodAntiInvite = require('~utils/classes/Automoderation/Automod-AntiInv
 const AutomodAntiLinks = require('~utils/classes/Automoderation/Automod-AntiLinks');
 const Hangman = require('~utils/classes/Games/Hangman/Hangman');
 const { messageDeleteReasons } = require('~assets/js/messageDeleteReasons');
+const { generateSession } = require('~src/assets/js/sessionID');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
@@ -28,6 +29,8 @@ const antiScam = new ScamDetection();
 antiScam.loadScam();
 
 async function messageCreate(message, bot) {
+    generateSession(message.user, message.guild);
+
     message.bot = bot;
 
     if (
