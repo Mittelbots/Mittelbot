@@ -7,7 +7,9 @@ function generateSession(user, guild) {
     const randomValue = _.random(0, 999999).toString();
     const sessionId = `${timestamp}-${randomValue}`;
 
-    session = dataTransformer({ user, guild }, sessionId);
+    if (session?.user || session?.guild) {
+        session = dataTransformer({ user, guild }, sessionId);
+    }
 
     setTimeout(() => {
         // remove session after 5 seconds
