@@ -4,7 +4,7 @@ const guildUploads = require('~src/db/Models/guildUploads.model');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const Notification = require('../Notifications');
 const YouTubeLogic = require('./YouTubeLogic');
-const delay = require('~utils/functions/delay');
+const { delay } = require('~utils/functions/delay');
 
 module.exports = class YouTubeNotification extends YouTubeLogic {
     constructor() {
