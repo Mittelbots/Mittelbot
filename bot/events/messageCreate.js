@@ -29,7 +29,7 @@ const antiScam = new ScamDetection();
 antiScam.loadScam();
 
 async function messageCreate(message, bot) {
-    generateSession(message.user, message.guild);
+    generateSession(message.author, message.guild);
 
     message.bot = bot;
 
