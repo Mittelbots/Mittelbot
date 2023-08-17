@@ -17,6 +17,7 @@ docker-compose.override.yml
 backups/*
 
 .vscode
+.idea
 
 # Deployment
 
