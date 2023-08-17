@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.65.18",
+    "version": "0.65.19",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -56,8 +56,8 @@
         "@discordjs/voice": "^0.16.0",
         "@distube/ytdl-core": "^4.11.17",
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
-        "@napi-rs/canvas": "^0.1.42",
-        "@sentry/node": "^7.62.0",
+        "@napi-rs/canvas": "^0.1.43",
+        "@sentry/node": "^7.64.0",
         "@sentry/profiling-node": "^1.1.2",
         "@stdlib/assert-is-uri": "^0.0.8",
         "@twurple/api": "^7.0.1",
@@ -72,7 +72,7 @@
         "dotenv": "^16.3.1",
         "extends-classes": "^1.0.5",
         "ffmpeg-static": "^5.1.0",
-        "googleapis": "^123.0.0",
+        "googleapis": "^124.0.0",
         "husky": "^8.0.3",
         "imgur": "^2.3.0",
         "jsonwebtoken": "^9.0.1",
@@ -96,6 +96,6 @@
         "jest": "^29.6.2",
         "node-sloc": "^0.2.1",
         "nodemon": "^3.0.1",
-        "prettier": "^3.0.1"
+        "prettier": "^3.0.2"
     }
 }
