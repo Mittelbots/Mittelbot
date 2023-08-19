@@ -48,7 +48,6 @@ class Reddit {
                 reddit
                     .create({
                         guild_id,
-
                         channel_id,
                         subreddit,
                         pingrole_id,
