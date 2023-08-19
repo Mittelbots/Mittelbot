@@ -38,7 +38,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
     const { ignoreMode } = (await new GlobalConfig().get()) || 0;
     if (ignoreMode) {
         if (main_interaction.user.id !== bot.owner) {
-            return main_interaction.react('🕒').catch((err) => {});
+            return main_interaction.react('🕒').catch(() => {});
         }
         return main_interaction
             .reply({
@@ -46,7 +46,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                     'Sorry, I am currently in ignore mode. Join the support server to get more information https://blackdayz.de/mittelbot/support.',
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
     const guildConfig = await new GuildConfig().get(main_interaction.guild.id);
@@ -92,7 +92,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                 await main_interaction.deferUpdate();
                 manageNewWelcomeSetting({
                     main_interaction,
-                }).catch((err) => {});
+                }).catch(() => {});
                 break;
             case 'pride_forward':
                 await main_interaction.deferUpdate();
@@ -120,7 +120,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                             content: res,
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 })
                 .catch((err) => {
                     main_interaction
@@ -128,7 +128,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                             content: err,
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 });
         }
 
@@ -156,7 +156,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                             ],
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 })
                 .catch((err) => {
                     main_interaction
@@ -168,7 +168,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
                             ],
                             ephemeral: true,
                         })
-                        .catch((err) => {});
+                        .catch(() => {});
                 });
         }
         if (main_interaction.customId.indexOf('banappeal') === 0) {
