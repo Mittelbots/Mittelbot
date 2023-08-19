@@ -28,7 +28,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         })
         .catch((err) => {
             main_interaction
@@ -40,7 +40,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 
