@@ -55,7 +55,6 @@ module.exports = class YouTubeLogic {
             const whereCond = ytChannelId
                 ? {
                       guild_id: guildId,
-                      channel_id: channelId,
                       channel_id: ytChannelId,
                   }
                 : {
