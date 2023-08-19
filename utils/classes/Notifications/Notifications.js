@@ -89,8 +89,8 @@ module.exports = class Notification {
                     url: author.url,
                 });
 
-            if (fields) {
-                if (fields.length > 0) embed.addFields(fields);
+            if (fields && fields.length > 0) {
+                embed.addFields(fields);
             }
 
             if (timestamp) embed.setTimestamp();
