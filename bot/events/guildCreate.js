@@ -21,7 +21,7 @@ module.exports.guildCreate = async (guild, bot) => {
 
     errorhandler({
         fatal: false,
-        message: ` I joined a new Guild: ${guild.name} (${guild.id})`,
+        message: ` I joined a new Guild: ${guild.name} (${guild.id}) with ${guild.memberCount} members.`,
     });
 
     new Guilds().create(guild.id);

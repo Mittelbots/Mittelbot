@@ -214,7 +214,7 @@ class Levelsystem {
                         index = Number(i) + 1;
                     }
                 }
-                return resolve(parseInt(index));
+                return resolve(parseInt(index, 10));
             } else {
                 return resolve(sorted);
             }

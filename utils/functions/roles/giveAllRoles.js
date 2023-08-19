@@ -14,7 +14,7 @@ async function giveAllRoles(userId, guild, roles) {
                 const role = await guild.roles.cache.find((role) => role.id == roles[x]);
                 const member = await guild.members.cache.get(userId);
 
-                if (!role) {
+                if (!role || !member) {
                     return;
                 }
                 member.roles

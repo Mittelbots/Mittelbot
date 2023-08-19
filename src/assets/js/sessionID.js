@@ -7,7 +7,7 @@ function generateSession(user, guild) {
     const randomValue = _.random(0, 999999).toString();
     const sessionId = `${timestamp}-${randomValue}`;
 
-    if (user || session) {
+    if (user || guild) {
         session = dataTransformer({ user, guild }, sessionId);
     }
 
