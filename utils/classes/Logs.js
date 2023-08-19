@@ -122,7 +122,7 @@ class Logs {
     getEvents({ guild_id }) {
         return new Promise(async (resolve) => {
             const logs = await this.get(guild_id);
-            if (!logs.events) return resolve([]);
+            if (!logs?.events) return resolve([]);
             return resolve(logs.events);
         });
     }
