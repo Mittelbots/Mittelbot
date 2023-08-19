@@ -43,7 +43,7 @@ module.exports = class Banappeal extends BanappealLogic {
                         resolve({});
                     }
                 })
-                .catch((err) => {
+                .catch(() => {
                     reject(false);
                 });
         });
@@ -68,7 +68,7 @@ module.exports = class Banappeal extends BanappealLogic {
 
     createBanappeal(guild_id, user_id) {
         return new Promise(async (resolve, reject) => {
-            const settings = await this.getSettings(guild_id).catch((err) => {
+            const settings = await this.getSettings(guild_id).catch(() => {
                 reject(false);
             });
 
@@ -89,7 +89,7 @@ module.exports = class Banappeal extends BanappealLogic {
                 .then((result) => {
                     resolve(result);
                 })
-                .catch((err) => {
+                .catch(() => {
                     reject(false);
                 });
         });
@@ -112,7 +112,7 @@ module.exports = class Banappeal extends BanappealLogic {
                 .then((result) => {
                     resolve(result);
                 })
-                .catch((err) => {
+                .catch(() => {
                     reject(false);
                 });
         });
