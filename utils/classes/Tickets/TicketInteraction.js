@@ -254,7 +254,7 @@ module.exports = class TicketInteraction {
                     setTimeout(async () => {
                         this.main_interaction.channel.delete().catch(() => {
                             reject(
-                                gloval.t.trans(
+                                global.t.trans(
                                     ['error.permissions.bot.channelDelete'],
                                     this.main_interaction.guild.id
                                 )
