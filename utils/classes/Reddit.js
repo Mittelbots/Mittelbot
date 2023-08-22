@@ -1,5 +1,6 @@
 const { default: axios } = require('axios');
 const reddit = require('~src/db/Models/reddit.model');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 
 class Reddit {
     constructor() {}
@@ -150,6 +151,9 @@ class Reddit {
                         return resolve(subreddit);
                     })
                     .catch((err) => {
+                        errorhandler({
+                            err,
+                        });
                         return resolve(false);
                     });
             }
