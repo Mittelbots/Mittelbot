@@ -14,5 +14,5 @@ describe('A session will be created from a user and a guild', () => {
         expect(session.sessionId).not.toBeNull();
         expect(typeof session.user).toBe('object');
         expect(typeof session.guild).toBe('object');
-    })
-})
+    });
+});
