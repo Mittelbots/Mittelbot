@@ -1,4 +1,4 @@
-const { getLinesOfCode } = require("~utils/functions/getLinesOfCode/getLinesOfCode");
+const { getLinesOfCode } = require('~utils/functions/getLinesOfCode/getLinesOfCode');
 
 describe('The code base will be scanned for lines of code', () => {
     it('should return the number of lines of code', async () => {
