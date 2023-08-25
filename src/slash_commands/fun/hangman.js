@@ -62,7 +62,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ['info.fun.hangman.embed.fields.word'],
                     main_interaction.guild.id
                 ),
-                value: `\`${game.config.word}\``,
+                value: `\`${game?.config?.word || 'Not Set'}\``,
                 inline: true,
             },
             {
@@ -70,7 +70,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ['info.fun.hangman.embed.fields.channel'],
                     main_interaction.guild.id
                 ),
-                value: `<#${game.channel_id}>`,
+                value: `<#${game?.channel_id || 'Not Set'}>`,
                 inline: true,
             },
             {
@@ -78,7 +78,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ['info.fun.hangman.embed.fields.lives'],
                     main_interaction.guild.id
                 ),
-                value: `\`${game.config.lives}\``,
+                value: `\`${game?.config?.lives || 0}\``,
             }
         )
         .setColor(global.t.trans(['general.colors.success']))

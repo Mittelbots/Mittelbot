@@ -43,7 +43,8 @@ module.exports.setActivity = async (bot, restart = false) => {
     }
 
     bot.user.setActivity({
-        name: newActivity,
-        type: ActivityType.Playing,
+        name: 'Custom  Status',
+        state: newActivity,
+        type: ActivityType.Custom,
     });
 };
