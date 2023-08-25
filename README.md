@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="" rel="noopener">
+  <a href="" rel="noopener"> 
  <img width=250px src="./.github/project_files/logo.png" alt="Project logo"></a>
 </p>
 
