@@ -1,4 +1,4 @@
-const { isValidDiscordInvite } = require("~utils/functions/validate/isValidDiscordInvite");
+const { isValidDiscordInvite } = require('~utils/functions/validate/isValidDiscordInvite');
 
 describe('It will validate a Discord invite link', () => {
     it('should return true if the link is valid', () => {

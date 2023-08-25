@@ -1,4 +1,4 @@
-const { isValidLink } = require("~utils/functions/validate/isValidLink");
+const { isValidLink } = require('~utils/functions/validate/isValidLink');
 
 describe('It will validate a link', () => {
     it('should return true if the link is valid', () => {

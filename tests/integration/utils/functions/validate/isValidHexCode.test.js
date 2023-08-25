@@ -1,4 +1,4 @@
-const { isValidHexCode } = require("~utils/functions/validate/isValidHexCode");
+const { isValidHexCode } = require('~utils/functions/validate/isValidHexCode');
 
 describe('It will validate a hex code', () => {
     it('should return true if the hex code is valid', () => {
