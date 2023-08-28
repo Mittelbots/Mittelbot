@@ -62,7 +62,7 @@
         "@stdlib/assert-is-uri": "^0.0.8",
         "@twurple/api": "^7.0.1",
         "@twurple/auth": "^7.0.0",
-        "axios": "^1.4.0",
+        "axios": "^1.5.0",
         "caller-id": "^0.1.0",
         "canvacord": "5.4.10",
         "discord-html-transcripts": "^3.1.5",
