@@ -54,7 +54,7 @@
         "@discordjs/opus": "github:discordjs/opus",
         "@discordjs/rest": "^2.0.0",
         "@discordjs/voice": "^0.16.0",
-        "@distube/ytdl-core": "^4.12.0",
+        "@distube/ytdl-core": "^4.12.1",
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@napi-rs/canvas": "^0.1.44",
         "@sentry/node": "^7.65.0",
