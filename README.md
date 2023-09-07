@@ -28,6 +28,8 @@
 **Mittelbot**. A multi-purpose Discord bot with a lot of features. <br>
 With Notifications, Moderation with warn roles, Fun Commands, Auto-Translation, Banappeals, Auto-Moderation, Ticketsystem, Scam Detection, Reactionroles, Levelsystem, Music, Utility Commands and more! <br>
 
+### [Invite the bot](https://mittelbot.xyz/invite)
+
 <br>
 
 ## Roadmap
