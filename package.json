@@ -84,7 +84,7 @@
         "patch-package": "^8.0.0",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.13.0",
-        "sequelize": "^6.32.1",
+        "sequelize": "^6.33.0",
         "string-mismatch": "^2.1.1",
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
