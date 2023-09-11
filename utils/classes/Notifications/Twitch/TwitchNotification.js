@@ -21,7 +21,11 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                     try {
                         dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
                     } catch (err) {
-                        // channel not available anymore or bot doesn't have access
+                        errorhandler({
+                            message: `Error while fetchin channel ${data.dc_channel_id} for twitch stream ${data.twitch_id} in guild ${data.guild_id}`,
+                            fatal: false,
+                            id: 1694461058
+                        });
                         return;
                     }
 
@@ -55,6 +59,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                 message: null,
                                 embedUpdatedAt: null,
                                 streamStartedAt: null,
+                                views: 0,
                             },
                             {
                                 where: {
@@ -111,6 +116,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                 embedUpdatedAt: new Date(),
                                 streamStartedAt: new Date(stream.startDate),
                                 isStreaming: true,
+                                views: stream.viewers,
                             },
                             {
                                 where: {
@@ -204,7 +210,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                       streamer.displayName,
                                   ]),
                                   value: await this.getViewsDiff(
-                                      stream.viewers.toString(),
+                                      stream.viewers,
                                       twitch_id,
                                       guild_id
                                   ),
