@@ -1,9 +1,8 @@
 name: Deployment BETA
 
 on:
-    push:
-        branches:
-            - beta
+    release:
+        types: [published]
 
 jobs:
     deploy:
