@@ -344,31 +344,31 @@
                             "name": "Server Boosts:"
                         },
                         {
-                            "name": "Server Boost Level:"
+                            "name": "Kiszolgáló Boost szint:"
                         },
                         {
-                            "name": "Is the server a large one?"
+                            "name": "Nagy a szerver?"
                         },
                         {
-                            "name": "Maximum Members:"
+                            "name": "Maximális taglétszám:"
                         },
                         {
-                            "name": "AFK Timer:"
+                            "name": "AFK időzítő:"
                         },
                         {
-                            "name": "AFK Channel:"
+                            "name": "AFK csatorna:"
                         },
                         {
-                            "name": "Video Channel User Limit:"
+                            "name": "Videócsatorna felhasználói korlát:"
                         },
                         {
-                            "name": "Prefered Location:"
+                            "name": "Kedvelt helyszín:"
                         },
                         {
-                            "name": "Owner"
+                            "name": "Tulajdonos"
                         },
                         {
-                            "name": "I joined at:"
+                            "name": "Csatlakoztam a:"
                         }
                     ]
                 }
