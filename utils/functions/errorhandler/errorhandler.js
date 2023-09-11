@@ -27,5 +27,9 @@ module.exports.errorhandler = ({ err = null, message = null, fatal = true, id = 
     }
 
     if (message === null) message = err;
-    debug_log.info(`${new Date().toLocaleDateString('de-DE')} ${new Date().toLocaleTimeString('de-DE')} || ${id} - ${message}`);
+    debug_log.info(
+        `${new Date().toLocaleDateString('de-DE')} ${new Date().toLocaleTimeString(
+            'de-DE'
+        )} || ${id} - ${message}`
+    );
 };
