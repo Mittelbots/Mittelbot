@@ -7,7 +7,6 @@ module.exports.registerPlayerEvents = (player, bot) => {
         errorhandler({
             err: error,
             message: `Error emitted from the queue ${queue.guild.name} | ${error.message}`,
-            fatal: false,
         });
         queue.metadata.channel
             .send({

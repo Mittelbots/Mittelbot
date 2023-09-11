@@ -303,17 +303,19 @@ class Levelsystem {
                     }
                 }
 
-                errorhandler({
-                    err: [
-                        obj.level,
-                        obj.xp,
-                        'multi ' + multiplier.toFixed(3),
-                        'top_multi ' + top_multiplier.toFixed(3),
-                        'diff ' + (obj.xp - prev).toFixed(0),
-                    ],
-                    fatal: false,
-                    message: 'Generating level config',
-                });
+                console.info(
+                    `Generating level config ${JSON.stringify(
+                        [
+                            obj.level,
+                            obj.xp,
+                            'multi ' + multiplier.toFixed(3),
+                            'top_multi ' + top_multiplier.toFixed(3),
+                            'diff ' + (obj.xp - prev).toFixed(0),
+                        ],
+                        null,
+                        4
+                    )}`
+                );
                 prev = obj.xp;
             }
             fs.writeFileSync('./src/assets/json/levelsystem/levelconfig.json', '', 'utf8');

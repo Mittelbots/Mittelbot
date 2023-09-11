@@ -254,15 +254,15 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                 .then((message) => {
                     console.info(`🔎 Twitch stream handler checked streamer: ${link}...`);
                     errorhandler({
-                        err: `🔎 Twitch stream notification sent! Twitch Streamer: ${link}`,
+                        message: `🔎 Twitch stream notification sent! Twitch Streamer: ${link}`,
                         fatal: false,
+                        id: 1694433320,
                     });
                     resolve(message);
                 })
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true,
                     });
                     reject(err);
                 });

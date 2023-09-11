@@ -91,7 +91,6 @@ module.exports.changeYtNotifier = async ({ ytchannel, dcchannel, pingrole, guild
             .catch((err) => {
                 errorhandler({
                     err,
-                    fatal: true,
                 });
                 reject(global.t.trans(['error.general'], guild.id));
             });

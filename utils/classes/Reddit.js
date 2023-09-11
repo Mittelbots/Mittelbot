@@ -147,7 +147,7 @@ class Reddit {
             } catch (err) {
                 return await axios
                     .get(`${this.baseUrl()}/${subreddit}/new.json?sort=new`)
-                    .then((res) => {
+                    .then(() => {
                         return resolve(subreddit);
                     })
                     .catch((err) => {

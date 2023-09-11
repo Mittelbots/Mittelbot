@@ -63,8 +63,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {
                         errorhandler({
-                            err,
+                            message: `Error while followUp the autodelete config message ${err.message}`,
                             fatal: false,
+                            id: 1694432733,
                         });
                     });
             })
@@ -78,8 +79,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {
                         errorhandler({
-                            err,
+                            message: `Error while followUp the autodelete config message ${err.message}`,
                             fatal: false,
+                            id: 1694432837,
                         });
                     });
             });
@@ -110,8 +112,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {
                         errorhandler({
-                            err,
+                            message: `Error while followUp the autodelete config message ${err.message}`,
                             fatal: false,
+                            id: 1694432843,
                         });
                     });
             })
@@ -125,8 +128,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     })
                     .catch((err) => {
                         errorhandler({
-                            err,
+                            message: `Error while followUp the autodelete config message ${err.message}`,
                             fatal: false,
+                            id: 1694432858,
                         });
                     });
             });

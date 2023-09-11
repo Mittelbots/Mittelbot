@@ -76,6 +76,7 @@ async function banUser({ user, mod, guild, reason, bot, dbtime, time, isAuto }) 
         errorhandler({
             fatal: false,
             message: `${mod.id} has triggered the ban command in ${guild.id}`,
+            id: 1694433512,
         });
 
         return resolve(p_response);

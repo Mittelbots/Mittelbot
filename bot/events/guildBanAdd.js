@@ -14,20 +14,6 @@ module.exports.guildBanAdd = async (bot, guildBan) => {
             guild: guildBan.guild,
         });
 
-        //! Debug: To be removed
-        errorhandler({
-            message: `Banlist: ${JSON.stringify(banlist, null, 2)}`,
-            fatal: false,
-        });
-        errorhandler({
-            message: `User: ${JSON.stringify(guildBan.user, null, 2)}`,
-            fatal: false,
-        });
-        errorhandler({
-            message: `Guild: ${JSON.stringify(guildBan.guild, null, 2)} `,
-            fatal: false,
-        });
-
         if (!banlist || banlist[0]) return;
 
         setNewModLogMessage(

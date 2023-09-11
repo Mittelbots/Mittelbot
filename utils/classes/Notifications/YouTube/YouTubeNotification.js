@@ -128,7 +128,6 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
         } catch (err) {
             errorhandler({
                 err,
-                fatal: true,
             });
             return false;
         }
@@ -159,6 +158,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         message: 'Youtube request run into Timeout.',
                         fatal: err.errno === 'ECONNREFUSED' ? false : true,
                         err,
+                        id: 1694433409,
                     });
                     return reject(err);
                 });
