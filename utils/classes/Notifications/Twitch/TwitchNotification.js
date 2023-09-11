@@ -24,7 +24,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                         errorhandler({
                             message: `Error while fetchin channel ${data.dc_channel_id} for twitch stream ${data.twitch_id} in guild ${data.guild_id}`,
                             fatal: false,
-                            id: 1694461058
+                            id: 1694461058,
                         });
                         return;
                     }
