@@ -2,6 +2,8 @@ FROM node:18.15.0
 
 ARG NODE_ENV=production
 
+ENV TZ=Europe/Berlin
+
 WORKDIR /app
 
 COPY . .
