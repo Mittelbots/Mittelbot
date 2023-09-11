@@ -36,6 +36,7 @@ module.exports.hasPermission = async ({
         errorhandler({
             fatal: false,
             message: `${guildUser.id} has tried a command with no permission in ${guild_id}`,
+            id: 1694433429,
         });
     }
 

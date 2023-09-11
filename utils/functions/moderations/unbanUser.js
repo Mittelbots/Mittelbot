@@ -57,6 +57,7 @@ function unbanUser({ user, mod, guild, reason, bot }) {
         errorhandler({
             fatal: false,
             message: `${user.id} has triggered the unban command in ${guild.id}`,
+            id: 1694433672,
         });
 
         return resolve(p_response);

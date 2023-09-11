@@ -10,10 +10,6 @@ module.exports.processErrorHandler = () => {
 
     process.on('uncaughtException', async (err) => {
         errorhandler({
-            err: '----BOT CRASHED-----',
-            fatal: true,
-        });
-        errorhandler({
             err,
             fatal: true,
         });

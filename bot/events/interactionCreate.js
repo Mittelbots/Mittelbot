@@ -56,6 +56,7 @@ module.exports.interactionCreate = async ({ main_interaction, bot }) => {
             errorhandler({
                 fatal: false,
                 message: `${main_interaction.user.username} is on slash command cooldown.`,
+                id: 1694432495,
             });
 
             return main_interaction

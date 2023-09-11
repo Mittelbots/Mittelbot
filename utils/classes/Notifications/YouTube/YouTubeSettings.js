@@ -43,7 +43,6 @@ module.exports = class YouTubeSettings extends YouTubeLogic {
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true,
                     });
                     reject(err);
                 });
@@ -65,7 +64,6 @@ module.exports = class YouTubeSettings extends YouTubeLogic {
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true,
                     });
                     reject(err);
                 });

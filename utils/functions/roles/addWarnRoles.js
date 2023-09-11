@@ -19,6 +19,7 @@ module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
                             errorhandler({
                                 fatal: false,
                                 message: `${user.id} has got a warn roles in ${guild.id}`,
+                                id: 1694433710,
                             });
                             new Temproles().insert({
                                 uid: user.id,
@@ -48,6 +49,7 @@ module.exports.addWarnRoles = async ({ user, inf_id, guild }) => {
             errorhandler({
                 fatal: false,
                 message: `${user.id} has already all roles ${guild.id}`,
+                id: 1694433720,
             });
 
             return {

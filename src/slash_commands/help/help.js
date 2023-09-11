@@ -67,10 +67,8 @@ module.exports.run = async ({ main_interaction, bot }) => {
             return msg;
         })
         .catch((err) => {
-            return errorhandler({
-                err,
-                fatal: true,
-            });
+            errorhandler({ err });
+            return;
         });
 
     const collector = helpMessage.createMessageComponentCollector({
@@ -131,10 +129,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     fetchReply: true,
                 })
                 .catch((err) => {
-                    return errorhandler({
-                        err,
-                        fatal: true,
-                    });
+                    errorhandler({ err });
                 });
             return;
         }

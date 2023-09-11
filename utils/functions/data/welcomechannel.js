@@ -510,14 +510,15 @@ module.exports.sendWelcomeMessage = async ({ guild_id, bot, joined_user }, isTes
                 errorhandler({
                     message: `✅ I have successfully send a welcome message in Guild: ${joined_user.guild.id}`,
                     fatal: false,
+                    id: 1694433443,
                 });
                 resolve(msg);
             })
             .catch(async (err) => {
                 errorhandler({
-                    message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id}`,
-                    err,
+                    message: `❌ I have failed to send a welcome message in Guild: ${joined_user.guild.id} - ${err.message}`,
                     fatal: false,
+                    id: 1694433448,
                 });
                 reject(err);
             });

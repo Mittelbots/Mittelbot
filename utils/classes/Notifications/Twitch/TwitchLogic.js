@@ -139,8 +139,9 @@ module.exports = class TwitchNotifier {
                 if (err.message.includes('self-signed certificate')) return false;
 
                 errorhandler({
-                    err,
+                    message: `Error while getting the Twitch Stream`,
                     fatal: false,
+                    id: 1694433290,
                 });
                 resolve(false);
             }

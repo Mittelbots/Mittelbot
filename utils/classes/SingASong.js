@@ -166,8 +166,9 @@ module.exports = class SingASong extends SingASongLogic {
                 })
                 .catch((err) => {
                     errorhandler({
-                        err,
+                        message: `Error while replying to sing a song message ${err.message}`,
                         fatal: false,
+                        id: 1694433207,
                     });
                     this.main_interaction.reply({
                         content:
@@ -238,8 +239,9 @@ module.exports = class SingASong extends SingASongLogic {
                 await this.#resetEvent(author);
                 this.main_interaction.message.delete().catch((err) => {
                     errorhandler({
-                        err,
+                        message: `Error while deleting the sing a song embed ${err.message}`,
                         fatal: false,
+                        id: 1694433250,
                     });
                 });
             }

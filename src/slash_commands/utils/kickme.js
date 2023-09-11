@@ -45,7 +45,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 components: [],
                 fetchReply: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     });
 
     collector.on('end', async (collected, reason) => {
@@ -57,12 +57,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 reason: 'User executed /kickme command.',
                 bot,
             })
-                .then((res) => {
+                .then(() => {
                     errorhandler({
+                        fatal: false,
                         message: `${user.id} has triggered the /kickme command successfully.`,
+                        id: 1694432973,
                     });
                 })
-                .catch((err) => {
+                .catch(() => {
                     main_interaction.editReply({
                         content: `❌ I don't have permissions to kick you.`,
                         components: [],
