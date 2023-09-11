@@ -53,92 +53,92 @@
                 },
                 "cooldown": {
                     "set": "{success.emote} Parancs cooldown sikeresen megváltoztatva %c másodpercre.",
-                    "disabled": "{success.emote} Command Cooldown successfully turned off \n \n**Info: A default Cooldown of 2 Seconds is still enabled to protect the bot from spam!**"
+                    "disabled": "{success.emote} Command Cooldown sikeresen kikapcsolva \n \n**Info: Az alapértelmezett 2 másodperces lehűlés továbbra is engedélyezve van, hogy megvédje a botot a spamtől!**"
                 }
             },
             "autoblacklist": {
-                "set": "{success.emote} Successfully set up Auto-Blacklist for this server.",
-                "delete": "{success.emote} Successfully deleted Auto-Blacklist for this server."
+                "set": "{success.emote} Sikeresen beállította az automatikus feketelistát ezen a kiszolgálón.",
+                "delete": "{success.emote} Sikeresen törölte a szerver automatikus feketelistáját."
             },
             "autodelete": {
-                "set": "{success.emote} Users %c send messages of type %e"
+                "set": "{success.emote} A %c felhasználók %e típusú üzeneteket küldenek"
             },
             "automod": {
                 "whitelistroles": {
-                    "add": "{success.emote} Successfully added the role %c to the whitelist."
+                    "add": "{success.emote} Sikeresen hozzáadta a szerepkört %c a fehérlistához."
                 },
                 "antispam": {
-                    "enabled": "{success.emote} Successfully enabled antispam with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nDetect Dublicates: %w\n\nPinglimit: %e.",
-                    "disabled": "{success.emote} Successfully disabled antispam."
+                    "enabled": "{success.emote} Sikeresen engedélyezte a spam elleni védelmet a `%c` művelettel. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nDetect Dublicates: %w\n\nPinglimit: %e.",
+                    "disabled": "{success.emote} Sikeresen kikapcsoltuk a spam elleni védelmet."
                 },
                 "antiinvite": {
-                    "enabled": "{success.emote} Successfully enabled Anti-invite with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinks: %w\n\nWhitelistinvites: `%w`.",
-                    "disabled": "{success.emote} Successfully disabled Anti-invite."
+                    "enabled": "{success.emote} Sikeresen engedélyezte az Anti-invite-ot a `%c` művelettel. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinkek: %w\n\nFehérlistás meghívók: `%w`.",
+                    "disabled": "{success.emote} Sikeresen kikapcsoltuk a meghívásgátlást."
                 },
                 "antilinks": {
-                    "enabled": "{success.emote} Successfully enabled Anti-Links with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinks: `%w`.",
-                    "disabled": "{success.emote} Successfully disabled Anti-Links."
+                    "enabled": "{success.emote} Sikeresen engedélyezte az Anti-Linkeket a `%c` művelettel. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWhitelistlinks: `%w`.",
+                    "disabled": "{success.emote} Sikeresen letiltotta az Anti-Linkeket."
                 },
                 "antiinsults": {
-                    "removed": "{success.emote} Successfully removed the insult `%c` from the list.",
-                    "enabled": "{success.emote} Successfully enabled Anti-Insults with the action `%c`. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nnWords: `%r`",
-                    "disabled": "{success.emote} Successfully disabled Anti-Mass-Mention."
+                    "removed": "{success.emote} Sikeresen eltávolította a `%c` sértést a listáról.",
+                    "enabled": "{success.emote} Sikeresen engedélyezte az Anti-Insultokat a `%c` művelettel. \n\nWhitelistroles: %e\n\nWhitelistchannel: %q\n\nWords: `%r`",
+                    "disabled": "{success.emote} Sikeresen kikapcsoltuk az Anti-Mass-Mentiont."
                 }
             },
             "autotranslate": {
-                "update": "{success.emote} Successfully updated your Auto-Translate settings."
+                "update": "{success.emote} Sikeresen frissítette az automatikus fordítás beállításait."
             },
             "banappeal": {
-                "set": "{success.emote} The ban appeal has been setup for your server. An example of how it will look will be sent to the channel you specified.",
-                "remove": "{success.emote} The ban appeal has been removed from your server."
+                "set": "{success.emote} A tiltási fellebbezés beállítása megtörtént a szervereden. Egy példát küldünk az általad megadott csatornára, hogy hogyan fog kinézni.",
+                "remove": "{success.emote} A tiltási fellebbezést eltávolítottuk a szerveréről."
             },
             "levelsettings": {
-                "set": "{success.emote} Successfully saved your level config to %c",
-                "setAlone": "{success.emote} Successfully saved your level config"
+                "set": "{success.emote} Sikeresen elmentette a szint konfigurációját %c",
+                "setAlone": "{success.emote} Sikeresen elmentette a szint konfigurációját"
             },
             "modules": {
-                "update": "{success.emote} Successfully %c %x."
+                "update": "{success.emote} Sikeresen %c %x."
             },
             "warnroles": {
-                "update": "{success.emote} Warn Roles updated!"
+                "update": "{success.emote} Figyelmeztető szerepek frissítve!"
             }
         },
         "ticket": {
             "setting": {
-                "set": "{success.emote} Successfully add your Ticket Setting.",
-                "delete": "{success.emote} Successfully deleted your Ticket Setting."
+                "set": "{success.emote} Sikeresen hozzáadta a jegybeállítást.",
+                "delete": "{success.emote} Sikeresen törölte a jegybeállítást."
             },
             "interacte": {
-                "create": "{success.emote} Successfully created your ticket. %c",
-                "close": "{success.emote} Successfully closed your ticket.",
-                "saveTranscript": "{success.emote} Successfully saved your transcript. You can download it now. (Web-hosted is not currently supported)"
+                "create": "{success.emote} Sikeresen létrehozta a jegyét. %c",
+                "close": "{success.emote} Sikeresen lezártuk a jegyét.",
+                "saveTranscript": "{success.emote} Sikeresen elmentette az átiratot. Most már letöltheti. (A webes tárhely jelenleg nem támogatott)"
             }
         },
         "fun": {
             "ship": {
-                "showResult": "**%c** and **%e** match `%p%`. \n\n `%r`"
+                "showResult": "**%c** és **%e** megegyezik a \"%p%\"-val. \n\n `%r`"
             },
             "hangman": {
-                "createdPrv": "{success.emote} Successfully created a new hangman game in %q (%w)",
-                "createdPub": "An game of hangman has been started in %c",
-                "cancelled": "{success.emote} Successfully cancelled the hangman game in %q (%w)"
+                "createdPrv": "{success.emote} Sikeresen létrehozott egy új akasztófa játékot %q-ban (%w)",
+                "createdPub": "Egy akasztófás játék indult %c-ben",
+                "cancelled": "{success.emote} Sikeresen töröltük a hóhérjátékot %q-ban (%w)"
             }
         },
         "moderation": {
             "singasong": {
-                "userHasBeenBanned": "{success.emote} User has been banned from using the command in this guild!"
+                "userHasBeenBanned": "{success.emote} A felhasználót kitiltották a parancs használatából ebben a céhben!"
             },
             "givexp": {
-                "xpGiven": "{success.emote} %c xp has been added to %x"
+                "xpGiven": "{success.emote} %c xp hozzá lett adva %x-hez"
             },
             "removexp": {
-                "xpRemoved": "{success.emote} %c xp has been removed from %x"
+                "xpRemoved": "{success.emote} %c xp-t eltávolítottuk %x-ről"
             },
             "infractions": {
-                "removed": "Infraction with id %c %x be removed!"
+                "removed": "A %c %x azonosítóval rendelkező szabálysértést el kell távolítani!"
             },
             "isBanned": {
-                "userIsBanned": "This user is banned! Reason: `%c` by %x",
+                "userIsBanned": "Ez a felhasználó ki van tiltva! Indoklás: `%c` by %x",
                 "userIsNotBanned": "Ez a felhasználó nincs bannolva!"
             },
             "purge": {
@@ -146,40 +146,40 @@
             }
         },
         "music": {
-            "disconnect": "{success.emote} Disconnected from the voice channel.",
-            "pause": "{success.emote} The current song has been paused.",
+            "disconnect": "{success.emote} Megszakadt a kapcsolat a hangcsatornával.",
+            "pause": "{success.emote} Az aktuális dal szünetel.",
             "play": {
-                "playlistAddedToQueue": "**%c** with **%x** songs has been added to the queue.",
-                "songAddedToQueue": "[%c](%x) has been added to the queue."
+                "playlistAddedToQueue": "**%c** **%x** dalokkal került a várólistára.",
+                "songAddedToQueue": "[%c](%x) hozzá lett adva a várólistához."
             },
             "resume": {
-                "resumed": " {success.emote} The current song has been resumed."
+                "resumed": " {success.emote} Az aktuális dal folytatódott."
             },
             "skip": {
-                "skipped": "{success.emote} **%c** has been skipped.\n ---------------------------------- \nNow playing: %x \nRequested by: %y \nDuration: %v \nURL: %z"
+                "skipped": "{success.emote} **%c** kihagyásra került.\n ---------------------------------- \nMost játszódik: %x \nKérte: %y \nIdőtartam: %v \nURL: %z"
             },
             "stop": {
-                "stopped": "{success.emote} The song has stopped and the queue is cleared. See you 👋"
+                "stopped": "{success.emote} A dal leállt, és a várólista kiürült. Viszlát 👋"
             },
             "shuffle": {
-                "enable": "{success.emote} Successfully enabled shuffle."
+                "enable": "{success.emote} Sikeresen engedélyezte a keverést."
             },
             "repeat": {
-                "enable": "{success.emote} Successfully enabled repeat.",
-                "disable": "{success.emote} Successfully disabled repeat."
+                "enable": "{success.emote} Sikeresen engedélyezte az ismétlést.",
+                "disable": "{success.emote} Sikeresen letiltotta az ismétlést."
             },
             "volume": {
-                "set": "{success.emote} Successfully set the volume to %c%"
+                "set": "{success.emote} Sikeresen beállította a kötetet %c%"
             }
         },
         "notifications": {
             "reddit": {
-                "removed": "{success.cheerEmote} Successfully removed the reddit notification for %c",
-                "added": "{success.cheerEmote} Successfully added the reddit notification for %c"
+                "removed": "{success.cheerEmote} Sikeresen eltávolította a reddit értesítést %c-ről",
+                "added": "{success.cheerEmote} Sikeresen hozzáadta a reddit értesítést %c-hez"
             },
             "youtube": {
-                "added": "{success.cheerEmote} Successfully added the youtube channel `%q` to the list.",
-                "removed": "{success.cheerEmote} Successfully removed the youtube channel `%q`."
+                "added": "{success.cheerEmote} Sikeresen hozzáadta a `%q` youtube csatornát a listához.",
+                "removed": "{success.cheerEmote} Sikeresen eltávolítottuk a `%q` youtube csatornát."
             },
             "twitch": {
                 "added": "{success.cheerEmote} Successfully added the twitch channel `%q` to the list.",
@@ -300,45 +300,45 @@
         },
         "utils": {
             "afk": {
-                "modalTitle": "Reason for your AFK state"
+                "modalTitle": "Az AFK állapotod oka"
             },
             "checkGuild": {
                 "embed": {
-                    "title": "---Get all informations about %c on Shard-Id %x----",
-                    "description": "Disclaimer: This informations are public and accessable for every bot. I don't expose sensetive data!",
+                    "title": "--- Minden információ lekérdezése %c-ről a Shard-azonosítón %x----",
+                    "description": "Jogi nyilatkozat: Ezek az információk nyilvánosak és minden bot számára hozzáférhetőek. Nem teszek közzé érzékeny adatokat!",
                     "fields": [
                         {
-                            "name": "Is this server available?"
+                            "name": "Elérhető ez a szerver?"
                         },
                         {
-                            "name": "Guild Description"
+                            "name": "Céh leírás"
                         },
                         {
-                            "name": "Verification Level:"
+                            "name": "Ellenőrzési szint:"
                         },
                         {
-                            "name": "Rules Channel:"
+                            "name": "Szabályok csatorna:"
                         },
                         {
-                            "name": "Member Count:"
+                            "name": "Tagok száma:"
                         },
                         {
-                            "name": "Channel Count:"
+                            "name": "Csatornák száma:"
                         },
                         {
-                            "name:": "Role Count:"
+                            "name:": "Szerepek száma:"
                         },
                         {
-                            "name": "Ban Count:"
+                            "name": "Tilalomszámlálás:"
                         },
                         {
-                            "name": "Vanity URL:"
+                            "name": "Hiúság URL:"
                         },
                         {
-                            "name": "Vanity URL uses:"
+                            "name": "Hiúsági URL felhasználások:"
                         },
                         {
-                            "name": "NSFW Level:"
+                            "name": "NSFW szint:"
                         },
                         {
                             "name": "Server Boosts:"
