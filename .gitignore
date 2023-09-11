@@ -24,3 +24,6 @@ backups/*
 _PipelineMapping/
 _actions/
 _tool/
+
+# Logs
+_debug/*.log
