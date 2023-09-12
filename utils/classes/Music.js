@@ -74,10 +74,8 @@ module.exports = class Music {
                 await this.queue.node.play();
                 await this.updateQueueInDB(true);
                 return resolve();
-            } catch (e) {
-                errorhandler({
-                    err: e,
-                });
+            } catch (err) {
+                errorhandler({ err });
                 return reject();
             }
         });
@@ -185,10 +183,8 @@ module.exports = class Music {
                 });
 
                 return resolve(this.queue);
-            } catch (e) {
-                errorhandler({
-                    err: e,
-                });
+            } catch (err) {
+                errorhandler({ err });
                 return resolve(false);
             }
         });

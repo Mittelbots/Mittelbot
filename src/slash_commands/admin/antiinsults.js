@@ -65,6 +65,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             errorhandler({
                 fatal: false,
                 message: `${main_interaction.guild.id} has been updated the anti Insults config.`,
+                id: 1694432692,
             });
 
             const replyData = [

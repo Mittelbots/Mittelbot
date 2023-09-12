@@ -70,10 +70,7 @@ module.exports.checkInfractions = (bot) => {
 
                         await new Infractions().moveFromOpenToClosed(results[i]);
                     } catch (err) {
-                        errorhandler({
-                            err,
-                            fatal: true,
-                        });
+                        errorhandler({ err });
                     }
 
                     done++;

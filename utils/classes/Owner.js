@@ -47,7 +47,7 @@ module.exports.restart = async (message) => {
             content: `Ok sir, Bot is restarting!`,
             ephemeral: true,
         })
-        .catch((err) => {});
+        .catch(() => {});
 
     await delay(5000);
 
@@ -65,12 +65,13 @@ module.exports.shutdown = async (message = null) => {
                 content: `Ok sir, Bot stopped!`,
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
     errorhandler({
         message: 'Bot stopped due function call',
         fatal: false,
+        id: 1694433111,
     });
     process.exit();
 };
@@ -88,7 +89,7 @@ module.exports.generatelevel = async (message, args) => {
                     content: 'Successfully created!',
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 
@@ -103,7 +104,7 @@ module.exports.ignoremode = async (message, args) => {
             content: '✅ Successfully set ignoremode to ' + (mode ? 'on' : 'off'),
             ephemeral: true,
         })
-        .catch((err) => {});
+        .catch(() => {});
 };
 
 module.exports.disable_command = async (message, args) => {
@@ -133,7 +134,7 @@ module.exports.disable_command = async (message, args) => {
                 }`,
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     } catch (err) {
         errorhandler({ err });
         message
@@ -141,7 +142,7 @@ module.exports.disable_command = async (message, args) => {
                 content: `❌ Something went wrong: ${err}`,
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 };
 
@@ -150,7 +151,7 @@ module.exports.export_logs = async (message) => {
         .reply({
             content: `https://blackdayz.sentry.io/issues/`,
         })
-        .catch((err) => {});
+        .catch(() => {});
 };
 
 module.exports.deploy_commands = async (bot) => {
@@ -194,7 +195,7 @@ module.exports.sendRestartNotice = async (message, args) => {
                 content: `✅ Successfully sent ${sentMessage} messages`,
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
         resolve();
     });
 };

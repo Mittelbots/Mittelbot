@@ -71,6 +71,7 @@ module.exports.run = async ({ main_interaction }) => {
             errorhandler({
                 fatal: false,
                 message: `${main_interaction.guild.id} has been updated the anti Links config.`,
+                id: 1694432710,
             });
             const description = antilinksEnabled
                 ? global.t.trans(

@@ -72,7 +72,6 @@ module.exports = class YouTubeLogic {
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true,
                     });
                     return resolve(false);
                 });
@@ -88,9 +87,7 @@ module.exports = class YouTubeLogic {
                 })
                 .catch((err) => {
                     errorhandler({
-                        message: link,
-                        err,
-                        fatal: true,
+                        err: `Error while getting YouTube Video Informations ${err.message} with link ${link}`,
                     });
                     return resolve(false);
                 });
@@ -159,13 +156,12 @@ module.exports = class YouTubeLogic {
                         },
                     }
                 )
-                .then((res) => {
+                .then(() => {
                     return resolve(true);
                 })
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true,
                     });
                     return resolve(false);
                 });
@@ -198,13 +194,12 @@ module.exports = class YouTubeLogic {
                         },
                     }
                 )
-                .then((res) => {
+                .then(() => {
                     return resolve(true);
                 })
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true,
                     });
                     return resolve(false);
                 });

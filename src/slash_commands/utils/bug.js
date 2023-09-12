@@ -56,9 +56,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             main_interaction.reply({ embeds: [embedToUser] }).catch(() => {});
         })
         .catch((err) => {
-            errorhandler({
-                err,
-            });
+            errorhandler({ err });
         });
 
     return;

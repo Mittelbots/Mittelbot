@@ -23,11 +23,12 @@ async function giveAllRoles(userId, guild, roles) {
                         errorhandler({
                             fatal: false,
                             message: `${userId} was given the roles back in ${guild.id}. ROLEID: ${roles[x]}`,
+                            id: 1694433732,
                         });
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             } catch (err) {
-                return errorhandler({ err, fatal: true });
+                return errorhandler({ err });
             }
         }
     }

@@ -60,6 +60,7 @@ module.exports.run = async ({ main_interaction }) => {
             errorhandler({
                 fatal: false,
                 message: `${main_interaction.guild.id} has been updated the antispam config.`,
+                id: 1694432701,
             });
 
             const description = setting.enabled

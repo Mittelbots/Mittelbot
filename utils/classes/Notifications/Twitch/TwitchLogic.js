@@ -139,8 +139,9 @@ module.exports = class TwitchNotifier {
                 if (err.message.includes('self-signed certificate')) return false;
 
                 errorhandler({
-                    err,
+                    message: `Error while getting the Twitch Stream`,
                     fatal: false,
+                    id: 1694433290,
                 });
                 resolve(false);
             }
@@ -302,7 +303,7 @@ module.exports = class TwitchNotifier {
     }
 
     getViews(twitch_id, guild_id) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             await twitchStreams
                 .findOne({
                     where: {
@@ -313,8 +314,11 @@ module.exports = class TwitchNotifier {
                 .then((res) => {
                     resolve(res.views);
                 })
-                .catch((err) => {
-                    reject(0);
+                .catch(() => {
+                    errorhandler({
+                        err: `Error while fetching the twitch stream views ${err.message}`,
+                    });
+                    resolve(0);
                 });
         });
     }

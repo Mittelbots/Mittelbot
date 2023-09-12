@@ -56,6 +56,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     errorhandler({
                         fatal: false,
                         message: `${main_interaction.guild.id} has been updated the automod config.`,
+                        id: 1694432871,
                     });
                     main_interaction
                         .reply({

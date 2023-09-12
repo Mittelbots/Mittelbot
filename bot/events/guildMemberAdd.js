@@ -91,5 +91,6 @@ module.exports.guildMemberAdd = async (member, bot) => {
     errorhandler({
         fatal: false,
         message: `I have added the join roles to ${member.user.username} in ${member.guild.name}`,
+        id: 1694432483,
     });
 };

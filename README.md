@@ -126,6 +126,14 @@ Go to your bot direct message and send `deploycommands`. You will notice, that i
 
 <br>
 
+## **Known Issues**
+
+![](./docs/readme/module_not_found.png)
+
+**Fix:** Run the install script again. If this doesn't work, please open an issue.
+
+<br>
+
 -----------------------
 
 <br/>

@@ -113,9 +113,9 @@ module.exports.reddit_notifier = async (bot) => {
                 })
                 .catch((err) => {
                     errorhandler({
-                        message: 'Error sending reddit post',
-                        err: err.message,
+                        message: `Error sending reddit post ${err.message}`,
                         fatal: false,
+                        id: 1694432662,
                     });
                 });
         });

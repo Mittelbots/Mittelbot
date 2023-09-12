@@ -18,7 +18,11 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
         const mutedRole = await getMutedRole(guild);
 
         if (!mutedRole) {
-            errorhandler({ err, fatal: false, message: `${mutedRole} is not a valid Muted Role.` });
+            errorhandler({
+                fatal: false,
+                message: `${mutedRole} is not a valid Muted Role.`,
+                id: 1694433644,
+            });
             return reject(
                 global.t.trans(['error.moderation.mute.noMuteRoleFoundOrCreated'], guild.id)
             );
@@ -35,9 +39,9 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
                 }
 
                 errorhandler({
-                    err,
                     fatal: false,
-                    message: `${mutedRole} is not a valid Muted Role in ${guild.id}`,
+                    message: `${mutedRole} is not a valid Muted Role in ${guild.id} - ${err.message}`,
+                    id: 1694433593,
                 });
                 return reject(
                     global.t.trans(
@@ -97,11 +101,12 @@ async function muteUser({ user, mod, bot, guild, reason, time, dbtime }) {
             errorhandler({
                 fatal: false,
                 message: `${mod.id} has triggered the mute command in ${guild.id}`,
+                id: 1694433658,
             });
 
             return resolve(p_response);
         } catch (err) {
-            errorhandler({ err, fatal: true });
+            errorhandler({ err });
             return reject(global.t.trans(['error.general'], guild.id));
         }
     });
