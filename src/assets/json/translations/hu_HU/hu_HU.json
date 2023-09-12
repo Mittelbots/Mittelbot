@@ -182,47 +182,47 @@
                 "removed": "{success.cheerEmote} Sikeresen eltávolítottuk a `%q` youtube csatornát."
             },
             "twitch": {
-                "added": "{success.cheerEmote} Successfully added the twitch channel `%q` to the list.",
-                "updated": "{success.cheerEmote} Successfully updated the twitch notification for `%q`",
-                "removed": "{success.cheerEmote} Successfully removed the twitch channel to the notification list."
+                "added": "{success.cheerEmote} Sikeresen hozzáadta a `%q` twitch csatornát a listához.",
+                "updated": "{success.cheerEmote} Sikeresen frissítette a twitch értesítést a `%q`-hez",
+                "removed": "{success.cheerEmote} Sikeresen eltávolította a twitch csatornát az értesítési listáról."
             }
         },
         "utils": {
             "afk": {
-                "set": "{success.emote} You are now afk. Reason `%q`",
-                "noLongerAfk": "{success.emote} You are no longer afk. Reason: %w You were afk: <t:%w:R>"
+                "set": "{success.emote} Most már afk vagy. Ok `%q`",
+                "noLongerAfk": "{success.emote} Már nem vagy afk. Indoklás: %w Afk voltál: <t:%w:R>"
             },
             "password": {
-                "generated": "{success.emote} Your password has been generated: `%c`"
+                "generated": "{success.emote} A jelszavadat generáltuk: `%c`"
             },
             "bug": {
-                "sent": "{success.emote} Your bug report has been sent!"
+                "sent": "{success.emote} A hibajelentést elküldtük!"
             }
         }
     },
     "info": {
         "emote": "💭",
         "general": {
-            "tryCommandAgainWithoutArgs": "Try again by clicking"
+            "tryCommandAgainWithoutArgs": "Próbálja újra a"
         },
         "admin": {
-            "messageUpdate": "**Message sent by <@%q> edited in <#%w>\n[Jump to Message](https://discord.com/channels/%e/%r/%t)**\n\n**Before**\n%z\n\n**After**\n%u",
+            "messageUpdate": "**Az <@%q> által küldött üzenet szerkesztve <#%w>-ban\n[Ugrás az üzenetre](https://discord.com/channels/%e/%r/%t)**\n\n**Előtte**\n%z\n\n**After**\n%u",
             "autoblacklist": {
                 "info": {
-                    "title": "Auto-Blacklist",
-                    "description": "This is a list of all the users that have been auto-blacklisted.",
+                    "title": "Automatikus feketelista",
+                    "description": "Ez az összes automatikusan feketelistára került felhasználó listája.",
                     "fields": [
                         {
-                            "name": "How to set up Auto-Blacklist?",
-                            "value": "To set up Auto-Blacklist, you need to create a announcement channel, add a blacklist webhook and set it up with the command `/autoblacklist set <channel> [ban_message]`"
+                            "name": "Hogyan állíthatom be az automatikus feketelistát?",
+                            "value": "Az automatikus feketelista beállításához létre kell hoznia egy bejelentési csatornát, hozzá kell adnia egy feketelista webhookot, és a `/autoblacklist set <csatorna> [ban_message]` paranccsal kell beállítania."
                         },
                         {
-                            "name": "How to use Auto-Blacklist?",
-                            "value": "You don't need to do anything. If a message is send through the webhook, all user ids in the message will be banned."
+                            "name": "Hogyan használható az Auto-Blacklist?",
+                            "value": "Nem kell semmit sem tenned. Ha egy üzenetet a webhookon keresztül küldünk, az üzenetben szereplő összes felhasználói azonosító tiltásra kerül."
                         },
                         {
-                            "name": "How to remove Auto-Blacklist?",
-                            "value": "To remove Auto-Blacklist, you need to use the command `/autoblacklist delete`"
+                            "name": "Hogyan lehet eltávolítani az automatikus feketelistát?",
+                            "value": "Az Auto-Blacklist eltávolításához a `/autoblacklist delete` parancsot kell használnia."
                         }
                     ]
                 }
@@ -231,29 +231,29 @@
                 "info": {
                     "admin": [
                         {
-                            "name": "Admin Permissions",
-                            "value": "This role can use commands like ban, unban, etc.",
+                            "name": "Admin engedélyek",
+                            "value": "Ez a szerepkör olyan parancsokat használhat, mint ban, unban, stb.",
                             "inline": true
                         }
                     ],
                     "mod": [
                         {
-                            "name": "Mod Permissions",
-                            "value": "This role can use commands like kick, mute, etc.",
+                            "name": "Mod engedélyek",
+                            "value": "Ez a szerepkör olyan parancsokat használhat, mint a kick, mute, stb.",
                             "inline": true
                         }
                     ],
                     "helper": [
                         {
-                            "name": "Helper Permissions",
-                            "value": "This role can use commands like warn, etc.",
+                            "name": "Segítői engedélyek",
+                            "value": "Ez a szerepkör olyan parancsokat használhat, mint a figyelmeztetés stb.",
                             "inline": true
                         }
                     ],
                     "remove": [
                         {
-                            "name": "Remove Role",
-                            "value": "This role will be removed from the modroles list.",
+                            "name": "Szerep eltávolítása",
+                            "value": "Ez a szerepkör lekerül a modroles listáról.",
                             "inline": true
                         }
                     ]
@@ -261,42 +261,42 @@
             },
             "autodelete": {
                 "types": {
-                    "onlyMedia": "Media",
-                    "onlyText": "Text",
+                    "onlyMedia": "Média",
+                    "onlyText": "Szöveg",
                     "onlyEmotes": "Emotes",
-                    "onlyStickers": "Stickers"
+                    "onlyStickers": "Matricák"
                 }
             }
         },
         "ticket": {
-            "deletedTicket": "{info.emote} This Ticket will be deleted in 5 seconds...",
+            "deletedTicket": "{info.emote} Ez a jegy 5 másodperc múlva törlődik...",
             "transcript": {
-                "title": "Ticket Saved - %c",
+                "title": "Mentett jegy - %c",
                 "fields": {
-                    "id": "Ticket ID",
-                    "openedBy": "Opened by",
-                    "closedBy": "Closed by",
-                    "createdAt": "Created at"
+                    "id": "Jegyazonosító",
+                    "openedBy": "Megnyitotta",
+                    "closedBy": "Bezárta",
+                    "createdAt": "Készült a"
                 }
             }
         },
         "music": {
-            "requestedBy": "Requested by",
-            "songsInQueue": "Songs in Queue: %c",
-            "duration": "Duration: %c",
-            "nowplaying": "Now playing: %c \nRequested by: %x \nDuration: %y \nURL: %v",
-            "nowPlayingOnlyTrack": "Now playing %c",
+            "requestedBy": "Kérte",
+            "songsInQueue": "Dalok a sorban: %c",
+            "duration": "Időtartam: %c",
+            "nowplaying": "Most játszik: %c \nKérte: %x \nIdőtartam: %y \nURL: %v",
+            "nowPlayingOnlyTrack": "Most játszik %c",
             "queue": {
-                "queueLength": "Songs %c - %x",
+                "queueLength": "Dalok %c - %x",
                 "songEmbedName": "Song %c",
-                "songEmbedValue": "%c (%x)\n Requested by: %y"
+                "songEmbedValue": "%c (%x)\n Kérte: %y"
             },
-            "multipleSearchResultsFound": "Multiple search results found. Please choose one of the following:",
-            "trackAddedToQueue": "Track added to queue: %c",
-            "disconnected": "I was manually disconnected or left due inactivity from the voice channel, clearing queue!",
-            "emptyChannel": "Nobody is in the voice channel, leaving the channel!",
-            "queueHasEnded": "Queue has ended",
-            "notInAVC": "I'm not in a voice channel right now."
+            "multipleSearchResultsFound": "Több keresési eredményt találtunk. Kérjük, válasszon egyet a következők közül:",
+            "trackAddedToQueue": "Pálya hozzáadva a várólistához: %c",
+            "disconnected": "Én manuálisan lekapcsolták vagy inaktivitás miatt maradtam a hangcsatornáról, a várólista törlése miatt!",
+            "emptyChannel": "Senki sincs a hangcsatornán, elhagyja a csatornát!",
+            "queueHasEnded": "A sor véget ért",
+            "notInAVC": "Most nem vagyok hangcsatornán."
         },
         "utils": {
             "afk": {
@@ -472,30 +472,30 @@
                 }
             },
             "twitch": {
-                "endedStream": "%q has ended their stream!",
-                "startedHrsAgo": "Stream started %q hours ago - Last updated",
-                "endedHrsAgo": "Stream ended %q hours ago",
-                "justWentLive": "%q just went live!",
-                "justEnded": "%q just ended their stream!",
+                "endedStream": "%q befejezte a streamet!",
+                "startedHrsAgo": "Stream indult %q órával ezelőtt - Utolsó frissítés",
+                "endedHrsAgo": "Az adatfolyam %q órával ezelőtt ért véget",
+                "justWentLive": "%q épp most indult el!",
+                "justEnded": "%q most fejezte be a streamet!",
                 "fields": {
                     "game": "Game",
-                    "viewers": "Viewers",
-                    "tags": "Tags"
+                    "viewers": "Nézők",
+                    "tags": "Címkék"
                 }
             }
         },
         "level": {
             "leaderboard": {
-                "title": "Top 10 members of %c.",
-                "currentRank": "Your current rank: %c",
-                "XP_Level": "XP: %c  Level: %e Last Message: %x",
-                "notRanksYet": "You don't have a rank yet.",
-                "writeAMessageFirst": "Write your first messages to gain xp."
+                "title": "A %c 10 legjobb tagja.",
+                "currentRank": "Az Ön jelenlegi rangja: %c",
+                "XP_Level": "XP: %c Szint: %e Utolsó üzenet: %x",
+                "notRanksYet": "Még nincs rangod.",
+                "writeAMessageFirst": "Írd meg az első üzeneteidet, hogy xp-t szerezz."
             }
         },
         "moderation": {
             "warn": {
-                "hasAllWarnRoles": "❗️This user has already all warnroles.❗️"
+                "hasAllWarnRoles": "❗️This felhasználó már rendelkezik minden warnroles.❗️"
             }
         }
     },
@@ -503,68 +503,68 @@
         "emote": "⚠️",
         "admin": {
             "autodelete": {
-                "get": " {warning.emote} Users %c send messages of type %e."
+                "get": " {warning.emote} A %c felhasználók %e típusú üzeneteket küldenek."
             },
             "modules": {
-                "notavalidmodule": "{warning.emote} %c is not a valid module.",
-                "isAlreadyEnabled": "{warning.emote} %c is already enabled.",
-                "isAlreadyDisabled": "{warning.emote} %c is already disabled."
+                "notavalidmodule": "{warning.emote} %c nem érvényes modul.",
+                "isAlreadyEnabled": "{warning.emote} %c már engedélyezve van.",
+                "isAlreadyDisabled": "{warning.emote} %c már le van tiltva."
             }
         },
         "music": {
-            "queueEnded": "{warning.emote} The queue has ended. Silence..."
+            "queueEnded": "{warning.emote} A várakozás véget ért. Csendet..."
         }
     },
     "error": {
         "emote": "❌",
-        "general": "{error.emote} There was an error processing your request. {general.tryAgainLater}",
+        "general": "{error.emote} Hiba történt a kérésed feldolgozásában. {general.tryAgainLater}",
         "generalWithMessage": "{error.general} %c",
         "modules": {
-            "notEnabled": "{error.emote} This Module **(%c)** is disabled. You or the server admins have to enable it first to use this command."
+            "notEnabled": "{error.emote} Ez a modul **(%c)** le van tiltva. Neked vagy a szerver adminisztrátorának először engedélyeznie kell, hogy használhassa ezt a parancsot."
         },
         "commands": {
-            "globallyDisabled": "This command is currently disabled in all Servers. Join the offical support discord for more informations. https://mittelbot.xyz/support",
-            "disabledOnGuild": "This command is disabled in your Guild."
+            "globallyDisabled": "Ez a parancs jelenleg minden kiszolgálón le van tiltva. További információkért csatlakozz a hivatalos támogatási discordhoz. https://mittelbot.xyz/support",
+            "disabledOnGuild": "Ez a parancs ki van kapcsolva a céhben."
         },
         "embed": {
-            "send": "{error.emote} There was an error sending your embed message. {general.tryAgainLater}"
+            "send": "{error.emote} Hiba történt a beágyazott üzenet elküldésében. {general.tryAgainLater}"
         },
-        "timelimit": "{error.emote} Time limit reached",
+        "timelimit": "{error.emote} Időlimit elérve",
         "permissions": {
             "user": {
-                "useCommand": "{error.emote} You don't have permission to use this command."
+                "useCommand": "{error.emote} Nincs jogosultsága a parancs használatához."
             },
             "bot": {
-                "dontKnow": "{error.emote} I don't have one of these permissions `%q`. Change them and try again.",
-                "write": "{error.emote} I don't have permission to write in %c.",
-                "channelDelete": "{error.emote} I don't have permission to delete channels.",
-                "roleAdd": "{error.emote} I don't have permission to add roles.",
-                "roleAddSpecific": "{error.emote} I don't have permission to add the role %c.",
-                "manageReactions": "{error.emote} I don't have permission to manage reactions.",
-                "ban": "{error.emote} I don't have permission to ban members.",
-                "kick": "{error.emote} I don't have permission to kick members.",
-                "unban": "{error.emote} I don't have permission to unban members.",
-                "manageRoles": "{error.emote} I don't have permission to manage roles."
+                "dontKnow": "{error.emote} Nekem nincs ilyen jogosultságom `%q`. Változtassa meg őket, és próbálja meg újra.",
+                "write": "{error.emote} Nincs engedélyem a %c-ben való íráshoz.",
+                "channelDelete": "{error.emote} Nincs jogosultságom a csatornák törlésére.",
+                "roleAdd": "{error.emote} Nincs jogosultságom szerepek hozzáadásához.",
+                "roleAddSpecific": "{error.emote} Nincs jogosultságom a %c szerep hozzáadásához.",
+                "manageReactions": "{error.emote} Nincs jogosultságom a reakciók kezeléséhez.",
+                "ban": "{error.emote} Nincs jogosultságom a tagok kitiltására.",
+                "kick": "{error.emote} Nincs jogosultságom tagokat rugdosni.",
+                "unban": "{error.emote} Nincs jogosultságom a tagok kitiltására.",
+                "manageRoles": "{error.emote} Nincs jogosultságom a szerepek kezeléséhez."
             }
         },
         "input": {
-            "invalidLink": "{error.emote} %c is not a valid link.",
-            "invalidNumber": "{error.emote} %c is not a valid number."
+            "invalidLink": "{error.emote} %c nem érvényes link.",
+            "invalidNumber": "{error.emote} %c nem érvényes szám."
         },
         "ticket": {
             "setting": {
-                "delete": "{error.emote} There was an error deleting your Ticket Setting. {general.tryAgainLater}"
+                "delete": "{error.emote} Hiba történt a jegybeállítás törlésében. {general.tryAgainLater}"
             },
-            "MAX_SETTINGS": "{error.emote} You have reached the maximum number of tickets (%c)",
+            "MAX_SETTINGS": "{error.emote} Elérte a jegyek maximális számát (%c)",
             "interacte": {
-                "create": "{error.emote} There was an error creating your ticket. {general.tryAgainLater}",
-                "close": "{error.emote} There was an error closing your ticket. {general.tryAgainLater}",
-                "hasTicketAlready": "{error.emote} You already have a ticket open."
+                "create": "{error.emote} Hiba történt a jegy létrehozásában. {general.tryAgainLater}",
+                "close": "{error.emote} Hiba történt a jegye lezárásában. {general.tryAgainLater}",
+                "hasTicketAlready": "{error.emote} Önnek már van nyitott jegye."
             }
         },
         "settings": {
             "muteRole": {
-                "set": "{error.emote} There was an error setting your Mute Role. {general.tryAgainLater}",
+                "set": "{error.emote} Hiba történt a némító szerepkör beállításában. {general.tryAgainLater}",
                 "remove": "{error.emote} There was an error removing your Mute Role. {general.tryAgainLater}"
             }
         },
