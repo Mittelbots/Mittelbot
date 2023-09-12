@@ -181,7 +181,7 @@ module.exports = class YouTubeLogic {
         });
     }
 
-    updateUdateCount(messageId) {
+    updateUpdateCount(messageId) {
         return new Promise(async (resolve) => {
             await guildUploads
                 .update(
