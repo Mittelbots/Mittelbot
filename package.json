@@ -18,7 +18,7 @@
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --check .\"",
         "postinstall": "patch-package && husky install",
         "alias-build": "link-module-alias",
-        "test": "jest",
+        "test": "jest --forceExit",
         "bash": "docker compose exec bot bash"
     },
     "nodemonConfig": {
