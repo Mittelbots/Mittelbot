@@ -375,100 +375,100 @@
             },
             "password": {
                 "removeBackticks": {
-                    "name": "[Mobile/Tablet Only] Remove Backticks",
-                    "value": "In order to have the right password, you have to remove the backticks ( ` ) from the password."
+                    "name": "[Csak mobilon/tableten] Backtickek eltávolítása",
+                    "value": "A megfelelő jelszóhoz el kell távolítani a jelszóból a hátsó írásjeleket ( ` )."
                 }
             },
-            "oldestOrNewestmember": "** %c ** \n**Joined:** %x ago \n **Account created:** %y ago",
-            "uptime": "I'm up for %c Days %x Hours %y Minutes %z Seconds",
-            "imgur": "[Click here to view the image]( %c )"
+            "oldestOrNewestmember": "** %c ** \n**csatlakozott:** %x ezelőtt \n **Fiók létrehozása:** %y ezelőtt",
+            "uptime": "Fent vagyok %c napok %x órák %y percek %z másodpercekig",
+            "imgur": "[Kattintson ide a kép megtekintéséhez]( %c )"
         },
         "fun": {
-            "punch": "You punched %c",
+            "punch": "Megütötted %c",
             "timer": {
-                "timerEnded": "Your timer has ended!",
-                "timeLeft": "**Time left:** %c",
-                "timeLeftTime": "**Time Left:** %q Day(s) %w Hour(s) %e Minute(s)"
+                "timerEnded": "Az időzítőd lejárt!",
+                "timeLeft": "**Maradék idő:** %c",
+                "timeLeftTime": "**Maradt idő:** %q Nap(ok) %w Óra(ok) %e Perc(ek)"
             },
             "guessnumber": {
-                "guess": "Guess the number between 1 and %c"
+                "guess": "Tippelje meg a számot 1 és %c között"
             },
             "pride": {
-                "sexuality": "Sexuality: %c",
-                "genderSingle": "Gender: %c",
-                "similarto": "Similar to: ",
-                "genderField": "Genders:",
-                "attractedto": "Attracted to:",
-                "attactiontype": "Attraction Type:"
+                "sexuality": "Szexualitás: %c",
+                "genderSingle": "Nem: %c",
+                "similarto": "Hasonló a következőkhöz: ",
+                "genderField": "Nemek:",
+                "attractedto": "Vonzódik:",
+                "attactiontype": "Látványosság típusa:"
             },
             "ship": {
                 "quotes": [
                     {
                         "100_70": [
-                            "You two are a perfect match!",
-                            "Damn! You really have to hangout together",
-                            "Wow!",
-                            "Wedding, when?"
+                            "Ti ketten tökéletesen összeilletek!",
+                            "A francba! Tényleg együtt kell lógnotok.",
+                            "Hűha!",
+                            "Esküvő, mikor?"
                         ],
                         "69_40": [
-                            "hm. Maybe with a little more effort it can be something special",
-                            "You two are a good match",
-                            "That's a good start"
+                            "hm. Talán egy kicsit több erőfeszítéssel valami különleges lehet belőle.",
+                            "Ti ketten jól összeilletek.",
+                            "Ez egy jó kezdet."
                         ],
                         "39_10": [
-                            "IDK. Maybe you should go out with someone else"
+                            "NEM TUDOM. Talán valaki mással kéne járnod."
                         ],
                         "9_0": [
-                            "I'm not sure if you can be friends with someone like that",
-                            "This is bad. Really bad.",
-                            "Sorry for that"
+                            "Nem vagyok benne biztos, hogy egy ilyen emberrel barátkozhatsz-e.",
+                            "Ez rossz. Nagyon rossz.",
+                            "Bocsánat ezért"
                         ]
                     }
                 ]
             },
             "singasong": {
-                "userPoints": "You have %c points."
+                "userPoints": "%c pontod van."
             },
             "stromberg": {
-                "spokenof": "Spoken of:",
-                "age": "Age:",
-                "position": "Position:",
-                "episode": "Episode:",
-                "createdAt": "Created at:",
-                "playedBy": "Played by:"
+                "spokenof": "Beszédes:",
+                "age": "Kor:",
+                "position": "Pozíció:",
+                "episode": "Epizód:",
+                "createdAt": "Készült a:",
+                "playedBy": "Játszott:"
             },
             "hangman": {
                 "embed": {
                     "fields": {
-                        "guessedLetters": "Guessed Letters",
-                        "falsyGuessedLetters": "Falsy Guessed Letters",
-                        "host": "Host",
-                        "word": "Word",
-                        "channel": "Channel",
+                        "guessedLetters": "Talált betűk",
+                        "falsyGuessedLetters": "Falsy kitalálta a leveleket",
+                        "host": "Házigazda",
+                        "word": "Szó",
+                        "channel": "Csatorna",
                         "lives": "Lives"
                     }
                 },
-                "guessedWord": "{success.emote} %c has guessed the word! The word was `%e`",
-                "guessedLetter": "{success.emote} %c has guessed the right letter `%e`",
-                "gameOver": "{error.emote} Game over! The word was `%c`",
-                "falsyGuessed": "{error.emote} %c has guessed the wrong letter `%e`"
+                "guessedWord": "{success.emote} %c kitalálta a szót! A szó a következő volt: \"%e",
+                "guessedLetter": "{success.emote} %c kitalálta a helyes betűt `%e`",
+                "gameOver": "{error.emote} Vége a játéknak! A szó `%c` volt",
+                "falsyGuessed": "{error.emote} %c rosszul találta ki a `%e` betűt."
             }
         },
         "commands": {
             "firstCommand": {
-                "description": "Get the latest informations, features, and bugs in the official support server. You can also report bugs and suggest features there. Join now or close this message forever.",
+                "description": "A legfrissebb információk, funkciók és hibák a hivatalos támogatási szerveren. Ott hibákat is jelenthet és funkciókat javasolhat. Csatlakozz most, vagy zárd be ezt az üzenetet örökre.",
                 "buttons": {
-                    "invite": "Join Support Server",
-                    "close": "Close and never ask again"
+                    "invite": "Csatlakozzon a támogatási szerverhez",
+                    "close": "Bezárni és soha többé nem kérdezni"
                 }
             }
         },
         "notifications": {
             "reddit": {
-                "new_post": "%q The subreddit %c has uploaded a new post. Check it out here: %x",
+                "new_post": "%q A subreddit %c új bejegyzést töltött fel. Nézd meg itt: %x",
                 "nsfwInfo": {
                     "title": "🔞 NSFW",
-                    "description": "'This post is marked as NSFW. Please be careful when viewing it."
+                    "description": "'Ez a bejegyzés NSFW-nek van jelölve. Kérjük, legyen óvatos a megtekintésével."
                 }
             },
             "twitch": {
@@ -565,170 +565,170 @@
         "settings": {
             "muteRole": {
                 "set": "{error.emote} Hiba történt a némító szerepkör beállításában. {general.tryAgainLater}",
-                "remove": "{error.emote} There was an error removing your Mute Role. {general.tryAgainLater}"
+                "remove": "{error.emote} Hiba történt a némító szereped eltávolításában. {general.tryAgainLater}"
             }
         },
         "music": {
-            "nothingPlays": "{error.emote} There is no song playing right now!",
-            "nothingInQueue": "{error.emote} There is nothing in the queue right now!",
+            "nothingPlays": "{error.emote} Jelenleg nincs lejátszott dal!",
+            "nothingInQueue": "{error.emote} Jelenleg nincs semmi a sorban!",
             "play": {
-                "notValidInput": "{error.emote} Please send a valid link or song name",
-                "notSupported": "{error.emote} I do not support any YouTube links due some legal issues. Please provide a spotify or soundcloud link.",
-                "queueCreate": "{error.emote} There was an error creating your queue. {general.tryAgainLater}",
-                "noResults": "{error.emote} No results for your search. Be sure to send a valid link.",
-                "botIsMuted": "{error.emote} I am muted in this channel. Your Queue is paused. Please unmute me to play music."
+                "notValidInput": "{error.emote} Kérjük, küldjön egy érvényes linket vagy dalnevet",
+                "notSupported": "{error.emote} Nem támogatom a YouTube linkeket bizonyos jogi problémák miatt. Kérem, adjon meg egy spotify vagy soundcloud linket.",
+                "queueCreate": "{error.emote} Hiba történt a várólista létrehozásában. {general.tryAgainLater}",
+                "noResults": "{error.emote} Nincs találat a keresésedre. Ügyeljen arra, hogy érvényes linket küldjön.",
+                "botIsMuted": "{error.emote} Elnémultam ezen a csatornán. A várólistád szünetel. Kérem, vegye fel a némítást, hogy zenét játszhassak."
             },
             "queue": {
-                "queueError": "{error.emote} There was an error getting the queue. {general.tryAgainLater}"
+                "queueError": "{error.emote} Hiba történt a várólistán. {general.tryAgainLater}"
             },
-            "userIsNotInAVoiceChannel": "{error.emote} You need to be in a voice channel to use this command!",
-            "botIsAlreadyInAVoiceChannel": "{error.emote} I am already in a voice channel! Please join that channel or wait until i left!",
-            "botIsNotInAVoiceChannel": "{error.emote} I am not in a voice channel! Please join a channel first!",
+            "userIsNotInAVoiceChannel": "{error.emote} A parancs használatához hangcsatornán kell lenned!",
+            "botIsAlreadyInAVoiceChannel": "{error.emote} Már egy hangcsatornán vagyok! Kérlek, csatlakozz ahhoz a csatornához, vagy várj, amíg elmegyek",
+            "botIsNotInAVoiceChannel": "{error.emote} Nem vagyok hangcsatornán! Kérlek, először csatlakozz egy csatornához!",
             "volume": {
-                "invalid": "{error.emote} Please enter a valid number between 0 and 100"
+                "invalid": "{error.emote} Kérjük, adjon meg egy érvényes számot 0 és 100 között"
             }
         },
         "notifications": {
             "reddit": {
-                "doesNotExistsOrIsPrivate": "{error.emote} The subreddit `%c` does not exists or is private.",
-                "isNsfw": "{error.emote} The subreddit `%c` is marked as NSFW. Please use the `nsfw` argument to enable NSFW content.",
-                "wasNotAddedBefore": "{error.emote} The subreddit `%c` was not added before. Please use the `add` argument to add it.",
-                "isAlreadyAdded": "{error.emote} The subreddit `%c` is already added. Please use the `remove` argument to remove it."
+                "doesNotExistsOrIsPrivate": "{error.emote} A `%c` alreddit nem létezik vagy privát.",
+                "isNsfw": "{error.emote} A `%c` subreddit NSFW-ként van megjelölve. Kérjük, használja az `nsfw` argumentumot az NSFW tartalmak engedélyezéséhez.",
+                "wasNotAddedBefore": "{error.emote} A `%c` alreddit még nem lett hozzáadva. Kérjük, használja a `add` argumentumot a hozzáadáshoz.",
+                "isAlreadyAdded": "{error.emote} A `%c` alreddit már hozzá lett adva. Kérjük, használja a `remove` argumentumot a törléséhez."
             },
             "twitch": {
-                "notFound": "{error.emote} I couldn't find the channel you have entered.",
-                "maxReached": "{error.emote} You have reached the maximum amount of channels you can add (%q). Please remove one first.",
-                "selectEveryChannel": "{error.emote}  Something went wrong while selecting all twitch channels. Please contact the Bot support.",
-                "removeChannel": "{error.emote} Something went wrong while removing the channel. Please contact the Bot support."
+                "notFound": "{error.emote} Nem találtam az általad megadott csatornát.",
+                "maxReached": "{error.emote} Elérte a hozzáadható csatornák maximális számát (%q). Kérjük, először távolítson el egyet.",
+                "selectEveryChannel": "{error.emote}  Valami rosszul sült el az összes twitch csatorna kiválasztása közben. Kérjük, lépjen kapcsolatba a bot ügyfélszolgálattal.",
+                "removeChannel": "{error.emote} Valami rosszul sült el a csatorna eltávolítása közben. Kérjük, lépjen kapcsolatba a bot ügyfélszolgálattal."
             },
             "youtube": {
-                "channelNotFound": "{error.emote} I couldn't find the channel you have entered with the name `%q`.",
-                "permissionCheck": "{error.emote} Something went wrong while checking the permissions.",
-                "maxReached": "{error.emote} You have reached the maximum amount of channels you can add (%q). Please remove one first.",
-                "alreadyExists": "{error.emote} The channel %q is already added. Please use the `remove` argument to remove it."
+                "channelNotFound": "{error.emote} Nem találtam meg az általad megadott `%q` nevű csatornát.",
+                "permissionCheck": "{error.emote} Valami rosszul sült el a jogosultságok ellenőrzése közben.",
+                "maxReached": "{error.emote} Elérte a hozzáadható csatornák maximális számát (%q). Kérjük, először távolítson el egyet.",
+                "alreadyExists": "{error.emote} A %q csatorna már hozzá van adva. Kérjük, használja a `remove` argumentumot a törléséhez."
             }
         },
         "utils": {
             "afk": {
-                "notAfk": "{error.emote} You are not afk!",
-                "alreadyAfk": "{error.emote} You are already afk! `Reason: %c` To remove your afk state add the remove option."
+                "notAfk": "{error.emote} Nem vagy afk!",
+                "alreadyAfk": "{error.emote} Te már afk vagy! `Reason: %c` Az afk állapotod eltávolításához add hozzá a remove opciót."
             },
             "checkGuild": {
-                "serverNotFound": "This Server doesnt exists or i'm not a member of it. Please invite me to get further informations."
+                "serverNotFound": "Ez a szerver nem létezik, vagy nem vagyok tagja. Kérem, hívjon meg, hogy további információkat kapjak."
             },
             "password": {
-                "noValidLength": "{error.emote} The password must be between %c and %x characters long."
+                "noValidLength": "{error.emote} A jelszónak %c és %x karakterek között kell lennie."
             },
             "imgur": {
-                "noValidLink": "{error.emote} Please send a valid Discord Attachement link. \n(Exp: https://cdn.discordapp.com/attachments/123456789012345678/123456789012345678/image.png)"
+                "noValidLink": "{error.emote} Kérjük, küldjön egy érvényes Discord csatolmány linket. \n(Exp: https://cdn.discordapp.com/attachments/123456789012345678/123456789012345678/image.png)"
             }
         },
         "fun": {
             "counter": {
-                "sameUserAgain": "{error.emote} You can't count twice in a row!",
-                "wrongCount": "{error.emote} You have to count with the right number. The correct number have to be %c",
-                "countReseted": "The counter was reseted. Try again!"
+                "sameUserAgain": "{error.emote} Nem számolhatsz kétszer egymás után!",
+                "wrongCount": "{error.emote} A megfelelő számmal kell számolnod. A helyes számnak %c-nek kell lennie",
+                "countReseted": "A számlálót visszaállították. Próbálja újra!"
             },
             "guessnumber": {
-                "tooLowOrHigh": "{error.emote} Your guess is too %c. It was %x.",
-                "haventguessed": "{error.emote} You haven't guessed yet. It was %c."
+                "tooLowOrHigh": "{error.emote} A tipped túl %c. %x volt.",
+                "haventguessed": "{error.emote} Még nem találta ki. %c volt."
             },
             "ship": {
-                "cannotShip": "You can't ship with %c!"
+                "cannotShip": "Nem szállíthatsz %c-vel!"
             },
             "singasong": {
-                "nopoints": "You have no points!"
+                "nopoints": "Nincsenek pontjaid!"
             },
             "hangman": {
-                "alreadyRunningGameInChannel": "{error.emote} There is already a game running in this channel. Please wait until it is finished.",
-                "noValidWord": "{error.emote} Please send a valid word.The word must contain only letters and at least 3 Letters long.",
-                "notCancelled": "{error.emote} You can't cancel a game that's not running or that you're not hosting."
+                "alreadyRunningGameInChannel": "{error.emote} Ezen a csatornán már fut egy játék. Kérjük, várjon, amíg befejeződik.",
+                "noValidWord": "{error.emote} Kérjük, küldj egy érvényes szót.A szónak csak betűket kell tartalmaznia, és legalább 3 betű hosszúnak kell lennie.",
+                "notCancelled": "{error.emote} Nem tudsz leállítani egy olyan játékot, amely nem fut, vagy amelyet nem te rendezel."
             }
         },
         "admin": {
             "counter": {
-                "notFound": "{error.emote} I don't have found any counter setting in this server.",
-                "alreadyExists": "{error.emote} There is already a counter in this server. Please delete it first."
+                "notFound": "{error.emote} Nem találtam semmilyen számláló beállítást ezen a szerveren.",
+                "alreadyExists": "{error.emote} Ezen a szerveren már van egy számláló. Kérjük, először törölje azt."
             },
             "joinroles": {
-                "notExists": "{error.emote} The role %c doesn't exists on this server. All existing mentions before are saved."
+                "notExists": "{error.emote} A szerep %c nem létezik ezen a szerveren. Minden korábban létező említés elmentésre kerül."
             },
             "logs": {
-                "alreadyRoleWhitelisted": "{error.emote} This role is already whitelisted.",
-                "alreadyChannelWhitelisted": "{error.emote} This channel is already whitelisted."
+                "alreadyRoleWhitelisted": "{error.emote} Ez a szerep már szerepel a fehér listán.",
+                "alreadyChannelWhitelisted": "{error.emote} Ez a csatorna már szerepel a fehér listán."
             },
             "reactionroles": {
-                "notEqual": "{error.emote} The amount of roles and emojis are not equal.",
-                "messageLinkNotValid": "{error.emote} The message link is not valid.",
-                "messageNotFound": "{error.emote} The message was not found.",
-                "emojiDoesntExists": "{error.emote} The emoji <:emote:&%c> doesn't exists.",
-                "emojiNotFound": "{error.emote} The emoji <:&%c> was not found.",
-                "roleDoesntExists": "{error.emote} The role <@&%c> doesn't exists.",
-                "roleNotFound": "{error.emote} The role <@&%c> was not found.",
-                "maxRoles": "{error.emote} You can't add more than %c roles.",
-                "noReactionRolesInServer": "{error.emote} There are no reaction roles in this server."
+                "notEqual": "{error.emote} A szerepek és az emojik száma nem egyenlő.",
+                "messageLinkNotValid": "{error.emote} Az üzenet linkje nem érvényes.",
+                "messageNotFound": "{error.emote} Az üzenet nem található.",
+                "emojiDoesntExists": "{error.emote} Az emoji <:emote:&%c> nem létezik.",
+                "emojiNotFound": "{error.emote} Az emoji <:&%c> nem található.",
+                "roleDoesntExists": "{error.emote} Az emoji <:&%c> nem található.",
+                "roleNotFound": "{error.emote} A <@&%c> szerep nem található.",
+                "maxRoles": "{error.emote} Nem adhatsz hozzá több mint %c szerepet.",
+                "noReactionRolesInServer": "{error.emote} Ezen a kiszolgálón nincsenek reakciós szerepek."
             },
             "autoblacklist": {
                 "set": {
-                    "alreadySet": "{error.emote} Auto-Blacklist is already set up for this server! Delete it first."
+                    "alreadySet": "{error.emote} Az automatikus feketelista már be van állítva erre a szerverre! Először törölje azt."
                 },
                 "delete": {
-                    "notSet": "{error.emote} Auto-Blacklist is not set up for this server!"
+                    "notSet": "{error.emote} Az automatikus feketelista nincs beállítva ezen a szerveren!"
                 }
             },
             "automod": {
                 "whitelistroles": {
-                    "alreadyExists": "{error.emote} You already have the role %c on the whitelist. If you want to remove it use the optional argument `remove`."
+                    "alreadyExists": "{error.emote} A %c szerep már szerepel a fehérlistán. Ha el akarja távolítani, használja az opcionális `remove` argumentumot."
                 }
             },
             "banappeal": {
-                "set": "{error.emote} An error occured while sending the example to the channel you specified. Please make sure I have the correct permissions or the bot is not able to send any Appeals."
+                "set": "{error.emote} Hiba történt a példa elküldésekor a megadott csatornára. Kérem, győződjön meg róla, hogy megfelelő jogosultságokkal rendelkezem, különben a bot nem tud küldeni semmilyen Felhívást."
             },
             "levelsettings": {
-                "set": "{error.emote} Somethings went wrong while changing your level config to %c",
-                "setAlone": "{error.emote} Somethings went wrong while changing your level config"
+                "set": "{error.emote} Valami rosszul sült el a szintkonfigurációd %c-re történő módosítása közben.",
+                "setAlone": "{error.emote} Valami rosszul ment a szintkonfiguráció módosítása közben."
             },
             "modroles": {
-                "doesntExist": "{error.emote} The role %c doesn't exist on this server."
+                "doesntExist": "{error.emote} A szerep %c nem létezik ezen a szerveren."
             }
         },
         "moderation": {
             "youcantx": {
-                "yourself": "{error.emote} You can't %c yourself!",
-                "bot": "{error.emote} You can't %c a bot!",
-                "mod": "{error.emote} You can't %c a moderator!"
+                "yourself": "{error.emote} Nem tudod %c magad!",
+                "bot": "{error.emote} Nem lehet %c egy bot!",
+                "mod": "{error.emote} Nem lehet %c moderátor!"
             },
             "mute": {
-                "noMuteRoleFoundOrCreated": "{error.emote} No mute role found or created. Please create a role with the name `Muted` and set the permissions for this role. I need the permission to send messages in the channel and to manage roles.",
-                "notAValidMuteRole": "%q is not a valid Muted Role in %w. Error Message: %e",
-                "alreadyMuted": "{error.emote} This user is already muted!"
+                "noMuteRoleFoundOrCreated": "{error.emote} Nem találtunk vagy hoztunk létre néma szerepet. Kérjük, hozzon létre egy szerepet `Muted` névvel, és állítsa be a jogosultságokat ehhez a szerephez. Szükségem van a csatornán történő üzenetküldéshez és a szerepek kezeléséhez szükséges jogosultságra.",
+                "notAValidMuteRole": "%q nem érvényes néma szerepkör %w-ban. Hibaüzenet: %e",
+                "alreadyMuted": "{error.emote} Ez a felhasználó már elnémult!"
             },
             "ban": {
-                "alreadyBanned": "{error.emote} This user is already banned."
+                "alreadyBanned": "{error.emote} Ez a felhasználó már ki van tiltva."
             },
             "infractions": {
-                "dontHaveAny": "%c don't have any infractions!",
-                "notFoundWithId": "There is no infraction with this id ` %c `"
+                "dontHaveAny": "%c-nek nincsenek szabálysértései!",
+                "notFoundWithId": "Nincs szabálysértés ezzel az azonosítóval ` %c `"
             },
             "purge": {
-                "notAValidNumber": "{error.emote} You need to input a number between 1 and %c"
+                "notAValidNumber": "{error.emote} Egy 1 és %c közötti számot kell megadnod."
             },
             "unban": {
-                "notBanned": "{error.emote} This user isn't banned!"
+                "notBanned": "{error.emote} Ez a felhasználó nincs kitiltva!"
             }
         },
         "level": {
             "givexp": {
-                "cannotGiveToBots": "{error.emote} You can't add xp to a bot or a system account."
+                "cannotGiveToBots": "{error.emote} Nem adhatsz xp-t egy bothoz vagy egy rendszerfiókhoz."
             },
             "removexp": {
-                "cannotRemoveFromBots": "{error.emote} You can't remove xp to a bot or a system account."
+                "cannotRemoveFromBots": "{error.emote} Nem tudod eltávolítani az xp-t egy bothoz vagy egy rendszerfiókhoz."
             },
             "leaderboard": {
-                "noOneRanked": "{error.emote} There's no one who is ranked. Write a messages first."
+                "noOneRanked": "{error.emote} Nincs senki, aki rangsorolva van. Először írj üzenetet."
             },
             "rank": {
-                "nothingFound": "{error.emote} I have nothing found for this user. Please gain some xp first."
+                "nothingFound": "{error.emote} Nem találtam semmit ehhez a felhasználóhoz. Kérlek, előbb szerezz egy kis xp-t."
             }
         }
     }
