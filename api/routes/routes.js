@@ -18,7 +18,7 @@ module.exports.getRoutes = async (req, res, type = 'get', bot) => {
             if (!route.config || routes.includes(route.config.path)) {
                 console.error(`Route ${route.config.path} already exists`);
                 continue;
-            }
+            };
 
             if (route.config.method === type && route.config.path === request) {
                 console.log(route.config);
@@ -28,13 +28,13 @@ module.exports.getRoutes = async (req, res, type = 'get', bot) => {
                 }
 
                 routes.push(route.config.path);
-
+                
                 try {
                     req.data.bot = bot;
-                } catch (err) {
+                }catch(err) {
                     req.data = {
                         bot: bot,
-                    };
+                    }
                 }
 
                 console.info(`Request: ${request} from ${req.ip}`);
