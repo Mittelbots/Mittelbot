@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const { checkInfractions } = require('~src/events/checkInfraction');
 const { checkTemproles } = require('~src/events/checkTemproles');
 const { twitch_notifier } = require('~src/events/notfifier/twitch_notifier');
@@ -15,8 +13,6 @@ const { timer } = require('~src/events/timer/timer');
 const logs = require('discord-logs');
 const Music = require('~utils/classes/Music');
 const YouTubeNotification = require('~utils/classes/Notifications/YouTube/YouTubeNotification');
-const MittelbotApi = require('~api/api');
-const apiAuth = require('~core/apiAuth');
 
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
@@ -49,8 +45,6 @@ module.exports.startBot = async (bot) => {
             if (process.env.NODE_ENV === 'production') {
                 await createSlashCommands(bot);
             }
-
-            new MittelbotApi();
 
             console.info(
                 `****Ready! Logged in as ${bot.user.username}! I'm on ${bot.guilds.cache.size} Server(s)****`

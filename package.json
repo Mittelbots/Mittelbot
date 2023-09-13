@@ -23,8 +23,7 @@
     },
     "nodemonConfig": {
         "ignore": [
-            "*.json",
-            "./dashboard/**"
+            "*.json"
         ]
     },
     "_moduleAliases": {
@@ -32,8 +31,7 @@
         "~core": "./bot/core",
         "~src": "./src",
         "~utils": "./utils",
-        "~assets": "./src/assets",
-        "~api": "./api"
+        "~assets": "./src/assets"
     },
     "jest": {
         "setupFiles": [
@@ -72,8 +70,6 @@
         "discord-player": "^6.6.3",
         "discord.js": "^14.13.0",
         "dotenv": "^16.3.1",
-        "crypto-js": "^4.1.1",
-        "express": "^4.18.2",
         "extends-classes": "^1.0.5",
         "ffmpeg-static": "^5.2.0",
         "googleapis": "^126.0.1",
