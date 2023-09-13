@@ -23,7 +23,8 @@
     },
     "nodemonConfig": {
         "ignore": [
-            "*.json"
+            "*.json",
+            "./dashboard/**"
         ]
     },
     "_moduleAliases": {

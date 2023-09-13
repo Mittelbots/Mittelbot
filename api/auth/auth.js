@@ -2,9 +2,9 @@ const cryptojs = require('crypto-js');
 const jsonwebtoken = require('jsonwebtoken');
 
 module.exports = (req, res) => {
-    const authKey = req.headers['x-auth-key'];
+    const authCode = req.headers['x-auth-code'];
 
-    if (!authKey) {
+    if (!authCode) {
         res.status(401).json({
             message: 'Unauthorized. No Auth Key provided',
         });
@@ -13,29 +13,31 @@ module.exports = (req, res) => {
 
     const isLocalhost = req.headers.host.indexOf('localhost') > -1;
 
-    let decryptedAuthKey;
+    let tmpAuthCode;
     if (isLocalhost) {
-        decryptedAuthKey = jsonwebtoken.verify(authKey, process.env.JWT_SECRET);
+        tmpAuthCode = jsonwebtoken.verify(authKey, process.env.JWT_SECRET);
     } else {
-        decryptedAuthKey = jsonwebtoken.verify(authKey, process.env.JWT_SECRET).authKey;
+        tmpAuthCode = jsonwebtoken.verify(authKey, process.env.JWT_SECRET).authCode;
     }
 
-    console.log(decryptedAuthKey, 'decryptedAuthKey');
+    const decryptedAuthCode = tmpAuthCode;
 
-    if (!decryptedAuthKey) {
+    console.log(decryptedAuthCode, 'decryptedAuthCode');
+
+    if (!decryptedAuthCode) {
         res.status(401).json({
             message: 'Unauthorized. Invalid Auth Key provided',
         });
         return false;
     }
 
-    const authKeyDecrypted = cryptojs.AES.decrypt(
-        decryptedAuthKey,
+    const authCodeDecrypted = cryptojs.AES.decrypt(
+        decryptedAuthCode,
         process.env.AUTH_KEY_SECRET
     ).toString(cryptojs.enc.Utf8);
 
-    console.log(authKeyDecrypted);
-    if (authKeyDecrypted.toLocaleLowerCase() !== process.env.AUTH_KEY.toLocaleLowerCase()) {
+    console.log(authCodeDecrypted);
+    if (authCodeDecrypted.toLocaleLowerCase() !== process.env.AUTH_KEY.toLocaleLowerCase()) {
         res.status(401).json({
             message: 'Unauthorized',
         });

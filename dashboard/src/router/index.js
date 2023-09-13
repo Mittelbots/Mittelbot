@@ -1,27 +1,40 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import isLoggedIn from '@/assets/js/functions/auth/isLoggedIn';
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-    }
-  }
-]
+    {
+        path: '/',
+        name: 'Mittelbot Dashboard',
+        beforeEnter: async (to, from, next) => {
+            const loggedIn = await isLoggedIn();
+            if (loggedIn) {
+                next();
+                return;
+            } else {
+                next('/login');
+                return;
+            }
+        },
+    },
+    {
+        path: '/login',
+        name: 'Discord Login',
+        beforeEnter: (to, from, next) => {
+            console.log(process.env.VUE_APP_OAUTH_URL);
+            window.location.href = process.env.VUE_APP_OAUTH_URL;
+            return;
+        },
+    },
+    {
+        path: '/callback',
+        name: 'Discord Callback',
+        component: () => import('@/nonViews/callback.vue'),
+    },
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
+});
 
-export default router
+export default router;
