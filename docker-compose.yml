@@ -3,10 +3,6 @@ version: '3.9'
 volumes:
     mysql:
 
-networks:
-    default:
-        name: mittelbot
-
 services:
     bot:
         container_name: mittelbot
@@ -26,8 +22,6 @@ services:
             - .:/app
         ports:
             - 5000:5000
-        networks:
-            - default
 
     mysql:
         container_name: mittelbot-mysql
@@ -70,20 +64,3 @@ services:
             - TIMEOUT=10s
             - INIT_BACKUP=1
             - MAX_BACKUPS=7
-
-    dashboard:
-        build:
-            context: ./dashboard
-            dockerfile: Dockerfile
-        restart: unless-stopped
-        env_file:
-            - ./.env
-        ports:
-            - 8080:8080
-        volumes:
-            - ./dashboard:/app
-        command: npm run serve
-        links:
-            - bot
-        networks:
-            - default
