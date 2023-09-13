@@ -60,7 +60,7 @@
         "@sentry/node": "^7.68.0",
         "@sentry/profiling-node": "^1.2.1",
         "@stdlib/assert-is-uri": "^0.0.8",
-        "@twurple/api": "^7.0.1",
+        "@twurple/api": "^7.0.2",
         "@twurple/auth": "^7.0.0",
         "axios": "^1.5.0",
         "caller-id": "^0.1.0",
