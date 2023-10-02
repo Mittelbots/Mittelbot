@@ -1,5 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const levelConfig = require('~assets/json/levelsystem/levelconfig.json');
 const GuildConfig = require('./Config');
@@ -448,7 +447,10 @@ class Levelsystem {
                 await guild.members.fetch();
                 const hasChannelPerms = guild.members.me
                     .permissionsIn(channel)
-                    .has(['VIEW_CHANNEL', 'SEND_MESSAGES']);
+                    .has([
+                        PermissionsBitField.Flags.ViewChannel,
+                        PermissionsBitField.Flags.SendMessages,
+                    ]);
 
                 if (!hasChannelPerms) {
                     return reject(
