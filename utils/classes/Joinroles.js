@@ -30,7 +30,7 @@ class Joinroles {
                     roles = roles.filter((r) => r !== rolesAlreadyExists[i]);
                 }
 
-                if (joinroles.length == 0) {
+                if (joinroles.length === 0) {
                     return resolve(
                         global.t.trans(['success.admin.joinroles.removedAll'], guild.id)
                     );
@@ -49,11 +49,11 @@ class Joinroles {
                 }
                 try {
                     if (!user.roles.cache.find((r) => r.id.toString() === role.id.toString())) {
-                        await user.roles.add(role).catch((err) => {});
-                        await user.roles.remove(role).catch((err) => {});
+                        await user.roles.add(role).catch(() => {});
+                        await user.roles.remove(role).catch(() => {});
                     } else {
-                        await user.roles.remove(role).catch((err) => {});
-                        await user.roles.add(role).catch((err) => {});
+                        await user.roles.remove(role).catch(() => {});
+                        await user.roles.add(role).catch(() => {});
                     }
                 } catch (err) {
                     return reject(

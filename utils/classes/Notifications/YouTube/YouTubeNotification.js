@@ -39,6 +39,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
 
                 let uploadedVideos = upload.uploads || [];
 
+                await this.updateViews(upload.channel_id, upload.guild_id, latestVideo.viewCount);
+
                 const videoAlreadyExists = uploadedVideos.includes(latestVideo.link);
                 if (videoAlreadyExists && upload.messageId) {
                     if (!this.isLongerThanXh(upload.updatedAt)) continue;
@@ -51,8 +53,6 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     );
                     continue;
                 }
-
-                await this.updateViews(upload.channel_id, upload.guild_id, latestVideo.viewCount);
 
                 const videoDetails = await this.getVideoInfos(latestVideo.link);
 
@@ -261,7 +261,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     });
                 })
                 .catch((err) => {
-                    this.updateUdateCount(messageId);
+                    this.updateUpdateCount(messageId);
 
                     errorhandler({
                         err: `I have failed to update a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id})) | ${err.message}`,

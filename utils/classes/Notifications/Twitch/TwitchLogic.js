@@ -314,7 +314,7 @@ module.exports = class TwitchNotifier {
                 .then((res) => {
                     resolve(res.views);
                 })
-                .catch(() => {
+                .catch((err) => {
                     errorhandler({
                         err: `Error while fetching the twitch stream views ${err.message}`,
                     });
