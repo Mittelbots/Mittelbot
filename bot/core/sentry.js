@@ -14,5 +14,5 @@ module.exports.sentryInit = async () => {
         integrations: [new ProfilingIntegration()],
     });
 
-    await Sentry.enableANRDetection({ captureStackTrace: true });
+    await Sentry.enableAnrDetection({ captureStackTrace: true });
 };
