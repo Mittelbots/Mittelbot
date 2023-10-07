@@ -1,5 +1,6 @@
 const allGuildId = require('~src/db/Models/guilds.model');
 const blacklist = require('~assets/json/blacklist/guilds.json');
+const { Guild } = require('discord.js');
 
 class Guilds {
     constructor() {}
@@ -60,6 +61,12 @@ class Guilds {
     isBlacklist(guild_id) {
         return new Promise(async (resolve) => {
             return resolve(blacklist.find((g) => g === guild_id));
+        });
+    }
+
+    amIOnThisServer(guild_id, bot) {
+        return new Promise(async (resolve) => {
+            return resolve(typeof bot.guilds.cache.get(guild_id) === Guild);
         });
     }
 }

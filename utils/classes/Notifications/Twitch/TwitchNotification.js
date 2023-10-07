@@ -3,12 +3,14 @@ const TwitchNotifier = require('./TwitchLogic');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const { ActionRowBuilder, ButtonBuilder, Message, ButtonStyle } = require('discord.js');
 const twitchStreams = require('~src/db/Models/twitchStreams.model');
+const Guilds = require('~utils/classes/Guilds');
 
 module.exports = class TwitchNotification extends TwitchNotifier {
     constructor(bot) {
         super();
         this.bot = bot;
         this.notificationApi = new Notification();
+        this.guildsApi = new Guilds();
     }
 
     check() {
@@ -21,6 +23,12 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                     try {
                         dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
                     } catch (err) {
+                        const serverAvailable = await this.guildsApi.amIOnThisServer(
+                            data.guild_id,
+                            this.bot
+                        );
+                        if (!serverAvailable) return;
+
                         errorhandler({
                             message: `Error while fetchin channel ${data.dc_channel_id} for twitch stream ${data.twitch_id} in guild ${data.guild_id}`,
                             fatal: false,
