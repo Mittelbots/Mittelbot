@@ -1,12 +1,10 @@
 const Sentry = require('@sentry/node');
 const { ProfilingIntegration } = require('@sentry/profiling-node');
 
-module.exports.sentryInit = () => {
+module.exports.sentryInit = async () => {
     Sentry.init({
         dsn: process.env.SENTRY_DSN,
 
-        // Alternatively, use `process.env.npm_package_version` for a dynamic release version
-        // if your build tool supports it.
         release: process.env.npm_package_version,
         environment: process.env.NODE_ENV,
 
@@ -15,4 +13,6 @@ module.exports.sentryInit = () => {
         profilesSampleRate: 0.8,
         integrations: [new ProfilingIntegration()],
     });
+
+    await Sentry.enableAnrDetection({ captureStackTrace: true });
 };
