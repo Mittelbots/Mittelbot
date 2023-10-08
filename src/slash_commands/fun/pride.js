@@ -37,7 +37,7 @@ module.exports.run = async ({ main_interaction }) => {
         const newSexuality = getRandomSexuality();
 
         newEmbed.setTitle(
-            globla.t.trans(
+            global.t.trans(
                 ['info.fun.pride.sexuality', newSexuality.name],
                 main_interaction.guild.id
             )

@@ -50,7 +50,6 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
         .catch((err) => {
             errorhandler({
                 err,
-                fatal: true,
             });
             return {
                 error: true,
@@ -122,13 +121,13 @@ async function unmuteUser({ user, bot, mod, reason, guild }) {
                     errorhandler({
                         fatal: false,
                         message: `${mod.id} has triggered the unmute command in ${guild.id}`,
+                        id: 1694433689,
                     });
                 }
             })
             .catch((err) => {
                 errorhandler({
                     err,
-                    fatal: true,
                 });
             });
 

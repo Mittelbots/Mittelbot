@@ -19,6 +19,7 @@ const AutomodAntiInvite = require('~utils/classes/Automoderation/Automod-AntiInv
 const AutomodAntiLinks = require('~utils/classes/Automoderation/Automod-AntiLinks');
 const Hangman = require('~utils/classes/Games/Hangman/Hangman');
 const { messageDeleteReasons } = require('~assets/js/messageDeleteReasons');
+const { generateSession } = require('~src/assets/js/sessionID');
 
 const antiSpam = new AutomodAntiSpam();
 const antiInsults = new AutomodAntiInsults();
@@ -28,6 +29,8 @@ const antiScam = new ScamDetection();
 antiScam.loadScam();
 
 async function messageCreate(message, bot) {
+    generateSession(message.author, message.guild);
+
     message.bot = bot;
 
     if (
@@ -93,6 +96,7 @@ async function messageCreate(message, bot) {
         errorhandler({
             fatal: false,
             message: ` I was in a BLACKLISTED Guild, but left after >messageCreate< : ${guild.name} (${guild.id})`,
+            id: 1694432508,
         });
 
         return guild.leave().catch(() => {});
@@ -116,6 +120,7 @@ async function messageCreate(message, bot) {
         errorhandler({
             fatal: false,
             message: `${message.author.id} has spammed in ${message.guild.id}.`,
+            id: 1694432518,
         });
         return;
     }
@@ -129,6 +134,7 @@ async function messageCreate(message, bot) {
         errorhandler({
             fatal: false,
             message: `${message.author.id} has sent an invite in ${message.guild.id}.`,
+            id: 1694432522,
         });
         return;
     }
@@ -142,6 +148,7 @@ async function messageCreate(message, bot) {
         errorhandler({
             fatal: false,
             message: `${message.author.id} has sent an insult in ${message.guild.id}.`,
+            id: 1694432537,
         });
         return;
     }
@@ -155,6 +162,7 @@ async function messageCreate(message, bot) {
         errorhandler({
             fatal: false,
             message: `${message.author.id} has sent a link in ${message.guild.id}.`,
+            id: 1694432545,
         });
         return;
     }

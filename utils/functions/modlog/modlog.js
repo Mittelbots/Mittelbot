@@ -41,7 +41,7 @@ async function sendToModLog(bot, message, gid) {
     await bot.channels.cache
         .get(logs.modlog)
         .send({ embeds: [message] })
-        .catch((err) => {});
+        .catch(() => {});
     return true;
 }
 

@@ -17,9 +17,13 @@ docker-compose.override.yml
 backups/*
 
 .vscode
+.idea
 
 # Deployment
 
 _PipelineMapping/
 _actions/
 _tool/
+
+# Logs
+_debug/*.log

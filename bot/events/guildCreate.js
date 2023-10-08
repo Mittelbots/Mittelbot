@@ -13,7 +13,8 @@ module.exports.guildCreate = async (guild, bot) => {
 
         errorhandler({
             fatal: false,
-            message: ` I joined a BLACKLISTED Guild: ${guild.name} (${guild.id})`,
+            message: `I joined a BLACKLISTED Guild: ${guild.name} (${guild.id})`,
+            id: 1694432438,
         });
 
         return guild.leave().catch(() => {});
@@ -21,7 +22,8 @@ module.exports.guildCreate = async (guild, bot) => {
 
     errorhandler({
         fatal: false,
-        message: ` I joined a new Guild: ${guild.name} (${guild.id})`,
+        message: ` I joined a new Guild: ${guild.name} (${guild.id}) with ${guild.memberCount} members.`,
+        id: 1694432449,
     });
 
     new Guilds().create(guild.id);

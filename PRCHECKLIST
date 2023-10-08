@@ -6,7 +6,6 @@
 --target dev +task+ Code Review approved?
 
 --target beta +title+ **Beta Branch checks**
---target beta +task+ Release issue created?
 --target beta +task+ Release npm version updated?
 --target beta +task+ Code works as expected?
 --target beta +task+ All Code checks are successfully? (Alerts from Socket Security should be checked and ignored for this checkpoint)

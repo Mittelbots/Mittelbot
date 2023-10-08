@@ -1,13 +1,3 @@
 {
-    "texts": [
-        {
-            "text": "with {loc} lines of code on v{version}",
-            "showLinesOfCode": true,
-            "showVersion": true
-        }
-    ],
-    "type": "Playing",
-    "showLinesOfCode": false,
-    "showMemberCount": false,
-    "showGuildCount": false
+    "texts": ["{loc} lines of code on v{version}"]
 }

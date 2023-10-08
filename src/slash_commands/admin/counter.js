@@ -83,7 +83,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     return await counterApi
-        .create(guild_id, channel_id)
+        .create(main_interaction.guild.id, channel_id)
         .then(() => {
             return main_interaction.followUp({
                 embeds: [

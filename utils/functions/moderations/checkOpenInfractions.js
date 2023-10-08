@@ -36,7 +36,8 @@ async function isOnBanList({ user, guild }) {
     } catch (err) {
         errorhandler({
             fatal: false,
-            err,
+            message: `Error while fetching the ban list ${err.message}`,
+            id: 1694433543,
         });
         return [false]; // NO PERMISSIONS
     }
@@ -62,7 +63,8 @@ async function isOnBanList({ user, guild }) {
         .catch((err) => {
             errorhandler({
                 fatal: false,
-                err,
+                message: `Error while fetching the ban list ${err.message}`,
+                id: 1694433571,
             });
             return [false];
         });

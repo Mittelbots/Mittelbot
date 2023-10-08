@@ -1,5 +1,6 @@
 const { default: axios } = require('axios');
 const reddit = require('~src/db/Models/reddit.model');
+const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 
 class Reddit {
     constructor() {}
@@ -48,7 +49,6 @@ class Reddit {
                 reddit
                     .create({
                         guild_id,
-
                         channel_id,
                         subreddit,
                         pingrole_id,
@@ -147,10 +147,13 @@ class Reddit {
             } catch (err) {
                 return await axios
                     .get(`${this.baseUrl()}/${subreddit}/new.json?sort=new`)
-                    .then((res) => {
+                    .then(() => {
                         return resolve(subreddit);
                     })
                     .catch((err) => {
+                        errorhandler({
+                            err,
+                        });
                         return resolve(false);
                     });
             }

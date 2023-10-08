@@ -1,9 +1,8 @@
 name: Deployment BETA
 
 on:
-    push:
-        branches:
-            - beta
+    release:
+        types: [published]
 
 jobs:
     deploy:
@@ -12,6 +11,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
+              with:
+                  ref: beta
 
             - name: Setup Node.js
               uses: actions/setup-node@v3

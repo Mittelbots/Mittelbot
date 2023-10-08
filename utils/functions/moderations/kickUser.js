@@ -57,6 +57,7 @@ module.exports.kickUser = ({ user, mod, guild, reason, bot }) => {
             errorhandler({
                 fatal: false,
                 message: `${mod.id} has triggered the kick command in ${guild.id}`,
+                id: 1694433580,
             });
 
             return resolve(p_response.message);

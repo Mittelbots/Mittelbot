@@ -23,8 +23,16 @@ module.exports = class TicketEmbeds {
 
             const btn = await this.generateCreateButton();
 
-            await this.main_interaction.guild.channels.cache
-                .get(newSettings.channel)
+            await this.main_interaction.guild.channels.fetch();
+            const ticketChannel = this.main_interaction.guild.channels.cache.get(
+                newSettings.channel
+            );
+
+            if (!ticketChannel) {
+                return resolve(false);
+            }
+
+            await ticketChannel
                 .send({
                     embeds: [embed],
                     components: [new ActionRowBuilder().addComponents(btn)],

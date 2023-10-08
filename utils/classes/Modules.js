@@ -68,7 +68,7 @@ module.exports = class Modules {
             const isAutoDisabled = defaultModule.autoDisable;
             const isDisabled = await this.get().catch(() => {});
 
-            if (isAutoDisabled && !isDisabled.enabled.includes(defaultModule.name)) {
+            if (isAutoDisabled && !isDisabled?.enabled?.includes(defaultModule.name)) {
                 response.enabled = false;
                 response.name = defaultModule.name;
                 return resolve(response);

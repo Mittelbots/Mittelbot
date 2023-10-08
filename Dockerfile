@@ -2,14 +2,14 @@ FROM node:18.15.0
 
 ARG NODE_ENV=production
 
+ENV TZ=Europe/Berlin
+
 WORKDIR /app
 
 COPY . .
 
 RUN if [ "$NODE_ENV" = "development" ]; then \
-        npm install && npm install -g nodemon ; \
-    else \
-        npm install --omit-dev ; \
+        npm install -g nodemon ; \
     fi
 
 EXPOSE 5000

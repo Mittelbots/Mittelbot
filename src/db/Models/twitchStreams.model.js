@@ -33,6 +33,10 @@ TwitchStreams.init(
         embedUpdatedAt: {
             type: DataTypes.DATE,
         },
+        views: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0,
+        },
     },
     {
         sequelize: database,

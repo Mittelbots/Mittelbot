@@ -33,7 +33,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistroles.includes(roleId)) {
             setting.whitelistroles.splice(setting.whitelistroles.indexOf(roleId), 1);
         } else {
-            if (parseInt(roleId)) {
+            if (parseInt(roleId, 10)) {
                 setting.whitelistroles.push(roleId);
             }
         }
@@ -44,7 +44,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         if (setting.whitelistchannels.includes(channelId)) {
             setting.whitelistchannels.splice(setting.whitelistchannels.indexOf(channelId), 1);
         } else {
-            if (!parseInt(channelId)) return;
+            if (!parseInt(channelId, 10)) return;
 
             setting.whitelistchannels.push(channelId);
         }
@@ -60,6 +60,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
             errorhandler({
                 fatal: false,
                 message: `${main_interaction.guild.id} has been updated the antispam config.`,
+                id: 1694432722,
             });
 
             const description = setting.enabled

@@ -28,6 +28,8 @@
 **Mittelbot**. A multi-purpose Discord bot with a lot of features. <br>
 With Notifications, Moderation with warn roles, Fun Commands, Auto-Translation, Banappeals, Auto-Moderation, Ticketsystem, Scam Detection, Reactionroles, Levelsystem, Music, Utility Commands and more! <br>
 
+### [Invite the bot](https://mittelbot.xyz/invite)
+
 <br>
 
 ## Roadmap
@@ -105,12 +107,14 @@ YT_KEY= #Your Youtube API Key to run the youtube notifier
 
 <br>
 
-3. Start the docker container
+3. Execute the install script
 ```bash
-docker compose up -d
+# Linux
+bash ./scripts/install-linux.sh
 
-# For older docker versions:
-docker-compose up -d
+# Windows
+./scripts/install-windows.bat
+
 ```
 
 <br>
@@ -119,6 +123,14 @@ docker-compose up -d
 
 Go to your bot direct message and send `deploycommands`. You will notice, that in your console the commands will be deployed and updated.
 
+
+<br>
+
+## **Known Issues**
+
+![](./docs/readme/module_not_found.png)
+
+**Fix:** Run the install script again. If this doesn't work, please open an issue.
 
 <br>
 

@@ -13,10 +13,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 .followUp({
                     files: [new AttachmentBuilder(url, 'dog.png')],
                 })
-                .catch((err) => {});
+                .catch(() => {});
         })
         .catch((err) => {
-            errorhandler({ err, fatal: true });
+            errorhandler({ err });
             main_interaction
                 .followUp({
                     embeds: [
@@ -31,7 +31,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         });
 };
 

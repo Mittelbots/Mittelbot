@@ -32,7 +32,7 @@ module.exports = class TicketSettings {
     }
 
     getSettingsWithChannel(channel_id) {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             const ticket = await this.getTicket({
                 channel_id,
             })

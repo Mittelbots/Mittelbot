@@ -1,3 +1,4 @@
+const { Message } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = class Notification {
@@ -25,13 +26,24 @@ module.exports = class Notification {
     updateNotification({ message, embed = null }) {
         return new Promise((resolve, reject) => {
             if (!message && !embed) return reject('No message, content or embed provided.');
+            if (!message instanceof Message) {
+                return reject('Message is not a valid message object.');
+            }
 
-            message
-                .edit({
-                    embeds: [embed],
-                })
-                .then((msg) => resolve(msg))
-                .catch((err) => reject(err));
+            try {
+                message
+                    .edit({
+                        embeds: [embed],
+                    })
+                    .then((msg) => resolve(msg));
+            } catch (error) {
+                message
+                    .update({
+                        embeds: [embed],
+                    })
+                    .then((msg) => resolve(msg))
+                    .catch((err) => reject(err));
+            }
         });
     }
 
@@ -77,8 +89,8 @@ module.exports = class Notification {
                     url: author.url,
                 });
 
-            if (fields) {
-                if (fields.length > 0) embed.addFields(fields);
+            if (fields && fields.length > 0) {
+                embed.addFields(fields);
             }
 
             if (timestamp) embed.setTimestamp();

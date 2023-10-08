@@ -105,7 +105,7 @@ module.exports.publicInfractionResponse = async ({
                                 : `${'Ban'}`
                         }`,
                         value: `Reason: ${inf.reason} ${
-                            inf.warn == 0
+                            inf.warn === 0
                                 ? `\nFrom **${
                                       new Date(inf.start_date).toLocaleString('de-DE', {
                                           timeZone: 'UTC',
@@ -115,9 +115,9 @@ module.exports.publicInfractionResponse = async ({
                                           ? new Date(inf.till_date).toLocaleString('de-DE', {
                                                 timeZone: 'UTC',
                                             })
-                                          : inf.mute == 1
+                                          : inf.mute === 1
                                           ? 'Permanent'
-                                          : inf.ban == 1
+                                          : inf.ban === 1
                                           ? 'Permanent'
                                           : ''
                                   }**`

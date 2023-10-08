@@ -60,7 +60,7 @@ class Translate {
                             return resolve();
                         })
                         .catch((err) => {
-                            errorhandler({ err, fatal: true });
+                            errorhandler({ err });
                             return reject(err);
                         });
                 })

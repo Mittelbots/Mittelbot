@@ -56,6 +56,7 @@ async function warnUser({ bot, user, mod, guild, reason }) {
     errorhandler({
         fatal: false,
         message: `${mod.id} has triggered the warn command in ${guild.id}`,
+        id: 1694433700,
     });
     return p_response;
 }

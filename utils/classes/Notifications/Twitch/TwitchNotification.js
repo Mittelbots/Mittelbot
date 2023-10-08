@@ -3,12 +3,14 @@ const TwitchNotifier = require('./TwitchLogic');
 const { errorhandler } = require('../../../functions/errorhandler/errorhandler');
 const { ActionRowBuilder, ButtonBuilder, Message, ButtonStyle } = require('discord.js');
 const twitchStreams = require('~src/db/Models/twitchStreams.model');
+const Guilds = require('~utils/classes/Guilds');
 
 module.exports = class TwitchNotification extends TwitchNotifier {
     constructor(bot) {
         super();
         this.bot = bot;
         this.notificationApi = new Notification();
+        this.guildsApi = new Guilds();
     }
 
     check() {
@@ -17,6 +19,24 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                 const allTwitchStreams = await this.getAllTwitchChannels();
 
                 allTwitchStreams.forEach(async (data) => {
+                    let dcChannel;
+                    try {
+                        dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
+                    } catch (err) {
+                        const serverAvailable = await this.guildsApi.amIOnThisServer(
+                            data.guild_id,
+                            this.bot
+                        );
+                        if (!serverAvailable) return;
+
+                        errorhandler({
+                            message: `Error while fetchin channel ${data.dc_channel_id} for twitch stream ${data.twitch_id} in guild ${data.guild_id}`,
+                            fatal: false,
+                            id: 1694461058,
+                        });
+                        return;
+                    }
+
                     const streamer = await this.getTwitchFromChannelId(data.twitch_id);
                     const stream = await this.getTwitchStream(data.twitch_id);
                     if (!stream) {
@@ -24,12 +44,17 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                         if (!wasLive) return;
 
                         const uptime = this.#getUptime(data.streamStartedAt);
-                        const embed = await this.#generateEmbed(streamer, stream, {
-                            isLive: false,
-                            uptime,
-                        });
+                        const embed = await this.#generateEmbed(
+                            streamer,
+                            stream,
+                            {
+                                isLive: false,
+                                uptime,
+                            },
+                            data.twitch_id,
+                            data.guild_id
+                        );
 
-                        const dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
                         const dcMessage = await dcChannel.messages.fetch(data.message);
                         await this.notificationApi.updateNotification({
                             message: dcMessage,
@@ -42,6 +67,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                 message: null,
                                 embedUpdatedAt: null,
                                 streamStartedAt: null,
+                                views: 0,
                             },
                             {
                                 where: {
@@ -63,12 +89,17 @@ module.exports = class TwitchNotification extends TwitchNotifier {
 
                     const isEveryone = data.pingrole === data.guild_id;
                     const messageContent = this.#generateMessageContent(data.pingrole, isEveryone);
-                    const embed = await this.#generateEmbed(streamer, stream, {
-                        uptime,
-                        isLive: true,
-                    });
+                    const embed = await this.#generateEmbed(
+                        streamer,
+                        stream,
+                        {
+                            uptime,
+                            isLive: true,
+                        },
+                        data.twitch_id,
+                        data.guild_id
+                    );
 
-                    const dcChannel = await this.bot.channels.fetch(data.dc_channel_id);
                     let message;
                     if (isUpdate) {
                         const dcMessage = await dcChannel.messages.fetch(data.message);
@@ -93,6 +124,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                 embedUpdatedAt: new Date(),
                                 streamStartedAt: new Date(stream.startDate),
                                 isStreaming: true,
+                                views: stream.viewers,
                             },
                             {
                                 where: {
@@ -138,7 +170,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
         return pingrole ? (isEveryone ? '@everyone' : `<@&${pingrole}>`) : '';
     }
 
-    #generateEmbed(streamer, stream, { isLive, uptime }) {
+    #generateEmbed(streamer, stream, { isLive, uptime }, twitch_id, guild_id) {
         return new Promise(async (resolve, reject) => {
             const embed = await this.notificationApi
                 .geneateNotificationEmbed({
@@ -185,7 +217,11 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                       'info.notifications.twitch.fields.viewers',
                                       streamer.displayName,
                                   ]),
-                                  value: stream.viewers.toString(),
+                                  value: await this.getViewsDiff(
+                                      stream.viewers,
+                                      twitch_id,
+                                      guild_id
+                                  ),
                                   inline: true,
                               },
                               {
@@ -193,7 +229,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                       'info.notifications.twitch.fields.tags',
                                       streamer.displayName,
                                   ]),
-                                  value: stream.tags.join(', '),
+                                  value: stream.tags.join(', ') || stream.tags || 'None',
                                   inline: true,
                               },
                           ]
@@ -232,15 +268,15 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                 .then((message) => {
                     console.info(`🔎 Twitch stream handler checked streamer: ${link}...`);
                     errorhandler({
-                        err: `🔎 Twitch stream notification sent! Twitch Streamer: ${link}`,
+                        message: `🔎 Twitch stream notification sent! Twitch Streamer: ${link}`,
                         fatal: false,
+                        id: 1694433320,
                     });
                     resolve(message);
                 })
                 .catch((err) => {
                     errorhandler({
                         err,
-                        fatal: true,
                     });
                     reject(err);
                 });

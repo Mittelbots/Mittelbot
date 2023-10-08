@@ -139,8 +139,9 @@ module.exports = class TwitchNotifier {
                 if (err.message.includes('self-signed certificate')) return false;
 
                 errorhandler({
-                    err,
+                    message: `Error while getting the Twitch Stream`,
                     fatal: false,
+                    id: 1694433290,
                 });
                 resolve(false);
             }
@@ -282,7 +283,7 @@ module.exports = class TwitchNotifier {
         return new Promise(async (resolve, reject) => {
             const twitchChannel = await this.getTwitchFromChannelName(channel);
             if (!twitchChannel) {
-                return reject(global.t.trans(['error.notifications.twitch.notFound'], guild.id));
+                return reject(global.t.trans(['error.notifications.twitch.notFound'], guild_id));
             }
 
             await twitchStreams
@@ -293,11 +294,40 @@ module.exports = class TwitchNotifier {
                     },
                 })
                 .then(() => {
-                    resolve(global.t.trans(['success.notifications.twitch.removed'], guild.id));
+                    resolve(global.t.trans(['success.notifications.twitch.removed'], guild_id));
                 })
                 .catch((err) => {
-                    reject(global.t.trans(['error.notifications.twitch.removeChannel'], guild.id));
+                    reject(global.t.trans(['error.notifications.twitch.removeChannel'], guild_id));
                 });
+        });
+    }
+
+    getViews(twitch_id, guild_id) {
+        return new Promise(async (resolve) => {
+            await twitchStreams
+                .findOne({
+                    where: {
+                        guild_id,
+                        twitch_id,
+                    },
+                })
+                .then((res) => {
+                    resolve(res.views);
+                })
+                .catch((err) => {
+                    errorhandler({
+                        err: `Error while fetching the twitch stream views ${err.message}`,
+                    });
+                    resolve(0);
+                });
+        });
+    }
+
+    getViewsDiff(newViews, guild_id, twitch_id) {
+        return new Promise(async (resolve) => {
+            const oldViews = await this.getViews(guild_id, twitch_id);
+            const diff = newViews - oldViews;
+            resolve(`${newViews} (${diff > 0 ? '+' : ''}${diff})`);
         });
     }
 };

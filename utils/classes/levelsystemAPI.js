@@ -1,5 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
-const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('fs');
 const levelConfig = require('~assets/json/levelsystem/levelconfig.json');
 const GuildConfig = require('./Config');
@@ -214,7 +213,7 @@ class Levelsystem {
                         index = Number(i) + 1;
                     }
                 }
-                return resolve(parseInt(index));
+                return resolve(parseInt(index, 10));
             } else {
                 return resolve(sorted);
             }
@@ -303,17 +302,19 @@ class Levelsystem {
                     }
                 }
 
-                errorhandler({
-                    err: [
-                        obj.level,
-                        obj.xp,
-                        'multi ' + multiplier.toFixed(3),
-                        'top_multi ' + top_multiplier.toFixed(3),
-                        'diff ' + (obj.xp - prev).toFixed(0),
-                    ],
-                    fatal: false,
-                    message: 'Generating level config',
-                });
+                console.info(
+                    `Generating level config ${JSON.stringify(
+                        [
+                            obj.level,
+                            obj.xp,
+                            'multi ' + multiplier.toFixed(3),
+                            'top_multi ' + top_multiplier.toFixed(3),
+                            'diff ' + (obj.xp - prev).toFixed(0),
+                        ],
+                        null,
+                        4
+                    )}`
+                );
                 prev = obj.xp;
             }
             fs.writeFileSync('./src/assets/json/levelsystem/levelconfig.json', '', 'utf8');
@@ -446,7 +447,10 @@ class Levelsystem {
                 await guild.members.fetch();
                 const hasChannelPerms = guild.members.me
                     .permissionsIn(channel)
-                    .has(['VIEW_CHANNEL', 'SEND_MESSAGES']);
+                    .has([
+                        PermissionsBitField.Flags.ViewChannel,
+                        PermissionsBitField.Flags.SendMessages,
+                    ]);
 
                 if (!hasChannelPerms) {
                     return reject(
