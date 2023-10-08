@@ -225,6 +225,16 @@
                             "value": "Az Auto-Blacklist eltávolításához a `/autoblacklist delete` parancsot kell használnia."
                         }
                     ]
+                },
+                "scam": {
+                    "view": {
+                        "buttons": {
+                            "back": "Vissza",
+                            "forward": "Előre"
+                        },
+                        "title": "Minden átverés linkek mentett a közösségi adatbázisban",
+                        "link": "Link"
+                    }
                 }
             },
             "modroles": {
