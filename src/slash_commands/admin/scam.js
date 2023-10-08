@@ -26,8 +26,9 @@ module.exports.run = async ({ main_interaction, bot }) => {
     }
 
     const link = main_interaction.options.getString('link');
+    const subcommand = main_interaction.options.getSubcommand();
 
-    if (!isURL(link)) {
+    if (subcommand !== 'view' && !isURL(link)) {
         main_interaction.reply({
             embeds: [
                 new EmbedBuilder()
@@ -40,7 +41,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         return;
     }
 
-    switch (main_interaction.options.getSubcommand()) {
+    switch (subcommand) {
         case 'add':
             new Scam()
                 .add({
