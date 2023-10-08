@@ -3,7 +3,6 @@ const dns = require('dns');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { removeHttp } = require('~utils/functions/removeCharacters');
 const advancedScamList = require('~src/db/Models/advancedScamList.model');
-const { errorhandler } = require('~utils/functions/errorhandler/errorhandler');
 
 class Scam {
     constructor() {}
@@ -221,7 +220,6 @@ class Scam {
                         });
                     })
                     .catch((err) => {
-                        errorhandler({ err });
                         reject(err);
                     });
             } else {
