@@ -138,43 +138,43 @@ class Scam {
         return new Promise(async (resolve, reject) => {
             if (!value) {
                 advancedScamList
-                    .findAll({
-                        where: {
-                            link: {
-                                $ne: null,
-                            },
-                        },
-                    })
+                    .findAll()
                     .then(async (res) => {
                         const backId = 'back';
                         const forwardId = 'forward';
                         const backButton = new ButtonBuilder({
                             style: ButtonStyle.Secondary,
-                            label: 'Back',
+                            label: global.t.trans(
+                                ['info.scam.view.buttons.back'],
+                                channel.guild.id
+                            ),
                             emoji: '⬅️',
                             customId: backId,
                         });
                         const forwardButton = new ButtonBuilder({
                             style: ButtonStyle.Secondary,
-                            label: 'Forward',
+                            label: global.t.trans(
+                                ['info.scam.view.buttons.forward'],
+                                channel.guild.id
+                            ),
                             emoji: '➡️',
                             customId: forwardId,
                         });
 
                         const embedMessage = new EmbedBuilder().setTitle(
-                            'Showing all current blacklist Links'
+                            global.t.trans(['info.scam.view.title'], channel.guild.id)
                         );
 
                         const generateEmbed = async (start) => {
-                            for (i in res) {
-                                if (i === Number(start) + Number(30)) return;
+                            res.forEach((link, index) => {
+                                if (index === Number(start) + Number(30)) return;
                                 embedMessage.addFields([
                                     {
                                         name: 'LINK:',
-                                        value: res[i].link,
+                                        value: link.link,
                                     },
                                 ]);
-                            }
+                            });
                             return embedMessage;
                         };
 
@@ -219,7 +219,9 @@ class Scam {
                             });
                         });
                     })
-                    .catch((err) => {});
+                    .catch((err) => {
+                        reject(err);
+                    });
             } else {
                 value = removeHttp(value);
                 advancedScamList

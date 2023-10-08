@@ -225,6 +225,16 @@
                             "value": "Aby usunąć Auto-Blacklist, należy użyć polecenia `/autoblacklist delete`."
                         }
                     ]
+                },
+                "scam": {
+                    "view": {
+                        "buttons": {
+                            "back": "Powrót",
+                            "forward": "Naprzód"
+                        },
+                        "title": "Wszystkie linki do oszustw zapisane w bazie danych społeczności",
+                        "link": "Link"
+                    }
                 }
             },
             "modroles": {
