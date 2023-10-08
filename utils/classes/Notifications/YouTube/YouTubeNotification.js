@@ -35,6 +35,12 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 const feed = await this.getFeed(upload.channel_id);
                 if (!feed) continue;
 
+                const { channel, guild } = await this.getServerInfos(
+                    upload.guild_id,
+                    upload.info_channel_id
+                );
+                if (!channel || !guild) continue;
+
                 const latestVideo = feed.items[0];
 
                 let uploadedVideos = upload.uploads || [];
@@ -61,12 +67,6 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 } else {
                     uploadedVideos.push(latestVideo.link);
                 }
-
-                const { channel, guild } = await this.getServerInfos(
-                    upload.guild_id,
-                    upload.info_channel_id
-                );
-                if (!channel) continue;
 
                 const pingrole = guild.roles.cache.get(upload.pingrole);
                 let isEveryone = false;

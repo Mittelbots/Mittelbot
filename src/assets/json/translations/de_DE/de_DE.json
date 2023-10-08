@@ -225,6 +225,16 @@
                             "value": "Um Auto-Blacklist zu entfernen, musst Du den Befehl `/autoblacklist delete` verwenden"
                         }
                     ]
+                },
+                "scam": {
+                    "view": {
+                        "buttons": {
+                            "back": "Zurück",
+                            "forward": "Weiter"
+                        },
+                        "title": "Alle Scam-Links, die in der Community-Datenbank gespeichert sind",
+                        "link": "Link"
+                    }
                 }
             },
             "modroles": {

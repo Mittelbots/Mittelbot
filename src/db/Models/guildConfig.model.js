@@ -96,7 +96,7 @@ GuildConfig.init(
         },
         lang: {
             type: DataTypes.STRING,
-            defaultValue: 'en_EN',
+            defaultValue: 'en_US',
         },
         firstCommand: {
             type: DataTypes.BOOLEAN,
