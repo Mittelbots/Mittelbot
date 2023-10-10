@@ -6,7 +6,7 @@ module.exports.welcomeSettingsConfig = new SlashCommandBuilder()
     .addSubcommand((subcommand) =>
         subcommand
             .setName('add')
-            .setDescription('Add or update the welcome message and channel.')
+            .setDescription('Remove the welcome message and channel.')
             .addChannelOption((channel) =>
                 channel
                     .setName('channel')
