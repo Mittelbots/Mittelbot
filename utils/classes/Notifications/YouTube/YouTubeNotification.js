@@ -246,9 +246,9 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
 
             const message = await channel.messages.fetch(messageId).catch(() => {
                 return null;
-            })
-            
-            if(!message) {
+            });
+
+            if (!message) {
                 return resolve(false);
             }
 
