@@ -2,7 +2,6 @@ const callerId = require('caller-id');
 const Sentry = require('@sentry/node');
 const { getSession, removeSession } = require('~src/assets/js/sessionID');
 const { debug_log } = require('./debugLogs');
-const { EmbedBuilder } = require('discord.js');
 
 module.exports.errorhandler = ({ err = null, message = null, fatal = true, id = null }) => {
     const caller = callerId.getData();
@@ -28,17 +27,9 @@ module.exports.errorhandler = ({ err = null, message = null, fatal = true, id = 
     }
 
     if (message === null) message = err;
-
-    const debugMessage = `${new Date().toLocaleDateString('de-DE')} ${new Date().toLocaleTimeString(
-        'de-DE'
-    )} || ${id} - ${message}`;
-
-    debug_log.info(debugMessage);
-
-    global.bot.channels.cache
-        .get(process.env.DC_DEBUGLOGS)
-        .send({
-            embeds: [new EmbedBuilder().setDescription(debugMessage).setTimestamp()],
-        })
-        .catch(() => null);
+    debug_log.info(
+        `${new Date().toLocaleDateString('de-DE')} ${new Date().toLocaleTimeString(
+            'de-DE'
+        )} || ${id} - ${message}`
+    );
 };
