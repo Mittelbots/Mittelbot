@@ -111,7 +111,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     );
                 } catch (err) {
                     console.error(
-                        `I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id}). LINK: ${latestVideo.link}`
+                        `I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id}). LINK: ${latestVideo.link}`,
+                        err
                     );
                 }
 
