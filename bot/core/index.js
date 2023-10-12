@@ -84,4 +84,6 @@ bot.once('ready', async () => {
     }, 3600000); // 1h
 });
 
+global.bot = bot;
+
 bot.login(process.env.DISCORD_TOKEN);

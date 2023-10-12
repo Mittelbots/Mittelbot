@@ -244,7 +244,14 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
             const { channel, guild } = await this.getServerInfos(guildId, channelId);
             if (!channel) return resolve(false);
 
-            const message = await channel.messages.fetch(messageId);
+            const message = await channel.messages.fetch(messageId).catch(() => {
+                return null;
+            });
+
+            if (!message) {
+                return resolve(false);
+            }
+
             const embed = await this.generateEmbed(videoDetails, ytChannelId, guildId);
 
             await this.notificationApi
