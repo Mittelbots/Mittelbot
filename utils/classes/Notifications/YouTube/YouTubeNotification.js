@@ -249,7 +249,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 return null;
             });
 
-            if (!message) {
+            if (!message || typeof message !== Message) {
                 return resolve(false);
             }
 
@@ -272,7 +272,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     this.updateUpdateCount(messageId);
 
                     errorhandler({
-                        err: `I have failed to update a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id})) | ${err.message}`,
+                        err: `I have failed to update a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id})) | ${err.message} | message: ${message?.content}`,
                         fatal: true,
                     });
                     return false;
