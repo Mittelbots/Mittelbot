@@ -119,5 +119,5 @@ module.exports.reddit_notifier = async (bot) => {
                     });
                 });
         });
-    }, 1000 * 15); // 15 seconds
+    }, 1000 * 60); // 15 seconds
 };
