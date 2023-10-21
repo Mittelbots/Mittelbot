@@ -61,6 +61,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 }
 
                 const videoDetails = await this.getVideoInfos(latestVideo.link);
+                if (!videoDetails) continue;
 
                 if (uploadedVideos.length >= 10) {
                     uploadedVideos = [latestVideo.link];
