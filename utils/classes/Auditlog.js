@@ -167,7 +167,7 @@ class Auditlog {
             if (imageUrl) {
                 const isObject = typeof imageUrl === 'object';
                 const isUrl = imageUrl.url;
-                const isVideo = imageUrl.url.includes('mp4');
+                const isVideo = imageUrl.url?.includes('mp4');
 
                 if (isObject && isUrl && isVideo) this.embed.setDescription(imageUrl.url);
 
