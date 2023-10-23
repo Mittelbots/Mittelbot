@@ -80,7 +80,7 @@
         "module-alias": "^2.2.3",
         "moment-timezone": "^0.5.43",
         "mysql2": "^3.6.2",
-        "nconf": "^0.12.0",
+        "nconf": "^0.12.1",
         "patch-package": "^8.0.0",
         "random-animals-api": "^1.2.6",
         "rss-parser": "^3.13.0",
