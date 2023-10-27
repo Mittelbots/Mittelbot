@@ -89,7 +89,7 @@
         "string-mismatch": "^2.1.1",
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
-        "undici": "^5.26.5",
+        "undici": "^5.27.0",
         "validator": "^13.11.0",
         "ytdl-core": "npm:@distube/ytdl-core@^4.11.10"
     },
