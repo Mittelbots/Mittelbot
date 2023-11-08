@@ -1,10 +1,19 @@
 const { Message } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
+const YouTubeSettings = require('./YouTube/YouTubeSettings');
+const TwitchNotifier = require('./Twitch/TwitchLogic');
 
 module.exports = class Notification {
     constructor() {}
 
-    async sendNotification({ channel, content = null, embed = null, components = null }) {
+    async sendNotification({
+        channel,
+        content = null,
+        embed = null,
+        components = null,
+        channel_id = null,
+        type = '',
+    }) {
         return new Promise(async (resolve, reject) => {
             if (!channel) reject('No channel provided.');
             if (!content && !embed) reject('No content or embed provided.');
@@ -18,6 +27,19 @@ module.exports = class Notification {
                 const msg = await channel.send(options);
                 return resolve(msg);
             } catch (err) {
+                if (channel_id && err.status === 403) {
+                    if (type === 'yt') {
+                        new YouTubeSettings(channel.guild.id).remove({
+                            guild_id: channel.guild.id,
+                            channel_id: channel_id,
+                        });
+                        return reject(
+                            'I do not have permission to send messages in that channel. I have removed the channel from the YouTube settings.'
+                        );
+                    } else if (type === 'twitch') {
+                        new TwitchNotifier().delete(channel.guild.id, channel_id);
+                    }
+                }
                 return reject(err);
             }
         });
