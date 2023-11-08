@@ -38,6 +38,9 @@ module.exports = class Notification {
                         );
                     } else if (type === 'twitch') {
                         new TwitchNotifier().delete(channel.guild.id, channel_id);
+                        return reject(
+                            'I do not have permission to send messages in that channel. I have removed the channel from the Twitch settings.'
+                        );
                     }
                 }
                 return reject(err);
