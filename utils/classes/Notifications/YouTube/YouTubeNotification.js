@@ -92,6 +92,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         channel,
                         content: embedContent,
                         embed: embed,
+                        channel_id: upload.channel_id,
+                        type: 'yt',
                     });
 
                     if (!message || !message.id) continue;
