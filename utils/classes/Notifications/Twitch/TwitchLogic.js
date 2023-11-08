@@ -296,7 +296,7 @@ module.exports = class TwitchNotifier {
                 .then(() => {
                     resolve(global.t.trans(['success.notifications.twitch.removed'], guild_id));
                 })
-                .catch((err) => {
+                .catch(() => {
                     reject(global.t.trans(['error.notifications.twitch.removeChannel'], guild_id));
                 });
         });

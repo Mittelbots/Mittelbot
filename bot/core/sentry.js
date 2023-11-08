@@ -13,8 +13,4 @@ module.exports.sentryInit = async () => {
         profilesSampleRate: 0.8,
         integrations: [new ProfilingIntegration()],
     });
-
-    if (process.env.NODE_ENV === 'production') {
-        await Sentry.enableAnrDetection({ captureStackTrace: true });
-    }
 };
