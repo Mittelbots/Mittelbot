@@ -98,6 +98,6 @@
         "jest": "^29.7.0",
         "node-sloc": "^0.2.1",
         "nodemon": "^3.0.1",
-        "prettier": "^3.0.3"
+        "prettier": "^3.1.0"
     }
 }
