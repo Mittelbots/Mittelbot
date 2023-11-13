@@ -217,8 +217,8 @@ module.exports = class BanappealLogic {
                                 err.code === 10026
                                     ? 'The user is not banned.'
                                     : err.code === 50013
-                                    ? 'The bot does not have permissions to unban the user.'
-                                    : 'There was an error while trying to unban the user.'
+                                      ? 'The bot does not have permissions to unban the user.'
+                                      : 'There was an error while trying to unban the user.'
                             }`,
                             ephemeral: true,
                         })

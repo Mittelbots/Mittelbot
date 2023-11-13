@@ -99,10 +99,10 @@ module.exports.publicInfractionResponse = async ({
                             inf.mute === 1
                                 ? `${'Mute'}`
                                 : inf.kick === 1
-                                ? `${'Kick'}`
-                                : inf.warn === 1
-                                ? `${'Warn'}`
-                                : `${'Ban'}`
+                                  ? `${'Kick'}`
+                                  : inf.warn === 1
+                                    ? `${'Warn'}`
+                                    : `${'Ban'}`
                         }`,
                         value: `Reason: ${inf.reason} ${
                             inf.warn === 0
@@ -116,10 +116,10 @@ module.exports.publicInfractionResponse = async ({
                                                 timeZone: 'UTC',
                                             })
                                           : inf.mute === 1
-                                          ? 'Permanent'
-                                          : inf.ban === 1
-                                          ? 'Permanent'
-                                          : ''
+                                            ? 'Permanent'
+                                            : inf.ban === 1
+                                              ? 'Permanent'
+                                              : ''
                                   }**`
                                 : ''
                         }`,

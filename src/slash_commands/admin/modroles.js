@@ -36,10 +36,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ? dbEntity.isAdmin
                     ? 'Admin'
                     : dbEntity.isMod
-                    ? 'Moderator'
-                    : dbEntity.isHelper
-                    ? 'Helper'
-                    : 'Not set yet'
+                      ? 'Moderator'
+                      : dbEntity.isHelper
+                        ? 'Helper'
+                        : 'Not set yet'
                 : 'Not set yet'
         }**`
     );

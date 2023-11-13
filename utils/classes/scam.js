@@ -420,8 +420,8 @@ module.exports.manageScam = async ({ main_interaction }) => {
                                                     request.request_type == 'ADD'
                                                         ? `✅ This request has been added to the scam list by ${main_interaction.user}`
                                                         : request.request_type == 'DELETE'
-                                                        ? `✅ This request has been deleted from the scam list by ${main_interaction.user}`
-                                                        : `✅ This Guild has been added to the blacklist by ${main_interaction.user}`,
+                                                          ? `✅ This request has been deleted from the scam list by ${main_interaction.user}`
+                                                          : `✅ This Guild has been added to the blacklist by ${main_interaction.user}`,
                                                 components: [],
                                             }).catch((err) => {});
                                         });
@@ -433,8 +433,8 @@ module.exports.manageScam = async ({ main_interaction }) => {
                                                 request.request_type == 'ADD'
                                                     ? `✅ Your request got accepted.`
                                                     : request.request_type == 'DELETE'
-                                                    ? `❌ Your request got declined.`
-                                                    : `❌ Your request got declined.`,
+                                                      ? `❌ Your request got declined.`
+                                                      : `❌ Your request got declined.`,
                                         })
                                         .catch((err) => {});
                                 }

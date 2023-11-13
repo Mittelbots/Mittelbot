@@ -473,8 +473,8 @@ class Levelsystem {
                             type === 'dm'
                                 ? 'type to **DM**'
                                 : type === 'disable'
-                                ? 'type to **disabled**'
-                                : 'channel to ' + channel
+                                  ? 'type to **disabled**'
+                                  : 'channel to ' + channel
                         }`
                     );
                 })

@@ -51,7 +51,7 @@ module.exports = class Notification {
     updateNotification({ message, embed = null }) {
         return new Promise((resolve, reject) => {
             if (!message && !embed) return reject('No message, content or embed provided.');
-            if (!message instanceof Message) {
+            if ((!message) instanceof Message) {
                 return reject('Message is not a valid message object.');
             }
 
