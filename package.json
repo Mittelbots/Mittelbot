@@ -57,7 +57,7 @@
         "@distube/ytdl-core": "^4.13.3",
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@napi-rs/canvas": "^0.1.44",
-        "@sentry/node": "^7.80.1",
+        "@sentry/node": "^7.81.0",
         "@sentry/profiling-node": "^1.2.6",
         "@stdlib/assert-is-uri": "^0.1.1",
         "@twurple/api": "^7.0.5",
