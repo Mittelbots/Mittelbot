@@ -81,14 +81,14 @@ module.exports.run = async ({ main_interaction, bot }) => {
                       main_interaction.guild.id
                   )
                 : setting.enabled
-                ? global.t.trans(
-                      ['success.admin.automod.antiinsults.enabled', ...replyData],
-                      main_interaction.guild.id
-                  )
-                : global.t.trans(
-                      ['success.admin.automod.antiinsults.disabled', ...replyData],
-                      main_interaction.guild.id
-                  );
+                  ? global.t.trans(
+                        ['success.admin.automod.antiinsults.enabled', ...replyData],
+                        main_interaction.guild.id
+                    )
+                  : global.t.trans(
+                        ['success.admin.automod.antiinsults.disabled', ...replyData],
+                        main_interaction.guild.id
+                    );
 
             main_interaction
                 .followUp({
