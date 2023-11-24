@@ -4,10 +4,12 @@ const { singasongConfig } = require('../_config/fun/singasong');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports.run = async ({ main_interaction, bot }) => {
-    return await main_interaction.reply({
-        content: 'This command is currently disabled!',
-        ephemeral: true,
-    }).catch((err) => {});
+    return await main_interaction
+        .reply({
+            content: 'This command is currently disabled!',
+            ephemeral: true,
+        })
+        .catch((err) => {});
 
     const singasong = new SingASong(main_interaction, bot);
 
