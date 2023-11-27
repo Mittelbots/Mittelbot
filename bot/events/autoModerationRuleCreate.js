@@ -26,18 +26,18 @@ module.exports.autoModerationRuleCreate = async (bot, rule) => {
                 action.type === 1
                     ? 'Delete Message'
                     : action.type === 2
-                    ? 'Send alert to'
-                    : action.type === 3
-                    ? 'Timeout user'
-                    : 'none',
+                      ? 'Send alert to'
+                      : action.type === 3
+                        ? 'Timeout user'
+                        : 'none',
             value:
                 action.type === 1
                     ? 'True'
                     : action.type === 2
-                    ? `<#${action.metadata.channelId}>`
-                    : action.type === 3
-                    ? `${action.metadata.durationSeconds} seconds`
-                    : 'none',
+                      ? `<#${action.metadata.channelId}>`
+                      : action.type === 3
+                        ? `${action.metadata.durationSeconds} seconds`
+                        : 'none',
         };
     });
 

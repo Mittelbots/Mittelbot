@@ -111,6 +111,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                         message = await this.sendTwitchNotification(messageContent, embed, {
                             dc_channel: dcChannel,
                             link: `https://twitch.tv/${stream.userDisplayName}`,
+                            twitch_id: data.twitch_id,
                         });
                     }
                     if (!(message instanceof Message)) {
@@ -184,7 +185,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                     footer: {
                         text: isLive
                             ? global.t.trans(['info.notifications.twitch.startedHrsAgo', uptime])
-                            : global.t.trans(['info.notifications.twitch.endedHrsAgo', uptime]),
+                            : global.t.trans(['info.notifications.twitch.wasLiveFor', uptime]),
                     },
                     image: isLive ? stream.getThumbnailUrl(1920, 1080) : streamer.profilePictureUrl,
                     url: isLive
@@ -248,7 +249,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
         });
     }
 
-    sendTwitchNotification(content, embed, { dc_channel, link }) {
+    sendTwitchNotification(content, embed, { dc_channel, link, twitch_id }) {
         return new Promise(async (resolve, reject) => {
             this.notificationApi
                 .sendNotification({
@@ -264,6 +265,8 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                 .setEmoji('🔴')
                         ),
                     ],
+                    channel_id: twitch_id,
+                    type: 'twitch',
                 })
                 .then((message) => {
                     console.info(`🔎 Twitch stream handler checked streamer: ${link}...`);

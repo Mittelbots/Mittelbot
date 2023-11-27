@@ -61,6 +61,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 }
 
                 const videoDetails = await this.getVideoInfos(latestVideo.link);
+                if (!videoDetails) continue;
 
                 if (uploadedVideos.length >= 10) {
                     uploadedVideos = [latestVideo.link];
@@ -91,6 +92,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                         channel,
                         content: embedContent,
                         embed: embed,
+                        channel_id: upload.channel_id,
+                        type: 'yt',
                     });
 
                     if (!message || !message.id) continue;
@@ -111,7 +114,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     );
                 } catch (err) {
                     console.error(
-                        `I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id}). LINK: ${latestVideo.link}`
+                        `I have failed to send a youtube upload message to ${channel.name} (${channel.id}) in ${guild.name} (${guild.id}). LINK: ${latestVideo.link}`,
+                        err
                     );
                 }
 
@@ -244,7 +248,14 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
             const { channel, guild } = await this.getServerInfos(guildId, channelId);
             if (!channel) return resolve(false);
 
-            const message = await channel.messages.fetch(messageId);
+            const message = await channel.messages.fetch(messageId).catch(() => {
+                return null;
+            });
+
+            if (!message || typeof message !== Message) {
+                return resolve(false);
+            }
+
             const embed = await this.generateEmbed(videoDetails, ytChannelId, guildId);
 
             await this.notificationApi
@@ -264,7 +275,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                     this.updateUpdateCount(messageId);
 
                     errorhandler({
-                        err: `I have failed to update a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id})) | ${err.message}`,
+                        err: `I have failed to update a youtube upload message to ${channel.name}(${channel.id}) in ${guild.name} (${guild.id})) | ${err.message} | message: ${message?.content}`,
                         fatal: true,
                     });
                     return false;
