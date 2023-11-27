@@ -484,7 +484,7 @@
             "twitch": {
                 "endedStream": "%q zakończył swój stream!",
                 "startedHrsAgo": "Stream rozpoczęty %q godzin temu - Ostatnia aktualizacja",
-                "wasLiveFor": "Stream zakończył się %q godzin temu",
+                "wasLiveFor": "Stream był na żywo przez %q godzin",
                 "justWentLive": "%q właśnie zostało uruchomione!",
                 "justEnded": "%q właśnie zakończył swój stream!",
                 "fields": {
