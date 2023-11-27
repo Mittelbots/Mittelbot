@@ -1,6 +1,6 @@
 {
     "name": "mittelbot",
-    "version": "0.67.1",
+    "version": "0.67.2",
     "description": "A Discord Bot written in Node.js",
     "main": "bot/core/shard.js",
     "private": true,
@@ -60,7 +60,7 @@
         "@sentry/node": "^7.81.1",
         "@sentry/profiling-node": "^1.2.6",
         "@stdlib/assert-is-uri": "^0.1.1",
-        "@twurple/api": "^7.0.5",
+        "@twurple/api": "^7.0.6",
         "@twurple/auth": "^7.0.0",
         "axios": "^1.6.2",
         "caller-id": "^0.1.0",
@@ -89,7 +89,7 @@
         "string-mismatch": "^2.1.1",
         "translatte": "^3.0.1",
         "underscore": "^1.13.6",
-        "undici": "^5.27.2",
+        "undici": "^5.28.0",
         "validator": "^13.11.0",
         "ytdl-core": "npm:@distube/ytdl-core@^4.11.10"
     },
