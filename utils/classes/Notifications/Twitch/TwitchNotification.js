@@ -185,7 +185,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                     footer: {
                         text: isLive
                             ? global.t.trans(['info.notifications.twitch.startedHrsAgo', uptime])
-                            : global.t.trans(['info.notifications.twitch.endedHrsAgo', uptime]),
+                            : global.t.trans(['info.notifications.twitch.wasLiveFor', uptime]),
                     },
                     image: isLive ? stream.getThumbnailUrl(1920, 1080) : streamer.profilePictureUrl,
                     url: isLive
