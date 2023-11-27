@@ -484,7 +484,7 @@
             "twitch": {
                 "endedStream": "%q befejezte a streamet!",
                 "startedHrsAgo": "Stream indult %q órával ezelőtt - Utolsó frissítés",
-                "wasLiveFor": "Stream was Live for %q hours",
+                "wasLiveFor": "Stream élő volt %q órákig",
                 "justWentLive": "%q épp most indult el!",
                 "justEnded": "%q most fejezte be a streamet!",
                 "fields": {
