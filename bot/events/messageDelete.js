@@ -2,7 +2,7 @@ const Auditlog = require('~utils/classes/Auditlog');
 const { messageDeleteReasons } = require('~assets/js/messageDeleteReasons');
 
 module.exports.messageDelete = async (bot, message) => {
-    if (!message.author) return;
+    if (!message.author || !message.guild) return;
     const auditLog = new Auditlog();
     const isEnabled = await auditLog.checkEnabledEvents(message.guild.id, 'message_delete');
     if (!isEnabled) return;
