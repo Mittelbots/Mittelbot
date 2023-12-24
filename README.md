@@ -25,6 +25,18 @@
 
 <br>
 
+## **Important Note!**
+This project <span style="font-weight: 800; color: red;">does not</span> support hosting without Docker or another free hosting service such as Heroku or Netlify currently. <br> 
+To host this project, you must have a basic understanding of Docker and NodeJS.
+Anyone is welcome to contribute to this project and add a "how to host" guide to this readme file for other hosting services.
+
+<br>
+
+---
+
+<br>
+
+
 **Mittelbot**. A multi-purpose Discord bot with a lot of features. <br>
 With Notifications, Moderation with warn roles, Fun Commands, Auto-Translation, Banappeals, Auto-Moderation, Ticketsystem, Scam Detection, Reactionroles, Levelsystem, Music, Utility Commands and more! <br>
 
