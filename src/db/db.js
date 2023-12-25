@@ -11,7 +11,8 @@ const database = new Sequelize(
     process.env.DB_PASSWORD,
     {
         host: process.env.DB_HOST,
-        dialect: 'mysql',
+        port: process.env.DB_PORT || 3306,
+        dialect: process.env.DB_DIALECT || 'mysql',
         logging: false,
         pool: {
             max: 5,
@@ -74,10 +75,10 @@ SequelizeModel.destroy = function () {
 
 database.init = () => {
     return new Promise(async (resolve, reject) => {
-        const dir = path.resolve('./src/db/Models/');
         await database
             .authenticate()
             .then(() => {
+                const dir = path.resolve('./src/db/Models/');
                 fs.readdirSync(dir).forEach((file) => {
                     console.info('Loading model: ' + file);
                     require(path.join(dir, file));
