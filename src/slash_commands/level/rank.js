@@ -54,14 +54,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
 
     Font.loadDefault();
 
-    let avatarURL = user.avatarURL({
-        format: 'jpg',
-    }) || user.displayAvatarURL();
+    let avatarURL =
+        user.avatarURL({
+            format: 'jpg',
+        }) || user.displayAvatarURL();
 
     if (avatarURL.endsWith('.gif')) {
         avatarURL = avatarURL.slice(0, -3) + 'png';
     }
-    
+
     const rank = new RankCardBuilder()
         .setAvatar(avatarURL)
         .setDisplayName(user.username)
@@ -70,7 +71,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
         .setRank(userRank)
         .setLevel(playerXP.level_announce)
         .setCurrentXP(playerXP.xp)
-        .setRequiredXP(nextLevel.xp)
+        .setRequiredXP(nextLevel.xp);
 
     rank.build({
         format: 'png',
