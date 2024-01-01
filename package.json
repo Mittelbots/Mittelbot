@@ -64,7 +64,7 @@
         "@twurple/auth": "^7.0.0",
         "axios": "^1.6.3",
         "caller-id": "^0.1.0",
-        "canvacord": "5.4.10",
+        "canvacord": "6.0.0",
         "discord-html-transcripts": "^3.2.0",
         "discord-logs": "^2.2.1",
         "discord-player": "^6.6.6",
