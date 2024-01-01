@@ -1,9 +1,9 @@
-const canvacord = require('canvacord');
 const { AttachmentBuilder } = require('discord.js');
 const levels = require('~assets/json/levelsystem/levelconfig.json');
 const Levelsystem = require('~utils/classes/levelsystemAPI');
 const { rankConfig } = require('../_config/level/rank');
 const { EmbedBuilder } = require('discord.js');
+const { RankCardBuilder, Font } = require('canvacord');
 
 module.exports.run = async ({ main_interaction, bot }) => {
     await main_interaction.deferReply({
@@ -52,22 +52,30 @@ module.exports.run = async ({ main_interaction, bot }) => {
         guild_id: main_interaction.guild.id,
     });
 
-    const rank = new canvacord.Rank()
-        .setAvatar(
-            user.avatarURL({
-                format: 'jpg',
-            }) || user.displayAvatarURL()
-        )
-        .setUsername(user.username)
-        .setStatus('online', true, '30')
-        .setProgressBar(['#240000', '#00e8ff'], 'GRADIENT')
+    Font.loadDefault();
+
+    let avatarURL =
+        user.avatarURL({
+            format: 'jpg',
+        }) || user.displayAvatarURL();
+
+    if (avatarURL.endsWith('.gif')) {
+        avatarURL = avatarURL.slice(0, -3) + 'png';
+    }
+
+    const rank = new RankCardBuilder()
+        .setAvatar(avatarURL)
+        .setDisplayName(user.username)
+        .setStatus('online')
+        .setOverlay(90)
         .setRank(userRank)
         .setLevel(playerXP.level_announce)
         .setCurrentXP(playerXP.xp)
-        .setRequiredXP(nextLevel.xp)
-        .setMinXP(currentLevel.xp);
+        .setRequiredXP(nextLevel.xp);
 
-    rank.build().then((data) => {
+    rank.build({
+        format: 'png',
+    }).then((data) => {
         const attachment = new AttachmentBuilder(data, 'RankCard.png');
         main_interaction
             .followUp({
