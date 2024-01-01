@@ -236,11 +236,11 @@ module.exports.acceptBotInteraction = (bot) => {
     });
 
     bot.on('guildMemberOffline', (member, oldStatus) => {
-        guildMemberOffline(bot, member);
+        guildMemberOffline(bot, member, oldStatus);
     });
 
     bot.on('guildMemberOnline', (member, oldStatus) => {
-        guildMemberOnline(bot, member);
+        guildMemberOnline(bot, member, oldStatus);
     });
 
     bot.on('userAvatarUpdate', (user, oldAvatarURL, newAvatarURL) => {

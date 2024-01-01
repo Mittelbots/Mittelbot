@@ -26,8 +26,9 @@ module.exports.checkInfractions = (bot) => {
             const currentYear = new Date().getFullYear();
             const infYear = results[i].till_date.getFullYear();
             if (currentdate - till_date >= 0 && currentYear <= infYear) {
+                const guild = await bot.guilds.cache.get(results[i].guild_id);
+
                 if (results[i].mute) {
-                    const guild = await bot.guilds.cache.get(results[i].guild_id);
                     const user = await guild.members
                         .fetch(results[i].user_id)
                         .then((members) => {
@@ -37,7 +38,7 @@ module.exports.checkInfractions = (bot) => {
                             return await bot.users.cache.get(results[i].user_id);
                         });
                     try {
-                        await removeMutedRole(user, bot.guilds.cache.get(results[i].guild_id));
+                        await removeMutedRole(user, guild);
 
                         if (user) {
                             await giveAllRoles(
@@ -79,9 +80,8 @@ module.exports.checkInfractions = (bot) => {
                 } else {
                     //Member got banned
                     await new Infractions().moveFromOpenToClosed(results[i]);
-                    await bot.guilds.cache
-                        .get(results[i].guild_id)
-                        .members.unban(`${results[i].user_id}`, `Auto`)
+                    await guild.members
+                        .unban(`${results[i].user_id}`, `Auto`)
                         .then(async () => {
                             await setNewModLogMessage(
                                 bot,
