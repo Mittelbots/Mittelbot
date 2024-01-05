@@ -5,7 +5,9 @@ const { rankConfig } = require('../_config/level/rank');
 const { EmbedBuilder } = require('discord.js');
 const { RankCardBuilder, Font } = require('canvacord');
 
-module.exports.run = async ({ main_interaction, bot }) => {
+Font.loadDefault();
+
+module.exports.run = async ({ main_interaction }) => {
     await main_interaction.deferReply({
         ephemeral: true,
     });
@@ -42,17 +44,15 @@ module.exports.run = async ({ main_interaction, bot }) => {
         playerXP.level_announce,
         true
     );
-    const currentLevel = await new Levelsystem().getLevelOfUser(
-        levels[mode],
-        playerXP.level_announce
-    );
+    // const currentLevel = await new Levelsystem().getLevelOfUser(
+    //     levels[mode],
+    //     playerXP.level_announce
+    // );
 
     const userRank = await new Levelsystem().getRank({
         user_id: user.id,
         guild_id: main_interaction.guild.id,
     });
-
-    Font.loadDefault();
 
     let avatarURL =
         user.avatarURL({
@@ -82,7 +82,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 files: [attachment],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     });
 };
 
