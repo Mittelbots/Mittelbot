@@ -33,7 +33,7 @@ jobs:
               run: |
                   sleep 10
                   docker ps -a                  
-                  docker inspect --format='{{json .State.Health}}' bot
+                  docker inspect --format='{{json .State.Health}}' mittelbot
                   docker inspect --format='{{json .State.Health}}' mysql
                   docker inspect --format='{{json .State.Health}}' mysql-backup
 
