@@ -8,11 +8,9 @@
         "node": ">=18.15.0"
     },
     "scripts": {
-        "start": "docker compose up -d && docker logs -f mittelbot",
-        "start-prod": "npm install && npm run alias-build && docker compose up -d",
+        "start:dev": "docker compose up -d && docker logs -f mittelbot",
         "stop": "docker compose down",
-        "restart": "npm run stop && npm run start",
-        "restart-prod": "npm run stop && npm run start-prod",
+        "restart": "npm run stop && npm run start:dev",
         "log": "docker logs -f mittelbot",
         "format": "npm run stop && docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --write .\"",
         "check": "docker run --rm -v $(pwd):/app -w /app node:18.8 sh -c \"npm install -g prettier && prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --check .\"",

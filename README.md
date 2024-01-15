@@ -32,6 +32,11 @@ Anyone is welcome to contribute to this project and add a "how to host" guide to
 
 <br>
 
+## Performance
+This project is designed to run on a server with at least 4GB of RAM and 2 CPU cores. 
+
+<br>
+
 ---
 
 <br>
@@ -119,30 +124,17 @@ YT_KEY= #Your Youtube API Key to run the youtube notifier
 
 <br>
 
-3. Execute the install script
+3. Start Docker
 ```bash
-# Linux
-bash ./scripts/install-linux.sh
-
-# Windows
-./scripts/install-windows.bat
-
+npm run start
 ```
 
 <br>
 
-4. View all commands
+4. View all commands (development only)
 
 Go to your bot direct message and send `deploycommands`. You will notice, that in your console the commands will be deployed and updated.
 
-
-<br>
-
-## **Known Issues**
-
-![](./docs/readme/module_not_found.png)
-
-**Fix:** Run the install script again. If this doesn't work, please open an issue.
 
 <br>
 

@@ -9,7 +9,7 @@ module.exports.createSlashCommands = async (bot) => {
         const clientId = process.env.DISCORD_APPLICATION_ID;
         const guildId = process.env.DEVELOPER_DISCORD_GUILD_ID;
 
-        const loadedCommandList = await this.loadCommandList();
+        const loadedCommandList = this.loadCommandList();
         const commands = loadedCommandList.commands;
 
         bot.commands = loadedCommandList.cmd;
@@ -40,26 +40,33 @@ module.exports.createSlashCommands = async (bot) => {
     });
 };
 
-module.exports.loadCommandList = async () => {
-    const modules = fs.readdirSync('./src/slash_commands').filter((file) => file !== 'index.js');
+module.exports.loadCommandList = () => {
+    try {
+        const modules = fs
+            .readdirSync('./src/slash_commands')
+            .filter((file) => file !== 'index.js');
 
-    const commands = [];
-    const cmd = [];
+        const commands = [];
+        const cmd = [];
 
-    for (const cmd_folder of modules) {
-        if (cmd_folder.startsWith('._') || cmd_folder.startsWith('_')) continue;
-        const files = fs.readdirSync(`./src/slash_commands/${cmd_folder}/`);
-        for (const command_file of files) {
-            if (command_file.startsWith('._')) continue;
-            console.info(`${command_file} Command has been loaded!`);
-            const command = require(`~src/slash_commands/${cmd_folder}/${command_file}`);
-            commands.push(command.data.toJSON());
-            cmd.push(command);
+        for (const cmd_folder of modules) {
+            if (cmd_folder.startsWith('._') || cmd_folder.startsWith('_')) continue;
+            const files = fs.readdirSync(`./src/slash_commands/${cmd_folder}/`);
+            for (const command_file of files) {
+                if (command_file.startsWith('._')) continue;
+                console.info(`${command_file} Command has been loaded!`);
+                const command = require(`~src/slash_commands/${cmd_folder}/${command_file}`);
+                commands.push(command.data.toJSON());
+                cmd.push(command);
+            }
         }
-    }
 
-    return {
-        commands,
-        cmd,
-    };
+        return {
+            commands,
+            cmd,
+        };
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
 };
