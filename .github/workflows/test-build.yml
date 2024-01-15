@@ -9,12 +9,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup Node.js
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
-                  node-version: 18
+                  node-version: 20
 
             - name: Install test env data
               run: |
@@ -25,17 +25,19 @@ jobs:
                   echo ${{ secrets.TEST_SECRET }} >> .env
                   echo ${{ secrets.TEST_APPLICATION_ID }} >> .env
                   echo ${{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
-                  echo ${{ secrets.TEST_APPLICATION_ID }}
 
-            - name: Install important data
+            - name: Start Container
               run: |
                   npm run start
 
             - name: Wait 10 seconds and check if all containers are healthy without any npm commands
               run: |
                   sleep 10
-                  docker ps -a
-                  docker inspect --format='{{json .State.Health.Status}}' $(docker ps -aq) | grep -v healthy | wc -l
+                  docker ps -a                  
+                  docker inspect --format='{{json .State.Health}}' bot
+                  docker inspect --format='{{json .State.Health}}' mysql
+                  docker inspect --format='{{json .State.Health}}' mysql-backup
+
                   
 
             - name: Stop Container
