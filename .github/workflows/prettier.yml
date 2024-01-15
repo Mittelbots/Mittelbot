@@ -1,8 +1,6 @@
 name: Code Check
 
 on:
-    pull_request_target:
-        branches: [dev, main, beta]
     push:
         branches: [dev]
 
