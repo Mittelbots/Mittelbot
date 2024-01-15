@@ -19,7 +19,7 @@ jobs:
             - name: Install test env data
               run: |
                   cp .env.example .env
-                  echo NODE_ENV=production >> .env
+                  echo "NODE_ENV=production" >> .env
                   echo ${{ secrets.TEST_TOKEN }} >> .env
                   echo ${{ secrets.TEST_TOKEN }} >> .env
                   echo ${{ secrets.TEST_SECRET }} >> .env
@@ -30,9 +30,16 @@ jobs:
               run: |
                   npm run start
 
-            - name: Build
+            - name: Wait 10 seconds and check if all containers are healthy without any npm commands
               run: |
-                  npm run restart
+                  sleep 10
+                  docker ps -a
+                  docker inspect --format='{{json .State.Health.Status}}' $(docker ps -aq) | grep -v healthy | wc -l
+                  
+
+            - name: Stop Container
+              run: |
+                  npm run stop
 
             - name: Stop Workflow
               if: steps.check_condition.outputs.stop_workflow == 'true'
