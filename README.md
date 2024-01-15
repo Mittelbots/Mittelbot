@@ -32,6 +32,11 @@ Anyone is welcome to contribute to this project and add a "how to host" guide to
 
 <br>
 
+## Performance
+This project is designed to run on a server with at least 4GB of RAM and 2 CPU cores. 
+
+<br>
+
 ---
 
 <br>

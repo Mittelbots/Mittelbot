@@ -42,7 +42,9 @@ module.exports.createSlashCommands = async (bot) => {
 
 module.exports.loadCommandList = () => {
     try {
-        const modules = fs.readdirSync('./src/slash_commands').filter((file) => file !== 'index.js');
+        const modules = fs
+            .readdirSync('./src/slash_commands')
+            .filter((file) => file !== 'index.js');
 
         const commands = [];
         const cmd = [];
@@ -54,7 +56,6 @@ module.exports.loadCommandList = () => {
                 if (command_file.startsWith('._')) continue;
                 console.info(`${command_file} Command has been loaded!`);
                 const command = require(`~src/slash_commands/${cmd_folder}/${command_file}`);
-                console.log('command', command);
                 commands.push(command.data.toJSON());
                 cmd.push(command);
             }
@@ -68,6 +69,4 @@ module.exports.loadCommandList = () => {
         console.error(err);
         return false;
     }
-
-
 };

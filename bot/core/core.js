@@ -17,57 +17,40 @@ const YouTubeNotification = require('~utils/classes/Notifications/YouTube/YouTub
 module.exports.startBot = async (bot) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.info('1');
             logs(bot);
             await database.init();
-            console.info('2');
             await setActivity(bot, true);
-            console.info('3');
             await Promise.resolve(this.fetchCache(bot));
-            console.info('4');
             //await bot.player.extractors.loadDefault();
-            console.info('5');
             new Music(null, bot, true).generateQueueAfterRestart();
-            console.info('6');
 
             /**
                 ---- Events & Timer ----
             */
             new YouTubeNotification().init(bot);
-            console.info('7');
             twitch_notifier({
                 bot,
             });
-            console.info('8');
             reddit_notifier(bot);
-            console.info('9');
             timer(bot);
-            console.info('10');
             checkInfractions(bot);
-            console.info('11');
             checkTemproles(bot);
-            console.info('12');
             /**
                 ----END ----
             */
 
-            const botList = await loadCommandList(bot)
-            console.info('12.5');
+            const botList = await loadCommandList(bot);
             bot.commands = botList.cmd;
-            console.info('13');
 
             setActivity(bot);
-            console.info('14');
             if (process.env.NODE_ENV === 'production') {
                 await createSlashCommands(bot);
             }
 
-            console.info('15');
-
             console.info(
                 `****Ready! Logged in as ${bot.user.username}! I'm on ${bot.guilds.cache.size} Server(s)****`
             );
-            
+
             return resolve(true);
         } catch (err) {
             return reject(err);
