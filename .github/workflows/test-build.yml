@@ -19,6 +19,8 @@ jobs:
             - name: Install test env data
               run: |
                   cp .env.example .env
+                  echo NODE_ENV=production >> .env
+                  echo ${{ secrets.TEST_TOKEN }} >> .env
                   echo ${{ secrets.TEST_TOKEN }} >> .env
                   echo ${{ secrets.TEST_SECRET }} >> .env
                   echo ${{ secrets.TEST_APPLICATION_ID }} >> .env
@@ -26,13 +28,11 @@ jobs:
 
             - name: Install important data
               run: |
-                  npm run start-prod
-                  docker compose exec bot npm install --omit=dev
-                  docker compose exec bot npm run alias-build
+                  npm run start
 
             - name: Build
               run: |
-                  npm run restart-prod
+                  npm run restart
 
             - name: Stop Workflow
               if: steps.check_condition.outputs.stop_workflow == 'true'
