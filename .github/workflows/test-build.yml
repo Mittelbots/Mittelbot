@@ -25,10 +25,9 @@ jobs:
                   echo ${{ secrets.TEST_APPLICATION_ID }} >> .env
                   echo ${{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
 
-            # set nodeenv to production and run npm run start
             - name: Start Container
               run: |
-                  NODE_ENV=production npm run start
+                  NODE_ENV=production docker compose up -d
 
             - name: Wait 10 seconds and check if all containers are healthy without any npm commands
               run: |
@@ -37,8 +36,6 @@ jobs:
                   docker inspect --format='{{json .State.Health}}' bot
                   docker inspect --format='{{json .State.Health}}' mysql
                   docker inspect --format='{{json .State.Health}}' mysql-backup
-
-                  
 
             - name: Stop Container
               run: |
