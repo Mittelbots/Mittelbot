@@ -29,9 +29,9 @@ jobs:
               run: |
                   NODE_ENV=production docker compose up -d
 
-            - name: Wait 20 seconds and check if all containers are healthy without any npm commands
+            - name: Wait 60 seconds and check if all containers are healthy without any npm commands
               run: |
-                  sleep 20
+                  sleep 60
                   docker ps -a                  
                   docker inspect --format='{{json .State.Health}}' mittelbot
                   docker inspect --format='{{json .State.Health}}' mittelbot-mysql
