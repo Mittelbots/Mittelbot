@@ -25,6 +25,7 @@ jobs:
                   echo ${{ secrets.TEST_SECRET }} >> .env
                   echo ${{ secrets.TEST_APPLICATION_ID }} >> .env
                   echo ${{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
+                  echo ${{ secrets.TEST_APPLICATION_ID }}
 
             - name: Install important data
               run: |
