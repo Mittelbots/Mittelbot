@@ -19,16 +19,16 @@ jobs:
             - name: Install test env data
               run: |
                   cp .env.example .env
-                  echo "NODE_ENV=production" >> .env
                   echo ${{ secrets.TEST_TOKEN }} >> .env
                   echo ${{ secrets.TEST_TOKEN }} >> .env
                   echo ${{ secrets.TEST_SECRET }} >> .env
                   echo ${{ secrets.TEST_APPLICATION_ID }} >> .env
                   echo ${{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
 
+            # set nodeenv to production and run npm run start
             - name: Start Container
               run: |
-                  npm run start
+                  NODE_ENV=production npm run start
 
             - name: Wait 10 seconds and check if all containers are healthy without any npm commands
               run: |
