@@ -33,7 +33,7 @@ jobs:
             - name: Setup Node
               uses: actions/setup-node@v4
               with:
-                  node-version: 18
+                  node-version: 20
 
             - name: Install Dependencies
               run: npm install
@@ -66,7 +66,7 @@ jobs:
               run: |
                   NODE_ENV=production docker compose up -d
 
-            - name: Wait 60 seconds and check if all containers are healthy without any npm commands
+            - name: Wait 60 seconds and check if all containers are healthy
               run: |
                   sleep 60
                   docker ps -a                  
