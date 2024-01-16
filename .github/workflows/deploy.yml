@@ -22,9 +22,6 @@ jobs:
               with:
                   node-version: 20
 
-            - name: Install dependencies
-              run: npm install --omit=dev
-
             - name: Get production data
               run: |
                   cp ../.env .env
@@ -50,7 +47,14 @@ jobs:
 
             - name: Build
               run: |
-                  docker compose down && docker compose up -d
+                  NODE_ENV=production docker compose down && docker compose up -d
+
+            - name: Wait 60 seconds and check if all containers are healthy
+              run: |
+                  sleep 60
+                  docker ps -a                  
+                  docker inspect --format='{{json .State.Health}}' mittelbot
+                  docker inspect --format='{{json .State.Health}}' mittelbot-mysql
 
             - name: Stop Workflow
               if: steps.check_condition.outputs.stop_workflow == 'true'
