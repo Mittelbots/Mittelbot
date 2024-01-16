@@ -50,7 +50,7 @@ jobs:
 
             - name: Build
               run: |
-                  npm run restart-prod
+                  docker compose down && docker compose up -d
 
             - name: Stop Workflow
               if: steps.check_condition.outputs.stop_workflow == 'true'
