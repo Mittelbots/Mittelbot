@@ -180,12 +180,12 @@ module.exports.sendRestartNotice = async (message, args) => {
                     .then(() => {
                         sentMessage++;
                     })
-                    .catch(async () => {
-                        await channel
-                            .send({
-                                content: noticeMessage,
-                            })
-                            .catch(() => {});
+                    .catch((err) => {
+                        errorhandler({
+                            err,
+                            message: 'Could not send restart notice to channel',
+                            fatal: true,
+                        });
                     });
             }
         }

@@ -38,7 +38,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
     if (allow_nsfw && !channel.nsfw) {
         return main_interaction
@@ -55,7 +55,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
     const subredditName = subRedditExists;
@@ -81,31 +81,12 @@ module.exports.run = async ({ main_interaction, bot }) => {
                     ],
                     ephemeral: true,
                 })
-                .catch((err) => {});
+                .catch(() => {});
         }
 
         reddit
             .remove(guild_id)
             .then(async () => {
-                return main_interaction
-                    .followUp({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setDescription(
-                                    global.t.trans(
-                                        [
-                                            'error.notifications.reddit.doesNotExistsOrIsPrivate',
-                                            subredditName,
-                                        ],
-                                        main_interaction.guild.id
-                                    )
-                                )
-                                .setColor(global.t.trans(['general.colors.error'])),
-                        ],
-                        ephemeral: true,
-                    })
-                    .catch((err) => {});
-
                 await main_interaction
                     .followUp({
                         embeds: [
@@ -120,7 +101,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ],
                         ephemeral: true,
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             })
             .catch((err) => {
                 return main_interaction
@@ -137,7 +118,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ],
                         ephemeral: true,
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             });
     } else {
         let override = false;
@@ -162,7 +143,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ],
                         ephemeral: true,
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             }
         }
 
@@ -190,7 +171,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ],
                         ephemeral: true,
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             })
             .catch((err) => {
                 return main_interaction
@@ -207,7 +188,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                         ],
                         ephemeral: true,
                     })
-                    .catch((err) => {});
+                    .catch(() => {});
             });
     }
 };

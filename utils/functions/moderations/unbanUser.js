@@ -6,13 +6,10 @@ const Infractions = require('~utils/classes/Infractions');
 
 function unbanUser({ user, mod, guild, reason, bot }) {
     return new Promise(async (resolve, reject) => {
-        await guild.members
-            .unban(`${user.id}`, `${reason}`)
-            .then(() => (pass = true))
-            .catch((err) => {
-                errorhandler({ err });
-                return reject(global.t.trans(['error.permissions.bot.kick'], guild.id));
-            });
+        await guild.members.unban(`${user.id}`, `${reason}`).catch((err) => {
+            errorhandler({ err });
+            return reject(global.t.trans(['error.permissions.bot.kick'], guild.id));
+        });
 
         const infractions = await new Infractions().getOpen({
             user_id: user.id,
@@ -33,7 +30,7 @@ function unbanUser({ user, mod, guild, reason, bot }) {
                 start_date: latestBanInfractions[0].start_date,
                 guild_id: guild.id,
             });
-            await new Infractions().deleteOpen(res[0].infraction_id);
+            await new Infractions().deleteOpen(latestBanInfractions[0].infraction_id);
         }
 
         setNewModLogMessage(

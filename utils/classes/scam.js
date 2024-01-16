@@ -14,7 +14,7 @@ class Scam {
                 .then((data) => {
                     resolve(data);
                 })
-                .catch((err) => {
+                .catch(() => {
                     return reject(false);
                 });
         });
@@ -190,7 +190,7 @@ class Scam {
                                           }),
                                       ],
                             })
-                            .catch((err) => {});
+                            .catch(() => {});
 
                         if (canFitOnOnePage) return;
 
@@ -210,7 +210,7 @@ class Scam {
                                     new ActionRowBuilder({
                                         components: [
                                             ...(currentIndex ? [backButton] : []),
-                                            ...(currentIndex + 10 < data.length
+                                            ...(currentIndex + 10 < res.length
                                                 ? [forwardButton]
                                                 : []),
                                         ],

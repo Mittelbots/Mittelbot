@@ -530,18 +530,17 @@ class Levelsystem {
                 .setTimestamp();
 
             try {
-                if (levelsettings.level_up_channel !== 'dm') {
-                    if (level_up_channel === 'disable') return;
+                const levelUpChannel = levelsettings.level_up_channel;
+                if (levelUpChannel !== 'dm') {
+                    if (levelUpChannel === 'disable') return;
 
-                    const channel = await message.guild.channels.cache.get(
-                        levelsettings.level_up_channel
-                    );
+                    const channel = await message.guild.channels.cache.get(levelUpChannel);
                     channel
                         .send({
                             content: `${message.author}`,
                             embeds: [newLevelMessage],
                         })
-                        .catch((err) => {
+                        .catch(() => {
                             return;
                         });
                 } else {
@@ -549,7 +548,7 @@ class Levelsystem {
                         .send({
                             embeds: [newLevelMessage],
                         })
-                        .catch((err) => {
+                        .catch(() => {
                             return;
                         });
                 }

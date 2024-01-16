@@ -13,7 +13,7 @@ class Timer {
                 .then((data) => {
                     return resolve(data);
                 })
-                .catch((err) => {
+                .catch(() => {
                     return resolve([]);
                 });
         });
@@ -26,7 +26,7 @@ class Timer {
                 .then((data) => {
                     return resolve(data);
                 })
-                .catch((err) => {
+                .catch(() => {
                     return resolve([]);
                 });
         });
@@ -46,20 +46,20 @@ class Timer {
                 .then((data) => {
                     return resolve(data);
                 })
-                .catch((err) => {
+                .catch(() => {
                     return reject(false);
                 });
         });
     }
 
     destroy(guild_id) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             timer
                 .destroy({ where: { guild_id } })
                 .then(() => {
                     return resolve(true);
                 })
-                .catch((err) => {
+                .catch(() => {
                     return reject(false);
                 });
         });
