@@ -3,36 +3,79 @@ name: Deployment Test Build
 on:
     pull_request:
         branches: [dev, main, beta]
+    workflow_call:
 
 jobs:
+    prettier:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  # Make sure the actual branch is checked out when running on pull requests
+                  ref: ${{ github.head_ref }}
+                  # This is important to fetch the changes to the previous commit
+                  fetch-depth: 0
+
+            - name: Prettify code
+              uses: creyD/prettier_action@v4.3
+              with:
+                  prettier_options: '--config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --check . --single-quote --bracket-same-line=true'
+                  dry: true
+                  only_changed: True
+    test:
+        runs-on: ubuntu-latest
+        needs: prettier
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Run Tests
+              run: npm test
+
     test-deploy:
         runs-on: ubuntu-latest
+        needs: test
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup Node.js
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
-                  node-version: 18
+                  node-version: 20
 
             - name: Install test env data
               run: |
                   cp .env.example .env
                   echo ${{ secrets.TEST_TOKEN }} >> .env
+                  echo ${{ secrets.TEST_TOKEN }} >> .env
                   echo ${{ secrets.TEST_SECRET }} >> .env
                   echo ${{ secrets.TEST_APPLICATION_ID }} >> .env
                   echo ${{ secrets.TEST_DEVELOPER_DISCORD_GUILD_ID }} >> .env
 
-            - name: Install important data
+            - name: Start Container
               run: |
-                  npm run start-prod
-                  docker compose exec bot npm install --omit=dev
-                  docker compose exec bot npm run alias-build
+                  NODE_ENV=production docker compose up -d
 
-            - name: Build
+            - name: Wait 60 seconds and check if all containers are healthy
               run: |
-                  npm run restart-prod
+                  sleep 60
+                  docker ps -a                  
+                  docker inspect --format='{{json .State.Health}}' mittelbot
+                  docker inspect --format='{{json .State.Health}}' mittelbot-mysql
+
+            - name: Stop Container
+              run: |
+                  npm run stop
 
             - name: Stop Workflow
               if: steps.check_condition.outputs.stop_workflow == 'true'

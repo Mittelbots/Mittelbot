@@ -21,7 +21,7 @@ module.exports.startBot = async (bot) => {
             await database.init();
             await setActivity(bot, true);
             await Promise.resolve(this.fetchCache(bot));
-            await bot.player.extractors.loadDefault();
+            //await bot.player.extractors.loadDefault();
             new Music(null, bot, true).generateQueueAfterRestart();
 
             /**
@@ -39,7 +39,8 @@ module.exports.startBot = async (bot) => {
                 ----END ----
             */
 
-            bot.commands = (await loadCommandList(bot)).cmd;
+            const botList = await loadCommandList(bot);
+            bot.commands = botList.cmd;
 
             setActivity(bot);
             if (process.env.NODE_ENV === 'production') {

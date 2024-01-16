@@ -3,7 +3,8 @@ node_modules/
 .DS_Store
 ._*
 
-./core
+core
+!bot/core
 
 .env
 .env.prod
