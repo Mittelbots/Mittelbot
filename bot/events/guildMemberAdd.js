@@ -85,8 +85,9 @@ module.exports.guildMemberAdd = async (member, bot) => {
     if (joinroles.length === 0) return;
 
     for (let i in joinroles) {
-        const joinrole = await member.guild.roles.cache.find((r) => r.id === joinroles[i]);
-        await member.roles.add(joinrole).catch((err) => {});
+        const joinrole = joinroles[i];
+        const guildRole = await member.guild.roles.cache.find((r) => r.id === joinrole);
+        await member.roles.add(guildRole).catch(() => {});
     }
     errorhandler({
         fatal: false,
