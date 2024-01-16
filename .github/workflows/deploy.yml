@@ -47,7 +47,8 @@ jobs:
 
             - name: Build
               run: |
-                  NODE_ENV=production docker compose down && docker compose up -d
+                  export NODE_ENV=production
+                  docker compose down && docker compose up -d
 
             - name: Wait 60 seconds and check if all containers are healthy
               run: |
