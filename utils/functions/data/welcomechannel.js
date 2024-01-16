@@ -111,12 +111,10 @@ module.exports.manageNewWelcomeSetting = async ({ main_interaction }) => {
             } else if (message.content.toLowerCase() === 'clear') {
                 isClear = true;
                 data[value] = '';
-            } else {
-                pass = true;
             }
 
             data[value] = message.content;
-            message.delete().catch((err) => {});
+            message.delete().catch(() => {});
 
             const messageEmbed = main_interaction.message.embeds[0].data;
             switch (value) {

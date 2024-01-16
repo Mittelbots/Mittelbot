@@ -29,6 +29,7 @@ module.exports.hasPermission = async ({
             isDashboard,
             modOnly,
             adminOnly,
+            bot,
         })
     );
 
@@ -52,6 +53,7 @@ module.exports.checkPerms = ({
     isDashboard,
     adminOnly,
     modOnly,
+    bot,
 }) => {
     const userHasRole = isDashboard
         ? bot.guilds.cache.get(guild_id).members.cache.get(user).roles.cache.has(role_id)

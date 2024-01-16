@@ -1,7 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
 const { hasPermission } = require('~utils/functions/hasPermissions');
 const Levelsystem = require('~utils/classes/levelsystemAPI');
-const config = require('../../assets/json/_config/config.json');
 const { removexpConfig } = require('../_config/level/removexp');
 const { EmbedBuilder } = require('discord.js');
 
@@ -32,7 +30,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
     const user = main_interaction.options.getUser('user');
@@ -53,7 +51,7 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
     const currentXP = await new Levelsystem().gain({
@@ -73,10 +71,10 @@ module.exports.run = async ({ main_interaction, bot }) => {
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
-    const newAmount = Number(currentXP) - Number(amount);
+    let newAmount = Number(currentXP) - Number(amount);
 
     if (newAmount < 0) newAmount = 0;
 

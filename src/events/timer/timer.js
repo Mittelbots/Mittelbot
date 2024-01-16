@@ -29,12 +29,12 @@ module.exports.timer = async (bot) => {
                                     channel.guild.id
                                 ),
                             })
-                            .catch((err) => {});
+                            .catch(() => {});
                     })
-                    .catch((err) => {
+                    .catch(() => {
                         message.react('❌');
                     });
-                await timer.destroy(channel.guild.id).catch((err) => {});
+                await timer.destroy(channel.guild.id).catch(() => {});
                 return;
             }
 
