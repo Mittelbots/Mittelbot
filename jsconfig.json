@@ -7,8 +7,8 @@
             "~utils/*": ["./utils/*"],
             "~bot/*": ["./bot/*"],
             "~core/*": ["./bot/core/*"],
-            "~assets/*": ["./src/assets/*"]
-        }
+            "~assets/*": ["./src/assets/*"],
+        },
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
 }
