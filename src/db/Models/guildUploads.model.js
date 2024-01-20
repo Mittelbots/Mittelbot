@@ -30,10 +30,6 @@ GuildUploads.init(
             type: DataTypes.BIGINT,
             defaultValue: 0,
         },
-        views: {
-            type: DataTypes.BIGINT,
-            defaultValue: 0,
-        },
         subs: {
             type: DataTypes.BIGINT,
             defaultValue: 0,
