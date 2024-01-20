@@ -67,7 +67,6 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                 message: null,
                                 embedUpdatedAt: null,
                                 streamStartedAt: null,
-                                views: 0,
                             },
                             {
                                 where: {
@@ -125,7 +124,6 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                 embedUpdatedAt: new Date(),
                                 streamStartedAt: new Date(stream.startDate),
                                 isStreaming: true,
-                                views: stream.viewers,
                             },
                             {
                                 where: {
@@ -171,7 +169,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
         return pingrole ? (isEveryone ? '@everyone' : `<@&${pingrole}>`) : '';
     }
 
-    #generateEmbed(streamer, stream, { isLive, uptime }, twitch_id, guild_id) {
+    #generateEmbed(streamer, stream, { isLive, uptime }) {
         return new Promise(async (resolve, reject) => {
             const embed = await this.notificationApi
                 .geneateNotificationEmbed({
@@ -218,11 +216,7 @@ module.exports = class TwitchNotification extends TwitchNotifier {
                                       'info.notifications.twitch.fields.viewers',
                                       streamer.displayName,
                                   ]),
-                                  value: await this.getViewsDiff(
-                                      stream.viewers,
-                                      twitch_id,
-                                      guild_id
-                                  ),
+                                  value: stream.viewers.toString() || '0',
                                   inline: true,
                               },
                               {

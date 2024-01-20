@@ -257,7 +257,7 @@ module.exports = class TwitchNotifier {
                 .then(() => {
                     resolve(true);
                 })
-                .catch((err) => {
+                .catch(() => {
                     reject(false);
                 });
         });
@@ -299,35 +299,6 @@ module.exports = class TwitchNotifier {
                 .catch(() => {
                     reject(global.t.trans(['error.notifications.twitch.removeChannel'], guild_id));
                 });
-        });
-    }
-
-    getViews(twitch_id, guild_id) {
-        return new Promise(async (resolve) => {
-            await twitchStreams
-                .findOne({
-                    where: {
-                        guild_id,
-                        twitch_id,
-                    },
-                })
-                .then((res) => {
-                    resolve(res.views);
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err: `Error while fetching the twitch stream views ${err.message}`,
-                    });
-                    resolve(0);
-                });
-        });
-    }
-
-    getViewsDiff(newViews, guild_id, twitch_id) {
-        return new Promise(async (resolve) => {
-            const oldViews = await this.getViews(guild_id, twitch_id);
-            const diff = newViews - oldViews;
-            resolve(`${newViews} (${diff > 0 ? '+' : ''}${diff})`);
         });
     }
 };
