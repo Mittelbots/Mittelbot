@@ -14,7 +14,6 @@ module.exports.run = async ({ main_interaction }) => {
                     ephemeral: true,
                 })
                 .catch(() => {});
-            break;
 
         case 'cooldown':
             const cooldown = main_interaction.options.getNumber('cooldown');

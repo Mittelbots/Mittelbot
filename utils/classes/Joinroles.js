@@ -99,10 +99,10 @@ class Joinroles {
                     valueName: 'joinroles',
                 })
                 .then(() => {
-                    resolve(global.t.trans(['success.admin.joinroles.removedAll'], guild.id));
+                    resolve(global.t.trans(['success.admin.joinroles.removedAll'], guild_id));
                 })
                 .catch(() => {
-                    reject(global.t.trans(['error.general'], guild.id));
+                    reject(global.t.trans(['error.general'], guild_id));
                 });
         });
     }

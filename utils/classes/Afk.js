@@ -23,12 +23,12 @@ module.exports = class Afk {
             .reply({
                 embeds: [
                     new EmbedBuilder().setDescription(
-                        global.t.trans(['success.utils.afk.set', afk], main_interaction.guild.id)
+                        global.t.trans(['success.utils.afk.set', reason], main_interaction.guild.id)
                     ),
                 ],
                 ephemeral: true,
             })
-            .catch((err) => {});
+            .catch(() => {});
     }
 
     isAfk(user_id, guild_id) {

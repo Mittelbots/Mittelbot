@@ -37,18 +37,16 @@ module.exports = class YouTubeLogic {
 
     constructor() {}
 
-    updateUploads({ guildId, channelId, uploads, messageId, ytChannelId, views, subs }) {
+    updateUploads({ guildId, channelId, uploads, messageId, ytChannelId, subs }) {
         return new Promise(async (resolve) => {
             const update = uploads
                 ? {
                       uploads: uploads,
                       messageId: messageId,
-                      views: views,
                       subs: subs,
                   }
                 : {
                       updateCount: Math.floor(Math.random() * 200) + 1,
-                      views: views,
                       subs: subs,
                   };
 
@@ -66,7 +64,7 @@ module.exports = class YouTubeLogic {
                 .update(update, {
                     where: whereCond,
                 })
-                .then((res) => {
+                .then(() => {
                     return resolve(true);
                 })
                 .catch((err) => {
@@ -126,45 +124,6 @@ module.exports = class YouTubeLogic {
                 return resolve(false);
             }
             return resolve(response.data.items[0].id.channelId);
-        });
-    }
-
-    getViews(channel_id, guild_id) {
-        return new Promise(async (resolve) => {
-            const uploads = await guildUploads.findOne({
-                where: {
-                    guild_id: guild_id,
-                    channel_id: channel_id,
-                },
-            });
-
-            return resolve(uploads.views);
-        });
-    }
-
-    updateViews(channel_id, guild_id, views) {
-        return new Promise(async (resolve) => {
-            await guildUploads
-                .update(
-                    {
-                        views: views,
-                    },
-                    {
-                        where: {
-                            guild_id: guild_id,
-                            channel_id: channel_id,
-                        },
-                    }
-                )
-                .then(() => {
-                    return resolve(true);
-                })
-                .catch((err) => {
-                    errorhandler({
-                        err,
-                    });
-                    return resolve(false);
-                });
         });
     }
 

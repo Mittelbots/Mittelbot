@@ -45,8 +45,6 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
 
                 let uploadedVideos = upload.uploads || [];
 
-                await this.updateViews(upload.channel_id, upload.guild_id, latestVideo.viewCount);
-
                 const videoAlreadyExists = uploadedVideos.includes(latestVideo.link);
                 if (videoAlreadyExists && upload.messageId) {
                     if (!this.isLongerThanXh(upload.updatedAt)) continue;
@@ -195,15 +193,8 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
         );
     }
 
-    generateEmbed(videoDetails, channel, guild_id) {
+    generateEmbed(videoDetails) {
         return new Promise(async (resolve) => {
-            const subs = await this.getSubsDiff(
-                videoDetails.author.subscriber_count,
-                channel,
-                guild_id
-            );
-            const views = await this.getViewsDiff(videoDetails.viewCount, channel, guild_id);
-
             const embed = await new Notification().geneateNotificationEmbed({
                 title: videoDetails.title ? videoDetails.title.substring(0, 250) : 'No title',
                 description: videoDetails.description
@@ -214,7 +205,7 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 thumbnail: videoDetails?.author.thumbnails?.splice(-1)[0]?.url,
                 color: '#ff0000',
                 footer: {
-                    text: `Subscribers ${subs} | Views ${views} | Length ${videoDetails.lengthSeconds}s | ${videoDetails.author.name}`,
+                    text: `Subscribers ${videoDetails.author.subscriber_count} | Views ${videoDetails.viewCount} | Length ${videoDetails.lengthSeconds}s | ${videoDetails.author.name}`,
                 },
                 author: {
                     name: `${videoDetails.author.name} just uploaded a new video!`,
@@ -223,22 +214,6 @@ module.exports = class YouTubeNotification extends YouTubeLogic {
                 timestamp: true,
             });
             resolve(embed);
-        });
-    }
-
-    getViewsDiff(newViews, channel_id, guild_id) {
-        return new Promise(async (resolve) => {
-            const oldViews = await this.getViews(channel_id, guild_id);
-            const diff = newViews - oldViews;
-            resolve(`${newViews} (${diff > 0 ? '+' : ''}${diff})`);
-        });
-    }
-
-    getSubsDiff(newSubs, channel_id, guild_id) {
-        return new Promise(async (resolve) => {
-            const oldSubs = await this.getSubs(channel_id, guild_id);
-            const diff = newSubs - oldSubs;
-            resolve(`${newSubs} (${diff > 0 ? '+' : ''}${diff})`);
         });
     }
 

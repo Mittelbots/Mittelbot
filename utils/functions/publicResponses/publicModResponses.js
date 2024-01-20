@@ -58,7 +58,7 @@ module.exports.publicInfractionResponse = async ({
             .addFields([
                 {
                     name: `${infraction.infraction_id} - ${type} \nFrom: **${
-                        inf.start_date || `404 Start date :(`
+                        infraction.start_date || `404 Start date :(`
                     }** -> to **${infraction.till_date}**`,
                     value: `Reason: **${infraction.reason}** \n Moderator: <@${infraction.mod_id}>`,
                 },

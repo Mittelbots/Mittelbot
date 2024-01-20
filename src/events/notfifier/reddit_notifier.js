@@ -34,7 +34,6 @@ module.exports.reddit_notifier = async (bot) => {
             const {
                 title,
                 url,
-                hidden,
                 selftext,
                 over_18,
                 permalink,

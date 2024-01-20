@@ -23,7 +23,7 @@ services:
             - 5000:5000
         command: >
             sh -c 'if [ "$NODE_ENV" = "development" ]; then
-                    npm install -g nodemon && npm install && npm run alias-build && ls -la /app/bot/core && node ./bot/core/shard.js
+                    npm install -g nodemon && npm install && npm run alias-build && ls -la /app/bot/core && nodemon ./bot/core/shard.js
                 else 
                     npm install --omit=dev && npm run alias-build && node bot/core/shard.js
                 fi'
