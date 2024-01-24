@@ -77,7 +77,7 @@
         "link-module-alias": "^1.2.0",
         "module-alias": "^2.2.3",
         "moment-timezone": "^0.5.44",
-        "mysql2": "^3.7.1",
+        "mysql2": "^3.8.0",
         "nconf": "^0.12.1",
         "patch-package": "^8.0.0",
         "random-animals-api": "^1.2.6",
