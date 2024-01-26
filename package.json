@@ -14,7 +14,7 @@
         "log": "docker logs -f mittelbot",
         "format": "prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --write .",
         "check": "prettier --config .tools/prettier/.prettierrc --ignore-path .tools/prettier/.prettierignore --check .",
-        "postinstall": "patch-package && husky install",
+        "postinstall": "patch-package && husky",
         "alias-build": "link-module-alias",
         "test": "jest --forceExit",
         "bash": "docker compose exec bot bash"
