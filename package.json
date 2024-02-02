@@ -71,7 +71,7 @@
         "extends-classes": "^1.0.5",
         "ffmpeg-static": "^5.2.0",
         "googleapis": "^131.0.0",
-        "husky": "^9.0.7",
+        "husky": "^9.0.10",
         "imgur": "^2.4.2",
         "jsonwebtoken": "^9.0.2",
         "link-module-alias": "^1.2.0",
