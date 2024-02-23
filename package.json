@@ -57,7 +57,7 @@
         "@napi-rs/canvas": "^0.1.48",
         "@sentry/node": "^7.102.0",
         "@sentry/profiling-node": "^7.102.0",
-        "@stdlib/assert-is-uri": "^0.2.0",
+        "@stdlib/assert-is-uri": "^0.2.1",
         "@twurple/api": "^7.0.10",
         "@twurple/auth": "^7.0.0",
         "axios": "^1.6.7",
