@@ -56,7 +56,7 @@
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@napi-rs/canvas": "^0.1.50",
         "@sentry/node": "^7.104.0",
-        "@sentry/profiling-node": "^7.104.0",
+        "@sentry/profiling-node": "^7.105.0",
         "@stdlib/assert-is-uri": "^0.2.1",
         "@twurple/api": "^7.0.10",
         "@twurple/auth": "^7.0.0",
